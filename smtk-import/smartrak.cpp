@@ -978,7 +978,7 @@ void smartrak_import(const char *file, struct divelog *log)
 				if (tmptank->gasmix.he.permille == 0)
 					tmptank->gasmix.he.permille = lrint(strtod((char *)col[i + hefraccol]->bind_ptr, NULL) * 10);
 			} else {
-				tmptank->gasmix.he.permille = 0;
+				tmptank->gasmix.he = 0_percent;
 			}
 			smtk_build_tank_info(mdb_clon, tmptank, (char *)col[i + tankidxcol]->bind_ptr);
 		}

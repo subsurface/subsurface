@@ -118,9 +118,9 @@ static void fill_samples_no_avg(std::vector<sample> &s, int max_d, int max_t, do
 		s[2].time.seconds = max_t - lrint(max_d / slope) - 180;
 		s[2].depth.mm = max_d;
 		s[3].time.seconds = max_t - lrint(5000 / slope) - 180;
-		s[3].depth.mm = 5000;
+		s[3].depth = 5_m;
 		s[4].time.seconds = max_t - lrint(5000 / slope);
-		s[4].depth.mm = 5000;
+		s[4].depth = 5_m;
 	}
 }
 

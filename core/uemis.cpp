@@ -254,7 +254,7 @@ void uemis::event(struct dive *dive, struct divecomputer *dc, struct sample *sam
 		sample->in_deco = true;
 		sample->stopdepth.mm = stopdepth;
 		sample->stoptime.seconds = u_sample->hold_time * 60;
-		sample->ndl.seconds = 0;
+		sample->ndl = 0_sec;
 	} else if (flags[0] & 128) {
 		/* safety stop - distinguished from deco stop by having
 		 * both ndl and stop information */
@@ -266,8 +266,8 @@ void uemis::event(struct dive *dive, struct divecomputer *dc, struct sample *sam
 		/* NDL */
 		sample->in_deco = false;
 		lastndl = sample->ndl.seconds = u_sample->hold_time * 60;
-		sample->stopdepth.mm = 0;
-		sample->stoptime.seconds = 0;
+		sample->stopdepth = 0_m;
+		sample->stoptime = 0_sec;
 	}
 #if UEMIS_DEBUG & 32
 	printf("%dm:%ds: p_amb_tol:%d surface:%d holdtime:%d holddepth:%d/%d ---> stopdepth:%d stoptime:%d ndl:%d\n",
@@ -326,9 +326,9 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		 */
 		cylinder_t *cyl = dive->get_or_create_cylinder(i);
 		cyl->type.size.mliter = lrintf(volume);
-		cyl->type.workingpressure.mbar = 202600;
+		cyl->type.workingpressure = 202600_mbar;
 		cyl->gasmix.o2.permille = *(uint8_t *)(data.data() + 120 + 25 * (gasoffset + i)) * 10;
-		cyl->gasmix.he.permille = 0;
+		cyl->gasmix.he = 0_percent;
 	}
 	/* first byte of divelog data is at offset 0x123 */
 	size_t i = 0x123;
@@ -353,7 +353,7 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		u_sample++;
 	}
 	if (sample)
-		dive->dcs[0].duration = sample->time - duration_t { .seconds = 1 };
+		dive->dcs[0].duration = sample->time - 1_sec;
 
 	/* get data from the footer */
 	add_extra_data(dc, "FW Version",

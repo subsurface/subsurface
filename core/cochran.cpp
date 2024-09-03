@@ -677,7 +677,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 			cylinder_t cyl = default_cylinder(dive.get());
 			cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT] / 256
 				+ log[CMD_O2_PERCENT + 1]) * 10;
-			cyl.gasmix.he.permille = 0;
+			cyl.gasmix.he = 0_percent;
 			dive->cylinders.add(0, std::move(cyl));
 		} else {
 			dc->model = "Commander";
@@ -686,7 +686,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 				cylinder_t cyl = default_cylinder(dive.get());
 				cyl.gasmix.o2.permille = (log[CMD_O2_PERCENT + g * 2] / 256
 					+ log[CMD_O2_PERCENT + g * 2 + 1]) * 10;
-				cyl.gasmix.he.permille = 0;
+				cyl.gasmix.he = 0_percent;
 				dive->cylinders.add(g, std::move(cyl));
 			}
 		}

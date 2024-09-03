@@ -41,7 +41,7 @@ preferences::preferences() :
 	ascratestops(9000 / 60),
 	ascrate50(9000 / 60),
 	ascrate75(9000 / 60),
-	bestmixend({ .mm = 30'000 }),
+	bestmixend(30_m),
 	bottompo2(1400),
 	bottomsac(20000),
 	decopo2(1600),

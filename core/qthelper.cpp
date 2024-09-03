@@ -1293,10 +1293,11 @@ fraction_t string_to_fraction(const char *str)
 	/*
 	 * Don't permit values less than zero or greater than 100%
 	 */
+	// TODO: use std::clamp() once we have comparison on unit types
 	if (fraction.permille < 0)
-		fraction.permille = 0;
+		fraction = 0_percent;
 	else if (fraction.permille > 1000)
-		fraction.permille = 1000;
+		fraction = 100_percent;
 	return fraction;
 }
 

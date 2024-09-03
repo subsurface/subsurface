@@ -531,7 +531,7 @@ static bool parseASF(QFile &f, metadata *metadata)
 mediatype_t get_metadata(const char *filename_in, metadata *data)
 {
 	data->timestamp = 0;
-	data->duration.seconds = 0;
+	data->duration = 0_sec;
 	data->location.lat.udeg = 0;
 	data->location.lon.udeg = 0;
 

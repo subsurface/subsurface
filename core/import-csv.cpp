@@ -519,10 +519,10 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		{
 			cylinder_t cyl;
 			cyl.cylinder_use = OXYGEN;
-			cyl.type.size.mliter = 3000;
-			cyl.type.workingpressure.mbar = 200000;
+			cyl.type.size = 3_l;
+			cyl.type.workingpressure = 200_bar;
 			cyl.type.description = "3l Mk6";
-			cyl.gasmix.o2.permille = 1000;
+			cyl.gasmix.o2 = 100_percent;
 			cyl.manually_added = true;
 			cyl.bestmix_o2 = 0;
 			cyl.bestmix_he = 0;
@@ -532,8 +532,8 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		{
 			cylinder_t cyl;
 			cyl.cylinder_use = DILUENT;
-			cyl.type.size.mliter = 3000;
-			cyl.type.workingpressure.mbar = 200000;
+			cyl.type.size = 3_l;
+			cyl.type.workingpressure = 200_bar;
 			cyl.type.description = "3l Mk6";
 			value = parse_mkvi_value(memtxt.data(), "Helium percentage");
 			he = atoi(value.c_str());

@@ -328,7 +328,7 @@ static void temperature(const char *buffer, temperature_t *temperature, struct p
 	/* temperatures outside -40C .. +70C should be ignored */
 	if (temperature->mkelvin < ZERO_C_IN_MKELVIN - 40000 ||
 	    temperature->mkelvin > ZERO_C_IN_MKELVIN + 70000)
-		temperature->mkelvin = 0;
+		*temperature = 0_K;
 }
 
 static void sampletime(const char *buffer, duration_t *time)
@@ -351,7 +351,7 @@ static void sampletime(const char *buffer, duration_t *time)
 		time->seconds = (hr * 60 + min) * 60 + sec;
 		break;
 	default:
-		time->seconds = 0;
+		*time = 0_sec;
 		report_info("Strange sample time reading %s", buffer);
 	}
 }
@@ -715,7 +715,7 @@ static void parse_libdc_deco(const char *buffer, struct sample *s)
 		s->in_deco = false;
 		// The time wasn't stoptime, it was ndl
 		s->ndl = s->stoptime;
-		s->stoptime.seconds = 0;
+		s->stoptime = 0_sec;
 	}
 }
 

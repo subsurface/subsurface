@@ -51,18 +51,18 @@ void dive_table::force_fixup_dive(struct dive &d) const
 	duration_t old_duration = d.duration;
 	std::vector<start_end_pressure> old_pressures(d.cylinders.size());
 
-	d.maxdepth.mm = 0;
-	dc->maxdepth.mm = 0;
-	d.watertemp.mkelvin = 0;
-	dc->watertemp.mkelvin = 0;
-	d.duration.seconds = 0;
-	d.maxtemp.mkelvin = 0;
-	d.mintemp.mkelvin = 0;
+	d.maxdepth = 0_m;
+	dc->maxdepth = 0_m;
+	d.watertemp = 0_K;
+	dc->watertemp = 0_K;
+	d.duration = 0_sec;
+	d.maxtemp = 0_K;
+	d.mintemp = 0_K;
 	for (auto [i, cyl]: enumerated_range(d.cylinders)) {
 		old_pressures[i].start = cyl.start;
 		old_pressures[i].end = cyl.end;
-		cyl.start.mbar = 0;
-		cyl.end.mbar = 0;
+		cyl.start = 0_bar;
+		cyl.end = 0_bar;
 	}
 
 	fixup_dive(d);
@@ -95,7 +95,7 @@ std::unique_ptr<dive> dive_table::default_dive()
 {
 	auto d = std::make_unique<dive>();
 	d->when = time(nullptr) + gettimezoneoffset() + 3600;
-	d->dcs[0].duration.seconds = 40 * 60;
+	d->dcs[0].duration = 40_min;
 	d->dcs[0].maxdepth.mm = M_OR_FT(15, 45);
 	d->dcs[0].meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
 	make_manually_added_dive_dc(&d->dcs[0]);

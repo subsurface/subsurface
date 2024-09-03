@@ -171,7 +171,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 			 */
 			int val = atoi_n(ptr4, 3);
 			if (state->cur_sample->in_deco) {
-				state->cur_sample->ndl.seconds = 0;
+				state->cur_sample->ndl = 0_sec;
 				if (val)
 					state->cur_sample->tts.seconds = val * 60;
 			} else {

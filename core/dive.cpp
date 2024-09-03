@@ -498,7 +498,7 @@ void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 			struct gasmix gasmix = loop.at(sample.time.seconds).first;
 			gas_pressures pressures = fill_pressures(lrint(calculate_depth_to_mbarf(sample.depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
 			if (abs(sample.setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
-				sample.setpoint.mbar = 0;
+				sample.setpoint = 0_baro2;
 		}
 	}
 
@@ -809,7 +809,7 @@ static void fixup_dc_temp(struct dive &dive, struct divecomputer &dc)
 			 * the redundant ones.
 			 */
 			if (lasttemp == temp)
-				sample.temperature.mkelvin = 0;
+				sample.temperature = 0_K;
 			else
 				lasttemp = temp;
 
@@ -839,7 +839,7 @@ static void simplify_dc_pressures(struct divecomputer &dc)
 			if (index == lastindex[j]) {
 				/* Remove duplicate redundant pressure information */
 				if (pressure == lastpressure[j])
-					sample.pressure[j].mbar = 0;
+					sample.pressure[j] = 0_bar;
 			}
 			lastindex[j] = index;
 			lastpressure[j] = pressure;
@@ -912,7 +912,7 @@ static bool validate_gaschange(struct dive &dive, struct event &event)
 
 	/* We'll get rid of the per-event gasmix, but for now sanitize it */
 	if (gasmix_is_air(event.gas.mix))
-		event.gas.mix.o2.permille = 0;
+		event.gas.mix.o2 = 0_percent;
 
 	/* Do we already have a cylinder index for this gasmix? */
 	if (event.gas.index >= 0)
@@ -993,7 +993,7 @@ static void fixup_dc_sample_sensors(struct dive &dive, struct divecomputer &dc)
 			// No invalid sensor ID's, please
 			if (sensor < 0 || sensor > MAX_SENSORS) {
 				sample.sensor[j] = NO_SENSOR;
-				sample.pressure[j].mbar = 0;
+				sample.pressure[j] = 0_bar;
 				continue;
 			}
 
@@ -1076,9 +1076,9 @@ void dive::fixup_no_cylinder()
 	for (auto &cyl: cylinders) {
 		add_cylinder_description(cyl.type);
 		if (same_rounded_pressure(cyl.sample_start, cyl.start))
-			cyl.start.mbar = 0;
+			cyl.start = 0_bar;
 		if (same_rounded_pressure(cyl.sample_end, cyl.end))
-			cyl.end.mbar = 0;
+			cyl.end = 0_bar;
 	}
 
 	for (auto &ws: weightsystems)
@@ -1120,7 +1120,7 @@ static void merge_one_sample(const struct sample &sample, struct divecomputer &d
 
 			append_sample(surface, &dc);
 
-			surface.time = sample.time - duration_t { .seconds = 20 };
+			surface.time = sample.time - 20_sec;
 			append_sample(surface, &dc);
 		}
 	}
@@ -1399,7 +1399,7 @@ static void sample_renumber(struct sample &s, const struct sample *prev, const i
 			// Remove sensor and gas pressure info
 			if (!prev) {
 				s.sensor[j] = 0;
-				s.pressure[j].mbar = 0;
+				s.pressure[j] = 0_bar;
 			} else {
 				s.sensor[j] = prev->sensor[j];
 				s.pressure[j] = prev->pressure[j];
@@ -2331,8 +2331,9 @@ fraction_t dive::best_o2(depth_t depth, bool in_planner) const
 
 	fo2.permille = (po2 * 100 / depth_to_mbar(depth.mm)) * 10;	//use integer arithmetic to round down to nearest percent
 	// Don't permit >100% O2
+	// TODO: use std::min, once we have comparison
 	if (fo2.permille > 1000)
-		fo2.permille = 1000;
+		fo2 = 100_percent;
 	return fo2;
 }
 
@@ -2348,8 +2349,9 @@ fraction_t dive::best_he(depth_t depth, bool o2narcotic, fraction_t fo2) const
 	} else {
 		fhe.permille = 1000 - fo2.permille - N2_IN_AIR * pnarcotic / ambient;
 	}
+	// TODO: use std::max, once we have comparison
 	if (fhe.permille < 0)
-		fhe.permille = 0;
+		fhe = 0_percent;
 	return fhe;
 }
 

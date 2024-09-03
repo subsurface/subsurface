@@ -306,7 +306,7 @@ void EditDuration::set(struct dive *d, int value) const
 {
 	d->dcs[0].duration.seconds = value;
 	d->duration = d->dcs[0].duration;
-	d->dcs[0].meandepth.mm = 0;
+	d->dcs[0].meandepth = 0_m;
 	d->dcs[0].samples.clear();
 	fake_dc(&d->dcs[0]);
 }
@@ -326,7 +326,7 @@ void EditDepth::set(struct dive *d, int value) const
 {
 	d->dcs[0].maxdepth.mm = value;
 	d->maxdepth = d->dcs[0].maxdepth;
-	d->dcs[0].meandepth.mm = 0;
+	d->dcs[0].meandepth = 0_m;
 	d->dcs[0].samples.clear();
 	fake_dc(&d->dcs[0]);
 }
@@ -673,10 +673,10 @@ PasteState::PasteState(dive &d, const dive_paste_data &data, std::vector<dive_si
 		}
 		for (size_t i = data.cylinders->size(); i < cylinders->size(); ++i) {
 			cylinder_t &cyl = (*cylinders)[i];
-			cyl.start.mbar = 0;
-			cyl.end.mbar = 0;
-			cyl.sample_start.mbar = 0;
-			cyl.sample_end.mbar = 0;
+			cyl.start = 0_bar;
+			cyl.end = 0_bar;
+			cyl.sample_start = 0_bar;
+			cyl.sample_end = 0_bar;
 			cyl.manually_added = true;
 		}
 	}
@@ -796,7 +796,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 		return;
 
 	// Fix source. Things might be inconsistent after modifying the profile.
-	source->maxdepth.mm = source->dcs[0].maxdepth.mm = 0;
+	source->maxdepth = source->dcs[0].maxdepth = 0_m;
 	divelog.dives.fixup_dive(*source);
 
 	when = source->when;
