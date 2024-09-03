@@ -81,25 +81,20 @@ enum event_severity event::get_severity() const
 	}
 }
 
-event_loop::event_loop(const char *name) : name(name), idx(0)
+event_loop::event_loop(const char *name, const struct divecomputer &dc) : name(name), idx(0), dc(dc)
 {
 }
 
-struct event *event_loop::next(struct divecomputer &dc)
+const struct event *event_loop::next()
 {
 	if (name.empty())
 		return nullptr;
 	while (idx < dc.events.size()) {
-		struct event &ev = dc.events[idx++];
+		const struct event &ev = dc.events[idx++];
 		if (ev.name == name)
 			return &ev;
 	}
 	return nullptr;
-}
-
-const struct event *event_loop::next(const struct divecomputer &dc)
-{
-	return next(const_cast<divecomputer &>(dc));
 }
 
 struct event *get_first_event(struct divecomputer &dc, const std::string &name)

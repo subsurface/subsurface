@@ -364,7 +364,7 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 				cyl = sensor;
 		}
 
-		divemode_t dmode = loop_mode.next(time);
+		divemode_t dmode = loop_mode.at(time);
 
 		if (current != std::string::npos) { // calculate pressure-time, taking into account the dive mode for this specific segment.
 			entry.pressure_time = (int)(calc_pressure_time(dive, pi.entry[i - 1], entry) * gasfactor[dmode] + 0.5);

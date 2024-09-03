@@ -162,7 +162,7 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 				ds->max_bottom_ceiling_pressure.mbar = ceiling_pressure.mbar;
 		}
 
-		divemode_t divemode = loop.next(t0.seconds + 1);
+		divemode_t divemode = loop.at(t0.seconds + 1);
 		interpolate_transition(ds, dive, t0, t1, lastdepth, sample.depth, gas, setpoint, divemode);
 		psample = &sample;
 		t0 = t1;
@@ -720,7 +720,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	current_cylinder = get_cylinderid_at_time(dive, dc, sample.time);
 	// Find the divemode at the end of the dive
 	divemode_loop loop(*dc);
-	divemode = loop.next(bottom_time);
+	divemode = loop.at(bottom_time);
 	gas = dive->get_cylinder(current_cylinder)->gasmix;
 
 	po2 = sample.setpoint.mbar;

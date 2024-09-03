@@ -212,9 +212,9 @@ static void check_setpoint_events(const struct dive *, const struct divecomputer
 	pressure_t setpoint;
 	setpoint.mbar = 0;
 
-	event_loop loop("SP change");
+	event_loop loop("SP change", *dc);
 	bool found = false;
-	while (auto ev = loop.next(*dc)) {
+	while (auto ev = loop.next()) {
 		i = set_setpoint(pi, i, setpoint.mbar, ev->time.seconds);
 		setpoint.mbar = ev->value;
 		found = true;
@@ -876,7 +876,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			int j, t0 = prev.sec, t1 = entry.sec;
 			int time_stepsize = 20, max_ceiling = -1;
 
-			divemode_t current_divemode = loop_d.next(entry.sec);
+			divemode_t current_divemode = loop_d.at(entry.sec);
 			struct gasmix gasmix = loop.at(t1).first;
 			entry.ambpressure = dive->depth_to_bar(entry.depth);
 			entry.gfline = get_gf(ds, entry.ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
@@ -1114,7 +1114,7 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 
 		auto gasmix = loop.at(entry.sec).first;
 		amb_pressure = dive->depth_to_bar(entry.depth);
-		divemode_t current_divemode = loop_d.next(entry.sec);
+		divemode_t current_divemode = loop_d.at(entry.sec);
 		entry.pressures = fill_pressures(amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry.o2pressure.mbar / 1000.0, current_divemode);
 		fn2 = 1000.0 * entry.pressures.n2 / amb_pressure;
 		fhe = 1000.0 * entry.pressures.he / amb_pressure;
