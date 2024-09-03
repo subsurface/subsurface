@@ -80,7 +80,7 @@ static void exportHTMLstatistics(const QString filename, struct htmlExportSettin
 
 	stats_summary stats = calculate_stats_summary(hes.selectedOnly);
 	total_stats.selection_size = 0;
-	total_stats.total_time.seconds = 0;
+	total_stats.total_time = 0_sec;
 
 	out << "divestat=[";
 	if (hes.yearlyStatistics) {

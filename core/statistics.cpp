@@ -21,7 +21,7 @@
 
 static void process_temperatures(const struct dive &dp, stats_t &stats)
 {
-	temperature_t min_temp, mean_temp, max_temp = {.mkelvin = 0};
+	temperature_t min_temp, mean_temp, max_temp;
 
 	max_temp.mkelvin = dp.maxtemp.mkelvin;
 	if (max_temp.mkelvin && (!stats.max_temp.mkelvin || max_temp.mkelvin > stats.max_temp.mkelvin))
@@ -262,7 +262,7 @@ std::vector<volume_t> get_gas_used(struct dive *dive)
 		if (end.mbar && start.mbar > end.mbar)
 			gases[idx] = cyl.gas_volume(start) - cyl.gas_volume(end);
 		else
-			gases[idx].mliter = 0;
+			gases[idx] = 0_l;
 	}
 
 	return gases;
@@ -277,7 +277,7 @@ static std::pair<volume_t, volume_t> get_gas_parts(struct gasmix mix, volume_t v
 
 	volume_t air { .mliter = int_cast<int>(((double)vol.mliter * get_n2(mix)) / (1000 - o2_in_topup)) };
 	volume_t he { .mliter = int_cast<int>(((double)vol.mliter * get_he(mix)) / 1000.0) };
-	volume_t o2 { .mliter = vol.mliter - he.mliter - air.mliter };
+	volume_t o2 = vol - he - air;
 	return std::make_pair(o2, he);
 }
 

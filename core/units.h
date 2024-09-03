@@ -120,6 +120,14 @@ struct duration_t : public unit_base<duration_t>
 {
 	int32_t seconds = 0; // durations up to 34 yrs
 };
+static inline duration_t operator""_sec(unsigned long long sec)
+{
+	return { .seconds = static_cast<int32_t>(sec) };
+}
+static inline duration_t operator""_min(unsigned long long min)
+{
+	return { .seconds = static_cast<int32_t>(min * 60) };
+}
 
 struct offset_t : public unit_base<offset_t>
 {
@@ -130,16 +138,44 @@ struct depth_t : public unit_base<depth_t> // depth to 2000 km
 {
 	int32_t mm = 0;
 };
+static inline depth_t operator""_mm(unsigned long long mm)
+{
+	return { .mm = static_cast<int32_t>(mm) };
+}
+static inline depth_t operator""_m(unsigned long long m)
+{
+	return { .mm = static_cast<int32_t>(m * 1000) };
+}
+static inline depth_t operator""_ft(unsigned long long ft)
+{
+	return { .mm = static_cast<int32_t>(round(ft * 304.8)) };
+}
 
 struct pressure_t : public unit_base<pressure_t>
 {
 	int32_t mbar = 0; // pressure up to 2000 bar
 };
+static inline pressure_t operator""_mbar(unsigned long long mbar)
+{
+	return { .mbar = static_cast<int32_t>(mbar) };
+}
+static inline pressure_t operator""_bar(unsigned long long bar)
+{
+	return { .mbar = static_cast<int32_t>(bar * 1000) };
+}
+static inline pressure_t operator""_atm(unsigned long long atm)
+{
+	return { .mbar = static_cast<int32_t>(round(atm * 1013.25)) };
+}
 
 struct o2pressure_t : public unit_base<o2pressure_t>
 {
 	uint16_t mbar = 0;
 };
+static inline o2pressure_t operator""_baro2(unsigned long long bar)
+{
+	return { .mbar = static_cast<uint16_t>(bar * 1000) };
+}
 
 struct bearing_t : public unit_base<bearing_t>
 {
@@ -150,6 +186,10 @@ struct temperature_t : public unit_base<temperature_t>
 {
 	uint32_t mkelvin = 0; // up to 4 MK (temperatures in K are always positive)
 };
+static inline temperature_t operator""_K(unsigned long long K)
+{
+	return { .mkelvin = static_cast<uint32_t>(K * 1000) };
+}
 
 struct temperature_sum_t : public unit_base<temperature_sum_t>
 {
@@ -160,11 +200,27 @@ struct volume_t : public unit_base<volume_t>
 {
 	int mliter = 0;
 };
+static inline volume_t operator""_ml(unsigned long long ml)
+{
+	return { .mliter = static_cast<int>(ml) };
+}
+static inline volume_t operator""_l(unsigned long long l)
+{
+	return { .mliter = static_cast<int>(l * 1000) };
+}
 
 struct fraction_t : public unit_base<fraction_t>
 {
 	int permille = 0;
 };
+static inline fraction_t operator""_permille(unsigned long long permille)
+{
+	return { .permille = static_cast<int>(permille) };
+}
+static inline fraction_t operator""_percent(unsigned long long percent)
+{
+	return { .permille = static_cast<int>(percent * 10) };
+}
 
 struct weight_t : public unit_base<weight_t>
 {

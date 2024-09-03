@@ -316,7 +316,7 @@ static int dm5_cylinders(void *param, int, char **data, char **)
 		 * value is 0 (and using metric units). So we just use
 		 * the same 12 liters when size is not available */
 		if (permissive_strtod(data[6], NULL) == 0.0 && cyl->start.mbar)
-			cyl->type.size.mliter = 12000;
+			cyl->type.size = 12_l;
 		else
 			cyl->type.size.mliter = lrint((permissive_strtod(data[6], NULL)) * 1000);
 	}

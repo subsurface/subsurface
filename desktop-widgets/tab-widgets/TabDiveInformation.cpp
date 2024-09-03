@@ -460,7 +460,7 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 			setIndexNoSignal(ui->atmPressType, 0);          // reset combobox to mbar
 			break;
 		default:
-			atmpress.mbar = 1013;    // This line should never execute
+			atmpress = 1_atm;    // This line should never execute
 			break;
 		}
 		if (atmpress.mbar)

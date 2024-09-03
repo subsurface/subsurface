@@ -667,8 +667,8 @@ static struct sample *new_sample(struct git_parser_state *state)
 	size_t num_samples = state->active_dc->samples.size();
 	if (num_samples >= 2) {
 		*sample = state->active_dc->samples[num_samples - 2];
-		sample->pressure[0].mbar = 0;
-		sample->pressure[1].mbar = 0;
+		sample->pressure[0] = 0_bar;
+		sample->pressure[1] = 0_bar;
 	} else {
 		sample->sensor[0] = sanitize_sensor_id(state->active_dive.get(), !state->o2pressure_sensor);
 		sample->sensor[1] = sanitize_sensor_id(state->active_dive.get(), state->o2pressure_sensor);

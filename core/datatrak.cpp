@@ -239,19 +239,19 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	read_bytes(1);
 	switch (tmp_1byte) {
 		case 1:
-			dt_dive->dcs[0].surface_pressure.mbar = 1013;
+			dt_dive->dcs[0].surface_pressure = 1_atm;
 			break;
 		case 2:
-			dt_dive->dcs[0].surface_pressure.mbar = 932;
+			dt_dive->dcs[0].surface_pressure = 932_mbar;
 			break;
 		case 3:
-			dt_dive->dcs[0].surface_pressure.mbar = 828;
+			dt_dive->dcs[0].surface_pressure = 828_mbar;
 			break;
 		case 4:
-			dt_dive->dcs[0].surface_pressure.mbar = 735;
+			dt_dive->dcs[0].surface_pressure = 735_mbar;
 			break;
 		default:
-			dt_dive->dcs[0].surface_pressure.mbar = 1013;
+			dt_dive->dcs[0].surface_pressure = 1_atm;
 	}
 
 	/*
@@ -336,9 +336,9 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 		cylinder_t cyl;
 		cyl.type.size.mliter = tmp_2bytes * 10;
 		cyl.type.description = cyl_type_by_size(tmp_2bytes * 10);
-		cyl.start.mbar = 200000;
-		cyl.gasmix.he.permille = 0;
-		cyl.gasmix.o2.permille = 210;
+		cyl.start = 200_bar;
+		cyl.gasmix.he = 0_percent;
+		cyl.gasmix.o2 = 21_percent;
 		cyl.manually_added = true;
 		dt_dive->cylinders.push_back(std::move(cyl));
 	}
@@ -365,7 +365,7 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	if (tmp_2bytes != 0x7fff)
 		dt_dive->watertemp.mkelvin = dt_dive->dcs[0].watertemp.mkelvin = C_to_mkelvin((double)(tmp_2bytes / 100));
 	else
-		dt_dive->watertemp.mkelvin = 0;
+		dt_dive->watertemp = 0_K;
 
 	/*
 	 * Air used in bar*100.

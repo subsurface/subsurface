@@ -1379,7 +1379,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			// let's create an actual profile so the desktop version can work it
 			// first clear out the mean depth (or the fake_dc() function tries
 			// to be too clever)
-			d->meandepth.mm = d->dcs[0].meandepth.mm = 0;
+			d->meandepth = d->dcs[0].meandepth = 0_m;
 			fake_dc(&d->dcs[0]);
 		}
 		divelog.dives.fixup_dive(*d);

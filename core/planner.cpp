@@ -201,7 +201,7 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 	cylinder_t *cyl;
 	int oldpo2 = 0;
 	int lasttime = 0, last_manual_point = 0;
-	depth_t lastdepth = {.mm = 0};
+	depth_t lastdepth;
 	int lastcylid;
 	enum divemode_t type = dc->divemode;
 
@@ -305,7 +305,7 @@ divedatapoint::divedatapoint(int time_incr, int depth, int cylinderid, int po2, 
 	time(time_incr),
 	depth{ .mm = depth },
 	cylinderid(cylinderid),
-	minimum_gas{ .mbar = 0 },
+	minimum_gas = 0_bar;
 	setpoint(po2),
 	entered(entered),
 	divemode(OC)
@@ -654,7 +654,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 	}
 
 	clear_deco(ds, dive->surface_pressure.mbar / 1000.0, true);
-	ds->max_bottom_ceiling_pressure.mbar = ds->first_ceiling_pressure.mbar = 0;
+	ds->max_bottom_ceiling_pressure = ds->first_ceiling_pressure = 0_bar;
 	create_dive_from_plan(diveplan, dive, dc, is_planner);
 
 	// Do we want deco stop array in metres or feet?

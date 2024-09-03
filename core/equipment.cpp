@@ -317,8 +317,8 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 			cyl.depth = dive->gas_mod(cyl.gasmix, decopo2, M_OR_FT(3,10));
 		if (track_gas)
 			cyl.start.mbar = cyl.end.mbar = cyl.type.workingpressure.mbar;
-		cyl.gas_used.mliter = 0;
-		cyl.deco_gas_used.mliter = 0;
+		cyl.gas_used = 0_l;
+		cyl.deco_gas_used = 0_l;
 	}
 }
 
@@ -404,8 +404,8 @@ void add_default_cylinder(struct dive *d)
 	} else {
 		// roughly an AL80
 		cyl.type.description = translate("gettextFromC", "unknown");
-		cyl.type.size.mliter = 11100;
-		cyl.type.workingpressure.mbar = 207000;
+		cyl.type.size = 11100_ml;
+		cyl.type.workingpressure = 207_bar;
 	}
 	d->cylinders.add(0, std::move(cyl));
 	reset_cylinders(d, false);

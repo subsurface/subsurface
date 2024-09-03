@@ -390,8 +390,8 @@ void DiveListBase::redo()
 AddDive::AddDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber)
 {
 	setText(Command::Base::tr("add dive"));
-	d->maxdepth.mm = 0;
-	d->dcs[0].maxdepth.mm = 0;
+	d->maxdepth = 0_m;
+	d->dcs[0].maxdepth = 0_m;
 	divelog.dives.fixup_dive(*d);
 
 	// this only matters if undoit were called before redoit

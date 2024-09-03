@@ -209,7 +209,6 @@ static void check_setpoint_events(const struct dive *, const struct divecomputer
 {
 	size_t i = 0;
 	pressure_t setpoint;
-	setpoint.mbar = 0;
 
 	event_loop loop("SP change", *dc);
 	bool found = false;
@@ -848,7 +847,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 
 	if (!in_planner) {
 		ds->deco_time = 0;
-		ds->first_ceiling_pressure.mbar = 0;
+		ds->first_ceiling_pressure = 0_bar;
 	} else {
 		ds->deco_time = planner_ds->deco_time;
 		ds->first_ceiling_pressure = planner_ds->first_ceiling_pressure;
@@ -1179,7 +1178,7 @@ static void fill_o2_values(const struct dive *dive, const struct divecomputer *d
 			o2pressure.mbar = calculate_ccr_po2(entry, dc); // ...calculate the po2 based on the sensor data
 			entry.o2pressure.mbar = std::min(o2pressure.mbar, amb_pressure.mbar);
 		} else {
-			entry.o2pressure.mbar = 0; // initialise po2 to zero for dctype = OC
+			entry.o2pressure = 0_bar; // initialise po2 to zero for dctype = OC
 		}
 	}
 }
