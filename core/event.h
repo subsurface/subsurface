@@ -58,10 +58,10 @@ class event_loop
 {
 	std::string name;
 	size_t idx;
+	const struct divecomputer &dc;
 public:
-	event_loop(const char *name);
-	struct event *next(struct divecomputer &dc); // nullptr -> end
-	const struct event *next(const struct divecomputer &dc); // nullptr -> end
+	event_loop(const char *name, const struct divecomputer &dc);
+	const struct event *next(); // nullptr -> end
 };
 
 /* Get gasmixes at increasing timestamps. */
@@ -92,13 +92,13 @@ public:
 
 /* Get divemodes at increasing timestamps. */
 class divemode_loop {
-	const struct divecomputer &dc;
 	divemode_t last;
 	event_loop loop;
 	const struct event *ev;
 public:
 	divemode_loop(const struct divecomputer &dc);
-	divemode_t next(int time);
+	// Return the divemode at a given time during the dive
+	divemode_t at(int time);
 };
 
 extern const struct event *get_first_event(const struct divecomputer &dc, const std::string &name);

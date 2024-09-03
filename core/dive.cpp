@@ -2554,7 +2554,7 @@ location_t dive::get_gps_location() const
 }
 
 gasmix_loop::gasmix_loop(const struct dive &d, const struct divecomputer &dc) :
-	dive(d), dc(dc), first_run(true), loop("gaschange")
+	dive(d), dc(dc), first_run(true), loop("gaschange", dc)
 {
 }
 
@@ -2571,13 +2571,13 @@ std::pair<int, int> gasmix_loop::next_cylinder_index()
 		return std::make_pair(-1, INT_MAX);
 
 	if (first_run) {
-		next_event = loop.next(dc);
+		next_event = loop.next();
 		last_cylinder_index = 0; // default to first cylinder
 		last_time = 0;
 		if (next_event && ((!dc.samples.empty() && next_event->time.seconds == dc.samples[0].time.seconds) || next_event->time.seconds <= 1)) {
 			last_cylinder_index = dive.get_cylinder_index(*next_event);
 			last_time = next_event->time.seconds;
-			next_event = loop.next(dc);
+			next_event = loop.next();
 		} else if (dc.divemode == CCR) {
 			last_cylinder_index = std::max(get_cylinder_idx_by_use(dive, DILUENT), last_cylinder_index);
 		}
@@ -2587,7 +2587,7 @@ std::pair<int, int> gasmix_loop::next_cylinder_index()
 		if (next_event) {
 			last_cylinder_index = dive.get_cylinder_index(*next_event);
 			last_time = next_event->time.seconds;
-			next_event = loop.next(dc);
+			next_event = loop.next();
 		} else {
 			last_cylinder_index = -1;
 			last_time = INT_MAX;

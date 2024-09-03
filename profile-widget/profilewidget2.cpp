@@ -568,7 +568,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	m.addAction(tr("Split dive into two"), [this, seconds]() { splitDive(seconds); });
 
 	divemode_loop loop(*d->get_dc(dc));
-	divemode_t divemode = loop.next(seconds);
+	divemode_t divemode = loop.at(seconds);
 	QMenu *changeMode = m.addMenu(tr("Change divemode"));
 	if (divemode != OC)
 		changeMode->addAction(gettextFromC::tr(divemode_text_ui[OC]),
