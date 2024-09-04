@@ -1270,7 +1270,6 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	if (my_instance != instanceCounter)
 		return;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, original, cache, true, false);
-	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
 	cloneDiveplan(*original_plan, plan_copy);
@@ -1279,7 +1278,6 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	if (my_instance != instanceCounter)
 		return;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, deeper, cache, true, false);
-	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
 	second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
@@ -1287,7 +1285,6 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	if (my_instance != instanceCounter)
 		return;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, shallower, cache, true, false);
-	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
 	cloneDiveplan(*original_plan, plan_copy);
@@ -1295,14 +1292,12 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	if (my_instance != instanceCounter)
 		return;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, longer, cache, true, false);
-	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
 	plan_copy.dp.back().time -= delta_time.seconds;
 	if (my_instance != instanceCounter)
 		return;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, shorter, cache, true, false);
-	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
 	char buf[200];
