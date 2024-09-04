@@ -128,7 +128,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 
 	clear();
 	removeDeco();
-	free_dps(&diveplan);
+	diveplan.dp.clear();
 
 	diveplan.when = d->when;
 	// is this a "new" dive where we marked manually entered samples?
@@ -396,7 +396,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		}
 		case CCSETPOINT: {
 			bool ok;
-			int po2 = lrintf(value.toFloat(&ok) * 100) * 10;
+			int po2 = static_cast<int>(round(value.toFloat(&ok) * 100) * 10);
 
 			if (ok)
 				p.setpoint = std::max(po2, 160);
@@ -499,7 +499,6 @@ DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTable
 	cylinders(true),
 	mode(NOTHING)
 {
-	memset(&diveplan, 0, sizeof(diveplan));
 	startTime.setTimeSpec(Qt::UTC);
 	// use a Qt-connection to send the variations text across thread boundary (in case we
 	// are calculating the variations in a background thread).
@@ -890,7 +889,6 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 	point.minimum_gas.mbar = 0;
 	point.entered = entered;
 	point.divemode = divemode;
-	point.next = NULL;
 	divepoints.insert(divepoints.begin() + row, point);
 	endInsertRows();
 	return row;
@@ -1050,7 +1048,7 @@ void DivePlannerPointsModel::cancelPlan()
 	*/
 
 	setPlanMode(NOTHING);
-	free_dps(&diveplan);
+	diveplan.dp.clear();
 
 	emit planCanceled();
 }
@@ -1086,11 +1084,11 @@ void DivePlannerPointsModel::clear()
 void DivePlannerPointsModel::createTemporaryPlan()
 {
 	// Get the user-input and calculate the dive info
-	free_dps(&diveplan);
+	diveplan.dp.clear();
 
 	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
 		if (cyl.depth.mm && cyl.cylinder_use == OC_GAS)
-			plan_add_segment(&diveplan, 0, cyl.depth.mm, i, 0, false, OC);
+			plan_add_segment(diveplan, 0, cyl.depth.mm, i, 0, false, OC);
 	}
 
 	int lastIndex = -1;
@@ -1101,15 +1099,15 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		lastIndex = i;
 		if (i == 0 && mode == PLAN && prefs.drop_stone_mode) {
 			/* Okay, we add a first segment where we go down to depth */
-			plan_add_segment(&diveplan, p.depth.mm / prefs.descrate, p.depth.mm, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
+			plan_add_segment(diveplan, p.depth.mm / prefs.descrate, p.depth.mm, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
 			deltaT -= p.depth.mm / prefs.descrate;
 		}
 		if (p.entered)
-			plan_add_segment(&diveplan, deltaT, p.depth.mm, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
+			plan_add_segment(diveplan, deltaT, p.depth.mm, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
 	}
 
 #if DEBUG_PLAN
-	dump_plan(&diveplan);
+	dump_plan(diveplan);
 #endif
 }
 
@@ -1123,27 +1121,27 @@ void DivePlannerPointsModel::updateDiveProfile()
 	if (!d)
 		return;
 	createTemporaryPlan();
-	if (diveplan_empty(&diveplan))
+	if (diveplan_empty(diveplan))
 		return;
 
 	deco_state_cache cache;
 	struct decostop stoptable[60];
 	struct deco_state plan_deco_state;
 
-	plan(&plan_deco_state, &diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), false);
+	plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), false);
 	updateMaxDepth();
 
 	if (isPlanner() && shouldComputeVariations()) {
-		struct diveplan *plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
+		auto plan_copy = std::make_unique<struct diveplan>();
 		lock_planner();
-		cloneDiveplan(&diveplan, plan_copy);
+		cloneDiveplan(diveplan, *plan_copy);
 		unlock_planner();
 #ifdef VARIATIONS_IN_BACKGROUND
 		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
 		// on the stack, it must be copied and freed by the worker-thread.
-		auto plan_deco_state_copy = std::make_unique<deco_state>(plan_deco_state);
+		auto deco_copy = std::make_unique<deco_state>(plan_deco_state);
 
-		// Ideally, we would pass the unique_ptr to the lambda for QtConcurrent::run().
+		// Ideally, we would pass the unique_ptrs to the lambda for QtConcurrent::run().
 		// This, in principle, can be done as such:
 		//	[ptr = std::move(ptr)] () mutable { f(std::move(ptr)) };
 		// However, this make the lambda uncopyable and QtConcurrent::run() sadly
@@ -1154,15 +1152,15 @@ void DivePlannerPointsModel::updateDiveProfile()
 		//	exceptions anyway.
 		// Note 2: We also can't use the function / argument syntax of QtConcurrent::run(),
 		//	because it likewise uses copy-semantics. How annoying.
-		QtConcurrent::run([this, plan_copy, deco = plan_deco_state_copy.release()] ()
-				  { this->computeVariationsFreeDeco(plan_copy, std::unique_ptr<deco_state>(deco)); });
+		QtConcurrent::run([this, plan = plan_copy.release(), deco = deco_copy.release()] ()
+				  { this->computeVariationsFreeDeco(std::unique_ptr<struct diveplan>(plan),
+								    std::unique_ptr<deco_state>(deco)); });
 #else
-		computeVariations(plan_copy, &plan_deco_state);
+		computeVariations(std::move(plan_copy), &plan_deco_state);
 #endif
 		final_deco_state = plan_deco_state;
 	}
 	emit calculatedPlanNotes(QString::fromStdString(d->notes));
-
 
 #if DEBUG_PLAN
 	save_dive(stderr, *d);
@@ -1172,7 +1170,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 
 void DivePlannerPointsModel::deleteTemporaryPlan()
 {
-	free_dps(&diveplan);
+	diveplan.dp.clear();
 }
 
 void DivePlannerPointsModel::savePlan()
@@ -1185,26 +1183,9 @@ void DivePlannerPointsModel::saveDuplicatePlan()
 	createPlan(true);
 }
 
-struct divedatapoint *DivePlannerPointsModel::cloneDiveplan(struct diveplan *plan_src, struct diveplan *plan_copy)
+void DivePlannerPointsModel::cloneDiveplan(const struct diveplan &plan_src, struct diveplan &plan_copy)
 {
-	divedatapoint *src, *last_segment;
-	divedatapoint **dp;
-
-	src = plan_src->dp;
-	*plan_copy = *plan_src;
-	dp = &plan_copy->dp;
-	while (src && (!src->time || src->entered)) {
-		*dp = (struct divedatapoint *)malloc(sizeof(struct divedatapoint));
-		**dp = *src;
-		dp = &(*dp)->next;
-		src = src->next;
-	}
-	(*dp) = NULL;
-
-	last_segment = plan_copy->dp;
-	while (last_segment && last_segment->next && last_segment->next->next)
-		last_segment = last_segment->next;
-	return last_segment;
+	plan_copy = plan_src;
 }
 
 int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit)
@@ -1240,13 +1221,21 @@ int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decos
 	return (leftsum + rightsum) / 2;
 }
 
-void DivePlannerPointsModel::computeVariationsFreeDeco(struct diveplan *original_plan, std::unique_ptr<struct deco_state> previous_ds)
+void DivePlannerPointsModel::computeVariationsFreeDeco(std::unique_ptr<struct diveplan> original_plan, std::unique_ptr<struct deco_state> previous_ds)
 {
-	computeVariations(original_plan, previous_ds.get());
+	computeVariations(std::move(original_plan), previous_ds.get());
 	// Note: previous ds automatically free()d by virtue of being a unique_ptr.
 }
 
-void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, const struct deco_state *previous_ds)
+// Return reference to second to last element.
+// Caller is responsible for checking that there are at least two elements.
+template <typename T>
+auto &second_to_last(T &v)
+{
+	return *std::prev(std::prev(v.end()));
+}
+
+void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> original_plan, const struct deco_state *previous_ds)
 {
 	// nothing to do unless there's an original plan
 	if (!original_plan)
@@ -1257,7 +1246,6 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 	struct decostop original[60], deeper[60], shallower[60], shorter[60], longer[60];
 	deco_state_cache cache, save;
 	struct diveplan plan_copy;
-	struct divedatapoint *last_segment;
 	struct deco_state ds = *previous_ds;
 
 	int my_instance = ++instanceCounter;
@@ -1276,47 +1264,45 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 		depth_units = tr("ft");
 	}
 
-	last_segment = cloneDiveplan(original_plan, &plan_copy);
-	if (!last_segment)
-		goto finish;
+	cloneDiveplan(*original_plan, plan_copy);
+	if (plan_copy.dp.size() < 2)
+		return;
 	if (my_instance != instanceCounter)
-		goto finish;
-	plan(&ds, &plan_copy, dive.get(), dcNr, 1, original, cache, true, false);
-	free_dps(&plan_copy);
+		return;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, original, cache, true, false);
+	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
-	last_segment = cloneDiveplan(original_plan, &plan_copy);
-	last_segment->depth.mm += delta_depth.mm;
-	last_segment->next->depth.mm += delta_depth.mm;
+	cloneDiveplan(*original_plan, plan_copy);
+	second_to_last(plan_copy.dp).depth.mm += delta_depth.mm;
+	plan_copy.dp.back().depth.mm += delta_depth.mm;
 	if (my_instance != instanceCounter)
-		goto finish;
-	plan(&ds, &plan_copy, dive.get(), dcNr, 1, deeper, cache, true, false);
-	free_dps(&plan_copy);
+		return;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, deeper, cache, true, false);
+	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
-	last_segment = cloneDiveplan(original_plan, &plan_copy);
-	last_segment->depth.mm -= delta_depth.mm;
-	last_segment->next->depth.mm -= delta_depth.mm;
+	second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
+	plan_copy.dp.back().depth.mm -= delta_depth.mm;
 	if (my_instance != instanceCounter)
-		goto finish;
-	plan(&ds, &plan_copy, dive.get(), dcNr, 1, shallower, cache, true, false);
-	free_dps(&plan_copy);
+		return;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, shallower, cache, true, false);
+	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
-	last_segment = cloneDiveplan(original_plan, &plan_copy);
-	last_segment->next->time += delta_time.seconds;
+	cloneDiveplan(*original_plan, plan_copy);
+	plan_copy.dp.back().time += delta_time.seconds;
 	if (my_instance != instanceCounter)
-		goto finish;
-	plan(&ds, &plan_copy, dive.get(), dcNr, 1, longer, cache, true, false);
-	free_dps(&plan_copy);
+		return;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, longer, cache, true, false);
+	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
-	last_segment = cloneDiveplan(original_plan, &plan_copy);
-	last_segment->next->time -= delta_time.seconds;
+	plan_copy.dp.back().time -= delta_time.seconds;
 	if (my_instance != instanceCounter)
-		goto finish;
-	plan(&ds, &plan_copy, dive.get(), dcNr, 1, shorter, cache, true, false);
-	free_dps(&plan_copy);
+		return;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, shorter, cache, true, false);
+	plan_copy.dp.clear();
 	save.restore(&ds, false);
 
 	char buf[200];
@@ -1329,9 +1315,6 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, c
 #ifdef DEBUG_STOPVAR
 	printf("\n\n");
 #endif
-finish:
-	free_dps(original_plan);
-	free(original_plan);
 }
 
 void DivePlannerPointsModel::computeVariationsDone(QString variations)
@@ -1360,15 +1343,14 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	createTemporaryPlan();
 
 	struct decostop stoptable[60];
-	plan(&ds_after_previous_dives, &diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), true);
+	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), true);
 
 	if (shouldComputeVariations()) {
-		struct diveplan *plan_copy;
-		plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
+		auto plan_copy = std::make_unique<struct diveplan>();
 		lock_planner();
-		cloneDiveplan(&diveplan, plan_copy);
+		cloneDiveplan(diveplan, *plan_copy);
 		unlock_planner();
-		computeVariations(plan_copy, &ds_after_previous_dives);
+		computeVariations(std::move(plan_copy), &ds_after_previous_dives);
 	}
 
 	// Fixup planner notes.
@@ -1426,7 +1408,7 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.
-	free_dps(&diveplan);
+	diveplan.dp.clear();
 
 	planCreated(); // This signal will exit the UI from planner state.
 }

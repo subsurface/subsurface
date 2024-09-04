@@ -25,17 +25,15 @@
 #include "subsurface-string.h"
 #include "version.h"
 
-static int diveplan_duration(struct diveplan *diveplan)
+static int diveplan_duration(const struct diveplan &diveplan)
 {
-	struct divedatapoint *dp = diveplan->dp;
 	int duration = 0;
 	int lastdepth = 0;
-	while(dp) {
-		if (dp->time > duration && (dp->depth.mm > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD)) {
-			duration = dp->time;
-			lastdepth = dp->depth.mm;
+	for (auto &dp: diveplan.dp) {
+		if (dp.time > duration && (dp.depth.mm > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD)) {
+			duration = dp.time;
+			lastdepth = dp.depth.mm;
 		}
-		dp = dp->next;
 	}
 	return (duration + 30) / 60;
 }
@@ -96,14 +94,13 @@ extern std::string get_planner_disclaimer_formatted()
 	return format_string_std(get_planner_disclaimer(), deco);
 }
 
-void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_disclaimer, planner_error_t error)
+void add_plan_to_notes(struct diveplan &diveplan, struct dive *dive, bool show_disclaimer, planner_error_t error)
 {
 	std::string buf;
 	std::string icdbuf;
 	const char *segmentsymbol;
 	int lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
 	struct gasmix lastprintgasmix = gasmix_invalid;
-	struct divedatapoint *dp = diveplan->dp;
 	bool plan_verbatim = prefs.verbatim_plan;
 	bool plan_display_runtime = prefs.display_runtime;
 	bool plan_display_duration = prefs.display_duration;
@@ -115,11 +112,10 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	enum divemode_t lastdivemode = UNDEF_COMP_TYPE;
 	bool lastentered = true;
 	bool icdwarning = false, icdtableheader = true;
-	struct divedatapoint *nextdp = NULL;
-	struct divedatapoint *lastbottomdp = NULL;
+	struct divedatapoint *lastbottomdp = nullptr;
 	struct icd_data icdvalues;
 
-	if (!dp)
+	if (diveplan.dp.empty())
 		return;
 
 	if (error != PLAN_OK) {
@@ -155,14 +151,14 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 
 	buf += "<div>\n<b>";
-	if (diveplan->surface_interval < 0) {
+	if (diveplan.surface_interval < 0) {
 		buf += format_string_std("%s (%s) %s",
 			translate("gettextFromC", "Subsurface"),
 			subsurface_canonical_version(),
 			translate("gettextFromC", "dive plan</b> (overlapping dives detected)"));
 		dive->notes = std::move(buf);
 		return;
-	} else if (diveplan->surface_interval >= 48 * 60 *60) {
+	} else if (diveplan.surface_interval >= 48 * 60 *60) {
 		buf += format_string_std("%s (%s) %s %s",
 			translate("gettextFromC", "Subsurface"),
 			subsurface_canonical_version(),
@@ -173,7 +169,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			translate("gettextFromC", "Subsurface"),
 			subsurface_canonical_version(),
 			translate("gettextFromC", "dive plan</b> (surface interval "),
-			FRACTION_TUPLE(diveplan->surface_interval / 60, 60),
+			FRACTION_TUPLE(diveplan.surface_interval / 60, 60),
 			translate("gettextFromC", "created on"),
 			get_current_date().c_str());
 	}
@@ -197,30 +193,31 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				translate("gettextFromC", "gas"));
 	}
 
-	do {
+	for (auto dp = diveplan.dp.begin(); dp != diveplan.dp.end(); ++dp) {
+		auto nextdp = std::next(dp);
 		struct gasmix gasmix, newgasmix = {};
 		const char *depth_unit;
 		double depthvalue;
 		int decimals;
 		bool isascent = (dp->depth.mm < lastdepth);
 
-		nextdp = dp->next;
 		if (dp->time == 0)
 			continue;
 		gasmix = dive->get_cylinder(dp->cylinderid)->gasmix;
 		depthvalue = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
-		while (nextdp && nextdp->time == 0)
-			nextdp = nextdp->next;
-		if (nextdp)
+		while (nextdp != diveplan.dp.end() && nextdp->time == 0)
+			++nextdp;
+		bool atend = nextdp == diveplan.dp.end();
+		if (!atend)
 			newgasmix = dive->get_cylinder(nextdp->cylinderid)->gasmix;
-		gaschange_after = (nextdp && (gasmix_distance(gasmix, newgasmix)));
+		gaschange_after = (!atend && (gasmix_distance(gasmix, newgasmix)));
 		gaschange_before =  (gasmix_distance(lastprintgasmix, gasmix));
-		rebreatherchange_after = (nextdp && (dp->setpoint != nextdp->setpoint || dp->divemode != nextdp->divemode));
+		rebreatherchange_after = (!atend && (dp->setpoint != nextdp->setpoint || dp->divemode != nextdp->divemode));
 		rebreatherchange_before = lastprintsetpoint != dp->setpoint || lastdivemode != dp->divemode;
 		/* do we want to skip this leg as it is devoid of anything useful? */
 		if (!dp->entered &&
-		    nextdp &&
+		    !atend &&
 		    dp->depth.mm != lastdepth &&
 		    nextdp->depth.mm != dp->depth.mm &&
 		    !gaschange_before &&
@@ -229,14 +226,14 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		    !rebreatherchange_after)
 			continue;
 		// Ignore final surface segment for notes
-		if (lastdepth == 0 && dp->depth.mm == 0 && !dp->next)
+		if (lastdepth == 0 && dp->depth.mm == 0 && atend)
 			continue;
-		if ((dp->time - lasttime < 10 && lastdepth == dp->depth.mm) && !(gaschange_after && dp->next && dp->depth.mm != dp->next->depth.mm))
+		if ((dp->time - lasttime < 10 && lastdepth == dp->depth.mm) && !(gaschange_after && !atend && dp->depth.mm != nextdp->depth.mm))
 			continue;
 
 		/* Store pointer to last entered datapoint for minimum gas calculation */
-		if (dp->entered && nextdp && !nextdp->entered)
-			lastbottomdp = dp;
+		if (dp->entered && !atend && !nextdp->entered)
+			lastbottomdp = &*dp;
 
 		if (plan_verbatim) {
 			/* When displaying a verbatim plan, we output a waypoint for every gas change.
@@ -246,7 +243,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			 * non-verbatim plan.
 			 */
 			if (dp->depth.mm != lastprintdepth) {
-				if (plan_display_transitions || dp->entered || !dp->next || (gaschange_after && dp->next && dp->depth.mm != nextdp->depth.mm)) {
+				if (plan_display_transitions || dp->entered || atend || (gaschange_after && !atend && dp->depth.mm != nextdp->depth.mm)) {
 					if (dp->setpoint) {
 						buf += casprintf_loc(translate("gettextFromC", "%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
 							     dp->depth.mm < lastprintdepth ? translate("gettextFromC", "Ascend") : translate("gettextFromC", "Descend"),
@@ -269,7 +266,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				newdepth = dp->depth.mm;
 				lasttime = dp->time;
 			} else {
-				if ((nextdp && dp->depth.mm != nextdp->depth.mm) || gaschange_after) {
+				if ((!atend && dp->depth.mm != nextdp->depth.mm) || gaschange_after) {
 					if (dp->setpoint) {
 						buf += casprintf_loc(translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)"),
 							     decimals, depthvalue, depth_unit,
@@ -307,12 +304,12 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			 *    used for a calculated ascent, there is a subsequent gas change before the first deco stop, and zero
 			 *    time has been allowed for a gas switch.
 			 */
-			if (plan_display_transitions || dp->entered || !dp->next ||
-			    (nextdp && dp->depth.mm != nextdp->depth.mm) ||
-			    (!isascent && (gaschange_before || rebreatherchange_before) && nextdp && dp->depth.mm != nextdp->depth.mm) ||
+			if (plan_display_transitions || dp->entered || atend ||
+			    (!atend && dp->depth.mm != nextdp->depth.mm) ||
+			    (!isascent && (gaschange_before || rebreatherchange_before) && !atend && dp->depth.mm != nextdp->depth.mm) ||
 			    ((gaschange_after || rebreatherchange_after) && lastentered) || ((gaschange_after || rebreatherchange_after)&& !isascent) ||
-			    (isascent && (gaschange_after || rebreatherchange_after) && nextdp && dp->depth.mm != nextdp->depth.mm ) ||
-			    (lastentered && !dp->entered && dp->next->depth.mm == dp->depth.mm)) {
+			    (isascent && (gaschange_after || rebreatherchange_after) && !atend && dp->depth.mm != nextdp->depth.mm ) ||
+			    (lastentered && !dp->entered && nextdp->depth.mm == dp->depth.mm)) {
 				// Print a symbol to indicate whether segment is an ascent, descent, constant depth (user entered) or deco stop
 				if (isascent)
 					segmentsymbol = "&#10138;"; // up-right arrow for ascent
@@ -339,7 +336,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				/* Normally a gas change is displayed on the stopping segment, so only display a gas change at the end of
 				 * an ascent segment if it is not followed by a stop
 				 */
-				if (isascent && gaschange_after && dp->next && nextdp && nextdp->entered) {
+				if (isascent && gaschange_after && !atend && nextdp->entered) {
 					if (nextdp->setpoint) {
 						temp = casprintf_loc(translate("gettextFromC", "(SP = %.1fbar CCR)"), nextdp->setpoint / 1000.0);
 						buf += format_string_std("<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
@@ -395,7 +392,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			// gas switch at this waypoint for verbatim
 			if (plan_verbatim) {
 				if (lastsetpoint >= 0) {
-					if (nextdp && nextdp->setpoint) {
+					if (!atend && nextdp->setpoint) {
 						buf += casprintf_loc(translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), newgasmix.name().c_str(), (double) nextdp->setpoint / 1000.0);
 					} else {
 						buf += format_string_std(translate("gettextFromC", "Switch gas to %s"), newgasmix.name().c_str());
@@ -419,7 +416,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		lastdepth = dp->depth.mm;
 		lastsetpoint = dp->setpoint;
 		lastentered = dp->entered;
-	} while ((dp = nextdp) != NULL);
+	}
 	if (!plan_verbatim)
 		buf += "</tbody>\n</table>\n<br/>\n";
 
@@ -433,25 +430,25 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	/* Print the settings for the diveplan next. */
 	buf += "<div>\n";
 	if (decoMode(true) == BUEHLMANN) {
-		buf += casprintf_loc(translate("gettextFromC", "Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%"), diveplan->gflow, diveplan->gfhigh);
+		buf += casprintf_loc(translate("gettextFromC", "Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%"), diveplan.gflow, diveplan.gfhigh);
 	} else if (decoMode(true) == VPMB) {
-		if (diveplan->vpmb_conservatism == 0)
+		if (diveplan.vpmb_conservatism == 0)
 			buf += translate("gettextFromC", "Deco model: VPM-B at nominal conservatism");
 		else
-			buf += casprintf_loc(translate("gettextFromC", "Deco model: VPM-B at +%d conservatism"), diveplan->vpmb_conservatism);
-		if (diveplan->eff_gflow)
-			buf += casprintf_loc( translate("gettextFromC", ", effective GF=%d/%d"), diveplan->eff_gflow, diveplan->eff_gfhigh);
+			buf += casprintf_loc(translate("gettextFromC", "Deco model: VPM-B at +%d conservatism"), diveplan.vpmb_conservatism);
+		if (diveplan.eff_gflow)
+			buf += casprintf_loc( translate("gettextFromC", ", effective GF=%d/%d"), diveplan.eff_gflow, diveplan.eff_gfhigh);
 	} else if (decoMode(true) == RECREATIONAL) {
 		buf += casprintf_loc(translate("gettextFromC", "Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%"),
-			     diveplan->gflow, diveplan->gfhigh);
+			     diveplan.gflow, diveplan.gfhigh);
 	}
 	buf += "<br/>\n";
 
 	{
 		const char *depth_unit;
-		int altitude = (int) get_depth_units((int) (pressure_to_altitude(diveplan->surface_pressure)), NULL, &depth_unit);
+		int altitude = (int) get_depth_units((int) (pressure_to_altitude(diveplan.surface_pressure)), NULL, &depth_unit);
 
-		buf += casprintf_loc(translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br/>\n</div>\n"), diveplan->surface_pressure, altitude, depth_unit);
+		buf += casprintf_loc(translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br/>\n</div>\n"), diveplan.surface_pressure, altitude, depth_unit);
 	}
 
 	/* Get SAC values and units for printing it in gas consumption */
@@ -584,44 +581,42 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 	/* Print warnings for pO2 (move into separate function?) */
 	{
-		dp = diveplan->dp;
 		bool o2warning_exist = false;
 		double amb;
 
 		divemode_loop loop(dive->dcs[0]);
 		if (dive->dcs[0].divemode != CCR) {
-			while (dp) {
-				if (dp->time != 0) {
+			for (auto &dp: diveplan.dp) {
+				if (dp.time != 0) {
 					std::string temp;
-					struct gasmix gasmix = dive->get_cylinder(dp->cylinderid)->gasmix;
+					struct gasmix gasmix = dive->get_cylinder(dp.cylinderid)->gasmix;
 
-					divemode_t current_divemode = loop.at(dp->time);
-					amb = dive->depth_to_atm(dp->depth.mm);
+					divemode_t current_divemode = loop.at(dp.time);
+					amb = dive->depth_to_atm(dp.depth.mm);
 					gas_pressures pressures = fill_pressures(amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix.o2.permille / 1000.0, current_divemode);
 
-					if (pressures.o2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
+					if (pressures.o2 > (dp.entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
 						const char *depth_unit;
 						int decimals;
-						double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
+						double depth_value = get_depth_units(dp.depth.mm, &decimals, &depth_unit);
 						if (!o2warning_exist)
 							buf += "<div>\n";
 						o2warning_exist = true;
 						temp = casprintf_loc(translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
-							pressures.o2, FRACTION_TUPLE(dp->time, 60), gasmix.name().c_str(), decimals, depth_value, depth_unit);
+							pressures.o2, FRACTION_TUPLE(dp.time, 60), gasmix.name().c_str(), decimals, depth_value, depth_unit);
 						buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp.c_str());
 					} else if (pressures.o2 < 0.16) {
 						const char *depth_unit;
 						int decimals;
-						double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
+						double depth_value = get_depth_units(dp.depth.mm, &decimals, &depth_unit);
 						if (!o2warning_exist)
 							buf += "<div>";
 						o2warning_exist = true;
 						temp = casprintf_loc(translate("gettextFromC", "low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
-							pressures.o2, FRACTION_TUPLE(dp->time, 60), gasmix.name().c_str(), decimals, depth_value, depth_unit);
+							pressures.o2, FRACTION_TUPLE(dp.time, 60), gasmix.name().c_str(), decimals, depth_value, depth_unit);
 						buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp.c_str());
 					}
 				}
-				dp = dp->next;
 			}
 		}
 		if (o2warning_exist)
