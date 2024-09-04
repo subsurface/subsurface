@@ -1142,8 +1142,20 @@ void DivePlannerPointsModel::updateDiveProfile()
 		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
 		// on the stack, it must be copied and freed by the worker-thread.
 		auto plan_deco_state_copy = std::make_unique<deco_state>(plan_deco_state);
-		QtConcurrent::run([this, plan_copy, &plan_deco_state_copy] ()
-				  { this->computeVariationsFreeDeco(plan_copy, std::move(plan_deco_state_copy)); });
+
+		// Ideally, we would pass the unique_ptr to the lambda for QtConcurrent::run().
+		// This, in principle, can be done as such:
+		//	[ptr = std::move(ptr)] () mutable { f(std::move(ptr)) };
+		// However, this make the lambda uncopyable and QtConcurrent::run() sadly
+		// uses copy semantics.
+		// So let's be pragmatic and do a release/reaquire pair.
+		// Somewhat disappointing, but what do you want to do?
+		// Note 1: this is now not exception safe, but Qt doesn't support
+		//	exceptions anyway.
+		// Note 2: We also can't use the function / argument syntax of QtConcurrent::run(),
+		//	because it likewise uses copy-semantics. How annoying.
+		QtConcurrent::run([this, plan_copy, deco = plan_deco_state_copy.release()] ()
+				  { this->computeVariationsFreeDeco(plan_copy, std::unique_ptr<deco_state>(deco)); });
 #else
 		computeVariations(plan_copy, &plan_deco_state);
 #endif
