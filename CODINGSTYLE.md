@@ -14,7 +14,7 @@ At the end of this file are some ideas for your `.emacs` file (if that's
 your editor of choice) as well as for QtCreator. If you have settings for
 other editors that implement this coding style, please add them here.
 
-## Basic rules
+## Basic style rules
 
 * all indentation is tabs (set to 8 char) with the exception of
   continuation lines that are aligned with tabs and then spaces
@@ -87,17 +87,17 @@ other editors that implement this coding style, please add them here.
 
 * unfortunate inconsistency
 
-  - C code usually uses underscores to structure names
+  - Core code usually uses underscores to structure names
     ```
-    variable_in_C
+    variable_or_class_in_core
     ```
-  - In contrast, C++ code usually uses camelCase
+  - In contrast, Qt / display layer code usually uses camelCase
     ```
-    variableInCPlusPlus
+    variableInQt
     ```
     for variable names and PascalCase
     ```
-    ClassInCPlusPlus
+    ClassInQt
     ```
     for names of classes and other types
 
@@ -113,6 +113,20 @@ other editors that implement this coding style, please add them here.
   ```
   #define frob 17
   #define frobulate(x) (x)+frob
+  ```
+
+  Since C++ is strongly typed, avoid macros where possible.
+  For constants use `constexpr`:
+  ```
+  static constexpr int frob = 17;
+  ```
+  and for functions use templated inline functions such as
+  ```
+  template<typename T>
+  static bool less_than(T x, T y)
+  {
+    return x < y;
+  }
   ```
 
 * there is a strong preference for lower case file names; sometimes conventions
@@ -140,16 +154,40 @@ other editors that implement this coding style, please add them here.
   }
   ```
 
+## Separation of core and UI layer and historical remarks
+
+Ideally, we strive for a separation of core functionality and UI layer.
+In practice however, the distinction is rather fuzzy and the code base is
+inconsistent. The current state is due to the fact that the project was
+originally written in C with the gtk library. Later, the UI layer was
+converted to Qt, whereas the core functionality was still C. Gradually
+more and more Qt and C++ creeped into the core layer. Recently we
+switched to full C++.
+
+To keep the option of non-Qt frontends, we should strive to use as few Qt
+primitives in the core code as possible. However, some parts
+are deeply interwoven with Qt, such as for example the translation machinery.
+Moreover, some platform independent features, such as regexps or URL handling
+might be hard to replace.
+
+## C++
+
+Since the project was originally written in C, some of the creators and
+original contributors may feel overwhelmed by all too
+"modern" C++, so try to avoid "fancy" constructs such as template meta
+programming, unless they make the code distinctly simpler.
+
+Also many of the (potential) contributors will not have an extensive
+background in C++, so strive for simplicity.
+
 ## Coding conventions
 
 * variable declarations
 
-  In C code we really like them to be at the beginning of a code block,
-  not interspersed in the middle.
-  in C++ we are a bit less strict about this – but still, try not to go
-  crazy. Notably, in C++ the lifetime of a variable often coincides with the
+  In C++ the lifetime of a variable often coincides with the
   lifetime of a resource (e.g. file) and therefore the variable is defined
-  at the place where the resource is needed.
+  at the place where the resource is acquired. The resource is freed,
+  when the variable goes out of scope.
 
 * The `*`, `&` and `&&` declarators are grouped with the name, not the type
   (classical C-style) as in `char *string` instead of `char* string`. This
@@ -164,7 +202,7 @@ other editors that implement this coding style, please add them here.
   struct dive *next, **pprev;
   ```
 
-* In C++ code, we generally use explicit types in variable declarations for clarity.
+* We generally use explicit types in variable declarations for clarity.
   Use `auto` sparingly and only in cases where code readability improves.
   Two classical examples are:
   - Iterators, whose type names often are verbose:
@@ -173,26 +211,29 @@ other editors that implement this coding style, please add them here.
     ```
     is not only distinctly shorter than
     ```
-    QMap<qint64, gpsTracker>::iterator it = m_trackers.find(when);
+    std::map<qint64, gpsTracker>::iterator it = m_trackers.find(when);
     ```
     it will also continue working if a different data structure is chosen.
   - If the type is given in the same line anyway. Thus,
     ```
-    auto service = qobject_cast<QLowEnergyService*>(sender());
+    auto service = std::make_unique<QLowEnergyService*>(sender());
     ```
     is easier to read than and conveys the same information as
     ```
-    QLowEnergyService *service = qobject_cast<QLowEnergyService*>(sender());
+    std::unique_ptr<QLowEnergyService> service = std::make_unique<QLowEnergyService>(sender());
     ```
-  - If the variable is a container that is only assigned to a local variable to
-    be able to use it in a range-based `for` loop
-    ```
-    const auto serviceUuids = device.serviceUuids();
-    for (QBluetoothUuid id: serviceUuids) {
-    ```
-    The variable has also to be const to avoid that Qt containers will do a
-    deep copy when the range bases `for` loop will call the `begin()` method
-    internally.
+
+* containers
+
+  The standard library (STL) containers are robust, but their usage may
+  appear verbose. Therefore, we have a few convenience functions in the
+  `core/ranges.h` header.
+  For example, to loop with an index variable, use
+  ```
+  for (auto [idx, v]: container) {
+    ...
+  }
+  ```
 
 * text strings
 
@@ -230,9 +271,8 @@ other editors that implement this coding style, please add them here.
   ```
 
   The `gettextFromC` class in the above example was created as a catch-all
-  context for translations accessed in C code. But it can also be used
-  from C++ helper functions. To use it from C, include the `"core/gettext.h"`
-  header and invoke the `translate()` macro:
+  context for translations accessed in core code. To use it from C, include
+  the `"core/gettext.h"` header and invoke the `translate()` macro:
   ```
   #include "core/gettext.h"
   
@@ -280,18 +320,85 @@ other editors that implement this coding style, please add them here.
 
 * string manipulation
 
- * user interface
+ - user interface
 
     In UI part of the code use of `QString` methods is preferred, see this pretty
     good guide in [`QString` documentation][1]
 
- * core components
+ - core components
 
-    In the core part of the code, C-string should be used.
-    C-string manipulation is not always straightforward specifically when
-    it comes to memory allocation, a set of helper functions has been developed
-    to help with this. Documentation and usage examples can be found in
-    [core/membuffer.h][2]
+    In the core part of the code, std::string should be used.
+
+* memory management in core
+
+  In core code, objects are typically stored in containers, such as `std::vector<>` or
+  as subobjects of classes.
+
+  If an object has to be allocated on the heap, the owner keeps an `std::unique_ptr`.
+  To transfer ownership, use `std::move()`.
+
+* initialization and life time
+
+  By using subobjects, the life time of objects is well defined.
+  Consider a class A1 with the two subobjects B and C:
+  ```
+  class A1 {
+    struct B;
+    struct C;
+  };
+  ```
+  furthermode, consider a class A2 derived from A1 with the subobjects D and E:
+  ```
+  class A2 : public A1 {
+    struct D;
+    struct E;
+  };
+  ```
+  When creating an object of type A2, the constructors are run in the following order:
+    - B
+    - C
+    - A1
+    - D
+    - E
+    - A2
+  The destructors run in opposite order.
+  This means that C can *always* access B, but not vice-versa and so on.
+
+  Subobjects should be initialized using initializer lists, so that they are initoalized
+  only once.
+  
+* pointers and references
+
+  The difference between pointers and references can be confusing to C programmers,
+  as internally they are realized by the same mechanism. However, conceptually they
+  are different: a reference is a placeholder for a variable.
+
+  In particular this means two things:
+    - A reference cannot be 'reseated'. It stands for a different variable and only
+      that variable. There is no pointer arithmetic with references.
+    - A reference cannot be null. In fact any reasonable compiler will compile
+      ```
+        void f(int &f) {
+            return &f == nullptr ? 1 : 2;
+        }
+      ```
+      as
+      ```
+        f(int&):
+            mov     eax, 2
+            ret
+      ```
+
+  Thus, functions should in general take references, not pointers. A pointer argument is
+  basically only used if the argument is optional.
+
+* output parameters
+
+  If a function returns multiple values, generally don't return them in output parameters,
+  but return a structure of multiple values. This can be used in structured bindings:
+  ```
+    [val, i] = get_result();
+  ```
 
 ## Sample Settings
 
