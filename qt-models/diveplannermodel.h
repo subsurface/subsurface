@@ -134,7 +134,7 @@ private:
 	void computeVariationsDone(QString text);
 	void computeVariations(std::unique_ptr<struct diveplan> plan, const struct deco_state *ds);
 	void computeVariationsFreeDeco(std::unique_ptr<struct diveplan> plan, std::unique_ptr<struct deco_state> ds);
-	int analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit);
+	int analyzeVariations(const std::vector<decostop> &min, const std::vector<decostop> &mid, const std::vector<decostop> &max, const char *unit);
 	struct dive *d;
 	int dcNr;
 	CylindersModel cylinders;

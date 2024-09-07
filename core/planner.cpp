@@ -602,7 +602,7 @@ static void average_max_depth(const struct diveplan &dive, int *avg_depth, int *
 		*avg_depth = *max_depth = 0;
 }
 
-bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, int dcNr, int timestep, struct decostop *decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer)
+bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, int dcNr, int timestep, std::vector<decostop> &decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer)
 {
 
 	int bottom_depth;
@@ -635,7 +635,6 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 	int first_stop_depth = 0;
 	int laststoptime = timestep;
 	bool o2breaking = false;
-	int decostopcounter = 0;
 	struct divecomputer *dc = dive->get_dc(dcNr);
 	enum divemode_t divemode = dc->divemode;
 
@@ -819,7 +818,7 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 
 	//CVA
 	do {
-		decostopcounter = 0;
+		decostoptable.clear();
 		is_final_plan = (decoMode(true) == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
 		if (ds->deco_time != 10000000)
 			vpmb_next_gradient(ds, ds->deco_time, diveplan.surface_pressure / 1000.0, true);
@@ -931,9 +930,7 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 				/* Check if ascending to next stop is clear, go back and wait if we hit the ceiling on the way */
 				if (trial_ascent(ds, 0, depth, stoplevels[stopidx], avg_depth, bottom_time,
 						dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure / 1000.0, dive, divemode)) {
-					decostoptable[decostopcounter].depth = depth;
-					decostoptable[decostopcounter].time = 0;
-					decostopcounter++;
+					decostoptable.push_back( decostop { depth, 0 });
 					break; /* We did not hit the ceiling */
 				}
 
@@ -1023,9 +1020,7 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 				add_segment(ds, dive->depth_to_bar(depth), dive->get_cylinder(stop_cylinder)->gasmix,
 					    laststoptime, po2, divemode, prefs.decosac, true);
 				last_segment_min_switch = false;
-				decostoptable[decostopcounter].depth = depth;
-				decostoptable[decostopcounter].time = laststoptime;
-				++decostopcounter;
+				decostoptable.push_back(decostop { depth, laststoptime } );
 
 				clock += laststoptime;
 				if (!o2breaking)
@@ -1045,7 +1040,6 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 		 * Assume final ascent takes 20s, which is the time taken to ascend at 9m/min from 3m */
 		ds->deco_time = clock - bottom_time - (M_OR_FT(3,10) * ( prefs.last_stop ? 2 : 1)) / last_ascend_rate + 20;
 	} while (!is_final_plan && error == PLAN_OK);
-	decostoptable[decostopcounter].depth = 0;
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
 	if (decoMode(true) == VPMB) {
