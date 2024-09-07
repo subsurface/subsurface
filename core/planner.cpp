@@ -74,11 +74,9 @@ diveplan::~diveplan()
 {
 }
 
-bool diveplan_empty(const struct diveplan &diveplan)
+bool diveplan::is_empty() const
 {
-	return std::none_of(diveplan.dp.begin(), diveplan.dp.end(),
-		[](const divedatapoint &dp)
-		{ return dp.time != 0; });
+	return std::none_of(dp.begin(), dp.end(), [](const divedatapoint &dp) { return dp.time != 0; });
 }
 
 /* get the cylinder index at a certain time during the dive */
@@ -303,17 +301,15 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 	return;
 }
 
-static struct divedatapoint create_dp(int time_incr, int depth, int cylinderid, int po2)
+divedatapoint::divedatapoint(int time_incr, int depth, int cylinderid, int po2, bool entered) :
+	time(time_incr),
+	depth{ .mm = depth },
+	cylinderid(cylinderid),
+	minimum_gas{ .mbar = 0 },
+	setpoint(po2),
+	entered(entered),
+	divemode(OC)
 {
-	struct divedatapoint dp;
-
-	dp.time = time_incr;
-	dp.depth.mm = depth;
-	dp.cylinderid = cylinderid;
-	dp.minimum_gas.mbar = 0;
-	dp.setpoint = po2;
-	dp.entered = false;
-	return dp;
 }
 
 static void add_to_end_of_diveplan(struct diveplan &diveplan, const struct divedatapoint &dp)
@@ -328,8 +324,7 @@ static void add_to_end_of_diveplan(struct diveplan &diveplan, const struct dived
 
 void plan_add_segment(struct diveplan &diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode)
 {
-	struct divedatapoint dp = create_dp(duration, depth, cylinderid, divemode == CCR ? po2 : 0);
-	dp.entered = entered;
+	struct divedatapoint dp(duration, depth, cylinderid, divemode == CCR ? po2 : 0, entered);
 	dp.divemode = divemode;
 	add_to_end_of_diveplan(diveplan, dp);
 }
@@ -786,7 +781,7 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 		} while (depth > 0);
 		plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
 		create_dive_from_plan(diveplan, dive, dc, is_planner);
-		add_plan_to_notes(diveplan, dive, show_disclaimer, error);
+		diveplan.add_plan_to_notes(*dive, show_disclaimer, error);
 		fixup_dc_duration(*dc);
 
 		return false;
@@ -1068,7 +1063,7 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 		plan_add_segment(diveplan, prefs.surface_segment, 0, current_cylinder, 0, false, OC);
 	}
 	create_dive_from_plan(diveplan, dive, dc, is_planner);
-	add_plan_to_notes(diveplan, dive, show_disclaimer, error);
+	diveplan.add_plan_to_notes(*dive, show_disclaimer, error);
 	fixup_dc_duration(*dc);
 
 	return decodive;
