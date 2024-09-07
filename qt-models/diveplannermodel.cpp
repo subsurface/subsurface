@@ -1128,7 +1128,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 	if (isPlanner() && shouldComputeVariations()) {
 		auto plan_copy = std::make_unique<struct diveplan>();
 		lock_planner();
-		cloneDiveplan(diveplan, *plan_copy);
+		*plan_copy = diveplan;
 		unlock_planner();
 #ifdef VARIATIONS_IN_BACKGROUND
 		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
@@ -1175,11 +1175,6 @@ void DivePlannerPointsModel::savePlan()
 void DivePlannerPointsModel::saveDuplicatePlan()
 {
 	createPlan(true);
-}
-
-void DivePlannerPointsModel::cloneDiveplan(const struct diveplan &plan_src, struct diveplan &plan_copy)
-{
-	plan_copy = plan_src;
 }
 
 int DivePlannerPointsModel::analyzeVariations(const std::vector<decostop> &min, const std::vector<decostop> &mid, const std::vector<decostop> &max, const char *unit)
@@ -1243,7 +1238,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 		depth_units = tr("ft");
 	}
 
-	cloneDiveplan(*original_plan, plan_copy);
+	plan_copy = *original_plan;
 	if (plan_copy.dp.size() < 2)
 		return;
 	if (my_instance != instanceCounter)
@@ -1251,7 +1246,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, original, cache, true, false);
 	save.restore(&ds, false);
 
-	cloneDiveplan(*original_plan, plan_copy);
+	plan_copy = *original_plan;
 	second_to_last(plan_copy.dp).depth.mm += delta_depth.mm;
 	plan_copy.dp.back().depth.mm += delta_depth.mm;
 	if (my_instance != instanceCounter)
@@ -1266,7 +1261,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, shallower, cache, true, false);
 	save.restore(&ds, false);
 
-	cloneDiveplan(*original_plan, plan_copy);
+	plan_copy = *original_plan;
 	plan_copy.dp.back().time += delta_time.seconds;
 	if (my_instance != instanceCounter)
 		return;
@@ -1322,7 +1317,7 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	if (shouldComputeVariations()) {
 		auto plan_copy = std::make_unique<struct diveplan>();
 		lock_planner();
-		cloneDiveplan(diveplan, *plan_copy);
+		*plan_copy = diveplan;
 		unlock_planner();
 		computeVariations(std::move(plan_copy), &ds_after_previous_dives);
 	}
