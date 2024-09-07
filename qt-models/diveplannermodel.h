@@ -130,7 +130,6 @@ private:
 	void updateDiveProfile(); // Creates a temporary plan and updates the dive profile with it.
 	void createTemporaryPlan();
 	struct diveplan diveplan;
-	void cloneDiveplan(const struct diveplan &plan_src, struct diveplan &plan_copy);
 	void computeVariationsDone(QString text);
 	void computeVariations(std::unique_ptr<struct diveplan> plan, const struct deco_state *ds);
 	void computeVariationsFreeDeco(std::unique_ptr<struct diveplan> plan, std::unique_ptr<struct deco_state> ds);
