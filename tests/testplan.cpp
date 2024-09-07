@@ -13,7 +13,6 @@
 
 // testing the dive plan algorithm
 static struct dive dive;
-static std::vector<decostop> stoptable;
 static struct deco_state test_deco_state;
 void setupPrefs()
 {
@@ -495,7 +494,7 @@ void TestPlan::testMetric()
 
 	auto testPlan = setupPlan();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -532,7 +531,7 @@ void TestPlan::testImperial()
 
 	auto testPlan = setupPlan();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -568,7 +567,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 
 	auto testPlan = setupPlanVpmb45m30mTx();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -594,7 +593,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 
 	auto testPlan = setupPlanVpmb60m10mTx();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -620,7 +619,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 
 	auto testPlan = setupPlanVpmb60m30minAir();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -646,7 +645,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 
 	auto testPlan = setupPlanVpmb60m30minEan50();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -678,7 +677,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 
 	auto testPlan = setupPlanVpmb60m30minTx();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -710,7 +709,7 @@ void TestPlan::testVpmbMetric100m60min()
 
 	auto testPlan = setupPlanVpmb100m60min();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -748,7 +747,7 @@ void TestPlan::testMultipleGases()
 
 	auto testPlan = setupPlanSeveralGases();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -770,7 +769,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 
 	auto testPlan = setupPlanVpmbMultiLevelAir();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -796,7 +795,7 @@ void TestPlan::testVpmbMetric100m10min()
 
 	auto testPlan = setupPlanVpmb100m10min();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -839,7 +838,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 	auto testPlan = setupPlanVpmb30m20min();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -857,7 +856,7 @@ void TestPlan::testVpmbMetricRepeat()
 	int firstDiveRunTimeSeconds = dive.dcs[0].duration.seconds;
 
 	testPlan = setupPlanVpmb100mTo70m30min();
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -892,7 +891,7 @@ void TestPlan::testVpmbMetricRepeat()
 	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 127u * 60u + 20u, 127u * 60u + 20u));
 
 	testPlan = setupPlanVpmb30m20min();
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, 1, 0);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, 1, 0);
 
 #if DEBUG
 	dive.notes.clear();
@@ -927,7 +926,7 @@ void TestPlan::testCcrBailoutGasSelection()
 
 	auto testPlan = setupPlanCcr();
 
-	plan(&test_deco_state, testPlan, &dive, 0, 60, stoptable, cache, true, false);
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, true, false);
 
 #if DEBUG
 	dive.notes.clear();
