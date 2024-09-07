@@ -881,13 +881,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
-	divedatapoint point;
-	point.depth.mm = milimeters;
-	point.time = seconds;
-	point.cylinderid = cylinderid;
-	point.setpoint = ccpoint;
-	point.minimum_gas.mbar = 0;
-	point.entered = entered;
+	divedatapoint point(seconds, milimeters, cylinderid, ccpoint, entered);
 	point.divemode = divemode;
 	divepoints.insert(divepoints.begin() + row, point);
 	endInsertRows();
@@ -1121,7 +1115,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 	if (!d)
 		return;
 	createTemporaryPlan();
-	if (diveplan_empty(diveplan))
+	if (diveplan.is_empty())
 		return;
 
 	deco_state_cache cache;
