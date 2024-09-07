@@ -13,7 +13,7 @@
 
 // testing the dive plan algorithm
 static struct dive dive;
-static struct decostop stoptable[60];
+static std::vector<decostop> stoptable;
 static struct deco_state test_deco_state;
 void setupPrefs()
 {

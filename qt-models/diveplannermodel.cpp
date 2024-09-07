@@ -1119,7 +1119,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 		return;
 
 	deco_state_cache cache;
-	struct decostop stoptable[60];
+	std::vector<decostop> stoptable;
 	struct deco_state plan_deco_state;
 
 	plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), false);
@@ -1182,29 +1182,14 @@ void DivePlannerPointsModel::cloneDiveplan(const struct diveplan &plan_src, stru
 	plan_copy = plan_src;
 }
 
-int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit)
+int DivePlannerPointsModel::analyzeVariations(const std::vector<decostop> &min, const std::vector<decostop> &mid, const std::vector<decostop> &max, const char *unit)
 {
-	int minsum = 0;
-	int midsum = 0;
-	int maxsum = 0;
-	int leftsum = 0;
-	int rightsum = 0;
-
-	while (min->depth) {
-		minsum += min->time;
-		++min;
-	}
-	while (mid->depth) {
-		midsum += mid->time;
-		++mid;
-	}
-	while (max->depth) {
-		maxsum += max->time;
-		++max;
-	}
-
-	leftsum = midsum - minsum;
-	rightsum = maxsum - midsum;
+	auto sum_time = [](int time, const decostop &ds) { return ds.time + time; };
+	int minsum = std::accumulate(min.begin(), min.end(), 0, sum_time);
+	int midsum = std::accumulate(mid.begin(), mid.end(), 0, sum_time);
+	int maxsum = std::accumulate(max.begin(), max.end(), 0, sum_time);
+	int leftsum = midsum - minsum;
+	int rightsum = maxsum - midsum;
 
 #ifdef DEBUG_STOPVAR
 	printf("Total + %d:%02d/%s +- %d s/%s\n\n", FRACTION_TUPLE((leftsum + rightsum) / 2, 60), unit,
@@ -1237,7 +1222,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 
 	auto dive = std::make_unique<struct dive>();
 	copy_dive(d, dive.get());
-	struct decostop original[60], deeper[60], shallower[60], shorter[60], longer[60];
+	std::vector<decostop> original, deeper, shallower, shorter, longer;
 	deco_state_cache cache, save;
 	struct diveplan plan_copy;
 	struct deco_state ds = *previous_ds;
@@ -1331,7 +1316,7 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	removeDeco();
 	createTemporaryPlan();
 
-	struct decostop stoptable[60];
+	std::vector<decostop> stoptable;
 	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), true);
 
 	if (shouldComputeVariations()) {
