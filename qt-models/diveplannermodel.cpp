@@ -1119,10 +1119,9 @@ void DivePlannerPointsModel::updateDiveProfile()
 		return;
 
 	deco_state_cache cache;
-	std::vector<decostop> stoptable;
 	struct deco_state plan_deco_state;
 
-	plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), false);
+	plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, cache, isPlanner(), false);
 	updateMaxDepth();
 
 	if (isPlanner() && shouldComputeVariations()) {
@@ -1217,7 +1216,6 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 
 	auto dive = std::make_unique<struct dive>();
 	copy_dive(d, dive.get());
-	std::vector<decostop> original, deeper, shallower, shorter, longer;
 	deco_state_cache cache, save;
 	struct diveplan plan_copy;
 	struct deco_state ds = *previous_ds;
@@ -1243,7 +1241,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 		return;
 	if (my_instance != instanceCounter)
 		return;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, original, cache, true, false);
+	auto original = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
 	plan_copy = *original_plan;
@@ -1251,27 +1249,27 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	plan_copy.dp.back().depth.mm += delta_depth.mm;
 	if (my_instance != instanceCounter)
 		return;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, deeper, cache, true, false);
+	auto deeper = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
 	second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
 	plan_copy.dp.back().depth.mm -= delta_depth.mm;
 	if (my_instance != instanceCounter)
 		return;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, shallower, cache, true, false);
+	auto shallower = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
 	plan_copy = *original_plan;
 	plan_copy.dp.back().time += delta_time.seconds;
 	if (my_instance != instanceCounter)
 		return;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, longer, cache, true, false);
+	auto longer = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
 	plan_copy.dp.back().time -= delta_time.seconds;
 	if (my_instance != instanceCounter)
 		return;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, shorter, cache, true, false);
+	auto shorter = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
 	char buf[200];
@@ -1311,8 +1309,7 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	removeDeco();
 	createTemporaryPlan();
 
-	std::vector<decostop> stoptable;
-	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, stoptable, cache, isPlanner(), true);
+	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, cache, isPlanner(), true);
 
 	if (shouldComputeVariations()) {
 		auto plan_copy = std::make_unique<struct diveplan>();

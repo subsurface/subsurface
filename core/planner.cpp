@@ -602,7 +602,7 @@ static void average_max_depth(const struct diveplan &dive, int *avg_depth, int *
 		*avg_depth = *max_depth = 0;
 }
 
-bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, int dcNr, int timestep, std::vector<decostop> &decostoptable, deco_state_cache &cache, bool is_planner, bool show_disclaimer)
+std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, int dcNr, int timestep, deco_state_cache &cache, bool is_planner, bool show_disclaimer)
 {
 
 	int bottom_depth;
@@ -631,7 +631,6 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 	int break_cylinder = -1, breakfrom_cylinder = 0;
 	bool last_segment_min_switch = false;
 	planner_error_t error = PLAN_OK;
-	bool decodive = false;
 	int first_stop_depth = 0;
 	int laststoptime = timestep;
 	bool o2breaking = false;
@@ -701,7 +700,7 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 		transitiontime = lrint(depth / (double)prefs.ascratelast6m);
 		plan_add_segment(diveplan, transitiontime, 0, current_cylinder, po2, false, divemode);
 		create_dive_from_plan(diveplan, dive, dc, is_planner);
-		return false;
+		return {};
 	}
 
 #if DEBUG_PLAN & 4
@@ -783,7 +782,7 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 		diveplan.add_plan_to_notes(*dive, show_disclaimer, error);
 		fixup_dc_duration(*dc);
 
-		return false;
+		return {};
 	}
 
 	if (best_first_ascend_cylinder != -1 && best_first_ascend_cylinder != current_cylinder) {
@@ -817,6 +816,7 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 	bottom_stopidx = stopidx;
 
 	//CVA
+	std::vector<decostop> decostoptable;
 	do {
 		decostoptable.clear();
 		is_final_plan = (decoMode(true) == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
@@ -831,7 +831,7 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 		clock = previous_point_time = bottom_time;
 		gas = bottom_gas;
 		stopping = false;
-		decodive = false;
+		bool decodive = false;
 		first_stop_depth = 0;
 		stopidx = bottom_stopidx;
 		ds->first_ceiling_pressure.mbar = dive->depth_to_mbar(
@@ -1059,6 +1059,5 @@ bool plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, i
 	create_dive_from_plan(diveplan, dive, dc, is_planner);
 	diveplan.add_plan_to_notes(*dive, show_disclaimer, error);
 	fixup_dc_duration(*dc);
-
-	return decodive;
+	return decostoptable;
 }
