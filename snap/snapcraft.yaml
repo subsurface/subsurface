@@ -150,6 +150,7 @@ parts:
     - libqt5charts5-dev
     - libqt5svg5-dev
     - libqt5webkit5-dev
+    - libraw-dev
     - libsqlite3-dev
     - libssh2-1-dev
     - libssl-dev
@@ -202,6 +203,7 @@ parts:
     - libsqlite3-0
     - libssh2-1
     - libssl3
+    - libraw20
     - libusb-1.0-0
     - libxml2
     - libxslt1.1
