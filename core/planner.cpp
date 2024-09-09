@@ -57,7 +57,7 @@ void dump_plan(struct diveplan *diveplan)
 	printf("\nDiveplan @ %04d-%02d-%02d %02d:%02d:%02d (surfpres %dmbar):\n",
 	       tm.tm_year, tm.tm_mon + 1, tm.tm_mday,
 	       tm.tm_hour, tm.tm_min, tm.tm_sec,
-	       diveplan->surface_pressure);
+	       diveplan->surface_pressure.mbar);
 	dp = diveplan->dp;
 	while (dp) {
 		printf("\t%3u:%02u: %6dmm cylid: %2d setpoint: %d\n", FRACTION_TUPLE(dp->time, 60), dp->depth, dp->cylinderid, dp->setpoint);
@@ -216,7 +216,7 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 	// dive-to-be-planned so we can restart
 	reset_cylinders(dive, track_gas);
 	dc->when = dive->when = diveplan.when;
-	dc->surface_pressure.mbar = diveplan.surface_pressure;
+	dc->surface_pressure = diveplan.surface_pressure;
 	dc->salinity = diveplan.salinity;
 	dc->samples.clear();
 	dc->events.clear();
@@ -305,7 +305,7 @@ divedatapoint::divedatapoint(int time_incr, int depth, int cylinderid, int po2, 
 	time(time_incr),
 	depth{ .mm = depth },
 	cylinderid(cylinderid),
-	minimum_gas = 0_bar;
+	minimum_gas(0_bar),
 	setpoint(po2),
 	entered(entered),
 	divemode(OC)
@@ -640,16 +640,14 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 	set_gf(diveplan.gflow, diveplan.gfhigh);
 	set_vpmb_conservatism(diveplan.vpmb_conservatism);
 
-	if (!diveplan.surface_pressure) {
+	if (diveplan.surface_pressure.mbar == 0) {
 		// Lets use dive's surface pressure in planner, if have one...
-		if (dc->surface_pressure.mbar) { // First from DC...
-			diveplan.surface_pressure = dc->surface_pressure.mbar;
-		}
-		else if (dive->surface_pressure.mbar) { // After from user...
-			diveplan.surface_pressure = dive->surface_pressure.mbar;
-		}
-		else {
-			diveplan.surface_pressure = SURFACE_PRESSURE;
+		if (dc->surface_pressure.mbar != 0) { // First from DC...
+			diveplan.surface_pressure = dc->surface_pressure;
+		} else if (dive->surface_pressure.mbar != 0) { // After from user...
+			diveplan.surface_pressure = dive->surface_pressure;
+		} else {
+			diveplan.surface_pressure = 1_atm;
 		}
 	}
 
@@ -744,7 +742,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 			update_cylinder_pressure(dive, depth, depth, timestep, prefs.bottomsac, dive->get_cylinder(current_cylinder), false, divemode);
 			clock += timestep;
 		} while (trial_ascent(ds, 0, depth, 0, avg_depth, bottom_time, dive->get_cylinder(current_cylinder)->gasmix,
-				      po2, diveplan.surface_pressure / 1000.0, dive, divemode) &&
+				      po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode) &&
 			 enough_gas(dive, current_cylinder) && clock < 6 * 3600);
 
 		// We did stay one timestep too many.
@@ -821,7 +819,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 		decostoptable.clear();
 		is_final_plan = (decoMode(true) == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
 		if (ds->deco_time != 10000000)
-			vpmb_next_gradient(ds, ds->deco_time, diveplan.surface_pressure / 1000.0, true);
+			vpmb_next_gradient(ds, ds->deco_time, diveplan.surface_pressure.mbar / 1000.0, true);
 
 		previous_deco_time = ds->deco_time;
 		bottom_cache.restore(ds, true);
@@ -836,7 +834,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 		stopidx = bottom_stopidx;
 		ds->first_ceiling_pressure.mbar = dive->depth_to_mbar(
 					deco_allowed_depth(tissue_tolerance_calc(ds, dive, dive->depth_to_bar(depth), true),
-							   diveplan.surface_pressure / 1000.0, dive, 1));
+							   diveplan.surface_pressure.mbar / 1000.0, dive, 1));
 		if (ds->max_bottom_ceiling_pressure.mbar > ds->first_ceiling_pressure.mbar)
 			ds->first_ceiling_pressure.mbar = ds->max_bottom_ceiling_pressure.mbar;
 
@@ -893,7 +891,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 				if (current_cylinder != gaschanges[gi].gasidx) {
 					if (!prefs.switch_at_req_stop ||
 							!trial_ascent(ds, 0, depth, stoplevels[stopidx - 1], avg_depth, bottom_time,
-							dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure / 1000.0, dive, divemode) || get_o2(dive->get_cylinder(current_cylinder)->gasmix) < 160) {
+							dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode) || get_o2(dive->get_cylinder(current_cylinder)->gasmix) < 160) {
 						if (is_final_plan)
 							plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 						stopping = true;
@@ -929,7 +927,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 			while (1) {
 				/* Check if ascending to next stop is clear, go back and wait if we hit the ceiling on the way */
 				if (trial_ascent(ds, 0, depth, stoplevels[stopidx], avg_depth, bottom_time,
-						dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure / 1000.0, dive, divemode)) {
+						dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode)) {
 					decostoptable.push_back( decostop { depth, 0 });
 					break; /* We did not hit the ceiling */
 				}
@@ -971,7 +969,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 				}
 
 				int new_clock = wait_until(ds, dive, clock, clock, laststoptime * 2 + 1, timestep, depth, stoplevels[stopidx], avg_depth,
-					bottom_time, dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure / 1000.0, divemode);
+					bottom_time, dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure.mbar / 1000.0, divemode);
 				laststoptime = new_clock - clock;
 				/* Finish infinite deco */
 				if (laststoptime >= 48 * 3600 && depth >= 6000) {

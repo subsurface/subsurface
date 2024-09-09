@@ -39,7 +39,7 @@ struct diveplan {
 	diveplan &operator=(diveplan &&) = default;
 
 	timestamp_t when = 0;
-	int surface_pressure = 0; /* mbar */
+	pressure_t surface_pressure;
 	int bottomsac = 0;	/* ml/min */
 	int decosac = 0;	  /* ml/min */
 	int salinity = 0;

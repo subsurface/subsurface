@@ -170,8 +170,9 @@ void DivePlannerWidget::settingsChanged()
 	ui.startTime->setDisplayFormat(QString::fromStdString(prefs.time_format));
 }
 
-void DivePlannerWidget::atmPressureChanged(const int pressure)
+void DivePlannerWidget::atmPressureChanged(int pressure_in_mbar)
 {
+	pressure_t pressure { .mbar = pressure_in_mbar };
 	DivePlannerPointsModel::instance()->setSurfacePressure(pressure);
 	ui.atmHeight->blockSignals(true);
 	ui.atmHeight->setValue((int) get_depth_units((int) pressure_to_altitude(pressure), NULL, NULL));
@@ -180,9 +181,9 @@ void DivePlannerWidget::atmPressureChanged(const int pressure)
 
 void DivePlannerWidget::heightChanged(const int height)
 {						// height is in ft or in meters
-	int pressure = (int) (altitude_to_pressure(units_to_depth((double) height).mm));
+	pressure_t pressure = altitude_to_pressure(units_to_depth((double) height).mm);
 	ui.ATMPressure->blockSignals(true);
-	ui.ATMPressure->setValue(pressure);
+	ui.ATMPressure->setValue(pressure.mbar);
 	ui.ATMPressure->blockSignals(false);
 	DivePlannerPointsModel::instance()->setSurfacePressure(pressure);
 }

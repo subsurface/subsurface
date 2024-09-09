@@ -2368,8 +2368,7 @@ bool dive::cache_is_valid() const
 
 pressure_t dive::get_surface_pressure() const
 {
-	return surface_pressure.mbar > 0 ? surface_pressure
-					 : pressure_t { .mbar = SURFACE_PRESSURE };
+	return surface_pressure.mbar > 0 ? surface_pressure : 1_atm;
 }
 
 /* This returns the conversion factor that you need to multiply
@@ -2387,17 +2386,14 @@ static double salinity_to_specific_weight(int salinity)
  * and add that to the surface pressure (or to 1013 if that's unknown) */
 static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity)
 {
-	double specific_weight;
-	int mbar = surface_pressure.mbar;
-
-	if (!mbar)
-		mbar = SURFACE_PRESSURE;
+	if (!surface_pressure.mbar)
+		surface_pressure = 1_atm;
 	if (!salinity)
 		salinity = SEAWATER_SALINITY;
 	if (salinity < 500)
 		salinity += FRESHWATER_SALINITY;
-	specific_weight = salinity_to_specific_weight(salinity);
-	return mbar + depth * specific_weight;
+	double specific_weight = salinity_to_specific_weight(salinity);
+	return surface_pressure.mbar + depth * specific_weight;
 }
 
 int dive::depth_to_mbar(int depth) const
@@ -2452,7 +2448,7 @@ int dive::mbar_to_depth(int mbar) const
 		: dcs[0].surface_pressure;
 
 	if (!surface_pressure.mbar)
-		surface_pressure.mbar = SURFACE_PRESSURE;
+		surface_pressure = 1_atm;
 
 	return rel_mbar_to_depth(mbar - surface_pressure.mbar);
 }

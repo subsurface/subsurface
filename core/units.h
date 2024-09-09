@@ -15,7 +15,6 @@
 #define O2_DENSITY 1331 // mg/Liter
 #define N2_DENSITY 1165
 #define HE_DENSITY 166
-#define SURFACE_PRESSURE 1013 // mbar
 #define ZERO_C_IN_MKELVIN 273150 // mKelvin
 
 #define M_OR_FT(_m, _f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
@@ -345,12 +344,12 @@ static inline double to_PSI(pressure_t pressure)
 
 static inline double bar_to_atm(double bar)
 {
-	return bar / SURFACE_PRESSURE * 1000;
+	return bar / (1_atm).mbar * 1000;
 }
 
 static inline double mbar_to_atm(int mbar)
 {
-	return (double)mbar / SURFACE_PRESSURE;
+	return (double)mbar / (1_atm).mbar;
 }
 
 static inline double mbar_to_PSI(int mbar)
@@ -359,15 +358,13 @@ static inline double mbar_to_PSI(int mbar)
 	return to_PSI(p);
 }
 
-static inline int32_t altitude_to_pressure(int32_t altitude) 	// altitude in mm above sea level
-{						// returns atmospheric pressure in mbar
-	return (int32_t) (1013.0 * exp(- altitude / 7800000.0));
+static inline pressure_t altitude_to_pressure(int32_t altitude) { 	// altitude in mm above sea level
+	return pressure_t { .mbar = int_cast<int32_t> (1013.0 * exp(- altitude / 7800000.0)) };
 }
 
-
-static inline int32_t pressure_to_altitude(int32_t pressure)	// pressure in mbar
+static inline int32_t pressure_to_altitude(pressure_t pressure)
 {						// returns altitude in mm above sea level
-	return (int32_t) (log(1013.0 / pressure) * 7800000);
+	return (int32_t) (log(1013.0 / pressure.mbar) * 7800000);
 }
 
 /*
