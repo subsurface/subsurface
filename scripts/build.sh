@@ -376,17 +376,6 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make install
 	popd
 
-	./${SRC_DIR}/scripts/get-dep-lib.sh single . libcurl
-	pushd libcurl
-	bash ./buildconf
-	mkdir -p build
-	cd build
-	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --with-openssl \
-		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
-	make -j4
-	make install
-	popd
-
 	# openssl doesn't support fat binaries out of the box
 	# this tries to hack around this by first doing an install for x86_64, then a build for arm64
 	# and then manually creating fat libraries from that
@@ -414,6 +403,17 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 		LIBCRYPTONAME=$(readlink libcrypto.dylib)
 		lipo -create ./$LIBCRYPTONAME ../build-x86_64/$LIBCRYPTONAME -output "$INSTALL_ROOT"/lib/$LIBCRYPTONAME
 	fi
+	popd
+
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libcurl
+	pushd libcurl
+	bash ./buildconf
+	mkdir -p build
+	cd build
+	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --with-openssl \
+		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
+	make -j4
+	make install
 	popd
 
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . libssh2
