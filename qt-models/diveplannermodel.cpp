@@ -396,7 +396,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		}
 		case CCSETPOINT: {
 			bool ok;
-			int po2 = round(value.toFloat(&ok) * 100) * 10;
+			int po2 = lrintf(value.toFloat(&ok) * 100) * 10;
 
 			if (ok)
 				p.setpoint = std::max(po2, 160);
