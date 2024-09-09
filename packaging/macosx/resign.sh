@@ -6,8 +6,9 @@
 # resign.sh path-where-DMG-is-mounted temp-dir-where-output-happens version
 
 croak() {
-        echo "$0: $*" >&2
-        exit 1
+	echo "$0: $*" >&2
+	echo "usage: $0 <path to mounted DMG> <path to working directory> <version number without leading v>" >&2
+	exit 1
 }
 
 if [[ "$1" == "" || ! -d "$1" || ! -d "$1/Subsurface.app/Contents/MacOS" ]] ; then
@@ -15,6 +16,7 @@ if [[ "$1" == "" || ! -d "$1" || ! -d "$1/Subsurface.app/Contents/MacOS" ]] ; th
 fi
 if [[ "$2" == "" || ! -d "$2" ]] ; then
 	mkdir -p "$2" || croak "can't create $2 as output directory"
+	WORKING=$( cd "$2" && pwd )
 fi
 [[ "$3" == "" ]] && croak "missing a version argument"
 VERSION="$3"
@@ -23,8 +25,9 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd ../../.. && pwd )
 
 DMGCREATE=create-dmg
 
-mkdir "$2"/staging
-cd "$2"/staging
+mkdir "$WORKING"/staging
+cd "$WORKING"
+pushd staging
 cp -a "$1/Subsurface.app" .
 
 
@@ -40,14 +43,14 @@ codesign --options runtime --keychain "$HOME/Library/Keychains/login.keychain" -
 # ok, now the app is signed. let's notarize it
 # first create a apple appropriate zip file;
 # regular zip command isn't good enough, need to use "ditto"
-ditto -c -k --sequesterRsrc --keepParent Subsurface.app "Subsurface-$VERSION.zip"
+ditto -c -k --sequesterRsrc --keepParent Subsurface.app "$WORKING/Subsurface-$VERSION.zip"
 
 # this assumes that you have setup the notary tool and have the credentials stored
 # in your keychain
-xcrun notarytool submit "./Subsurface-$VERSION.zip" --keychain-profile "notarytool-password" --wait
+xcrun notarytool submit "$WORKING/Subsurface-$VERSION.zip" --keychain-profile "notarytool-password" --wait
 xcrun stapler staple Subsurface.app
 
-cd "$2"
+popd
 
 # it's not entirely clear if signing / stapling the DMG is required as well
 # all I can say is that when I do both, it appears to work
