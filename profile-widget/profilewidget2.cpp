@@ -558,10 +558,14 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 
 	// Add or edit Gas Change
 	if (d && item && item->ev.is_gaschange()) {
-		addGasChangeMenu(m, tr("Edit Gas Change"), *d, dc, item->ev.time.seconds);
+		addGasChangeMenu(m, tr("Edit gas change"), *d, dc, item->ev.time.seconds);
 	} else if (d && d->cylinders.size() > 1) {
 		// if we have more than one gas, offer to switch to another one
-		addGasChangeMenu(m, tr("Add gas change"), *d, dc, seconds);
+		const struct divecomputer *currentdc = d->get_dc(dc);
+		if (seconds == 0 || (!currentdc->samples.empty() && seconds <= currentdc->samples[0].time.seconds))
+			addGasChangeMenu(m, tr("Set initial gas"), *d, dc, 0);
+		else
+			addGasChangeMenu(m, tr("Add gas change"), *d, dc, seconds);
 	}
 	m.addAction(tr("Add setpoint change"), [this, seconds]() { ProfileWidget2::addSetpointChange(seconds); });
 	m.addAction(tr("Add bookmark"), [this, seconds]() { addBookmark(seconds); });
