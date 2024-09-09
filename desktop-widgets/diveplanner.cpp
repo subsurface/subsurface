@@ -594,7 +594,7 @@ void PlannerWidgets::preparePlanDive(const dive *currentDive, int currentDcNr)
 			plannerWidget.setSalinity(SEAWATER_SALINITY);
 	}
 
-	setDiveMode(getDiveMode());
+	plannerWidget.setDiveMode(getDiveMode());
 }
 
 void PlannerWidgets::planDive()
@@ -611,7 +611,7 @@ void PlannerWidgets::prepareReplanDive(const dive *currentDive, int currentDcNr)
 	copy_dive(currentDive, planned_dive.get());
 	dcNr = currentDcNr;
 
-	setDiveMode(getDiveMode());
+	plannerWidget.setDiveMode(getDiveMode());
 }
 
 void PlannerWidgets::replanDive()
