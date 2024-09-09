@@ -34,8 +34,8 @@ void TestAirPressure::testReadAirPressure()
 
 void TestAirPressure::testConvertAltitudetoAirPressure()
 {
-	QCOMPARE(891,altitude_to_pressure(1000000)); // 1000 m altitude in mm
-	QCOMPARE(1013,altitude_to_pressure(0)); // sea level
+	QCOMPARE(891, altitude_to_pressure(1000000).mbar); // 1000 m altitude in mm
+	QCOMPARE(1013, altitude_to_pressure(0).mbar); // sea level
 }
 
 void TestAirPressure::testWriteReadBackAirPressure()

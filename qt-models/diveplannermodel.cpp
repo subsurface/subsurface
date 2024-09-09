@@ -609,7 +609,7 @@ void DivePlannerPointsModel::setVpmbConservatism(int level)
 	}
 }
 
-void DivePlannerPointsModel::setSurfacePressure(int pressure)
+void DivePlannerPointsModel::setSurfacePressure(pressure_t pressure)
 {
 	diveplan.surface_pressure = pressure;
 	emitDataChanged();
@@ -621,7 +621,7 @@ void DivePlannerPointsModel::setSalinity(int salinity)
 	emitDataChanged();
 }
 
-int DivePlannerPointsModel::getSurfacePressure() const
+pressure_t DivePlannerPointsModel::getSurfacePressure() const
 {
 	return diveplan.surface_pressure;
 }

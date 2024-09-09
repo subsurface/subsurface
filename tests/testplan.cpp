@@ -41,7 +41,7 @@ diveplan setupPlan()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.gfhigh = 100;
 	dp.gflow = 100;
 	dp.bottomsac = prefs.bottomsac;
@@ -76,7 +76,7 @@ diveplan setupPlanVpmb45m30mTx()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.gfhigh = 100;
 	dp.gflow = 100;
 	dp.bottomsac = prefs.bottomsac;
@@ -111,7 +111,7 @@ diveplan setupPlanVpmb60m10mTx()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.gfhigh = 100;
 	dp.gflow = 100;
 	dp.bottomsac = prefs.bottomsac;
@@ -146,7 +146,7 @@ diveplan setupPlanVpmb60m30minAir()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
@@ -168,7 +168,7 @@ diveplan setupPlanVpmb60m30minEan50()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
@@ -198,7 +198,7 @@ diveplan setupPlanVpmb60m30minTx()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
@@ -228,7 +228,7 @@ diveplan setupPlanVpmbMultiLevelAir()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
@@ -252,7 +252,7 @@ diveplan setupPlanVpmb100m60min()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
@@ -286,7 +286,7 @@ diveplan setupPlanVpmb100m10min()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
@@ -320,7 +320,7 @@ diveplan setupPlanVpmb30m20min()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
@@ -342,7 +342,7 @@ diveplan setupPlanVpmb100mTo70m30min()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
@@ -384,7 +384,7 @@ diveplan setupPlanSeveralGases()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.bottomsac = prefs.bottomsac;
 	dp.decosac = prefs.decosac;
 
@@ -414,7 +414,7 @@ diveplan setupPlanCcr()
 {
 	diveplan dp;
 	dp.salinity = 10300;
-	dp.surface_pressure = 1013;
+	dp.surface_pressure = 1_atm;
 	dp.gflow = 50;
 	dp.gfhigh = 70;
 	dp.bottomsac = prefs.bottomsac;

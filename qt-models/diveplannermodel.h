@@ -52,7 +52,7 @@ public:
 	int ascratestopsDisplay() const;
 	int ascratelast6mDisplay() const;
 	int descrateDisplay() const;
-	int getSurfacePressure() const;
+	pressure_t getSurfacePressure() const;
 	int gfLow() const;
 	int gfHigh() const;
 
@@ -74,7 +74,7 @@ slots:
 	void setGFHigh(const int gfhigh);
 	void setGFLow(const int gflow);
 	void setVpmbConservatism(int level);
-	void setSurfacePressure(int pressure);
+	void setSurfacePressure(pressure_t pressure);
 	void setSalinity(int salinity);
 	void setBottomSac(double sac);
 	void setDecoSac(double sac);
