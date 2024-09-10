@@ -105,8 +105,6 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 	bool plan_display_runtime = prefs.display_runtime;
 	bool plan_display_duration = prefs.display_duration;
 	bool plan_display_transitions = prefs.display_transitions;
-	bool gaschange_after = !plan_verbatim;
-	bool gaschange_before;
 	bool rebreatherchange_after = !plan_verbatim;
 	bool rebreatherchange_before;
 	enum divemode_t lastdivemode = UNDEF_COMP_TYPE;
@@ -211,8 +209,8 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 		bool atend = nextdp == this->dp.end();
 		if (!atend)
 			newgasmix = dive.get_cylinder(nextdp->cylinderid)->gasmix;
-		gaschange_after = (!atend && (gasmix_distance(gasmix, newgasmix)));
-		gaschange_before =  (gasmix_distance(lastprintgasmix, gasmix));
+		bool gaschange_after = (!atend && (gasmix_distance(gasmix, newgasmix)));
+		bool gaschange_before =  (gasmix_distance(lastprintgasmix, gasmix));
 		rebreatherchange_after = (!atend && (dp->setpoint != nextdp->setpoint || dp->divemode != nextdp->divemode));
 		rebreatherchange_before = lastprintsetpoint != dp->setpoint || lastdivemode != dp->divemode;
 		/* do we want to skip this leg as it is devoid of anything useful? */
@@ -408,7 +406,6 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 					buf += "<br/>\n";
 				}
 				lastprintgasmix = newgasmix;
-				gaschange_after = false;
 				gasmix = newgasmix;
 			}
 		}
