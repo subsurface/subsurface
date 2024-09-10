@@ -552,7 +552,12 @@ static bool parseRaw(const char *fn, metadata *metadata)
 
 	metadata->timestamp = raw.imgdata.other.timestamp;
 	metadata->location.lat = degminsec_to_udeg(raw.imgdata.other.parsed_gps.latitude);
+#if LIBRAW_MINOR_VERSION < 20
+	// what a funny typo in the structure...
+	metadata->location.lon = degminsec_to_udeg(raw.imgdata.other.parsed_gps.longtitude);
+#else
 	metadata->location.lon = degminsec_to_udeg(raw.imgdata.other.parsed_gps.longitude);
+#endif
 
 	return true;
 }
