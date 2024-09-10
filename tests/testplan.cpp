@@ -503,7 +503,7 @@ void TestPlan::testMetric()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 148l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 148l);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN36 at 33m
 	struct event *ev = &dive.dcs[0].events[0];
@@ -540,7 +540,7 @@ void TestPlan::testImperial()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 155l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 155l);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN36 at 33m
 	struct event *ev = &dive.dcs[0].events[0];
@@ -576,7 +576,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 108l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 108l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
@@ -602,7 +602,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 162l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 162l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
@@ -628,7 +628,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 180l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 180l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
@@ -654,7 +654,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 155l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 155l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 1);
@@ -686,7 +686,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 159l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 159l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check first gas change to EAN50 at 21m
@@ -718,7 +718,7 @@ void TestPlan::testVpmbMetric100m60min()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 157l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 157l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
@@ -778,7 +778,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 101l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 101l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 167 minutes, and known Subsurface runtime of 169 minutes
@@ -804,7 +804,7 @@ void TestPlan::testVpmbMetric100m10min()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 175l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 175l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
@@ -847,7 +847,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 61l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 61l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	// check benchmark run time of 27 minutes, and known Subsurface runtime of 28 minutes
@@ -865,7 +865,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 	// check minimum gas result
 	dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 80l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 80l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 3);
@@ -900,7 +900,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 	// check minimum gas result
 	dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp->minimum_gas.mbar / 1000.0), 61l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 61l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 
