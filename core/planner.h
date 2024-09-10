@@ -33,6 +33,10 @@ typedef enum {
 struct diveplan {
 	diveplan();
 	~diveplan();
+	diveplan(const diveplan &) = default;
+	diveplan(diveplan &&) = default;
+	diveplan &operator=(const diveplan &) = default;
+	diveplan &operator=(diveplan &&) = default;
 
 	timestamp_t when = 0;
 	int surface_pressure = 0; /* mbar */
