@@ -48,7 +48,7 @@ if [ ! -f latest-subsurface-buildnumber ] ; then
 	LAST_BUILD_BRANCHES=$(git branch -a --sort=-committerdate --list | grep remotes/origin/branch-for | cut -d/ -f3)
 	for LAST_BUILD_BRANCH in $LAST_BUILD_BRANCHES "not-found" ; do
 		LAST_BUILD_SHA=$(cut -d- -f 3 <<< "$LAST_BUILD_BRANCH")
-		git -C "$SUBSURFACE_SOURCE" merge-base --is-ancestor "$LAST_BUILD_SHA" HEAD && break
+		git -C "$SUBSURFACE_SOURCE" merge-base --is-ancestor "$LAST_BUILD_SHA" HEAD 2> /dev/null&& break
 	done
 	[ "not-found" = "$LAST_BUILD_BRANCH" ] && croak "can't find a build number for the current working tree"
 	git checkout "$LAST_BUILD_BRANCH" &> /dev/null || croak "failed to check out $LAST_BUILD_BRANCH in nightly-builds"
