@@ -32,7 +32,7 @@ jobs:
         qt6-qtlocation-devel qt6-qtsvg-devel \
         qt6-qttools-devel redhat-rpm-config \
         libxkbcommon-devel qt6-qt5compat-devel \
-        bluez-libs-devel libgit2-devel libzip-devel libmtp-devel \
+        bluez-libs-devel libgit2-devel libzip-devel libmtp-devel libraw-devel \
         xorg-x11-server-Xvfb
 
     - name: checkout sources
