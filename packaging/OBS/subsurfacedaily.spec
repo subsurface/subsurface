@@ -38,6 +38,7 @@ BuildRequires:	libssh2-devel
 BuildRequires:	libcurl-devel
 BuildRequires:  libgit2-devel
 BuildRequires:  libmtp-devel
+BuildRequires:  libraw-devel
 %if  0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 BuildRequires:	netpbm-devel
 BuildRequires:	openssl-devel
