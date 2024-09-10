@@ -166,7 +166,7 @@ if(NOT ANDROID)
 	endif()
 	pkg_config_library(LIBUSB libusb-1.0 QUIET)
 	pkg_config_library(LIBMTP libmtp QUIET)
-	pkg_config_library(LIBRAW libraw QUIET)
+	pkg_config_library(LIBRAW libraw )
 endif()
 
 if(LIBRAW_FOUND)
