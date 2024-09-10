@@ -61,6 +61,31 @@
  * actual value. So there is hopefully little fear of using a value
  * in millikelvin as Fahrenheit by mistake.
  *
+ * In general, to initialize a variable, use named initializers:
+ *	depth_t depth = { .mm = 10'000; }; // 10 m
+ * However, for convenience, we define a number of user-defined
+ * literals, which make the above more readable:
+ *	depht_t depth = 10_m;
+ * Currently, we only support integer literals, but might also
+ * do floating points if that seems practical.
+ *
+ * Currently we define:
+ *	_sec		-> duration_t in seconds
+ *	_min		-> duration_t in minutes
+ *	_mm		-> depth_t in millimeters
+ *	_m		-> depth_t in meters
+ *	_ft		-> depth_t in feet
+ *	_mbar		-> pressure_t in millibar
+ *	_bar		-> pressure_t in bar
+ *	_atm		-> pressure_t in atmospheres
+ *	_baro2		-> o2pressure_t in bar
+ *	_K		-> temperature_t in kelvin
+ *	_ml		-> volume_t in milliliters
+ *	_l		-> volume_t in liters
+ *	_percent	-> volume_t in liters
+ *	_permille	-> fraction_t in ‰
+ *	_percent	-> fraction_t in %
+ *
  * We don't actually use these all yet, so maybe they'll change, but
  * I made a number of types as guidelines.
  */
