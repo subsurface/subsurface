@@ -1,5 +1,5 @@
-MACRO(pkg_config_library LIBNAME pcfile option)
-	pkg_check_modules(${LIBNAME} ${option} ${pcfile})
+MACRO(pkg_config_library LIBNAME pcfile )
+	pkg_check_modules(${LIBNAME} ${ARGN} ${pcfile})
 	include_directories(${${LIBNAME}_INCLUDE_DIRS})
 	link_directories(${${LIBNAME}_LIBRARY_DIRS})
 	add_definitions(${${LIBNAME}_CFLAGS_OTHER})
