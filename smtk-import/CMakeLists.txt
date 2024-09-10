@@ -35,6 +35,7 @@ pkg_config_library(LIBGIT2 libgit2 REQUIRED)
 pkg_config_library(LIBMDB libmdb REQUIRED)
 pkg_config_library(LIBDC libdivecomputer REQUIRED)
 pkg_config_library(LIBFTDI libftdi1 QUIET)
+pkg_config_library(LIBRAW libraw)
 
 find_package(Qt5 REQUIRED COMPONENTS Core
 				     Concurrent
