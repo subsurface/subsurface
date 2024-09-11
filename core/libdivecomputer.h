@@ -25,6 +25,13 @@ struct dive;
 struct divelog;
 struct devices;
 
+typedef void (*dc_authfunc_t) (unsigned char data[], size_t size, void *userdata);
+
+typedef struct dc_authfunc_data_t {
+	dc_authfunc_t func;
+	void *userdata;
+} dc_authfunc_data_t;
+
 struct device_data_t {
 	dc_descriptor_t *descriptor = nullptr;
 	std::string vendor, product, devname;
@@ -44,6 +51,7 @@ struct device_data_t {
 	FILE *libdc_logfile = nullptr;
 	struct divelog *log = nullptr;
 	void *androidUsbDeviceDescriptor = nullptr;
+	dc_authfunc_data_t *auth;
 	device_data_t();
 	~device_data_t();
 	device_data_t(const device_data_t &) = default;
@@ -53,7 +61,7 @@ struct device_data_t {
 };
 
 const char *errmsg (dc_status_t rc);
-std::string do_libdivecomputer_import(device_data_t *data);
+std::string do_libdivecomputer_import(device_data_t *data, dc_authfunc_data_t *auth);
 dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned char *buffer, int size);
 void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata);
 dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model);

@@ -645,6 +645,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
 		$LIBGIT2_FROM_PKGCONFIG \
 		-DFORCE_LIBSSH=OFF \
+		-DMAKE_TESTS=OFF \
 		$EXTRA_OPTS \
 		"$SRC"/${SRC_DIR}
 
