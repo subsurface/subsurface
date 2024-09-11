@@ -771,6 +771,12 @@ dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size
 	switch (request) {
 	case DC_IOCTL_BLE_GET_NAME:
 		return ble->get_name((char *) data, size);
+	case DC_IOCTL_BLE_GET_PINCODE:
+		return ble->get_pincode((char *) data, size);
+	case DC_IOCTL_BLE_GET_ACCESSCODE:
+		return ble->get_accesscode((unsigned char *) data, size);
+	case DC_IOCTL_BLE_SET_ACCESSCODE:
+		return ble->set_accesscode((const unsigned char *) data, size);
 	default:
 		return DC_STATUS_UNSUPPORTED;
 	}

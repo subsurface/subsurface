@@ -7,6 +7,17 @@
 #include "core/uemis.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/divelist.h"
+#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
+#include "desktop-widgets/mainwindow.h"
+#endif
+#include <QDebug>
+#include <QInputDialog>
+#include <QMetaObject>
+#include <QObject>
+#include <algorithm>
+#include <functional>
+
+
 #if defined(Q_OS_ANDROID)
 #include "core/subsurface-string.h"
 #endif
@@ -16,6 +27,31 @@ QHash<QString, QStringList> productList;
 static QHash<QString, QStringList> mobileProductList; // BT, BLE or FTDI supported DCs for mobile
 QMap<QString, dc_descriptor_t *> descriptorLookup;
 ConnectionListModel connectionListModel;
+
+
+extern "C" void authfunc_offthread(unsigned char data[], size_t size, void *userdata)
+{
+	QString out;
+	QByteArray byt;
+	size_t siz;
+
+	DownloadThread *thiz = static_cast<DownloadThread *>(userdata);
+
+	bool success = QMetaObject::invokeMethod(thiz, [&thiz, &out]() { thiz->doAuthFunc(out); }, Qt::BlockingQueuedConnection);
+	if (!success)
+		qDebug() << "Failed to invoke doAuthFunc slot";
+
+	byt = out.toUtf8();
+	siz = (size_t)byt.size();
+	memcpy(data, byt.data(), (std::min)(siz, size));
+
+	if (siz > size)
+		qDebug() << "Truncated auth data";
+}
+
+AuthCb::AuthCb(QObject *thiz) : auth({authfunc_offthread, static_cast<void *>(thiz)})
+{
+}
 
 static void updateRememberedDCs()
 {
@@ -72,7 +108,7 @@ static QString getTransportString(unsigned int transport)
 	return ts;
 }
 
-DownloadThread::DownloadThread() : m_data(DCDeviceData::instance())
+DownloadThread::DownloadThread() : m_data(DCDeviceData::instance()), m_authcb(this)
 {
 }
 
@@ -106,7 +142,7 @@ void DownloadThread::run()
 	if (internalData->vendor == "Uemis")
 		errorText = do_uemis_import(internalData);
 	else
-		errorText = do_libdivecomputer_import(internalData);
+		errorText = do_libdivecomputer_import(internalData, &m_authcb.auth);
 	if (!errorText.empty()) {
 		error = format_string_std(errorText.c_str(), internalData->devname.c_str(),
 					  internalData->vendor.c_str(), internalData->product.c_str());
@@ -122,6 +158,15 @@ void DownloadThread::run()
 	qPrefDiveComputer::set_device_name(m_data->devBluetoothName());
 
 	updateRememberedDCs();
+}
+
+void DownloadThread::doAuthFunc(QString &out)
+{
+	QInputDialog *auth = MainWindow::instance()->findChild<QInputDialog *>("authDialog", Qt::FindChildrenRecursively);
+	int r = auth->exec();
+	if (r != QDialog::Accepted)
+		qDebug() << "Auth dialog rejected";
+	out = auth->textValue();
 }
 
 void fill_computer_list()
