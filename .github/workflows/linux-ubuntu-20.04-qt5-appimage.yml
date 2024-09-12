@@ -123,14 +123,14 @@ jobs:
         compression-level: 0
 
     # only publish a 'release' on push events (those include merging a PR)
-    - name: upload binaries
-      if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: v${{ steps.version_number.outputs.version }}
-        repository: ${{ github.repository_owner }}/nightly-builds
-        token: ${{ secrets.NIGHTLY_BUILDS }}
-        prerelease: false
-        fail_on_unmatched_files: true
-        files: |
-         ./Subsurface-*.AppImage
+    #- name: upload binaries
+    #  if: github.event_name == 'push'
+    #  uses: softprops/action-gh-release@v2
+    #  with:
+    #    tag_name: v${{ steps.version_number.outputs.version }}
+    #    repository: ${{ github.repository_owner }}/nightly-builds
+    #    token: ${{ secrets.NIGHTLY_BUILDS }}
+    #    prerelease: false
+    #    fail_on_unmatched_files: true
+    #    files: |
+    #     ./Subsurface-*.AppImage
