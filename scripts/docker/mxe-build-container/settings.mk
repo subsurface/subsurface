@@ -30,6 +30,7 @@ LOCAL_PKG_LIST := gcc \
                   libgit2 \
                   libftdi1 \
                   mdbtools \
+                  libraw \
                   qtconnectivity \
                   qtdeclarative \
                   qtimageformats \

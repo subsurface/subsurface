@@ -12,8 +12,8 @@ jobs:
   windows-mxe:
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ '3.1.0' }}    # 'official' images should have a dot-zero version
-      mxe_sha: 'c0bfefc57a00fdf6cb5278263e21a478e47b0bf5'
+      VERSION: ${{ '3.2.0' }}    # 'official' images should have a dot-zero version
+      mxe_sha: '974808c2ecb02866764d236fe533ae57ba342e7a'
 
     steps:
     - uses: actions/checkout@v4
