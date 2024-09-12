@@ -6,6 +6,7 @@
 
 #include <QMutex>
 #include <QFuture>
+#include <QImage>
 #include <QThreadPool>
 #include <QQueue>
 #include <QString>

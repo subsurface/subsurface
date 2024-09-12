@@ -89,6 +89,10 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/divesite.cpp \
 	core/equipment.cpp \
 	core/gas.cpp \
+	core/imagedownloader.cpp \
+	core/videoframeextractor.cpp \
+	core/metadata.cpp \
+	core/xmp_parser.cpp \
 	core/membuffer.cpp \
 	core/selection.cpp \
 	core/sha1.cpp \
@@ -241,6 +245,10 @@ HEADERS += \
 	core/gaspressures.h \
 	core/gettext.h \
 	core/gettextfromc.h \
+	core/imagedownloader.h \
+	core/videoframeextractor.h \
+	core/metadata.h \
+	core/xmp_parser.h \
 	core/membuffer.h \
 	core/metrics.h \
 	core/qt-gui.h \
