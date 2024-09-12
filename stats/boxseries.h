@@ -5,7 +5,7 @@
 #ifndef BOX_SERIES_H
 #define BOX_SERIES_H
 
-#include "chartitem.h"
+#include "statsitem.h"
 #include "statsseries.h"
 #include "statsvariables.h" // for StatsQuartiles
 

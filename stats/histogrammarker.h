@@ -2,7 +2,7 @@
 #ifndef HISTOGRAM_MARKER_H
 #define HISTOGRAM_MARKER_H
 
-#include "chartitem.h"
+#include "statsitem.h"
 
 class StatsAxis;
 

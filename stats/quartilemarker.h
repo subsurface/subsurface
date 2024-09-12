@@ -2,7 +2,7 @@
 #ifndef QUARTILE_MARKER_H
 #define QUARTILE_MARKER_H
 
-#include "chartitem.h"
+#include "statsitem.h"
 
 class StatsAxis;
 

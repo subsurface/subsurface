@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsgrid.h"
-#include "chartitem.h"
+#include "statsitem.h"
 #include "statsaxis.h"
 #include "statscolors.h"
 #include "statsview.h"

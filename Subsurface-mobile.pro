@@ -138,7 +138,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	stats/statsview.cpp \
 	stats/barseries.cpp \
 	stats/boxseries.cpp \
-	stats/chartitem.cpp \
+	stats/statsitem.cpp \
 	stats/chartlistmodel.cpp \
 	stats/histogrammarker.cpp \
 	stats/informationbox.cpp \
@@ -300,7 +300,7 @@ HEADERS += \
 	qt-quick/chartview.h \
 	stats/barseries.h \
 	stats/boxseries.h \
-	stats/chartitem.h \
+	stats/statsitem.h \
 	stats/chartlistmodel.h \
 	stats/histogrammarker.h \
 	stats/informationbox.h \

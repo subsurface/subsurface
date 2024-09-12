@@ -2,7 +2,7 @@
 #ifndef REGRESSION_H
 #define REGRESSION_H
 
-#include "chartitem.h"
+#include "statsitem.h"
 
 class StatsAxis;
 class StatsTheme;

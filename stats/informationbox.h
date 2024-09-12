@@ -4,7 +4,7 @@
 #ifndef INFORMATION_BOX_H
 #define INFORMATION_BOX_H
 
-#include "chartitem.h"
+#include "statsitem.h"
 
 #include <vector>
 #include <memory>

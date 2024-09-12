@@ -2,7 +2,7 @@
 #ifndef STATS_AXIS_H
 #define STATS_AXIS_H
 
-#include "chartitem.h"
+#include "statsitem.h"
 
 #include <memory>
 #include <vector>
