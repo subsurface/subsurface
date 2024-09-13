@@ -535,8 +535,8 @@ static bool parseASF(QFile &f, metadata *metadata)
 degrees_t degminsec_to_udeg(float a[3])
 {
 	if (a[0] == 0.0 && a[1] == 0.0 && a[2] == 0.0)
-		return { 0 };
-	return { static_cast<int>(round(a[0] * 1'000'000.0 +
+		return { .udeg = 0 };
+	return { .udeg = static_cast<int>(round(a[0] * 1'000'000.0 +
 					a[1] * (1'000'000.0/60.0) +
 					a[2] * (1'000'000.0/3600.0))) };
 }
