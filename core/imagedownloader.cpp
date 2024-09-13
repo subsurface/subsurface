@@ -217,7 +217,7 @@ Thumbnailer::Thumbnail Thumbnailer::getVideoThumbnailFromStream(QDataStream &str
 	// is not repeated ad-nauseum for broken images.
 	if (numPics == 0 && prefs.extract_video_thumbnails) {
 		QMetaObject::invokeMethod(VideoFrameExtractor::instance(), "extract", Qt::AutoConnection,
-					  Q_ARG(QString, filename), Q_ARG(QString, filename), Q_ARG(duration_t, duration_t{(int32_t)duration}));
+					  Q_ARG(QString, filename), Q_ARG(QString, filename), Q_ARG(duration_t, duration_t{ .seconds = (int32_t)duration}));
 	}
 
 	// Currently, we support only one picture
@@ -231,7 +231,7 @@ Thumbnailer::Thumbnail Thumbnailer::getVideoThumbnailFromStream(QDataStream &str
 		res = videoImage; // No picture -> show dummy-icon
 	else
 		markVideoThumbnail(res); // We got an image -> place our video marker on top of it
-	return { res, MEDIATYPE_VIDEO, { (int32_t)duration } };
+	return { res, MEDIATYPE_VIDEO, { .seconds = (int32_t)duration } };
 }
 
 // Fetch a thumbnail from cache.

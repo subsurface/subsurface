@@ -160,7 +160,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 		}
 	}
 	bool no_volume = true;
-	struct gasmix bottom_gas = { {1000}, {0} }; /* Default to pure O2, or air if there are no mixes defined */
+	struct gasmix bottom_gas = { 100_percent, 0_percent }; /* Default to pure O2, or air if there are no mixes defined */
 	if (ngases == 0) {
 		bottom_gas = gasmix_air;
 	}
@@ -291,7 +291,7 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 					cyl.end.mbar = lrint(tank.endpressure * 1000);
 				} else if (devdata->vendor == "Uwatec") {
 					cyl.start.mbar = lrint(tank.beginpressure * 1000 + 30000);
-					cyl.end.mbar = 30000;
+					cyl.end = 30_bar;
 				}
 			}
 		}
@@ -850,7 +850,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	/* Various libdivecomputer interface fixups */
 	if (dive->dcs[0].airtemp.mkelvin == 0 && first_temp_is_air && !dive->dcs[0].samples.empty()) {
 		dive->dcs[0].airtemp = dive->dcs[0].samples[0].temperature;
-		dive->dcs[0].samples[0].temperature.mkelvin = 0;
+		dive->dcs[0].samples[0].temperature = 0_K;
 	}
 
 	/* special case for bug in Tecdiving DiveComputer.eu

@@ -472,9 +472,9 @@ static bool is_same_cylinder(cylinder_t *cyl_a, cylinder_t *cyl_b)
 static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
 {
 	if (!dst->size.mliter)
-		dst->size.mliter = src->size.mliter;
+		dst->size = src->size;
 	if (!dst->workingpressure.mbar)
-		dst->workingpressure.mbar = src->workingpressure.mbar;
+		dst->workingpressure = src->workingpressure;
 	if (dst->description.empty() || dst->description == "---") {
 		dst->description = std::move(src->description);
 	}
@@ -978,7 +978,7 @@ void smartrak_import(const char *file, struct divelog *log)
 				if (tmptank->gasmix.he.permille == 0)
 					tmptank->gasmix.he.permille = lrint(strtod((char *)col[i + hefraccol]->bind_ptr, NULL) * 10);
 			} else {
-				tmptank->gasmix.he.permille = 0;
+				tmptank->gasmix.he = 0_percent;
 			}
 			smtk_build_tank_info(mdb_clon, tmptank, (char *)col[i + tankidxcol]->bind_ptr);
 		}
@@ -1001,7 +1001,7 @@ void smartrak_import(const char *file, struct divelog *log)
 
 		/* No DC related data */
 		smtkdive->visibility = strtod((char *)col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : lrint(strtod((char *)col[13]->bind_ptr, NULL) / 5);
-		weightsystem_t ws = { {(int)lrint(strtod((char *)col[coln(WEIGHT)]->bind_ptr, NULL) * 1000)}, std::string(), false };
+		weightsystem_t ws = { { .grams = int_cast<int>(strtod((char *)col[coln(WEIGHT)]->bind_ptr, NULL) * 1000)}, std::string(), false };
 		smtkdive->weightsystems.push_back(std::move(ws));
 		smtkdive->suit = get(suit_list, atoi((char *)col[coln(SUITIDX)]->bind_ptr) - 1);
 		smtk_build_location(mdb_clon, (char *)col[coln(SITEIDX)]->bind_ptr, &smtkdive->dive_site, log);

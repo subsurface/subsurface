@@ -149,7 +149,6 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	int j = 0;
 	int cylinderid = 0;
 
-	last_sp.mbar = 0;
 	divemode_loop loop(*dc);
 	for (int i = 0; i < plansamples - 1; i++) {
 		if (dc->last_manual_time.seconds && dc->last_manual_time.seconds > 120 && lasttime.seconds >= dc->last_manual_time.seconds)
@@ -216,7 +215,7 @@ void DivePlannerPointsModel::setupCylinders()
 bool DivePlannerPointsModel::updateMaxDepth()
 {
 	int prevMaxDepth = d->maxdepth.mm;
-	d->maxdepth.mm = 0;
+	d->maxdepth = 0_m;
 	for (int i = 0; i < rowCount(); i++) {
 		divedatapoint p = at(i);
 		if (p.depth.mm > d->maxdepth.mm)
@@ -296,7 +295,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 		case CCSETPOINT:
 			return (divemode == CCR) ? (double)(p.setpoint / 1000.0) : QVariant();
 		case DEPTH:
-			return (int) lrint(get_depth_units(p.depth.mm, NULL, NULL));
+			return int_cast<int>(get_depth_units(p.depth.mm, NULL, NULL));
 		case RUNTIME:
 			return p.time / 60;
 		case DURATION:
@@ -610,7 +609,7 @@ void DivePlannerPointsModel::setVpmbConservatism(int level)
 	}
 }
 
-void DivePlannerPointsModel::setSurfacePressure(int pressure)
+void DivePlannerPointsModel::setSurfacePressure(pressure_t pressure)
 {
 	diveplan.surface_pressure = pressure;
 	emitDataChanged();
@@ -622,7 +621,7 @@ void DivePlannerPointsModel::setSalinity(int salinity)
 	emitDataChanged();
 }
 
-int DivePlannerPointsModel::getSurfacePressure() const
+pressure_t DivePlannerPointsModel::getSurfacePressure() const
 {
 	return diveplan.surface_pressure;
 }
@@ -1069,7 +1068,7 @@ bool DivePlannerPointsModel::tankInUse(int cylinderid) const
 void DivePlannerPointsModel::clear()
 {
 	cylinders.clear();
-	preserved_until.seconds = 0;
+	preserved_until = 0_sec;
 	beginResetModel();
 	divepoints.clear();
 	endResetModel();
@@ -1223,16 +1222,16 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	int my_instance = ++instanceCounter;
 	save.cache(&ds);
 
-	duration_t delta_time = { .seconds = 60 };
+	duration_t delta_time = 1_min;
 	QString time_units = tr("min");
 	depth_t delta_depth;
 	QString depth_units;
 
 	if (prefs.units.length == units::METERS) {
-		delta_depth.mm = 1000; // 1m
+		delta_depth = 1_m;
 		depth_units = tr("m");
 	} else {
-		delta_depth.mm = feet_to_mm(1.0); // 1ft
+		delta_depth = 1_ft;
 		depth_units = tr("ft");
 	}
 

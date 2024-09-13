@@ -93,16 +93,17 @@ static weight_t get_weight(const char *line)
 
 static pressure_t get_airpressure(const char *line)
 {
-	pressure_t p;
-	p.mbar = lrint(ascii_strtod(line, NULL));
-	return p;
+	return pressure_t { .mbar = int_cast<int32_t>(ascii_strtod(line, NULL)) };
 }
 
 static pressure_t get_pressure(const char *line)
 {
-	pressure_t p;
-	p.mbar = lrint(1000 * ascii_strtod(line, NULL));
-	return p;
+	return pressure_t { .mbar = int_cast<int32_t>(1000 * ascii_strtod(line, NULL)) };
+}
+
+static o2pressure_t get_o2pressure(const char *line)
+{
+	return o2pressure_t { .mbar = int_cast<uint16_t>(1000 * ascii_strtod(line, NULL)) };
 }
 
 static int get_salinity(const char *line)
@@ -557,43 +558,35 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const std::str
 	}
 
 	if (!strcmp(key, "po2")) {
-		pressure_t p = get_pressure(value.c_str());
-		sample->setpoint.mbar = p.mbar;
+		sample->setpoint = get_o2pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "sensor1")) {
-		pressure_t p = get_pressure(value.c_str());
-		sample->o2sensor[0].mbar = p.mbar;
+		sample->o2sensor[0] = get_o2pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "sensor2")) {
-		pressure_t p = get_pressure(value.c_str());
-		sample->o2sensor[1].mbar = p.mbar;
+		sample->o2sensor[1] = get_o2pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "sensor3")) {
-		pressure_t p = get_pressure(value.c_str());
-		sample->o2sensor[2].mbar = p.mbar;
+		sample->o2sensor[2] = get_o2pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "sensor4")) {
-		pressure_t p = get_pressure(value.c_str());
-		sample->o2sensor[3].mbar = p.mbar;
+		sample->o2sensor[3] = get_o2pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "sensor5")) {
-		pressure_t p = get_pressure(value.c_str());
-		sample->o2sensor[4].mbar = p.mbar;
+		sample->o2sensor[4] = get_o2pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "sensor6")) {
-		pressure_t p = get_pressure(value.c_str());
-		sample->o2sensor[5].mbar = p.mbar;
+		sample->o2sensor[5] = get_o2pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "o2pressure")) {
-		pressure_t p = get_pressure(value.c_str());
-		sample->pressure[1].mbar = p.mbar;
+		sample->pressure[1] = get_pressure(value.c_str());
 		return;
 	}
 	if (!strcmp(key, "heartbeat")) {
@@ -674,8 +667,8 @@ static struct sample *new_sample(struct git_parser_state *state)
 	size_t num_samples = state->active_dc->samples.size();
 	if (num_samples >= 2) {
 		*sample = state->active_dc->samples[num_samples - 2];
-		sample->pressure[0].mbar = 0;
-		sample->pressure[1].mbar = 0;
+		sample->pressure[0] = 0_bar;
+		sample->pressure[1] = 0_bar;
 	} else {
 		sample->sensor[0] = sanitize_sensor_id(state->active_dive.get(), !state->o2pressure_sensor);
 		sample->sensor[1] = sanitize_sensor_id(state->active_dive.get(), state->o2pressure_sensor);

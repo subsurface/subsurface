@@ -306,7 +306,7 @@ void EditDuration::set(struct dive *d, int value) const
 {
 	d->dcs[0].duration.seconds = value;
 	d->duration = d->dcs[0].duration;
-	d->dcs[0].meandepth.mm = 0;
+	d->dcs[0].meandepth = 0_m;
 	d->dcs[0].samples.clear();
 	fake_dc(&d->dcs[0]);
 }
@@ -326,7 +326,7 @@ void EditDepth::set(struct dive *d, int value) const
 {
 	d->dcs[0].maxdepth.mm = value;
 	d->maxdepth = d->dcs[0].maxdepth;
-	d->dcs[0].meandepth.mm = 0;
+	d->dcs[0].meandepth = 0_m;
 	d->dcs[0].samples.clear();
 	fake_dc(&d->dcs[0]);
 }
@@ -673,10 +673,10 @@ PasteState::PasteState(dive &d, const dive_paste_data &data, std::vector<dive_si
 		}
 		for (size_t i = data.cylinders->size(); i < cylinders->size(); ++i) {
 			cylinder_t &cyl = (*cylinders)[i];
-			cyl.start.mbar = 0;
-			cyl.end.mbar = 0;
-			cyl.sample_start.mbar = 0;
-			cyl.sample_end.mbar = 0;
+			cyl.start = 0_bar;
+			cyl.end = 0_bar;
+			cyl.sample_start = 0_bar;
+			cyl.sample_end = 0_bar;
 			cyl.manually_added = true;
 		}
 	}
@@ -790,17 +790,13 @@ void PasteDives::redo()
 // ***** ReplanDive *****
 ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	when(0),
-	maxdepth({0}),
-	meandepth({0}),
-	surface_pressure({0}),
-	duration({0}),
 	salinity(0)
 {
 	if (!d)
 		return;
 
 	// Fix source. Things might be inconsistent after modifying the profile.
-	source->maxdepth.mm = source->dcs[0].maxdepth.mm = 0;
+	source->maxdepth = source->dcs[0].maxdepth = 0_m;
 	divelog.dives.fixup_dive(*source);
 
 	when = source->when;
@@ -870,11 +866,7 @@ QString editProfileTypeToString(EditProfileType type, int count)
 }
 
 EditProfile::EditProfile(const dive *source, int dcNr, EditProfileType type, int count) : d(current_dive),
-	dcNr(dcNr),
-	maxdepth({0}),
-	meandepth({0}),
-	dcmaxdepth({0}),
-	duration({0})
+	dcNr(dcNr)
 {
 	const struct divecomputer *sdc = source->get_dc(dcNr);
 	if (!sdc)
@@ -1268,8 +1260,8 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 			cyl[i].cylinder_use = cylIn.cylinder_use;
 			break;
 		case EditCylinderType::PRESSURE:
-			cyl[i].start.mbar = cylIn.start.mbar;
-			cyl[i].end.mbar = cylIn.end.mbar;
+			cyl[i].start = cylIn.start;
+			cyl[i].end = cylIn.end;
 			break;
 		case EditCylinderType::GASMIX:
 			cyl[i].gasmix = cylIn.gasmix;

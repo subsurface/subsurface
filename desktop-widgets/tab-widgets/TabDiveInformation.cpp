@@ -439,18 +439,18 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 					altitudeVal = feet_to_mm(altitudeVal); // imperial: convert altitude from feet to mm
 				else
 					altitudeVal = altitudeVal * 1000;     // metric: convert altitude from meters to mm
-				atmpress.mbar = altitude_to_pressure((int32_t) altitudeVal); // convert altitude (mm) to pressure (mbar)
+				atmpress = altitude_to_pressure((int32_t) altitudeVal); // convert altitude (mm) to pressure (mbar)
 				ui->atmPressVal->setText(QString::number(atmpress.mbar));
 				setIndexNoSignal(ui->atmPressType, 0);    // reset combobox to mbar
 			} else { // i.e. event == COMBO_CHANGED, that is, "m" or "ft" was selected from combobox
 				 // Show estimated altitude
 				bool ok;
 				double convertVal = 0.0010;	// Metric conversion fro mm to m
-				int pressure_as_integer = ui->atmPressVal->text().toInt(&ok,10);
+				pressure_t pressure = { .mbar = ui->atmPressVal->text().toInt(&ok,10) };
 				if (ok && ui->atmPressVal->text().length()) {  // Show existing atm press as an altitude:
 					if (prefs.units.length == units::FEET) // For imperial units
 						convertVal = mm_to_feet(1);    // convert from mm to ft
-					ui->atmPressVal->setText(QString::number((int)(pressure_to_altitude(pressure_as_integer) * convertVal)));
+					ui->atmPressVal->setText(QString::number((int)(pressure_to_altitude(pressure) * convertVal)));
 				}
 			}
 			break;
@@ -460,7 +460,7 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 			setIndexNoSignal(ui->atmPressType, 0);          // reset combobox to mbar
 			break;
 		default:
-			atmpress.mbar = 1013;    // This line should never execute
+			atmpress = 1_atm;    // This line should never execute
 			break;
 		}
 		if (atmpress.mbar)

@@ -204,7 +204,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 				put_format(&buf, "\\def\\%scyl%cmixO2{%.1f\\%%}\n", ssrf, 'a' + i, get_o2(cyl.gasmix)/10.0);
 				put_format(&buf, "\\def\\%scyl%cmixHe{%.1f\\%%}\n", ssrf, 'a' + i, get_he(cyl.gasmix)/10.0);
 				put_format(&buf, "\\def\\%scyl%cmixN2{%.1f\\%%}\n", ssrf, 'a' + i, (100.0 - (get_o2(cyl.gasmix)/10.0) - (get_he(cyl.gasmix)/10.0)));
-				delta_p.mbar += cyl.start.mbar - cyl.end.mbar;
+				delta_p += cyl.start - cyl.end;
 				put_format(&buf, "\\def\\%scyl%cstartpress{%.1f\\%spressureunit}\n", ssrf, 'a' + i, get_pressure_units(cyl.start.mbar, &unit)/1.0, ssrf);
 				put_format(&buf, "\\def\\%scyl%cendpress{%.1f\\%spressureunit}\n", ssrf, 'a' + i, get_pressure_units(cyl.end.mbar, &unit)/1.0, ssrf);
 				qty_cyl += 1;

@@ -171,7 +171,7 @@ static int divinglog_profile(void *param, int, char **data, char **)
 			 */
 			int val = atoi_n(ptr4, 3);
 			if (state->cur_sample->in_deco) {
-				state->cur_sample->ndl.seconds = 0;
+				state->cur_sample->ndl = 0_sec;
 				if (val)
 					state->cur_sample->tts.seconds = val * 60;
 			} else {
@@ -309,7 +309,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 		state->cur_dive->watertemp.mkelvin = C_to_mkelvin(atol(data[9]));
 
 	if (data[10]) {
-		weightsystem_t ws = { { atoi(data[10]) * 1000 }, translate("gettextFromC", "unknown"), false };
+		weightsystem_t ws = { { .grams = atoi(data[10]) * 1000 }, translate("gettextFromC", "unknown"), false };
 		state->cur_dive->weightsystems.push_back(std::move(ws));
 	}
 

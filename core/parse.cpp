@@ -267,8 +267,7 @@ void dive_end(struct parser_state *state)
 	}
 	state->cur_dive.reset();
 	state->cur_dc = NULL;
-	state->cur_location.lat.udeg = 0;
-	state->cur_location.lon.udeg = 0;
+	state->cur_location = location_t();
 }
 
 void trip_start(struct parser_state *state)
@@ -350,8 +349,8 @@ void sample_start(struct parser_state *state)
 
 	if (dc->samples.size() > 1) {
 		*sample = dc->samples[dc->samples.size() - 2];
-		sample->pressure[0].mbar = 0;
-		sample->pressure[1].mbar = 0;
+		sample->pressure[0] = 0_bar;
+		sample->pressure[1] = 0_bar;
 	} else {
 		sample->sensor[0] = sanitize_sensor_id(state->cur_dive.get(), !state->o2pressure_sensor);
 		sample->sensor[1] = sanitize_sensor_id(state->cur_dive.get(), state->o2pressure_sensor);

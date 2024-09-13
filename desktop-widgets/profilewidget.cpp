@@ -345,7 +345,7 @@ void ProfileWidget::exitEditMode()
 // Update depths of edited dive
 static void calcDepth(dive &d, int dcNr)
 {
-	d.maxdepth.mm = d.get_dc(dcNr)->maxdepth.mm = 0;
+	d.maxdepth = d.get_dc(dcNr)->maxdepth = 0_m;
 	divelog.dives.fixup_dive(d);
 }
 

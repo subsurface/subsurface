@@ -86,7 +86,7 @@ static QVariant gas_usage_tooltip(const cylinder_t *cyl)
 	volume_t start = cyl->gas_volume(startp);
 	volume_t end = cyl->gas_volume(endp);
 	// TOOO: implement comparison and subtraction on units.h types.
-	volume_t used = (end.mliter && start.mliter > end.mliter) ? volume_t { start.mliter - end.mliter } : volume_t();
+	volume_t used = (end.mliter && start.mliter > end.mliter) ? volume_t { .mliter = start.mliter - end.mliter } : volume_t();
 
 	if (!used.mliter)
 		return gas_wp_tooltip(cyl);
@@ -410,7 +410,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 				cyl.gasmix.he.permille = 1000 - get_o2(cyl.gasmix);
 			pressure_t modpO2;
 			if (d->dcs[0].divemode == PSCR)
-				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(cyl.gasmix)) * SURFACE_PRESSURE *
+				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(cyl.gasmix)) * (1_atm).mbar *
 						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
 			else
 				modpO2.mbar = prefs.decopo2;

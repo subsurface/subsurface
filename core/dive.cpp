@@ -469,7 +469,7 @@ static void update_min_max_temperatures(struct dive &dive, temperature_t tempera
  */
 static int same_rounded_pressure(pressure_t a, pressure_t b)
 {
-	return abs(a.mbar - b.mbar) <= 500;
+	return abs((a - b).mbar) <= 500;
 }
 
 static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity);
@@ -498,7 +498,7 @@ void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 			struct gasmix gasmix = loop.at(sample.time.seconds).first;
 			gas_pressures pressures = fill_pressures(lrint(calculate_depth_to_mbarf(sample.depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
 			if (abs(sample.setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
-				sample.setpoint.mbar = 0;
+				sample.setpoint = 0_baro2;
 		}
 	}
 
@@ -554,7 +554,7 @@ static void match_standard_cylinder(cylinder_type_t &type)
 	default:
 		return;
 	}
-	type.description = format_string_std(fmt, (int)lrint(cuft));
+	type.description = format_string_std(fmt, int_cast<int>(cuft));
 }
 
 /*
@@ -678,7 +678,7 @@ static void fixup_duration(struct dive &dive)
 		if (logged || !is_dc_planner(&dc))
 			duration.seconds = std::max(duration.seconds, dc.duration.seconds);
 	}
-	dive.duration.seconds = duration.seconds;
+	dive.duration = duration;
 }
 
 static void fixup_watertemp(struct dive &dive)
@@ -724,7 +724,7 @@ static void fixup_dc_events(struct divecomputer &dc)
 			continue;
 		for (int idx2 = idx - 1; idx2 > 0; --idx2) {
 			const auto &prev = dc.events[idx2];
-			if (event.time.seconds - prev.time.seconds > 60)
+			if ((event.time - prev.time).seconds > 60)
 				break;
 			if (range_contains(to_delete, idx2))
 				continue;
@@ -809,7 +809,7 @@ static void fixup_dc_temp(struct dive &dive, struct divecomputer &dc)
 			 * the redundant ones.
 			 */
 			if (lasttemp == temp)
-				sample.temperature.mkelvin = 0;
+				sample.temperature = 0_K;
 			else
 				lasttemp = temp;
 
@@ -839,7 +839,7 @@ static void simplify_dc_pressures(struct divecomputer &dc)
 			if (index == lastindex[j]) {
 				/* Remove duplicate redundant pressure information */
 				if (pressure == lastpressure[j])
-					sample.pressure[j].mbar = 0;
+					sample.pressure[j] = 0_bar;
 			}
 			lastindex[j] = index;
 			lastpressure[j] = pressure;
@@ -912,7 +912,7 @@ static bool validate_gaschange(struct dive &dive, struct event &event)
 
 	/* We'll get rid of the per-event gasmix, but for now sanitize it */
 	if (gasmix_is_air(event.gas.mix))
-		event.gas.mix.o2.permille = 0;
+		event.gas.mix.o2 = 0_percent;
 
 	/* Do we already have a cylinder index for this gasmix? */
 	if (event.gas.index >= 0)
@@ -993,7 +993,7 @@ static void fixup_dc_sample_sensors(struct dive &dive, struct divecomputer &dc)
 			// No invalid sensor ID's, please
 			if (sensor < 0 || sensor > MAX_SENSORS) {
 				sample.sensor[j] = NO_SENSOR;
-				sample.pressure[j].mbar = 0;
+				sample.pressure[j] = 0_bar;
 				continue;
 			}
 
@@ -1076,9 +1076,9 @@ void dive::fixup_no_cylinder()
 	for (auto &cyl: cylinders) {
 		add_cylinder_description(cyl.type);
 		if (same_rounded_pressure(cyl.sample_start, cyl.start))
-			cyl.start.mbar = 0;
+			cyl.start = 0_bar;
 		if (same_rounded_pressure(cyl.sample_end, cyl.end))
-			cyl.end.mbar = 0;
+			cyl.end = 0_bar;
 	}
 
 	for (auto &ws: weightsystems)
@@ -1115,12 +1115,12 @@ static void merge_one_sample(const struct sample &sample, struct divecomputer &d
 
 			/* Init a few values from prev sample to avoid useless info in XML */
 			surface.bearing.degrees = prev.bearing.degrees;
-			surface.ndl.seconds = prev.ndl.seconds;
+			surface.ndl = prev.ndl;
 			surface.time.seconds = last_time + 20;
 
 			append_sample(surface, &dc);
 
-			surface.time.seconds = sample.time.seconds - 20;
+			surface.time = sample.time - 20_sec;
 			append_sample(surface, &dc);
 		}
 	}
@@ -1399,10 +1399,10 @@ static void sample_renumber(struct sample &s, const struct sample *prev, const i
 			// Remove sensor and gas pressure info
 			if (!prev) {
 				s.sensor[j] = 0;
-				s.pressure[j].mbar = 0;
+				s.pressure[j] = 0_bar;
 			} else {
 				s.sensor[j] = prev->sensor[j];
-				s.pressure[j].mbar = prev->pressure[j].mbar;
+				s.pressure[j] = prev->pressure[j];
 			}
 		} else {
 			s.sensor[j] = sensor;
@@ -1547,9 +1547,9 @@ static pressure_t merge_pressures(pressure_t a, pressure_t sample_a, pressure_t 
 static void merge_one_cylinder(cylinder_t *a, const cylinder_t *b)
 {
 	if (!a->type.size.mliter)
-		a->type.size.mliter = b->type.size.mliter;
+		a->type.size = b->type.size;
 	if (!a->type.workingpressure.mbar)
-		a->type.workingpressure.mbar = b->type.workingpressure.mbar;
+		a->type.workingpressure = b->type.workingpressure;
 	if (a->type.description.empty())
 		a->type.description = b->type.description;
 
@@ -1562,8 +1562,8 @@ static void merge_one_cylinder(cylinder_t *a, const cylinder_t *b)
 	a->end = merge_pressures(a->end, a->sample_end, b->end, b->sample_end, true);
 
 	/* Really? */
-	a->gas_used.mliter += b->gas_used.mliter;
-	a->deco_gas_used.mliter += b->deco_gas_used.mliter;
+	a->gas_used += b->gas_used;
+	a->deco_gas_used += b->deco_gas_used;
 	a->bestmix_o2 = a->bestmix_o2 && b->bestmix_o2;
 	a->bestmix_he = a->bestmix_he && b->bestmix_he;
 }
@@ -1737,7 +1737,7 @@ static int compare_sample(const struct sample &s, const struct sample &a, const 
 	int diff;
 
 	if (offset) {
-		unsigned int interval = b.time.seconds - a.time.seconds;
+		unsigned int interval = (b.time - a.time).seconds;
 		unsigned int depth_a = a.depth.mm;
 		unsigned int depth_b = b.depth.mm;
 
@@ -2248,7 +2248,7 @@ duration_t dive::totaltime() const
 				time = dc_time;
 		}
 	}
-	return { time };
+	return { .seconds = time };
 }
 
 timestamp_t dive::endtime() const
@@ -2331,8 +2331,9 @@ fraction_t dive::best_o2(depth_t depth, bool in_planner) const
 
 	fo2.permille = (po2 * 100 / depth_to_mbar(depth.mm)) * 10;	//use integer arithmetic to round down to nearest percent
 	// Don't permit >100% O2
+	// TODO: use std::min, once we have comparison
 	if (fo2.permille > 1000)
-		fo2.permille = 1000;
+		fo2 = 100_percent;
 	return fo2;
 }
 
@@ -2348,8 +2349,9 @@ fraction_t dive::best_he(depth_t depth, bool o2narcotic, fraction_t fo2) const
 	} else {
 		fhe.permille = 1000 - fo2.permille - N2_IN_AIR * pnarcotic / ambient;
 	}
+	// TODO: use std::max, once we have comparison
 	if (fhe.permille < 0)
-		fhe.permille = 0;
+		fhe = 0_percent;
 	return fhe;
 }
 
@@ -2366,8 +2368,7 @@ bool dive::cache_is_valid() const
 
 pressure_t dive::get_surface_pressure() const
 {
-	return surface_pressure.mbar > 0 ? surface_pressure
-					 : pressure_t { SURFACE_PRESSURE };
+	return surface_pressure.mbar > 0 ? surface_pressure : 1_atm;
 }
 
 /* This returns the conversion factor that you need to multiply
@@ -2385,17 +2386,14 @@ static double salinity_to_specific_weight(int salinity)
  * and add that to the surface pressure (or to 1013 if that's unknown) */
 static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity)
 {
-	double specific_weight;
-	int mbar = surface_pressure.mbar;
-
-	if (!mbar)
-		mbar = SURFACE_PRESSURE;
+	if (!surface_pressure.mbar)
+		surface_pressure = 1_atm;
 	if (!salinity)
 		salinity = SEAWATER_SALINITY;
 	if (salinity < 500)
 		salinity += FRESHWATER_SALINITY;
-	specific_weight = salinity_to_specific_weight(salinity);
-	return mbar + depth * specific_weight;
+	double specific_weight = salinity_to_specific_weight(salinity);
+	return surface_pressure.mbar + depth * specific_weight;
 }
 
 int dive::depth_to_mbar(int depth) const
@@ -2439,7 +2437,7 @@ int dive::rel_mbar_to_depth(int mbar) const
 
 	/* whole mbar gives us cm precision */
 	double specific_weight = salinity_to_specific_weight(salinity);
-	return (int)lrint(mbar / specific_weight);
+	return int_cast<int>(mbar / specific_weight);
 }
 
 int dive::mbar_to_depth(int mbar) const
@@ -2450,7 +2448,7 @@ int dive::mbar_to_depth(int mbar) const
 		: dcs[0].surface_pressure;
 
 	if (!surface_pressure.mbar)
-		surface_pressure.mbar = SURFACE_PRESSURE;
+		surface_pressure = 1_atm;
 
 	return rel_mbar_to_depth(mbar - surface_pressure.mbar);
 }
@@ -2459,23 +2457,23 @@ int dive::mbar_to_depth(int mbar) const
 depth_t dive::gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const
 {
 	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix));
-	return depth_t { (int)lrint(depth / roundto) * roundto };
+	return depth_t { .mm = int_cast<int>(depth / roundto) * roundto };
 }
 
 /* Maximum narcotic depth rounded to multiples of roundto mm */
 depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 {
-	pressure_t ppo2n2 { depth_to_mbar(end.mm) };
+	pressure_t ppo2n2 { .mbar = depth_to_mbar(end.mm) };
 
 	int maxambient = prefs.o2narcotic ?
-					(int)lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0))
+					int_cast<int>(ppo2n2.mbar / (1 - get_he(mix) / 1000.0))
 			      :
 					get_n2(mix) > 0 ?
-						(int)lrint(ppo2n2.mbar * N2_IN_AIR / get_n2(mix))
+						int_cast<int>(ppo2n2.mbar * N2_IN_AIR / get_n2(mix))
 					:
 						// Actually: Infinity
 						1000000;
-	return depth_t { (int)lrint(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
+	return depth_t { .mm = int_cast<int>(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
 }
 
 std::string dive::get_country() const
@@ -2677,7 +2675,7 @@ temperature_t dive::dc_watertemp() const
 	}
 	if (!nr)
 		return temperature_t();
-	return temperature_t{ static_cast<uint32_t>((sum + nr / 2) / nr) };
+	return temperature_t{ .mkelvin = static_cast<uint32_t>((sum + nr / 2) / nr) };
 }
 
 /*
@@ -2695,7 +2693,7 @@ temperature_t dive::dc_airtemp() const
 	}
 	if (!nr)
 		return temperature_t();
-	return temperature_t{ static_cast<uint32_t>((sum + nr / 2) / nr) };
+	return temperature_t{ .mkelvin = static_cast<uint32_t>((sum + nr / 2) / nr) };
 }
 
 /*
@@ -2782,5 +2780,5 @@ weight_t dive::total_weight() const
 	// TODO: implement addition for units.h types
 	return std::accumulate(weightsystems.begin(), weightsystems.end(), weight_t(),
 			       [] (weight_t w, const weightsystem_t &ws)
-			       { return weight_t{ w.grams + ws.weight.grams }; });
+			       { return weight_t{ .grams = w.grams + ws.weight.grams }; });
 }

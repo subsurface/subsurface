@@ -15,7 +15,6 @@
 #define O2_DENSITY 1331 // mg/Liter
 #define N2_DENSITY 1165
 #define HE_DENSITY 166
-#define SURFACE_PRESSURE 1013 // mbar
 #define ZERO_C_IN_MKELVIN 273150 // mKelvin
 
 #define M_OR_FT(_m, _f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
@@ -62,67 +61,197 @@
  * actual value. So there is hopefully little fear of using a value
  * in millikelvin as Fahrenheit by mistake.
  *
+ * In general, to initialize a variable, use named initializers:
+ *	depth_t depth = { .mm = 10'000; }; // 10 m
+ * However, for convenience, we define a number of user-defined
+ * literals, which make the above more readable:
+ *	depht_t depth = 10_m;
+ * Currently, we only support integer literals, but might also
+ * do floating points if that seems practical.
+ *
+ * Currently we define:
+ *	_sec		-> duration_t in seconds
+ *	_min		-> duration_t in minutes
+ *	_mm		-> depth_t in millimeters
+ *	_m		-> depth_t in meters
+ *	_ft		-> depth_t in feet
+ *	_mbar		-> pressure_t in millibar
+ *	_bar		-> pressure_t in bar
+ *	_atm		-> pressure_t in atmospheres
+ *	_baro2		-> o2pressure_t in bar
+ *	_K		-> temperature_t in kelvin
+ *	_ml		-> volume_t in milliliters
+ *	_l		-> volume_t in liters
+ *	_percent	-> volume_t in liters
+ *	_permille	-> fraction_t in ‰
+ *	_percent	-> fraction_t in %
+ *
  * We don't actually use these all yet, so maybe they'll change, but
  * I made a number of types as guidelines.
  */
 using timestamp_t = int64_t;
 
-struct duration_t
+/*
+ * There is a semi-common pattern where lrint() is used to round
+ * doubles to long integers and then cast down to a less wide
+ * int. Since this is unwieldy, encapsulate this in this function
+ */
+template <typename INT>
+INT int_cast(double v)
+{
+	return static_cast<INT>(lrint(v));
+}
+
+// Base class for all unit types using the "Curiously recurring template pattern"
+// (https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern)
+// to implement addition, subtraction and negation.
+// Multiplication and division (which result in a different type)
+// are not implemented. If we want that, we should switch to a proper
+// units libary.
+// Also note that some units may be based on unsigned integers and
+// therefore subtraction may be ill-defined.
+template <typename T>
+struct unit_base {
+	auto &get_base() {
+		auto &[v] = static_cast<T &>(*this);
+		return v;
+	}
+	auto get_base() const {
+		auto [v] = static_cast<const T &>(*this);
+		return v;
+	}
+	template <typename base_type>
+	static T from_base(base_type v) {
+		return { {}, v };
+	}
+	T operator+(const T &v2) const {
+		return from_base(get_base() + v2.get_base());
+	}
+	T &operator+=(const T &v2) {
+		get_base() += v2.get_base();
+		return static_cast<T &>(*this);
+	}
+	T operator-(const T &v2) const {
+		return from_base(get_base() - v2.get_base());
+	}
+	T &operator-=(const T &v2) {
+		get_base() -= v2.get_base();
+		return static_cast<T &>(*this);
+	}
+};
+
+struct duration_t : public unit_base<duration_t>
 {
 	int32_t seconds = 0; // durations up to 34 yrs
 };
+static inline duration_t operator""_sec(unsigned long long sec)
+{
+	return { .seconds = static_cast<int32_t>(sec) };
+}
+static inline duration_t operator""_min(unsigned long long min)
+{
+	return { .seconds = static_cast<int32_t>(min * 60) };
+}
 
-struct offset_t
+struct offset_t : public unit_base<offset_t>
 {
 	int32_t seconds = 0; // offsets up to +/- 34 yrs
 };
 
-struct depth_t // depth to 2000 km
+struct depth_t : public unit_base<depth_t> // depth to 2000 km
 {
 	int32_t mm = 0;
 };
+static inline depth_t operator""_mm(unsigned long long mm)
+{
+	return { .mm = static_cast<int32_t>(mm) };
+}
+static inline depth_t operator""_m(unsigned long long m)
+{
+	return { .mm = static_cast<int32_t>(m * 1000) };
+}
+static inline depth_t operator""_ft(unsigned long long ft)
+{
+	return { .mm = static_cast<int32_t>(round(ft * 304.8)) };
+}
 
-struct pressure_t
+struct pressure_t : public unit_base<pressure_t>
 {
 	int32_t mbar = 0; // pressure up to 2000 bar
 };
+static inline pressure_t operator""_mbar(unsigned long long mbar)
+{
+	return { .mbar = static_cast<int32_t>(mbar) };
+}
+static inline pressure_t operator""_bar(unsigned long long bar)
+{
+	return { .mbar = static_cast<int32_t>(bar * 1000) };
+}
+static inline pressure_t operator""_atm(unsigned long long atm)
+{
+	return { .mbar = static_cast<int32_t>(round(atm * 1013.25)) };
+}
 
-struct o2pressure_t
+struct o2pressure_t : public unit_base<o2pressure_t>
 {
 	uint16_t mbar = 0;
 };
+static inline o2pressure_t operator""_baro2(unsigned long long bar)
+{
+	return { .mbar = static_cast<uint16_t>(bar * 1000) };
+}
 
-struct bearing_t
+struct bearing_t : public unit_base<bearing_t>
 {
 	int16_t degrees = 0;
 };
 
-struct temperature_t
+struct temperature_t : public unit_base<temperature_t>
 {
 	uint32_t mkelvin = 0; // up to 4 MK (temperatures in K are always positive)
 };
+static inline temperature_t operator""_K(unsigned long long K)
+{
+	return { .mkelvin = static_cast<uint32_t>(K * 1000) };
+}
 
-struct  temperature_sum_t
+struct temperature_sum_t : public unit_base<temperature_sum_t>
 {
 	uint64_t mkelvin = 0; // up to 18446744073 MK (temperatures in K are always positive)
 };
 
-struct volume_t
+struct volume_t : public unit_base<volume_t>
 {
 	int mliter = 0;
 };
+static inline volume_t operator""_ml(unsigned long long ml)
+{
+	return { .mliter = static_cast<int>(ml) };
+}
+static inline volume_t operator""_l(unsigned long long l)
+{
+	return { .mliter = static_cast<int>(l * 1000) };
+}
 
-struct fraction_t
+struct fraction_t : public unit_base<fraction_t>
 {
 	int permille = 0;
 };
+static inline fraction_t operator""_permille(unsigned long long permille)
+{
+	return { .permille = static_cast<int>(permille) };
+}
+static inline fraction_t operator""_percent(unsigned long long percent)
+{
+	return { .permille = static_cast<int>(percent * 10) };
+}
 
-struct weight_t
+struct weight_t : public unit_base<weight_t>
 {
 	int grams = 0;
 };
 
-struct degrees_t
+struct degrees_t : public unit_base<degrees_t>
 {
 	int udeg = 0;
 };
@@ -152,8 +281,8 @@ static inline bool operator!=(const location_t &a, const location_t &b)
 static inline location_t create_location(double lat, double lon)
 {
 	location_t location = {
-		{ (int) lrint(lat * 1000000) },
-		{ (int) lrint(lon * 1000000) }
+		{ .udeg = int_cast<int>(lat * 1000000) },
+		{ .udeg = int_cast<int>(lon * 1000000) }
 	};
 	return location;
 }
@@ -170,7 +299,7 @@ static inline double grams_to_lbs(int grams)
 
 static inline int lbs_to_grams(double lbs)
 {
-	return (int)lrint(lbs * 453.6);
+	return int_cast<int>(lbs * 453.6);
 }
 
 static inline double ml_to_cuft(int ml)
@@ -196,11 +325,6 @@ static inline double m_to_mile(int m)
 static inline long feet_to_mm(double feet)
 {
 	return lrint(feet * 304.8);
-}
-
-static inline int to_feet(depth_t depth)
-{
-	return (int)lrint(mm_to_feet(depth.mm));
 }
 
 static inline double mkelvin_to_C(int mkelvin)
@@ -245,29 +369,27 @@ static inline double to_PSI(pressure_t pressure)
 
 static inline double bar_to_atm(double bar)
 {
-	return bar / SURFACE_PRESSURE * 1000;
+	return bar / (1_atm).mbar * 1000;
 }
 
 static inline double mbar_to_atm(int mbar)
 {
-	return (double)mbar / SURFACE_PRESSURE;
+	return (double)mbar / (1_atm).mbar;
 }
 
 static inline double mbar_to_PSI(int mbar)
 {
-	pressure_t p = { mbar };
+	pressure_t p = { .mbar = mbar };
 	return to_PSI(p);
 }
 
-static inline int32_t altitude_to_pressure(int32_t altitude) 	// altitude in mm above sea level
-{						// returns atmospheric pressure in mbar
-	return (int32_t) (1013.0 * exp(- altitude / 7800000.0));
+static inline pressure_t altitude_to_pressure(int32_t altitude) { 	// altitude in mm above sea level
+	return pressure_t { .mbar = int_cast<int32_t> (1013.0 * exp(- altitude / 7800000.0)) };
 }
 
-
-static inline int32_t pressure_to_altitude(int32_t pressure)	// pressure in mbar
+static inline int32_t pressure_to_altitude(pressure_t pressure)
 {						// returns altitude in mm above sea level
-	return (int32_t) (log(1013.0 / pressure) * 7800000);
+	return (int32_t) (log(1013.0 / pressure.mbar) * 7800000);
 }
 
 /*

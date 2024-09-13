@@ -62,7 +62,8 @@ RenumberDialog::RenumberDialog(bool selectedOnlyIn, QWidget *parent) : QDialog(p
 void SetpointDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
-		Command::addEventSetpointChange(d, dcNr, time, pressure_t { (int)(1000.0 * ui.spinbox->value()) });
+		Command::addEventSetpointChange(d, dcNr, time,
+						pressure_t { .mbar = (int)(1000.0 * ui.spinbox->value()) });
 }
 
 SetpointDialog::SetpointDialog(struct dive *dIn, int dcNrIn, int seconds) : QDialog(MainWindow::instance()),

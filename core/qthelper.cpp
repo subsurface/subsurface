@@ -786,33 +786,6 @@ int parseTemperatureToMkelvin(const QString &text)
 	return mkelvin;
 }
 
-int parseWeightToGrams(const QString &text)
-{
-	int grams;
-	QString numOnly = text;
-	numOnly.replace(",", ".").remove(QRegularExpression("[^0-9.]"));
-	if (numOnly.isEmpty())
-		return 0;
-	double number = numOnly.toDouble();
-	if (text.contains(gettextFromC::tr("kg"), Qt::CaseInsensitive)) {
-		grams = lrint(number * 1000);
-	} else if (text.contains(gettextFromC::tr("lbs"), Qt::CaseInsensitive)) {
-		grams = lbs_to_grams(number);
-	} else {
-		switch (prefs.units.weight) {
-		case units::KG:
-			grams = lrint(number * 1000);
-			break;
-		case units::LBS:
-			grams = lbs_to_grams(number);
-			break;
-		default:
-			grams = 0;
-		}
-	}
-	return grams;
-}
-
 int parsePressureToMbar(const QString &text)
 {
 	int mbar;
@@ -1320,10 +1293,11 @@ fraction_t string_to_fraction(const char *str)
 	/*
 	 * Don't permit values less than zero or greater than 100%
 	 */
+	// TODO: use std::clamp() once we have comparison on unit types
 	if (fraction.permille < 0)
-		fraction.permille = 0;
+		fraction = 0_percent;
 	else if (fraction.permille > 1000)
-		fraction.permille = 1000;
+		fraction = 100_percent;
 	return fraction;
 }
 

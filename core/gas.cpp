@@ -54,7 +54,7 @@ void sanitize_gasmix(struct gasmix &mix)
 			return;
 		/* 20.8% to 21% O2 is just air */
 		if (gasmix_is_air(mix)) {
-			mix.o2.permille = 0;
+			mix.o2 = 0_percent;
 			return;
 		}
 	}

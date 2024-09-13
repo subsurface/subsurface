@@ -495,8 +495,8 @@ void clear_vpmb_state(struct deco_state *ds)
 		ds->max_he_crushing_pressure[ci] = 0.0;
 	}
 	ds->max_ambient_pressure = 0;
-	ds->first_ceiling_pressure.mbar = 0;
-	ds->max_bottom_ceiling_pressure.mbar = 0;
+	ds->first_ceiling_pressure = 0_bar;
+	ds->max_bottom_ceiling_pressure = 0_bar;
 }
 
 void clear_deco(struct deco_state *ds, double surface_pressure, bool in_planner)

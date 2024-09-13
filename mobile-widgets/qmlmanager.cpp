@@ -1133,7 +1133,7 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 		} else if (m6.hasMatch()) {
 			m = m6.captured(1).toInt();
 		}
-		d->dcs[0].duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
+		d->dcs[0].duration = d->duration = duration_t { .seconds = h * 3600 + m * 60 + s };
 		if (is_dc_manually_added_dive(&d->dcs[0]))
 			d->dcs[0].samples.clear();
 		else
@@ -1160,6 +1160,29 @@ bool QMLManager::checkDepth(dive *d, QString depth)
 		}
 	}
 	return false;
+}
+
+static weight_t parseWeight(const QString &text)
+{
+	QString numOnly = text;
+	numOnly.replace(",", ".").remove(QRegularExpression("[^0-9.]"));
+	if (numOnly.isEmpty())
+		return {};
+	double number = numOnly.toDouble();
+	if (text.contains(gettextFromC::tr("kg"), Qt::CaseInsensitive)) {
+		return { .grams = int_cast<int>(number * 1000) };
+	} else if (text.contains(gettextFromC::tr("lbs"), Qt::CaseInsensitive)) {
+		return { .grams = lbs_to_grams(number) };
+	} else {
+		switch (prefs.units.weight) {
+		case units::KG:
+			return { .grams = int_cast<int>(number * 1000) };
+		case units::LBS:
+			return { .grams = lbs_to_grams(number) };
+		default:
+			return {};
+		}
+	}
 }
 
 // update the dive and return the notes field, stripped of the HTML junk
@@ -1228,10 +1251,10 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		// not sure what we'd do if there was more than one weight system
 		// defined - for now just ignore that case
 		if (d->weightsystems.size() == 0) {
-			weightsystem_t ws = { { parseWeightToGrams(weight) } , tr("weight").toStdString(), false };
+			weightsystem_t ws = { parseWeight(weight), tr("weight").toStdString(), false };
 			d->weightsystems.add(0, std::move(ws));
 		} else if (d->weightsystems.size() == 1) {
-			d->weightsystems[0].weight.grams = parseWeightToGrams(weight);
+			d->weightsystems[0].weight = parseWeight(weight);
 		}
 	}
 	// start and end pressures
@@ -1356,7 +1379,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			// let's create an actual profile so the desktop version can work it
 			// first clear out the mean depth (or the fake_dc() function tries
 			// to be too clever)
-			d->meandepth.mm = d->dcs[0].meandepth.mm = 0;
+			d->meandepth = d->dcs[0].meandepth = 0_m;
 			fake_dc(&d->dcs[0]);
 		}
 		divelog.dives.fixup_dive(*d);
