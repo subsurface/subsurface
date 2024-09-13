@@ -4,6 +4,9 @@ on:
   push:
     paths-ignore:
     - scripts/docker/**
+    branches:
+    - master
+
   pull_request:
     paths-ignore:
     - scripts/docker/**
@@ -32,8 +35,8 @@ jobs:
         qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
         qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev \
         mdbtools-dev curl
-        git config --global user.email "ci@subsurface-divelog.org"
-        git config --global user.name "Subsurface CI"
+        git config --global user.email "mgian@pm.me"
+        git config --global user.name "Gianluca Montecchi"
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
     # needs git from the previous step
@@ -50,6 +53,7 @@ jobs:
         # now build the appimage
         cd ..
         bash -e -x subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit
+
     - name: build appimage
       run: |
         echo "--------------------------------------------------------------"
@@ -81,10 +85,33 @@ jobs:
         # copy AppImage to the calling VM
         # with GitHub Actions the $GITHUB_WORKSPACE directory is the current working directory at the start of a step
         cp Subsurface*.AppImage* $GITHUB_WORKSPACE/Subsurface.AppImage
+
+    - name: Get release
+      id: build_version
+      if: github.event_name == 'push'
+      run: |
+         echo "Gettting latest build number"
+         version=$(./scripts/get-version.sh)
+         echo "version=$version" >> $GITHUB_OUTPUT
+
     - name: PR artifacts
       # We cannot update this as glibc on 16.04 is too old for node 20.
       uses: actions/upload-artifact@v4
       with:
-        name: Subsurface-Linux-AppImage
+        name: Subsurface-Linux-AppImage-${{ steps.build_version.outputs.version }}
         path: Subsurface.AppImage
         compression-level: 0
+
+    - name: prepare release artifacts
+      if: github.event_name == 'push'
+      run: |
+           mv Subsurface.AppImage Subsurface-v${{ steps.build_version.outputs.version }}.AppImage
+
+
+    - name: Release artifacts
+      if: github.event_name == 'push'
+      uses: softprops/action-gh-release@v2
+      with:
+          tag_name: v${{ steps.build_version.outputs.version }}
+          files: |
+             ./Subsurface*.AppImage

@@ -71,7 +71,7 @@ if [ -f "latest-subsurface-buildnumber-extension" ] ; then
 	SUFFIX=$(<"latest-subsurface-buildnumber-extension")
 	VERSION_EXTENSION+=$(sed 's/_/-/g;s/[^.a-zA-Z0-9-]//g' <<< "$SUFFIX")
 else
-	#VERSION_EXTENSION+="local-i330R_DSX"
+	VERSION_EXTENSION+="local-i330R_DSX"
 fi
 
 if [[ $DIGITS == "1" ]] ; then
