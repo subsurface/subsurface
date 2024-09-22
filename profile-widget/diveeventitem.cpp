@@ -16,7 +16,7 @@
 
 static int depthAtTime(const plot_info &pi, duration_t time);
 
-DiveEventItem::DiveEventItem(const struct dive *d, int idx, const struct event &ev, struct gasmix lastgasmix,
+DiveEventItem::DiveEventItem(const struct dive *d, const struct divecomputer *dc, int idx, const struct event &ev, const struct gasmix lastgasmix, divemode_t lastdivemode,
 			     const plot_info &pi, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
 			     int speed, const DivePixmaps &pixmaps, QGraphicsItem *parent) : DivePixmapItem(parent),
 	vAxis(vAxis),
@@ -28,8 +28,8 @@ DiveEventItem::DiveEventItem(const struct dive *d, int idx, const struct event &
 {
 	setFlag(ItemIgnoresTransformations);
 
-	setupPixmap(lastgasmix, pixmaps);
-	setupToolTipString(lastgasmix);
+	setupPixmap(lastgasmix, lastdivemode, *dc, pixmaps);
+	setupToolTipString(lastgasmix, lastdivemode, *dc);
 	recalculatePos();
 }
 
@@ -37,7 +37,7 @@ DiveEventItem::~DiveEventItem()
 {
 }
 
-void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pixmaps)
+void DiveEventItem::setupPixmap(const struct gasmix lastgasmix, divemode_t lastdivemode, const struct divecomputer &dc, const DivePixmaps &pixmaps)
 {
 	event_severity severity = ev.get_severity();
 	if (ev.name.empty()) {
@@ -51,10 +51,15 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 		setPixmap(pixmaps.bookmark);
 		setOffset(QPointF(0.0, -pixmap().height()));
 	} else if (ev.is_gaschange()) {
-		struct gasmix mix = dive->get_gasmix_from_event(ev);
+		auto [mix, divemode] = dive->get_gasmix_from_event(ev, dc);
 		struct icd_data icd_data;
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
-		if (mix.he.permille) {
+		if (divemode != lastdivemode) {
+			if (divemode == CCR)
+				setPixmap(pixmaps.onCCRLoop);
+			else
+				setPixmap(pixmaps.bailout);
+		} else if (mix.he.permille) {
 			if (icd)
 				setPixmap(pixmaps.gaschangeTrimixICD);
 			else
@@ -111,7 +116,7 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 	}
 }
 
-void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
+void DiveEventItem::setupToolTipString(const struct gasmix lastgasmix, divemode_t lastdivemode, const struct divecomputer &dc)
 {
 	// we display the event on screen - so translate
 	QString name = gettextFromC::tr(ev.name.c_str());
@@ -120,7 +125,7 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 
 	if (ev.is_gaschange()) {
 		struct icd_data icd_data;
-		struct gasmix mix = dive->get_gasmix_from_event(ev);
+		auto [mix, divemode] = dive->get_gasmix_from_event(ev, dc);
 		name += ": ";
 		name += QString::fromStdString(mix.name());
 
@@ -135,6 +140,9 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 					      qPrintable(tr("ΔN₂")), icd_data.dN2 / 10.0,
 					      icd ? ">" : "<", lrint(-icd_data.dHe / 5.0) / 10.0);
 		}
+		if (divemode != lastdivemode)
+			name += QString("\nmodechange: %1").arg(gettextFromC::tr(divemode_text_ui[divemode != OC]));
+
 	} else if (ev.name == "modechange") {
 		name += QString(": %1").arg(gettextFromC::tr(divemode_text_ui[ev.value]));
 	} else if (value) {

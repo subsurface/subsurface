@@ -150,7 +150,8 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	int j = 0;
 	int cylinderid = 0;
 
-	divemode_loop loop(*dc);
+	gasmix_loop loop_gas(*d, *dc);
+	divemode_loop loop_mode(*dc);
 	for (int i = 0; i < plansamples - 1; i++) {
 		if (dc->last_manual_time.seconds && dc->last_manual_time.seconds > 120 && lasttime.seconds >= dc->last_manual_time.seconds)
 			break;
@@ -172,7 +173,8 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 			if (newtime.seconds - lastrecordedtime.seconds > 10 || cylinderid == get_cylinderid_at_time(d, dc, nexttime)) {
 				if (newtime.seconds == lastrecordedtime.seconds)
 					newtime.seconds += 10;
-				divemode_t current_divemode = loop.at(newtime.seconds - 1);
+
+				[[maybe_unused]] auto [current_divemode, _cylinder_index, _gasmix] = get_dive_status_at(*d, *dc, newtime.seconds - 1, &loop_mode, &loop_gas);
 				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 				lastrecordedtime = newtime;
 			}
@@ -182,9 +184,9 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 		}
 	}
 	// make sure we get the last point right so the duration is correct
-	divemode_t current_divemode = loop.at(dc->duration.seconds);
+	[[maybe_unused]] auto [current_divemode, _cylinder_index, _gasmix] = get_dive_status_at(*d, *dc, dc->duration.seconds, &loop_mode, &loop_gas);
 	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
-		addStop(0_m, dc->duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
+		addStop(0_m, dc->duration.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 	preserved_until = d->duration;
 
 	updateDiveProfile();

@@ -56,7 +56,7 @@ dive::~dive() = default;
  * equals the appropriate enum value [oxygen, diluent, bailout] given by cylinder_use_type.
  * A negative number returned indicates that a match could not be found.
  * Call parameters: dive = the dive being processed
- *                  cylinder_use_type = an enum, one of {oxygen, diluent, bailout} */
+ *		  cylinder_use_type = an enum, one of {oxygen, diluent, bailout} */
 static int get_cylinder_idx_by_use(const struct dive &dive, enum cylinderuse cylinder_use_type)
 {
 	auto it = std::find_if(dive.cylinders.begin(), dive.cylinders.end(), [cylinder_use_type]
@@ -156,16 +156,18 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	add_event_to_dc(dc, std::move(ev));
 }
 
-struct gasmix dive::get_gasmix_from_event(const struct event &ev) const
+std::pair<const struct gasmix, divemode_t> dive::get_gasmix_from_event(const struct event &ev, const struct divecomputer &dc) const
 {
 	if (ev.is_gaschange()) {
 		int index = ev.gas.index;
 		// FIXME: The planner uses one past cylinder-count to signify "surface air". Remove in due course.
-		if (index >= 0 && static_cast<size_t>(index) < cylinders.size() + 1)
-			return get_cylinder(index)->gasmix;
-		return ev.gas.mix;
+		if (index >= 0 && static_cast<size_t>(index) < cylinders.size() + 1) {
+			const cylinder_t *cylinder = get_cylinder(index);
+			return std::make_pair(cylinder->gasmix, get_effective_divemode(dc, *cylinder));
+		}
+		return std::make_pair(ev.gas.mix, dc.divemode);
 	}
-	return gasmix_air;
+	return std::make_pair(gasmix_air, dc.divemode);
 }
 
 // we need this to be uniq. oh, and it has no meaning whatsoever
@@ -307,7 +309,7 @@ static int get_cylinder_used(const struct dive *dive, bool used[])
  * Some dive computers give cylinder indices, some
  * give just the gas mix.
  */
-int dive::get_cylinder_index(const struct event &ev) const
+int dive::get_cylinder_index(const struct event &ev, const struct divecomputer &dc) const
 {
 	if (ev.gas.index >= 0)
 		return ev.gas.index;
@@ -320,7 +322,7 @@ int dive::get_cylinder_index(const struct event &ev) const
 	 */
 	report_info("Still looking up cylinder based on gas mix in get_cylinder_index()!");
 
-	gasmix mix = get_gasmix_from_event(ev);
+	gasmix mix = get_gasmix_from_event(ev, dc).first;
 	int best = find_best_gasmix_match(mix, cylinders);
 	return best < 0 ? 0 : best;
 }
@@ -1629,6 +1631,38 @@ bool is_cylinder_use_appropriate(const struct divecomputer &dc, const cylinder_t
 	return true;
 }
 
+divemode_t get_effective_divemode(const struct divecomputer &dc, const struct cylinder_t &cylinder)
+{
+	divemode_t divemode = dc.divemode;
+	if (divemode == CCR && cylinder.cylinder_use == OC_GAS)
+		divemode = OC;
+
+	return divemode;
+}
+
+std::tuple<divemode_t, int, const struct gasmix *> get_dive_status_at(const struct dive &dive, const struct divecomputer &dc, int seconds, divemode_loop *loop_mode, gasmix_loop *loop_gas)
+{
+	if (!loop_mode)
+		loop_mode = new divemode_loop(dc);
+	if (!loop_gas)
+		loop_gas = new gasmix_loop(dive, dc);
+	auto [divemode, divemode_time] = loop_mode->at(seconds);
+	auto [cylinder_index, gasmix_time] = loop_gas->cylinder_index_at(seconds);
+	const struct gasmix *gasmix;
+	if (cylinder_index == -1) {
+		gasmix = &gasmix_air;
+		if (gasmix_time >= divemode_time)
+			divemode = OC;
+	} else {
+		const struct cylinder_t *cylinder = dive.get_cylinder(cylinder_index);
+		gasmix = &cylinder->gasmix;
+		if (gasmix_time >= divemode_time)
+			divemode = get_effective_divemode(dc, *cylinder);
+	}
+
+	return std::make_tuple(divemode, cylinder_index, gasmix);
+}
+
 /*
  * Merging cylinder information is non-trivial, because the two dive computers
  * may have different ideas of what the different cylinder indexing is.
@@ -2573,25 +2607,27 @@ gasmix_loop::gasmix_loop(const struct dive &d, const struct divecomputer &dc) :
 
 std::pair<int, int> gasmix_loop::next_cylinder_index()
 {
-	if (dive.cylinders.empty())
-		return std::make_pair(-1, INT_MAX);
-
 	if (first_run) {
 		next_event = loop.next();
-		last_cylinder_index = 0; // default to first cylinder
-		last_time = 0;
-		if (next_event && ((!dc.samples.empty() && next_event->time.seconds == dc.samples[0].time.seconds) || next_event->time.seconds <= 1)) {
-			last_cylinder_index = dive.get_cylinder_index(*next_event);
-			last_time = next_event->time.seconds;
-			next_event = loop.next();
-		} else if (dc.divemode == CCR) {
-			last_cylinder_index = std::max(get_cylinder_idx_by_use(dive, DILUENT), last_cylinder_index);
-		}
-
 		first_run = false;
+
+		if (dive.cylinders.empty()) {
+			last_cylinder_index = -1;
+			last_time = 0;
+		} else {
+			last_cylinder_index = 0; // default to first cylinder
+			last_time = 0;
+			if (next_event && ((!dc.samples.empty() && next_event->time.seconds == dc.samples[0].time.seconds) || next_event->time.seconds <= 1)) {
+				last_cylinder_index = dive.get_cylinder_index(*next_event, dc);
+				last_time = next_event->time.seconds;
+				next_event = loop.next();
+			} else if (dc.divemode == CCR) {
+				last_cylinder_index = std::max(get_cylinder_idx_by_use(dive, DILUENT), last_cylinder_index);
+			}
+		}
 	} else {
 		if (next_event) {
-			last_cylinder_index = dive.get_cylinder_index(*next_event);
+			last_cylinder_index = dive.get_cylinder_index(*next_event, dc);
 			last_time = next_event->time.seconds;
 			next_event = loop.next();
 		} else {
@@ -2605,16 +2641,9 @@ std::pair<int, int> gasmix_loop::next_cylinder_index()
 
 std::pair<gasmix, int> gasmix_loop::next()
 {
-	if (first_run && dive.cylinders.empty()) {
-		first_run = false;
-
-		// return one cylinder of air if we don't have any cylinders
-		return std::make_pair(gasmix_air, 0);
-	}
-
 	next_cylinder_index();
 
-	return std::make_pair(last_cylinder_index < 0 ? gasmix_invalid : dive.get_cylinder(last_cylinder_index)->gasmix, last_time);
+	return get_last_gasmix();
 }
 
 std::pair<int, int> gasmix_loop::cylinder_index_at(int time)
@@ -2630,18 +2659,22 @@ std::pair<int, int> gasmix_loop::cylinder_index_at(int time)
 
 std::pair<gasmix, int> gasmix_loop::at(int time)
 {
-	if (dive.cylinders.empty())
-		// return air if we don't have any cylinders
-		return std::make_pair(gasmix_air, 0);
-
 	cylinder_index_at(time);
 
-	return std::make_pair(last_cylinder_index < 0 ? gasmix_invalid : dive.get_cylinder(last_cylinder_index)->gasmix, last_time);
+	return get_last_gasmix();
 }
 
 bool gasmix_loop::has_next() const
 {
 	return first_run || (!dive.cylinders.empty() && next_event);
+}
+
+std::pair<gasmix, int> gasmix_loop::get_last_gasmix()
+{
+	if (last_cylinder_index < 0 && last_time == 0)
+		return std::make_pair(gasmix_air, 0);
+
+	return std::make_pair(last_cylinder_index < 0 ? gasmix_invalid : dive.get_cylinder(last_cylinder_index)->gasmix, last_time);
 }
 
 /* get the gas at a certain time during the dive */

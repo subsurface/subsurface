@@ -529,10 +529,11 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	QMenu m;
 	if (!d)
 		return;
+
+	const struct divecomputer *currentdc = d->get_dc(dc);
 	// figure out if we are ontop of the dive computer name in the profile
 	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
 	if (isDiveTextItem(sceneItem, profileScene->diveComputerText)) {
-		const struct divecomputer *currentdc = d->get_dc(dc);
 		if (!currentdc->deviceid && dc == 0 && d->number_of_computers() == 1)
 			// nothing to do, can't rename, delete or reorder
 			return;
@@ -561,7 +562,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		addGasChangeMenu(m, tr("Edit gas change"), *d, dc, item->ev.time.seconds);
 	} else if (d && d->cylinders.size() > 1) {
 		// if we have more than one gas, offer to switch to another one
-		const struct divecomputer *currentdc = d->get_dc(dc);
 		if (seconds == 0 || (!currentdc->samples.empty() && seconds <= currentdc->samples[0].time.seconds))
 			addGasChangeMenu(m, tr("Set initial gas"), *d, dc, 0);
 		else
@@ -571,18 +571,21 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	m.addAction(tr("Add bookmark"), [this, seconds]() { addBookmark(seconds); });
 	m.addAction(tr("Split dive into two"), [this, seconds]() { splitDive(seconds); });
 
-	divemode_loop loop(*d->get_dc(dc));
-	divemode_t divemode = loop.at(seconds);
-	QMenu *changeMode = m.addMenu(tr("Change divemode"));
-	if (divemode != OC)
-		changeMode->addAction(gettextFromC::tr(divemode_text_ui[OC]),
-				      [this, seconds](){ addDivemodeSwitch(seconds, OC); });
-	if (divemode != CCR)
-		changeMode->addAction(gettextFromC::tr(divemode_text_ui[CCR]),
-				      [this, seconds](){ addDivemodeSwitch(seconds, CCR); });
-	if (divemode != PSCR)
-		changeMode->addAction(gettextFromC::tr(divemode_text_ui[PSCR]),
-				      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
+	[[maybe_unused]] auto [divemode, cylinder_index, _gasmix] = get_dive_status_at(*d, *currentdc, seconds);
+	if (currentdc->divemode == PSCR || (currentdc->divemode == CCR && prefs.allowOcGasAsDiluent && (cylinder_index == -1 || d->get_cylinder(cylinder_index)->cylinder_use == OC_GAS))) {
+		QMenu *changeMode = m.addMenu(tr("Change divemode"));
+		if (divemode != OC) {
+			changeMode->addAction(gettextFromC::tr(divemode_text_ui[OC]),
+					      [this, seconds](){ addDivemodeSwitch(seconds, OC); });
+		} else {
+			if (currentdc->divemode == PSCR)
+				changeMode->addAction(gettextFromC::tr(divemode_text_ui[PSCR]),
+						      [this, seconds](){ addDivemodeSwitch(seconds, PSCR); });
+			else
+				changeMode->addAction(gettextFromC::tr(divemode_text_ui[CCR]),
+						      [this, seconds](){ addDivemodeSwitch(seconds, CCR); });
+		}
+	}
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
@@ -639,7 +642,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 		m2->addAction(tr("All event types"), this, &ProfileWidget2::unhideEventTypes);
 	}
-	const struct divecomputer *currentdc = d->get_dc(dc);
 	if (currentdc && std::any_of(currentdc->events.begin(), currentdc->events.end(),
 	    [] (auto &ev) { return ev.hidden; }))
 		m.addAction(tr("Unhide individually hidden events of this dive"), this, &ProfileWidget2::unhideEvents);
