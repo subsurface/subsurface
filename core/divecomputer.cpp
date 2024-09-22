@@ -200,19 +200,20 @@ void fake_dc(struct divecomputer *dc)
 }
 
 divemode_loop::divemode_loop(const struct divecomputer &dc) :
-	last(dc.divemode), loop("modechange", dc)
+	last(dc.divemode), last_time(0), loop("modechange", dc)
 {
 	/* on first invocation, get first event (if any) */
 	ev = loop.next();
 }
 
-divemode_t divemode_loop::at(int time)
+std::pair<divemode_t, int> divemode_loop::at(int time)
 {
 	while (ev && ev->time.seconds <= time) {
 		last = static_cast<divemode_t>(ev->value);
+		last_time = ev->time.seconds;
 		ev = loop.next();
 	}
-	return last;
+	return std::make_pair(last, last_time);
 }
 
 /* helper function to make it easier to work with our structures

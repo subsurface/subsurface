@@ -198,7 +198,7 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 	dump_pr_track(cyl, track_pr);
 #endif
 
-	/* Transfer interpolated cylinder pressures from pr_track strucktures to plotdata
+	/* Transfer interpolated cylinder pressures from pr_track structures to plotdata
 	 * Go down the list of tank pressures in plot_info. Align them with the start &
 	 * end times of each profile segment represented by a pr_track_t structure. Get
 	 * the accumulated pressure_depths from the pr_track_t structures and then
@@ -248,7 +248,7 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 			last_segment = it;
 		}
 
-		if(dive->get_cylinder(cyl)->cylinder_use == OC_GAS) {
+		if (dive->get_cylinder(cyl)->cylinder_use == OC_GAS) {
 
 			/* if this segment has pressure_time, then calculate a new interpolated pressure */
 			if (interpolate.pressure_time) {
@@ -358,16 +358,15 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 		int pressure = get_plot_sensor_pressure(pi, i, sensor);
 		int time = entry.sec;
 
+		[[maybe_unused]] auto [divemode, cylinder_index, _gasmix] = get_dive_status_at(*dive, *dc, time, &loop_mode, &loop_gas);
 		if (has_gaschange) {
-			cyl = loop_gas.cylinder_index_at(time).first;
+			cyl = cylinder_index;
 			if (cyl < 0)
 				cyl = sensor;
 		}
 
-		divemode_t dmode = loop_mode.at(time);
-
 		if (current != std::string::npos) { // calculate pressure-time, taking into account the dive mode for this specific segment.
-			entry.pressure_time = (int)(calc_pressure_time(dive, pi.entry[i - 1], entry) * gasfactor[dmode] + 0.5);
+			entry.pressure_time = (int)(calc_pressure_time(dive, pi.entry[i - 1], entry) * gasfactor[divemode] + 0.5);
 			track[current].pressure_time += entry.pressure_time;
 			track[current].t_end = entry.sec;
 			if (pressure)

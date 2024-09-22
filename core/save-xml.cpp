@@ -342,7 +342,7 @@ static void save_sample(struct membuffer *b, const struct sample &sample, struct
 	put_format(b, " />\n");
 }
 
-static void save_one_event(struct membuffer *b, const struct dive &dive, const struct event &ev)
+static void save_one_event(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc, const struct event &ev)
 {
 	put_format(b, "  <event time='%d:%02d min'", FRACTION_TUPLE(ev.time.seconds, 60));
 	show_index(b, ev.type, "type='", "'");
@@ -353,7 +353,7 @@ static void save_one_event(struct membuffer *b, const struct dive &dive, const s
 		show_index(b, ev.value, "value='", "'");
 	show_utf8(b, ev.name.c_str(), " name='", "'", 1);
 	if (ev.is_gaschange()) {
-		struct gasmix mix = dive.get_gasmix_from_event(ev);
+		struct gasmix mix = dive.get_gasmix_from_event(ev, dc).first;
 		if (ev.gas.index >= 0)
 			show_integer(b, ev.gas.index, "cylinder='", "'");
 		put_gasmix(b, mix);
@@ -365,7 +365,7 @@ static void save_one_event(struct membuffer *b, const struct dive &dive, const s
 static void save_events(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc)
 {
 	for (auto &ev: dc.events)
-		save_one_event(b, dive, ev);
+		save_one_event(b, dive, dc, ev);
 }
 
 static void save_tags(struct membuffer *b, const tag_list &tags)
