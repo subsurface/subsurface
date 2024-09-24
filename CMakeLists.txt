@@ -52,6 +52,7 @@ option(NO_USERMANUAL "don't include a viewer for the user manual" OFF)
 #Options regarding enabling parts of subsurface
 option(BTSUPPORT "enable support for QtBluetooth" ON)
 option(FTDISUPPORT "enable support for libftdi based serial" OFF)
+option(LIBRAW_SUPPORT "enable support for LibRaw images" ON)
 
 # Options regarding What should we build on subsurface
 option(MAKE_TESTS "Make the tests" ON)
@@ -167,10 +168,6 @@ if(NOT ANDROID)
 	pkg_config_library(LIBUSB libusb-1.0 QUIET)
 	pkg_config_library(LIBMTP libmtp QUIET)
 	pkg_config_library(LIBRAW libraw )
-endif()
-
-if(LIBRAW_FOUND)
-	add_definitions(-DLIBRAW_SUPPORT)
 endif()
 
 include_directories(.
@@ -300,6 +297,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 		set(SUBSURFACE_TARGET subsurface-downloader)
 	endif()
 	set(BTSUPPORT ON)
+	set(LIBRAW_SUPPORT OFF)
 	add_definitions(-DSUBSURFACE_DOWNLOADER)
 	message(STATUS "building the embedded Subsurface-downloader app")
 endif()
@@ -361,6 +359,14 @@ if(BTSUPPORT)
 	list(APPEND QT_EXTRA_COMPONENTS Bluetooth)
 	add_definitions(-DBT_SUPPORT)
 	add_definitions(-DBLE_SUPPORT)
+endif()
+
+if (LIBRAW_SUPPORT)
+	if(LIBRAW_FOUND)
+		add_definitions(-DLIBRAW_SUPPORT)
+	endif()
+else()
+	message(STATUS "building without built-in libraw support")
 endif()
 
 if(ANDROID)
