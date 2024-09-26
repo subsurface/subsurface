@@ -439,7 +439,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 {
 	const unsigned char *s;
 	unsigned int offset = 0, profile_period = 1, sample_cnt = 0;
-	double depth = 0, temp = 0, depth_sample = 0, psi = 0, sgc_rate = 0;
+	double depth = 0, temp = 0, depth_sample = 0, psi = 0;
 	//int ascent_rate = 0;
 	unsigned int ndl = 0;
 	unsigned int in_deco = 0, deco_ceiling = 0, deco_time = 0;
@@ -457,8 +457,6 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 			+ log[CMD_START_DEPTH + 1] * 256) / 4;
 		temp = log[CMD_START_TEMP];
 		psi = log[CMD_START_PSI] + log[CMD_START_PSI + 1] * 256;
-		sgc_rate = (double)(log[CMD_START_SGC]
-			+ log[CMD_START_SGC + 1] * 256) / 2;
 		profile_period = log[CMD_PROFILE_PERIOD];
 		break;
 	case TYPE_COMMANDER:
@@ -532,9 +530,6 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 				break;
 			case 2:	// PSI change
 				psi -= (double)(s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 4;
-				break;
-			case 1:	// SGC rate
-				sgc_rate -= (double)(s[1] & 0x7f) * (s[1] & 0x80 ? 1 : -1) / 2;
 				break;
 			case 3:	// Temperature
 				temp = (double)s[1] / 2 + 20;

@@ -20,7 +20,7 @@ class DiveGasPressureItem;
 class DiveHeartrateItem;
 class DiveMeanDepthItem;
 class DivePercentageItem;
-class DivePixmaps;
+struct DivePixmaps;
 class DivePlannerPointsModel;
 class DiveProfileItem;
 class DiveReportedCeiling;

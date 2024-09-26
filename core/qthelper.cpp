@@ -917,7 +917,7 @@ QString get_dive_date_string(timestamp_t when)
 }
 
 // Get local seconds since Epoch from ISO formatted UTC date time + offset string
-time_t get_dive_datetime_from_isostring(char *when) {
+time_t get_dive_datetime_from_isostring(const char *when) {
 	QDateTime divetime = QDateTime::fromString(when, Qt::ISODate);
 	return (time_t)(divetime.toSecsSinceEpoch());
 }
