@@ -586,7 +586,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 
 	if (DiveEventItem *item = dynamic_cast<DiveEventItem *>(sceneItem)) {
 		m.addAction(tr("Remove event"), [this,item] { removeEvent(item); });
-		m.addAction(tr("Hide event"), [this, item] { hideEvent(item); });
+		m.addAction(tr("Hide event"), [this, item] { hideOneEvent(item); });
 		m.addAction(tr("Hide events of type '%1'").arg(event_type_name(item->ev)),
 			    [this, item] { hideEventType(item); });
 		if (item->ev.type == SAMPLE_EVENT_BOOKMARK)
@@ -678,7 +678,7 @@ void ProfileWidget2::renameCurrentDC()
 		Command::editDeviceNickname(currentdc, newName);
 }
 
-void ProfileWidget2::hideEvent(DiveEventItem *item)
+void ProfileWidget2::hideOneEvent(DiveEventItem *item)
 {
 	if (!d)
 		return;

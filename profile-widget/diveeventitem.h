@@ -6,7 +6,7 @@
 #include "core/event.h"
 
 class DiveCartesianAxis;
-class DivePixmaps;
+struct DivePixmaps;
 struct event;
 struct plot_info;
 

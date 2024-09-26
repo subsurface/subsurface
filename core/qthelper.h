@@ -111,7 +111,7 @@ std::string local_file_path(const struct picture &picture);
 std::string hashfile_name();
 enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
-time_t get_dive_datetime_from_isostring(char *when);
+time_t get_dive_datetime_from_isostring(const char *when);
 void print_qt_versions();
 void lock_planner();
 void unlock_planner();

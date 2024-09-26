@@ -17,6 +17,7 @@
 #include "gettext.h"
 #include "tag.h"
 #include "errorhelper.h"
+#include "format.h"
 #include <string.h>
 #include "divecomputer.h"
 
@@ -45,7 +46,6 @@ static int seac_dive(void *param, int, char **data, char **)
 {
 	int retval = 0, cylnum = 0;
 	int year, month, day, hour, min, sec, tz;
-	char isodatetime[30];
 	time_t divetime;
 	struct gasmix lastgas, curgas;
 	struct parser_state *state = (struct parser_state *)param;
@@ -123,8 +123,8 @@ static int seac_dive(void *param, int, char **data, char **)
 	 "-13:45",  // 40
 	 "-14:00"}; // 41
 
-	sprintf(isodatetime, "%4i-%02i-%02iT%02i:%02i:%02i%6s", year, month, day, hour, min, sec, timezoneoffset[tz]);
-	divetime = get_dive_datetime_from_isostring(isodatetime);
+	std::string isodatetime = format_string_std("%4i-%02i-%02iT%02i:%02i:%02i%6s", year, month, day, hour, min, sec, timezoneoffset[tz]);
+	divetime = get_dive_datetime_from_isostring(isodatetime.c_str());
 	state->cur_dive->when = divetime;
 
 	// 6 = dive_type
