@@ -55,7 +55,7 @@ jobs:
         echo "key=$( git merge-base origin/master $GITHUB_SHA )" >> $GITHUB_OUTPUT
 
     - name: CCache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         key: ccache-${{ runner.os }}-${{ steps.setup-ccache.outputs.key }}
         restore-keys: |
