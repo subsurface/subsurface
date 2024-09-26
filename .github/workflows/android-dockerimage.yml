@@ -12,7 +12,7 @@ jobs:
   android-build-container:
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ '5.15.2' }} # the version numbers here is based on the Qt version, the third digit is the rev of the docker image
+      VERSION: ${{ '5.15.3' }} # the version numbers here is based on the Qt version, the third digit is the rev of the docker image
 
     steps:
     - uses: actions/checkout@v4
