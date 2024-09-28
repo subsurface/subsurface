@@ -2,11 +2,10 @@
 #ifndef REGRESSION_H
 #define REGRESSION_H
 
-#include "chartitem.h"
+#include "statsitem.h"
 
 class StatsAxis;
 class StatsTheme;
-class StatsView;
 
 struct regression_data {
 	double a,b;
@@ -16,7 +15,7 @@ struct regression_data {
 
 class RegressionItem : public ChartPixmapItem {
 public:
-	RegressionItem(StatsView &view, regression_data data, StatsAxis *xAxis, StatsAxis *yAxis);
+	RegressionItem(ChartView &view, const StatsTheme &theme, regression_data data, StatsAxis *xAxis, StatsAxis *yAxis);
 	~RegressionItem();
 	void updatePosition();
 	void setFeatures(bool regression, bool confidence);

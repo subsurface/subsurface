@@ -5,8 +5,6 @@
 #include <QGraphicsPolygonItem>
 #include <memory>
 
-#include "divelineitem.h"
-
 #include "core/equipment.h"
 
 /* This is the Profile Item, it should be used for quite a lot of things

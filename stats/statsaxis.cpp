@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "statsaxis.h"
 #include "statscolors.h"
-#include "statshelper.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
 #include "statsview.h"
@@ -25,9 +24,9 @@ static const double axisLabelSpaceVertical = 2.0;	// Space between axis or ticks
 static const double axisTitleSpaceHorizontal = 2.0;	// Space between labels and title
 static const double axisTitleSpaceVertical = 2.0;	// Space between labels and title
 
-StatsAxis::StatsAxis(StatsView &view, const QString &title, bool horizontal, bool labelsBetweenTicks) :
+StatsAxis::StatsAxis(ChartView &view, const StatsTheme &theme, const QString &title, bool horizontal, bool labelsBetweenTicks) :
 	ChartPixmapItem(view, ChartZValue::Axes),
-	theme(view.getCurrentTheme()),
+	theme(theme),
 	line(view.createChartItem<ChartLineItem>(ChartZValue::Axes, theme.axisColor, axisWidth)),
 	title(title), horizontal(horizontal), labelsBetweenTicks(labelsBetweenTicks),
 	size(1.0), zeroOnScreen(0.0), min(0.0), max(1.0), labelWidth(0.0)
@@ -256,8 +255,9 @@ void StatsAxis::setPos(QPointF pos)
 	}
 }
 
-ValueAxis::ValueAxis(StatsView &view, const QString &title, double min, double max, int decimals, bool horizontal) :
-	StatsAxis(view, title, horizontal, false),
+ValueAxis::ValueAxis(ChartView &view, const StatsTheme &theme,
+		     const QString &title, double min, double max, int decimals, bool horizontal) :
+	StatsAxis(view, theme, title, horizontal, false),
 	min(min), max(max), decimals(decimals)
 {
 	// Avoid degenerate cases
@@ -317,8 +317,8 @@ void ValueAxis::updateLabels()
 	}
 }
 
-CountAxis::CountAxis(StatsView &view, const QString &title, int count, bool horizontal) :
-	ValueAxis(view, title, 0.0, (double)count, 0, horizontal),
+CountAxis::CountAxis(ChartView &view, const StatsTheme &theme, const QString &title, int count, bool horizontal) :
+	ValueAxis(view, theme, title, 0.0, (double)count, 0, horizontal),
 	count(count)
 {
 }
@@ -376,8 +376,9 @@ void CountAxis::updateLabels()
 	}
 }
 
-CategoryAxis::CategoryAxis(StatsView &view, const QString &title, const std::vector<QString> &labels, bool horizontal) :
-	StatsAxis(view, title, horizontal, true),
+CategoryAxis::CategoryAxis(ChartView &view, const StatsTheme &theme,
+			   const QString &title, const std::vector<QString> &labels, bool horizontal) :
+	StatsAxis(view, theme, title, horizontal, true),
 	labelsText(labels)
 {
 	if (!labels.empty())
@@ -437,8 +438,9 @@ void CategoryAxis::updateLabels()
 	}
 }
 
-HistogramAxis::HistogramAxis(StatsView &view, const QString &title, std::vector<HistogramAxisEntry> bins, bool horizontal) :
-	StatsAxis(view, title, horizontal, false),
+HistogramAxis::HistogramAxis(ChartView &view, const StatsTheme &theme,
+			     const QString &title, std::vector<HistogramAxisEntry> bins, bool horizontal) :
+	StatsAxis(view, theme, title, horizontal, false),
 	bin_values(std::move(bins))
 {
 	if (bin_values.size() < 2) // Less than two makes no sense -> there must be at least one category
@@ -643,7 +645,7 @@ static std::vector<HistogramAxisEntry> timeRangeToBins(double from, double to)
 	return res;
 }
 
-DateAxis::DateAxis(StatsView &view, const QString &title, double from, double to, bool horizontal) :
-	HistogramAxis(view, title, timeRangeToBins(from, to), horizontal)
+DateAxis::DateAxis(ChartView &view, const StatsTheme &theme, const QString &title, double from, double to, bool horizontal) :
+	HistogramAxis(view, theme, title, timeRangeToBins(from, to), horizontal)
 {
 }

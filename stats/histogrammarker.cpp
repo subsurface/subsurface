@@ -5,7 +5,7 @@
 
 static const double histogramMarkerWidth = 2.0;
 
-HistogramMarker::HistogramMarker(StatsView &view, double val, bool horizontal,
+HistogramMarker::HistogramMarker(ChartView &view, double val, bool horizontal,
 				 QColor color, StatsAxis *xAxis, StatsAxis *yAxis) :
 	ChartLineItem(view, ChartZValue::ChartFeatures, color, histogramMarkerWidth),
 	xAxis(xAxis), yAxis(yAxis),

@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "scatterseries.h"
-#include "chartitem.h"
+#include "statsitem.h"
 #include "informationbox.h"
 #include "statscolors.h"
-#include "statshelper.h"
 #include "statstranslations.h"
 #include "statsvariables.h"
 #include "statsview.h"
@@ -24,8 +23,8 @@ ScatterSeries::~ScatterSeries()
 {
 }
 
-ScatterSeries::Item::Item(StatsView &view, ScatterSeries *series, dive *d, double pos, double value) :
-	item(view.createChartItem<ChartScatterItem>(ChartZValue::Series, d->selected)),
+ScatterSeries::Item::Item(StatsView &view, ScatterSeries *series, const StatsTheme &theme, dive *d, double pos, double value) :
+	item(view.createChartItem<ChartScatterItem>(ChartZValue::Series, theme, d->selected)),
 	d(d),
 	selected(d->selected),
 	pos(pos),
@@ -50,7 +49,7 @@ void ScatterSeries::Item::highlight(bool highlight)
 
 void ScatterSeries::append(dive *d, double pos, double value)
 {
-	items.emplace_back(view, this, d, pos, value);
+	items.emplace_back(view, this, theme, d, pos, value);
 }
 
 void ScatterSeries::updatePositions()
@@ -183,7 +182,7 @@ bool ScatterSeries::hover(QPointF pos)
 		return false;
 	} else {
 		if (!information)
-			information = view.createChartItem<InformationBox>();
+			information = view.createChartItem<InformationBox>(theme);
 
 		std::vector<QString> text;
 		text.reserve(highlighted.size() * 5);

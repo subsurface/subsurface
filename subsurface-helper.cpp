@@ -7,6 +7,7 @@
 #include "qt-models/maplocationmodel.h"
 #endif
 
+#include "profile-widget/profileview.h"
 #include "stats/statsview.h"
 #include "core/devicedetails.h"
 #include "core/errorhelper.h"
@@ -26,7 +27,6 @@
 #include "qt-models/divesummarymodel.h"
 #include "qt-models/messagehandlermodel.h"
 #include "qt-models/mobilelistmodel.h"
-#include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
 #include "core/subsurfacestartup.h" // for testqml
 #include "core/metrics.h"
@@ -219,7 +219,6 @@ static void register_qml_types(QQmlEngine *engine)
 #ifdef SUBSURFACE_MOBILE
 	register_qml_type<QMLManager>("QMLManager");
 	register_qml_type<StatsManager>("StatsManager");
-	register_qml_type<QMLProfile>("QMLProfile");
 	register_qml_type<DiveImportedModel>("DCImportModel");
 	register_qml_type<DiveSummaryModel>("DiveSummaryModel");
 	register_qml_type<ChartListModel>("ChartListModel");
@@ -229,5 +228,6 @@ static void register_qml_types(QQmlEngine *engine)
 	register_qml_type<MapWidgetHelper>("MapWidgetHelper");
 	register_qml_type<MapLocationModel>("MapLocationModel");
 #endif
+	register_qml_type<ProfileView>("ProfileView");
 	register_qml_type<StatsView>("StatsView");
 }

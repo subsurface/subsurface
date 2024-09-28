@@ -32,7 +32,7 @@ BoxSeries::Item::Item(StatsView &view, BoxSeries *series, double lowerBound, dou
 	binName(binName),
 	selected(allDivesSelected(q.dives))
 {
-	item = view.createChartItem<ChartBoxItem>(ChartZValue::Series, boxBorderWidth);
+	item = view.createChartItem<ChartBoxItem>(ChartZValue::Series, theme, boxBorderWidth);
 	highlight(false, theme);
 	updatePosition(series);
 }
@@ -130,7 +130,7 @@ bool BoxSeries::hover(QPointF pos)
 		Item &item = *items[highlighted];
 		item.highlight(true, theme);
 		if (!information)
-			information = view.createChartItem<InformationBox>();
+			information = view.createChartItem<InformationBox>(theme);
 		information->setText(formatInformation(item), pos);
 		information->setVisible(true);
 	} else {

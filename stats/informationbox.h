@@ -4,17 +4,18 @@
 #ifndef INFORMATION_BOX_H
 #define INFORMATION_BOX_H
 
-#include "chartitem.h"
+#include "statsitem.h"
 
 #include <vector>
 #include <memory>
 
 struct dive;
-class StatsView;
+class ChartView;
+class StatsTheme;
 
 // Information window showing data of highlighted dive
 struct InformationBox : ChartRectItem {
-	InformationBox(StatsView &);
+	InformationBox(ChartView &, const StatsTheme &theme);
 	void setText(const std::vector<QString> &text, QPointF pos);
 	void setPos(QPointF pos);
 	int recommendedMaxLines() const;

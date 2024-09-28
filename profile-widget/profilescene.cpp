@@ -11,6 +11,7 @@
 #include "core/device.h"
 #include "core/divecomputer.h"
 #include "core/event.h"
+#include "core/eventtype.h"
 #include "core/pref.h"
 #include "core/profile.h"
 #include "core/qthelper.h"	// for decoMode()
@@ -19,36 +20,8 @@
 #include "core/subsurface-string.h"
 #include "core/settings/qPrefDisplay.h"
 #include "qt-models/diveplannermodel.h"
-#include <QAbstractAnimation>
 
 static const double diveComputerTextBorder = 1.0;
-
-// Class for animations (if any). Might want to do our own.
-class ProfileAnimation : public QAbstractAnimation {
-	ProfileScene &scene;
-	// For historical reasons, speed is actually the duration
-	// (i.e. the reciprocal of speed). Ouch, that hurts.
-	int speed;
-
-	int duration() const override
-	{
-		return speed;
-	}
-	void updateCurrentTime(int time) override
-	{
-		// Note: we explicitly pass 1.0 at the end, so that
-		// the callee can do a simple float comparison for "end".
-		scene.anim(time == speed ? 1.0
-					 : static_cast<double>(time) / speed);
-	}
-public:
-	ProfileAnimation(ProfileScene &scene, int animSpeed) :
-		scene(scene),
-		speed(animSpeed)
-	{
-		start();
-	}
-};
 
 template<typename T, class... Args>
 T *ProfileScene::createItem(const DiveCartesianAxis &vAxis, DataAccessor accessor, int z, Args&&... args)
@@ -123,6 +96,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 							[](const plot_data &item) { return 0.0; }, // unused
 							1, dpr)),
 	diveComputerText(new DiveTextItem(dpr, 1.0, Qt::AlignRight | Qt::AlignTop, nullptr)),
+	eventsHiddenText(new DiveTextItem(dpr, 1.0, Qt::AlignRight | Qt::AlignTop, nullptr)),
 	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis,
 							[](const plot_data &item) { return (double)item.ceiling; },
 							1, dpr)),
@@ -171,6 +145,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 	// Add items to scene
 	addItem(diveComputerText);
+	addItem(eventsHiddenText);
 	addItem(tankItem);
 	addItem(decoModelParameters);
 	addItem(profileYAxis);
@@ -184,10 +159,17 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 
 	for (AbstractProfilePolygonItem *item: profileItems)
 		addItem(item);
+
+	eventsHiddenText->set(tr("Hidden events!"), getColor(TIME_TEXT, isGrayscale));
 }
 
 ProfileScene::~ProfileScene()
 {
+}
+
+const plot_info &ProfileScene::getPlotInfo() const
+{
+	return plotInfo;
 }
 
 void ProfileScene::clear()
@@ -195,10 +177,6 @@ void ProfileScene::clear()
 	for (AbstractProfilePolygonItem *item: profileItems)
 		item->clear();
 
-	// the events will have connected slots which can fire after
-	// the dive and its data have been deleted - so explictly delete
-	// the DiveEventItems
-	qDeleteAll(eventItems);
 	eventItems.clear();
 	plotInfo = plot_info();
 	empty = true;
@@ -314,8 +292,10 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	profileYAxis->setGridIsMultipleOfThree( qPrefDisplay::three_m_based_grid() );
 
 	// Place the fixed dive computer text at the bottom
-	double bottomBorder = sceneRect().height() - diveComputerText->height() - 2.0 * dpr * diveComputerTextBorder;
-	diveComputerText->setPos(0.0, bottomBorder + dpr * diveComputerTextBorder);
+	double bottomTextHeight = std::max(diveComputerText->height(), eventsHiddenText->height());
+	double bottomBorder = sceneRect().height() - bottomTextHeight - 2.0 * dpr * diveComputerTextBorder;
+	diveComputerText->setPos(0.0, round(bottomBorder + dpr * diveComputerTextBorder));
+	eventsHiddenText->setPos(width - dpr * diveComputerTextBorder - eventsHiddenText->width(), bottomBorder + dpr * diveComputerTextBorder);
 
 	double topBorder = 0.0;
 
@@ -394,6 +374,17 @@ bool ProfileScene::pointOnProfile(const QPointF &point) const
 	return timeAxis->pointInRange(point.x()) && profileYAxis->pointInRange(point.y());
 }
 
+bool ProfileScene::pointOnDiveComputerText(const QPointF &point) const
+{
+	return diveComputerText->boundingRect().contains(point - diveComputerText->pos());
+}
+
+bool ProfileScene::pointOnEventsHiddenText(const QPointF &point) const
+{
+	return eventsHiddenText->isVisible() &&
+	       eventsHiddenText->boundingRect().contains(point - eventsHiddenText->pos());
+}
+
 static double max_gas(const plot_info &pi, double gas_pressures::*gas)
 {
 	double ret = -1;
@@ -404,8 +395,9 @@ static double max_gas(const plot_info &pi, double gas_pressures::*gas)
 	return ret;
 }
 
-void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsModel *plannerModel,
-			   bool inPlanner, bool instant, bool keepPlotInfo, bool calcMax, double zoom, double zoomedPosition)
+void ProfileScene::plotDive(const struct dive *dIn, int dcIn, int animSpeed, bool simplified,
+			   DivePlannerPointsModel *plannerModel,
+			   bool inPlanner, bool keepPlotInfo, bool calcMax, double zoom, double zoomedPosition)
 {
 	d = dIn;
 	dc = dcIn;
@@ -439,8 +431,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 		keepPlotInfo = false;
 	empty = false;
 
-	int animSpeed = instant || printMode ? 0 : qPrefDisplay::animation_speed();
-
 	// A non-null planner_ds signals to create_plot_info_new that the dive is currently planned.
 	struct deco_state *planner_ds = inPlanner && plannerModel ? &plannerModel->final_deco_state : nullptr;
 
@@ -457,13 +447,12 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 	bool hasHeartBeat = plotInfo.maxhr;
 	// For mobile we might want to turn of some features that are normally shown.
-#ifdef SUBSURFACE_MOBILE
-	bool simplified = true;
-#else
-	bool simplified = false;
-#endif
 	updateVisibility(hasHeartBeat, simplified);
 	updateAxes(hasHeartBeat, simplified);
+
+	// When we found that we don't have enough place to draw, the state was set to empty.
+	if (empty)
+		return;
 
 	int newMaxtime = get_maxtime(plotInfo);
 	if (calcMax || newMaxtime > maxtime)
@@ -546,14 +535,15 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	if (prefs.percentagegraph)
 		percentageItem->replot(d, currentdc, plotInfo);
 
-	// The event items are a bit special since we don't know how many events are going to
-	// exist on a dive, so I cant create cache items for that. that's why they are here
-	// while all other items are up there on the constructor.
-	qDeleteAll(eventItems);
 	eventItems.clear();
 	struct gasmix lastgasmix = d->get_gasmix_at_time(*currentdc, 1_sec);
 
+	bool has_hidden_events = false;
 	for (auto [idx, event]: enumerated_range(currentdc->events)) {
+		if (event.hidden || is_event_type_hidden(event)) {
+			has_hidden_events = true;
+			continue;
+		}
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
 			if (event.name.empty() ||
@@ -564,15 +554,16 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 				continue;
 		}
 		if (DiveEventItem::isInteresting(d, currentdc, event, plotInfo, firstSecond, lastSecond)) {
-			auto item = new DiveEventItem(d, idx, event, lastgasmix, plotInfo,
-						      timeAxis, profileYAxis, animSpeed, *pixmaps);
+			auto item = std::make_unique<DiveEventItem>(d, idx, event, lastgasmix, plotInfo,
+								    timeAxis, profileYAxis, animSpeed, *pixmaps);
 			item->setZValue(2);
-			addItem(item);
-			eventItems.push_back(item);
+			addItem(item.get());
+			eventItems.push_back(std::move(item));
 		}
 		if (event.is_gaschange())
 			lastgasmix = d->get_gasmix_from_event(event);
 	}
+	eventsHiddenText->setVisible(has_hidden_events);
 
 	QString dcText = QString::fromStdString(get_dc_nickname(currentdc));
 	if (is_dc_planner(currentdc))
@@ -585,12 +576,6 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	if (nr > 1)
 		dcText += tr(" (#%1 of %2)").arg(dc + 1).arg(nr);
 	diveComputerText->set(dcText, getColor(TIME_TEXT, isGrayscale));
-
-	// Reset animation.
-	if (animSpeed <= 0)
-		animation.reset();
-	else
-		animation = std::make_unique<ProfileAnimation>(*this, animSpeed);
 }
 
 void ProfileScene::anim(double fraction)
@@ -605,7 +590,7 @@ void ProfileScene::draw(QPainter *painter, const QRect &pos,
 {
 	QSize size = pos.size();
 	resize(QSizeF(size));
-	plotDive(d, dc, plannerModel, inPlanner, true, false, true);
+	plotDive(d, dc, 0, false, plannerModel, inPlanner, false, true);
 
 	QImage image(pos.size(), QImage::Format_ARGB32);
 	image.fill(getColor(::BACKGROUND, isGrayscale));
@@ -644,4 +629,65 @@ double ProfileScene::calcZoomPosition(double zoom, double originalPos, double de
 	double newRelStart = newStart / maxtime;
 	double newPos = newRelStart / factor;
 	return std::clamp(newPos, 0.0, 1.0);
+}
+
+int ProfileScene::timeAt(QPointF pos) const
+{
+	return lrint(timeAxis->valueAt(pos));
+}
+
+int ProfileScene::depthAt(QPointF pos) const
+{
+	return lrint(profileYAxis->valueAt(pos));
+}
+
+std::pair<double, double> ProfileScene::minMaxTime() const
+{
+	return { timeAxis->minimum(), timeAxis->maximum() };
+}
+
+std::pair<double, double> ProfileScene::minMaxX() const
+{
+	return timeAxis->screenMinMax();
+}
+
+std::pair<double, double> ProfileScene::minMaxY() const
+{
+	return profileYAxis->screenMinMax();
+}
+
+double ProfileScene::yToScreen(double y) const
+{
+	auto [min, max] = profileYAxis->screenMinMax();
+	return min + (max - min) * y;
+}
+
+double ProfileScene::posAtTime(double time) const
+{
+	return timeAxis->posAtValue(time);
+}
+
+double ProfileScene::posAtDepth(double depth) const
+{
+	return profileYAxis->posAtValue(depth);
+}
+
+std::vector<std::pair<QString, QPixmap>> ProfileScene::eventsAt(QPointF pos) const
+{
+	std::vector<std::pair<QString, QPixmap>> res;
+	for (const auto &item: eventItems) {
+		if (!item->contains(item->mapFromScene(pos)))
+			continue;
+		res.emplace_back(item->text, item->pixmap);
+	}
+	return res;
+}
+
+DiveEventItem *ProfileScene::eventAtPosition(QPointF pos) const
+{
+	for (const auto &item: eventItems) {
+		if (item->contains(item->mapFromScene(pos)))
+			return item.get();
+	}
+	return nullptr;
 }

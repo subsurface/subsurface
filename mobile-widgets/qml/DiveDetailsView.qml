@@ -231,13 +231,13 @@ Item {
 			Layout.columnSpan: 3
 			clip: true
 
-			QMLProfile {
+			ProfileView {
 				id: qmlProfile
 				visible: !noDive
 				anchors.fill: parent
 				clip: true
-				property real lastScale: 1.0 // final scale at the end of previous pinch
 				diveId: detailsView.myId
+				property real dpr: 0.8		// TODO: make this dynamic
 				Rectangle {
 					color: "transparent"
 					opacity: 0.6
@@ -253,36 +253,20 @@ Item {
 						// before realizing that this is actually a pinch/zoom. So let's reset this
 						// just in case
 						qmlProfile.opacity = 1.0
-						if (manager.verboseEnabled)
-							manager.appendTextToLog("pinch started w/ previousScale " + qmlProfile.lastScale)
+						qmlProfile.pinchStart()
 					}
 					onPinchUpdated: {
-						if (pinch.scale * qmlProfile.lastScale < 1.0)
-							qmlProfile.lastScale = 1.0 / pinch.scale // this way we never shrink and the changes stay smooth
-						// the underlying widget deals with the scaling, no need to send an update request
-						qmlProfile.scale = pinch.scale * qmlProfile.lastScale
-						if (manager.verboseEnabled)
-							manager.appendTextToLog("pinch updated to scale " + qmlProfile.scale);
-					}
-					onPinchFinished: {
-						// remember the final scale value so we can continue from there next time the user pinches
-						qmlProfile.lastScale = pinch.scale * qmlProfile.lastScale
+						qmlProfile.pinch(pinch.scale)
 					}
 
 					MouseArea {
 						// we want to pan the profile if we are zoomed in, but we want to immediately
 						// pass the mouse events through to the ListView if we are not. That way you
 						// can swipe through the dive list, even if you happen to swipe the profile
-						property bool isZoomed: qmlProfile.scale - 1.0 > 0.02
+						property bool isZoomed: qmlProfile.zoomLevel > 1.02
 
 						// this indicates that we are actually dragging
 						property bool dragging: false
-						// cursor/finger position as we start dragging
-						property real initialX
-						property real initialY
-						// the offset previously used to show the profile
-						property real oldXOffset
-						property real oldYOffset
 
 						// if the profile is not scaled in, don't start panning
 						// but if the profile is scaled in, then start almost immediately
@@ -290,16 +274,6 @@ Item {
 
 						// pass events through to the parent and eventually into the ListView
 						propagateComposedEvents: true
-
-						// for testing / debugging on a desktop
-						scrollGestureEnabled: true
-						onWheel: {
-							manager.appendTextToLog("wheel " + wheel.angleDelta)
-							if (wheel.angleDelta.y > 0)
-								qmlProfile.scale += 0.2
-							if (wheel.angleDelta.y < 0 && qmlProfile.scale > 1.1)
-								qmlProfile.scale -= 0.2
-						}
 
 						anchors.fill: parent
 						drag.target: qmlProfile
@@ -311,10 +285,7 @@ Item {
 						}
 						onPressAndHold: {
 							dragging = true;
-							oldXOffset = qmlProfile.xOffset
-							oldYOffset = qmlProfile.yOffset
-							initialX = mouse.x
-							initialY = mouse.y
+							qmlProfile.panStart(mouse.x, mouse.y)
 							if (manager.verboseEnabled)
 								manager.appendTextToLog("press and hold at mouse" + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10)
 							// give visual feedback to the user that they now can drag
@@ -322,13 +293,9 @@ Item {
 						}
 						onPositionChanged: {
 							if (dragging) {
-								var x = (mouse.x - initialX) / qmlProfile.scale
-								var y = (mouse.y - initialY) / qmlProfile.scale
 								if (manager.verboseEnabled)
 									manager.appendTextToLog("drag mouse "  + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10 + " delta " + Math.round(x) + " / " + Math.round(y))
-								qmlProfile.xOffset = oldXOffset + x
-								qmlProfile.yOffset = oldYOffset + y
-								qmlProfile.update()
+								qmlProfile.pan(mouse.x, mouse.y)
 							} else {
 								mouse.accepted = false
 							}
@@ -344,7 +311,6 @@ Item {
 						onClicked: {
 							// reset the position if not zoomed in
 							if (!isZoomed) {
-								qmlProfile.xOffset = qmlProfile.yOffset = oldXOffset = oldYOffset = 0
 								mouse.accepted = false
 							}
 						}

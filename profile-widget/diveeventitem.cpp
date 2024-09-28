@@ -18,7 +18,9 @@ static int depthAtTime(const plot_info &pi, duration_t time);
 
 DiveEventItem::DiveEventItem(const struct dive *d, int idx, const struct event &ev, struct gasmix lastgasmix,
 			     const plot_info &pi, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
-			     int speed, const DivePixmaps &pixmaps, QGraphicsItem *parent) : DivePixmapItem(parent),
+			     int speed, const DivePixmaps &pixmaps, QGraphicsItem *parent) : QGraphicsPixmapItem(parent),
+	text(setupToolTipString(d, ev, lastgasmix)),
+	pixmap(setupPixmap(d, ev, lastgasmix, pixmaps)),
 	vAxis(vAxis),
 	hAxis(hAxis),
 	idx(idx),
@@ -27,55 +29,42 @@ DiveEventItem::DiveEventItem(const struct dive *d, int idx, const struct event &
 	depth(depthAtTime(pi, ev.time))
 {
 	setFlag(ItemIgnoresTransformations);
-
-	setupPixmap(lastgasmix, pixmaps);
-	setupToolTipString(lastgasmix);
+	setPixmap(pixmap);
 	recalculatePos();
+
+	if (ev.type == SAMPLE_EVENT_BOOKMARK)
+		setOffset(QPointF(0.0, -pixmap.height()));
 }
 
 DiveEventItem::~DiveEventItem()
 {
 }
 
-void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pixmaps)
+QPixmap DiveEventItem::setupPixmap(const struct dive *dive, const struct event &ev, struct gasmix lastgasmix, const DivePixmaps &pixmaps)
 {
 	event_severity severity = ev.get_severity();
-	if (ev.name.empty()) {
-		setPixmap(pixmaps.warning);
-	} else if (same_string_caseinsensitive(ev.name.c_str(), "modechange")) {
-		if (ev.value == 0)
-			setPixmap(pixmaps.bailout);
-		else
-			setPixmap(pixmaps.onCCRLoop);
-	} else if (ev.type == SAMPLE_EVENT_BOOKMARK) {
-		setPixmap(pixmaps.bookmark);
-		setOffset(QPointF(0.0, -pixmap().height()));
-	} else if (ev.is_gaschange()) {
+	if (ev.name.empty())
+		return pixmaps.warning;
+
+	if (same_string_caseinsensitive(ev.name.c_str(), "modechange"))
+		return ev.value == 0 ? pixmaps.bailout : pixmaps.onCCRLoop;
+
+	if (ev.type == SAMPLE_EVENT_BOOKMARK)
+		return pixmaps.bookmark;
+
+	if (ev.is_gaschange()) {
 		struct gasmix mix = dive->get_gasmix_from_event(ev);
 		struct icd_data icd_data;
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
-		if (mix.he.permille) {
-			if (icd)
-				setPixmap(pixmaps.gaschangeTrimixICD);
-			else
-				setPixmap(pixmaps.gaschangeTrimix);
-		} else if (gasmix_is_air(mix)) {
-			if (icd)
-				setPixmap(pixmaps.gaschangeAirICD);
-			else
-				setPixmap(pixmaps.gaschangeAir);
-		} else if (mix.o2.permille == 1000) {
-			if (icd)
-				setPixmap(pixmaps.gaschangeOxygenICD);
-			else
-				setPixmap(pixmaps.gaschangeOxygen);
-		} else {
-			if (icd)
-				setPixmap(pixmaps.gaschangeEANICD);
-			else
-				setPixmap(pixmaps.gaschangeEAN);
-		}
-	} else if ((((ev.flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
+		if (mix.he.permille)
+			return icd ? pixmaps.gaschangeTrimixICD : pixmaps.gaschangeTrimix;
+		if (gasmix_is_air(mix))
+			return icd ? pixmaps.gaschangeAirICD : pixmaps.gaschangeAir;
+		if (mix.o2.permille == 1000)
+			return icd ? pixmaps.gaschangeOxygenICD : pixmaps.gaschangeOxygen;
+		return icd ? pixmaps.gaschangeEANICD : pixmaps.gaschangeEAN;
+	}
+	if ((((ev.flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
 		    // those are useless internals of the dive computer
 		   same_string_caseinsensitive(ev.name.c_str(), "heading") ||
 		   (same_string_caseinsensitive(ev.name.c_str(), "SP change") && ev.time.seconds == 0)) {
@@ -86,35 +75,35 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 		// so set an "almost invisible" pixmap (a narrow but somewhat tall, basically transparent pixmap)
 		// that allows tooltips to work when we don't want to show a specific
 		// pixmap for an event, but want to show the event value in the tooltip
-		setPixmap(pixmaps.transparent);
-	} else if (severity == EVENT_SEVERITY_INFO) {
-		setPixmap(pixmaps.info);
-	} else if (severity == EVENT_SEVERITY_WARN) {
-		setPixmap(pixmaps.warning);
-	} else if (severity == EVENT_SEVERITY_ALARM) {
-		setPixmap(pixmaps.violation);
-	} else if (same_string_caseinsensitive(ev.name.c_str(), "violation") || // generic libdivecomputer
+		return pixmaps.transparent;
+	}
+	if (severity == EVENT_SEVERITY_INFO)
+		return pixmaps.info;
+	if (severity == EVENT_SEVERITY_WARN)
+		return pixmaps.warning;
+	if (severity == EVENT_SEVERITY_ALARM)
+		return pixmaps.violation;
+	if (same_string_caseinsensitive(ev.name.c_str(), "violation") || // generic libdivecomputer
 		   same_string_caseinsensitive(ev.name.c_str(), "Safety stop violation")  || // the rest are from the Uemis downloader
 		   same_string_caseinsensitive(ev.name.c_str(), "pO₂ ascend alarm")  ||
 		   same_string_caseinsensitive(ev.name.c_str(), "RGT alert")  ||
 		   same_string_caseinsensitive(ev.name.c_str(), "Dive time alert")  ||
 		   same_string_caseinsensitive(ev.name.c_str(), "Low battery alert")  ||
-		   same_string_caseinsensitive(ev.name.c_str(), "Speed alarm")) {
-		setPixmap(pixmaps.violation);
-	} else if (same_string_caseinsensitive(ev.name.c_str(), "non stop time") || // generic libdivecomputer
-		   same_string_caseinsensitive(ev.name.c_str(), "safety stop") ||
-		   same_string_caseinsensitive(ev.name.c_str(), "safety stop (voluntary)") ||
-		   same_string_caseinsensitive(ev.name.c_str(), "Tank change suggested") || // Uemis downloader
-		   same_string_caseinsensitive(ev.name.c_str(), "Marker")) {
-		setPixmap(pixmaps.info);
-	} else {
-		// we should do some guessing based on the type / name of the event;
-		// for now they all get the warning icon
-		setPixmap(pixmaps.warning);
-	}
+		   same_string_caseinsensitive(ev.name.c_str(), "Speed alarm"))
+		return pixmaps.violation;
+	if (same_string_caseinsensitive(ev.name.c_str(), "non stop time") || // generic libdivecomputer
+	    same_string_caseinsensitive(ev.name.c_str(), "safety stop") ||
+	    same_string_caseinsensitive(ev.name.c_str(), "safety stop (voluntary)") ||
+	    same_string_caseinsensitive(ev.name.c_str(), "Tank change suggested") || // Uemis downloader
+	    same_string_caseinsensitive(ev.name.c_str(), "Marker"))
+		return pixmaps.info;
+
+	// we should do some guessing based on the type / name of the event;
+	// for now they all get the warning icon
+	return pixmaps.warning;
 }
 
-void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
+QString DiveEventItem::setupToolTipString(const struct dive *dive, const struct event &ev, struct gasmix lastgasmix)
 {
 	// we display the event on screen - so translate
 	QString name = gettextFromC::tr(ev.name.c_str());
@@ -158,7 +147,7 @@ void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 		name += ev.flags & SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
 								    ev.flags & SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
 	}
-	setToolTip(QString("<img height=\"16\" src=\":status-warning-icon\">&nbsp;  ") + name);
+	return name;
 }
 
 void DiveEventItem::eventVisibilityChanged(const QString&, bool)
@@ -216,7 +205,7 @@ void DiveEventItem::recalculatePos()
 		hide();
 		return;
 	}
-	setVisible(!ev.hidden && !is_event_type_hidden(&ev));
+	setVisible(!ev.hidden && !is_event_type_hidden(ev));
 	double x = hAxis->posAtValue(ev.time.seconds);
 	double y = vAxis->posAtValue(depth);
 	setPos(x, y);

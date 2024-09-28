@@ -9,10 +9,10 @@
 
 static const double regressionLineWidth = 2.0;
 
-RegressionItem::RegressionItem(StatsView &view, regression_data reg,
-						   StatsAxis *xAxis, StatsAxis *yAxis) :
+RegressionItem::RegressionItem(ChartView &view, const StatsTheme &theme, regression_data reg,
+			       StatsAxis *xAxis, StatsAxis *yAxis) :
 	ChartPixmapItem(view, ChartZValue::ChartFeatures),
-	theme(view.getCurrentTheme()),
+	theme(theme),
 	xAxis(xAxis), yAxis(yAxis), reg(reg),
 	regression(true), confidence(true)
 {

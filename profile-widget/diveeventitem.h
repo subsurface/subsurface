@@ -2,16 +2,17 @@
 #ifndef DIVEEVENTITEM_H
 #define DIVEEVENTITEM_H
 
-#include "divepixmapitem.h"
 #include "core/event.h"
+#include <QCoreApplication> // for Q_DECLARE_TR_FUNCTIONS
+#include <QGraphicsPixmapItem>
 
 class DiveCartesianAxis;
 class DivePixmaps;
 struct event;
 struct plot_info;
 
-class DiveEventItem : public DivePixmapItem {
-	Q_OBJECT
+class DiveEventItem : public QGraphicsPixmapItem {
+	Q_DECLARE_TR_FUNCTIONS(DiveEventItem)
 public:
 	DiveEventItem(const struct dive *d, int idx, const struct event &ev, struct gasmix lastgasmix,
 		      const struct plot_info &pi, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
@@ -23,10 +24,11 @@ public:
 	static bool isInteresting(const struct dive *d, const struct divecomputer *dc,
 				  const struct event &ev, const struct plot_info &pi,
 				  int firstSecond, int lastSecond);
-
+	const QString text;
+	const QPixmap pixmap;
 private:
-	void setupToolTipString(struct gasmix lastgasmix);
-	void setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pixmaps);
+	static QString setupToolTipString(const struct dive *d, const struct event &ev, struct gasmix lastgasmix);
+	static QPixmap setupPixmap(const struct dive *d, const struct event &ev, struct gasmix lastgasmix, const DivePixmaps &pixmaps);
 	void recalculatePos();
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;

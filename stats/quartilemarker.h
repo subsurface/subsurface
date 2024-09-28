@@ -2,14 +2,13 @@
 #ifndef QUARTILE_MARKER_H
 #define QUARTILE_MARKER_H
 
-#include "chartitem.h"
+#include "statsitem.h"
 
 class StatsAxis;
-class StatsView;
 
 class QuartileMarker : public ChartLineItem {
 public:
-	QuartileMarker(StatsView &view, double pos, double value, StatsAxis *xAxis, StatsAxis *yAxis);
+	QuartileMarker(ChartView &view, const StatsTheme &theme, double pos, double value, StatsAxis *xAxis, StatsAxis *yAxis);
 	~QuartileMarker();
 	void updatePosition();
 private:

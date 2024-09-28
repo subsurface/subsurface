@@ -4,17 +4,23 @@
 // with smaller z-values. For the same z-value objects are
 // drawn in order of addition to the scene.
 #ifndef ZVALUES_H
+#define ZVALUES_H
 
-enum class ChartZValue {
-	Grid = 0,
-	Series,
-	Axes,
-	SeriesLabels,
-	ChartFeatures,	// quartile markers and regression lines
-	Selection,
-	InformationBox,
-	Legend,
-	Count
+// Encapsulating an enum in a struct is stupid, but allows us
+// to not poison the namespace and yet autoconvert to int
+// (in constrast to enum class). enum is so broken!
+struct ChartZValue {
+	enum ZValues {
+		Grid = 0,
+		Series,
+		Axes,
+		SeriesLabels,
+		ChartFeatures,	// quartile markers and regression lines
+		Selection,
+		InformationBox,
+		Legend,
+		Count
+	};
 };
 
 #endif
