@@ -34,7 +34,7 @@ if [[ -z "${CONTAINER_ID}" ]]; then
 		croak "Please make sure GIT_AUTHOR_NAME and GIT_AUTHOR_EMAIL are set for the first run of this script."
 	fi
 
-	docker create -v ${SUBSURFACE_ROOT}:${CONTAINER_SUBSURFACE_DIR} --name=${CONTAINER_NAME} subsurface/android-build:5.15.2 sleep infinity
+	docker create -v ${SUBSURFACE_ROOT}:${CONTAINER_SUBSURFACE_DIR} --name=${CONTAINER_NAME} subsurface/android-build:5.15.3 sleep infinity
 
 fi
 
