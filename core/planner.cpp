@@ -191,6 +191,17 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 	}
 }
 
+static struct sample *create_sample(struct divecomputer &dc, int time, depth_t depth, bool entered)
+{
+	struct sample *sample = prepare_sample(&dc);
+	sample->time.seconds = time;
+	sample->depth = depth;
+	sample->manually_entered = entered;
+	sample->sac.mliter = entered ? prefs.bottomsac : prefs.decosac;
+
+	return sample;
+}
+
 /* overwrite the data in dive
  * return false if something goes wrong */
 static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, struct divecomputer *dc, bool track_gas)
@@ -257,34 +268,36 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 				report_error("Invalid cylinder in create_dive_from_plan(): %d", dp.cylinderid);
 				continue;
 			}
-			sample = prepare_sample(dc);
-			sample[-1].setpoint.mbar = po2;
+
+			sample->setpoint.mbar = po2;
 			if (po2)
-				sample[-1].o2sensor[0].mbar = po2;
-			sample->time.seconds = lasttime + 1;
-			sample->depth = lastdepth;
-			sample->manually_entered = dp.entered;
-			sample->sac.mliter = dp.entered ? prefs.bottomsac : prefs.decosac;
+				sample->o2sensor[0].mbar = po2;
+			type = get_effective_divemode(*dc, *cyl);
+
+			sample = create_sample(*dc, lasttime + 1, lastdepth, dp.entered);
+
 			lastcylid = dp.cylinderid;
 		}
 		if (dp.divemode != type) {
 			type = dp.divemode;
-			add_event(dc, lasttime, SAMPLE_EVENT_BOOKMARK, 0, type, "modechange");
+			if ((dc->divemode == CCR && prefs.allowOcGasAsDiluent && cyl->cylinder_use == OC_GAS) || dc->divemode == PSCR)
+				add_event(dc, lasttime, SAMPLE_EVENT_BOOKMARK, 0, type, "modechange");
 		}
 
-		/* Create sample */
-		sample = prepare_sample(dc);
 		/* set po2 at beginning of this segment */
 		/* and keep it valid for last sample - where it likely doesn't matter */
-		sample[-1].setpoint.mbar = po2;
 		sample->setpoint.mbar = po2;
-		sample->time.seconds = lasttime = time;
-		if (dp.entered) last_manual_point = dp.time;
-		sample->depth = lastdepth = depth;
-		sample->manually_entered = dp.entered;
-		sample->sac.mliter = dp.entered ? prefs.bottomsac : prefs.decosac;
-		if (track_gas && !sample[-1].setpoint.mbar) {    /* Don't track gas usage for CCR legs of dive */
-			update_cylinder_pressure(dive, sample[-1].depth.mm, depth.mm, time - sample[-1].time.seconds,
+
+		sample = create_sample(*dc, time, depth, dp.entered);
+		sample->setpoint.mbar = po2;
+		if (dp.entered)
+			last_manual_point = time;
+		lastdepth = depth;
+		lasttime = time;
+
+		if (track_gas) {
+			if (!sample[-1].setpoint.mbar)    /* Don't track gas usage for CCR legs of dive */
+				update_cylinder_pressure(dive, sample[-1].depth.mm, depth.mm, time - sample[-1].time.seconds,
 					dp.entered ? diveplan.bottomsac : diveplan.decosac, cyl, !dp.entered, type);
 			if (cyl->type.workingpressure.mbar)
 				sample->pressure[0].mbar = cyl->end.mbar;
