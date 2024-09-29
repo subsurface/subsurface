@@ -595,18 +595,6 @@ static void sanitize_cylinder_info(struct dive &dive)
 	}
 }
 
-/* some events should never be thrown away */
-static bool is_potentially_redundant(const struct event &event)
-{
-	if (event.name == "gaschange")
-		return false;
-	if (event.name == "bookmark")
-		return false;
-	if (event.name == "heading")
-		return false;
-	return true;
-}
-
 pressure_t dive::calculate_surface_pressure() const
 {
 	pressure_t res;
@@ -720,21 +708,51 @@ static temperature_t un_fixup_airtemp(const struct dive &a)
  * is no dive computer with a sample rate of more than 60
  * seconds... that would be pretty pointless to plot the
  * profile with)
+ *
+ * We also throw away CCR bailout events if they are
+ * indicating a switch to a mode that is already defined by
+ * the gas currently used, or to be used within the next minute.
  */
-static void fixup_dc_events(struct divecomputer &dc)
+static void fixup_dc_events(struct dive &dive, struct divecomputer &dc)
 {
 	std::vector<int> to_delete;
-
+	divemode_t current_divemode = dc.divemode;
+	struct cylinder_t *current_cylinder = dive.get_cylinder(0);
+	divemode_t new_divemode;
 	for (auto [idx, event]: enumerated_range(dc.events)) {
-		if (!is_potentially_redundant(event))
+		if (event.name == "bookmark" || event.name == "heading")
 			continue;
+
+		if (event.is_gaschange() && event.gas.index >= 0) {
+			current_cylinder = dive.get_cylinder(event.gas.index);
+			current_divemode = get_effective_divemode(dc, *current_cylinder);
+		} else if (event.is_divemodechange()) {
+			new_divemode = static_cast<divemode_t>(event.value);
+			if (!((dc.divemode == CCR && prefs.allowOcGasAsDiluent && current_cylinder->cylinder_use == OC_GAS) || dc.divemode == PSCR)) {
+				to_delete.push_back(idx);
+				continue;
+			} else if (new_divemode != current_divemode) {
+				current_divemode = new_divemode;
+			}
+		}
+
 		for (int idx2 = idx - 1; idx2 > 0; --idx2) {
 			const auto &prev = dc.events[idx2];
 			if ((event.time - prev.time).seconds > 60)
 				break;
+
 			if (range_contains(to_delete, idx2))
 				continue;
-			if (prev.name == event.name && prev.flags == event.flags) {
+
+			if ((event.time - prev.time).seconds <= 10 && event.is_gaschange() && prev.is_divemodechange()) {
+				new_divemode = static_cast<divemode_t>(prev.value);
+				if (new_divemode != current_divemode)
+					current_divemode = new_divemode;
+				else
+					to_delete.push_back(idx2);
+			}
+
+			if (!event.is_gaschange() && prev.name == event.name && prev.flags == event.flags) {
 				to_delete.push_back(idx);
 				break;
 			}
@@ -1047,7 +1065,7 @@ static void fixup_dive_dc(struct dive &dive, struct divecomputer &dc)
 	/* Fix up cylinder pressures based on DC info */
 	fixup_dive_pressures(dive, dc);
 
-	fixup_dc_events(dc);
+	fixup_dc_events(dive, dc);
 
 	/* Fixup CCR / PSCR dives with o2sensor values, but without no_o2sensors */
 	fixup_no_o2sensors(dc);
