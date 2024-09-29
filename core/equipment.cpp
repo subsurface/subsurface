@@ -27,7 +27,7 @@ cylinder_t::~cylinder_t() = default;
 static cylinder_t make_surface_air_cylinder()
 {
 	cylinder_t res;
-	res.cylinder_use = NOT_USED;
+	res.cylinder_use = OC_GAS;
 	return res;
 }
 static const cylinder_t surface_air_cylinder = make_surface_air_cylinder();
