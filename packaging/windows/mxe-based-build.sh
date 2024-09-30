@@ -27,11 +27,15 @@
 #
 # now you can start the build
 #
-# make libxml2 libxslt libusb1 libzip libssh2 libftdi1 curl qt5 nsis
+# make libxml2 libxslt libusb1 libzip libssh2 libftdi1 libraw curl qt5 nsis
 #
 #     (if you intend to build Subsurface without user space FTDI support
 #      you can drop libftdi1 from that list and start this script with
 #      -noftdi )
+#
+#     (if you intend to build Subsurface without libraw support
+#      you can drop libraw from that list and start this script with
+#      -nolibraw )
 #
 # After quite a while (depending on your machine anywhere from 15-20
 # minutes to several hours) you should have a working MXE install in
@@ -91,6 +95,13 @@ if [[ "$1" == "-noftdi" ]] ; then
 	FTDI="OFF"
 else
 	FTDI="ON"
+fi
+
+if [[ "$1" == "-nolibraw" ]] ; then
+	shift
+	LIBRAW="OFF"
+else
+	LIBRAW="ON"
 fi
 
 # this is run on a rather powerful machine - if you want less
@@ -292,6 +303,7 @@ cd "$BUILDDIR"/subsurface
 	-DMAKE_TESTS=OFF \
 	-DBTSUPPORT=ON -DBLESUPPORT=ON \
 	-DFTDISUPPORT=$FTDI \
+	-DLIBRAW_SUPPORT=$LIBRAW \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \
 	"$BASEDIR"/subsurface
 

@@ -13,7 +13,7 @@ set -e
 mkdir -p win32
 cd win32
 
-# build Subsurface and then smtk2ssrf
+# build Subsurface
 export MXEBUILDTYPE=x86_64-w64-mingw32.shared
 bash -ex ../subsurface/packaging/windows/mxe-based-build.sh installer
 
@@ -22,6 +22,10 @@ bash -ex ../subsurface/packaging/windows/mxe-based-build.sh installer
 mv subsurface/subsurface.exe* ${OUTPUT_DIR}/
 fullname=$(cd subsurface ; ls subsurface-*.exe)
 mv subsurface/"$fullname" ${OUTPUT_DIR}/"${fullname%.exe}-installer.exe"
+
+# build Subsurface for smtk2ssrf
+
+bash -ex ../subsurface/packaging/windows/mxe-based-build.sh -noftdi -nolibraw subsurface
 
 bash -ex ../subsurface/packaging/windows/smtk2ssrf-mxe-build.sh -a -i
 
