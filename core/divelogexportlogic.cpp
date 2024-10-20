@@ -160,6 +160,6 @@ void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes)
 	file_copy_and_overwrite(searchPath + "jqplot.canvasAxisTickRenderer.min.js", exportFiles + "jqplot.canvasAxisTickRenderer.min.js");
 	file_copy_and_overwrite(searchPath + "jqplot.canvasTextRenderer.min.js", exportFiles + "jqplot.canvasTextRenderer.min.js");
 	file_copy_and_overwrite(searchPath + "jquery.min.js", exportFiles + "jquery.min.js");
-	file_copy_and_overwrite(searchPath + "jquery.jqplot.css", exportFiles + "jquery.jqplot.css");
+	file_copy_and_overwrite(searchPath + "jquery.jqplot.min.css", exportFiles + "jquery.jqplot.min.css");
 	file_copy_and_overwrite(searchPath + hes.themeFile, exportFiles + "theme.css");
 }

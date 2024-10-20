@@ -5,6 +5,7 @@
 #include "core/divelist.h"
 #include "core/divelog.h"
 #include "core/event.h"
+#include "core/format.h"
 #include "core/subsurface-string.h"
 #include "qt-models/cylindermodel.h"
 #include "core/metrics.h" // For defaultModelFont().
@@ -1271,13 +1272,12 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	auto shorter = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
-	char buf[200];
-	sprintf(buf, ", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
+	std::string buf = format_string_std(", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
 		SIGNED_FRAC_TRIPLET(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
 		SIGNED_FRAC_TRIPLET(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
 
 	// By using a signal, we can transport the variations to the main thread.
-	emit variationsComputed(QString(buf));
+	emit variationsComputed(QString::fromStdString(buf));
 #ifdef DEBUG_STOPVAR
 	printf("\n\n");
 #endif

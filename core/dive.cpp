@@ -1599,7 +1599,7 @@ static bool cylinder_in_use(const struct dive *dive, int idx)
 bool is_cylinder_use_appropriate(const struct divecomputer &dc, const cylinder_t &cyl, bool allowNonUsable)
 {
 	switch (cyl.cylinder_use) {
-	case OC:
+	case OC_GAS:
 		if (dc.divemode == FREEDIVE)
 			return false;
 
