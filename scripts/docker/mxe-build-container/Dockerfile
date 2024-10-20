@@ -1,7 +1,7 @@
 # Build the image using the --build-arg option, e.g.:
 # docker build -t boret/myimage:0.1 --build-arg=mxe_sha=123ABC456 .
 
-FROM ubuntu:22.04 as base
+FROM ubuntu:24.04 as base
 
 # update and set up the packages we need for the build
 RUN apt-get update  &&  \

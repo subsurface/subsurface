@@ -12,7 +12,7 @@ jobs:
   windows-mxe:
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ '3.2.0' }}    # 'official' images should have a dot-zero version
+      VERSION: ${{ '3.3.0' }}    # 'official' images should have a dot-zero version
       mxe_sha: '974808c2ecb02866764d236fe533ae57ba342e7a'
 
     steps:
