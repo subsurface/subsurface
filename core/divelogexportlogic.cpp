@@ -155,10 +155,10 @@ void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes)
 	file_copy_and_overwrite(searchPath + "dive_export.html", filename);
 	file_copy_and_overwrite(searchPath + "list_lib.js", exportFiles + "list_lib.js");
 	file_copy_and_overwrite(searchPath + "poster.png", exportFiles + "poster.png");
-	file_copy_and_overwrite(searchPath + "jqplot.highlighter.min.js", exportFiles + "jqplot.highlighter.min.js");
 	file_copy_and_overwrite(searchPath + "jquery.jqplot.min.js", exportFiles + "jquery.jqplot.min.js");
-	file_copy_and_overwrite(searchPath + "jqplot.canvasAxisTickRenderer.min.js", exportFiles + "jqplot.canvasAxisTickRenderer.min.js");
-	file_copy_and_overwrite(searchPath + "jqplot.canvasTextRenderer.min.js", exportFiles + "jqplot.canvasTextRenderer.min.js");
+	file_copy_and_overwrite(searchPath + "jqplot.canvasAxisTickRenderer.js", exportFiles + "jqplot.canvasAxisTickRenderer.js");
+	file_copy_and_overwrite(searchPath + "jqplot.canvasTextRenderer.js", exportFiles + "jqplot.canvasTextRenderer.js");
+	file_copy_and_overwrite(searchPath + "jqplot.highlighter.js", exportFiles + "jqplot.highlighter.js");
 	file_copy_and_overwrite(searchPath + "jquery.min.js", exportFiles + "jquery.min.js");
 	file_copy_and_overwrite(searchPath + "jquery.jqplot.min.css", exportFiles + "jquery.jqplot.min.css");
 	file_copy_and_overwrite(searchPath + hes.themeFile, exportFiles + "theme.css");
