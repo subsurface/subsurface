@@ -1,8 +1,9 @@
 .gitignore	export-ignore
 .gitattributes	export-ignore
 Documentation/*.html.git text=auto
-theme/jqplot.canvasAxisTickRenderer.min.js binary
-theme/jqplot.highlighter.min.js binary
+theme/jqplot.canvasAxisTickRenderer.js binary
+theme/jqplot.canvasTextRenderer.js binary
+theme/jqplot.highlighter.js binary
 theme/jquery.jqplot.min.js binary
 theme/jquery.min.js binary
 CHANGELOG.md -text merge=union
