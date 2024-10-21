@@ -48,13 +48,14 @@ RUN apt-get install -y \
     libxml-parser-perl \
     python3 \
     python3-mako \
+    python3-setuptools \
     python-is-python3 \
     ruby \
     xz-utils \
     scons
 
 # very often master is broken, so we pass in a known good SHA
-ARG mxe_sha=master
+ARG mxe_sha=d6377b2f2334694dbb040294fd0d848327e63328
 ENV _ver=${mxe_sha}
 
 WORKDIR /win
@@ -72,9 +73,6 @@ ADD settings.mk .
 # Patch the qtconnectivity build to explicilty enable native-win32-bluetooth and ensure another
 # backend is not picked
 ADD qtconnectivity-1.patch src/
-
-ADD mdbtools_version.patch .
-RUN patch -p1 < mdbtools_version.patch 2>&1 | tee mxe-patch.log
 
 # separate download from build so that we can redo the build
 RUN make -j download 2>&1 | tee mxe-build.log
