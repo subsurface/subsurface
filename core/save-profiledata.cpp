@@ -6,7 +6,9 @@
 #include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/format.h"
+#include "core/gettext.h"
 #include "core/membuffer.h"
+#include "core/pref.h"
 #include "core/subsurface-string.h"
 #include "core/version.h"
 #include <errno.h>
@@ -43,6 +45,16 @@ static std::string video_time(int secs)
 	int mins = secs / 60;
 	secs -= mins * 60;
 	return format_string_std("%d:%02d:%02d.000,", hours, mins, secs);
+}
+
+void replace_all(std::string& str, const std::string& old_value, const std::string& new_value) {
+    if (old_value.empty())
+        return;
+    size_t start_pos = std::string::npos;
+    while ((start_pos = str.find(old_value, start_pos)) != std::string::npos) {
+        str.replace(start_pos, old_value.length(), new_value);
+        start_pos += new_value.length(); // In case 'new_value' contains 'old_value', like replacing 'x' with 'yx'
+    }
 }
 
 static void put_pd(struct membuffer *b, const struct plot_info &pi, int idx)
@@ -175,32 +187,214 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 	double value;
 	int decimals;
 	const char *unit;
-
-	if (entry.sec < offset || entry.sec > offset + length)
+	if (next_entry.sec < offset || entry.sec > offset + length)
 		return {};
 
 	std::string res = "Dialogue: 0,";
-	res += video_time(entry.sec - offset);
-	res += video_time(next_entry.sec - offset < length ? next_entry.sec - offset : length);
+	res += video_time(std::max(entry.sec - offset, 0));
+	res += video_time(std::min(next_entry.sec - offset, length));
 	res += "Default,,0,0,0,,";
-	res += format_string_std("%d:%02d ", FRACTION_TUPLE(entry.sec, 60));
+
+	std::string format_string = prefs.subtitles_format_string;
+	
+	replace_all(format_string, "[time]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.sec, 60)));
 	value = get_depth_units(entry.depth, &decimals, &unit);
-	res += format_string_std("D=%02.2f %s ", value, unit);
+	replace_all(format_string, "[depth]", format_string_std("%02.2f %s", value, unit));
+	
 	if (entry.temperature) {
 		value = get_temp_units(entry.temperature, &unit);
-		res += format_string_std("T=%.1f%s ", value, unit);
+		replace_all(format_string,"[temperature]", format_string_std("%.1f%s", value, unit));
+	} else {
+		replace_all(format_string, "[temperature]", "");	
 	}
-	// Only show NDL if it is not essentially infinite, show TTS for mandatory stops.
-	if (entry.ndl_calc < 3600) {
-		if (entry.ndl_calc > 0)
-			res += format_string_std("NDL=%d:%02d ", FRACTION_TUPLE(entry.ndl_calc, 60));
-		else
-			if (entry.tts_calc > 0)
-				res += format_string_std("TTS=%d:%02d ", FRACTION_TUPLE(entry.tts_calc, 60));
+
+	if (entry.ceiling) {
+		value = get_depth_units(entry.ceiling, &decimals, &unit);
+		replace_all(format_string,"[ceiling]", format_string_std("%02.2f %s", value, unit));
+	} else {
+		replace_all(format_string, "[ceiling]", "");	
 	}
+
+	if (entry.ndl > 0) {
+		if (entry.ndl < 7200) {
+			replace_all(format_string,"[ndl]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.ndl, 60)));
+		} else {
+			replace_all(format_string,"[ndl]", ">2h");
+		}
+	} else {
+		replace_all(format_string, "[ndl]", "");	
+	}
+
+	if (entry.tts > 0) {
+		replace_all(format_string,"[tts]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.tts, 60)));
+	} else {
+		replace_all(format_string, "[tts]", "");	
+	}
+	
+	if (entry.rbt > 0) {
+		replace_all(format_string,"[rbt]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.rbt, 60)));
+	} else {
+		replace_all(format_string, "[rbt]", "");	
+	}
+	
+	if (entry.stoptime > 0) {
+		replace_all(format_string,"[stoptime]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.stoptime, 60)));
+	} else {
+		replace_all(format_string, "[stoptime]", "");	
+	}
+	
+	if (entry.stopdepth > 0) {
+		value = get_depth_units(entry.stopdepth, &decimals, &unit);
+		replace_all(format_string, "[stopdepth]", format_string_std("%02.2f %s", value, unit));
+	} else {
+		replace_all(format_string, "[stopdepth]", "");	
+	}
+
+	replace_all(format_string, "[cns]", format_string_std("%u%%", entry.cns));
+	
+	if (entry.sac > 0) {
+		value = get_volume_units(entry.sac, &decimals, &unit);
+		replace_all(format_string, "[sac]", format_string_std("%02.2f %s", value, unit));
+	} else {
+		replace_all(format_string, "[sac]", "");	
+	}
+
+	if (entry.pressures.o2 > 0) {
+		replace_all(format_string, "[p_o2]", format_string_std("%.2fbar", entry.pressures.o2));
+	} else {
+		replace_all(format_string, "[p_o2]", "");	
+	}
+	
+	if (entry.pressures.n2 > 0) {
+		replace_all(format_string, "[p_n2]", format_string_std("%.2fbar", entry.pressures.n2));
+	} else {
+		replace_all(format_string, "[p_n2]", "");	
+	}
+	
+	if (entry.pressures.he > 0) {
+		replace_all(format_string, "[p_he]", format_string_std("%.2fbar", entry.pressures.he));
+	} else {
+		replace_all(format_string, "[p_he]", "");	
+	}
+
+	if (entry.o2pressure.mbar > 0) {
+		replace_all(format_string, "[o2_pressure]", format_string_std("%.2fbar", entry.o2pressure.mbar/1000.0));
+	} else {
+		replace_all(format_string, "[o2_pressure]", "");	
+	}
+	
+	if (entry.o2setpoint.mbar > 0) {
+		replace_all(format_string, "[o2_setpoint]", format_string_std("%.2fbar", entry.o2setpoint.mbar/1000.0));
+	} else {
+		replace_all(format_string, "[o2_setpoint]", "");	
+	}
+	
+	if (entry.scr_OC_pO2.mbar > 0 && entry.pressures.o2 > 0) {
+		replace_all(format_string, "[scr_oc_po2]", format_string_std("%.2fbar", entry.scr_OC_pO2.mbar/1000.0 - entry.pressures.o2));
+	} else {
+		replace_all(format_string, "[scr_oc_po2]", "");	
+	}
+	
+	if (entry.mod > 0) {
+		value = get_depth_units(entry.mod, &decimals, &unit);
+		replace_all(format_string, "[mod]", format_string_std("%02.2f %s", value, unit));
+	} else {
+		replace_all(format_string, "[mod]", "");	
+	}
+	
+	if (entry.ead > 0) {
+		value = get_depth_units(entry.ead, &decimals, &unit);
+		replace_all(format_string, "[ead]", format_string_std("%02.2f %s", value, unit));
+	} else {
+		replace_all(format_string, "[ead]", "");	
+	}
+
+	if (entry.end > 0) {
+		value = get_depth_units(entry.end, &decimals, &unit);
+		replace_all(format_string, "[end]", format_string_std("%02.2f %s", value, unit));
+	} else {
+		replace_all(format_string, "[end]", "");	
+	}
+	
+	if (entry.eadd > 0) {
+		value = get_depth_units(entry.eadd, &decimals, &unit);
+		replace_all(format_string, "[eadd]", format_string_std("%02.2f %s", value, unit));
+	} else {
+		replace_all(format_string, "[eadd]", "");	
+	}
+	
+	value = get_vertical_speed_units(entry.speed, &decimals, &unit);
+	if (entry.speed > 0)
+		/* Ascending speeds are positive, descending are negative */
+		value *= -1;
+	replace_all(format_string, "[speed]", format_string_std("%02.2f %s", value, unit));
+	
+	if (entry.in_deco) {
+		replace_all(format_string, "[in_deco]", translate("gettextFromC", "In deco"));
+	} else {
+		replace_all(format_string, "[in_deco]", "");	
+	}
+
+	if (entry.ndl_calc > 0) {
+		if (entry.ndl_calc < 7200) {
+			replace_all(format_string,"[ndl_calc]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.ndl_calc, 60)));
+		} else {
+			replace_all(format_string,"[ndl_calc]", ">2h");
+		}
+	} else {
+		replace_all(format_string, "[ndl_calc]", "");	
+	}
+
+	if (entry.tts_calc > 0) {
+		replace_all(format_string,"[tts_calc]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.tts_calc, 60)));
+	} else {
+		replace_all(format_string, "[tts_calc]", "");	
+	}
+
+	if (entry.stoptime_calc > 0) {
+		replace_all(format_string,"[stoptime_calc]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.stoptime_calc, 60)));
+	} else {
+		replace_all(format_string, "[stoptime_calc]", "");	
+	}
+	
+	if (entry.stopdepth_calc > 0) {
+		value = get_depth_units(entry.stopdepth_calc, &decimals, &unit);
+		replace_all(format_string, "[stopdepth_calc]", format_string_std("%02.2f %s", value, unit));
+	} else {
+		replace_all(format_string, "[stopdepth_calc]", "");	
+	}
+	
+	if (entry.heartbeat > 0) {
+		replace_all(format_string, "[heartrate]", format_string_std("%d", entry.heartbeat));
+	} else {
+		replace_all(format_string, "[heartrate]", "");	
+	}
+	
 	if (entry.surface_gf > 0.0) {
-		res += format_string_std("sGF=%.1f%% ", entry.surface_gf);
+		replace_all(format_string, "[surface_gf]", format_string_std("%.1f%%", entry.surface_gf));
+	} else {
+		replace_all(format_string, "[surface_gf]", "");	
 	}
+
+	if (entry.current_gf > 0.0) {
+		replace_all(format_string, "[current_gf]", format_string_std("%.1f%%", entry.current_gf));
+	} else {
+		replace_all(format_string, "[current_gf]", "");	
+	}
+
+	if (entry.density > 0) {
+		replace_all(format_string, "[density]", format_string_std("%.1fg/ℓ", entry.density));
+	} else {
+		replace_all(format_string, "[density]", "");	
+	}
+
+	if (entry.icd_warning) {
+		replace_all(format_string, "[icd_warning]", translate("gettextFromC", "ICD in leading tissue"));
+	} else {
+		replace_all(format_string, "[icd_warning]", "");	
+	}
+
+	res += format_string;
 	res += "\n";
 	return res;
 }

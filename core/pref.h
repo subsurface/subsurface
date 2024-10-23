@@ -113,6 +113,7 @@ struct preferences {
 	bool	    extract_video_thumbnails;
 	int	    extract_video_thumbnails_position; // position in stream: 0=first 100=last second
 	std::string ffmpeg_executable; // path of ffmpeg binary
+	std::string	subtitles_format_string; // Format string for subtitles generated from the dive data
 	int         defaultsetpoint; // default setpoint in mbar
 	std::string default_filename;
 	enum def_file_behavior default_file_behavior;
