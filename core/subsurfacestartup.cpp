@@ -197,6 +197,7 @@ void setup_system_prefs()
 	default_prefs.divelist_font = system_divelist_default_font;
 	default_prefs.font_size = system_divelist_default_font_size;
 	default_prefs.ffmpeg_executable = "ffmpeg";
+	default_prefs.subtitles_format_string = "[time] D=[depth] T=[temperature] sGF=[surface_gf]";
 
 #if !defined(SUBSURFACE_MOBILE)
 	default_prefs.default_filename = system_default_filename();

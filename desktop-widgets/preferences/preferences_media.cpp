@@ -71,6 +71,7 @@ void PreferencesMedia::refreshSettings()
 	ui->extractVideoThumbnails->setChecked(qPrefMedia::extract_video_thumbnails());
 	ui->videoThumbnailPosition->setValue(qPrefMedia::extract_video_thumbnails_position());
 	ui->ffmpegExecutable->setText(qPrefMedia::ffmpeg_executable());
+	ui->subtitlesFormatString->setText(qPrefMedia::subtitles_format_string());
 
 	ui->auto_recalculate_thumbnails->setChecked(prefs.auto_recalculate_thumbnails);
 }
@@ -81,5 +82,6 @@ void PreferencesMedia::syncSettings()
 	media->set_extract_video_thumbnails(ui->extractVideoThumbnails->isChecked());
 	media->set_extract_video_thumbnails_position(ui->videoThumbnailPosition->value());
 	media->set_ffmpeg_executable(ui->ffmpegExecutable->text());
+	media->set_subtitles_format_string(ui->subtitlesFormatString->text());
 	qPrefMedia::set_auto_recalculate_thumbnails(ui->auto_recalculate_thumbnails->isChecked());
 }
