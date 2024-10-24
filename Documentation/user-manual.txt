@@ -1816,14 +1816,51 @@ from the _Media_ tab as well as the dive profile.
 
 By right-clicking on a video and selecting the "Save dive data as subtitles" option, a subtitles
 file with the same name as the video but with an ".ass" extension is created that contains
-time dependent dive data (runtime, depth, temperature, NDL, TTS, surface GF) to be overlayed
-with the video. The VLC video player automatically finds this file upon playing the video
-and overlays the dive data. Alternatively, the ffmpeg video encoder can be used to create a
+time dependent dive data to be overlayed with the video. The format of the subtitle is specified
+in the _Media preferences_ (_File->Preferences->Media_). The tags used in the format string are
+replaced with the actual values, if present, or removed if not present in the data.
+The VLC video player automatically finds this file upon playing
+the video and overlays the dive data. Alternatively, the ffmpeg video encoder can be used to create a
 new video file with the dive data encoded in the video stream. To do so run
 
 	ffmpeg -v video.mp4 -vf "ass=video.ass" video_with_data.mp4
 
 from the command line. You need to have the libass library installed.
+
+Available tags are:
+* Dive time: [time]
+* Depth: [depth]
+* Temperature: [temperature]
+* Ceiling: [ceiling]
+* NDL: [ndl]
+* TTS: [tts]
+* RBT: [rbt]
+* Stop time: [stoptime]
+* Stop depth: [stopdepth]
+* CNS: [cns]
+* SAC: [sac]
+* pO₂: [p_o2]
+* pN₂: [p_n2]
+* pHe: [p_he]
+* O₂ pressure (rebreather): [o2_pressure]
+* O₂ setpoint: [o2_setpoint]
+* SCR ΔpO₂: [scr_oc_po2]
+* MOD: [mod]
+* EAD: [ead]
+* END: [end]
+* EADD: [eadd]
+* Vertical speed: [speed]
+* In deco (calculated): [in_deco]
+* NDL (calculated): [ndl_calc]
+* TTS (calculated): [tts_calc]
+* Stop time (calculated): [stoptime_calc]
+* Stop depth (calculated): [stopdepth_calc]
+* Heartrate: [heartrate]
+* Bearing: [bearing]
+* Surface GF: [surface_gf]
+* Current GF: [current_gf]
+* Density: [density]
+* ICD Warning: [icd_warning]
 
 ==== Media on an external hard disk
 Most underwater photographers store media on an external drive. If such a drive can be mapped by the operating system
