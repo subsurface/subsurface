@@ -1,3 +1,4 @@
+desktop: update "Save dive data as subtitles" feature to make it more configurable.
 bluetooth: fix crash on MacOS when doing first download from a new BLE device
 statistics: show proper dates in January
 desktop: add country to the fields indexed for full text search
