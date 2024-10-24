@@ -47,10 +47,10 @@ static std::string video_time(int secs)
 	return format_string_std("%d:%02d:%02d.000,", hours, mins, secs);
 }
 
-void replace_all(std::string& str, const std::string& old_value, const std::string& new_value) {
+static void replace_all(std::string &str, const std::string &old_value, const std::string &new_value) {
     if (old_value.empty())
         return;
-    size_t start_pos = std::string::npos;
+    size_t start_pos = 0;
     while ((start_pos = str.find(old_value, start_pos)) != std::string::npos) {
         str.replace(start_pos, old_value.length(), new_value);
         start_pos += new_value.length(); // In case 'new_value' contains 'old_value', like replacing 'x' with 'yx'
