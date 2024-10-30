@@ -170,9 +170,8 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
     libqt5-qtscript-devel libqt5-qtdeclarative-devel \
     libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel \
     bluez-devel libgit2-devel libmtp-devel libraw-devel
-
+```
 On Debian Bookworm this seems to work
-
 ```
 sudo apt install \
     autoconf automake cmake g++ git libbluetooth-dev libcrypto++-dev \
