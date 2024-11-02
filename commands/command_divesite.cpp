@@ -243,7 +243,7 @@ EditDiveSiteCountry::EditDiveSiteCountry(dive_site *dsIn, const QString &country
 
 bool EditDiveSiteCountry::workToBeDone()
 {
-	return value == taxonomy_get_country(ds->taxonomy);
+	return value != taxonomy_get_country(ds->taxonomy);
 }
 
 void EditDiveSiteCountry::redo()
