@@ -5,12 +5,12 @@
 #include "core/divelog.h"
 #include "core/divesite.h"
 #include "core/errorhelper.h"
-#include "core/trip.h"
 #include "core/file.h"
 #include "core/import-csv.h"
 #include "core/parse.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
+#include "core/trip.h"
 #include "core/xmlparams.h"
 #include <QTextStream>
 
@@ -224,7 +224,8 @@ void TestParse::testParseNewFormat()
 							       "/dives/")
 						   .append(files.at(i))
 						   .toLatin1()
-						   .data(), &divelog),
+						   .data(),
+					   &divelog),
 			 0);
 		QCOMPARE(divelog.dives.size(), i + 1);
 	}
@@ -452,7 +453,11 @@ void TestParse::parseDL7()
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/DL7.zxu",
 				&params, "DL7", &divelog),
 		 0);
+
 	QCOMPARE(divelog.dives.size(), 3);
+	QCOMPARE(divelog.dives[0]->number, 1);
+	QCOMPARE(divelog.dives[1]->number, 2);
+	QCOMPARE(divelog.dives[2]->number, 3);
 
 	QCOMPARE(save_dives("./testdl7out.ssrf"), 0);
 	FILE_COMPARE("./testdl7out.ssrf",
