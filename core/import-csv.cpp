@@ -1,21 +1,21 @@
-#include <unistd.h>
-#include <stdlib.h>
 #include <errno.h>
 #include <libdivecomputer/parser.h>
+#include <map>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include "dive.h"
-#include "errorhelper.h"
-#include "subsurface-string.h"
 #include "divelist.h"
 #include "divelog.h"
+#include "errorhelper.h"
 #include "file.h"
 #include "format.h"
-#include "parse.h"
-#include "sample.h"
-#include "divelist.h"
 #include "gettext.h"
 #include "import-csv.h"
+#include "parse.h"
 #include "qthelper.h"
+#include "sample.h"
+#include "subsurface-string.h"
 #include "xmlparams.h"
 
 #define MATCH(buffer, pattern) \
@@ -107,18 +107,205 @@ static char *parse_dan_new_line(char *buf, const char *NL)
 }
 
 static int try_to_xslt_open_csv(const char *filename, std::string &mem, const char *tag);
+
+static int parse_csv_line(char *&ptr, const char *NL, char delim, std::vector<std::string> &fields)
+{
+	char *line_end = strstr(ptr, NL); // Find the end of the line using the newline string
+	bool withNL = line_end;
+
+	if (!line_end) {
+		// EOF - set line_end to end of 'ptr'
+		line_end = ptr + strlen(ptr);
+	}
+
+	// Create a temporary pointer to traverse the line
+	char *field_start = ptr;
+	char *field_end = nullptr;
+
+	// Skip leading delimiter
+	if (*field_start == delim) {
+		field_start++;
+	} else {
+		return report_error("DEBUG: No leading delimiter found");
+	}
+
+	while (field_start < line_end) {
+		// Find the next delimiter or end of line
+		field_end = static_cast<char *>(memchr(field_start, delim, line_end - field_start));
+
+		if (field_end) {
+			// If we found a delimiter, extract the field
+			fields.emplace_back(field_start, field_end - field_start);
+			// Move to the next character after the delimiter
+			field_start = field_end + 1;
+		} else {
+			// If no more delimiters, add the last field
+			fields.emplace_back(field_start, line_end - field_start);
+			break;
+		}
+	}
+
+	// Update the pointer to point to the next line
+	ptr = line_end;
+	if (withNL)
+		ptr += strlen(NL);
+	return 0;
+}
+
+
+// Parses a line of DAN data fields (| separated). The provided 'fields' mapping
+// will get filled with as many fields as are found in the line.
+static int parse_dan_fields(
+	const char *NL,
+	std::map<unsigned, std::string> &fields,
+	char *&ptr)
+{
+	std::vector<std::string> csv_fields;
+	if (parse_csv_line(ptr, NL, '|', csv_fields) < 0)
+		return -1;
+
+	if (csv_fields.size() > fields.size()) {
+		report_info("DEBUG: More DAN fields than expected");
+		return -1;
+	}
+
+	for (size_t i = 0; i < csv_fields.size(); i++) {
+		fields[i] = csv_fields[i];
+	}
+
+	return 0;
+}
+
+
+// Parses the DAN ZDH dive header.
+static int parse_dan_zdh(const char *NL, struct xml_params *params, char *&ptr)
+{
+	// Skip the leading 'ZDH'
+	ptr += 3;
+
+	std::string temp;
+
+	// Parse all fields - we only use a subset of them, but parse all for code maintain- and debugability.
+	enum ZDH_FIELD {
+		EXPORT_SEQUENCE,
+		INTERNAL_DIVE_SEQUENCE,
+		RECORD_TYPE,
+		RECORDING_INTERVAL,
+		LEAVE_SURFACE,
+		AIR_TEMPERATURE,
+		TANK_VOLUME,
+		O2_MODE,
+		REBREATHER_DILUENT_GAS,
+		ALTITUDE,
+	};
+	std::map<unsigned, std::string> fields = {
+		{EXPORT_SEQUENCE, ""},
+		{INTERNAL_DIVE_SEQUENCE, ""},
+		{RECORD_TYPE, ""},
+		{RECORDING_INTERVAL, ""},
+		{LEAVE_SURFACE, ""},
+		{AIR_TEMPERATURE, ""},
+		{TANK_VOLUME, ""},
+		{O2_MODE, ""},
+		{REBREATHER_DILUENT_GAS, ""},
+		{ALTITUDE, ""},
+	};
+
+	if (parse_dan_fields(NL, fields, ptr) < 0)
+		return -1;
+
+	// Add relevant fields to the XML parameters.
+
+	// Parse date. 'leaveSurface' should (per the spec) be provided in
+	// the format "YYYYMMDDHHMMSS", but old code used to allow for just parsing
+	// the date... so we'll do that here as well.
+	auto &leaveSurface = fields[LEAVE_SURFACE];
+	if (leaveSurface.length() >= 8) {
+		xml_params_add(params, "date", leaveSurface.substr(0, 8));
+	}
+
+	// Parse time with "1" prefix
+	if (leaveSurface.length() >= 14) {
+		std::string time_str = "1" + leaveSurface.substr(8, 6);
+		xml_params_add(params, "time", time_str);
+	}
+
+	xml_params_add(params, "airTemp", fields[AIR_TEMPERATURE]);
+	xml_params_add(params, "diveNro", fields[INTERNAL_DIVE_SEQUENCE]);
+
+	return 0;
+}
+
+// Parse the DAN ZDT dive trailer.
+static int parse_dan_zdt(const char *NL, struct xml_params *params, char *&ptr)
+{
+	// Skip the leading 'ZDT'
+	ptr += 3;
+
+	enum ZDT_FIELD {
+		EXPORT_SEQUENCE,
+		INTERNAL_DIVE_SEQUENCE,
+		MAX_DEPTH,
+		REACH_SURFACE,
+		MIN_WATER_TEMP,
+		PRESSURE_DROP,
+	};
+
+	std::map<unsigned, std::string> fields = {
+		{EXPORT_SEQUENCE, ""},
+		{INTERNAL_DIVE_SEQUENCE, ""},
+		{MAX_DEPTH, ""},
+		{REACH_SURFACE, ""},
+		{MIN_WATER_TEMP, ""},
+		{PRESSURE_DROP, ""},
+	};
+
+	if (parse_dan_fields(NL, fields, ptr) < 0)
+		return -1;
+
+	// Add relevant fields to the XML parameters.
+	xml_params_add(params, "waterTemp", fields[MIN_WATER_TEMP]);
+
+	return 0;
+}
+
+static int parse_dan_zdp(const char *NL, const char *filename, struct xml_params *params, char *&ptr, std::string &mem_csv)
+{
+	if (strncmp(ptr, "ZDP{", 4) != 0)
+		return report_error("DEBUG: Failed to find start of ZDP");
+
+	if (ptr && ptr[4] == '}')
+		return report_error(translate("gettextFromC", "No dive profile found from '%s'"), filename);
+
+	ptr = parse_dan_new_line(ptr, NL);
+	if (!ptr)
+		return -1;
+
+	// We're now in the ZDP segment. Look for the end of it.
+	char *end_ptr = strstr(ptr, "ZDP}");
+	if (!end_ptr) {
+		return report_error("DEBUG: failed to find end of ZDP");
+	}
+
+	/* Copy the current dive data to start of mem_csv buffer */
+	mem_csv = std::string(ptr, end_ptr - ptr);
+
+	// Skip the trailing 'ZDP}' line.
+	ptr = end_ptr;
+	ptr = parse_dan_new_line(end_ptr, NL);
+	return 0;
+}
+
 static int parse_dan_format(const char *filename, struct xml_params *params, struct divelog *log)
 {
-	int ret = 0, i;
-	size_t end_ptr = 0;
-	char tmpbuf[MAXCOLDIGITS];
+	int ret = 0;
 	int params_orig_size = xml_params_count(params);
 
 	char *ptr = NULL;
 	const char *NL = NULL;
-	char *iter = NULL;
 
 	auto [mem, err] = readfile(filename);
+	const char *end = mem.data() + mem.size();
 	if (err < 0)
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
 
@@ -132,133 +319,36 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 		return -1;
 	}
 
-	while ((end_ptr < mem.size()) && (ptr = strstr(mem.data() + end_ptr, "ZDH"))) {
-		xml_params_resize(params, params_orig_size); // restart with original parameter block
-		char *iter_end = NULL;
 
-		iter = ptr + 4;
-		iter = strchr(iter, '|');
-		if (iter) {
-			memcpy(tmpbuf, ptr + 4, iter - ptr - 4);
-			tmpbuf[iter - ptr - 4] = 0;
-			xml_params_add(params, "diveNro", tmpbuf);
-		}
+	// Iteratively parse ZDH, ZDP and ZDT fields, which together comprise a list of dives.
+	while (ptr < end) {
+		xml_params_resize(params, params_orig_size); // Restart with original parameter block
 
-		//report_info("DEBUG: BEGIN end_ptr %d round %d <%s>", end_ptr, j++, ptr);
-		iter = ptr + 1;
-		for (i = 0; i <= 4 && iter; ++i) {
-			iter = strchr(iter, '|');
-			if (iter)
-				++iter;
-		}
-
-		if (!iter) {
-			report_info("DEBUG: Data corrupt");
-			return -1;
-		}
-
-		/* Setting date */
-		memcpy(tmpbuf, iter, 8);
-		tmpbuf[8] = 0;
-		xml_params_add(params, "date", tmpbuf);
-
-		/* Setting time, gotta prepend it with 1 to
-		 * avoid octal parsing (this is stripped out in
-		 * XSLT */
-		tmpbuf[0] = '1';
-		memcpy(tmpbuf + 1, iter + 8, 6);
-		tmpbuf[7] = 0;
-		xml_params_add(params, "time", tmpbuf);
-
-		/* Air temperature */
-		memset(tmpbuf, 0, sizeof(tmpbuf));
-		iter = strchr(iter, '|');
-
-		if (iter) {
-			iter = iter + 1;
-			iter_end = strchr(iter, '|');
-
-			if (iter_end) {
-				memcpy(tmpbuf, iter, iter_end - iter);
-				xml_params_add(params, "airTemp", tmpbuf);
-			}
-		}
-
-		/* Search for the next line */
-		if (iter)
-			iter = parse_dan_new_line(iter, NL);
-		if (!iter)
-			return -1;
-
-		/* We got a trailer, no samples on this dive */
-		if (strncmp(iter, "ZDT", 3) == 0) {
-			end_ptr = iter - mem.data();
-
-			/* Water temperature */
-			memset(tmpbuf, 0, sizeof(tmpbuf));
-			for (i = 0; i < 5 && iter; ++i)
-				iter = strchr(iter + 1, '|');
-
-			if (iter) {
-				iter = iter + 1;
-				iter_end = strchr(iter, '|');
-
-				if (iter_end) {
-					memcpy(tmpbuf, iter, iter_end - iter);
-					xml_params_add(params, "waterTemp", tmpbuf);
-				}
-			}
-			ret |= parse_xml_buffer(filename, "<csv></csv>", 11, log, params);
-			continue;
-		}
-
-		/* After ZDH we should get either ZDT (above) or ZDP */
-		if (strncmp(iter, "ZDP{", 4) != 0) {
-			report_info("DEBUG: Input appears to violate DL7 specification");
-			end_ptr = iter - mem.data();
-			continue;
-		}
-
-		if (ptr && ptr[4] == '}')
-			return report_error(translate("gettextFromC", "No dive profile found from '%s'"), filename);
-
-		if (ptr)
+		// Locate the ZDH header.
+		while (strncmp(ptr, "ZDH", 3) != 0) {
 			ptr = parse_dan_new_line(ptr, NL);
-		if (!ptr)
-			return -1;
+			if (!ptr)
+				return report_error("Expected ZDH header not found");
+		}
 
-		end_ptr = ptr - mem.data();
+		if (int ret = parse_dan_zdh(NL, params, ptr); ret < 0)
+			return ret;
 
-		/* Copy the current dive data to start of mem_csv buffer */
-		std::string mem_csv(ptr,  mem.size() - (ptr - mem.data()));
+		// Attempt to parse the ZDP field (optional)
+		std::string mem_csv;
+		if (strncmp(ptr, "ZDP", 3) == 0) {
+			if (int ret = parse_dan_zdp(NL, filename, params, ptr, mem_csv); ret < 0)
+				return ret;
+		}
 
-		ptr = strstr(mem_csv.data(), "ZDP}");
-		if (ptr) {
-			*ptr = 0;
+		// Parse the mandatorty ZDT field
+		if (strncmp(ptr, "ZDT", 3) == 0) {
+			if (int ret = parse_dan_zdt(NL, params, ptr); ret < 0)
+				return ret;
 		} else {
-			report_info("DEBUG: failed to find end ZDP");
-			return -1;
+			return report_error("Expected ZDT trailer not found");
 		}
-		mem_csv.resize(ptr - mem_csv.data());
-		end_ptr += ptr - mem_csv.data();
 
-		iter = parse_dan_new_line(ptr + 1, NL);
-		if (iter && strncmp(iter, "ZDT", 3) == 0) {
-			/* Water temperature */
-			memset(tmpbuf, 0, sizeof(tmpbuf));
-			for (i = 0; i < 5 && iter; ++i)
-				iter = strchr(iter + 1, '|');
-
-			if (iter) {
-				iter = iter + 1;
-				iter_end = strchr(iter, '|');
-
-				if (iter_end) {
-					memcpy(tmpbuf, iter, iter_end - iter);
-					xml_params_add(params, "waterTemp", tmpbuf);
-				}
-			}
-		}
 
 		if (try_to_xslt_open_csv(filename, mem_csv, "csv"))
 			return -1;
