@@ -92,7 +92,8 @@ static void write_dive_status(struct membuffer *b, const struct dive &dive)
 
 static void put_HTML_bookmarks(struct membuffer *b, const struct dive &dive)
 {
-	const char *separator = "\"events\":[";
+	const char *separator = "";
+	put_string(b, "\"events\":[");
 	for (const auto &ev: dive.dcs[0].events) {
 		put_string(b, separator);
 		separator = ", ";
