@@ -13,13 +13,22 @@
 #include "format.h"
 #include "libdivecomputer.h"
 
+// As supplied by Divesoft
+static const char divesoft_liberty_serial_prefix[] = "7026";
+static const char divesoft_freedom_serial_prefix[] = "7044";
+static const char divesoft_freedom_plus_serial_prefix[] = "7273";
+
+// From libdivecomputer
+static const int divesoft_liberty_model = 10;
+static const int divesoft_freedom_model = 19;
+
 int divesoft_import(const std::unique_ptr<std::vector<unsigned char>> &buffer, struct divelog *log)
 {
 	int model = 0;
-	if (strncmp((char *)(buffer->data() + 52), "7026", 4) == 0)
-		model = 10;
-	else if (strncmp((char *)(buffer->data() + 52), "7044", 4) == 0 || strncmp((char *)(buffer->data() + 52), "7273", 4) == 0)
-		model = 19;
+	if (strncmp((char *)(buffer->data() + 52), divesoft_liberty_serial_prefix, 4) == 0)
+		model = divesoft_liberty_model;
+	else if (strncmp((char *)(buffer->data() + 52), divesoft_freedom_serial_prefix, 4) == 0 || strncmp((char *)(buffer->data() + 52), divesoft_freedom_plus_serial_prefix, 4) == 0)
+		model = divesoft_freedom_model;
 	device_data_t devdata;
 	int ret = prepare_device_descriptor(model, DC_FAMILY_DIVESOFT_FREEDOM, devdata);
 	if (ret == 0)

@@ -278,7 +278,6 @@ static std::unique_ptr<std::vector<unsigned char>> read_into_buffer(const char *
 		return NULL;
 	}
 
-	// Open the archive
 	FILE *archive;
 	if ((archive = subsurface_fopen(file, "rb")) == NULL) {
 		report_error(failed_to_read_msg, file);
