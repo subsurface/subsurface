@@ -150,7 +150,6 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buf, i
 int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
-int parse_dlf_buffer(unsigned char *buffer, size_t size, struct divelog *log);
 std::string trimspace(const char *buffer);
 
 #endif

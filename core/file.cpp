@@ -267,6 +267,44 @@ bool remote_repo_uptodate(const char *filename, struct git_info *info)
 	return false;
 }
 
+static std::unique_ptr<std::vector<unsigned char>> read_into_buffer(const char *file)
+{
+	const char *failed_to_read_msg = translate("gettextFromC", "Failed to read '%s'");
+
+	struct stat file_status;
+	if (stat(file, &file_status) < 0) {
+		report_error(failed_to_read_msg, file);
+
+		return NULL;
+	}
+
+	// Open the archive
+	FILE *archive;
+	if ((archive = subsurface_fopen(file, "rb")) == NULL) {
+		report_error(failed_to_read_msg, file);
+
+		return NULL;
+	}
+
+	// Read dive's raw data
+	auto buffer = std::make_unique<std::vector<unsigned char>>(file_status.st_size, 0);
+	int i = 0, c;
+	while ((c = getc(archive)) != EOF) {
+		(*buffer)[i] = c;
+
+		i++;
+	}
+	if (ferror(archive)) {
+		report_error(failed_to_read_msg, file);
+		fclose(archive);
+
+		return NULL;
+	}
+	fclose(archive);
+
+	return buffer;
+}
+
 int parse_file(const char *filename, struct divelog *log)
 {
 	struct git_info info;
@@ -304,8 +342,13 @@ int parse_file(const char *filename, struct divelog *log)
 	}
 
 	/* Divesoft Freedom */
-	if (fmt && (!strcasecmp(fmt + 1, "DLF")))
-		return parse_dlf_buffer((unsigned char *)mem.data(), mem.size(), log);
+	if (fmt && (!strcasecmp(fmt + 1, "DLF"))) {
+		auto buffer = read_into_buffer(filename);
+		if (buffer == NULL)
+			return -1;
+
+		return divesoft_import(buffer, log);
+	}
 
 	/* DataTrak/Wlog */
 	if (fmt && !strcasecmp(fmt + 1, "LOG")) {
@@ -321,8 +364,11 @@ int parse_file(const char *filename, struct divelog *log)
 
 	/* OSTCtools */
 	if (fmt && (!strcasecmp(fmt + 1, "DIVE"))) {
-		ostctools_import(filename, log);
-		return 0;
+		auto buffer = read_into_buffer(filename);
+		if (buffer == NULL)
+			return -1;
+
+		return ostctools_import(buffer, log);
 	}
 
 	return parse_file_buffer(filename, mem, log);

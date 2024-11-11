@@ -15,100 +15,47 @@
 #include "libdivecomputer.h"
 
 /*
- * Fills a device_data_t structure with known dc data and a descriptor.
- */
-static int ostc_prepare_data(int data_model, dc_family_t dc_fam, device_data_t &dev_data)
-{
-	dc_descriptor_t *data_descriptor;
-
-	dev_data.device = NULL;
-	dev_data.context = NULL;
-
-	data_descriptor = get_descriptor(dc_fam, data_model);
-	if (data_descriptor) {
-		dev_data.descriptor = data_descriptor;
-		dev_data.vendor = dc_descriptor_get_vendor(data_descriptor);
-		dev_data.model = dc_descriptor_get_product(data_descriptor);
-	} else {
-		return 0;
-	}
-	return 1;
-}
-
-/*
  * OSTCTools stores the raw dive data in heavily padded files, one dive
  * each file. So it's not necessary to iterate once and again on a parsing
  * function. Actually there's only one kind of archive for every DC model.
  */
-void ostctools_import(const char *file, struct divelog *log)
+int ostctools_import(const std::unique_ptr<std::vector<unsigned char>> &buffer, struct divelog *log)
 {
-	FILE *archive;
-	device_data_t devdata;
-	dc_family_t dc_fam;
-	std::vector<unsigned char> buffer(65536, 0);
-	unsigned char uc_tmp[2];
-	auto ostcdive = std::make_unique<dive>();
-	dc_status_t rc = DC_STATUS_SUCCESS;
-	int model, ret, i = 0, c;
-	unsigned int serial;
-	const char *failed_to_read_msg = translate("gettextFromC", "Failed to read '%s'");
-
-	// Open the archive
-	if ((archive = subsurface_fopen(file, "rb")) == NULL) {
-		report_error(failed_to_read_msg, file);
-		return;
-	}
+	if (buffer->size() < 456)
+		return report_error("%s", translate("gettextFromC", "Invalid OSTCTools file"));
 
 	// Read dive number from the log
-	if (fseek(archive, 258, 0) == -1) {
-		report_error(failed_to_read_msg, file);
-		fclose(archive);
-		return;
-	}
-	if (fread(uc_tmp, 1, 2, archive) != 2) {
-		report_error(failed_to_read_msg, file);
-		fclose(archive);
-		return;
-	}
-	ostcdive->number = uc_tmp[0] + (uc_tmp[1] << 8);
+	auto ostcdive = std::make_unique<dive>();
+	ostcdive->number = (*buffer)[258] + ((*buffer)[259] << 8);
+
 
 	// Read device's serial number
-	if (fseek(archive, 265, 0) == -1) {
-		report_error(failed_to_read_msg, file);
-		fclose(archive);
-		return;
-	}
-	if (fread(uc_tmp, 1, 2, archive) != 2) {
-		report_error(failed_to_read_msg, file);
-		fclose(archive);
-		return;
-	}
-	serial = uc_tmp[0] + (uc_tmp[1] << 8);
+	unsigned int serial = (*buffer)[265] + ((*buffer)[266] << 8);
 
-	// Read dive's raw data, header + profile
-	if (fseek(archive, 456, 0) == -1) {
-		report_error(failed_to_read_msg, file);
-		fclose(archive);
-		return;
-	}
-	while ((c = getc(archive)) != EOF) {
-		buffer[i] = c;
-		if (buffer[i] == 0xFD && buffer[i - 1] == 0xFD)
-			break;
+	// Trim the buffer to the actual dive data
+	buffer->erase(buffer->begin(), buffer->begin() + 456);
+	unsigned int i = 0;
+	bool end_marker = false;
+	for (auto c: *buffer) {
 		i++;
+		if (c == 0xFD) {
+			if (end_marker)
+				break;
+			else
+				end_marker = true;
+		} else {
+			end_marker = false;
+		}
 	}
-	if (ferror(archive)) {
-		report_error(failed_to_read_msg, file);
-		fclose(archive);
-		return;
-	}
-	fclose(archive);
+	if (end_marker)
+		buffer->erase(buffer->begin() + i, buffer->end());
 
 	// Try to determine the dc family based on the header type
-	if (buffer[2] == 0x20 || buffer[2] == 0x21) {
+	dc_family_t dc_fam;
+	if ((*buffer)[2] == 0x20 || (*buffer)[2] == 0x21) {
 		dc_fam = DC_FAMILY_HW_OSTC;
 	} else {
-		switch (buffer[8]) {
+		switch ((*buffer)[8]) {
 		case 0x22:
 			dc_fam = DC_FAMILY_HW_FROG;
 			break;
@@ -117,12 +64,12 @@ void ostctools_import(const char *file, struct divelog *log)
 			dc_fam = DC_FAMILY_HW_OSTC3;
 			break;
 		default:
-			report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
-			return;
+			return report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
 		}
 	}
 
 	// Try to determine the model based on serial number
+	int model;
 	switch (dc_fam) {
 	case DC_FAMILY_HW_OSTC:
 		if (serial > 7000)
@@ -145,17 +92,16 @@ void ostctools_import(const char *file, struct divelog *log)
 	}
 
 	// Prepare data to pass to libdivecomputer.
-	ret = ostc_prepare_data(model, dc_fam, devdata);
-	if (ret == 0) {
-		report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
-		return;
-	}
+	device_data_t devdata;
+	int ret = prepare_device_descriptor(model, dc_fam, devdata);
+	if (ret == 0)
+		return report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
 	ostcdive->dcs[0].model = devdata.vendor + " " + devdata.model + " (Imported from OSTCTools)";
 
 	// Parse the dive data
-	rc = libdc_buffer_parser(ostcdive.get(), &devdata, buffer.data(), i + 1);
+	dc_status_t rc = libdc_buffer_parser(ostcdive.get(), &devdata, buffer->data(), buffer->size());
 	if (rc != DC_STATUS_SUCCESS)
-		report_error(translate("gettextFromC", "Error - %s - parsing dive %d"), errmsg(rc), ostcdive->number);
+		return report_error(translate("gettextFromC", "Error - %s - parsing dive %d"), errmsg(rc), ostcdive->number);
 
 	// Serial number is not part of the header nor the profile, so libdc won't
 	// catch it. If Serial is part of the extra_data, and set to zero, replace it.
@@ -169,4 +115,6 @@ void ostctools_import(const char *file, struct divelog *log)
 		add_extra_data(&ostcdive->dcs[0], "Serial", ostcdive->dcs[0].serial);
 
 	log->dives.record_dive(std::move(ostcdive));
+
+	return 1;
 }

@@ -77,6 +77,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divesitetable.h
 	divesitehelpers.cpp
 	divesitehelpers.h
+	divesoft.cpp
 	downloadfromdcthread.cpp
 	downloadfromdcthread.h
 	event.cpp
