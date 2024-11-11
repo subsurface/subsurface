@@ -1535,6 +1535,26 @@ std::string do_libdivecomputer_import(device_data_t *data)
 }
 
 /*
+ * Fills a device_data_t structure with known dc data and a descriptor.
+ */
+int prepare_device_descriptor(int data_model, dc_family_t dc_fam, device_data_t &dev_data)
+{
+	dev_data.device = NULL;
+	dev_data.context = NULL;
+
+	dc_descriptor_t *data_descriptor = get_descriptor(dc_fam, data_model);
+	if (data_descriptor) {
+		dev_data.descriptor = data_descriptor;
+		dev_data.vendor = dc_descriptor_get_vendor(data_descriptor);
+		dev_data.model = dc_descriptor_get_product(data_descriptor);
+	} else {
+		return 0;
+	}
+
+	return 1;
+}
+
+/*
  * Parse data buffers instead of dc devices downloaded data.
  * Intended to be used to parse profile data from binary files during import tasks.
  * Actually included Uwatec families because of works on datatrak and smartrak logs
@@ -1543,7 +1563,7 @@ std::string do_libdivecomputer_import(device_data_t *data)
  * Note that dc_descriptor_t in data  *must* have been filled using dc_descriptor_iterator()
  * calls.
  */
-dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned char *buffer, int size)
+dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const unsigned char *buffer, int size)
 {
 	dc_status_t rc;
 	dc_parser_t *parser = NULL;
@@ -1556,6 +1576,7 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 	case DC_FAMILY_HW_OSTC:
 	case DC_FAMILY_HW_FROG:
 	case DC_FAMILY_HW_OSTC3:
+	case DC_FAMILY_DIVESOFT_FREEDOM:
 		rc = dc_parser_new2(&parser, data->context, data->descriptor, buffer, size);
 		break;
 	default:

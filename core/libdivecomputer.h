@@ -54,7 +54,8 @@ struct device_data_t {
 
 const char *errmsg (dc_status_t rc);
 std::string do_libdivecomputer_import(device_data_t *data);
-dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned char *buffer, int size);
+int prepare_device_descriptor(int data_model, dc_family_t dc_fam, device_data_t &dev_data);
+dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const unsigned char *buffer, int size);
 void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata);
 dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model);
 

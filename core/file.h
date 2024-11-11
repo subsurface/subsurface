@@ -8,11 +8,13 @@
 #include <stdio.h>
 #include <vector>
 #include <utility>
+#include <memory>
 
 struct divelog;
 struct zip;
 
-extern void ostctools_import(const char *file, struct divelog *log);
+extern int ostctools_import(const std::unique_ptr<std::vector<unsigned char>> &buffer, struct divelog *log);
+extern int divesoft_import(const std::unique_ptr<std::vector<unsigned char>> &buffer, struct divelog *log);
 
 extern int parse_file(const char *filename, struct divelog *log);
 extern int try_to_open_zip(const char *filename, struct divelog *log);
