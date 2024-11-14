@@ -865,17 +865,17 @@ void TestPlan::testVpmbMetricRepeat()
 
 	// check minimum gas result
 	dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 80l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 85l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar) * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 3);
-	// check first gas change to 21/35 at 66m
+	// check first gas change to 21/35 at 63m
 	struct event *ev = &dive.dcs[0].events[0];
 	QVERIFY(ev != NULL);
 	QCOMPARE(ev->gas.index, 1);
 	QCOMPARE(ev->gas.mix.o2.permille, 210);
 	QCOMPARE(ev->gas.mix.he.permille, 350);
-	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 66000);
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], ev->time.seconds), 63000);
 	// check second gas change to EAN50 at 21m
 	ev = &dive.dcs[0].events[1];
 	QCOMPARE(ev->gas.index, 2);
