@@ -2457,7 +2457,9 @@ int dive::mbar_to_depth(int mbar) const
 depth_t dive::gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const
 {
 	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix));
-	return depth_t { .mm = int_cast<int>(depth / roundto) * roundto };
+	// Rounding should be towards lower=safer depths but we give a bit
+	// of fudge to all to switch to o2 at 6m. So from .9 we round up.
+	return depth_t { .mm = (int)(depth / roundto + 0.1) * roundto };
 }
 
 /* Maximum narcotic depth rounded to multiples of roundto mm */
