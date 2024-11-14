@@ -74,6 +74,17 @@ diveplan::~diveplan()
 {
 }
 
+diveplan diveplan::copy_planned_segments() const
+{
+	diveplan res = *this;
+
+	// Remove non manually added entries
+	auto it = std::find_if(res.dp.begin(), res.dp.end(),
+			       [] (const divedatapoint &dp) { return dp.time && !dp.entered; });
+	res.dp.erase(it, res.dp.end());
+	return res;
+}
+
 bool diveplan::is_empty() const
 {
 	return std::none_of(dp.begin(), dp.end(), [](const divedatapoint &dp) { return dp.time != 0; });

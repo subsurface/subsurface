@@ -53,6 +53,7 @@ struct diveplan {
 	bool is_empty() const;
 	void add_plan_to_notes(struct dive &dive, bool show_disclaimer, planner_error_t error);
 	int duration() const;
+	diveplan copy_planned_segments() const; // copy diveplan, but ignore automatically added stops
 };
 
 struct deco_state_cache;
