@@ -1,7 +1,10 @@
 # Build the image using the --build-arg option, e.g.:
 # docker build -t boret/myimage:0.1 --build-arg=mxe_sha=123ABC456 .
 
-FROM ubuntu:24.04 as base
+# We need to stick with 22.04 for now because the latest MXE version
+# (db430dc676e6f5d77604af150b8acc1403af4fd7) does not build a working
+# version of QtWebKit, which breaks printing in Subsurface.
+FROM ubuntu:22.04 as base
 
 # update and set up the packages we need for the build
 RUN apt-get update  &&  \
@@ -54,8 +57,9 @@ RUN apt-get install -y \
     xz-utils \
     scons
 
-# very often master is broken, so we pass in a known good SHA
-ARG mxe_sha=d6377b2f2334694dbb040294fd0d848327e63328
+# Default to 'master' if no build argument is passed in
+ARG mxe_sha=master
+# Very often master is broken, so we pass in a known good SHA
 ENV _ver=${mxe_sha}
 
 WORKDIR /win

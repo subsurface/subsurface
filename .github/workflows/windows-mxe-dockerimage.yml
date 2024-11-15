@@ -12,8 +12,9 @@ jobs:
   windows-mxe:
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ '3.3.0' }}    # 'official' images should have a dot-zero version
-      mxe_sha: '974808c2ecb02866764d236fe533ae57ba342e7a'
+      VERSION: ${{ '3.4.0' }}    # 'official' images should have a dot-zero version
+      # Fix this here as QTWebKit (needed for printing) is broken in newer versions
+      mxe_sha: 'd6377b2f2334694dbb040294fd0d848327e63328'
 
     steps:
     - uses: actions/checkout@v4
