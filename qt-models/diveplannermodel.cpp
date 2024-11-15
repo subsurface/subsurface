@@ -1121,9 +1121,9 @@ void DivePlannerPointsModel::updateDiveProfile()
 	// For calculating variations, we need a copy of the plan. We have to copy _before_
 	// calling plan(), because that adds deco stops.
 	bool computeVariations = isPlanner() && shouldComputeVariations();
-	std::unique_ptr<struct diveplan> plan_copy;
+	struct diveplan plan_copy;
 	if (computeVariations)
-		plan_copy = std::make_unique<struct diveplan>(diveplan);
+		plan_copy = diveplan;
 
 	deco_state_cache cache;
 	struct deco_state plan_deco_state;
@@ -1133,26 +1133,10 @@ void DivePlannerPointsModel::updateDiveProfile()
 
 	if (computeVariations) {
 #ifdef VARIATIONS_IN_BACKGROUND
-		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
-		// on the stack, it must be copied and freed by the worker-thread.
-		auto deco_copy = std::make_unique<deco_state>(plan_deco_state);
-
-		// Ideally, we would pass the unique_ptrs to the lambda for QtConcurrent::run().
-		// This, in principle, can be done as such:
-		//	[ptr = std::move(ptr)] () mutable { f(std::move(ptr)) };
-		// However, this make the lambda uncopyable and QtConcurrent::run() sadly
-		// uses copy semantics.
-		// So let's be pragmatic and do a release/reaquire pair.
-		// Somewhat disappointing, but what do you want to do?
-		// Note 1: this is now not exception safe, but Qt doesn't support
-		//	exceptions anyway.
-		// Note 2: We also can't use the function / argument syntax of QtConcurrent::run(),
-		//	because it likewise uses copy-semantics. How annoying.
-		QtConcurrent::run([this, plan = plan_copy.release(), deco = deco_copy.release()] ()
-				  { this->computeVariationsFreeDeco(std::unique_ptr<struct diveplan>(plan),
-								    std::unique_ptr<deco_state>(deco)); });
+		QtConcurrent::run([this, plan = std::move(plan_copy), deco = plan_deco_state] ()
+				  { this->computeVariations(std::move(plan), deco); });
 #else
-		computeVariations(std::move(plan_copy), &plan_deco_state);
+		computeVariations(std::move(plan_copy), plan_deco_state);
 #endif
 		final_deco_state = plan_deco_state;
 	}
@@ -1197,12 +1181,6 @@ int DivePlannerPointsModel::analyzeVariations(const std::vector<decostop> &min, 
 	return (leftsum + rightsum) / 2;
 }
 
-void DivePlannerPointsModel::computeVariationsFreeDeco(std::unique_ptr<struct diveplan> original_plan, std::unique_ptr<struct deco_state> previous_ds)
-{
-	computeVariations(std::move(original_plan), previous_ds.get());
-	// Note: previous ds automatically free()d by virtue of being a unique_ptr.
-}
-
 // Return reference to second to last element.
 // Caller is responsible for checking that there are at least two elements.
 template <typename T>
@@ -1211,17 +1189,16 @@ auto &second_to_last(T &v)
 	return *std::prev(std::prev(v.end()));
 }
 
-void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> original_plan, const struct deco_state *previous_ds)
+void DivePlannerPointsModel::computeVariations(struct diveplan original_plan, struct deco_state ds)
 {
 	// nothing to do unless there's an original plan
-	if (!original_plan)
+	if (original_plan.dp.empty())
 		return;
 
 	auto dive = std::make_unique<struct dive>();
 	copy_dive(d, dive.get());
 	deco_state_cache cache, save;
 	struct diveplan plan_copy;
-	struct deco_state ds = *previous_ds;
 
 	int my_instance = ++instanceCounter;
 	save.cache(&ds);
@@ -1239,7 +1216,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 		depth_units = tr("ft");
 	}
 
-	plan_copy = *original_plan;
+	plan_copy = original_plan;
 	if (plan_copy.dp.size() < 2)
 		return;
 	if (my_instance != instanceCounter)
@@ -1247,7 +1224,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	auto original = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
-	plan_copy = *original_plan;
+	plan_copy = original_plan;
 	second_to_last(plan_copy.dp).depth.mm += delta_depth.mm;
 	plan_copy.dp.back().depth.mm += delta_depth.mm;
 	if (my_instance != instanceCounter)
@@ -1255,7 +1232,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	auto deeper = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
-	plan_copy = *original_plan;
+	plan_copy = original_plan;
 	second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
 	plan_copy.dp.back().depth.mm -= delta_depth.mm;
 	if (my_instance != instanceCounter)
@@ -1263,14 +1240,14 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	auto shallower = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
-	plan_copy = *original_plan;
+	plan_copy = original_plan;
 	plan_copy.dp.back().time += delta_time.seconds;
 	if (my_instance != instanceCounter)
 		return;
 	auto longer = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
-	plan_copy = *original_plan;
+	plan_copy = original_plan;
 	plan_copy.dp.back().time -= delta_time.seconds;
 	if (my_instance != instanceCounter)
 		return;
@@ -1315,14 +1292,14 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 
 	// For calculating variations, we need a copy of the plan. We have to copy _before_
 	// calling plan(), because that adds deco stops.
-	std::unique_ptr<struct diveplan> plan_copy;
+	struct diveplan plan_copy;
 	if (shouldComputeVariations())
-		plan_copy = std::make_unique<struct diveplan>(diveplan);
+		plan_copy = diveplan;
 
 	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, cache, isPlanner(), true);
 
 	if (shouldComputeVariations())
-		computeVariations(std::move(plan_copy), &ds_after_previous_dives);
+		computeVariations(std::move(plan_copy), ds_after_previous_dives);
 
 	// Fixup planner notes.
 	if (current_dive && d->id == current_dive->id) {
