@@ -131,8 +131,7 @@ private:
 	void createTemporaryPlan();
 	struct diveplan diveplan;
 	void computeVariationsDone(QString text);
-	void computeVariations(std::unique_ptr<struct diveplan> plan, const struct deco_state *ds);
-	void computeVariationsFreeDeco(std::unique_ptr<struct diveplan> plan, std::unique_ptr<struct deco_state> ds);
+	void computeVariations(struct diveplan plan, struct deco_state ds); // Note: works on copies of plan and ds
 	int analyzeVariations(const std::vector<decostop> &min, const std::vector<decostop> &mid, const std::vector<decostop> &max, const char *unit);
 	struct dive *d;
 	int dcNr;
