@@ -1118,17 +1118,20 @@ void DivePlannerPointsModel::updateDiveProfile()
 	if (diveplan.is_empty())
 		return;
 
+	// For calculating variations, we need a copy of the plan. We have to copy _before_
+	// calling plan(), because that adds deco stops.
+	bool computeVariations = isPlanner() && shouldComputeVariations();
+	std::unique_ptr<struct diveplan> plan_copy;
+	if (computeVariations)
+		plan_copy = std::make_unique<struct diveplan>(diveplan);
+
 	deco_state_cache cache;
 	struct deco_state plan_deco_state;
 
 	plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, cache, isPlanner(), false);
 	updateMaxDepth();
 
-	if (isPlanner() && shouldComputeVariations()) {
-		auto plan_copy = std::make_unique<struct diveplan>();
-		lock_planner();
-		*plan_copy = diveplan;
-		unlock_planner();
+	if (computeVariations) {
 #ifdef VARIATIONS_IN_BACKGROUND
 		// Since we're calling computeVariations asynchronously and plan_deco_state is allocated
 		// on the stack, it must be copied and freed by the worker-thread.
@@ -1252,6 +1255,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	auto deeper = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
+	plan_copy = *original_plan;
 	second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
 	plan_copy.dp.back().depth.mm -= delta_depth.mm;
 	if (my_instance != instanceCounter)
@@ -1266,6 +1270,7 @@ void DivePlannerPointsModel::computeVariations(std::unique_ptr<struct diveplan> 
 	auto longer = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
 	save.restore(&ds, false);
 
+	plan_copy = *original_plan;
 	plan_copy.dp.back().time -= delta_time.seconds;
 	if (my_instance != instanceCounter)
 		return;
@@ -1308,15 +1313,16 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	removeDeco();
 	createTemporaryPlan();
 
+	// For calculating variations, we need a copy of the plan. We have to copy _before_
+	// calling plan(), because that adds deco stops.
+	std::unique_ptr<struct diveplan> plan_copy;
+	if (shouldComputeVariations())
+		plan_copy = std::make_unique<struct diveplan>(diveplan);
+
 	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, cache, isPlanner(), true);
 
-	if (shouldComputeVariations()) {
-		auto plan_copy = std::make_unique<struct diveplan>();
-		lock_planner();
-		*plan_copy = diveplan;
-		unlock_planner();
+	if (shouldComputeVariations())
 		computeVariations(std::move(plan_copy), &ds_after_previous_dives);
-	}
 
 	// Fixup planner notes.
 	if (current_dive && d->id == current_dive->id) {
