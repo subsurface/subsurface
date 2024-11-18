@@ -15,9 +15,10 @@ CURRENT_LIBXML2="v2.9.4"
 CURRENT_LIBFTDI="abd19b721f7e9b4d514ed319ece173ebc7b1ea72"
 CURRENT_KIRIGAMI="v5.76.0"
 CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
+CURRENT_GOOGLEMAPS="master"
 CURRENT_MDBTOOLS="v1.0.0"
-CURRENT_QT_ANDROID_CMAKE="master"
-CURRENT_LIBMTP="master"
+CURRENT_QT_ANDROID_CMAKE="fa363d60e389afbcd56c31ab4dd9723708b79fbe"
+CURRENT_LIBMTP="d578ba117e4a6f4de666e22c4ea380c2c0befea1"
 
 # Checkout library from git
 # Ensure specified version is checked out,
@@ -169,7 +170,7 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library breeze-icons $CURRENT_BREEZE_ICONS https://github.com/kde/breeze-icons.git
 			;;
 		googlemaps)
-			git_checkout_library googlemaps master https://github.com/Subsurface/googlemaps.git
+			git_checkout_library googlemaps $CURRENT_GOOGLEMAPS https://github.com/Subsurface/googlemaps.git
 			;;
 		hidapi)
 			git_checkout_library hidapi master https://github.com/libusb/hidapi.git
