@@ -34,7 +34,7 @@ if [[ -z "${CONTAINER_ID}" ]]; then
 		croak "Please make sure GIT_AUTHOR_NAME and GIT_AUTHOR_EMAIL are set for the first run of this script."
 	fi
 
-	docker create -v ${SUBSURFACE_ROOT}:${CONTAINER_SUBSURFACE_DIR} --name=${CONTAINER_NAME} subsurface/mxe-build:3.3.0 sleep infinity
+	docker create -v ${SUBSURFACE_ROOT}:${CONTAINER_SUBSURFACE_DIR} --name=${CONTAINER_NAME} subsurface/mxe-build:3.4.0 sleep infinity
 fi
 
 # Start the container
