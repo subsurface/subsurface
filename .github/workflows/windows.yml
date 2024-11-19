@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: docker://subsurface/mxe-build:3.3.0
+      image: docker://subsurface/mxe-build:3.4.0
 
     steps:
     - name: checkout sources
