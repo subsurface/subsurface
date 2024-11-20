@@ -27,6 +27,8 @@
 #include "qthelper.h"
 #include "version.h"
 
+#define DEBUG_PLAN 255
+
 static constexpr int base_timestep = 2; // seconds
 
 static std::vector<depth_t> decostoplevels_metric = { 0_m, 3_m, 6_m, 9_m, 12_m, 15_m, 18_m, 21_m, 24_m, 27_m,
@@ -46,23 +48,19 @@ static std::vector<depth_t> decostoplevels_imperial = { 0_ft, 10_ft, 20_ft, 30_f
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
 {
-	struct divedatapoint *dp;
-	struct tm tm;
-
 	if (!diveplan) {
 		printf("Diveplan NULL\n");
 		return;
 	}
+	struct tm tm;
 	utc_mkdate(diveplan->when, &tm);
 
 	printf("\nDiveplan @ %04d-%02d-%02d %02d:%02d:%02d (surfpres %dmbar):\n",
 	       tm.tm_year, tm.tm_mon + 1, tm.tm_mday,
 	       tm.tm_hour, tm.tm_min, tm.tm_sec,
 	       diveplan->surface_pressure.mbar);
-	dp = diveplan->dp;
-	while (dp) {
-		printf("\t%3u:%02u: %6dmm cylid: %2d setpoint: %d\n", FRACTION_TUPLE(dp->time, 60), dp->depth, dp->cylinderid, dp->setpoint);
-		dp = dp->next;
+	for (auto &dp: diveplan->dp) {
+		printf("\t%3u:%02u: %6dmm cylid: %2d setpoint: %d\n", FRACTION_TUPLE(dp.time, 60), dp.depth.mm, dp.cylinderid, dp.setpoint);
 	}
 }
 #endif
@@ -210,7 +208,7 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 		return;
 #if DEBUG_PLAN & 4
 	printf("in create_dive_from_plan\n");
-	dump_plan(diveplan);
+	dump_plan(&diveplan);
 #endif
 	dive->salinity = diveplan.salinity;
 	// reset the cylinders and clear out the samples and events of the
@@ -297,7 +295,7 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 	dc->last_manual_time.seconds = last_manual_point;
 
 #if DEBUG_PLAN & 32
-	save_dive(stdout, *dive);
+	save_dive(stdout, *dive, false);
 #endif
 	return;
 }
@@ -393,8 +391,8 @@ static std::vector<gaschanges> analyze_gaslist(const struct diveplan &diveplan, 
 #if DEBUG_PLAN & 16
 	for (size_t nr = 0; nr < gaschanges.size(); nr++) {
 		int idx = gaschanges[nr].gasidx;
-		printf("gaschange nr %d: @ %5.2lfm gasidx %d (%s)\n", nr, gaschanges[nr].depth / 1000.0,
-		       idx, dive.get_cylinder(idx)->gasmix.name().c_str());
+		printf("gaschange nr %zu: @ %5.2lfm gasidx %d (%s)\n", nr, gaschanges[nr].depth / 1000.0,
+		       idx, dive->get_cylinder(idx)->gasmix.name().c_str());
 	}
 #endif
 	return gaschanges;
@@ -777,7 +775,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 
 #if DEBUG_PLAN & 16
 		printf("switch to gas %d (%d/%d) @ %5.2lfm\n", best_first_ascend_cylinder,
-		       (get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[best_first_ascend_cylinder].depth.mm / 1000.0);
+		       (get_o2(gas) + 5) / 10, (get_he(gas) + 5) / 10, gaschanges[best_first_ascend_cylinder].depth.mm / 1000.0);
 #endif
 	}
 
@@ -890,7 +888,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 #if DEBUG_PLAN & 16
 						gas = dive->get_cylinder(current_cylinder)->gasmix;
 						printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
-							(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
+							(get_o2(gas) + 5) / 10, (get_he(gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
 						/* Stop for the minimum duration to switch gas unless we switch to o2 */
 						if (!last_segment_min_switch && get_o2(dive->get_cylinder(current_cylinder)->gasmix) != 1000) {
@@ -944,7 +942,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 #if DEBUG_PLAN & 16
 					gas = dive->get_cylinder(current_cylinder)->gasmix;
 					printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi + 1].gasidx,
-						(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi + 1].depth / 1000.0);
+						(get_o2(gas) + 5) / 10, (get_he(gas) + 5) / 10, gaschanges[gi + 1].depth / 1000.0);
 #endif
 					/* Stop for the minimum duration to switch gas unless we switch to o2 */
 					if (!last_segment_min_switch && get_o2(dive->get_cylinder(current_cylinder)->gasmix) != 1000) {
