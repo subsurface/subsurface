@@ -27,7 +27,7 @@
 #include "qthelper.h"
 #include "version.h"
 
-#define DEBUG_PLAN 255
+//#define DEBUG_PLAN 255
 
 static constexpr int base_timestep = 2; // seconds
 
@@ -46,20 +46,16 @@ static std::vector<depth_t> decostoplevels_imperial = { 0_ft, 10_ft, 20_ft, 30_f
 					1067_ft, 1133_ft, 1200_ft, 1267_ft };
 
 #if DEBUG_PLAN
-void dump_plan(struct diveplan *diveplan)
+void dump_plan(const struct diveplan &diveplan)
 {
-	if (!diveplan) {
-		printf("Diveplan NULL\n");
-		return;
-	}
 	struct tm tm;
-	utc_mkdate(diveplan->when, &tm);
+	utc_mkdate(diveplan.when, &tm);
 
 	printf("\nDiveplan @ %04d-%02d-%02d %02d:%02d:%02d (surfpres %dmbar):\n",
 	       tm.tm_year, tm.tm_mon + 1, tm.tm_mday,
 	       tm.tm_hour, tm.tm_min, tm.tm_sec,
-	       diveplan->surface_pressure.mbar);
-	for (auto &dp: diveplan->dp) {
+	       diveplan.surface_pressure.mbar);
+	for (auto &dp: diveplan.dp) {
 		printf("\t%3u:%02u: %6dmm cylid: %2d setpoint: %d\n", FRACTION_TUPLE(dp.time, 60), dp.depth.mm, dp.cylinderid, dp.setpoint);
 	}
 }
@@ -208,7 +204,7 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 		return;
 #if DEBUG_PLAN & 4
 	printf("in create_dive_from_plan\n");
-	dump_plan(&diveplan);
+	dump_plan(diveplan);
 #endif
 	dive->salinity = diveplan.salinity;
 	// reset the cylinders and clear out the samples and events of the
@@ -775,7 +771,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 
 #if DEBUG_PLAN & 16
 		printf("switch to gas %d (%d/%d) @ %5.2lfm\n", best_first_ascend_cylinder,
-		       (get_o2(gas) + 5) / 10, (get_he(gas) + 5) / 10, gaschanges[best_first_ascend_cylinder].depth.mm / 1000.0);
+		       (get_o2(gas) + 5) / 10, (get_he(gas) + 5) / 10, gaschanges[best_first_ascend_cylinder].depth / 1000.0);
 #endif
 	}
 
