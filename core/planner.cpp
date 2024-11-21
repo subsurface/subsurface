@@ -27,7 +27,7 @@
 #include "qthelper.h"
 #include "version.h"
 
-#define DEBUG_PLAN 255
+//#define DEBUG_PLAN 255
 
 static constexpr int base_timestep = 2; // seconds
 
