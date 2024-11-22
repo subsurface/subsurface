@@ -131,7 +131,6 @@ if [[ "$1" == "debug" ]] ; then
 	RELEASE="Debug"
 	RELEASE_MAIN="Debug"
 	RELEASE_GM="debug"
-	DLL_SUFFIX="d"
 	shift
 	if [[ -f Release ]] ; then
 		rm -rf *
@@ -141,7 +140,6 @@ else
 	RELEASE="Release"
 	RELEASE_MAIN="RelWithDebInfo"
 	RELEASE_GM="release"
-	DLL_SUFFIX=""
 	if [[ -f Debug ]] ; then
 		rm -rf *
 	fi
@@ -281,9 +279,9 @@ done
 
 # for some reason we aren't installing Qt5Xml.dll and Qt5Location.dll
 # I need to figure out why and fix that, but for now just manually copy that as well
-EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5Xml$DLL_SUFFIX.dll \
-$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5Location$DLL_SUFFIX.dll \
-$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5QmlWorkerScript$DLL_SUFFIX.dll"
+EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5Xml.dll \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5Location.dll \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5QmlWorkerScript.dll"
 
 for f in $EXTRA_MANUAL_DEPENDENCIES
 do

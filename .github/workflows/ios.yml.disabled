@@ -11,6 +11,7 @@ on:
     - scripts/docker/**
     branches:
     - master
+  workflow_dispatch:
 
 jobs:
   build:
@@ -45,12 +46,18 @@ jobs:
       env:
         VERSION: ${{ steps.version_number.outputs.version }}
       run: |
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
         cd ..
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
         export IOS_QT=$GITHUB_WORKSPACE/qt-ios
         echo "build for simulator"
-        bash -x $GITHUB_WORKSPACE/packaging/ios/build.sh -simulator
+        bash -x $GITHUB_WORKSPACE/packaging/ios/build.sh -simulator ${BUILD_EXTRA_ARGS}
         # We need this in order to be able to access the file and publish it
         mv build-Subsurface-mobile-Qt_5_14_1_for_iOS-Release/Release-iphonesimulator/Subsurface-mobile.app $GITHUB_WORKSPACE/Subsurface-mobile-$VERSION.app
 

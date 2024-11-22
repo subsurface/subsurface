@@ -11,6 +11,7 @@ on:
     - scripts/docker/**
     branches:
     - master
+  workflow_dispatch:
 
 jobs:
   build:
@@ -49,6 +50,12 @@ jobs:
         VERSION: ${{ steps.version_number.outputs.version }}
         VERSION_4: ${{ steps.version_number.outputs.version_4 }}
       run: |
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} release"
+        fi
+
         # this is rather awkward, but it allows us to use the preinstalled
         # Android and Qt versions with relative paths
         cd ..
@@ -65,7 +72,7 @@ jobs:
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
         # get the build number via curl so this works both for a pull request as well as a push
         export OUTPUT_DIR="$GITHUB_WORKSPACE"
-        bash -x ./subsurface/packaging/android/qmake-build.sh -buildnr $BUILDNR -canonicalversion $VERSION -canonicalversion_4 $VERSION_4
+        bash -x ./subsurface/packaging/android/qmake-build.sh ${BUILD_EXTRA_ARGS} -buildnr $BUILDNR -canonicalversion $VERSION -canonicalversion_4 $VERSION_4
 
     - name: delete the keystore
       if: github.event_name == 'push'

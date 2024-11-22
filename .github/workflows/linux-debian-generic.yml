@@ -71,9 +71,15 @@ jobs:
         echo "--------------------------------------------------------------"
         echo "building desktop"
 
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
         # now build for the desktop version (including WebKit)
         cd ..
-        bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit
+        bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit ${BUILD_EXTRA_ARGS}
 
     - name: test desktop build
       run: |
