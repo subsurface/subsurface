@@ -44,6 +44,12 @@ jobs:
       env:
         CANONICALVERSION: ${{ steps.version_number.outputs.version }}
       run: |
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
         cd ${GITHUB_WORKSPACE}/..
         export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.15
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
@@ -51,7 +57,7 @@ jobs:
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
 
         # now setup Subsurface with WebKit and build the dependencies, using the generic build script
-        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release -build-deps -ftdi -prep-only
+        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -build-deps -ftdi -prep-only ${BUILD_EXTRA_ARGS}
 
         echo "finished initial cmake setup of Subsurface - next build the package"
         cd subsurface/build

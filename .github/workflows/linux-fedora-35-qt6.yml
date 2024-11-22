@@ -11,6 +11,7 @@ on:
     - scripts/docker/**
     branches:
     - master
+  workflow_dispatch:
 
 jobs:
   build:
@@ -52,12 +53,18 @@ jobs:
         echo "--------------------------------------------------------------"
         echo "building desktop"
 
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
         # now build for the desktop version (without WebKit)
         cd ..
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
         git config --global --get-all safe.directory
-        bash -e -x subsurface/scripts/build.sh -desktop -build-with-qt6
+        bash -e -x subsurface/scripts/build.sh -desktop -build-with-qt6 ${BUILD_EXTRA_ARGS}
 
     - name: test desktop build
       run: |

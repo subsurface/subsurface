@@ -47,9 +47,15 @@ jobs:
         CANONICALVERSION: ${{ steps.version_number.outputs.version }}
         CANONICALVERSION_4: ${{ steps.version_number.outputs.version_4 }}
       run: |
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
         export OUTPUT_DIR="$GITHUB_WORKSPACE"
         cd /win
-        bash -x subsurface/packaging/windows/in-container-build.sh 2>&1 | tee build.log
+        bash -x subsurface/packaging/windows/in-container-build.sh ${BUILD_EXTRA_ARGS} 2>&1 | tee build.log
         grep "Built target installer" build.log
 
     - name: publish pull request artifacts

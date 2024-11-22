@@ -13,9 +13,17 @@ set -e
 mkdir -p win32
 cd win32
 
+BUILD_EXTRA_ARGS="debug"
+SMTK2SSRF_EXTRA_ARGS="-b debug"
+if [[ "$1" == "-release" ]]; then
+    BUILD_EXTRA_ARGS=""
+    SMTK2SSRF_BUILD_EXTRA_ARGS="-b release"
+    shift
+fi
+
 # build Subsurface
 export MXEBUILDTYPE=x86_64-w64-mingw32.shared
-bash -ex ../subsurface/packaging/windows/mxe-based-build.sh installer
+bash -ex ../subsurface/packaging/windows/mxe-based-build.sh ${BUILD_EXTRA_ARGS} installer
 
 # the strange two step move is in order to get predictable names to use
 # in the publish step of the GitHub Action
@@ -27,7 +35,7 @@ mv subsurface/"$fullname" ${OUTPUT_DIR}/"${fullname%.exe}-installer.exe"
 
 bash -ex ../subsurface/packaging/windows/mxe-based-build.sh -noftdi -nolibraw subsurface
 
-bash -ex ../subsurface/packaging/windows/smtk2ssrf-mxe-build.sh -a -i
+bash -ex ../subsurface/packaging/windows/smtk2ssrf-mxe-build.sh ${SMTK2SSRF_BUILD_EXTRA_ARGS} -a -i
 
 # the strange two step move is in order to get predictable names to use
 # in the publish step of the GitHub Action

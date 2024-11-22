@@ -11,6 +11,7 @@ on:
     - scripts/docker/**
     branches:
     - master
+  workflow_dispatch:
 
 jobs:
   do-build-test:
