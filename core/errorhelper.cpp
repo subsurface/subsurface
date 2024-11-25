@@ -11,6 +11,10 @@
 #define LOG_MSG(fmt, s)	__android_log_print(ANDROID_LOG_INFO, "Subsurface", fmt, s);
 #endif
 
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+extern void writeToAppLogFile(QString logText);
+#endif
+
 int verbose;
 
 void report_info(const char *fmt, ...)
@@ -20,6 +24,10 @@ void report_info(const char *fmt, ...)
 	std::string s = vformat_string_std(fmt, args);
 	va_end(args);
 	LOG_MSG("INFO: %s\n", s.c_str());
+
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+	writeToAppLogFile(s.c_str());
+#endif
 }
 
 static void (*error_cb)(std::string) = NULL;
@@ -31,6 +39,10 @@ int report_error(const char *fmt, ...)
 	std::string s = vformat_string_std(fmt, args);
 	va_end(args);
 	LOG_MSG("ERROR: %s\n", s.c_str());
+
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+	writeToAppLogFile(s.c_str());
+#endif
 
 	/* if there is no error callback registered, don't produce errors */
 	if (error_cb)
