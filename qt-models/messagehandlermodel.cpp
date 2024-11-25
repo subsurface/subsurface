@@ -3,10 +3,6 @@
 #include "core/errorhelper.h"
 #include "QRegularExpression"
 
-#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-extern void writeToAppLogFile(QString logText);
-#endif
-
 void logMessageHandler(QtMsgType type, const QMessageLogContext&, const QString &msg)
 {
 	MessageHandlerModel::self()->addLog(type, msg);
@@ -48,9 +44,6 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 	m_data.append({message, type});
 	endInsertRows();
 	report_info("%s", qPrintable(message));
-#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-	writeToAppLogFile(message);
-#endif
 }
 
 const QString MessageHandlerModel::logAsString()
