@@ -1849,20 +1849,20 @@ void QMLManager::setBtEnabled(bool value)
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 
-void writeToAppLogFile(QString logText)
+void writeToAppLogFile(const std::string &logText)
 {
 	// write to storage and flush so that the data doesn't get lost
-	logText.append("\n");
 	QMLManager *self = QMLManager::instance();
 	if (self) {
 		self->writeToAppLogFile(logText);
 	}
 }
 
-void QMLManager::writeToAppLogFile(QString logText)
+void QMLManager::writeToAppLogFile(const std::string &logText)
 {
 	if (appLogFileOpen) {
-		appLogFile.write(qPrintable(logText));
+		std::string line = logText + "\n";
+		appLogFile.write(line.c_str());
 		appLogFile.flush();
 	}
 }

@@ -167,7 +167,7 @@ public:
 	QObject *qmlWindow;
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-	void writeToAppLogFile(QString logText);
+	void writeToAppLogFile(const std::string &logText);
 #endif
 	qPrefCloudStorage::cloud_status oldStatus() const;
 	void setOldStatus(const qPrefCloudStorage::cloud_status value);
