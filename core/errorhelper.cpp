@@ -12,7 +12,7 @@
 #endif
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-extern void writeToAppLogFile(QString logText);
+extern void writeToAppLogFile(const std::string &logText);
 #endif
 
 int verbose;
@@ -26,7 +26,7 @@ void report_info(const char *fmt, ...)
 	LOG_MSG("INFO: %s\n", s.c_str());
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-	writeToAppLogFile(s.c_str());
+	writeToAppLogFile(s);
 #endif
 }
 
@@ -41,7 +41,7 @@ int report_error(const char *fmt, ...)
 	LOG_MSG("ERROR: %s\n", s.c_str());
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-	writeToAppLogFile(s.c_str());
+	writeToAppLogFile(s);
 #endif
 
 	/* if there is no error callback registered, don't produce errors */
