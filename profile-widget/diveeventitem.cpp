@@ -77,12 +77,9 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pix
 		}
 	} else if ((((ev.flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
 		    // those are useless internals of the dive computer
-		   same_string_caseinsensitive(ev.name.c_str(), "heading") ||
 		   (same_string_caseinsensitive(ev.name.c_str(), "SP change") && ev.time.seconds == 0)) {
-		// 2 cases:
-		// a) some dive computers have heading in every sample
-		// b) at t=0 we might have an "SP change" to indicate dive type
-		// in both cases we want to get the right data into the tooltip but don't want the visual clutter
+		// at t=0 we might have an "SP change" to indicate dive type
+		// we want to get the right data into the tooltip but don't want the visual clutter
 		// so set an "almost invisible" pixmap (a narrow but somewhat tall, basically transparent pixmap)
 		// that allows tooltips to work when we don't want to show a specific
 		// pixmap for an event, but want to show the event value in the tooltip
