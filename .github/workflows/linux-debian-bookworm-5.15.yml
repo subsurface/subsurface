@@ -1,0 +1,20 @@
+name: Debian bookworm / Qt 5
+
+on:
+  push:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+  pull_request:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+  workflow_dispatch:
+
+jobs:
+  do-build-test:
+    uses: ./.github/workflows/linux-debian-generic.yml
+    with:
+      container-image: debian:bookworm
