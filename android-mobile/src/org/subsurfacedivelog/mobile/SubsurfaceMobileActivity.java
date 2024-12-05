@@ -30,6 +30,7 @@ import android.content.pm.ResolveInfo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import androidx.core.content.ContextCompat;
 
 // this is the main class that will be run at start
 public class SubsurfaceMobileActivity extends QtActivity
@@ -129,7 +130,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 
 		// Register the usb permission intent filter.
 		IntentFilter filter = new IntentFilter("org.subsurfacedivelog.mobile.USB_PERMISSION");
-		registerReceiver(usbReceiver, filter);
+		ContextCompat.registerReceiver(usbReceiver, filter, ContextCompat.RECEIVER_EXPORTED);
 
 	} // onCreate
 
