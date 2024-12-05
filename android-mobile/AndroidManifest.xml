@@ -89,7 +89,7 @@
         </provider>
     </application>
 
-    <uses-sdk android:minSdkVersion="21"
+    <uses-sdk android:minSdkVersion="26"
 	      android:targetSdkVersion="34" />
 
     <supports-screens
