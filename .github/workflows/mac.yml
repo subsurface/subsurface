@@ -15,7 +15,7 @@ on:
 
 jobs:
   build:
-    runs-on: macOS-12
+    runs-on: macOS-13
     steps:
     - name: checkout sources
       uses: actions/checkout@v4
@@ -51,7 +51,7 @@ jobs:
         fi
 
         cd ${GITHUB_WORKSPACE}/..
-        export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.15
+        export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.16
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         export PATH=$QT_ROOT/bin:$PATH
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
