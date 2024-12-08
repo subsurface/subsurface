@@ -30,7 +30,7 @@ static std::vector<dive_site *> addDiveSites(std::vector<std::unique_ptr<dive_si
 		}
 
 		// Add dive site to core, but remember a non-owning pointer first.
-		auto add_res = divelog.sites.put(std::move(ds)); // Return ownership to backend.
+		auto add_res = divelog.sites.register_site(std::move(ds)); // Return ownership to backend.
 		res.push_back(add_res.ptr);
 		emit diveListNotifier.diveSiteAdded(res.back(), add_res.idx); // Inform frontend of new dive site.
 	}
