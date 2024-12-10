@@ -417,9 +417,9 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 
 	if (!plannerModel) {
 		if (decoMode(false) == VPMB)
-			decoModelParameters->set(QString("VPM-B +%1").arg(prefs.vpmb_conservatism), getColor(PRESSURE_TEXT));
+			decoModelParameters->set(QString("Subsurface VPM-B +%1").arg(prefs.vpmb_conservatism), getColor(PRESSURE_TEXT));
 		else
-			decoModelParameters->set(QString("GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh), getColor(PRESSURE_TEXT));
+			decoModelParameters->set(QString("Subsurface GF %1/%2").arg(prefs.gflow).arg(prefs.gfhigh), getColor(PRESSURE_TEXT));
 	} else {
 		struct diveplan &diveplan = plannerModel->getDiveplan();
 		if (decoMode(inPlanner) == VPMB)
