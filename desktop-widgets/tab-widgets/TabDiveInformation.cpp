@@ -144,7 +144,8 @@ void TabDiveInformation::updateProfile()
 			continue;
 		volumes.append(get_volume_string(gases[i], true));
 		if (duration[i]) {
-			sac.mliter = lrint(gases[i].mliter / (currentDive->depth_to_atm(mean[i]) * duration[i] / 60));
+			depth_t mean_depth = { .mm = mean[i] }; // Will be removed in upcoming commit
+			sac.mliter = lrint(gases[i].mliter / (currentDive->depth_to_atm(mean_depth) * duration[i] / 60));
 			SACs.append(get_volume_string(sac, true).append(tr("/min")));
 		}
 	}

@@ -248,7 +248,7 @@ void uemis::event(struct dive *dive, struct divecomputer *dc, struct sample *sam
 	 * flags[3].bit0 | flags[5].bit1 != 0 ==> in deco
 	 * flags[0].bit7 == 1 ==> Safety Stop
 	 * otherwise NDL */
-	stopdepth = dive->rel_mbar_to_depth(u_sample->hold_depth);
+	stopdepth = dive->rel_mbar_to_depth(u_sample->hold_depth).mm;
 	if ((flags[3] & 1) | (flags[5] & 2)) {
 		/* deco */
 		sample->in_deco = true;
@@ -344,7 +344,7 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		}
 		sample = prepare_sample(dc);
 		sample->time.seconds = u_sample->dive_time;
-		sample->depth.mm = dive->rel_mbar_to_depth(u_sample->water_pressure);
+		sample->depth = dive->rel_mbar_to_depth(u_sample->water_pressure);
 		sample->temperature.mkelvin = C_to_mkelvin(u_sample->dive_temperature / 10.0);
 		add_sample_pressure(sample, active, (u_sample->tank_pressure_high * 256 + u_sample->tank_pressure_low) * 10);
 		sample->cns = u_sample->cns;

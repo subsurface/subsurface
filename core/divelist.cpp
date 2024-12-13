@@ -116,16 +116,18 @@ static int get_sample_o2(const struct dive &dive, const struct divecomputer *dc,
 {
 	int po2i, po2f, po2;
 	// Use sensor[0] if available
+	depth_t depth = sample.depth;
+	depth_t pdepth = psample.depth;
 	if ((dc->divemode == CCR || dc->divemode == PSCR) && sample.o2sensor[0].mbar) {
 		po2i = psample.o2sensor[0].mbar;
 		po2f = sample.o2sensor[0].mbar;	// then use data from the first o2 sensor
 		po2 = (po2f + po2i) / 2;
 	} else if (sample.setpoint.mbar > 0) {
 		po2 = std::min((int) sample.setpoint.mbar,
-				dive.depth_to_mbar(sample.depth.mm));
+				dive.depth_to_mbar(depth));
 	} else {
-		double amb_presure = dive.depth_to_bar(sample.depth.mm);
-		double pamb_pressure = dive.depth_to_bar(psample.depth.mm );
+		double amb_presure = dive.depth_to_bar(depth);
+		double pamb_pressure = dive.depth_to_bar(pdepth);
 		if (dc->divemode == PSCR) {
 			po2i = pscr_o2(pamb_pressure, dive.get_gasmix_at_time(*dc, psample.time));
 			po2f = pscr_o2(amb_presure, dive.get_gasmix_at_time(*dc, sample.time));
@@ -154,6 +156,8 @@ static int calculate_otu(const struct dive &dive)
 		int po2i, po2f;
 		double pm;
 		int t = (sample.time - psample.time).seconds;
+		depth_t depth = sample.depth;
+		depth_t pdepth = psample.depth;
 		// if there is sensor data use sensor[0]
 		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample.o2sensor[0].mbar) {
 			po2i = psample.o2sensor[0].mbar;
@@ -161,15 +165,15 @@ static int calculate_otu(const struct dive &dive)
 		} else {
 			if (sample.setpoint.mbar > 0) {
 				po2f = std::min((int) sample.setpoint.mbar,
-						 dive.depth_to_mbar(sample.depth.mm));
+						 dive.depth_to_mbar(depth));
 				if (psample.setpoint.mbar > 0)
 					po2i = std::min((int) psample.setpoint.mbar,
-							 dive.depth_to_mbar(psample.depth.mm));
+							 dive.depth_to_mbar(pdepth));
 				else
 					po2i = po2f;
 			} else {						// For OC and rebreather without o2 sensor/setpoint
-				double amb_presure = dive.depth_to_bar(sample.depth.mm);
-				double pamb_pressure = dive.depth_to_bar(psample.depth.mm);
+				double amb_presure = dive.depth_to_bar(depth);
+				double pamb_pressure = dive.depth_to_bar(pdepth);
 				if (dc->divemode == PSCR) {
 					po2i = pscr_o2(pamb_pressure, dive.get_gasmix_at_time(*dc, psample.time));
 					po2f = pscr_o2(amb_presure, dive.get_gasmix_at_time(*dc, sample.time));
@@ -394,7 +398,7 @@ static int calculate_sac(const struct dive &dive)
 {
 	const struct divecomputer *dc = &dive.dcs[0];
 	double airuse, pressure, sac;
-	int duration, meandepth;
+	int duration;
 
 	airuse = calculate_airuse(dive);
 	if (!airuse)
@@ -404,12 +408,11 @@ static int calculate_sac(const struct dive &dive)
 	if (!duration)
 		return 0;
 
-	meandepth = dc->meandepth.mm;
-	if (!meandepth)
+	if (!dc->meandepth.mm)
 		return 0;
 
 	/* Mean pressure in ATM (SAC calculations are in atm*l/min) */
-	pressure = dive.depth_to_atm(meandepth);
+	pressure = dive.depth_to_atm(dc->meandepth);
 	sac = airuse / pressure * 60 / duration;
 
 	/* milliliters per minute.. */
@@ -429,7 +432,7 @@ static void add_dive_to_deco(struct deco_state *ds, const struct dive &dive, boo
 		int j;
 
 		for (j = t0; j < t1; j++) {
-			int depth = interpolate(psample.depth.mm, sample.depth.mm, j - t0, t1 - t0);
+			depth_t depth = { .mm = interpolate(psample.depth.mm, sample.depth.mm, j - t0, t1 - t0) };
 			auto gasmix = loop.at(j).first;
 			add_segment(ds, dive.depth_to_bar(depth), gasmix, 1, sample.setpoint.mbar,
 				    loop_d.at(j), dive.sac,

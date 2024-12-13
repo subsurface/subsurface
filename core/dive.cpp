@@ -472,7 +472,7 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
 	return abs((a - b).mbar) <= 500;
 }
 
-static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity);
+static double calculate_depth_to_mbarf(depth_t depth, pressure_t surface_pressure, int salinity);
 
 /* this gets called when the dive mode has changed (so OC vs. CC)
  * there are two places we might have setpoints... events or in the samples
@@ -496,7 +496,7 @@ void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 		gasmix_loop loop(*dive, *dc);
 		for (auto &sample: dc->samples) {
 			struct gasmix gasmix = loop.at(sample.time.seconds).first;
-			gas_pressures pressures = fill_pressures(lrint(calculate_depth_to_mbarf(sample.depth.mm, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
+			gas_pressures pressures = fill_pressures(lrint(calculate_depth_to_mbarf(sample.depth, dc->surface_pressure, 0)), gasmix ,0, dc->divemode);
 			if (abs(sample.setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
 				sample.setpoint = 0_baro2;
 		}
@@ -2329,7 +2329,7 @@ fraction_t dive::best_o2(depth_t depth, bool in_planner) const
 	fraction_t fo2;
 	int po2 = in_planner ? prefs.bottompo2 : (int)(prefs.modpO2 * 1000.0);
 
-	fo2.permille = (po2 * 100 / depth_to_mbar(depth.mm)) * 10;	//use integer arithmetic to round down to nearest percent
+	fo2.permille = (po2 * 100 / depth_to_mbar(depth)) * 10;	//use integer arithmetic to round down to nearest percent
 	// Don't permit >100% O2
 	// TODO: use std::min, once we have comparison
 	if (fo2.permille > 1000)
@@ -2342,8 +2342,8 @@ fraction_t dive::best_he(depth_t depth, bool o2narcotic, fraction_t fo2) const
 {
 	fraction_t fhe;
 	int pnarcotic, ambient;
-	pnarcotic = depth_to_mbar(prefs.bestmixend.mm);
-	ambient = depth_to_mbar(depth.mm);
+	pnarcotic = depth_to_mbar(prefs.bestmixend);
+	ambient = depth_to_mbar(depth);
 	if (o2narcotic) {
 		fhe.permille = (100 - 100 * pnarcotic / ambient) * 10;	//use integer arithmetic to round up to nearest percent
 	} else {
@@ -2384,7 +2384,7 @@ static double salinity_to_specific_weight(int salinity)
 /* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
  * of water (and use standard salt water at 1.03kg per liter if we don't know salinity)
  * and add that to the surface pressure (or to 1013 if that's unknown) */
-static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, int salinity)
+static double calculate_depth_to_mbarf(depth_t depth, pressure_t surface_pressure, int salinity)
 {
 	if (!surface_pressure.mbar)
 		surface_pressure = 1_atm;
@@ -2393,15 +2393,15 @@ static double calculate_depth_to_mbarf(int depth, pressure_t surface_pressure, i
 	if (salinity < 500)
 		salinity += FRESHWATER_SALINITY;
 	double specific_weight = salinity_to_specific_weight(salinity);
-	return surface_pressure.mbar + depth * specific_weight;
+	return surface_pressure.mbar + depth.mm * specific_weight;
 }
 
-int dive::depth_to_mbar(int depth) const
+int dive::depth_to_mbar(depth_t depth) const
 {
 	return lrint(depth_to_mbarf(depth));
 }
 
-double dive::depth_to_mbarf(int depth) const
+double dive::depth_to_mbarf(depth_t depth) const
 {
 	// For downloaded and planned dives, use DC's values
 	int salinity = dcs[0].salinity;
@@ -2414,12 +2414,12 @@ double dive::depth_to_mbarf(int depth) const
 	return calculate_depth_to_mbarf(depth, surface_pressure, salinity);
 }
 
-double dive::depth_to_bar(int depth) const
+double dive::depth_to_bar(depth_t depth) const
 {
 	return depth_to_mbar(depth) / 1000.0;
 }
 
-double dive::depth_to_atm(int depth) const
+double dive::depth_to_atm(depth_t depth) const
 {
 	return mbar_to_atm(depth_to_mbar(depth));
 }
@@ -2428,7 +2428,7 @@ double dive::depth_to_atm(int depth) const
  * (that's the one that some dive computers like the Uemis Zurich
  * provide - for the other models that do this libdivecomputer has to
  * take care of this, but the Uemis we support natively */
-int dive::rel_mbar_to_depth(int mbar) const
+depth_t dive::rel_mbar_to_depth(int mbar) const
 {
 	// For downloaded and planned dives, use DC's salinity. Manual dives, use user's salinity
 	int salinity = is_dc_manually_added_dive(&dcs[0]) ? user_salinity : dcs[0].salinity;
@@ -2437,10 +2437,11 @@ int dive::rel_mbar_to_depth(int mbar) const
 
 	/* whole mbar gives us cm precision */
 	double specific_weight = salinity_to_specific_weight(salinity);
-	return int_cast<int>(mbar / specific_weight);
+	depth_t res { .mm = int_cast<int>(mbar / specific_weight) };
+	return res;
 }
 
-int dive::mbar_to_depth(int mbar) const
+depth_t dive::mbar_to_depth(int mbar) const
 {
 	// For downloaded and planned dives, use DC's pressure. Manual dives, use user's pressure
 	pressure_t surface_pressure = is_dc_manually_added_dive(&dcs[0])
@@ -2456,7 +2457,7 @@ int dive::mbar_to_depth(int mbar) const
 /* MOD rounded to multiples of roundto mm */
 depth_t dive::gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const
 {
-	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix));
+	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix)).mm;
 	// Rounding should be towards lower=safer depths but we give a bit
 	// of fudge to all to switch to o2 at 6m. So from .9 we round up.
 	return depth_t { .mm = (int)(depth / roundto + 0.1) * roundto };
@@ -2465,7 +2466,7 @@ depth_t dive::gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) cons
 /* Maximum narcotic depth rounded to multiples of roundto mm */
 depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 {
-	pressure_t ppo2n2 { .mbar = depth_to_mbar(end.mm) };
+	pressure_t ppo2n2 { .mbar = depth_to_mbar(end) };
 
 	int maxambient = prefs.o2narcotic ?
 					int_cast<int>(ppo2n2.mbar / (1 - get_he(mix) / 1000.0))
@@ -2475,7 +2476,8 @@ depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 					:
 						// Actually: Infinity
 						1000000;
-	return depth_t { .mm = int_cast<int>(((double)mbar_to_depth(maxambient)) / roundto) * roundto };
+	double depth = static_cast<double>(mbar_to_depth(maxambient).mm);
+	return depth_t { .mm = int_cast<int>(depth / roundto) * roundto };
 }
 
 std::string dive::get_country() const
