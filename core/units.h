@@ -144,11 +144,11 @@ struct duration_t : public unit_base<duration_t>
 {
 	int32_t seconds = 0; // durations up to 34 yrs
 };
-static inline duration_t operator""_sec(unsigned long long sec)
+static constexpr inline duration_t operator""_sec(unsigned long long sec)
 {
 	return duration_t { .seconds = static_cast<int32_t>(sec) };
 }
-static inline duration_t operator""_min(unsigned long long min)
+static constexpr inline duration_t operator""_min(unsigned long long min)
 {
 	return duration_t { .seconds = static_cast<int32_t>(min * 60) };
 }
@@ -162,14 +162,15 @@ struct depth_t : public unit_base<depth_t> // depth to 2000 km
 {
 	int32_t mm = 0;
 };
-static inline depth_t operator""_mm(unsigned long long mm)
+static constexpr inline depth_t operator""_mm(unsigned long long mm)
 {
 	return depth_t { .mm = static_cast<int32_t>(mm) };
 }
-static inline depth_t operator""_m(unsigned long long m)
+static constexpr inline depth_t operator""_m(unsigned long long m)
 {
 	return depth_t { .mm = static_cast<int32_t>(m * 1000) };
 }
+// Not yet constexpr, because round() not constexpr on our Android compiler
 static inline depth_t operator""_ft(unsigned long long ft)
 {
 	return depth_t { .mm = static_cast<int32_t>(round(ft * 304.8)) };
@@ -179,14 +180,15 @@ struct pressure_t : public unit_base<pressure_t>
 {
 	int32_t mbar = 0; // pressure up to 2000 bar
 };
-static inline pressure_t operator""_mbar(unsigned long long mbar)
+static constexpr inline pressure_t operator""_mbar(unsigned long long mbar)
 {
 	return pressure_t { .mbar = static_cast<int32_t>(mbar) };
 }
-static inline pressure_t operator""_bar(unsigned long long bar)
+static constexpr inline pressure_t operator""_bar(unsigned long long bar)
 {
 	return pressure_t { .mbar = static_cast<int32_t>(bar * 1000) };
 }
+// Not yet constexpr, because round() not constexpr on our Android compiler
 static inline pressure_t operator""_atm(unsigned long long atm)
 {
 	return pressure_t { .mbar = static_cast<int32_t>(round(atm * 1013.25)) };
@@ -196,7 +198,7 @@ struct o2pressure_t : public unit_base<o2pressure_t>
 {
 	uint16_t mbar = 0;
 };
-static inline o2pressure_t operator""_baro2(unsigned long long bar)
+static constexpr inline o2pressure_t operator""_baro2(unsigned long long bar)
 {
 	return o2pressure_t { .mbar = static_cast<uint16_t>(bar * 1000) };
 }
@@ -210,7 +212,7 @@ struct temperature_t : public unit_base<temperature_t>
 {
 	uint32_t mkelvin = 0; // up to 4 MK (temperatures in K are always positive)
 };
-static inline temperature_t operator""_K(unsigned long long K)
+static constexpr inline temperature_t operator""_K(unsigned long long K)
 {
 	return temperature_t { .mkelvin = static_cast<uint32_t>(K * 1000) };
 }
@@ -224,11 +226,11 @@ struct volume_t : public unit_base<volume_t>
 {
 	int mliter = 0;
 };
-static inline volume_t operator""_ml(unsigned long long ml)
+static constexpr inline volume_t operator""_ml(unsigned long long ml)
 {
 	return volume_t { .mliter = static_cast<int>(ml) };
 }
-static inline volume_t operator""_l(unsigned long long l)
+static constexpr inline volume_t operator""_l(unsigned long long l)
 {
 	return volume_t { .mliter = static_cast<int>(l * 1000) };
 }
@@ -237,11 +239,11 @@ struct fraction_t : public unit_base<fraction_t>
 {
 	int permille = 0;
 };
-static inline fraction_t operator""_permille(unsigned long long permille)
+static constexpr inline fraction_t operator""_permille(unsigned long long permille)
 {
 	return fraction_t { .permille = static_cast<int>(permille) };
 }
-static inline fraction_t operator""_percent(unsigned long long percent)
+static constexpr inline fraction_t operator""_percent(unsigned long long percent)
 {
 	return fraction_t { .permille = static_cast<int>(percent * 10) };
 }
