@@ -151,8 +151,6 @@ static const double vpmb_conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
 #define DECO_STOPS_MULTIPLIER_MM 3000.0
 #define NITROGEN_FRACTION 0.79
 
-#define TISSUE_ARRAY_SZ sizeof(ds->tissue_n2_sat)
-
 static double get_crit_radius_He()
 {
 	if (vpmb_config.conservatism <= 4)
@@ -465,7 +463,6 @@ void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, i
 		ds->tissue_n2_sat[ci] += n2_satmult * pn2_oversat * n2_f;
 		ds->tissue_he_sat[ci] += he_satmult * phe_oversat * he_f;
 		ds->tissue_inertgas_saturation[ci] = ds->tissue_n2_sat[ci] + ds->tissue_he_sat[ci];
-
 	}
 	if (decoMode(in_planner) == VPMB)
 		calc_crushing_pressure(ds, pressure);
