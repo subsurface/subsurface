@@ -46,7 +46,7 @@ struct deco_state {
 
 extern const double buehlmann_N2_t_halflife[];
 
-extern int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth);
+extern depth_t deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth);
 
 double get_gf(struct deco_state *ds, double ambpressure_bar, const struct dive *dive);
 extern void clear_deco(struct deco_state *ds, double surface_pressure, bool in_planner);

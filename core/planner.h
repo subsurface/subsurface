@@ -58,6 +58,7 @@ struct diveplan {
 struct deco_state_cache;
 
 extern int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time);
+extern int ascent_velocity(depth_t depth, int avg_depth, int);
 extern const char *get_planner_disclaimer();
 
 void plan_add_segment(struct diveplan &diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode);

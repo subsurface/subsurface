@@ -116,12 +116,12 @@ struct dive {
 	std::string get_country() const;
 	std::string get_location() const;
 
-	int depth_to_mbar(int depth) const;
-	double depth_to_mbarf(int depth) const;
-	double depth_to_bar(int depth) const;
-	double depth_to_atm(int depth) const;
-	int rel_mbar_to_depth(int mbar) const;
-	int mbar_to_depth(int mbar) const;
+	int depth_to_mbar(depth_t depth) const;
+	double depth_to_mbarf(depth_t depth) const;
+	double depth_to_bar(depth_t depth) const;
+	double depth_to_atm(depth_t depth) const;
+	depth_t rel_mbar_to_depth(int mbar) const;
+	depth_t mbar_to_depth(int mbar) const;
 
 	pressure_t calculate_surface_pressure() const;
 	pressure_t un_fixup_surface_pressure() const;
