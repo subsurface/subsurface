@@ -47,7 +47,8 @@ static std::string video_time(int secs)
 	return format_string_std("%d:%02d:%02d.000,", hours, mins, secs);
 }
 
-static void replace_all(std::string &str, const std::string &old_value, const std::string &new_value) {
+static void replace_all(std::string &str, const std::string &old_value, const std::string &new_value)
+{
     if (old_value.empty())
         return;
     size_t start_pos = 0;
