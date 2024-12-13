@@ -28,7 +28,11 @@
 #include "planner.h"
 #include "qthelper.h"
 
-#define cube(x) (x * x * x)
+template <typename T>
+T cube(T x)
+{
+	return x * x * x;
+}
 
 // Subsurface until v4.6.2 appeared to produce marginally less conservative plans than our benchmarks.
 // This factor was used to correct this. Since a fix for the saturation and desaturation rates
