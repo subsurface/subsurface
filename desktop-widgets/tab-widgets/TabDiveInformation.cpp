@@ -442,12 +442,12 @@ void TabDiveInformation::updateTextBox(int event) // Either the text box has bee
 			} else { // i.e. event == COMBO_CHANGED, that is, "m" or "ft" was selected from combobox
 				 // Show estimated altitude
 				bool ok;
-				double convertVal = 0.0010;	// Metric conversion fro mm to m
 				pressure_t pressure = { .mbar = ui->atmPressVal->text().toInt(&ok,10) };
 				if (ok && ui->atmPressVal->text().length()) {  // Show existing atm press as an altitude:
-					if (prefs.units.length == units::FEET) // For imperial units
-						convertVal = mm_to_feet(1);    // convert from mm to ft
-					ui->atmPressVal->setText(QString::number((int)(pressure_to_altitude(pressure) * convertVal)));
+					double convertVal = (prefs.units.length == units::FEET) ?
+						mm_to_feet(1) :		// convert from mm to ft
+						0.001;			// Metric conversion fro mm to m
+					ui->atmPressVal->setText(QString::number((int)(pressure_to_altitude(pressure).mm * convertVal)));
 				}
 			}
 			break;

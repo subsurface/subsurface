@@ -443,7 +443,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 
 	{
 		const char *depth_unit;
-		int altitude = (int) get_depth_units((int) (pressure_to_altitude(surface_pressure)), NULL, &depth_unit);
+		int altitude = (int) get_depth_units(pressure_to_altitude(surface_pressure).mm, NULL, &depth_unit);
 
 		buf += casprintf_loc(translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br/>\n</div>\n"), surface_pressure, altitude, depth_unit);
 	}
