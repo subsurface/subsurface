@@ -69,7 +69,7 @@ static void put_pd(struct membuffer *b, const struct plot_info &pi, int idx)
 		put_int(b, get_plot_interpolated_pressure(pi, idx, c));
 	}
 	put_int(b, entry.temperature);
-	put_int(b, entry.depth);
+	put_int(b, entry.depth.mm);
 	put_int(b, entry.ceiling);
 	for (int i = 0; i < 16; i++)
 		put_int(b, entry.ceilings[i]);
@@ -79,9 +79,9 @@ static void put_pd(struct membuffer *b, const struct plot_info &pi, int idx)
 	put_int(b, entry.tts);
 	put_int(b, entry.rbt);
 	put_int(b, entry.stoptime);
-	put_int(b, entry.stopdepth);
+	put_int(b, entry.stopdepth.mm);
 	put_int(b, entry.cns);
-	put_int(b, entry.smoothed);
+	put_int(b, entry.smoothed.mm);
 	put_int(b, entry.sac);
 	put_int(b, entry.running_sum);
 	put_double(b, entry.pressures.o2);
@@ -118,7 +118,7 @@ static void put_pd(struct membuffer *b, const struct plot_info &pi, int idx)
 	put_int(b, entry.ndl_calc);
 	put_int(b, entry.tts_calc);
 	put_int(b, entry.stoptime_calc);
-	put_int(b, entry.stopdepth_calc);
+	put_int(b, entry.stopdepth_calc.mm);
 	put_int(b, entry.pressure_time);
 	put_int(b, entry.heartbeat);
 	put_int(b, entry.bearing);
@@ -199,7 +199,7 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 	std::string format_string = prefs.subtitles_format_string;
 	
 	replace_all(format_string, "[time]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.sec, 60)));
-	value = get_depth_units(entry.depth, &decimals, &unit);
+	value = get_depth_units(entry.depth.mm, &decimals, &unit);
 	replace_all(format_string, "[depth]", format_string_std("%02.2f %s", value, unit));
 	
 	if (entry.temperature) {
@@ -244,8 +244,8 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 		replace_all(format_string, "[stoptime]", "");	
 	}
 	
-	if (entry.stopdepth > 0) {
-		value = get_depth_units(entry.stopdepth, &decimals, &unit);
+	if (entry.stopdepth.mm > 0) {
+		value = get_depth_units(entry.stopdepth.mm, &decimals, &unit);
 		replace_all(format_string, "[stopdepth]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[stopdepth]", "");	
@@ -358,8 +358,8 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 		replace_all(format_string, "[stoptime_calc]", "");	
 	}
 	
-	if (entry.stopdepth_calc > 0) {
-		value = get_depth_units(entry.stopdepth_calc, &decimals, &unit);
+	if (entry.stopdepth_calc.mm > 0) {
+		value = get_depth_units(entry.stopdepth_calc.mm, &decimals, &unit);
 		replace_all(format_string, "[stopdepth_calc]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[stopdepth_calc]", "");	

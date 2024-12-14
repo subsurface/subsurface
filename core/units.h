@@ -90,7 +90,7 @@
  * are supported.
  *
  * Moreover, multiplication and division with an integral are
- * suppoerted. Attention: the latter uses standard C++ integer
+ * supported. Attention: the latter uses standard C++ integer
  * semantics: it always rounds towards 0!
  *
  * Note: multiplication with a scalar is currently only supported

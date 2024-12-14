@@ -280,7 +280,7 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 static inline int calc_pressure_time(const struct dive *dive, const struct plot_data &a, const struct plot_data &b)
 {
 	int time = b.sec - a.sec;
-	depth_t depth { .mm = (a.depth + b.depth) / 2 };
+	depth_t depth = (a.depth + b.depth) / 2;
 
 	if (depth.mm <= SURFACE_THRESHOLD)
 		return 0;
