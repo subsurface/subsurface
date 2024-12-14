@@ -367,89 +367,93 @@ static bool has_unknown_used_cylinders(const struct dive &dive, const struct div
 	return num > 0;
 }
 
-void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
+std::vector<dive::depth_duration> dive::per_cylinder_mean_depth_and_duration(int dc_nr) const
 {
-	int num_used_cylinders;
+	const struct divecomputer *dc = get_dc(dc_nr);
 
-	if (dive->cylinders.empty())
-		return;
+	std::vector<depth_duration> res;
+	if (cylinders.empty())
+		return res;
 
-	for (size_t i = 0; i < dive->cylinders.size(); i++)
-		mean[i] = duration[i] = 0;
-	if (!dc)
-		return;
+	res.resize(cylinders.size());
 
 	/*
 	 * There is no point in doing per-cylinder information
 	 * if we don't actually know about the usage of all the
 	 * used cylinders.
 	 */
-	auto used_cylinders = std::make_unique<bool[]>(dive->cylinders.size());
-	num_used_cylinders = get_cylinder_used(dive, used_cylinders.get());
-	if (has_unknown_used_cylinders(*dive, dc, used_cylinders.get(), num_used_cylinders)) {
+	auto used_cylinders = std::make_unique<bool[]>(cylinders.size());
+	int num_used_cylinders = get_cylinder_used(this, used_cylinders.get());
+	if (has_unknown_used_cylinders(*this, dc, used_cylinders.get(), num_used_cylinders)) {
 		/*
 		 * If we had more than one used cylinder, but
 		 * do not know usage of them, we simply cannot
 		 * account mean depth to them.
 		 */
 		if (num_used_cylinders > 1)
-			return;
+			return res;
 
 		/*
 		 * For a single cylinder, use the overall mean
 		 * and duration
 		 */
-		for (size_t i = 0; i < dive->cylinders.size(); i++) {
+		for (size_t i = 0; i < cylinders.size(); i++) {
 			if (used_cylinders[i]) {
-				mean[i] = dc->meandepth.mm;
-				duration[i] = dc->duration.seconds;
+				res[i].depth = dc->meandepth;
+				res[i].duration = dc->duration;
 			}
 		}
 
-		return;
+		return res;
 	}
-	if (dc->samples.empty())
-		fake_dc(dc);
 
-	gasmix_loop loop(*dive, *dc);
-	std::vector<int> depthtime(dive->cylinders.size(), 0);
-	int lasttime = 0;
-	int lastdepth = 0;
+	// TODO: Wow: the old code was super sketchy: It would "fake" a dc here of all places if there were no samples.
+	// Let's comment this out for now and fix the root-cause if this ever gives a problem.
+	//if (dc->samples.empty())
+	//	fake_dc(dc);
+
+	// No samples - something is wrong. Give up.
+	if (dc->samples.empty())
+		return res;
+
+	gasmix_loop loop(*this, *dc);
+	std::vector<int32_t> depthtime(cylinders.size(), 0); // mm × seconds
+	duration_t lasttime;
+	depth_t lastdepth;
 	int last_cylinder_index = -1;
 	std::pair<int, int> gaschange_event;
 	for (auto it = dc->samples.begin(); it != dc->samples.end(); ++it) {
-		int32_t time = it->time.seconds;
-		int depth = it->depth.mm;
-
 		/* Make sure to move the event past 'lasttime' */
-		gaschange_event = loop.cylinder_index_at(lasttime);
+		gaschange_event = loop.cylinder_index_at(lasttime.seconds);
 
 		/* Do we need to fake a midway sample? */
 		if (last_cylinder_index >= 0 && last_cylinder_index != gaschange_event.first) {
-			int newdepth = interpolate(lastdepth, depth, gaschange_event.second - lasttime, time - lasttime);
-			if (newdepth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
-				duration[gaschange_event.first] += gaschange_event.second - lasttime;
-				depthtime[gaschange_event.first] += (gaschange_event.second - lasttime) * (newdepth + lastdepth) / 2;
+			depth_t newdepth = interpolate(lastdepth, it->depth, gaschange_event.second - lasttime.seconds, (it->time - lasttime).seconds);
+			if (newdepth.mm > SURFACE_THRESHOLD || lastdepth.mm > SURFACE_THRESHOLD) {
+				res[gaschange_event.first].duration.seconds += gaschange_event.second - lasttime.seconds;
+				depthtime[gaschange_event.first] += (gaschange_event.second - lasttime.seconds) * (newdepth.mm + lastdepth.mm) / 2;
 			}
 
-			lasttime = gaschange_event.second;
+			lasttime.seconds = gaschange_event.second;
 			lastdepth = newdepth;
 		}
 
 		/* We ignore segments at the surface */
-		if (depth > SURFACE_THRESHOLD || lastdepth > SURFACE_THRESHOLD) {
-			duration[gaschange_event.first] += time - lasttime;
-			depthtime[gaschange_event.first] += (time - lasttime) * (depth + lastdepth) / 2;
+		if (it->depth.mm > SURFACE_THRESHOLD || lastdepth.mm > SURFACE_THRESHOLD) {
+			res[gaschange_event.first].duration += it->time - lasttime;
+			depthtime[gaschange_event.first] += (it->time - lasttime).seconds * (it->depth + lastdepth).mm / 2;
 		}
 
-		lastdepth = depth;
-		lasttime = time;
+		lastdepth = it->depth;
+		lasttime = it->time;
 		last_cylinder_index = gaschange_event.first;
 	}
-	for (size_t i = 0; i < dive->cylinders.size(); i++) {
-		if (duration[i])
-			mean[i] = (depthtime[i] + duration[i] / 2) / duration[i];
+	for (size_t i = 0; i < cylinders.size(); i++) {
+		if (res[i].duration.seconds)
+			res[i].depth.mm = (depthtime[i] + res[i].duration.seconds / 2) / res[i].duration.seconds;
 	}
+
+	return res;
 }
 
 static void update_min_max_temperatures(struct dive &dive, temperature_t temperature)

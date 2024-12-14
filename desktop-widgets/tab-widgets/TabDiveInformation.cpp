@@ -126,15 +126,12 @@ void TabDiveInformation::updateProfile()
 
 	std::vector<volume_t> gases = get_gas_used(currentDive);
 	QString volumes;
-	std::vector<int> mean(currentDive->cylinders.size()), duration(currentDive->cylinders.size());
-	struct divecomputer *currentdc = parent.getCurrentDC();
-	if (currentdc && !currentDive->cylinders.empty())
-		per_cylinder_mean_depth(currentDive, currentdc, mean.data(), duration.data());
+	auto mean = currentDive->per_cylinder_mean_depth_and_duration(parent.currentDC);
 	volume_t sac;
 	QString gaslist, SACs, separator;
 
 	for (size_t i = 0; i < currentDive->cylinders.size(); i++) {
-		if (!currentDive->is_cylinder_used(i))
+		if (!currentDive->is_cylinder_used(i) || i >= mean.size())
 			continue;
 		gaslist.append(separator); volumes.append(separator); SACs.append(separator);
 		separator = "\n";
@@ -143,9 +140,8 @@ void TabDiveInformation::updateProfile()
 		if (!gases[i].mliter)
 			continue;
 		volumes.append(get_volume_string(gases[i], true));
-		if (duration[i]) {
-			depth_t mean_depth = { .mm = mean[i] }; // Will be removed in upcoming commit
-			sac.mliter = lrint(gases[i].mliter / (currentDive->depth_to_atm(mean_depth) * duration[i] / 60));
+		if (mean[i].duration.seconds > 0) {
+			sac.mliter = lrint(gases[i].mliter / (currentDive->depth_to_atm(mean[i].depth) * mean[i].duration.seconds / 60));
 			SACs.append(get_volume_string(sac, true).append(tr("/min")));
 		}
 	}
@@ -155,7 +151,7 @@ void TabDiveInformation::updateProfile()
 	ui->diveTimeText->setText(get_dive_duration_string(currentDive->duration.seconds, tr("h"), tr("min"), tr("sec"),
 			" ", currentDive->dcs[0].divemode == FREEDIVE));
 
-	ui->sacText->setText(!currentDive->cylinders.empty() && mean[0] && currentDive->dcs[0].divemode != CCR ? std::move(SACs) : QString());
+	ui->sacText->setText(!currentDive->cylinders.empty() && mean[0].depth.mm > 0 && currentDive->dcs[0].divemode != CCR ? std::move(SACs) : QString());
 
 	if (currentDive->surface_pressure.mbar == 0) {
 		ui->atmPressVal->clear();			// If no atm pressure for dive then clear text box

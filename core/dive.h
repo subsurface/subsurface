@@ -130,6 +130,12 @@ struct dive {
 	fraction_t best_o2(depth_t depth, bool in_planner) const;
 	fraction_t best_he(depth_t depth, bool o2narcotic, fraction_t fo2) const;
 
+	struct depth_duration {
+		depth_t depth;
+		duration_t duration;
+	};
+	std::vector<depth_duration> per_cylinder_mean_depth_and_duration(int dc_nr) const;
+
 	bool dive_has_gps_location() const;
 	location_t get_gps_location() const;
 
@@ -193,7 +199,6 @@ extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, 
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
-extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
 
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
