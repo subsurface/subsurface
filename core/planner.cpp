@@ -302,9 +302,9 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 	return;
 }
 
-divedatapoint::divedatapoint(int time_incr, int depth, int cylinderid, int po2, bool entered) :
+divedatapoint::divedatapoint(int time_incr, depth_t depth, int cylinderid, int po2, bool entered) :
 	time(time_incr),
-	depth{ .mm = depth },
+	depth(depth),
 	cylinderid(cylinderid),
 	minimum_gas(0_bar),
 	setpoint(po2),
@@ -323,7 +323,7 @@ static void add_to_end_of_diveplan(struct diveplan &diveplan, const struct dived
 	diveplan.dp.back().time += lasttime;
 }
 
-void plan_add_segment(struct diveplan &diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode)
+void plan_add_segment(struct diveplan &diveplan, int duration, depth_t depth, int cylinderid, int po2, bool entered, enum divemode_t divemode)
 {
 	struct divedatapoint dp(duration, depth, cylinderid, divemode == CCR ? po2 : 0, entered);
 	dp.divemode = divemode;
@@ -687,7 +687,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 		 * same ascent rate as in fake_dc(). If you change it here, also change it there.
 		 */
 		transitiontime = lrint(depth.mm / (double)prefs.ascratelast6m);
-		plan_add_segment(diveplan, transitiontime, 0, current_cylinder, po2, false, divemode);
+		plan_add_segment(diveplan, transitiontime, 0_m, current_cylinder, po2, false, divemode);
 		create_dive_from_plan(diveplan, dive, dc, is_planner);
 		return {};
 	}
@@ -742,13 +742,13 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 		// so we don't really have to compute the deco state.
 		update_cylinder_pressure(dive, depth.mm, depth.mm, -timestep, prefs.bottomsac, dive->get_cylinder(current_cylinder), false, divemode);
 		clock -= timestep;
-		plan_add_segment(diveplan, clock - previous_point_time, depth.mm, current_cylinder, po2, true, divemode);
+		plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, true, divemode);
 		previous_point_time = clock;
 		do {
 			/* Ascend to surface */
 			int deltad = ascent_velocity(depth, avg_depth, bottom_time) * base_timestep;
 			if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
-				plan_add_segment(diveplan, clock - previous_point_time, depth.mm, current_cylinder, po2, false, divemode);
+				plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
 				last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 			}
@@ -758,15 +758,15 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 			clock += base_timestep;
 			depth.mm -= deltad;
 			if (depth.mm <= 5000 && depth.mm >= (5000 - deltad) && safety_stop) {
-				plan_add_segment(diveplan, clock - previous_point_time, 5000, current_cylinder, po2, false, divemode);
+				plan_add_segment(diveplan, clock - previous_point_time, 5_m, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
 				clock += 180;
-				plan_add_segment(diveplan, clock - previous_point_time, 5000, current_cylinder, po2, false, divemode);
+				plan_add_segment(diveplan, clock - previous_point_time, 5_m, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
 				safety_stop = false;
 			}
 		} while (depth.mm > 0);
-		plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
+		plan_add_segment(diveplan, clock - previous_point_time, 0_m, current_cylinder, po2, false, divemode);
 		create_dive_from_plan(diveplan, dive, dc, is_planner);
 		diveplan.add_plan_to_notes(*dive, show_disclaimer, error);
 		fixup_dc_duration(*dc);
@@ -793,7 +793,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 		add_segment(ds, dive->depth_to_bar(depth),
 			dive->get_cylinder(current_cylinder)->gasmix,
 			bailoutsegment, po2, divemode, prefs.bottomsac, true);
-		plan_add_segment(diveplan, bailoutsegment, depth.mm, current_cylinder, po2, false, divemode);
+		plan_add_segment(diveplan, bailoutsegment, depth, current_cylinder, po2, false, divemode);
 		bottom_time += bailoutsegment;
 	}
 	previous_deco_time = 100000000;
@@ -848,7 +848,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 				depth_t deltad { .mm = ascent_velocity(depth, avg_depth, bottom_time) * base_timestep };
 				if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
 					if (is_final_plan)
-						plan_add_segment(diveplan, clock - previous_point_time, depth.mm, current_cylinder, po2, false, divemode);
+						plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 					previous_point_time = clock;
 					stopping = false;
 					last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
@@ -884,7 +884,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 							!trial_ascent(ds, 0, depth, stoplevels[stopidx - 1], avg_depth, bottom_time,
 							dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode) || get_o2(dive->get_cylinder(current_cylinder)->gasmix) < 160) {
 						if (is_final_plan)
-							plan_add_segment(diveplan, clock - previous_point_time, depth.mm, current_cylinder, po2, false, divemode);
+							plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 						stopping = true;
 						previous_point_time = clock;
 						current_cylinder = gaschanges[gi].gasidx;
@@ -932,7 +932,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 					/* The last segment was an ascend segment.
 					 * Add a waypoint for start of this deco stop */
 					if (is_final_plan)
-						plan_add_segment(diveplan, clock - previous_point_time, depth.mm, current_cylinder, po2, false, divemode);
+						plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 					previous_point_time = clock;
 					stopping = true;
 				}
@@ -989,7 +989,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 							o2break_next = true;
 							breakfrom_cylinder = current_cylinder;
 							if (is_final_plan)
-								plan_add_segment(diveplan, laststoptime, depth.mm, current_cylinder, po2, false, divemode);
+								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false, divemode);
 							previous_point_time = clock + laststoptime;
 							current_cylinder = break_cylinder;
 						}
@@ -1000,7 +1000,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 							o2breaking  = true;
 							o2break_next = false;
 							if (is_final_plan)
-								plan_add_segment(diveplan, laststoptime, depth.mm, current_cylinder, po2, false, divemode);
+								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false, divemode);
 							previous_point_time = clock + laststoptime;
 							current_cylinder = breakfrom_cylinder;
 						}
@@ -1018,7 +1018,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 			if (stopping) {
 				/* Next we will ascend again. Add a waypoint if we have spend deco time */
 				if (is_final_plan)
-					plan_add_segment(diveplan, clock - previous_point_time, depth.mm, current_cylinder, po2, false, divemode);
+					plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
 				stopping = false;
 			}
@@ -1030,7 +1030,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 		ds->deco_time = clock - bottom_time - (m_or_ft(3, 10).mm * ( prefs.last_stop ? 2 : 1)) / last_ascend_rate + 20;
 	} while (!is_final_plan && error == PLAN_OK);
 
-	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
+	plan_add_segment(diveplan, clock - previous_point_time, 0_m, current_cylinder, po2, false, divemode);
 	if (decoMode(true) == VPMB) {
 		diveplan.eff_gfhigh = lrint(100.0 * regressionb(ds));
 		diveplan.eff_gflow = lrint(100.0 * (regressiona(ds) * first_stop_depth.mm + regressionb(ds)));
@@ -1043,7 +1043,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 		// past the regular cylinder table, which is not visible to the UI.
 		// Fix this as soon as possible!
 		current_cylinder = static_cast<int>(dive->cylinders.size());
-		plan_add_segment(diveplan, prefs.surface_segment, 0, current_cylinder, 0, false, OC);
+		plan_add_segment(diveplan, prefs.surface_segment, 0_m, current_cylinder, 0, false, OC);
 	}
 	create_dive_from_plan(diveplan, dive, dc, is_planner);
 	diveplan.add_plan_to_notes(*dive, show_disclaimer, error);

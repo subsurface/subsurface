@@ -21,7 +21,7 @@ struct divedatapoint {
 	divedatapoint(const divedatapoint &) = default;
 	divedatapoint(divedatapoint &&) = default;
 	divedatapoint &operator=(const divedatapoint &) = default;
-	divedatapoint(int time_incr, int depth, int cylinderid, int po2, bool entered);
+	divedatapoint(int time_incr, depth_t depth, int cylinderid, int po2, bool entered);
 };
 
 typedef enum {
@@ -61,7 +61,7 @@ extern int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, du
 extern int ascent_velocity(depth_t depth, int avg_depth, int);
 extern const char *get_planner_disclaimer();
 
-void plan_add_segment(struct diveplan &diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode);
+void plan_add_segment(struct diveplan &diveplan, int duration, depth_t depth, int cylinderid, int po2, bool entered, enum divemode_t divemode);
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
 #endif
