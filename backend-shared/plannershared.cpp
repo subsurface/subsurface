@@ -154,7 +154,7 @@ void PlannerShared::set_decopo2(double value)
 
 int PlannerShared::bestmixend()
 {
-	return lrint(get_depth_units(prefs.bestmixend.mm, NULL, NULL));
+	return lrint(get_depth_units(prefs.bestmixend, NULL, NULL));
 }
 void PlannerShared::set_bestmixend(int value)
 {

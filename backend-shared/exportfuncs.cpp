@@ -180,8 +180,8 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		dive->mintemp.mkelvin ? put_format(&buf, "\\def\\%smintemp{%.1f\\%stemperatureunit}\n", ssrf, get_temp_units(dive->mintemp.mkelvin, &unit), ssrf) : put_format(&buf, "\\def\\%ssrfmintemp{}\n", ssrf);
 		dive->watertemp.mkelvin ? put_format(&buf, "\\def\\%swatertemp{%.1f\\%stemperatureunit}\n", ssrf, get_temp_units(dive->watertemp.mkelvin, &unit), ssrf) : put_format(&buf, "\\def\\%swatertemp{}\n", ssrf);
 		dive->airtemp.mkelvin ? put_format(&buf, "\\def\\%sairtemp{%.1f\\%stemperatureunit}\n", ssrf, get_temp_units(dive->airtemp.mkelvin, &unit), ssrf) : put_format(&buf, "\\def\\%sairtemp{}\n", ssrf);
-		dive->maxdepth.mm ? put_format(&buf, "\\def\\%smaximumdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smaximumdepth{}\n", ssrf);
-		dive->meandepth.mm ? put_format(&buf, "\\def\\%smeandepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->meandepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smeandepth{}\n", ssrf);
+		dive->maxdepth.mm ? put_format(&buf, "\\def\\%smaximumdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smaximumdepth{}\n", ssrf);
+		dive->meandepth.mm ? put_format(&buf, "\\def\\%smeandepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->meandepth, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%smeandepth{}\n", ssrf);
 
 		std::string tags = taglist_get_tagstring(dive->tags);
 		put_format(&buf, "\\def\\%stype{%s}\n", ssrf, tags.c_str());
@@ -242,7 +242,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		put_format(&buf, "\\def\\%sspot{}\n", ssrf);
 		put_format(&buf, "\\def\\%sentrance{}\n", ssrf);
 		put_format(&buf, "\\def\\%splace{%s}\n", ssrf, site ? site->name.c_str() : "");
-		dive->maxdepth.mm ? put_format(&buf, "\\def\\%sdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth.mm, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%sdepth{}\n", ssrf);
+		dive->maxdepth.mm ? put_format(&buf, "\\def\\%sdepth{%.1f\\%sdepthunit}\n", ssrf, get_depth_units(dive->maxdepth, NULL, &unit), ssrf) : put_format(&buf, "\\def\\%sdepth{}\n", ssrf);
 
 		put_format(&buf, "\\%spage\n", ssrf);
 	}
@@ -280,7 +280,7 @@ void export_depths(const char *filename, bool selected_only)
 					break;
 				depth = s.depth;
 			}
-			put_format(&buf, "%s\t%.1f", picture.filename.c_str(), get_depth_units(depth.mm, NULL, &unit));
+			put_format(&buf, "%s\t%.1f", picture.filename.c_str(), get_depth_units(depth, NULL, &unit));
 			put_format(&buf, "%s\n", unit);
 		}
 	}

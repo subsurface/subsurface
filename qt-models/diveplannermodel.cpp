@@ -296,7 +296,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 		case CCSETPOINT:
 			return (divemode == CCR) ? (double)(p.setpoint / 1000.0) : QVariant();
 		case DEPTH:
-			return int_cast<int>(get_depth_units(p.depth.mm, NULL, NULL));
+			return int_cast<int>(get_depth_units(p.depth, NULL, NULL));
 		case RUNTIME:
 			return p.time / 60;
 		case DURATION:

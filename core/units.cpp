@@ -95,7 +95,7 @@ depth_t units_to_depth(double depth)
 	return internaldepth;
 }
 
-double get_depth_units(int mm, int *frac, const char **units)
+double get_depth_units(depth_t depth, int *frac, const char **units)
 {
 	int decimals;
 	double d;
@@ -105,12 +105,12 @@ double get_depth_units(int mm, int *frac, const char **units)
 	switch (units_p->length) {
 	case units::METERS:
 	default:
-		d = mm / 1000.0;
+		d = depth.mm / 1000.0;
 		unit = translate("gettextFromC", "m");
 		decimals = d < 20;
 		break;
 	case units::FEET:
-		d = mm_to_feet(mm);
+		d = mm_to_feet(depth.mm);
 		unit = translate("gettextFromC", "ft");
 		decimals = 0;
 		break;

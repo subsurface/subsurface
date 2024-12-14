@@ -326,7 +326,7 @@ static void insert_entry(struct plot_info &pi, int time, depth_t depth, int sac)
 	entry = prev;
 	entry.sec = time;
 	entry.depth = depth;
-	entry.running_sum = prev.running_sum + (time - prev.sec) * (depth + prev.depth).mm / 2;
+	entry.running_sum = prev.running_sum + (depth + prev.depth) * (time - prev.sec) / 2;
 	entry.sac = sac;
 	entry.ndl = -1;
 	entry.bearing = -1;
@@ -401,7 +401,7 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 		entry.sec = time;
 		entry.depth = sample.depth;
 
-		entry.running_sum = prev.running_sum + (time - prev.sec) * (sample.depth.mm + prev.depth.mm) / 2;
+		entry.running_sum = prev.running_sum + (sample.depth + prev.depth) * (time - prev.sec) / 2;
 		entry.stopdepth = sample.stopdepth;
 		entry.stoptime = sample.stoptime.seconds;
 		entry.ndl = sample.ndl.seconds;
@@ -1268,7 +1268,7 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 	const struct plot_data &entry = pi.entry[idx];
 	std::vector<std::string> res;
 
-	depthvalue = get_depth_units(entry.depth.mm, NULL, &depth_unit);
+	depthvalue = get_depth_units(entry.depth, NULL, &depth_unit);
 	res.push_back(casprintf_loc(translate("gettextFromC", "@: %d:%02d"), FRACTION_TUPLE(entry.sec, 60)));
 	res.push_back(casprintf_loc(translate("gettextFromC", "D: %.1f%s"), depthvalue, depth_unit));
 	for (cyl = 0; cyl < pi.nr_cylinders; cyl++) {
@@ -1303,23 +1303,23 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 	if (prefs.pp_graphs.phe && entry.pressures.he > 0)
 		res.push_back(casprintf_loc(translate("gettextFromC", "pHe: %.2fbar"), entry.pressures.he));
 	if (prefs.mod && entry.mod.mm > 0) {
-		mod.mm = lrint(get_depth_units(entry.mod.mm, NULL, &depth_unit));
+		mod.mm = lrint(get_depth_units(entry.mod, NULL, &depth_unit));
 		res.push_back(casprintf_loc(translate("gettextFromC", "MOD: %d%s"), mod.mm, depth_unit));
 	}
-	eadd.mm = lrint(get_depth_units(entry.eadd.mm, NULL, &depth_unit));
+	eadd.mm = lrint(get_depth_units(entry.eadd, NULL, &depth_unit));
 
 	if (prefs.ead) {
 		switch (pi.dive_type) {
 		case plot_info::NITROX:
 			if (entry.ead.mm > 0) {
-				ead.mm = lrint(get_depth_units(entry.ead.mm, NULL, &depth_unit));
+				ead.mm = lrint(get_depth_units(entry.ead, NULL, &depth_unit));
 				res.push_back(casprintf_loc(translate("gettextFromC", "EAD: %d%s"), ead.mm, depth_unit));
 				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/ℓ"), eadd.mm, depth_unit, entry.density));
 				break;
 			}
 		case plot_info::TRIMIX:
 			if (entry.end.mm > 0) {
-				end.mm = lrint(get_depth_units(entry.end.mm, NULL, &depth_unit));
+				end.mm = lrint(get_depth_units(entry.end, NULL, &depth_unit));
 				res.push_back(casprintf_loc(translate("gettextFromC", "END: %d%s"), end.mm, depth_unit));
 				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/ℓ"), eadd.mm, depth_unit, entry.density));
 				break;
@@ -1334,7 +1334,7 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 		}
 	}
 	if (entry.stopdepth.mm > 0) {
-		depthvalue = get_depth_units(entry.stopdepth.mm, NULL, &depth_unit);
+		depthvalue = get_depth_units(entry.stopdepth, NULL, &depth_unit);
 		if (entry.ndl > 0) {
 			/* this is a safety stop as we still have ndl */
 			if (entry.stoptime)
@@ -1360,7 +1360,7 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 	if (entry.tts)
 		res.push_back(casprintf_loc(translate("gettextFromC", "TTS: %umin"), div_up(entry.tts, 60)));
 	if (entry.stopdepth_calc.mm > 0 && entry.stoptime_calc) {
-		depthvalue = get_depth_units(entry.stopdepth_calc.mm, NULL, &depth_unit);
+		depthvalue = get_depth_units(entry.stopdepth_calc, NULL, &depth_unit);
 		res.push_back(casprintf_loc(translate("gettextFromC", "Deco: %umin @ %.0f%s (calc)"), div_up(entry.stoptime_calc, 60),
 				  depthvalue, depth_unit));
 	} else if (entry.in_deco_calc) {
@@ -1390,13 +1390,13 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 		if (entry.surface_gf > 0.0)
 			res.push_back(casprintf_loc(translate("gettextFromC", "Surface GF %.0f%%"), entry.surface_gf));
 		if (entry.ceiling.mm > 0) {
-			depthvalue = get_depth_units(entry.ceiling.mm, NULL, &depth_unit);
+			depthvalue = get_depth_units(entry.ceiling, NULL, &depth_unit);
 			res.push_back(casprintf_loc(translate("gettextFromC", "Calculated ceiling %.1f%s"), depthvalue, depth_unit));
 			if (prefs.calcalltissues) {
 				int k;
 				for (k = 0; k < 16; k++) {
 					if (entry.ceilings[k].mm > 0) {
-						depthvalue = get_depth_units(entry.ceilings[k].mm, NULL, &depth_unit);
+						depthvalue = get_depth_units(entry.ceilings[k], NULL, &depth_unit);
 						res.push_back(casprintf_loc(translate("gettextFromC", "Tissue %.0fmin: %.1f%s"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit));
 					}
 				}
@@ -1409,7 +1409,7 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 		res.push_back(casprintf_loc(translate("gettextFromC", "heart rate: %d"), entry.heartbeat));
 	if (entry.bearing >= 0)
 		res.push_back(casprintf_loc(translate("gettextFromC", "bearing: %d"), entry.bearing));
-	if (entry.running_sum) {
+	if (entry.running_sum.mm > 0) {
 		depthvalue = get_depth_units(entry.running_sum / entry.sec, NULL, &depth_unit);
 		res.push_back(casprintf_loc(translate("gettextFromC", "mean depth to here %.1f%s"), depthvalue, depth_unit));
 	}
@@ -1458,7 +1458,8 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	int max_asc_speed = 0;
 	int max_desc_speed = 0;
 
-	int delta_depth = abs(start.depth.mm - stop.depth.mm);
+	depth_t delta_depth = start.depth - stop.depth;
+	delta_depth.mm = std::abs(delta_depth.mm);
 	int delta_time = abs(start.sec - stop.sec);
 	depth_t avg_depth;
 	depth_t max_depth;
@@ -1527,13 +1528,13 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	depthvalue = get_depth_units(delta_depth, NULL, &depth_unit);
 	l += space + casprintf_loc(translate("gettextFromC", "ΔD:%.1f%s"), depthvalue, depth_unit);
 
-	depthvalue = get_depth_units(min_depth.mm, NULL, &depth_unit);
+	depthvalue = get_depth_units(min_depth, NULL, &depth_unit);
 	l += space + casprintf_loc(translate("gettextFromC", "↓D:%.1f%s"), depthvalue, depth_unit);
 
-	depthvalue = get_depth_units(max_depth.mm, NULL, &depth_unit);
+	depthvalue = get_depth_units(max_depth, NULL, &depth_unit);
 	l += space + casprintf_loc(translate("gettextFromC", "↑D:%.1f%s"), depthvalue, depth_unit);
 
-	depthvalue = get_depth_units(avg_depth.mm, NULL, &depth_unit);
+	depthvalue = get_depth_units(avg_depth, NULL, &depth_unit);
 	l += space + casprintf_loc(translate("gettextFromC", "øD:%.1f%s"), depthvalue, depth_unit);
 	res.push_back(l);
 

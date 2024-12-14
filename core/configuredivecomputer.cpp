@@ -169,7 +169,7 @@ bool ConfigureDiveComputer::saveXMLBackup(const QString &fileName, const DeviceD
 
 	writer.writeStartElement("AlarmDepth");
 	writer.writeAttribute("enabled", QString::number(details.alarmDepthEnabled));
-	writer.writeCharacters(QString::number(details.alarmDepth));
+	writer.writeCharacters(QString::number(details.alarmDepth.mm));
 	writer.writeEndElement();
 
 	writer.writeEndElement();
@@ -474,7 +474,7 @@ bool ConfigureDiveComputer::restoreXMLBackup(const QString &fileName, DeviceDeta
 			if (settingName == "AlarmDepth") {
 				if (attributes.hasAttribute("enabled"))
 					details.alarmDepthEnabled = attributes.value("enabled").toString().toInt();
-				details.alarmDepth = keyString.toInt();
+				details.alarmDepth.mm = keyString.toInt();
 			}
 
 			if (settingName == "AlarmTime") {

@@ -83,7 +83,7 @@ static void put_pd(struct membuffer *b, const struct plot_info &pi, int idx)
 	put_int(b, entry.cns);
 	put_int(b, entry.smoothed.mm);
 	put_int(b, entry.sac);
-	put_int(b, entry.running_sum);
+	put_int(b, entry.running_sum.mm);
 	put_double(b, entry.pressures.o2);
 	put_double(b, entry.pressures.n2);
 	put_double(b, entry.pressures.he);
@@ -199,7 +199,7 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 	std::string format_string = prefs.subtitles_format_string;
 	
 	replace_all(format_string, "[time]", format_string_std("%d:%02d", FRACTION_TUPLE(entry.sec, 60)));
-	value = get_depth_units(entry.depth.mm, &decimals, &unit);
+	value = get_depth_units(entry.depth, &decimals, &unit);
 	replace_all(format_string, "[depth]", format_string_std("%02.2f %s", value, unit));
 	
 	if (entry.temperature) {
@@ -210,7 +210,7 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 	}
 
 	if (entry.ceiling.mm > 0) {
-		value = get_depth_units(entry.ceiling.mm, &decimals, &unit);
+		value = get_depth_units(entry.ceiling, &decimals, &unit);
 		replace_all(format_string,"[ceiling]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[ceiling]", "");	
@@ -245,7 +245,7 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 	}
 	
 	if (entry.stopdepth.mm > 0) {
-		value = get_depth_units(entry.stopdepth.mm, &decimals, &unit);
+		value = get_depth_units(entry.stopdepth, &decimals, &unit);
 		replace_all(format_string, "[stopdepth]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[stopdepth]", "");	
@@ -297,28 +297,28 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 	}
 	
 	if (entry.mod.mm > 0) {
-		value = get_depth_units(entry.mod.mm, &decimals, &unit);
+		value = get_depth_units(entry.mod, &decimals, &unit);
 		replace_all(format_string, "[mod]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[mod]", "");	
 	}
 	
 	if (entry.ead.mm > 0) {
-		value = get_depth_units(entry.ead.mm, &decimals, &unit);
+		value = get_depth_units(entry.ead, &decimals, &unit);
 		replace_all(format_string, "[ead]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[ead]", "");	
 	}
 
 	if (entry.end.mm > 0) {
-		value = get_depth_units(entry.end.mm, &decimals, &unit);
+		value = get_depth_units(entry.end, &decimals, &unit);
 		replace_all(format_string, "[end]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[end]", "");	
 	}
 	
 	if (entry.eadd.mm > 0) {
-		value = get_depth_units(entry.eadd.mm, &decimals, &unit);
+		value = get_depth_units(entry.eadd, &decimals, &unit);
 		replace_all(format_string, "[eadd]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[eadd]", "");	
@@ -359,7 +359,7 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 	}
 	
 	if (entry.stopdepth_calc.mm > 0) {
-		value = get_depth_units(entry.stopdepth_calc.mm, &decimals, &unit);
+		value = get_depth_units(entry.stopdepth_calc, &decimals, &unit);
 		replace_all(format_string, "[stopdepth_calc]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[stopdepth_calc]", "");	

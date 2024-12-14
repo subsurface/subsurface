@@ -456,17 +456,17 @@ static std::vector<depth_t> sort_stops(const std::vector<depth_t> &dstops, size_
 	return stoplevels;
 }
 
-int ascent_velocity(depth_t depth, int avg_depth, int)
+int ascent_velocity(depth_t depth, depth_t avg_depth, int)
 {
 	/* We need to make this configurable */
 
 	/* As an example (and possibly reasonable default) this is the Tech 1 provedure according
 	 * to http://www.globalunderwaterexplorers.org/files/Standards_and_Procedures/SOP_Manual_Ver2.0.2.pdf */
 
-	if (depth.mm * 4 > avg_depth * 3) {
+	if (depth.mm * 4 > avg_depth.mm * 3) {
 		return prefs.ascrate75;
 	} else {
-		if (depth.mm * 2 > avg_depth) {
+		if (depth.mm * 2 > avg_depth.mm) {
 			return prefs.ascrate50;
 		} else {
 			if (depth.mm > 6000)
@@ -477,7 +477,7 @@ int ascent_velocity(depth_t depth, int avg_depth, int)
 	}
 }
 
-static void track_ascent_gas(depth_t depth, struct dive *dive, int cylinder_id, int avg_depth, int bottom_time, bool safety_stop, enum divemode_t divemode)
+static void track_ascent_gas(depth_t depth, struct dive *dive, int cylinder_id, depth_t avg_depth, int bottom_time, bool safety_stop, enum divemode_t divemode)
 {
 	cylinder_t *cylinder = dive->get_cylinder(cylinder_id);
 	while (depth.mm > 0) {
@@ -494,7 +494,7 @@ static void track_ascent_gas(depth_t depth, struct dive *dive, int cylinder_id, 
 }
 
 // Determine whether ascending to the next stop will break the ceiling.  Return true if the ascent is ok, false if it isn't.
-static bool trial_ascent(struct deco_state *ds, int wait_time, depth_t trial_depth, depth_t stoplevel, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, struct dive *dive, enum divemode_t divemode)
+static bool trial_ascent(struct deco_state *ds, int wait_time, depth_t trial_depth, depth_t stoplevel, depth_t avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, struct dive *dive, enum divemode_t divemode)
 {
 
 	bool clear_to_ascend = true;
@@ -562,7 +562,7 @@ static bool enough_gas(const struct dive *dive, int current_cylinder)
  * leap is a guess for the maximum but there is no guarantee that leap is an upper limit.
  * So we always test at the upper bundary, not in the middle!
  */
-static int wait_until(struct deco_state *ds, struct dive *dive, int clock, int min, int leap, int stepsize, depth_t depth, depth_t target_depth, int avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, enum divemode_t divemode)
+static int wait_until(struct deco_state *ds, struct dive *dive, int clock, int min, int leap, int stepsize, depth_t depth, depth_t target_depth, depth_t avg_depth, int bottom_time, struct gasmix gasmix, int po2, double surface_pressure, enum divemode_t divemode)
 {
 	// When a deco stop exceeds two days, there is something wrong...
 	if (min >= 48 * 3600)
@@ -579,28 +579,26 @@ static int wait_until(struct deco_state *ds, struct dive *dive, int clock, int m
 	return wait_until(ds, dive, clock, min, leap / 2, stepsize, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure, divemode);
 }
 
-static void average_max_depth(const struct diveplan &dive, int *avg_depth, int *max_depth)
+// returns an (average_depth, maximum_depth) pair
+static std::pair<depth_t, depth_t> average_max_depth(const struct diveplan &dive)
 {
-	int integral = 0;
+	depth_t integral; // Strictly speaking not a depth, but depth × time. Might want to define a custom time for that.
+	depth_t last_depth, max_depth;
 	int last_time = 0;
-	int last_depth = 0;
-
-	*max_depth = 0;
 
 	for (auto &dp: dive.dp) {
 		if (dp.time) {
 			/* Ignore gas indication samples */
-			integral += (dp.depth.mm + last_depth) * (dp.time - last_time) / 2;
+			integral += (dp.depth + last_depth) * (dp.time - last_time) / 2;
 			last_time = dp.time;
-			last_depth = dp.depth.mm;
-			if (dp.depth.mm > *max_depth)
-				*max_depth = dp.depth.mm;
+			last_depth = dp.depth;
+			if (dp.depth.mm > max_depth.mm)
+				max_depth = dp.depth;
 		}
 	}
 	if (last_time)
-		*avg_depth = integral / last_time;
-	else
-		*avg_depth = *max_depth = 0;
+		return { integral / last_time, max_depth };
+	return { 0_m, 0_m };
 }
 
 std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, int dcNr, int timestep, deco_state_cache &cache, bool is_planner, bool show_disclaimer)
@@ -619,7 +617,6 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 	bool stopping = false;
 	bool pendinggaschange = false;
 	int clock, previous_point_time;
-	int avg_depth, max_depth;
 	int last_ascend_rate;
 	int best_first_ascend_cylinder = -1;
 	struct gasmix gas, bottom_gas;
@@ -678,7 +675,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 
 	po2 = sample.setpoint.mbar;
 	depth_t depth = sample.depth;
-	average_max_depth(diveplan, &avg_depth, &max_depth);
+	auto [avg_depth, max_depth] = average_max_depth(diveplan);
 	last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 
 	/* if all we wanted was the dive just get us back to the surface */
@@ -723,7 +720,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 	nuclear_regeneration(ds, clock);
 	vpmb_start_gradient(ds);
 	if (decoMode(true) == RECREATIONAL) {
-		bool safety_stop = prefs.safetystop && max_depth >= 10000;
+		bool safety_stop = prefs.safetystop && max_depth.mm >= 10000;
 		track_ascent_gas(depth, dive, current_cylinder, avg_depth, bottom_time, safety_stop, divemode);
 		// How long can we stay at the current depth and still directly ascent to the surface?
 		do {

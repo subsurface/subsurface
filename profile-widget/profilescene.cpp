@@ -117,7 +117,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 							[](const plot_data &item) { return (double)item.temperature; },
 							1, dpr)),
 	meanDepthItem(createItem<DiveMeanDepthItem>(*profileYAxis,
-						    [](const plot_data &item) { return (double)item.running_sum; },
+						    [](const plot_data &item) { return (double)item.running_sum.mm; },
 						    1, dpr)),
 	gasPressureItem(createItem<DiveGasPressureItem>(*cylinderPressureAxis,
 							[](const plot_data &item) { return 0.0; }, // unused
