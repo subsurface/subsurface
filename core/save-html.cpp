@@ -281,7 +281,7 @@ void put_HTML_depth(struct membuffer *b, const struct dive &dive, const char *pr
 		put_format(b, "%s--%s", pre, post);
 		return;
 	}
-	value = get_depth_units(dive.maxdepth.mm, NULL, &unit);
+	value = get_depth_units(dive.maxdepth, NULL, &unit);
 
 	switch (units_p->length) {
 	case units::METERS:

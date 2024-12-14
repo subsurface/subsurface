@@ -176,7 +176,7 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 		return rc;
 	// in ft * 128.0
 	int depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
-	deviceDetails.maxDepth = depth;
+	deviceDetails.maxDepth.mm = depth;
 	EMIT_PROGRESS();
 
 	rc = dc_device_read(device, SUUNTO_VYPER_TOTAL_TIME, data, 2);
@@ -272,7 +272,7 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
-	deviceDetails.alarmDepth = depth;
+	deviceDetails.alarmDepth.mm = depth;
 	EMIT_PROGRESS();
 
 	return DC_STATUS_SUCCESS;
@@ -354,8 +354,8 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 		return rc;
 	EMIT_PROGRESS();
 
-	data2[0] = (int)(mm_to_feet(deviceDetails.alarmDepth) * 128) >> 8;
-	data2[1] = (int)(mm_to_feet(deviceDetails.alarmDepth) * 128) & 0x0FF;
+	data2[0] = (int)(mm_to_feet(deviceDetails.alarmDepth.mm) * 128) >> 8;
+	data2[1] = (int)(mm_to_feet(deviceDetails.alarmDepth.mm) * 128) & 0x0FF;
 	rc = dc_device_write(device, SUUNTO_VYPER_ALARM_DEPTH, data2, 2);
 	EMIT_PROGRESS();
 	return rc;

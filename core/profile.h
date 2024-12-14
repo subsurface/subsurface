@@ -53,7 +53,7 @@ struct plot_data {
 	int cns = 0;
 	depth_t smoothed;
 	int sac = 0;
-	int running_sum = 0;
+	depth_t running_sum; // strictly speaking not a depth, but depth × time. Might define a custom type for that based on a longer integer.
 	struct gas_pressures pressures;
 	// TODO: make pressure_t default to 0
 	pressure_t o2pressure;  // for rebreathers, this is consensus measured po2, or setpoint otherwise. 0 for OC.

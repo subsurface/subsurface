@@ -5,6 +5,7 @@
 #include <QObject>
 #include <QDateTime>
 #include "libdivecomputer.h"
+#include "units.h"
 
 struct gas {
 	unsigned char oxygen;
@@ -73,7 +74,7 @@ public:
 	int pressureSensorOffset;
 	bool flipScreen;
 	bool safetyStop;
-	int maxDepth;
+	depth_t maxDepth;
 	int totalTime;
 	int numberOfDives;
 	int altitude;
@@ -84,7 +85,7 @@ public:
 	bool alarmTimeEnabled;
 	int alarmTime;
 	bool alarmDepthEnabled;
-	int alarmDepth;
+	depth_t alarmDepth;
 	int leftButtonSensitivity;
 	int rightButtonSensitivity;
 	int buttonSensitivity;

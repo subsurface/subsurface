@@ -450,9 +450,9 @@ std::pair<double,double> DiveMeanDepthItem::getMeanDepth(int i) const
 {
 	for ( ; i >= 0; --i) {
 		const plot_data &entry = pInfo.entry[i];
-		if (entry.running_sum > 0)
+		if (entry.running_sum.mm > 0)
 			return { static_cast<double>(entry.sec),
-				 static_cast<double>(entry.running_sum) / entry.sec };
+				 static_cast<double>(entry.running_sum.mm) / entry.sec };
 	}
 	return { 0.0, 0.0 };
 }
@@ -462,9 +462,9 @@ std::pair<double,double> DiveMeanDepthItem::getNextMeanDepth(int first) const
 	int last = pInfo.nr;
 	for (int i = first + 1; i < last;  ++i) {
 		const plot_data &entry = pInfo.entry[i];
-		if (entry.running_sum > 0)
+		if (entry.running_sum.mm > 0)
 			return { static_cast<double>(entry.sec),
-				 static_cast<double>(entry.running_sum) / entry.sec };
+				 static_cast<double>(entry.running_sum.mm) / entry.sec };
 	}
 	return getMeanDepth(first);
 }

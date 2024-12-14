@@ -202,7 +202,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 		if (dp->time == 0)
 			continue;
 		gasmix = dive.get_cylinder(dp->cylinderid)->gasmix;
-		depthvalue = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
+		depthvalue = get_depth_units(dp->depth, &decimals, &depth_unit);
 		/* analyze the dive points ahead */
 		while (nextdp != this->dp.end() && nextdp->time == 0)
 			++nextdp;
@@ -443,7 +443,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 
 	{
 		const char *depth_unit;
-		int altitude = (int) get_depth_units(pressure_to_altitude(surface_pressure).mm, NULL, &depth_unit);
+		int altitude = (int) get_depth_units(pressure_to_altitude(surface_pressure), NULL, &depth_unit);
 
 		buf += casprintf_loc(translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br/>\n</div>\n"), surface_pressure, altitude, depth_unit);
 	}
@@ -519,7 +519,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 					mingas_volume = get_volume_units(mingasv.mliter, NULL, &unit);
 					mingas_pressure = get_pressure_units(lastbottomdp->minimum_gas.mbar, &pressure_unit);
 					mingas_d_pressure = get_pressure_units(lrint((double)cyl.end.mbar + deco_pressure_mbar - lastbottomdp->minimum_gas.mbar), &pressure_unit);
-					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
+					mingas_depth = get_depth_units(lastbottomdp->depth, NULL, &depth_unit);
 					/* Print it to results */
 					if (cyl.start.mbar > lastbottomdp->minimum_gas.mbar) {
 						mingas = casprintf_loc("<br/>\n&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): "
@@ -595,7 +595,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 					if (pressures.o2 > (dp.entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
 						const char *depth_unit;
 						int decimals;
-						double depth_value = get_depth_units(dp.depth.mm, &decimals, &depth_unit);
+						double depth_value = get_depth_units(dp.depth, &decimals, &depth_unit);
 						if (!o2warning_exist)
 							buf += "<div>\n";
 						o2warning_exist = true;
@@ -605,7 +605,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 					} else if (pressures.o2 < 0.16) {
 						const char *depth_unit;
 						int decimals;
-						double depth_value = get_depth_units(dp.depth.mm, &decimals, &depth_unit);
+						double depth_value = get_depth_units(dp.depth, &decimals, &depth_unit);
 						if (!o2warning_exist)
 							buf += "<div>";
 						o2warning_exist = true;

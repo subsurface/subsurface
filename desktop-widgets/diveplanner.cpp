@@ -163,7 +163,7 @@ void DivePlannerWidget::settingsChanged()
 	}
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DEPTH, new SpinBoxDelegate(0, maxDepth, 1, this));
 	ui.atmHeight->blockSignals(true);
-	ui.atmHeight->setValue((int) get_depth_units(pressure_to_altitude(DivePlannerPointsModel::instance()->getSurfacePressure()).mm, NULL, NULL));
+	ui.atmHeight->setValue((int) get_depth_units(pressure_to_altitude(DivePlannerPointsModel::instance()->getSurfacePressure()), NULL, NULL));
 	ui.atmHeight->blockSignals(false);
 
 	ui.dateEdit->setDisplayFormat(QString::fromStdString(prefs.date_format));
@@ -175,7 +175,7 @@ void DivePlannerWidget::atmPressureChanged(int pressure_in_mbar)
 	pressure_t pressure { .mbar = pressure_in_mbar };
 	DivePlannerPointsModel::instance()->setSurfacePressure(pressure);
 	ui.atmHeight->blockSignals(true);
-	ui.atmHeight->setValue((int) get_depth_units(pressure_to_altitude(pressure).mm, NULL, NULL));
+	ui.atmHeight->setValue((int) get_depth_units(pressure_to_altitude(pressure), NULL, NULL));
 	ui.atmHeight->blockSignals(false);
 }
 
@@ -457,7 +457,7 @@ void PlannerSettingsWidget::updateUnitsUI()
 	ui.ascRateStops->setValue(plannerModel->ascratestopsDisplay());
 	ui.ascRateLast6m->setValue(plannerModel->ascratelast6mDisplay());
 	ui.descRate->setValue(lrint(plannerModel->descrateDisplay()));
-	ui.bestmixEND->setValue(lrint(get_depth_units(prefs.bestmixend.mm, NULL, NULL)));
+	ui.bestmixEND->setValue(lrint(get_depth_units(prefs.bestmixend, NULL, NULL)));
 }
 
 PlannerSettingsWidget::~PlannerSettingsWidget()
