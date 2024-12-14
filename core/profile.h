@@ -60,7 +60,7 @@ struct plot_data {
 	std::array<pressure_t, MAX_O2_SENSORS> o2sensor; //for rebreathers with several sensors
 	pressure_t o2setpoint;
 	pressure_t scr_OC_pO2;
-	int mod = 0, ead = 0, end = 0, eadd = 0;
+	depth_t mod, ead, end, eadd;
 	velocity_t velocity = STABLE;
 	int speed = 0;
 	/* values calculated by us */

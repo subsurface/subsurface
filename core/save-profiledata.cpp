@@ -92,10 +92,10 @@ static void put_pd(struct membuffer *b, const struct plot_info &pi, int idx)
 		put_int(b, entry.o2sensor[i].mbar);
 	put_int(b, entry.o2setpoint.mbar);
 	put_int(b, entry.scr_OC_pO2.mbar);
-	put_int(b, entry.mod);
-	put_int(b, entry.ead);
-	put_int(b, entry.end);
-	put_int(b, entry.eadd);
+	put_int(b, entry.mod.mm);
+	put_int(b, entry.ead.mm);
+	put_int(b, entry.end.mm);
+	put_int(b, entry.eadd.mm);
 	switch (entry.velocity) {
 	case STABLE:
 		put_csv_string(b, "STABLE");
@@ -296,29 +296,29 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 		replace_all(format_string, "[scr_oc_po2]", "");	
 	}
 	
-	if (entry.mod > 0) {
-		value = get_depth_units(entry.mod, &decimals, &unit);
+	if (entry.mod.mm > 0) {
+		value = get_depth_units(entry.mod.mm, &decimals, &unit);
 		replace_all(format_string, "[mod]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[mod]", "");	
 	}
 	
-	if (entry.ead > 0) {
-		value = get_depth_units(entry.ead, &decimals, &unit);
+	if (entry.ead.mm > 0) {
+		value = get_depth_units(entry.ead.mm, &decimals, &unit);
 		replace_all(format_string, "[ead]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[ead]", "");	
 	}
 
-	if (entry.end > 0) {
-		value = get_depth_units(entry.end, &decimals, &unit);
+	if (entry.end.mm > 0) {
+		value = get_depth_units(entry.end.mm, &decimals, &unit);
 		replace_all(format_string, "[end]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[end]", "");	
 	}
 	
-	if (entry.eadd > 0) {
-		value = get_depth_units(entry.eadd, &decimals, &unit);
+	if (entry.eadd.mm > 0) {
+		value = get_depth_units(entry.eadd.mm, &decimals, &unit);
 		replace_all(format_string, "[eadd]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[eadd]", "");	
