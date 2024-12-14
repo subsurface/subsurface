@@ -314,7 +314,7 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 
 	for (cylinder_t &cyl: dive->cylinders) {
 		if (cyl.depth.mm == 0) /* if the gas doesn't give a mod, calculate based on prefs */
-			cyl.depth = dive->gas_mod(cyl.gasmix, decopo2, M_OR_FT(3,10));
+			cyl.depth = dive->gas_mod(cyl.gasmix, decopo2, m_or_ft(3, 10).mm);
 		if (track_gas)
 			cyl.start.mbar = cyl.end.mbar = cyl.type.workingpressure.mbar;
 		cyl.gas_used = 0_l;

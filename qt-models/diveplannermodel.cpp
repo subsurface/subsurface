@@ -90,12 +90,12 @@ void DivePlannerPointsModel::createSimpleDive(struct dive *dIn)
 	// If we're in drop_stone_mode, don't add a first point.
 	// It will be added implicitly.
 	if (!prefs.drop_stone_mode)
-		addStop(M_OR_FT(15, 45), 1 * 60, cylinderid, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
+		addStop(m_or_ft(15, 45), 1 * 60, cylinderid, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
 
-	addStop(M_OR_FT(15, 45), 20 * 60, 0, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
+	addStop(m_or_ft(15, 45), 20 * 60, 0, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
 	if (!isPlanner()) {
-		addStop(M_OR_FT(5, 15), 42 * 60, cylinderid, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
-		addStop(M_OR_FT(5, 15), 45 * 60, cylinderid, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
+		addStop(m_or_ft(5, 15), 42 * 60, cylinderid, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
+		addStop(m_or_ft(5, 15), 45 * 60, cylinderid, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
 	}
 	updateDiveProfile();
 }
@@ -173,7 +173,8 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 				if (newtime.seconds == lastrecordedtime.seconds)
 					newtime.seconds += 10;
 				divemode_t current_divemode = loop.at(newtime.seconds - 1);
-				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
+				depth_t depth { .mm = depthsum / samplecount };
+				addStop(depth, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 				lastrecordedtime = newtime;
 			}
 			lasttime = newtime;
@@ -184,7 +185,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	// make sure we get the last point right so the duration is correct
 	divemode_t current_divemode = loop.at(dc->duration.seconds);
 	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
-		addStop(0, dc->duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
+		addStop(0_m, dc->duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
 	preserved_until = d->duration;
 
 	updateDiveProfile();
@@ -808,19 +809,19 @@ int DivePlannerPointsModel::lastEnteredPoint() const
 void DivePlannerPointsModel::addDefaultStop()
 {
 	removeDeco();
-	addStop(0, 0, -1, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
+	addStop(0_m, 0, -1, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
 }
 
-void DivePlannerPointsModel::addStop(int milimeters, int seconds)
+void DivePlannerPointsModel::addStop(depth_t depth, int seconds)
 {
 	removeDeco();
-	addStop(milimeters, seconds, -1, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
+	addStop(depth, seconds, -1, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
 	updateDiveProfile();
 }
 
 // cylinderid_in == -1 means same gas as before.
 // divemode == UNDEF_COMP_TYPE means determine from previous point.
-int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t divemode)
+int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t divemode)
 {
 	int cylinderid = 0;
 	bool usePrevious = false;
@@ -830,16 +831,16 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 		usePrevious = true;
 
 	int row = divepoints.count();
-	if (seconds == 0 && milimeters == 0) {
+	if (seconds == 0 && depth.mm == 0) {
 		if (row == 0) {
-			milimeters = M_OR_FT(5, 15); // 5m / 15ft
+			depth = m_or_ft(5, 15); // 5m / 15ft
 			seconds = 600;		     // 10 min
 			// Default to the first cylinder
 			cylinderid = 0;
 		} else {
 			/* this is only possible if the user clicked on the 'plus' sign on the DivePoints Table */
 			const divedatapoint t = divepoints.at(lastEnteredPoint());
-			milimeters = t.depth.mm;
+			depth = t.depth;
 			seconds = t.time + 600; // 10 minutes.
 			cylinderid = t.cylinderid;
 			ccpoint = t.setpoint;
@@ -881,7 +882,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
-	divedatapoint point(seconds, milimeters, cylinderid, ccpoint, entered);
+	divedatapoint point(seconds, depth.mm, cylinderid, ccpoint, entered);
 	point.divemode = divemode;
 	divepoints.insert(divepoints.begin() + row, point);
 	endInsertRows();

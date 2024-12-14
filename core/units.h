@@ -19,8 +19,6 @@
 #define HE_DENSITY 166
 #define ZERO_C_IN_MKELVIN 273150 // mKelvin
 
-#define M_OR_FT(_m, _f) ((prefs.units.length == units::METERS) ? ((_m) * 1000) : (feet_to_mm(_f)))
-
 /* Salinity is expressed in weight in grams per 10l */
 #define SEAWATER_SALINITY 10300
 #define EN13319_SALINITY 10200
@@ -192,6 +190,10 @@ static inline depth_t operator""_ft(unsigned long long ft)
 {
 	return depth_t { .mm = static_cast<int32_t>(round(ft * 304.8)) };
 }
+
+// Return either the first argument in meters or the second argument in
+// feet, depending on use settings.
+depth_t m_or_ft(int m, int ft);
 
 struct pressure_t : public unit_base<pressure_t>
 {

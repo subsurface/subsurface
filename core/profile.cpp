@@ -764,12 +764,12 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 	const int ascent_s_per_deco_step = 1;
 	/* how long time steps in deco calculations? */
 	const int time_stepsize = 60;
-	const int deco_stepsize = M_OR_FT(3, 10);
+	const depth_t deco_stepsize = m_or_ft(3, 10);
 	/* at what depth is the current deco-step? */
 	depth_t ascent_depth { .mm = entry.depth };
 	int next_stop = round_up(deco_allowed_depth(
 					 tissue_tolerance_calc(ds, dive, dive->depth_to_bar(ascent_depth), in_planner),
-					 surface_pressure, dive, 1).mm, deco_stepsize);
+					 surface_pressure, dive, 1).mm, deco_stepsize.mm);
 	/* at what time should we give up and say that we got enuff NDL? */
 	/* If iterating through a dive, entry.tts_calc needs to be reset */
 	entry.tts_calc = 0;
@@ -802,14 +802,14 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 		add_segment(ds, dive->depth_to_bar(ascent_depth),
 			    gasmix, ascent_s_per_step, entry.o2pressure.mbar, divemode, prefs.decosac, in_planner);
 		next_stop = round_up(deco_allowed_depth(tissue_tolerance_calc(ds, dive, dive->depth_to_bar(ascent_depth), in_planner),
-							surface_pressure, dive, 1).mm, deco_stepsize);
+							surface_pressure, dive, 1).mm, deco_stepsize.mm);
 	}
 	ascent_depth.mm = next_stop;
 
 	/* And how long is the current deco-step? */
 	entry.stoptime_calc = 0;
 	entry.stopdepth_calc = next_stop;
-	next_stop -= deco_stepsize;
+	next_stop -= deco_stepsize.mm;
 
 	/* And how long is the total TTS */
 	while (next_stop >= 0) {
@@ -829,7 +829,7 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 				add_segment(ds, dive->depth_to_bar(ascent_depth),
 					    gasmix, ascent_s_per_deco_step, entry.o2pressure.mbar, divemode, prefs.decosac, in_planner);
 			ascent_depth.mm = next_stop;
-			next_stop -= deco_stepsize;
+			next_stop -= deco_stepsize.mm;
 		}
 	}
 }
