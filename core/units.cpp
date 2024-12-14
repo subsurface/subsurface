@@ -204,3 +204,8 @@ depth_t m_or_ft(int m, int ft)
 	int mm = prefs.units.length == units::METERS ? m * 1000 : feet_to_mm(ft);
 	return depth_t::from_base(mm);
 }
+
+depth_t pressure_to_altitude(pressure_t pressure)
+{						// returns altitude in mm above sea level
+	return depth_t::from_base(static_cast<int32_t>(log(1013.0 / pressure.mbar) * 7800000));
+}

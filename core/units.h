@@ -436,10 +436,7 @@ static inline pressure_t altitude_to_pressure(int32_t altitude) { 	// altitude i
 	return pressure_t { .mbar = int_cast<int32_t> (1013.0 * exp(- altitude / 7800000.0)) };
 }
 
-static inline int32_t pressure_to_altitude(pressure_t pressure)
-{						// returns altitude in mm above sea level
-	return (int32_t) (log(1013.0 / pressure.mbar) * 7800000);
-}
+depth_t pressure_to_altitude(pressure_t pressure);
 
 /*
  * We keep our internal data in well-specified units, but
