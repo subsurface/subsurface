@@ -882,7 +882,7 @@ int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_i
 
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
-	divedatapoint point(seconds, depth.mm, cylinderid, ccpoint, entered);
+	divedatapoint point(seconds, depth, cylinderid, ccpoint, entered);
 	point.divemode = divemode;
 	divepoints.insert(divepoints.begin() + row, point);
 	endInsertRows();
@@ -1083,7 +1083,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 
 	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
 		if (cyl.depth.mm && cyl.cylinder_use == OC_GAS)
-			plan_add_segment(diveplan, 0, cyl.depth.mm, i, 0, false, OC);
+			plan_add_segment(diveplan, 0, cyl.depth, i, 0, false, OC);
 	}
 
 	int lastIndex = -1;
@@ -1094,11 +1094,11 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		lastIndex = i;
 		if (i == 0 && mode == PLAN && prefs.drop_stone_mode) {
 			/* Okay, we add a first segment where we go down to depth */
-			plan_add_segment(diveplan, p.depth.mm / prefs.descrate, p.depth.mm, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
+			plan_add_segment(diveplan, p.depth.mm / prefs.descrate, p.depth, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
 			deltaT -= p.depth.mm / prefs.descrate;
 		}
 		if (p.entered)
-			plan_add_segment(diveplan, deltaT, p.depth.mm, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
+			plan_add_segment(diveplan, deltaT, p.depth, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
 	}
 
 #if DEBUG_PLAN
