@@ -432,7 +432,7 @@ static void add_dive_to_deco(struct deco_state *ds, const struct dive &dive, boo
 		int j;
 
 		for (j = t0; j < t1; j++) {
-			depth_t depth = { .mm = interpolate(psample.depth.mm, sample.depth.mm, j - t0, t1 - t0) };
+			depth_t depth = interpolate(psample.depth, sample.depth, j - t0, t1 - t0);
 			auto gasmix = loop.at(j).first;
 			add_segment(ds, dive.depth_to_bar(depth), gasmix, 1, sample.setpoint.mbar,
 				    loop_d.at(j), dive.sac,

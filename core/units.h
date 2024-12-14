@@ -2,6 +2,8 @@
 #ifndef UNITS_H
 #define UNITS_H
 
+#include "interpolate.h"
+
 #include <math.h>
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -86,6 +88,12 @@
  *	_permille	-> fraction_t in ‰
  *	_percent	-> fraction_t in %
  *
+ * For now, addition and subtraction of values of the same type
+ * are supported.
+ *
+ * A free standing interpolate() function can be used to interpolate
+ * between types of the same kind (see also the interpolate.h header).
+ *
  * We don't actually use these all yet, so maybe they'll change, but
  * I made a number of types as guidelines.
  */
@@ -139,6 +147,15 @@ struct unit_base {
 		return static_cast<T &>(*this);
 	}
 };
+
+template <typename T,
+	std::enable_if_t<!std::is_integral<T>::value, bool> = true>
+T interpolate(T a, T b, int part, int whole)
+{
+	return T::from_base(
+		interpolate(a.get_base(), b.get_base(), part, whole)
+	);
+}
 
 struct duration_t : public unit_base<duration_t>
 {

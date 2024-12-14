@@ -876,6 +876,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			int time_stepsize = 20;
 			depth_t max_ceiling;
 			depth_t depth { .mm = entry.depth };
+			depth_t prev_depth { .mm = prev.depth };
 
 			divemode_t current_divemode = loop_d.at(entry.sec);
 			struct gasmix gasmix = loop.at(t1).first;
@@ -888,7 +889,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			if (t0 != t1 && t1 - t0 < time_stepsize)
 				time_stepsize = t1 - t0;
 			for (int j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
-				depth_t new_depth { .mm = interpolate(prev.depth, depth.mm, j - t0, t1 - t0) };
+				depth_t new_depth = interpolate(prev_depth, depth, j - t0, t1 - t0);
 				add_segment(ds, dive->depth_to_bar(new_depth),
 					    gasmix, time_stepsize, entry.o2pressure.mbar, current_divemode, entry.sac, in_planner);
 				entry.icd_warning = ds->icd_warning;
@@ -915,7 +916,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				/* If using VPM-B, take first_ceiling_pressure as the deepest ceiling */
 				if (decoMode(in_planner) == VPMB) {
 					if  (current_ceiling.mm >= first_ceiling.mm ||
-					     (time_deep_ceiling == t0 && depth.mm == prev.depth)) {
+					     (time_deep_ceiling == t0 && depth.mm == prev_depth.mm)) {
 						time_deep_ceiling = t1;
 						first_ceiling = current_ceiling;
 						ds->first_ceiling_pressure.mbar = dive->depth_to_mbar(first_ceiling);

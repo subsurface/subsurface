@@ -104,7 +104,7 @@ static void interpolate_transition(struct deco_state *ds, struct dive *dive, dur
 	int32_t j;
 
 	for (j = t0.seconds; j < t1.seconds; j++) {
-		depth_t depth = depth_t { .mm = interpolate(d0.mm, d1.mm, j - t0.seconds, t1.seconds - t0.seconds) };
+		depth_t depth = interpolate(d0, d1, j - t0.seconds, t1.seconds - t0.seconds);
 		add_segment(ds, dive->depth_to_bar(depth), gasmix, 1, po2.mbar, divemode, prefs.bottomsac, true);
 	}
 	if (d1.mm > d0.mm)
