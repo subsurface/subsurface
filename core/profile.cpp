@@ -903,11 +903,11 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 					if (!first_iteration || in_planner)
 						vpmb_next_gradient(ds, ds->deco_time, surface_pressure / 1000.0, in_planner);
 				}
-				entry.ceiling = deco_allowed_depth(tissue_tolerance_calc(ds, dive, dive->depth_to_bar(entry.depth), in_planner), surface_pressure, dive, !prefs.calcceiling3m).mm;
+				entry.ceiling = deco_allowed_depth(tissue_tolerance_calc(ds, dive, dive->depth_to_bar(entry.depth), in_planner), surface_pressure, dive, !prefs.calcceiling3m);
 				if (prefs.calcceiling3m)
 					current_ceiling = deco_allowed_depth(tissue_tolerance_calc(ds, dive, dive->depth_to_bar(entry.depth), in_planner), surface_pressure, dive, true);
 				else
-					current_ceiling.mm = entry.ceiling;
+					current_ceiling = entry.ceiling;
 				last_ceiling = current_ceiling;
 				/* If using VPM-B, take first_ceiling_pressure as the deepest ceiling */
 				if (decoMode(in_planner) == VPMB) {
@@ -939,9 +939,9 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			for (int j = 0; j < 16; j++) {
 				double m_value = ds->buehlmann_inertgas_a[j] + entry.ambpressure / ds->buehlmann_inertgas_b[j];
 				double surface_m_value = ds->buehlmann_inertgas_a[j] + surface_pressure / ds->buehlmann_inertgas_b[j];
-				entry.ceilings[j] = deco_allowed_depth(ds->tolerated_by_tissue[j], surface_pressure, dive, 1).mm;
-				if (entry.ceilings[j] > max_ceiling.mm)
-					max_ceiling.mm = entry.ceilings[j];
+				entry.ceilings[j] = deco_allowed_depth(ds->tolerated_by_tissue[j], surface_pressure, dive, 1);
+				if (entry.ceilings[j].mm > max_ceiling.mm)
+					max_ceiling = entry.ceilings[j];
 				double current_gf = (ds->tissue_inertgas_saturation[j] - entry.ambpressure) / (m_value - entry.ambpressure);
 				entry.percentages[j] = ds->tissue_inertgas_saturation[j] < entry.ambpressure ?
 					lrint(ds->tissue_inertgas_saturation[j] / entry.ambpressure * AMB_PERCENTAGE) :
@@ -1388,14 +1388,14 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 			res.push_back(casprintf_loc(translate("gettextFromC", "GF %d%%"), (int)(100.0 * entry.current_gf)));
 		if (entry.surface_gf > 0.0)
 			res.push_back(casprintf_loc(translate("gettextFromC", "Surface GF %.0f%%"), entry.surface_gf));
-		if (entry.ceiling) {
-			depthvalue = get_depth_units(entry.ceiling, NULL, &depth_unit);
+		if (entry.ceiling.mm > 0) {
+			depthvalue = get_depth_units(entry.ceiling.mm, NULL, &depth_unit);
 			res.push_back(casprintf_loc(translate("gettextFromC", "Calculated ceiling %.1f%s"), depthvalue, depth_unit));
 			if (prefs.calcalltissues) {
 				int k;
 				for (k = 0; k < 16; k++) {
-					if (entry.ceilings[k]) {
-						depthvalue = get_depth_units(entry.ceilings[k], NULL, &depth_unit);
+					if (entry.ceilings[k].mm > 0) {
+						depthvalue = get_depth_units(entry.ceilings[k].mm, NULL, &depth_unit);
 						res.push_back(casprintf_loc(translate("gettextFromC", "Tissue %.0fmin: %.1f%s"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit));
 					}
 				}

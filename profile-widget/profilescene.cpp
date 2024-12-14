@@ -71,7 +71,7 @@ PartialPressureGasItem *ProfileScene::createPPGas(DataAccessor accessor, color_i
 template <int IDX>
 double accessTissue(const plot_data &item)
 {
-	return item.ceilings[IDX];
+	return static_cast<double>(item.ceilings[IDX].mm);
 }
 
 // For now, the accessor functions for the profile data do not possess a payload.
@@ -124,7 +124,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 							1, dpr)),
 	diveComputerText(new DiveTextItem(dpr, 1.0, Qt::AlignRight | Qt::AlignTop, nullptr)),
 	reportedCeiling(createItem<DiveReportedCeiling>(*profileYAxis,
-							[](const plot_data &item) { return (double)item.ceiling; },
+							[](const plot_data &item) { return (double)item.ceiling.mm; },
 							1, dpr)),
 	pn2GasItem(createPPGas([](const plot_data &item) { return (double)item.pressures.n2; },
 			       PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold)),
@@ -143,7 +143,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	ocpo2GasItem(createPPGas([](const plot_data &item) { return item.scr_OC_pO2.mbar / 1000.0; },
 				 SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max)),
 	diveCeiling(createItem<DiveCalculatedCeiling>(*profileYAxis,
-						      [](const plot_data &item) { return (double)item.ceiling; },
+						      [](const plot_data &item) { return (double)item.ceiling.mm; },
 						      1, dpr)),
 	decoModelParameters(new DiveTextItem(dpr, 1.0, Qt::AlignHCenter | Qt::AlignTop, nullptr)),
 	heartBeatItem(createItem<DiveHeartrateItem>(*heartBeatAxis,

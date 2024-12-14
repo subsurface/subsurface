@@ -42,8 +42,8 @@ struct plot_data {
 	int temperature = 0;
 	/* Depth info */
 	depth_t depth;
-	int ceiling = 0;
-	std::array<int, 16> ceilings;
+	depth_t ceiling;
+	std::array<depth_t, 16> ceilings;
 	std::array<int, 16> percentages;
 	int ndl = 0;
 	int tts = 0;
