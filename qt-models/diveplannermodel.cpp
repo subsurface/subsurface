@@ -118,7 +118,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	d = dIn;
 	dcNr = dcNrIn;
 
-	int depthsum = 0;
+	depth_t depthsum;
 	int samplecount = 0;
 	o2pressure_t last_sp;
 	struct divecomputer *dc = d->get_dc(dcNr);
@@ -157,7 +157,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 		while (j * plansamples <= i * static_cast<int>(dc->samples.size())) {
 			const sample &s = dc->samples[j];
 			if (s.time.seconds != 0 && (!hasMarkedSamples || s.manually_entered)) {
-				depthsum += s.depth.mm;
+				depthsum += s.depth;
 				if (j > 0)
 					last_sp = dc->samples[j-1].setpoint;
 				++samplecount;
@@ -173,12 +173,11 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 				if (newtime.seconds == lastrecordedtime.seconds)
 					newtime.seconds += 10;
 				divemode_t current_divemode = loop.at(newtime.seconds - 1);
-				depth_t depth { .mm = depthsum / samplecount };
-				addStop(depth, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
+				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 				lastrecordedtime = newtime;
 			}
 			lasttime = newtime;
-			depthsum = 0;
+			depthsum = 0_m;
 			samplecount = 0;
 		}
 	}
