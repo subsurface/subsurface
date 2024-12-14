@@ -64,11 +64,11 @@ diveplan setupPlan()
 	cyl2->gasmix = oxygen;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(79, 260) * 60 / M_OR_FT(23, 75);
-	plan_add_segment(dp, 0, dive.gas_mod(ean36, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
-	plan_add_segment(dp, droptime, M_OR_FT(79, 260), 0, 0, 1, OC);
-	plan_add_segment(dp, 30 * 60 - droptime, M_OR_FT(79, 260), 0, 0, 1, OC);
+	int droptime = m_or_ft(79, 260).mm * 60 / m_or_ft(23, 75).mm;
+	plan_add_segment(dp, 0, dive.gas_mod(ean36, po2, m_or_ft(3, 10).mm).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, m_or_ft(3, 10).mm).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, droptime, m_or_ft(79, 260).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 30 * 60 - droptime, m_or_ft(79, 260).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -99,11 +99,11 @@ diveplan setupPlanVpmb45m30mTx()
 	cyl2->gasmix = oxygen;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(45, 150) * 60 / M_OR_FT(23, 75);
-	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
-	plan_add_segment(dp, droptime, M_OR_FT(45, 150), 0, 0, 1, OC);
-	plan_add_segment(dp, 30 * 60 - droptime, M_OR_FT(45, 150), 0, 0, 1, OC);
+	int droptime = m_or_ft(45, 150).mm * 60 / m_or_ft(23, 75).mm;
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, m_or_ft(3, 10).mm).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, m_or_ft(3, 10).mm).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, droptime, m_or_ft(45, 150).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 30 * 60 - droptime, m_or_ft(45, 150).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -134,11 +134,11 @@ diveplan setupPlanVpmb60m10mTx()
 	cyl2->gasmix = oxygen;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(60, 200) * 60 / M_OR_FT(23, 75);
-	plan_add_segment(dp, 0, dive.gas_mod(tx50_15, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
-	plan_add_segment(dp, droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
-	plan_add_segment(dp, 10 * 60 - droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
+	int droptime = m_or_ft(60, 200).mm * 60 / m_or_ft(23, 75).mm;
+	plan_add_segment(dp, 0, dive.gas_mod(tx50_15, po2, m_or_ft(3, 10).mm).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, m_or_ft(3, 10).mm).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, droptime, m_or_ft(60, 200).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 10 * 60 - droptime, m_or_ft(60, 200).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -158,9 +158,9 @@ diveplan setupPlanVpmb60m30minAir()
 	dive.surface_pressure = 1_atm;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(60, 200) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
-	plan_add_segment(dp, 30 * 60 - droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
+	int droptime = m_or_ft(60, 200).mm * 60 / m_or_ft(99, 330).mm;
+	plan_add_segment(dp, droptime, m_or_ft(60, 200).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 30 * 60 - droptime, m_or_ft(60, 200).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -187,10 +187,10 @@ diveplan setupPlanVpmb60m30minEan50()
 	dive.surface_pressure = 1_atm;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(60, 200) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
-	plan_add_segment(dp, 30 * 60 - droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
+	int droptime = m_or_ft(60, 200).mm * 60 / m_or_ft(99, 330).mm;
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, m_or_ft(3, 10).mm).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, droptime, m_or_ft(60, 200).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 30 * 60 - droptime, m_or_ft(60, 200).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -217,10 +217,10 @@ diveplan setupPlanVpmb60m30minTx()
 	dive.surface_pressure = 1_atm;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(60, 200) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
-	plan_add_segment(dp, 30 * 60 - droptime, M_OR_FT(60, 200), 0, 0, 1, OC);
+	int droptime = m_or_ft(60, 200).mm * 60 / m_or_ft(99, 330).mm;
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, m_or_ft(3, 10).mm).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, droptime, m_or_ft(60, 200).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 30 * 60 - droptime, m_or_ft(60, 200).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -240,11 +240,11 @@ diveplan setupPlanVpmbMultiLevelAir()
 	dive.surface_pressure = 1_atm;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(20, 66) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, droptime, M_OR_FT(20, 66), 0, 0, 1, OC);
-	plan_add_segment(dp, 10 * 60 - droptime, M_OR_FT(20, 66), 0, 0, 1, OC);
-	plan_add_segment(dp, 1 * 60, M_OR_FT(60, 200), 0, 0, 1, OC);
-	plan_add_segment(dp, 29 * 60, M_OR_FT(60, 200), 0, 0, 1, OC);
+	int droptime = m_or_ft(20, 66).mm * 60 / m_or_ft(99, 330).mm;
+	plan_add_segment(dp, droptime, m_or_ft(20, 66).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 10 * 60 - droptime, m_or_ft(20, 66).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 1 * 60, m_or_ft(60, 200).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 29 * 60, m_or_ft(60, 200).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -274,11 +274,11 @@ diveplan setupPlanVpmb100m60min()
 	dive.surface_pressure = 1_atm;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(100, 330) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
-	plan_add_segment(dp, droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
-	plan_add_segment(dp, 60 * 60 - droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
+	int droptime = m_or_ft(100, 330).mm * 60 / m_or_ft(99, 330).mm;
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, m_or_ft(3, 10).mm).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, m_or_ft(3, 10).mm).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, droptime, m_or_ft(100, 330).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 60 * 60 - droptime, m_or_ft(100, 330).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -308,11 +308,11 @@ diveplan setupPlanVpmb100m10min()
 	dive.surface_pressure = 1_atm;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(100, 330) * 60 / M_OR_FT(99, 330);
-	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
-	plan_add_segment(dp, droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
-	plan_add_segment(dp, 10 * 60 - droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
+	int droptime = m_or_ft(100, 330).mm * 60 / m_or_ft(99, 330).mm;
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, m_or_ft(3, 10).mm).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, m_or_ft(3, 10).mm).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, droptime, m_or_ft(100, 330).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 10 * 60 - droptime, m_or_ft(100, 330).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -332,9 +332,9 @@ diveplan setupPlanVpmb30m20min()
 	dive.surface_pressure = 1_atm;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(30, 100) * 60 / M_OR_FT(18, 60);
-	plan_add_segment(dp, droptime, M_OR_FT(30, 100), 0, 0, 1, OC);
-	plan_add_segment(dp, 20 * 60 - droptime, M_OR_FT(30, 100), 0, 0, 1, OC);
+	int droptime = m_or_ft(30, 100).mm * 60 / m_or_ft(18, 60).mm;
+	plan_add_segment(dp, droptime, m_or_ft(30, 100).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 20 * 60 - droptime, m_or_ft(30, 100).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -367,14 +367,14 @@ diveplan setupPlanVpmb100mTo70m30min()
 	dive.surface_pressure = 1_atm;
 	reset_cylinders(&dive, true);
 
-	int droptime = M_OR_FT(100, 330) * 60 / M_OR_FT(18, 60);
-	plan_add_segment(dp, 0, dive.gas_mod(tx21_35, po2, M_OR_FT(3, 10)).mm, 1, 0, 1, OC);
-	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, M_OR_FT(3, 10)).mm, 2, 0, 1, OC);
-	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, M_OR_FT(3, 10)).mm, 3, 0, 1, OC);
-	plan_add_segment(dp, droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
-	plan_add_segment(dp, 20 * 60 - droptime, M_OR_FT(100, 330), 0, 0, 1, OC);
-	plan_add_segment(dp, 3 * 60, M_OR_FT(70, 230), 0, 0, 1, OC);
-	plan_add_segment(dp, (30 - 20 - 3) * 60, M_OR_FT(70, 230), 0, 0, 1, OC);
+	int droptime = m_or_ft(100, 330).mm * 60 / m_or_ft(18, 60).mm;
+	plan_add_segment(dp, 0, dive.gas_mod(tx21_35, po2, m_or_ft(3, 10).mm).mm, 1, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, m_or_ft(3, 10).mm).mm, 2, 0, 1, OC);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, m_or_ft(3, 10).mm).mm, 3, 0, 1, OC);
+	plan_add_segment(dp, droptime, m_or_ft(100, 330).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 20 * 60 - droptime, m_or_ft(100, 330).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, 3 * 60, m_or_ft(70, 230).mm, 0, 0, 1, OC);
+	plan_add_segment(dp, (30 - 20 - 3) * 60, m_or_ft(70, 230).mm, 0, 0, 1, OC);
 	return dp;
 }
 
@@ -431,19 +431,19 @@ diveplan setupPlanCcr()
 	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
 	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
 	cyl0->gasmix = diluent;
-	cyl0->depth = dive.gas_mod(diluent, po2, M_OR_FT(3, 10));
+	cyl0->depth = dive.gas_mod(diluent, po2, m_or_ft(3, 10).mm);
 	cyl0->type.size = 3_l;
 	cyl0->type.workingpressure = 200_bar;
 	cyl0->cylinder_use = DILUENT;
 	cyl1->gasmix = ean53;
-	cyl1->depth = dive.gas_mod(ean53, po2, M_OR_FT(3, 10));
+	cyl1->depth = dive.gas_mod(ean53, po2, m_or_ft(3, 10).mm);
 	cyl2->gasmix = tx19_33;
-	cyl2->depth = dive.gas_mod(tx19_33, po2, M_OR_FT(3, 10));
+	cyl2->depth = dive.gas_mod(tx19_33, po2, m_or_ft(3, 10).mm);
 	reset_cylinders(&dive, true);
 
 	plan_add_segment(dp, 0, cyl1->depth.mm, 1, 0, false, OC);
 	plan_add_segment(dp, 0, cyl2->depth.mm, 2, 0, false, OC);
-	plan_add_segment(dp, 20 * 60, M_OR_FT(60, 197), 0, 1300, true, CCR);
+	plan_add_segment(dp, 20 * 60, m_or_ft(60, 197).mm, 0, 1300, true, CCR);
 
 	return dp;
 }

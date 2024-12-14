@@ -96,8 +96,8 @@ std::unique_ptr<dive> dive_table::default_dive()
 	auto d = std::make_unique<dive>();
 	d->when = time(nullptr) + gettimezoneoffset() + 3600;
 	d->dcs[0].duration = 40_min;
-	d->dcs[0].maxdepth.mm = M_OR_FT(15, 45);
-	d->dcs[0].meandepth.mm = M_OR_FT(13, 39); // this creates a resonable looking safety stop
+	d->dcs[0].maxdepth = m_or_ft(15, 45);
+	d->dcs[0].meandepth = m_or_ft(13, 39); // this creates a resonable looking safety stop
 	make_manually_added_dive_dc(&d->dcs[0]);
 	fake_dc(&d->dcs[0]);
 	add_default_cylinder(d.get());

@@ -199,3 +199,8 @@ unsigned int get_distance(location_t loc1, location_t loc2)
 	return lrint(6371000 * c);
 }
 
+depth_t m_or_ft(int m, int ft)
+{
+	int mm = prefs.units.length == units::METERS ? m * 1000 : feet_to_mm(ft);
+	return depth_t::from_base(mm);
+}

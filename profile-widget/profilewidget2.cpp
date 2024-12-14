@@ -347,8 +347,8 @@ void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 			return;
 
 		int minutes = lrint(profileScene->timeAxis->valueAt(mappedPos) / 60);
-		int milimeters = lrint(profileScene->profileYAxis->valueAt(mappedPos) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
-		plannerModel->addStop(milimeters, minutes * 60);
+		depth_t depth { .mm = int_cast<int>(profileScene->profileYAxis->valueAt(mappedPos) / m_or_ft(1, 1).mm) * m_or_ft(1, 1).mm };
+		plannerModel->addStop(depth, minutes * 60);
 		if (currentState == EDIT)
 			emit stopAdded();
 	}
@@ -938,7 +938,7 @@ void ProfileWidget2::divePlannerHandlerMoved()
 		profileScene->timeAxis->setBounds(0.0, profileScene->timeAxis->maximum() * 1.02);
 
 	divedatapoint data = plannerModel->at(index);
-	data.depth.mm = lrint(profileScene->profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
+	data.depth.mm = lrint(profileScene->profileYAxis->valueAt(activeHandler->pos()) / m_or_ft(1, 1).mm) * m_or_ft(1, 1).mm;
 	data.time = lrint(profileScene->timeAxis->valueAt(activeHandler->pos()));
 
 	plannerModel->editStop(index, data);
@@ -964,7 +964,7 @@ void ProfileWidget2::keyDownAction()
 	for (int row: handleIndices) {
 		divedatapoint dp = plannerModel->at(row);
 
-		dp.depth.mm += M_OR_FT(1, 5);
+		dp.depth += m_or_ft(1, 5);
 		plannerModel->editStop(row, dp);
 	}
 	if (currentState == EDIT && !handleIndices.empty())
@@ -983,7 +983,7 @@ void ProfileWidget2::keyUpAction()
 		if (dp.depth.mm <= 0)
 			continue;
 
-		dp.depth.mm -= M_OR_FT(1, 5);
+		dp.depth -= m_or_ft(1, 5);
 		plannerModel->editStop(row, dp);
 	}
 	if (currentState == EDIT && !handleIndices.empty())

@@ -660,9 +660,9 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 	 * Remark: not reentrant, but the user probably won't change preferences while this is running.
 	 */
 	if (prefs.last_stop)
-		decostoplevels[1].mm = 0;
+		decostoplevels[1] = 0_m;
 	else
-		decostoplevels[1].mm = M_OR_FT(3,10);
+		decostoplevels[1] = m_or_ft(3, 10);
 
 	/* Let's start at the last 'sample', i.e. the last manually entered waypoint. */
 	const struct sample &sample = dc->samples.back();
@@ -1027,7 +1027,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 		 * otherwise odd things can happen, such as CVA causing the final ascent to start *later*
 		 * if the ascent rate is slower, which is completely nonsensical.
 		 * Assume final ascent takes 20s, which is the time taken to ascend at 9m/min from 3m */
-		ds->deco_time = clock - bottom_time - (M_OR_FT(3,10) * ( prefs.last_stop ? 2 : 1)) / last_ascend_rate + 20;
+		ds->deco_time = clock - bottom_time - (m_or_ft(3, 10).mm * ( prefs.last_stop ? 2 : 1)) / last_ascend_rate + 20;
 	} while (!is_final_plan && error == PLAN_OK);
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
