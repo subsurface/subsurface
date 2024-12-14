@@ -125,8 +125,8 @@ struct dive {
 
 	pressure_t calculate_surface_pressure() const;
 	pressure_t un_fixup_surface_pressure() const;
-	depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const;
-	depth_t gas_mnd(struct gasmix mix, depth_t end, int roundto) const;
+	depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, depth_t roundto) const;
+	depth_t gas_mnd(struct gasmix mix, depth_t end, depth_t roundto) const;
 	fraction_t best_o2(depth_t depth, bool in_planner) const;
 	fraction_t best_he(depth_t depth, bool o2narcotic, fraction_t fo2) const;
 

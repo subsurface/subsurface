@@ -2455,16 +2455,16 @@ depth_t dive::mbar_to_depth(int mbar) const
 }
 
 /* MOD rounded to multiples of roundto mm */
-depth_t dive::gas_mod(struct gasmix mix, pressure_t po2_limit, int roundto) const
+depth_t dive::gas_mod(struct gasmix mix, pressure_t po2_limit, depth_t roundto) const
 {
 	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix)).mm;
 	// Rounding should be towards lower=safer depths but we give a bit
 	// of fudge to all to switch to o2 at 6m. So from .9 we round up.
-	return depth_t { .mm = (int)(depth / roundto + 0.1) * roundto };
+	return depth_t { .mm = (int)(depth / roundto.mm + 0.1) * roundto.mm };
 }
 
 /* Maximum narcotic depth rounded to multiples of roundto mm */
-depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
+depth_t dive::gas_mnd(struct gasmix mix, depth_t end, depth_t roundto) const
 {
 	pressure_t ppo2n2 { .mbar = depth_to_mbar(end) };
 
@@ -2477,7 +2477,7 @@ depth_t dive::gas_mnd(struct gasmix mix, depth_t end, int roundto) const
 						// Actually: Infinity
 						1000000;
 	double depth = static_cast<double>(mbar_to_depth(maxambient).mm);
-	return depth_t { .mm = int_cast<int>(depth / roundto) * roundto };
+	return depth_t { .mm = int_cast<int>(depth / roundto.mm) * roundto.mm };
 }
 
 std::string dive::get_country() const
