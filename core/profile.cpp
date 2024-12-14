@@ -1126,23 +1126,23 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 		 * END takes O₂ + N₂ (air) into account ("Narcotic" for trimix dives)
 		 * EAD just uses N₂ ("Air" for nitrox dives) */
 		pressure_t modpO2 = { .mbar = (int)(prefs.modpO2 * 1000) };
-		entry.mod = dive->gas_mod(gasmix, modpO2, 1_mm).mm;
-		entry.end = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * (1000 - fhe) / 1000.0)).mm;
-		entry.ead = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * fn2 / (double)N2_IN_AIR)).mm;
+		entry.mod = dive->gas_mod(gasmix, modpO2, 1_mm);
+		entry.end = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * (1000 - fhe) / 1000.0));
+		entry.ead = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * fn2 / (double)N2_IN_AIR));
 		entry.eadd = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) *
 				      (entry.pressures.o2 / amb_pressure * O2_DENSITY +
 				       entry.pressures.n2 / amb_pressure * N2_DENSITY +
 				       entry.pressures.he / amb_pressure * HE_DENSITY) /
-				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000)).mm;
+				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000));
 		entry.density = gas_density(entry.pressures);
-		if (entry.mod < 0)
-			entry.mod = 0;
-		if (entry.ead < 0)
-			entry.ead = 0;
-		if (entry.end < 0)
-			entry.end = 0;
-		if (entry.eadd < 0)
-			entry.eadd = 0;
+		if (entry.mod.mm < 0)
+			entry.mod = 0_m;
+		if (entry.ead.mm < 0)
+			entry.ead = 0_m;
+		if (entry.end.mm < 0)
+			entry.end = 0_m;
+		if (entry.eadd.mm < 0)
+			entry.eadd = 0_m;
 	}
 }
 
@@ -1259,7 +1259,8 @@ struct plot_info create_plot_info_new(const struct dive *dive, const struct dive
 
 static std::vector<std::string> plot_string(const struct dive *d, const struct plot_info &pi, int idx)
 {
-	int pressurevalue, mod, ead, end, eadd;
+	int pressurevalue;
+	depth_t mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
 	double depthvalue, tempvalue, speedvalue, sacvalue;
 	int decimals, cyl;
@@ -1301,26 +1302,26 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 		res.push_back(casprintf_loc(translate("gettextFromC", "pN₂: %.2fbar"), entry.pressures.n2));
 	if (prefs.pp_graphs.phe && entry.pressures.he > 0)
 		res.push_back(casprintf_loc(translate("gettextFromC", "pHe: %.2fbar"), entry.pressures.he));
-	if (prefs.mod && entry.mod > 0) {
-		mod = lrint(get_depth_units(entry.mod, NULL, &depth_unit));
-		res.push_back(casprintf_loc(translate("gettextFromC", "MOD: %d%s"), mod, depth_unit));
+	if (prefs.mod && entry.mod.mm > 0) {
+		mod.mm = lrint(get_depth_units(entry.mod.mm, NULL, &depth_unit));
+		res.push_back(casprintf_loc(translate("gettextFromC", "MOD: %d%s"), mod.mm, depth_unit));
 	}
-	eadd = lrint(get_depth_units(entry.eadd, NULL, &depth_unit));
+	eadd.mm = lrint(get_depth_units(entry.eadd.mm, NULL, &depth_unit));
 
 	if (prefs.ead) {
 		switch (pi.dive_type) {
 		case plot_info::NITROX:
-			if (entry.ead > 0) {
-				ead = lrint(get_depth_units(entry.ead, NULL, &depth_unit));
-				res.push_back(casprintf_loc(translate("gettextFromC", "EAD: %d%s"), ead, depth_unit));
-				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/ℓ"), eadd, depth_unit, entry.density));
+			if (entry.ead.mm > 0) {
+				ead.mm = lrint(get_depth_units(entry.ead.mm, NULL, &depth_unit));
+				res.push_back(casprintf_loc(translate("gettextFromC", "EAD: %d%s"), ead.mm, depth_unit));
+				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/ℓ"), eadd.mm, depth_unit, entry.density));
 				break;
 			}
 		case plot_info::TRIMIX:
-			if (entry.end > 0) {
-				end = lrint(get_depth_units(entry.end, NULL, &depth_unit));
-				res.push_back(casprintf_loc(translate("gettextFromC", "END: %d%s"), end, depth_unit));
-				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/ℓ"), eadd, depth_unit, entry.density));
+			if (entry.end.mm > 0) {
+				end.mm = lrint(get_depth_units(entry.end.mm, NULL, &depth_unit));
+				res.push_back(casprintf_loc(translate("gettextFromC", "END: %d%s"), end.mm, depth_unit));
+				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/ℓ"), eadd.mm, depth_unit, entry.density));
 				break;
 			}
 		case plot_info::AIR:
