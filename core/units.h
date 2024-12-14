@@ -89,6 +89,14 @@
  * For now, addition and subtraction of values of the same type
  * are supported.
  *
+ * Moreover, multiplication and division with an integral are
+ * suppoerted. Attention: the latter uses standard C++ integer
+ * semantics: it always rounds towards 0!
+ *
+ * Note: multiplication with a scalar is currently only supported
+ * from the right: "depth * 2" is OK, "2 * depth" is (not yet) OK,
+ * because that needs a free standing "operator*()" operator.
+ *
  * A free standing interpolate() function can be used to interpolate
  * between types of the same kind (see also the interpolate.h header).
  *
@@ -143,6 +151,26 @@ struct unit_base {
 	T &operator-=(const T &v2) {
 		get_base() -= v2.get_base();
 		return static_cast<T &>(*this);
+	}
+	template <typename base_type>
+	T &operator*=(base_type v) {
+		get_base() *= v;
+		return static_cast<T &>(*this);
+	}
+	template <typename base_type>
+	T operator*(base_type v) const {
+		return from_base(get_base() * v);
+	}
+	// Attn: C++ integer semantics: this always rounds towards 0!
+	template <typename base_type>
+	T &operator/=(base_type v) {
+		get_base() /= v;
+		return static_cast<T &>(*this);
+	}
+	// Attn: C++ integer semantics: this always rounds towards 0!
+	template <typename base_type>
+	T operator/(base_type v) const {
+		return from_base(get_base() / v);
 	}
 };
 
