@@ -70,9 +70,9 @@ static void put_pd(struct membuffer *b, const struct plot_info &pi, int idx)
 	}
 	put_int(b, entry.temperature);
 	put_int(b, entry.depth.mm);
-	put_int(b, entry.ceiling);
+	put_int(b, entry.ceiling.mm);
 	for (int i = 0; i < 16; i++)
-		put_int(b, entry.ceilings[i]);
+		put_int(b, entry.ceilings[i].mm);
 	for (int i = 0; i < 16; i++)
 		put_int(b, entry.percentages[i]);
 	put_int(b, entry.ndl);
@@ -209,8 +209,8 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 		replace_all(format_string, "[temperature]", "");	
 	}
 
-	if (entry.ceiling) {
-		value = get_depth_units(entry.ceiling, &decimals, &unit);
+	if (entry.ceiling.mm > 0) {
+		value = get_depth_units(entry.ceiling.mm, &decimals, &unit);
 		replace_all(format_string,"[ceiling]", format_string_std("%02.2f %s", value, unit));
 	} else {
 		replace_all(format_string, "[ceiling]", "");	
