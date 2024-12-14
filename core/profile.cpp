@@ -490,7 +490,7 @@ static int sac_between(const struct dive *dive, const struct plot_info &pi, int 
 	do {
 		const struct plot_data &entry = pi.entry[first];
 		const struct plot_data &next = pi.entry[first + 1];
-		depth_t depth { .mm = (entry.depth.mm + next.depth.mm) / 2 };
+		depth_t depth = (entry.depth + next.depth) / 2;
 		int time = next.sec - entry.sec;
 		double atm = dive->depth_to_atm(depth);
 
