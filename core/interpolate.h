@@ -2,8 +2,16 @@
 #ifndef INTERPOLATE_H
 #define INTERPOLATE_H
 
-/* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
-static inline int interpolate(int a, int b, int part, int whole)
+#include <type_traits>
+#include <math.h> // lrint()
+
+/* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b
+ * Since we're currently stuck with C++17, we have this horrible way of testing whether the template
+ * parameter is an integral type.
+ */
+template <typename T,
+	std::enable_if_t<std::is_integral<T>::value, bool> = true>
+T interpolate(T a, T b, int part, int whole)
 {
 	/* It is doubtful that we actually need floating point for this, but whatever */
 	if (whole) {
