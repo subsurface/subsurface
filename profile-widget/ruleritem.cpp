@@ -42,13 +42,13 @@ void RulerNodeItem2::recalculate()
 	if (x() < 0) {
 		setPos(0, y());
 	} else if (x() > timeAxis->posAtValue(last.sec)) {
-		setPos(timeAxis->posAtValue(last.sec), depthAxis->posAtValue(last.depth));
+		setPos(timeAxis->posAtValue(last.sec), depthAxis->posAtValue(last.depth.mm));
 	} else {
 		idx = 0;
 		while (idx < pInfo->nr && timeAxis->posAtValue(pInfo->entry[idx].sec) < x())
 			++idx;
 		const struct plot_data &data = pInfo->entry[idx];
-		setPos(timeAxis->posAtValue(data.sec), depthAxis->posAtValue(data.depth));
+		setPos(timeAxis->posAtValue(data.sec), depthAxis->posAtValue(data.depth.mm));
 	}
 }
 

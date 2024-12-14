@@ -111,7 +111,7 @@ ProfileScene::ProfileScene(double dpr, bool printMode, bool isGrayscale) :
 	percentageAxis(new DiveCartesianAxis(DiveCartesianAxis::Position::Right, false, 2, 0, TIME_GRID, Qt::black, false, false,
 					     dpr, 0.7, printMode, isGrayscale, *this)),
 	diveProfileItem(createItem<DiveProfileItem>(*profileYAxis,
-						    [](const plot_data &item) { return (double)item.depth; },
+						    [](const plot_data &item) { return (double)item.depth.mm; },
 						    0, dpr)),
 	temperatureItem(createItem<DiveTemperatureItem>(*temperatureAxis,
 							[](const plot_data &item) { return (double)item.temperature; },

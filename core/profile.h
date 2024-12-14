@@ -41,7 +41,7 @@ struct plot_data {
 	int sec = 0;
 	int temperature = 0;
 	/* Depth info */
-	int depth = 0;
+	depth_t depth;
 	int ceiling = 0;
 	std::array<int, 16> ceilings;
 	std::array<int, 16> percentages;
@@ -49,9 +49,9 @@ struct plot_data {
 	int tts = 0;
 	int rbt = 0;
 	int stoptime = 0;
-	int stopdepth = 0;
+	depth_t stopdepth;
 	int cns = 0;
-	int smoothed = 0;
+	depth_t smoothed;
 	int sac = 0;
 	int running_sum = 0;
 	struct gas_pressures pressures;
@@ -68,7 +68,7 @@ struct plot_data {
 	int ndl_calc = 0;
 	int tts_calc = 0;
 	int stoptime_calc = 0;
-	int stopdepth_calc = 0;
+	depth_t stopdepth_calc;
 	int pressure_time = 0;
 	int heartbeat = 0;
 	int bearing = 0;

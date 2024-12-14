@@ -172,7 +172,7 @@ static int depthAtTime(const plot_info &pi, duration_t time)
 		qWarning("can't find a spot in the dataModel");
 		return DEPTH_NOT_FOUND;
 	}
-	return it->depth;
+	return it->depth.mm;
 }
 
 bool DiveEventItem::isInteresting(const struct dive *d, const struct divecomputer *dc,

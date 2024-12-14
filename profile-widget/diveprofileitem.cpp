@@ -135,7 +135,7 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 
 static bool comp_depth(const struct plot_data &p1, const struct plot_data &p2)
 {
-	return p1.depth < p2.depth;
+	return p1.depth.mm < p2.depth.mm;
 }
 
 void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
@@ -156,7 +156,7 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 				/* not in deco implies this is a safety stop, no ceiling */
 				p.append(QPointF(hAxis.posAtValue(entry->sec), vAxis.posAtValue(0)));
 			} else {
-				p.append(QPointF(hAxis.posAtValue(entry->sec), vAxis.posAtValue(qMin(entry->stopdepth, entry->depth))));
+				p.append(QPointF(hAxis.posAtValue(entry->sec), vAxis.posAtValue(std::min(entry->stopdepth.mm, entry->depth.mm))));
 			}
 		}
 		setPolygon(p);
@@ -186,7 +186,7 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 	std::vector<Peak> stack;
 	stack.reserve(max_peaks);
 	int highest_peak = std::max_element(data.begin() + from, data.begin() + to, comp_depth) - data.begin();
-	if (data[highest_peak].depth < min_depth)
+	if (data[highest_peak].depth.mm < min_depth)
 		return;
 	stack.push_back(Peak{ from, to, highest_peak });
 	while (!stack.empty()) {
@@ -204,22 +204,22 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 		for (new_from = act_peak.peak + 1; new_from + 3 < act_peak.range_to; ++new_from) {
 			if (data[new_from].sec > act_sample.sec + half_interval)
 				break;
-			if (data[new_from].depth < data[valley].depth)
+			if (data[new_from].depth.mm < data[valley].depth.mm)
 				valley = new_from;
 		}
 		// Continue search until peaks reach the minimum prominence (height from valley).
 		for ( ; new_from + 3 < act_peak.range_to; ++new_from) {
-			if (data[new_from].depth >= data[valley].depth + min_prominence) {
+			if (data[new_from].depth.mm >= data[valley].depth.mm + min_prominence) {
 				int new_peak = std::max_element(data.begin() + new_from, data.begin() + act_peak.range_to, comp_depth) - data.begin();
-				if (data[new_peak].depth < min_depth)
+				if (data[new_peak].depth.mm < min_depth)
 					break;
 				stack.push_back(Peak{ new_from, act_peak.range_to, new_peak });
 
-				if (data[valley].depth >= min_depth)
+				if (data[valley].depth.mm >= min_depth)
 					plot_depth_sample(data[valley], Qt::AlignHCenter | Qt::AlignBottom, getColor(SAMPLE_SHALLOW));
 				break;
 			}
-			if (data[new_from].depth < data[valley].depth)
+			if (data[new_from].depth.mm < data[valley].depth.mm)
 				valley = new_from;
 		}
 
@@ -230,22 +230,22 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 		for (new_to = act_peak.peak - 1; new_to >= act_peak.range_from + 3; --new_to) {
 			if (data[new_to].sec + half_interval < act_sample.sec)
 				break;
-			if (data[new_to].depth < data[valley].depth)
+			if (data[new_to].depth.mm < data[valley].depth.mm)
 				valley = new_to;
 		}
 		// Continue search until peaks reach the minimum prominence (height from valley).
 		for ( ; new_to >= act_peak.range_from + 3; --new_to) {
-			if (data[new_to].depth >= data[valley].depth + min_prominence) {
+			if (data[new_to].depth.mm >= data[valley].depth.mm + min_prominence) {
 				int new_peak = std::max_element(data.begin() + act_peak.range_from, data.begin() + new_to, comp_depth) - data.begin();
-				if (data[new_peak].depth < min_depth)
+				if (data[new_peak].depth.mm < min_depth)
 					break;
 				stack.push_back(Peak{ act_peak.range_from, new_to, new_peak });
 
-				if (data[valley].depth >= min_depth)
+				if (data[valley].depth.mm >= min_depth)
 					plot_depth_sample(data[valley], Qt::AlignHCenter | Qt::AlignBottom, getColor(SAMPLE_SHALLOW));
 				break;
 			}
-			if (data[new_to].depth < data[valley].depth)
+			if (data[new_to].depth.mm < data[valley].depth.mm)
 				valley = new_to;
 		}
 	}
@@ -255,7 +255,7 @@ void DiveProfileItem::plot_depth_sample(const struct plot_data &entry, QFlags<Qt
 {
 	auto item = std::make_unique<DiveTextItem>(dpr, 1.0, flags, this);
 	item->set(get_depth_string(entry.depth, true), color);
-	item->setPos(hAxis.posAtValue(entry.sec), vAxis.posAtValue(entry.depth));
+	item->setPos(hAxis.posAtValue(entry.sec), vAxis.posAtValue(entry.depth.mm));
 	texts.push_back(std::move(item));
 }
 
@@ -722,7 +722,7 @@ DiveReportedCeiling::DiveReportedCeiling(const plot_info &pInfo, const DiveCarte
 std::pair<double,double> DiveReportedCeiling::getTimeValue(int i) const
 {
 	const plot_data &entry = pInfo.entry[i];
-	int value = entry.in_deco && entry.stopdepth ? std::min(entry.stopdepth, entry.depth) : 0;
+	int value = entry.in_deco && entry.stopdepth.mm ? std::min(entry.stopdepth.mm, entry.depth.mm) : 0;
 	return { static_cast<double>(entry.sec), static_cast<double>(value) };
 }
 
