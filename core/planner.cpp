@@ -39,9 +39,9 @@ static std::vector<depth_t> decostoplevels_metric = { 0_m, 3_m, 6_m, 9_m, 12_m, 
 static std::vector<depth_t> decostoplevels_imperial = { 0_ft, 10_ft, 20_ft, 30_ft, 40_ft, 50_ft, 60_ft, 70_ft, 80_ft, 90_ft,
 					100_ft, 110_ft, 120_ft, 130_ft, 140_ft, 150_ft, 160_ft, 170_ft, 180_ft, 190_ft,
 					200_ft, 210_ft, 220_ft, 230_ft, 240_ft, 250_ft, 260_ft, 270_ft, 280_ft, 290_ft,
-					300_ft, 101600_mm, 111760_mm, 400_ft, 132080_mm, 142240_mm, 500_ft, 162560_mm, 172720_mm,
-					600_ft, 193040_mm, 203200_mm, 223520_mm, 800_ft, 264160_mm, 284480_mm, 1000_ft,
-					325120_mm, 345440_mm, 1200_ft, 386080_mm };
+					300_ft, 333_ft, 367_ft, 400_ft, 433_ft, 467_ft, 500_ft, 533_ft, 567_ft,
+					600_ft, 633_ft, 667_ft, 733_ft, 800_ft, 867_ft, 933_ft, 1000_ft,
+					1067_ft, 1133_ft, 1200_ft, 1267_ft };
 
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan)
