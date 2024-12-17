@@ -18,12 +18,17 @@ void xml_params_resize(struct xml_params *params, int count)
 
 void xml_params_add(struct xml_params *params, const char *key, const char *value)
 {
-	params->items.push_back({ std::string(key), std::string(value) });
+	xml_params_add(params, std::string(key), std::string(value));
+}
+
+void xml_params_add(struct xml_params *params, const std::string &key, const std::string &value)
+{
+	params->items.push_back({key, value});
 }
 
 void xml_params_add_int(struct xml_params *params, const char *key, int value)
 {
-	params->items.push_back({ std::string(key), std::to_string(value) });
+	params->items.push_back({std::string(key), std::to_string(value)});
 }
 
 int xml_params_count(const struct xml_params *params)
