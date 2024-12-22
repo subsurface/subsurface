@@ -898,6 +898,8 @@ QString MainWindow::filter_open()
 		    " *.apd"
 		    " *.dive"
 		    " *.zxu *.zxl"
+		    " *.script"
+		    " *.asd"
 		    ");;";
 
 	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
@@ -914,7 +916,9 @@ QString MainWindow::filter_open()
 	f += tr("MkVI files") + " (*.txt);;";
 	f += tr("APD log viewer") + " (*.apd);;";
 	f += tr("OSTCtools") + " (*.dive);;";
-	f += tr("DAN DL7") + " (*.zxu *.zxl)";
+	f += tr("DAN DL7") + " (*.zxu *.zxl);;";
+	f += tr("LogTrak/JTrak") + " (*.script);;";
+	f += tr("Scubapro ASD") + " (*.asd)";
 
 	return f;
 }
@@ -940,6 +944,8 @@ QString MainWindow::filter_import()
 		    " *.apd"
 		    " *.dive"
 		    " *.zxu *.zxl"
+		    " *.script"
+		    " *.asd"
 		    ");;";
 
 	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
@@ -958,6 +964,8 @@ QString MainWindow::filter_import()
 	f += tr("APD log viewer") + " (*.apd);;";
 	f += tr("OSTCtools") + " (*.dive);;";
 	f += tr("DAN DL7") + " (*.zxu *.zxl);;";
+	f += tr("LogTrak/JTrak") + " (*.script);;";
+	f += tr("Scubapro ASD") + " (*.asd);;";
 	f += tr("All files") + " (*.*)";
 
 	return f;

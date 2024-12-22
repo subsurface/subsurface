@@ -370,5 +370,15 @@ int parse_file(const char *filename, struct divelog *log)
 		return ostctools_import(buffer, log);
 	}
 
+	/* Scubapro Logtrak files */
+	if (fmt && (!strcasecmp(fmt+1, "script"))) {
+		return logtrak_import(mem, log);
+	}
+
+	/* Scubapro ASD files */
+	if (fmt && (!strcasecmp(fmt + 1, "asd"))) {
+		return scubapro_asd_import(mem, log);
+	}
+
 	return parse_file_buffer(filename, mem, log);
 }

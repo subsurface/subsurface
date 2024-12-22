@@ -116,10 +116,12 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	globals.h
 	imagedownloader.cpp
 	imagedownloader.h
+	import-asd.cpp
 	import-cobalt.cpp
 	import-csv.cpp
 	import-csv.h
 	import-divinglog.cpp
+	import-logtrak.cpp
 	import-shearwater.cpp
 	import-suunto.cpp
 	import-seac.cpp
