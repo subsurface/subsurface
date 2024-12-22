@@ -33,5 +33,7 @@ extern std::pair<std::string, int> readfile(const char *filename); // return dat
 extern int try_to_open_cochran(const char *filename, std::string &mem, struct divelog *log);
 extern int try_to_open_liquivision(const char *filename, std::string &mem, struct divelog *log);
 extern int datatrak_import(std::string &mem, std::string &wl_mem, struct divelog *log);
+extern int logtrak_import(const std::string &mem, struct divelog *log);
+extern int scubapro_asd_import(const std::string &mem, struct divelog *log);
 
 #endif // FILE_H
