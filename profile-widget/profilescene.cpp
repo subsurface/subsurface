@@ -551,8 +551,17 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 	// while all other items are up there on the constructor.
 	qDeleteAll(eventItems);
 	eventItems.clear();
-	struct gasmix lastgasmix = d->get_gasmix_at_time(*currentdc, 1_sec);
-
+	const struct gasmix *lastgasmix;
+	divemode_t lastdivemode;
+	int cylinder_index = gasmix_loop(*d, *currentdc).next_cylinder_index().first;
+	if (cylinder_index == -1) {
+		lastgasmix = &gasmix_air;
+		lastdivemode = OC;
+	} else {
+		const cylinder_t *cylinder = d->get_cylinder(cylinder_index);
+		lastgasmix = &cylinder->gasmix;
+		lastdivemode = get_effective_divemode(*currentdc, *cylinder);
+	}
 	for (auto [idx, event]: enumerated_range(currentdc->events)) {
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
@@ -560,18 +569,23 @@ void ProfileScene::plotDive(const struct dive *dIn, int dcIn, DivePlannerPointsM
 			    !(event.name == "heading" ||
 			      (event.name == "SP change" && event.time.seconds == 0) ||
 			      event.is_gaschange() ||
+			      event.is_divemodechange() ||
 			      event.type == SAMPLE_EVENT_BOOKMARK))
 				continue;
 		}
 		if (DiveEventItem::isInteresting(d, currentdc, event, plotInfo, firstSecond, lastSecond)) {
-			auto item = new DiveEventItem(d, idx, event, lastgasmix, plotInfo,
+			auto item = new DiveEventItem(d, currentdc, idx, event, *lastgasmix, lastdivemode, plotInfo,
 						      timeAxis, profileYAxis, animSpeed, *pixmaps);
 			item->setZValue(2);
 			addItem(item);
 			eventItems.push_back(item);
 		}
-		if (event.is_gaschange())
-			lastgasmix = d->get_gasmix_from_event(event);
+		if (event.is_gaschange()) {
+			auto [gasmix, divemode] = d->get_gasmix_from_event(event, *currentdc);
+			lastgasmix = &gasmix;
+			lastdivemode = divemode;
+		} else if (event.is_divemodechange())
+			lastdivemode = event.value ? CCR : OC;
 	}
 
 	QString dcText = QString::fromStdString(get_dc_nickname(currentdc));

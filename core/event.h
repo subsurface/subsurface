@@ -73,19 +73,20 @@ class gasmix_loop {
 	const struct event *next_event;
 	int last_cylinder_index;
 	int last_time;
+	std::pair<gasmix, int> get_last_gasmix();
 public:
 	gasmix_loop(const struct dive &dive, const struct divecomputer &dc);
 	// Return the next cylinder index / gasmix from the list of gas switches
 	// and the time in seconds when this gas switch happened
 	// (including the potentially imaginary first gas switch to cylinder 0 / air)
-	std::pair<int, int> next_cylinder_index(); // -1 -> end
-	std::pair<gasmix, int> next(); // gasmix_invalid -> end
+	std::pair<int, int> next_cylinder_index(); // <-1, 0> => implicit air cylinder, <-1, INT_MAX> => end
+	std::pair<gasmix, int> next(); // <gasmix_invalid, INT_MAX> => end
 
 	// Return the cylinder index / gasmix at a given time during the dive
 	// and the time in seconds when this switch to this gas happened
 	// (including the potentially imaginary first gas switch to cylinder 0 / air)
-	std::pair<int, int> cylinder_index_at(int time); // -1 -> end
-	std::pair<gasmix, int> at(int time); // gasmix_invalid -> end
+	std::pair<int, int> cylinder_index_at(int time); // <-1, 0> => implicit air cylinder
+	std::pair<gasmix, int> at(int time);
 
 	bool has_next() const;
 };
@@ -93,12 +94,14 @@ public:
 /* Get divemodes at increasing timestamps. */
 class divemode_loop {
 	divemode_t last;
+	int last_time;
 	event_loop loop;
 	const struct event *ev;
 public:
 	divemode_loop(const struct divecomputer &dc);
 	// Return the divemode at a given time during the dive
-	divemode_t at(int time);
+	// and the time in seconds when the switch to this divemode has happened
+	std::pair<divemode_t, int> at(int time);
 };
 
 extern const struct event *get_first_event(const struct divecomputer &dc, const std::string &name);

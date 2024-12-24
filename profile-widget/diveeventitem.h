@@ -13,7 +13,7 @@ struct plot_info;
 class DiveEventItem : public DivePixmapItem {
 	Q_OBJECT
 public:
-	DiveEventItem(const struct dive *d, int idx, const struct event &ev, struct gasmix lastgasmix,
+	DiveEventItem(const struct dive *d, const struct divecomputer *dc, int idx, const struct event &ev, const struct gasmix lastgasmix, divemode_t lastdivemode,
 		      const struct plot_info &pi, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis,
 		      int speed, const DivePixmaps &pixmaps, QGraphicsItem *parent = nullptr);
 	~DiveEventItem();
@@ -25,8 +25,8 @@ public:
 				  int firstSecond, int lastSecond);
 
 private:
-	void setupToolTipString(struct gasmix lastgasmix);
-	void setupPixmap(struct gasmix lastgasmix, const DivePixmaps &pixmaps);
+	void setupToolTipString(struct gasmix lastgasmix, divemode_t lastdivemode, const struct divecomputer &dc);
+	void setupPixmap(struct gasmix lastgasmix, divemode_t lastdivemode, const struct divecomputer &dc, const DivePixmaps &pixmaps);
 	void recalculatePos();
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;

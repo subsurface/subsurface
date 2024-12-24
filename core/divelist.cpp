@@ -424,8 +424,8 @@ static void add_dive_to_deco(struct deco_state *ds, const struct dive &dive, boo
 {
 	const struct divecomputer *dc = &dive.dcs[0];
 
-	gasmix_loop loop(dive, dive.dcs[0]);
-	divemode_loop loop_d(dive.dcs[0]);
+	gasmix_loop loop_gas(dive, dive.dcs[0]);
+	divemode_loop loop_mode(dive.dcs[0]);
 	for (auto [psample, sample]: pairwise_range(dc->samples)) {
 		int t0 = psample.time.seconds;
 		int t1 = sample.time.seconds;
@@ -433,9 +433,9 @@ static void add_dive_to_deco(struct deco_state *ds, const struct dive &dive, boo
 
 		for (j = t0; j < t1; j++) {
 			depth_t depth = interpolate(psample.depth, sample.depth, j - t0, t1 - t0);
-			auto gasmix = loop.at(j).first;
-			add_segment(ds, dive.depth_to_bar(depth), gasmix, 1, sample.setpoint.mbar,
-				    loop_d.at(j), dive.sac,
+			[[maybe_unused]] auto [divemode, _cylinder_index, gasmix] = get_dive_status_at(dive, dive.dcs[0], j);
+			add_segment(ds, dive.depth_to_bar(depth), *gasmix, 1, sample.setpoint.mbar,
+				    divemode, dive.sac,
 				    in_planner);
 		}
 	}

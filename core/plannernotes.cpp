@@ -588,7 +588,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 					std::string temp;
 					struct gasmix gasmix = dive.get_cylinder(dp.cylinderid)->gasmix;
 
-					divemode_t current_divemode = loop.at(dp.time);
+					divemode_t current_divemode = loop.at(dp.time).first;
 					amb = dive.depth_to_atm(dp.depth);
 					gas_pressures pressures = fill_pressures(amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix.o2.permille / 1000.0, current_divemode);
 
