@@ -48,7 +48,7 @@ else
     # someone else was faster - get the number they wrote
     git checkout main &> /dev/null
     git branch -D "$SHA_BRANCH" &> /dev/null
-    if ! git checkout "$SHA_BRANCH" &> /dev/null
+    if ! git checkout "$SHA_BRANCH"
     then
       echo "push to $SHA_BRANCH failed, but switching to it failed as well"
       exit 2
