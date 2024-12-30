@@ -514,11 +514,9 @@ static int asd_dive_parser(const std::string &input, struct dive *asd_dive, stru
 			goto bailout;
 
 		rc = libdc_buffer_parser(asd_dive, devdata.get(), dc_data, s);
-		if (rc != DC_STATUS_SUCCESS) {
-			delete[] dc_data;
+		free(dc_data);
+		if (rc != DC_STATUS_SUCCESS)
 			goto bailout;
-		}
-		delete[] dc_data;
 		// set serial in DC info, and set a node for the device.
 		asd_dive->dcs[0].serial = std::to_string(dc_serial);
 		create_device_node(log->devices, asd_dive->dcs[0].model, asd_dive->dcs[0].serial, asd_dive->dcs[0].model);
