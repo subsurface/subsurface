@@ -143,7 +143,7 @@ static std::string cyl_type_by_size(int size)
  * libdivecomputer parsing. Puts the completed buffer in a pre-allocated
  * compl_buffer, and returns status.
  */
-static dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_model, unsigned char *compl_buffer)
+dc_status_t dt_libdc_buffer(unsigned char *ptr, int prf_length, int dc_model, unsigned char *compl_buffer)
 {
 	if (compl_buffer == NULL)
 		return DC_STATUS_NOMEMORY;
