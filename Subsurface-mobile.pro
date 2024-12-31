@@ -74,6 +74,8 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/import-cobalt.cpp \
 	core/import-divinglog.cpp \
 	core/import-csv.cpp \
+	core/import-asd.cpp \
+	core/import-logtrak.cpp \
 	core/save-html.cpp \
 	core/statistics.cpp \
 	core/worldmap-save.cpp \
