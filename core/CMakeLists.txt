@@ -98,6 +98,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	filterpreset.h
 	filterpresettable.cpp
 	filterpresettable.h
+	fit_file.cpp
 	format.cpp
 	format.h
 	fulltext.cpp

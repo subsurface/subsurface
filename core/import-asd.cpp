@@ -483,6 +483,7 @@ static int asd_dive_parser(const std::string &input, struct dive *asd_dive, stru
 	const unsigned char str_seq[] = {0xff, 0xfe, 0xff}, dc_profile_begin[4] = {0x01, 0x00, 0x00, 0xFF};
 	unsigned char *dc_data;
 	auto devdata = std::make_unique<device_data_t>();
+	devdata->log = log;
 	asd_dive->dcs[0].serial.resize(64);
 	weightsystem_t ws;
 	std::string tmp, d_locat, d_point, d_coords, notes, viz, w_type, w_surf, weather, buddies, equipment;

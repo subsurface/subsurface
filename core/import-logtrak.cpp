@@ -482,6 +482,7 @@ int logtrak_import(const std::string &mem, struct divelog *log)
 		     *ltd_gf_high = NULL, *ltd_log_id = NULL, *ltd_airtemp = NULL;
 		auto lt_dive = std::make_unique<dive>();
 		auto devdata = std::make_unique<device_data_t>();
+		devdata->log = log;
 		dive_count++;
 		Lt_String ltd_notes;
 		int rc;

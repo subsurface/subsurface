@@ -1577,6 +1577,7 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const un
 	case DC_FAMILY_HW_FROG:
 	case DC_FAMILY_HW_OSTC3:
 	case DC_FAMILY_DIVESOFT_FREEDOM:
+	case DC_FAMILY_GARMIN:
 		rc = dc_parser_new2(&parser, data->context, data->descriptor, buffer, size);
 		break;
 	default:

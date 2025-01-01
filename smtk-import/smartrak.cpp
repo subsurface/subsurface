@@ -899,6 +899,7 @@ void smartrak_import(const char *file, struct divelog *log)
 	}
 	while (mdb_table.fetch_row()) {
 		device_data_t devdata;
+		devdata.log = log;
 		dc_family_t dc_fam = DC_FAMILY_NULL;
 		unsigned char *prf_buffer, *hdr_buffer;
 		auto smtkdive = std::make_unique<dive>();
