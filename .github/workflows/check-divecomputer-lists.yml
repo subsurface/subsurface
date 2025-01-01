@@ -40,6 +40,6 @@ jobs:
         diff -u SupportedDivecomputers.html SupportedDivecomputers_new.html
 
         if [ $? -ne 0 -o $TXT_EXIT_CODE -ne 0 ] ; then
-          echo "The list of supported dive computers in libdivecomputer has changed. Please run `scripts/update-supported-divecomputer-lists.sh` and commit the resulting changes."
+          echo "The list of supported dive computers in libdivecomputer has changed. Please run \`scripts/update-supported-divecomputer-lists.sh\` and commit the resulting changes."
           exit 1
         fi
