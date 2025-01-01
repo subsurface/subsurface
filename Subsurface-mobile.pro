@@ -56,6 +56,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/filterconstraint.cpp \
 	core/filterpreset.cpp \
 	core/filterpresettable.cpp \
+	core/fit_file.cpp \
 	core/divelist.cpp \
 	core/divelog.cpp \
 	core/gas-model.cpp \
