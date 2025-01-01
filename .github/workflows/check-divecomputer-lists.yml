@@ -30,6 +30,7 @@ jobs:
         submodules: recursive
 
     - name: Check the Supported Dive Computer Lists
+      shell: bash {0}
       run: |
         perl scripts/parse-descriptor.pl SupportedDivecomputers_new.txt
         diff -u SupportedDivecomputers.txt SupportedDivecomputers_new.txt
