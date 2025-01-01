@@ -1231,6 +1231,7 @@ available, as in dialog *B*, above. Currently these are:
  - Divesoft dive logs
  - Poseidon MK VI eCCR dive logs
  - CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
+ - Scubapro's LogTrak .script and .asd files (.asd also exported from SmartTrak).
 
 Selecting the appropriate format from the dropdown list and then the specific log file in the main window
 containing the file list. Then select the _Open_ button near the bottom right.
@@ -1310,6 +1311,12 @@ It can also be built for Linux systems. Two dependencies need to be met in your
 system before building: _glib2.0_ and _mdbtools_ (see below).
 
 In addition, a web service is available for divelog conversions from SmartTrak to _Subsurface_ (see below).
+
+Currently there is a third option; exporting the divelog from SmartTrak to an
+.asd file and then importing this in subsurface xref:S_ImportingLogTrak[using
+the regular import dialog in _Subsurface_]. This option should be avoided if
+possible, as a lot of information avaliable in SmartTrak is lost in the export
+to .asd file process.
 
 Feel free to contact the _Subsurface_ development team on mailto:subsurface@subsurface-divelog.org[our mailing list]
 for assistance in importing _SmartTrak_ dive logs.
@@ -1415,6 +1422,20 @@ On Windows 10, The SeacSync database is typically found in:
 _Subsurface_ will not modify the database during import, so it can be imported directly from this
 location.
 
+[[S_ImportingLogTrak]]
+==== Importing dives from Scubapro's LogTrak
+
+_Subsurface_ can directly import the Scubapro LogTrak generated files in two
+different ways:
+
+- You can generate an .asd file with LogTrak's export option (also valid for
+SmartTrak software) and import this file into _Suburface_ from the
+<<Unified_import, universal import dialog>> selecting _Scubapro ASD_ if
+needed to abreviate the file list.
+
+- Or you can import the original divelog's database using the
+<<Unified_import, universal import dialog>>. In windows this file is commonly
+placed in the user folder .jtrak\DB_V4\jtrak.script
 
 [[S_ImportingCSVData]]
 ==== Importing data in CSV format

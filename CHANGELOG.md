@@ -1,3 +1,4 @@
+desktop: add support to import .asd and .script files from Scubapro's LogTrak and SmartTrak
 desktop: update "Save dive data as subtitles" feature to make it more configurable.
 bluetooth: fix crash on MacOS when doing first download from a new BLE device
 statistics: show proper dates in January
