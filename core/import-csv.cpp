@@ -353,8 +353,8 @@ static int parse_dan_format(const char *filename, struct xml_params *params, str
 		if (mem_csv.empty()) {
 			mem_csv = "<csv></csv>";
 		} else {
-		if (try_to_xslt_open_csv(filename, mem_csv, "csv"))
-			return -1;
+			if (try_to_xslt_open_csv(filename, mem_csv, "csv"))
+				return -1;
 		}
 
 		ret |= parse_xml_buffer(filename, mem_csv.data(), mem_csv.size(), log, params);
