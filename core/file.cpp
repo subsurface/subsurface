@@ -109,6 +109,7 @@ static int db_test_func(void *, int, char **data, char **)
 	return *data[0] == '0';
 }
 
+#if !defined(SUBSURFACE_MOBILE)
 static int try_to_open_db(const char *filename, std::string &mem, struct divelog *log)
 {
 	sqlite3 *handle;
@@ -189,6 +190,7 @@ static int try_to_open_db(const char *filename, std::string &mem, struct divelog
 
 	return retval;
 }
+#endif
 
 /*
  * Cochran comma-separated values: depth in feet, temperature in F, pressure in psi.
@@ -206,6 +208,7 @@ static int try_to_open_db(const char *filename, std::string &mem, struct divelog
  *
  * Followed by the data values (all comma-separated, all one long line).
  */
+#if !defined(SUBSURFACE_MOBILE)
 static int open_by_filename(const char *filename, const char *fmt, std::string &mem, struct divelog *log)
 {
 	// hack to be able to provide a comment for the translated string
@@ -236,13 +239,16 @@ static int open_by_filename(const char *filename, const char *fmt, std::string &
 
 	return 0;
 }
+#endif
 
 static int parse_file_buffer(const char *filename, std::string &mem, struct divelog *log)
 {
+#if !defined(SUBSURFACE_MOBILE)
 	int ret;
 	const char *fmt = strrchr(filename, '.');
 	if (fmt && (ret = open_by_filename(filename, fmt + 1, mem, log)) != 0)
 		return ret;
+#endif
 
 	if (mem.empty())
 		return report_error("Out of memory parsing file %s\n", filename);
@@ -297,6 +303,7 @@ int parse_file(const char *filename, struct divelog *log)
 		return report_error(translate("gettextFromC", "Empty file '%s'"), filename);
 	}
 
+#if !defined(SUBSURFACE_MOBILE)
 	fmt = strrchr(filename, '.');
 	if (fmt && (!strcasecmp(fmt + 1, "DB") || !strcasecmp(fmt + 1, "BAK") || !strcasecmp(fmt + 1, "SQL"))) {
 		if (!try_to_open_db(filename, mem, log))
@@ -336,6 +343,7 @@ int parse_file(const char *filename, struct divelog *log)
 	if (fmt && (!strcasecmp(fmt + 1, "asd"))) {
 		return scubapro_asd_import(mem, log);
 	}
+#endif
 
 	return parse_file_buffer(filename, mem, log);
 }

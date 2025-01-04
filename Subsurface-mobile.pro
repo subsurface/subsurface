@@ -56,27 +56,17 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/filterconstraint.cpp \
 	core/filterpreset.cpp \
 	core/filterpresettable.cpp \
-	core/fit_file.cpp \
 	core/divelist.cpp \
 	core/divelog.cpp \
 	core/gas-model.cpp \
 	core/gaspressures.cpp \
 	core/git-access.cpp \
 	core/globals.cpp \
-	core/liquivision.cpp \
 	core/load-git.cpp \
 	core/parse-xml.cpp \
 	core/parse.cpp \
 	core/picture.cpp \
 	core/sample.cpp \
-	core/import-suunto.cpp \
-	core/import-shearwater.cpp \
-	core/import-seac.cpp \
-	core/import-cobalt.cpp \
-	core/import-divinglog.cpp \
-	core/import-csv.cpp \
-	core/import-asd.cpp \
-	core/import-logtrak.cpp \
 	core/save-html.cpp \
 	core/statistics.cpp \
 	core/worldmap-save.cpp \
@@ -84,11 +74,8 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/version.cpp \
 	core/save-git.cpp \
 	core/datatrak.cpp \
-	core/ostctools.cpp \
-	core/divesoft.cpp \
 	core/planner.cpp \
 	core/save-xml.cpp \
-	core/cochran.cpp \
 	core/deco.cpp \
 	core/divesite.cpp \
 	core/equipment.cpp \
@@ -225,7 +212,6 @@ HEADERS += \
 	core/divesite.h \
 	core/divesitetable.h \
 	core/checkcloudconnection.h \
-	core/cochran.h \
 	core/color.h \
 	core/configuredivecomputer.h \
 	core/datatrak.h \
@@ -382,7 +368,6 @@ android {
 		../install-root-$${QT_ARCH}/lib/libzip.a \
 		../install-root-$${QT_ARCH}/lib/libxslt.a \
 		../install-root-$${QT_ARCH}/lib/libxml2.a \
-		../install-root-$${QT_ARCH}/lib/libsqlite3.a \
 		../install-root-$${QT_ARCH}/lib/libssl_1_1.so \
 		../install-root-$${QT_ARCH}/lib/libcrypto_1_1.so \
 		../googlemaps-build/libplugins_geoservices_qtgeoservices_googlemaps_$${QT_ARCH}.so
@@ -399,7 +384,6 @@ android {
 
 	INCLUDEPATH += ../install-root-$${QT_ARCH}/include/ \
 		../install-root/lib/libzip/include \
-		../install-root-$${QT_ARCH}/include/libxstl \
 		../install-root-$${QT_ARCH}/include/libxml2 \
 		../install-root-$${QT_ARCH}/include/libexstl \
 		../install-root-$${QT_ARCH}/include/openssl \
@@ -434,13 +418,11 @@ ios {
 		$${ARCH_PATH}/lib/qml/org/kde/kirigami.2/libkirigamiplugin.a \
 		../googlemaps-build/libqtgeoservices_googlemaps.a \
 		-liconv \
-		-lsqlite3 \
 		-lxml2
 
 	LIBS += -framework MessageUI
 
 	INCLUDEPATH += $${ARCH_PATH}/include/ \
-		$${ARCH_PATH}/include/libxstl \
 		$${ARCH_PATH}/include/libexstl \
 		$${ARCH_PATH}/include/openssl \
 		. \
