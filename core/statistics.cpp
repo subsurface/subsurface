@@ -158,7 +158,7 @@ stats_summary calculate_stats_summary(bool selected_only)
 		process_dive(*dp, out.stats_by_depth[0]);
 
 		int d_idx = dp->maxdepth.mm / (STATS_DEPTH_BUCKET * 1000);
-		d_idx = std::clamp(d_idx, 0, STATS_MAX_DEPTH / STATS_DEPTH_BUCKET);
+		d_idx = std::clamp(d_idx, 0, STATS_MAX_DEPTH / STATS_DEPTH_BUCKET - 1);
 		process_dive(*dp, out.stats_by_depth[d_idx + 1]);
 		out.stats_by_depth[d_idx + 1].selection_size++;
 
@@ -167,7 +167,7 @@ stats_summary calculate_stats_summary(bool selected_only)
 		process_dive(*dp, out.stats_by_temp[0]);
 
 		int t_idx = ((int)mkelvin_to_C(dp->mintemp.mkelvin)) / STATS_TEMP_BUCKET;
-		t_idx = std::clamp(t_idx, 0, STATS_MAX_TEMP / STATS_TEMP_BUCKET);
+		t_idx = std::clamp(t_idx, 0, STATS_MAX_TEMP / STATS_TEMP_BUCKET - 1);
 		process_dive(*dp, out.stats_by_temp[t_idx + 1]);
 		out.stats_by_temp[t_idx + 1].selection_size++;
 

@@ -81,7 +81,7 @@ void StatsManager::var1Changed(int idx)
 {
 	if (uiState.var1.variables.empty())
 		return;
-	idx = std::clamp(idx, 0, (int)uiState.var1.variables.size());
+	idx = std::clamp(idx, 0, (int)uiState.var1.variables.size() - 1);
 	state.var1Changed(uiState.var1.variables[idx].id);
 	updateUi();
 }
@@ -96,7 +96,7 @@ void StatsManager::var2Changed(int idx)
 {
 	if (uiState.var2.variables.empty())
 		return;
-	idx = std::clamp(idx, 0, (int)uiState.var2.variables.size());
+	idx = std::clamp(idx, 0, (int)uiState.var2.variables.size() - 1);
 	state.var2Changed(uiState.var2.variables[idx].id);
 	updateUi();
 }
@@ -111,7 +111,7 @@ void StatsManager::var2OperationChanged(int idx)
 {
 	if (uiState.operations2.variables.empty())
 		return;
-	idx = std::clamp(idx, 0, (int)uiState.operations2.variables.size());
+	idx = std::clamp(idx, 0, (int)uiState.operations2.variables.size() - 1);
 	state.var2OperationChanged(uiState.operations2.variables[idx].id);
 	updateUi();
 }
@@ -120,7 +120,7 @@ void StatsManager::sortMode1Changed(int idx)
 {
 	if (uiState.sortMode1.variables.empty())
 		return;
-	idx = std::clamp(idx, 0, (int)uiState.sortMode1.variables.size());
+	idx = std::clamp(idx, 0, (int)uiState.sortMode1.variables.size() - 1);
 	state.sortMode1Changed(uiState.sortMode1.variables[idx].id);
 	updateUi();
 }
