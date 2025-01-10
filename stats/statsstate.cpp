@@ -256,7 +256,7 @@ static ChartValidity chartValidity(const ChartTypeDesc &desc,
 	if ((operation != StatsOperation::Invalid) != desc.var2HasOperations)
 		return ChartValidity::Invalid;
 
-	return valid1 == ChartValidity::Undesired || valid2 == ChartValidity::Undesired ? 
+	return valid1 == ChartValidity::Undesired || valid2 == ChartValidity::Undesired ?
 		ChartValidity::Undesired : ChartValidity::Good;
 }
 
@@ -454,7 +454,7 @@ static const StatsBinner *idxToBinner(const StatsVariable *v, int idx, bool seco
 
 void StatsState::var1Changed(int id)
 {
-	var1 = stats_variables[std::clamp(id, 0, (int)stats_variables.size())];
+	var1 = stats_variables[std::clamp(id, 0, (int)stats_variables.size() - 1)];
 	validate(true);
 }
 
@@ -478,7 +478,7 @@ void StatsState::var2Changed(int id)
 {
 	// The "none" variable is represented by a nullptr
 	var2 = id == none_idx ? nullptr
-			      : stats_variables[std::clamp(id, 0, (int)stats_variables.size())];
+			      : stats_variables[std::clamp(id, 0, (int)stats_variables.size() - 1)];
 	validate(true);
 }
 

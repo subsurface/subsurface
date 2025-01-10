@@ -41,7 +41,7 @@ void ChartListModel::initIcon(ChartSubType type, const char *name, int iconSize)
 
 const QPixmap &ChartListModel::getIcon(ChartSubType type, bool warning) const
 {
-	int idx = std::clamp((int)type, 0, (int)ChartSubType::Count);
+	int idx = std::clamp((int)type, 0, (int)ChartSubType::Count - 1);
 	return warning ? subTypeIcons[idx].warning : subTypeIcons[idx].normal;
 }
 
