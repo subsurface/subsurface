@@ -585,6 +585,10 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const std::str
 		sample->o2sensor[5] = get_o2pressure(value.c_str());
 		return;
 	}
+	if (!strcmp(key, "sensor7")) {
+		sample->o2sensor[6] = get_o2pressure(value.c_str());
+		return;
+	}
 	if (!strcmp(key, "o2pressure")) {
 		sample->pressure[1] = get_pressure(value.c_str());
 		return;

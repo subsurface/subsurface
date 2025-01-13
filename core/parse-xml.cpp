@@ -931,6 +931,8 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("sensor6.sample", double_to_o2pressure, &sample->o2sensor[5])) // up to 6 CCR sensors
 		return;
+	if (MATCH("sensor7.sample", double_to_o2pressure, &sample->o2sensor[6])) // the dive computer calculated ppO2
+		return;
 	if (MATCH("po2.sample", double_to_o2pressure, &sample->setpoint))
 		return;
 	if (MATCH("heartbeat", get_uint8, &sample->heartbeat))

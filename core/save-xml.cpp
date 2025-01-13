@@ -327,6 +327,11 @@ static void save_sample(struct membuffer *b, const struct sample &sample, struct
 		old.o2sensor[5] = sample.o2sensor[5];
 	}
 
+	if ((sample.o2sensor[6].mbar) && (sample.o2sensor[6].mbar != old.o2sensor[6].mbar)) {
+		put_milli(b, " sensor7='", sample.o2sensor[6].mbar, " bar'");
+		old.o2sensor[6] = sample.o2sensor[6];
+	}
+
 	if (sample.setpoint.mbar != old.setpoint.mbar) {
 		put_milli(b, " po2='", sample.setpoint.mbar, " bar'");
 		old.setpoint = sample.setpoint;

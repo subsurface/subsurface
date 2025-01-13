@@ -234,7 +234,7 @@ void ProfileScene::updateVisibility(bool diveHasHeartBeat, bool simplified)
 		o2SetpointGasItem->setVisible(ppGraphs && prefs.show_ccr_setpoint);
 		ccrsensor1GasItem->setVisible(ppGraphs && prefs.show_ccr_sensors);
 		ccrsensor2GasItem->setVisible(ppGraphs && prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
-		ccrsensor3GasItem->setVisible(ppGraphs && prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
+		ccrsensor3GasItem->setVisible(ppGraphs && prefs.show_ccr_sensors && (currentdc->no_o2sensors > 2));
 		ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
 		// No point to show the gradient factor if we're not showing the calculated ceiling that is derived from it
 		decoModelParameters->setVisible(prefs.calcceiling);
