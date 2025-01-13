@@ -250,7 +250,7 @@
   </action>
   <action name="actionRenumber">
    <property name="text">
-    <string>&amp;Renumber</string>
+    <string>&amp;Renumber all dives</string>
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+R</string>
