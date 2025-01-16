@@ -509,6 +509,8 @@ bool MainWindow::okToClose(QString message)
 
 void MainWindow::closeCurrentFile()
 {
+	ui.mainErrorMessage->hideNotification();
+
 	/* free the dives and trips */
 	clear_git_id();
 	clear_dive_file_data(); // this clears all the core data structures and resets the models
