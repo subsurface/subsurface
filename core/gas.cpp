@@ -62,8 +62,9 @@ void sanitize_gasmix(struct gasmix &mix)
 	/* Sane mix? */
 	if (o2 <= 1000 && he <= 1000 && o2 + he <= 1000)
 		return;
-	report_info("Odd gasmix: %u O2 %u He", o2, he);
+
 	mix = gasmix_air;
+	report_error("Odd gasmix: %u O2 %u He, switched to air.", o2, he);
 }
 
 int gasmix_distance(struct gasmix a, struct gasmix b)

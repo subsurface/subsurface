@@ -1042,6 +1042,27 @@ static void fixup_dc_sample_sensors(struct dive &dive, struct divecomputer &dc)
 	}
 }
 
+static void fixup_dc_cylinder_use(struct dive &dive, struct divecomputer &dc)
+{
+
+	if (dc.divemode != OC && dc.divemode != CCR && dc.divemode != PSCR)
+		return;
+
+	// Check that we have at least one cylinder that is suitable for the dive
+
+	// For OC we default to air if we don't have any cylinders
+
+	if (dc.divemode == OC && dive.cylinders.empty())
+		return;
+
+	for (auto &cylinder: dive.cylinders)
+		if ((dc.divemode == CCR && cylinder.cylinder_use == DILUENT) || ((dc.divemode == PSCR || dc.divemode == OC) && cylinder.cylinder_use == OC_GAS))
+			return;
+
+	report_error("Dive: %u, dive computer: %s: %s dive, but no %s cylinder found. Please add or select the correct cylinder use.", dive.number, dc.model.c_str(), dc.divemode == OC ? "open circuit" : dc.divemode == CCR ? "CCR" : "PSCR", dc.divemode == OC ? "open circuit" : dc.divemode == CCR ? "diluent" : "drive gas");
+}
+
+
 static void fixup_dive_dc(struct dive &dive, struct divecomputer &dc)
 {
 	/* Fixup duration and mean depth */
@@ -1069,6 +1090,9 @@ static void fixup_dive_dc(struct dive &dive, struct divecomputer &dc)
 
 	/* Fixup CCR / PSCR dives with o2sensor values, but without no_o2sensors */
 	fixup_no_o2sensors(dc);
+
+	/* Fixup cylinder use */
+	fixup_dc_cylinder_use(dive, dc);
 
 	/* If there are no samples, generate a fake profile based on depth and time */
 	if (dc.samples.empty())
