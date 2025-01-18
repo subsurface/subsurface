@@ -120,16 +120,22 @@ void BLEObject::writeCompleted(const QLowEnergyDescriptor&, const QByteArray&)
 	desc_written++;
 }
 
+#define ACCESS_NONE  0x00
+#define ACCESS_READ  0x01
+#define ACCESS_WRITE 0x02
+
 struct uuid_match {
 	const char *uuid, *details;
+	unsigned int access;
 };
 
-static const char *match_uuid_list(const QBluetoothUuid &match, const struct uuid_match *array)
+static const char *match_uuid_list(const QBluetoothUuid &match, const struct uuid_match *array, unsigned int access)
 {
 	const char *uuid;
 
 	while ((uuid = array->uuid) != NULL) {
-		if (match == QBluetoothUuid(QUuid(uuid)))
+		if (match == QBluetoothUuid(QUuid(uuid)) &&
+			(access == ACCESS_NONE || array->access & access))
 			return array->details;
 		array++;
 	}
@@ -165,6 +171,7 @@ static const struct uuid_match serial_service_uuids[] = {
 	{ "0000fcef-0000-1000-8000-00805f9b34fb", "Divesoft" },
         { "6e400001-b5a3-f393-e0a9-e50e24dc10b8", "Cressi"}, // Must have higher priority than Nordic UART
         { "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
+	{ "00000001-8c3b-4f2c-a59e-8c08224f3253", "Halcyon Symbios" },
 	{ NULL, }
 };
 
@@ -182,12 +189,12 @@ static const struct uuid_match upgrade_service_uuids[] = {
 
 static const char *is_known_serial_service(const QBluetoothUuid &service)
 {
-	return match_uuid_list(service, serial_service_uuids);
+	return match_uuid_list(service, serial_service_uuids, ACCESS_NONE);
 }
 
 static const char *is_known_bad_service(const QBluetoothUuid &service)
 {
-	return match_uuid_list(service, upgrade_service_uuids);
+	return match_uuid_list(service, upgrade_service_uuids, ACCESS_NONE);
 }
 
 void BLEObject::addService(const QBluetoothUuid &newService)
@@ -283,17 +290,19 @@ BLEObject::~BLEObject()
  *            RX characteristic: 49535343-8841-43f4-a8d4-ecbe34729bb3
  */
 static const struct uuid_match skip_characteristics[] = {
-	{ "49535343-6daa-4d02-abf6-19569aca69fe", "McLean Extreme Avoid" },
-	{ "49535343-aca3-481c-91ec-d85e28a60318", "McLean Extreme Avoid" },
-	{ "49535343-026e-3a9b-954c-97daef17e26e", "McLean Extreme Avoid" },
-	{ "49535343-4c8a-39b3-2f49-511cff073b7e", "McLean Extreme Avoid" },
+	{ "49535343-6daa-4d02-abf6-19569aca69fe", "McLean Extreme Avoid", ACCESS_READ | ACCESS_WRITE},
+	{ "49535343-aca3-481c-91ec-d85e28a60318", "McLean Extreme Avoid", ACCESS_READ | ACCESS_WRITE},
+	{ "49535343-026e-3a9b-954c-97daef17e26e", "McLean Extreme Avoid", ACCESS_READ | ACCESS_WRITE},
+	{ "49535343-4c8a-39b3-2f49-511cff073b7e", "McLean Extreme Avoid", ACCESS_READ | ACCESS_WRITE},
+	{ "00000101-8c3b-4f2c-a59e-8c08224f3253", "Halcyon Symbios Rx", ACCESS_READ},
+	{ "00000201-8c3b-4f2c-a59e-8c08224f3253", "Halcyon Symbios Tx", ACCESS_WRITE},
 	{ NULL, }
 };
 
 // a write characteristic needs Write or WriteNoResponse
 static bool is_write_characteristic(const QLowEnergyCharacteristic &c)
 {
-	if (match_uuid_list(c.uuid(), skip_characteristics))
+	if (match_uuid_list(c.uuid(), skip_characteristics, ACCESS_WRITE))
 		return false;
 	return c.properties() &
 		 (QLowEnergyCharacteristic::Write |
@@ -304,7 +313,7 @@ static bool is_write_characteristic(const QLowEnergyCharacteristic &c)
 // a descriptor to enable it
 static bool is_read_characteristic(const QLowEnergyCharacteristic &c)
 {
-	if (match_uuid_list(c.uuid(), skip_characteristics))
+	if (match_uuid_list(c.uuid(), skip_characteristics, ACCESS_READ))
 		return false;
 	return !c.descriptors().empty() &&
 		(c.properties() &
