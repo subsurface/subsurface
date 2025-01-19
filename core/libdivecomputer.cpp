@@ -379,7 +379,6 @@ static void handle_gasmix(struct divecomputer *dc, const struct sample &sample, 
 void
 sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata)
 {
-	static unsigned int nsensor = 0;
 	struct divecomputer *dc = (divecomputer *)userdata;
 	dc_sample_value_t value = *pvalue;
 
@@ -388,8 +387,6 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 	 * Other types fill in an existing sample.
 	 */
 	if (type == DC_SAMPLE_TIME) {
-		nsensor = 0;
-
 		// Create a new sample.
 		// Mark depth as negative
 		struct sample *sample = prepare_sample(dc);
@@ -456,16 +453,23 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 		/* for us a setpoint means constant pO2 from here */
 		sample.setpoint.mbar = po2 = lrint(value.setpoint * 1000);
 		break;
-	case DC_SAMPLE_PPO2:
-		if (nsensor < MAX_O2_SENSORS)
-			sample.o2sensor[nsensor].mbar = lrint(value.ppo2.value * 1000);
-		else
-			report_error("%d is more o2 sensors than we can handle", nsensor);
-		nsensor++;
-		// Set the amount of detected o2 sensors
-		if (nsensor > dc->no_o2sensors)
-			dc->no_o2sensors = nsensor;
+	case DC_SAMPLE_PPO2: {
+		unsigned int sensor_id = value.ppo2.sensor;
+		if (sensor_id == DC_SENSOR_NONE) {
+			sample.o2sensor[DC_REPORTED_PPO2].mbar = lrint(value.ppo2.value * 1000);
+		} else if (sensor_id >= MAX_O2_SENSORS) {
+			report_error("%d is more o2 sensors than we can handle", sensor_id + 1);
+
+			break;
+		} else {
+			sample.o2sensor[sensor_id].mbar = lrint(value.ppo2.value * 1000);
+
+			// Set the amount of detected o2 sensors
+			if (sensor_id + 1 > dc->no_o2sensors)
+				dc->no_o2sensors = sensor_id + 1;
+		}
 		break;
+	}
 	case DC_SAMPLE_CNS:
 		sample.cns = cns = lrint(value.cns * 100);
 		break;

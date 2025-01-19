@@ -1030,7 +1030,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 /* Sort the o2 pressure values. There are so few that a simple bubble sort
  * will do */
 
-void sort_o2_pressures(int *sensorn, int np, const struct plot_data &entry)
+static void sort_o2_pressures(int *sensorn, int np, const struct plot_data &entry)
 {
 	int smallest, position, old;
 
@@ -1196,9 +1196,9 @@ static void debug_print_profiledata(struct plot_info &pi)
 		fprintf(f1, "id t1 gas gasint t2 t3 dil dilint t4 t5 setpoint sensor1 sensor2 sensor3 t6 po2 fo2\n");
 		for (i = 0; i < pi.nr; i++) {
 			struct plot_data &entry = pi.entry[i];
-			fprintf(f1, "%d gas=%8d %8d ; dil=%8d %8d ; o2_sp= %d %d %d %d PO2= %f\n", i, get_plot_sensor_pressure(pi, i),
+			fprintf(f1, "%d gas=%8d %8d ; dil=%8d %8d ; o2_sp= %d %d %d %d %d %d %d PO2= %f\n", i, get_plot_sensor_pressure(pi, i),
 				get_plot_interpolated_pressure(pi, i), O2CYLINDER_PRESSURE(entry), INTERPOLATED_O2CYLINDER_PRESSURE(entry),
-				entry.o2pressure.mbar, entry.o2sensor[0].mbar, entry.o2sensor[1].mbar, entry.o2sensor[2].mbar, entry.pressures.o2);
+				entry.o2pressure.mbar, entry.o2sensor[0].mbar, entry.o2sensor[1].mbar, entry.o2sensor[2].mbar, entry.o2sensor[3].mbar, entry.o2sensor[4].mbar, entry.o2sensor[5].mbar, entry.pressures.o2);
 		}
 		fclose(f1);
 	}
