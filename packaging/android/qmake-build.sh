@@ -379,7 +379,7 @@ for ARCH in $ARCHITECTURES ; do
 			make install
 	popd
 
-	CURRENT_SHA=$(cd "$SUBSURFACE_SOURCE"/libdivecomputer ; git describe)
+	CURRENT_SHA=$(cd "$SUBSURFACE_SOURCE"/libdivecomputer ; git describe --always --long)
 	PREVIOUS_SHA=$(cat "libdivecomputer-${ARCH}.SHA" 2>/dev/null || echo)
 	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] || [ ! -e "$PKG_CONFIG_PATH/libdivecomputer.pc" ] ; then
 		mkdir -p libdivecomputer-build-"$ARCH"

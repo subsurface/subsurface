@@ -264,7 +264,7 @@ if [ "$QUICK" != "1" ] ; then
 	if [ ! -f "${PARENT_DIR}/libdivecomputer-build-${ARCH}/git.SHA" ] ; then
 		echo "" > "${PARENT_DIR}/libdivecomputer-build-${ARCH}/git.SHA"
 	fi
-	CURRENT_SHA=$(cd "${SUBSURFACE_SOURCE}/libdivecomputer" ; git describe)
+	CURRENT_SHA=$(cd "${SUBSURFACE_SOURCE}/libdivecomputer" ; git describe --always --long)
 	PREVIOUS_SHA=$(cat "${PARENT_DIR}/libdivecomputer-build-${ARCH}/git.SHA")
 	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] ; then
 		echo "$CURRENT_SHA" > "${PARENT_DIR}/libdivecomputer-build-${ARCH}/git.SHA"
