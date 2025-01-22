@@ -73,6 +73,7 @@ preferences::preferences() :
 	dcceiling(true),
 	display_deco_mode(BUEHLMANN),
 	ead(false),
+	gasplot_frac(0.1),
 	gfhigh(75),
 	gflow(30),
 	gf_low_at_maxdepth(false),
