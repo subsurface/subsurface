@@ -54,6 +54,8 @@ slots:
 	void shiftTimes();
 	void divesSelectedSlot(const QVector<QModelIndex> &indices, QModelIndex currentDive, int currentDC);
 	void tripSelected(QModelIndex trip, QModelIndex currentDive);
+	void divesChanged(const QVector<dive *> &dives, DiveField field);
+	void cylinderEdited(dive *dive, int);
 private:
 	void rowsInserted(const QModelIndex &parent, int start, int end) override;
 	void reset() override;
