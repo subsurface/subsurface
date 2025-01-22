@@ -339,17 +339,36 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	if (height <= 50.0 * dpr)
 		return clear();
 
-	// The rest is laid out dynamically. Give at least 50% to the actual profile.
-	// The max heights are given for DPR=1, i.e. a ca. 800x600 pixels profile.
-	const double minProfileFraction = 0.5;
-        VerticalAxisLayout secondaryAxes[] = {
+	// The fraction of the gasYAxis can be customized through prefs.gasplot_frac
+	// Fractions for other YAxes (percentagegraph, HartBeat, temperature) are fixed (for now)
+	// The profile should have at least minProfileFraction
+	const double minProfileFraction = 0.1;		// changed this to 0.1, to allow for much larger gasplot_frac!
+	const double heartBeatFraction = 0.125;		// these fraction were determined by their earlier pixel-
+	const double percentagegraphFraction = 0.083;	//  height dived by 600.  looks much like before.
+	const double temperatureFraction = 0.083;
+
+	// first we sum up the fixed fractions of all displayed axes
+	double _sumOfFractions = temperatureFraction;    // temperatureAxis is always on
+	if (prefs.hrgraph && diveHasHeartBeat)
+		_sumOfFractions += heartBeatFraction;
+	if (prefs.percentagegraph)
+		_sumOfFractions += percentagegraphFraction;
+
+	// lower gasplot_frac until minProfileFraction is reached
+	//  the max value of 0.7 as set through tec-settings may be too mauch in some circumstances
+	while ( (1 - (_sumOfFractions + prefs.gasplot_frac)) < minProfileFraction )
+		prefs.gasplot_frac -= 0.05;
+
+	VerticalAxisLayout secondaryAxes[] = {
 		// Note: axes are listed from bottom to top, since they are added that way.
-		{ heartBeatAxis, 75.0, 0.0, prefs.hrgraph && diveHasHeartBeat },
-		{ percentageAxis, 50.0, 0.0, prefs.percentagegraph },
-		{ gasYAxis, 75.0, 0.0, ppGraphsEnabled(currentdc, simplified) },
-		{ temperatureAxis, 50.0, 2.0, true },
+		// hk: using absolute numbers here causes troubles with small windows! all changed to fractions of height
+		{ heartBeatAxis, heartBeatFraction * height, 0.0, prefs.hrgraph && diveHasHeartBeat },
+		{ percentageAxis, percentagegraphFraction * height, 0.0, prefs.percentagegraph },
+		{ gasYAxis, prefs.gasplot_frac * height, 0.0, ppGraphsEnabled(currentdc, simplified) },
+		{ temperatureAxis, temperatureFraction * height, 2.0, true },
         };
 
+	/* hk: I think this is not needed anymore:
 	// A loop is probably easier to read than std::accumulate.
 	double totalSecondaryHeight = 0.0;
 	for (const VerticalAxisLayout &l: secondaryAxes) {
@@ -357,12 +376,14 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 			totalSecondaryHeight += l.height * dpr;
 	}
 
-	if (totalSecondaryHeight > height * minProfileFraction) {
-		// Use 50% for the profile and the rest for the remaining graphs, scaled by their maximum height.
+	if (totalSecondaryHeight > height * (1.0 - minProfileFraction) ) {     // has to be 1-minProfileFraction, otherwise this only works for 0.5! hk
+									       // this fix is needed to allow for smaller minProfileFraction's. see above
+		// Use minProfileFraction for the profile and the rest for the remaining graphs, scaled by their maximum height.
 		double remainingSpace = height * minProfileFraction;
 		for (VerticalAxisLayout &l: secondaryAxes)
 			l.height *= remainingSpace / totalSecondaryHeight;
 	}
+	*/
 
 	for (const VerticalAxisLayout &l: secondaryAxes) {
 		l.axis->setVisible(l.visible);
