@@ -74,9 +74,9 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->deleteLater();
 }
 
-static bool hasVideoFileExtension(const QString &filename)
+static bool hasFileExtension(const QString &filename, const QStringList extensionsList)
 {
-	for (const QString &ext: videoExtensionsList)
+	for (const QString &ext: extensionsList)
 		if (filename.endsWith(ext, Qt::CaseInsensitive))
 			return true;
 	return false;
@@ -136,7 +136,7 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &urlfilename, const
 
 #ifdef LIBRAW_SUPPORT
 		// If note, perhaps a raw image?
-		if (thumb.isNull())
+		if (thumb.isNull() && hasFileExtension(filename, rawExtensionsList))
 			thumb = fetchRawThumbnail(filename);
 #endif
 		if (!thumb.isNull()) {
@@ -148,7 +148,7 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &urlfilename, const
 		// Neither our code, nor Qt could determine the type of this object from looking at the data.
 		// Try to check for a video-file extension. Since we couldn't parse the video file,
 		// we pass 0 as the duration.
-		if (hasVideoFileExtension(filename))
+		if (hasFileExtension(filename, videoExtensionsList))
 			return fetchVideoThumbnail(filename, originalFilename, duration_t());
 
 		// Give up: we simply couldn't determine what this thing is.

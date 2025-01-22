@@ -1092,7 +1092,7 @@ const QStringList videoExtensionsList = {
 };
 
 // Raw extensions according to https://en.wikipedia.org/wiki/Raw_image_format
-static const QStringList rawExtensionsList = {
+const QStringList rawExtensionsList = {
 #ifdef LIBRAW_SUPPORT
 	"*.3fr", "*.ari", "*.arw", "*.bay", "*.braw", "*.crw", "*.cr2", "*.cr3", "*.cap",
 	"*.data", "*.dcs", "*.dcr", "*.dng", "*.drf", "*.eip", "*.erf", "*.fff", "*.gpr",

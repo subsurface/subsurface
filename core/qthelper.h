@@ -41,6 +41,7 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 void init_proxy();
 QStringList getWaterTypesAsString();
 extern const QStringList videoExtensionsList;
+extern const QStringList rawExtensionsList;
 QStringList mediaExtensionFilters();
 QStringList imageExtensionFilters();
 QStringList videoExtensionFilters();
