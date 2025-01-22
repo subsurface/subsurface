@@ -43,6 +43,9 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	connect(m, &MultiFilterSortModel::divesSelected, this, &DiveListView::divesSelectedSlot);
 	connect(m, &MultiFilterSortModel::tripSelected, this, &DiveListView::tripSelected);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &DiveListView::settingsChanged);
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &DiveListView::divesChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveListView::cylinderEdited);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveListView::cylinderEdited);
 
 	setSortingEnabled(true);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
@@ -387,6 +390,27 @@ void DiveListView::settingsChanged()
 		QString title = model()->headerData(i, Qt::Horizontal).toString();
 		header()->actions()[i]->setText(title);
 	}
+}
+
+static void check_cylinder_use(struct dive &dive)
+{
+	for (auto &divecomputer: dive.dcs)
+		check_dc_cylinder_use(dive, divecomputer);
+}
+	
+
+void DiveListView::divesChanged(const QVector<dive *> &dives, DiveField field)
+{
+	if (!field.mode)
+		return;
+
+	for (auto &dive: dives)
+		check_cylinder_use(*dive);
+}
+
+void DiveListView::cylinderEdited(struct dive *dive, int)
+{
+	check_cylinder_use(*dive);
 }
 
 void DiveListView::toggleColumnVisibilityByIndex()

@@ -206,6 +206,8 @@ extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id
 
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
 
+extern int check_dc_cylinder_use(struct dive &dive, struct divecomputer &dc);
+
 /* Make pointers to dive and dive_trip "Qt metatypes" so that they can be passed through
  * QVariants and through QML.
  */
