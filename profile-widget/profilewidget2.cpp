@@ -255,6 +255,17 @@ void ProfileWidget2::divesChanged(const QVector<dive *> &dives, DiveField field)
 
 void ProfileWidget2::actionRequestedReplot(bool)
 {
+	/* this is called vai infoboxChanged, therefore in currentState==PROFILE
+	   we have to set the mouseFollowerVertical to visible (if prefs.infobox)    hk  */
+#ifndef SUBSURFACE_MOBILE
+	if (currentState == PROFILE) {
+		mouseFollowerHorizontal->setVisible(false);
+		if (!prefs.infobox)
+			mouseFollowerVertical->setVisible(false);
+		else
+			mouseFollowerVertical->setVisible(true);
+	}
+#endif
 	settingsChanged();
 }
 
@@ -370,7 +381,7 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 
 	toolTipItem->refresh(d, mapToScene(mapFromGlobal(QCursor::pos())), currentState == PLAN);
 
-	if (currentState == PLAN || currentState == EDIT) {
+	if (currentState == PLAN || currentState == EDIT || prefs.infobox) {
 		QRectF rect = profileScene->profileRegion;
 		auto [miny, maxy] = profileScene->profileYAxis->screenMinMax();
 		double x = std::clamp(pos.x(), rect.left(), rect.right());
@@ -423,11 +434,23 @@ void ProfileWidget2::setProfileState(const dive *dIn, int dcIn)
 
 void ProfileWidget2::setProfileState()
 {
+	/* when infobox is active in currentState==PROFILE
+	   or, when switching to currentState==PROFILE
+	   the mouseFollowers are needed to be set.
+	   However, in currentState==PROFILE on toggling infobox, 
+	   this needs to be set too!   hk */
+#ifndef SUBSURFACE_MOBILE
+	mouseFollowerHorizontal->setVisible(false);
+	if (!prefs.infobox)
+		mouseFollowerVertical->setVisible(false);
+	else
+		mouseFollowerVertical->setVisible(true);
+#endif
+
 	if (currentState == PROFILE)
 		return;
 
 	disconnectPlannerModel();
-
 	currentState = PROFILE;
 	setBackgroundBrush(getColor(::BACKGROUND, profileScene->isGrayscale));
 
@@ -435,8 +458,6 @@ void ProfileWidget2::setProfileState()
 	toolTipItem->readPos();
 	toolTipItem->setVisible(prefs.infobox);
 	rulerItem->setVisible(prefs.rulergraph);
-	mouseFollowerHorizontal->setVisible(false);
-	mouseFollowerVertical->setVisible(false);
 #endif
 
 	handles.clear();
