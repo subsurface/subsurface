@@ -361,29 +361,12 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 
 	VerticalAxisLayout secondaryAxes[] = {
 		// Note: axes are listed from bottom to top, since they are added that way.
-		// hk: using absolute numbers here causes troubles with small windows! all changed to fractions of height
+		// using absolute numbers here causes troubles with small windows! all changed to fractions of height
 		{ heartBeatAxis, heartBeatFraction * height, 0.0, prefs.hrgraph && diveHasHeartBeat },
 		{ percentageAxis, percentagegraphFraction * height, 0.0, prefs.percentagegraph },
 		{ gasYAxis, prefs.gasplot_frac * height, 0.0, ppGraphsEnabled(currentdc, simplified) },
 		{ temperatureAxis, temperatureFraction * height, 2.0, true },
         };
-
-	/* hk: I think this is not needed anymore:
-	// A loop is probably easier to read than std::accumulate.
-	double totalSecondaryHeight = 0.0;
-	for (const VerticalAxisLayout &l: secondaryAxes) {
-		if (l.visible)
-			totalSecondaryHeight += l.height * dpr;
-	}
-
-	if (totalSecondaryHeight > height * (1.0 - minProfileFraction) ) {     // has to be 1-minProfileFraction, otherwise this only works for 0.5! hk
-									       // this fix is needed to allow for smaller minProfileFraction's. see above
-		// Use minProfileFraction for the profile and the rest for the remaining graphs, scaled by their maximum height.
-		double remainingSpace = height * minProfileFraction;
-		for (VerticalAxisLayout &l: secondaryAxes)
-			l.height *= remainingSpace / totalSecondaryHeight;
-	}
-	*/
 
 	for (const VerticalAxisLayout &l: secondaryAxes) {
 		l.axis->setVisible(l.visible);
