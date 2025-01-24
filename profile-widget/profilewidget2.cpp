@@ -255,7 +255,7 @@ void ProfileWidget2::divesChanged(const QVector<dive *> &dives, DiveField field)
 
 void ProfileWidget2::actionRequestedReplot(bool)
 {
-	/* this is called vai infoboxChanged, therefore in currentState==PROFILE
+	/* this is called via infoboxChanged, therefore in currentState==PROFILE
 	   we have to set the mouseFollowerVertical to visible (if prefs.infobox) */
 #ifndef SUBSURFACE_MOBILE
 	if (currentState == PROFILE) {
