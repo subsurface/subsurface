@@ -404,7 +404,12 @@ void DiveTemperatureItem::replot(const dive *, int fromIn, int toIn, bool)
 
 	for (size_t i = 0; i < textItems.size(); ++i) {
 		auto [sec, mkelvin] = textItems[i];
-		createTextItem(sec, mkelvin, i == textItems.size() - 1);
+		// never treat the first item as the last one (different text alignmet)
+		// even if there is only one. // Fixes bug #4407
+		if ( i == 0 )
+			createTextItem(sec, mkelvin, false);
+		else
+			createTextItem(sec, mkelvin, i == textItems.size() - 1);
 	}
 }
 
@@ -413,6 +418,7 @@ void DiveTemperatureItem::createTextItem(int sec, int mkelvin, bool last)
 	temperature_t temp;
 	temp.mkelvin = mkelvin;
 
+	// the last item should aligned to the right to fit in the plot
 	int flags = last ? Qt::AlignLeft | Qt::AlignBottom :
 			   Qt::AlignRight | Qt::AlignBottom;
 	auto text = std::make_unique<DiveTextItem>(dpr, 0.8, flags, this);
