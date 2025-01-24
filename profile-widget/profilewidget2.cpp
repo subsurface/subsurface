@@ -256,7 +256,7 @@ void ProfileWidget2::divesChanged(const QVector<dive *> &dives, DiveField field)
 void ProfileWidget2::actionRequestedReplot(bool)
 {
 	/* this is called vai infoboxChanged, therefore in currentState==PROFILE
-	   we have to set the mouseFollowerVertical to visible (if prefs.infobox)    hk  */
+	   we have to set the mouseFollowerVertical to visible (if prefs.infobox) */
 #ifndef SUBSURFACE_MOBILE
 	if (currentState == PROFILE) {
 		mouseFollowerHorizontal->setVisible(false);
@@ -438,7 +438,7 @@ void ProfileWidget2::setProfileState()
 	   or, when switching to currentState==PROFILE
 	   the mouseFollowers are needed to be set.
 	   However, in currentState==PROFILE on toggling infobox, 
-	   this needs to be set too!   hk */
+	   this needs to be set too!  */
 #ifndef SUBSURFACE_MOBILE
 	mouseFollowerHorizontal->setVisible(false);
 	if (!prefs.infobox)
