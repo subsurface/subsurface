@@ -42,6 +42,7 @@ void init_proxy();
 QStringList getWaterTypesAsString();
 extern const QStringList videoExtensionsList;
 extern const QStringList rawExtensionsList;
+bool hasFileExtension(const QString &filename, const QStringList extensionsList);
 QStringList mediaExtensionFilters();
 QStringList imageExtensionFilters();
 QStringList videoExtensionFilters();

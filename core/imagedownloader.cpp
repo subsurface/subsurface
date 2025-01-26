@@ -74,14 +74,6 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->deleteLater();
 }
 
-static bool hasFileExtension(const QString &filename, const QStringList extensionsList)
-{
-	for (const QString &ext: extensionsList)
-		if (filename.endsWith(ext, Qt::CaseInsensitive))
-			return true;
-	return false;
-}
-
 #ifdef LIBRAW_SUPPORT
 QImage fetchRawThumbnail(const QString &filename)
 {
