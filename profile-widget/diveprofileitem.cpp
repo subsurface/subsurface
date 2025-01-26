@@ -406,10 +406,10 @@ void DiveTemperatureItem::replot(const dive *, int fromIn, int toIn, bool)
 		auto [sec, mkelvin] = textItems[i];
 		// never treat the first item as the last one (different text alignmet)
 		// even if there is only one. // Fixes bug #4407
-		if ( i == 0 )
-			createTextItem(sec, mkelvin, false);
+		if ( i != 0 && i == textItems.size() - 1 )
+			createTextItem(sec, mkelvin, true);
 		else
-			createTextItem(sec, mkelvin, i == textItems.size() - 1);
+			createTextItem(sec, mkelvin, false);
 	}
 }
 
