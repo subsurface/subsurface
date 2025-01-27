@@ -12,6 +12,7 @@ class qPrefGeneral : public QObject {
 	Q_PROPERTY(int pscr_ratio READ pscr_ratio WRITE set_pscr_ratio NOTIFY pscr_ratioChanged)
 	Q_PROPERTY(QString diveshareExport_uid READ diveshareExport_uid WRITE set_diveshareExport_uid NOTIFY diveshareExport_uidChanged)
 	Q_PROPERTY(bool diveshareExport_private READ diveshareExport_private WRITE set_diveshareExport_private NOTIFY diveshareExport_privateChanged)
+	Q_PROPERTY(double maxDepth_metric_decimal_limit  READ maxDepth_metric_decimal_limit WRITE set_maxDepth_metric_decimal_limit NOTIFY maxDepth_metric_decimal_limitChanged)
 
 public:
 	static qPrefGeneral *instance();
@@ -27,6 +28,7 @@ public:
 	static int pscr_ratio() { return prefs.pscr_ratio; }
 	static QString diveshareExport_uid() { return st_diveshareExport_uid; }
 	static bool diveshareExport_private() { return st_diveshareExport_private; }
+	static double maxDepth_metric_decimal_limit() { return prefs.maxDepth_metric_decimal_limit; }
 
 public slots:
 	static void set_defaultsetpoint(int value);
@@ -34,6 +36,7 @@ public slots:
 	static void set_pscr_ratio(int value);
 	static void set_diveshareExport_uid(const QString& value);
 	static void set_diveshareExport_private(bool value);
+	static void set_maxDepth_metric_decimal_limit(double value);
 
 signals:
 	void defaultsetpointChanged(int value);
@@ -42,6 +45,7 @@ signals:
 	void diveshareExport_uidChanged(const QString& value);
 	void diveshareExport_privateChanged(bool value);
 	void salinityEditDefaultChanged(bool value);
+	void maxDepth_metric_decimal_limitChanged(double value);
 
 private:
 	qPrefGeneral() {}
@@ -49,6 +53,7 @@ private:
 	static void disk_defaultsetpoint(bool doSync);
 	static void disk_o2consumption(bool doSync);
 	static void disk_pscr_ratio(bool doSync);
+	static void disk_maxDepth_metric_decimal_limit(bool doSync);
 
 	// class variables are load only
 	static void load_diveshareExport_uid();

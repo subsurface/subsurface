@@ -96,7 +96,8 @@ preferences::preferences() :
 	allowOcGasAsDiluent(false),
 	coordinates_traditional(true),
 	unit_system(METRIC),
-	units(SI_UNITS)
+	units(SI_UNITS),
+	maxDepth_metric_decimal_limit(20.0)
 {
 }
 

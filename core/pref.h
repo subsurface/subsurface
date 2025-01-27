@@ -122,6 +122,7 @@ struct preferences {
 	bool        use_default_file;
 	bool        extraEnvironmentalDefault;
 	bool        salinityEditDefault;
+	double      maxDepth_metric_decimal_limit;
 
 	// ********** Geocoding **********
 	geocoding_prefs_t geocoding;

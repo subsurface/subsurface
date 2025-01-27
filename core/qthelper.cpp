@@ -494,7 +494,7 @@ QString get_depth_string(int mm, bool showunit, bool showdecimal)
 {
 	if (prefs.units.length == units::METERS) {
 		double meters = mm / 1000.0;
-		return QString("%L1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0).arg(showunit ? gettextFromC::tr("m") : QString());
+		return QString("%L1%2").arg(meters, 0, 'f', (showdecimal && meters < prefs.maxDepth_metric_decimal_limit) ? 1 : 0).arg(showunit ? gettextFromC::tr("m") : QString());
 	} else {
 		double feet = mm_to_feet(mm);
 		return QString("%L1%2").arg(feet, 0, 'f', 0).arg(showunit ? gettextFromC::tr("ft") : QString());
