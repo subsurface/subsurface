@@ -7481,6 +7481,11 @@ Siehe https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
         <translation>Einheiten in der Tauchgangsliste anzeigen</translation>
     </message>
     <message>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="287"/>
+        <source>metric depth decimals</source>
+        <translation>Meter mit Nachkommastelle</translation>
+    </message>
+    <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="290"/>
         <source>GPS coordinates</source>
         <translation>GPS-Koordinaten</translation>

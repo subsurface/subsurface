@@ -10,6 +10,7 @@ class qPrefUnits : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool coordinates_traditional READ coordinates_traditional WRITE set_coordinates_traditional NOTIFY coordinates_traditionalChanged)
 	Q_PROPERTY(bool show_units_table READ show_units_table WRITE set_show_units_table NOTIFY show_units_tableChanged)
+	Q_PROPERTY(bool show_mdecimal_table READ show_mdecimal_table WRITE set_show_mdecimal_table NOTIFY show_mdecimal_tableChanged)
 
 public:
 	static qPrefUnits *instance();
@@ -25,6 +26,7 @@ public:
 	static units::LENGTH length() { return prefs.units.length; }
 	static units::PRESSURE pressure() { return prefs.units.pressure; }
 	static bool show_units_table() { return prefs.units.show_units_table; }
+	static bool show_mdecimal_table() { return prefs.units.show_mdecimal_table; }
 	static unit_system_values unit_system() { return prefs.unit_system; }
 	static units::TEMPERATURE temperature() { return prefs.units.temperature; }
 	static units::TIME vertical_speed_time() { return prefs.units.vertical_speed_time; }
@@ -37,6 +39,7 @@ public slots:
 	static void set_length(units::LENGTH value);
 	static void set_pressure(units::PRESSURE value);
 	static void set_show_units_table(bool value);
+	static void set_show_mdecimal_table(bool value);
 	static void set_temperature(units::TEMPERATURE value);
 	static void set_unit_system(unit_system_values value);
 	static void set_vertical_speed_time(units::TIME value);
@@ -49,6 +52,7 @@ signals:
 	void lengthChanged(units::LENGTH value);
 	void pressureChanged(units::PRESSURE value);
 	void show_units_tableChanged(bool value);
+	void show_mdecimal_tableChanged(bool value);
 	void temperatureChanged(units::TEMPERATURE value);
 	void unit_systemChanged(unit_system_values value);
 	void vertical_speed_timeChanged(units::TIME value);
@@ -63,6 +67,7 @@ private:
 	static void disk_length(bool doSync);
 	static void disk_pressure(bool doSync);
 	static void disk_show_units_table(bool doSync);
+	static void disk_show_mdecimal_table(bool doSync);
 	static void disk_temperature(bool doSync);
 	static void disk_unit_system(bool doSync);
 	static void disk_vertical_speed_time(bool doSync);
