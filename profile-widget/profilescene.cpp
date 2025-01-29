@@ -359,12 +359,18 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	while ( (1 - (_sumOfFractions + prefs.gasplot_frac)) < minProfileFraction )
 		prefs.gasplot_frac -= 0.05;
 
+	double _used_gasplot_frac;
+	if (prefs.zoomed_plot)
+		_used_gasplot_frac = prefs.gasplot_frac;
+	else
+		_used_gasplot_frac = 0.1;
+
 	VerticalAxisLayout secondaryAxes[] = {
 		// Note: axes are listed from bottom to top, since they are added that way.
 		// using absolute numbers here causes troubles with small windows! all changed to fractions of height
 		{ heartBeatAxis, heartBeatFraction * height, 0.0, prefs.hrgraph && diveHasHeartBeat },
 		{ percentageAxis, percentagegraphFraction * height, 0.0, prefs.percentagegraph },
-		{ gasYAxis, prefs.gasplot_frac * height, 0.0, ppGraphsEnabled(currentdc, simplified) },
+		{ gasYAxis, _used_gasplot_frac * height, 0.0, ppGraphsEnabled(currentdc, simplified) },
 		{ temperatureAxis, temperatureFraction * height, 2.0, true },
         };
 
