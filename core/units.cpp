@@ -6,7 +6,7 @@
 const struct units SI_units = SI_UNITS;
 const struct units IMPERIAL_units = {
         .length = units::FEET, .volume = units::CUFT, .pressure = units::PSI, .temperature = units::FAHRENHEIT, .weight = units::LBS,
-	.vertical_speed_time = units::MINUTES, .duration_units = units::MIXED, .show_units_table = false, .show_mdecimal_table = false
+	.vertical_speed_time = units::MINUTES, .duration_units = units::MIXED, .show_units_table = false, .show_mdecimal = false
 };
 
 int get_pressure_units(int mb, const char **units)

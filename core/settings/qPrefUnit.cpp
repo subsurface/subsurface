@@ -19,7 +19,7 @@ void qPrefUnits::loadSync(bool doSync)
 	disk_length(doSync);
 	disk_pressure(doSync);
 	disk_show_units_table(doSync);
-	disk_show_mdecimal_table(doSync);
+	disk_show_mdecimal(doSync);
 	disk_temperature(doSync);
 	disk_unit_system(doSync);
 	disk_vertical_speed_time(doSync);
@@ -40,7 +40,7 @@ DISK_LOADSYNC_ENUM_EXT(Units, "pressure", units::PRESSURE, pressure, units.);
 
 HANDLE_PREFERENCE_BOOL_EXT(Units, "show_units_table", show_units_table, units.);
 
-HANDLE_PREFERENCE_BOOL_EXT(Units, "show_mdecimal_table", show_mdecimal_table, units.);
+HANDLE_PREFERENCE_BOOL_EXT(Units, "show_mdecimal", show_mdecimal, units.);
 
 SET_PREFERENCE_ENUM_EXT(Units, units::TEMPERATURE, temperature, units.);
 DISK_LOADSYNC_ENUM_EXT(Units, "temperature", units::TEMPERATURE, temperature, units.);

@@ -478,7 +478,7 @@ struct units {
 		ALWAYS_HOURS
 	} duration_units;
 	bool show_units_table;
-	bool show_mdecimal_table;
+	bool show_mdecimal;
 };
 
 /*
@@ -491,7 +491,7 @@ struct units {
 #define SI_UNITS 																\
         { \
 	        .length = units::METERS, .volume = units::LITER, .pressure = units::BAR, .temperature = units::CELSIUS, .weight = units::KG, \
-		.vertical_speed_time = units::MINUTES, .duration_units = units::MIXED, .show_units_table = false, .show_mdecimal_table = false \
+		.vertical_speed_time = units::MINUTES, .duration_units = units::MIXED, .show_units_table = false, .show_mdecimal = false \
         }
 
 extern const struct units SI_units, IMPERIAL_units;

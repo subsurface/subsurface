@@ -65,7 +65,7 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 		case 1:
 			return QVariant(get_dive_duration_string(d.duration.seconds, tr("h"), tr("min")));
 		case 2:
-			return QVariant(get_depth_string(d.maxdepth.mm, true, false));
+			return QVariant(get_depth_string(d.maxdepth.mm, true, prefs.units.show_mdecimal)); // screen output single dive: user choice
 		case 3:
 			return checkStates[index.row()];
 		}

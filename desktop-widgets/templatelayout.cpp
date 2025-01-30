@@ -460,11 +460,11 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "longest_time") {
 			return formatMinutes(object->longest_time.seconds);
 		} else if (property == "avg_depth") {
-			return get_depth_string(object->avg_depth);
+			return get_depth_string(object->avg_depth, false, true);
 		} else if (property == "min_depth") {
-			return get_depth_string(object->min_depth);
+			return get_depth_string(object->min_depth, false, prefs.units.show_mdecimal);
 		} else if (property == "max_depth") {
-			return get_depth_string(object->max_depth);
+			return get_depth_string(object->max_depth, false, prefs.units.show_mdecimal);
 		} else if (property == "avg_sac") {
 			return get_volume_string(object->avg_sac);
 		} else if (property == "min_sac") {
@@ -536,7 +536,7 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 		} else if (property == "noDive") {
 			return d->duration.seconds == 0 && d->dcs[0].duration.seconds == 0;
 		} else if (property == "depth") {
-			return get_depth_string(d->dcs[0].maxdepth.mm, true, true);
+			return get_depth_string(d->dcs[0].maxdepth.mm, true, prefs.units.show_mdecimal);
 		} else if (property == "meandepth") {
 			return get_depth_string(d->dcs[0].meandepth.mm, true, true);
 		} else if (property == "divemaster") {

@@ -282,7 +282,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="show_mdecimal_table">
+       <widget class="QCheckBox" name="show_mdecimal">
         <property name="text">
          <string>metric depth decimals</string>
         </property>
