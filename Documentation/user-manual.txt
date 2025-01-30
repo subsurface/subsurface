@@ -474,7 +474,7 @@ link:https://subsurface-divelog.org/documentation/supported-dive-computers/[list
 Bluetooth communication is often more reliable if all Bluetooth devices seen by the
 _Subsurface_ computer are removed and pairing with the Bluetooth dive computer
 is performed from afresh. The Bluetooth and BTLE interfaces are under active development
-with respect to new dive computers that use these mechanisms of communication. 
+with respect to new dive computers that use these mechanisms of communication.
 
 Setting up _Subsurface_ for Bluetooth communication requires
 four steps:
@@ -524,7 +524,7 @@ address and its pairing status. For BTLE devices the address often starts with "
 If the device is not paired and has a red
 background color, a context menu can be opened by selecting the item with a
 right-click.
-Select the _Pair_ option and wait for the task to complete. 
+Select the _Pair_ option and wait for the task to complete.
 If necessary, consult the user manual of the
 dive computer being used. This accomplishes steps 4 and 5, above.
 
@@ -644,7 +644,7 @@ increase in the amount of information stored for a dive.
 1. The *Notes* tab
 holds basic information about the dive, the date and time, locality,
 buddy, dive guide and some dive notes. This is about the minimum amount of
-information required for a coherent dive log. 
+information required for a coherent dive log.
 
 2. If one wishes, one can expand the dive information by using the
 *Equipment* tab to record information about the equipment used: cylinders
@@ -653,7 +653,7 @@ and their start and end pressures, dive suit used and weight system used.
 3. Expanding the dive information even more, the *Information* tab is used
 to record environmental information such as water type (usually fresh water or salt water),
 temperatures, surface conditions and conditions during the dive, e.g. visibility
-and current. For dives downloaded from a dive computer, water type and water temperature 
+and current. For dives downloaded from a dive computer, water type and water temperature
 are automatically provided in the *Information* tab. Some dive computers also
 provide air temperature and altitude.
 
@@ -812,7 +812,7 @@ using the Locality field in the *Notes* panel.
 of the Locality text box of the *Notes* tab.
 
 4. Select the button "Use GPS file" to the right of the Coordinates text box (see image A
-above). This opens a file selection dialog. 
+above). This opens a file selection dialog.
 
 5. Select the appropriate .GPX file on the GPS, or alternatively, the .GPX file that
 has been copied from the GPS to the desktop computer. Subsurface reads the .GPX file
@@ -958,7 +958,7 @@ create the new cylinder type.
 image::images/Newcyl-create.png["FIGURE: Creating ne cylinder type",align="center"]
 
 The new cylinder type now appears on the dropdown list. Add a size and start pressure for that
-cylinder (image below). 
+cylinder (image below).
 
 image::images/Newcyl-final.png["FIGURE: Final details for new cylinder type",align="center"]
 
@@ -1025,7 +1025,7 @@ For technical or freedivers, the *Dive mode* can be selected. *Dive mode*: This 
 allowing you to choose the type of dive
 performed. The options are OC (Open Circuit SCUBA, the default setting, for most recreational dives),
 Freedive (dive without SCUBA equipment), CCR (Closed-circuit
-rebreather) and pSCR (Passive semi-closed rebreather). 
+rebreather) and pSCR (Passive semi-closed rebreather).
 
 Use the Information tab to also enter environmental information for a dive.
 
@@ -2343,10 +2343,17 @@ So users should see the depth of the deepest point and other peaks. Mean depth
 is plotted as a grey line, indicating mean dive depth up to a particular moment during the dive.
 
 [icon="images/icons/scale.jpg"]
+[icon="images/icons/graph.png"]
 [NOTE]
-In some cases the dive profile does not fill the whole area of the *Dive Profile*
-panel. Clicking the *Scale* button in the toolbar on the left of the dive profile
-increases the size of the dive profile to fill the area of the panel.
+As a standard, the depth axis ranges down to 30m/90ft and the time axis extends up to
+30 minutes. If the depicted *dive profile* extends beyond these ranges, the axes of
+the plot will be set to the actual limits given by the dive. This behaviour (zoomed plot)
+can be enforced for all dives using the *Scale* button.
+A second functionality is activated too: if partial gas pressure graphs are shown
+(pO~2~, pN~2~, pHe), the area used by them will be enlarged. This is especially useful for
+looking at sensor performance in CCR dives. How much the partial pressure graphs
+will be enlarged can be set in xref:S_CCR_options[_File->Preferences->Tech setup_] by changing
+the _Gasplot fraction_ accordingly.
 
 *Water temperature* is shown as a blue line with temperature values
 placed adjacent to significant changes.
@@ -2838,7 +2845,7 @@ In this case type both dive sites into the text box, separated by a comma (see i
 
 
  2. Filtering some dive at a dive site: I may wish to list only the dives at 2 Mile Reef at Sodwana. However the
-way I entered the dive locations for dives was not consistent (some cases "2 Mile Reef Sodwana", other cases 
+way I entered the dive locations for dives was not consistent (some cases "2 Mile Reef Sodwana", other cases
 "Sodwana 2 mile reef"). In that case add a Location constraint, select "with substring" from the combobox and specify "Sodwana". Then add a second
 Location constraint, select "with substring" from the combobox and type "2 mile Reef") in the location text box
 (see image below). This is a logical AND operation. The same principles apply to all constraints
@@ -2926,7 +2933,7 @@ c) Which variable should be displayed along the left-hand vertical axis of the g
 
 *NB:* Since, in Subsurface, the graphs can be rotated to be horizontally-oriented or vertically oriented, the terms "horizontal axis variable" and "vertical axis variable" are not appropriate. We use the term *Base variable* to denote the conventional horizontal axis variable and the *Data variable* to denote the conventional vertical axis variable.
 
-d) Which chart type do you require? By default Subsurface selects the most appropriate graph type, but this is a user-selectable option. Taking the example of water temperature at various depths above, the image below shows three of the possible chart types of the same data: Image A below shows the raw data by plotting the exact temperature and depth for each dive. Image B, however, groups the dives in 5m depth intervals within which the temperature for each dive is indicated (the red marks are explained below). Image C also groups the dives in 5m depth intervals. However, in this case the minimum, maximum, mean, upper quartile and lower quartile are shown for each depth class. 
+d) Which chart type do you require? By default Subsurface selects the most appropriate graph type, but this is a user-selectable option. Taking the example of water temperature at various depths above, the image below shows three of the possible chart types of the same data: Image A below shows the raw data by plotting the exact temperature and depth for each dive. Image B, however, groups the dives in 5m depth intervals within which the temperature for each dive is indicated (the red marks are explained below). Image C also groups the dives in 5m depth intervals. However, in this case the minimum, maximum, mean, upper quartile and lower quartile are shown for each depth class.
 
 image::images/StatsGraphOptions.jpg["Statistics graph options",align="center"]
 
@@ -2980,7 +2987,7 @@ a) Select a variable with categories (along the horizontal axis) as a Base varia
 
 b) Select the data variable and set binning to "none".
 
-c) By default the Chart combobox shows "Categorical/data points". If this is not the case, select this value. 
+c) By default the Chart combobox shows "Categorical/data points". If this is not the case, select this value.
 
 image::images/StatsCategoricalData.jpg["Stats: Comparison of categories",align="center"]
 
@@ -3006,9 +3013,9 @@ image::images/StatsBarchartHorizontal.jpg["Stats: Horizontal comparison of categ
 
 ==== Rapid graphing of subsets of data in a graph (restricting the displayed data)
 
-Let's say you are viewing a bar graph showing mean maximum dive depth for different years. However two of the years have dive 
-depth values that appear atypical and you wish to inspect the dives only for those two years. The obvious approach is to use the xref:S_Filter[Filter tool] 
-to select only data for the two years of interest and then view those data using the Statistics panel. However, 
+Let's say you are viewing a bar graph showing mean maximum dive depth for different years. However two of the years have dive
+depth values that appear atypical and you wish to inspect the dives only for those two years. The obvious approach is to use the xref:S_Filter[Filter tool]
+to select only data for the two years of interest and then view those data using the Statistics panel. However,
 _Subsurface_ provides a rapid mechanism of selecting the appropriate subset of data using your mouse. In the above example of a bar graph,
 select the bars for the two years of interest by clicking on them and activate the "Restrict to selection" button towards the bottom left
 of the Statistics panel.
@@ -3027,7 +3034,7 @@ image::images/StatsRestrictedGraph.jpg["Stats: Showing restricted data",align="c
 
 The ability to rapidly create subsets of data for display (using the restriction tool) creates a powerful mechanism to do rapid but detailed analysis of a dive log.
 
-After creating a data subset, The text in the restriction tool indicates the number of dives in the subset that has been selected. Note, in the figure above, that a 
+After creating a data subset, The text in the restriction tool indicates the number of dives in the subset that has been selected. Note, in the figure above, that a
 previously greyed-out button, "Reset restriction", has been made active after restricting
 the data for graphing. The original dataset can be restored by clicking the "Reset restriction" button. The text in the restriction tool now shows "Analyzing all dives".
 
@@ -3581,7 +3588,7 @@ Using the appropriate buttons on the configuration panel, the following actions 
 There are several user-definable settings within _Subsurface_, found by selecting
 _File ->  Preferences_, mostly affecting the way in which _Subsurface_
 shows dive information to the user. The settings are in
-twelve panels: _Display_, _Language_, _Units_, _Dive Download_, _Dive log_, _Equipment_, 
+twelve panels: _Display_, _Language_, _Units_, _Dive Download_, _Dive log_, _Equipment_,
 _Media_, _Tech setup_, _Georeference_, _Cloud_, _Network_ and _Reset_,
 all of which operate on the same principles: specified settings can be applied to the display of
 the dive log by selecting _Apply_. At this stage, any new settings only apply to the present
@@ -3713,7 +3720,7 @@ image::images/Pref_media.jpg["FIGURE: Preferences: media",align="center"]
 
   ** *Update thumbnails*: Photographs or videos are sometimes edited after being uploaded and linked to _Subsurface_. If
      a photo is therefore more recent than its original thumbnail, checking this checkbox allows a new thumbnail to be created
-     after a photo or video has been edited. 
+     after a photo or video has been edited.
 
   ** *Video thumbnails*: In generating thumbnails for videos associated with dives, _Subsurface_
      needs to have the appropriate information (see section on <<S_ViewMedia,View Images>>). Three preferences need to be set
@@ -3726,7 +3733,7 @@ image::images/Pref_media.jpg["FIGURE: Preferences: media",align="center"]
 This tab sets common variables used for decompression calculations pertaining to technical diving.
 
 [[S_CCR_options]]
-image::images/Pref_tech.jpg["FIGURE: Preferences: Tech setup",align="center"]
+image::images/Pref_tech.png["FIGURE: Preferences: Tech setup",align="center"]
 
 * *Gas pressure display setup*. Even though nitrogen and helium pressures are also included here,
 these items mainly pertain to oxygen management:
@@ -3768,6 +3775,11 @@ these items mainly pertain to oxygen management:
 *** _Show equivalent OC with pSCR pO~2~_: The pO~2~ in the pSCR loop is usually lower than the
     pO~2~ of the fresh gas from the cylinder. Activating this checkbox allows the pO~2~ graph
     in the dive profile to also show the pO~2~ of the fresh gas entering the loop.
+
+** _Gasplot fraction_: this controls the height of the *Gas pressure display* as a fraction of
+    of the whole graph area. Allowed values are from 0.1 (which resembles the old behaviour, to
+    0.7. Note, that this is only active, while the *scale* button is pressed. See also
+    section xref:S_DiveProfile[The Dive Profile]
 
 * *Ceiling display setup*. These settings mostly deal with nitrogen and helium management
    by determining how the decompression ceiling (ascent ceiling) is calculated and displayed:
@@ -5485,7 +5497,7 @@ This should complete the setup of video thumbnails and they should now appear on
 ==== After filling in the correct information and submitting it, I do not receive a PIN by email
 1. Check *carefully* that there is not a spelling mistake in the email address you provided.
 2. Check that the return email containing the PIN is not in the SPAM folder of your email client.
-3. Wait for 24 hours and check again for an email with a PIN. 
+3. Wait for 24 hours and check again for an email with a PIN.
 4. If there is still no email containing a PIN, send mail to in-app-support@subsurface-divelog.org
 
 ==== I want to access the Subsurface cloud facility but I have forgotten my password. How can I reset my password?
