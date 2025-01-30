@@ -348,7 +348,9 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	const double temperatureFraction = 0.083;
 
 	// first we sum up the fixed fractions of all displayed axes
-	double _sumOfFractions = temperatureFraction;    // temperatureAxis is always on
+	double _sumOfFractions = 0;
+	if (!ppGraphsEnabled(currentdc, simplified))  // dont add temperature in simplified with ppGraphs
+		_sumOfFractions += temperatureFraction;
 	if (prefs.hrgraph && diveHasHeartBeat)
 		_sumOfFractions += heartBeatFraction;
 	if (prefs.percentagegraph)
@@ -371,7 +373,7 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 		{ heartBeatAxis, heartBeatFraction * height, 0.0, prefs.hrgraph && diveHasHeartBeat },
 		{ percentageAxis, percentagegraphFraction * height, 0.0, prefs.percentagegraph },
 		{ gasYAxis, _used_gasplot_frac * height, 0.0, ppGraphsEnabled(currentdc, simplified) },
-		{ temperatureAxis, temperatureFraction * height, 2.0, true },
+		{ temperatureAxis, temperatureFraction * height, 2.0, !ppGraphsEnabled(currentdc, simplified) }, //set temp invisible for simplified with ppGraphs
         };
 
 	for (const VerticalAxisLayout &l: secondaryAxes) {
