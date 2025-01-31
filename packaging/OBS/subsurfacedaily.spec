@@ -120,6 +120,7 @@ mkdir -p install-root
 		-DCMAKE_C_FLAGS:STRING="%optflags" \
 		-DCMAKE_CXX_FLAGS:STRING="%optflags" \
 		-DNO_PRINTING=OFF \
+		-DBUILD_DOCS=ON \
 		.. ; \
 	make VERBOSE=1 %{?_smp_mflags} subsurface)
 
