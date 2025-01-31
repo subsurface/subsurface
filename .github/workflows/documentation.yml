@@ -6,31 +6,44 @@ on:
     - master
     paths:
     - Documentation
-    - .github/workflows/documentation.yml
+    - .github/workflows/
   pull_request:
     branches:
     - master
     paths:
     - Documentation
-    - .github/workflows/documentation.yml
+    - .github/workflows/
 
 jobs:
   documentation:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Install Packages
+    - name: install packages
       run: |
         sudo apt-get -y update
         sudo apt-get -y install asciidoc docbook-xml w3m
 
-    - name: Checkout Sources
+    - name: checkout sources
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
 
-    - name: Process the Documentation
-      id: process_documentation
+    - name: process the documentation
       working-directory: Documentation
       run: make
+
+    - name: publish artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Subsurface-Documentation-${{ steps.version_number.outputs.version }}
+        path: |
+          Documentation/user-manual*.text
+          Documentation/user-manual*.html
+          Documentation/user-manual*.pdf
+          Documentation/mobile-manual-v3.text
+          Documentation/mobile-manual-v3.html
+          Documentation/mobile-manual-v3.pdf
+          Documentation/images/
+          Documentation/mobile-images/
