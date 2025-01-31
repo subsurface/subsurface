@@ -79,7 +79,7 @@ jobs:
 
     - name: check match with checked in versions
       run: |
-        cd Documantation
+        cd Documentation
         for file in *.html.git; do
           diff -u $file ${file%.git} || exit 1
           if [ $? -ne 0 -o $TXT_EXIT_CODE -ne 0 ] ; then
