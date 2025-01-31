@@ -2342,7 +2342,6 @@ The profile also includes depth readings for the peaks and troughs in the graph.
 So users should see the depth of the deepest point and other peaks. Mean depth
 is plotted as a grey line, indicating mean dive depth up to a particular moment during the dive.
 
-[icon="images/icons/scale.jpg"]
 [icon="images/icons/graph.png"]
 [NOTE]
 As a standard, the depth axis ranges down to 30m/90ft and the time axis extends up to
@@ -3777,7 +3776,7 @@ these items mainly pertain to oxygen management:
     in the dive profile to also show the pO~2~ of the fresh gas entering the loop.
 
 ** _Gasplot fraction_: this controls the height of the *Gas pressure display* as a fraction of
-    of the whole graph area. Allowed values are from 0.1 (which resembles the old behaviour, to
+    of the whole graph area. Allowed values are from 0.1 (which resembles the old behaviour), to
     0.7. Note, that this is only active, while the *scale* button is pressed. See also
     section xref:S_DiveProfile[The Dive Profile]
 
