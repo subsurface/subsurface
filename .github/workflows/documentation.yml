@@ -13,6 +13,7 @@ on:
     paths:
     - Documentation
     - .github/workflows/
+  workflow_dispatch:
 
 jobs:
   documentation:
@@ -43,3 +44,37 @@ jobs:
           Documentation/user-manual*.html
           Documentation/user-manual*.pdf
           Documentation/images/
+
+  check_documentation:
+    needs: documentation
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
+
+    - name: fetch artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: Subsurface-Documentation-${{ steps.version_number.outputs.version }}
+        path: Documentation/
+
+    - name: check match with checked in versions
+      run: |
+        cd Documantation
+        for file in *.html.git; do
+          diff -u $file ${file%.git} || exit 1
+          if [ $? -ne 0 -o $TXT_EXIT_CODE -ne 0 ] ; then
+            echo "The html version of the documentation in the repository (\`$file\`) does not match the does not match the latest generated html version.\nPlease grab the latest version from the artifacts of the 'Documentation' workflow (\`${file%.git}\`) and commit it to the repository as \`$file\`."
+            exit 1
+          fi
+        done
