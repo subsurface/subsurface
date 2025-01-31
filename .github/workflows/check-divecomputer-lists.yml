@@ -9,6 +9,7 @@ on:
     - SupportedDivecomputers.txt
     - SupportedDivecomputers.html
     - scripts
+    - .github/workflows/check-divecomputer-lists.yml
   pull_request:
     branches:
     - master
@@ -17,6 +18,7 @@ on:
     - SupportedDivecomputers.txt
     - SupportedDivecomputers.html
     - scripts
+    - .github/workflows/check-divecomputer-lists.yml
 
 jobs:
   check:

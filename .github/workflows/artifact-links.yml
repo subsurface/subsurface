@@ -2,8 +2,14 @@ name: Add artifact links to pull request
 
 on:
   workflow_run:
-    workflows: ["Ubuntu 16.04 / Qt 5.15-- for AppImage", "Mac", "Windows", "Android", "iOS"]
-    types: [completed]
+    workflows: 
+      - Ubuntu 16.04 / Qt 5.15-- for AppImage
+      - Mac
+      - Windows
+      - Android
+      - iOS
+    types:
+      - completed
 
 jobs:
   artifacts-url-comments:
