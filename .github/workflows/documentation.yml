@@ -6,14 +6,13 @@ on:
     - master
     paths:
     - Documentation/**
-    - .github/workflows/
+    - .github/workflows/**
   pull_request:
     branches:
     - master
     paths:
     - Documentation/**
-    - .github/workflows/
-  workflow_dispatch:
+    - .github/workflows/**
 
 jobs:
   documentation:
@@ -30,6 +29,12 @@ jobs:
       with:
         fetch-depth: 0
         submodules: recursive
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
     - name: process the documentation
       working-directory: Documentation
