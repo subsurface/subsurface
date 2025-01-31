@@ -146,6 +146,14 @@ while [[ $# -gt 0 ]] ; do
 			# make sure we include the user space FTDI drivers
 			FTDI="1"
 			;;
+		-build-docs)
+			# build the user manual
+			BUILD_DOCS="1"
+			;;
+		-install-docs)
+			# include the user manual files in the packages
+			INSTALL_DOCS="1"
+			;;
 		-create-appdir)
 			# we are building an AppImage as by product
 			CREATE_APPDIR="1"
@@ -156,7 +164,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-all] [-both] [-build-deps] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-prep-only] [-quick] [-release] [-src-dir <SUBSURFACE directory>] "
+			echo "Usage: build.sh [-all] [-both] [-build-deps] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-prep-only] [-quick] [-release] [-build-docs] [-install-docs] [-src-dir <SUBSURFACE directory>] "
 			exit 1
 			;;
 	esac
@@ -332,7 +340,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 else
 	SH_LIB_EXT=so
 
-	LIBGIT_ARGS=" -DLIBGIT2_DYNAMIC=ON "
+	LIBGIT_ARGS="-DLIBGIT2_DYNAMIC=ON"
 	# check if we need to build libgit2 (and do so if necessary)
 	# first check pkgconfig (that will capture our own local build if
 	# this script has been run before)
@@ -435,7 +443,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 fi
 
 if [[ "$LIBGITMAJ" -lt "1" && "$LIBGIT" -lt "26" ]] ; then
-	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
+	LIBGIT_ARGS="-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT"
 
 	cd "$SRC"
 
@@ -618,7 +626,13 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		EXTRA_OPTS="-DNO_USERMANUAL=ON -DNO_PRINTING=ON"
 	fi
 	if [ "$FTDI" = "1" ] ; then
-		EXTRA_OPTSi="$EXTRA_OPTS -DFTDISUPPORT=ON"
+		EXTRA_OPTS="$EXTRA_OPTS -DFTDISUPPORT=ON"
+	fi
+	if [ "$BUILD_DOCS" = "1" ] ; then
+		EXTRA_OPTS="$EXTRA_OPTS -DBUILD_DOCS=ON"
+	fi
+	if [ "$INSTALL_DOCS" = "1" ] ; then
+		EXTRA_OPTS="$EXTRA_OPTS -DINSTALL_DOCS=ON"
 	fi
 	if [ "$BUILD_WITH_QT6" = "1" ] ; then
 		EXTRA_OPTS="$EXTRA_OPTS -DBUILD_WITH_QT6=ON"

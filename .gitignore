@@ -13,14 +13,6 @@ po/*.mo
 /subsurface
 /*.tar.gz
 share/
-Documentation/docbook-xsl.css
-Documentation/user-manual*.html
-Documentation/user-manual*.pdf
-Documentation/user-manual*.text
-Documentation/mobile-manual*.html
-Documentation/mobile-manual*.pdf
-Documentation/mobile-manual*.text
-Documentation/mobile-images/mobile-images
 packaging/windows/subsurface.nsi
 packaging/macos/Info.plist
 *.kdev4
@@ -53,3 +45,4 @@ android-mobile/Roboto-Regular.ttf
 gh_release_notes.md
 release_content_title.txt
 /output/
+/Documentation/output/

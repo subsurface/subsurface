@@ -13,12 +13,23 @@ on:
     - master
 
 jobs:
+  build-documentation:
+    uses: ./.github/workflows/documentation-build.yml
+    with:
+      container-image: docker://subsurface/mxe-build:3.4.0
+
   build:
-    runs-on: ubuntu-latest
+    needs: build-documentation
+    runs-on: ubuntu-24.04
     container:
       image: docker://subsurface/mxe-build:3.4.0
 
     steps:
+    - name: install packages
+      run: |
+        apt-get -y update
+        apt-get -y dist-upgrade
+
     - name: checkout sources
       uses: actions/checkout@v4
       with:
@@ -30,6 +41,15 @@ jobs:
       uses: ./.github/actions/manage-version
       with:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
+
+    - name: load the documentation from cache
+      id: load-cache
+      uses: actions/cache@v4
+      with:
+        path: Documentation/output
+        key: documentation-${{ hashFiles('Documentation') }}
+        enableCrossOsArchive: true
+        fail-on-cache-miss: true
 
     - name: get other dependencies
       env:
@@ -55,7 +75,7 @@ jobs:
 
         export OUTPUT_DIR="$GITHUB_WORKSPACE"
         cd /win
-        bash -x subsurface/packaging/windows/in-container-build.sh ${BUILD_EXTRA_ARGS} 2>&1 | tee build.log
+        bash -x subsurface/packaging/windows/in-container-build.sh ${BUILD_EXTRA_ARGS} -install-docs 2>&1 | tee build.log
         grep "Built target installer" build.log
 
     - name: publish pull request artifacts

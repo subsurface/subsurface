@@ -1,0 +1,51 @@
+name: Build the Documentation
+
+on:
+  workflow_call:
+    inputs:
+      container-image:
+        type: string
+        required: false
+
+jobs:
+  documentation:
+    runs-on: ubuntu-24.04
+    container:
+      image: ${{ inputs.container-image }}
+
+    steps:
+    - name: install packages for checkout
+      run: |
+        if type sudo; then
+          SUDO=sudo
+        fi
+        ${SUDO} apt-get -y update
+        ${SUDO} apt-get -y dist-upgrade
+        DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get -y -q install git
+
+    - name: checkout sources
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: cache the documentation
+      id: cache-documentation
+      uses: actions/cache@v4
+      with:
+        path: Documentation/output
+        key: documentation${{ inputs.build-extra-name || '' }}-${{ hashFiles('Documentation') }}
+        enableCrossOsArchive: true
+
+    - name: install packages for the build
+      if: steps.cache-documentation.outputs.cache-hit != 'true'
+      run: |
+        if type sudo; then
+          SUDO=sudo
+        fi
+        DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get -y -q install make asciidoc docbook-xml w3m
+
+    - name: build the documentation
+      if: steps.cache-documentation.outputs.cache-hit != 'true'
+      run: |
+        make -C Documentation

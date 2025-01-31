@@ -146,6 +146,16 @@ else
 	touch Release
 fi
 
+BUILD_EXTRA_ARGS=""
+if [[ "$1" == "-build-docs" ]]; then
+    BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -DBUILD_DOCS=ON"
+    shift
+fi
+if [[ "$1" == "-install-docs" ]]; then
+    BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -DINSTALL_DOCS=ON"
+    shift
+fi
+
 cd "$BASEDIR"/subsurface
 
 # libdivecomputer
@@ -303,6 +313,7 @@ cd "$BUILDDIR"/subsurface
 	-DFTDISUPPORT=$FTDI \
 	-DLIBRAW_SUPPORT=$LIBRAW \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \
+	$BUILD_EXTRA_ARGS \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
