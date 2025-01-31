@@ -1,0 +1,57 @@
+name: Publish the Documentation
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - Documentation/**
+    - .github/workflows/**
+  pull_request:
+    branches:
+    - master
+    paths:
+    - Documentation/**
+    - .github/workflows/**
+
+jobs:
+  build-documentation:
+    uses: ./.github/workflows/documentation-build.yml
+
+  publish-documentation:
+    needs: build-documentation
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: install packages
+      run: |
+        sudo apt-get -y update
+        sudo apt-get -y dist-upgrade
+        DEBIAN_FRONTEND=noninteractive sudo apt-get -y -q install asciidoc docbook-xml w3m
+
+    - name: checkout sources
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: load the documentation from cache
+      id: load-cache
+      uses: actions/cache@v4
+      with:
+        path: Documentation/output
+        key: documentation-${{ hashFiles('Documentation') }}
+        enableCrossOsArchive: true
+        fail-on-cache-miss: true
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
+
+    - name: publish artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Subsurface-Documentation-${{ steps.version_number.outputs.version }}
+        path: Documentation/output

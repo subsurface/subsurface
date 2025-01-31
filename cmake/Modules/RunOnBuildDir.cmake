@@ -12,20 +12,19 @@ if(NOT NO_PRINTING)
 		ln -sf ${CMAKE_SOURCE_DIR}/printing_templates ${CMAKE_BINARY_DIR}/printing_templates
 	)
 endif()
-if(NOT NO_DOCS)
+if(BUILD_DOCS OR INSTALL_DOCS)
 	add_custom_target(
-		documentationLink ALL
+		install_documentation ALL
 		COMMAND
-		mkdir -p ${CMAKE_BINARY_DIR}/Documentation/ &&
-		rm -rf ${CMAKE_BINARY_DIR}/Documentation/images &&
-		rm -rf ${CMAKE_BINARY_DIR}/Documentation/mobile-images &&
-		ln -sf ${CMAKE_SOURCE_DIR}/Documentation/images ${CMAKE_BINARY_DIR}/Documentation/images &&
-		ln -sf ${CMAKE_SOURCE_DIR}/Documentation/mobile-images ${CMAKE_BINARY_DIR}/Documentation/mobile-images
+		rm -rf ${CMAKE_BINARY_DIR}/Documentation &&
+		ln -sf ${CMAKE_SOURCE_DIR}/Documentation/output ${CMAKE_BINARY_DIR}/Documentation
 	)
+endif()
+if(BUILD_DOCS)
 	add_custom_target(
-		documentation ALL
+		build_documentation ALL
 		COMMAND
-		${CMAKE_MAKE_PROGRAM} -C ${CMAKE_SOURCE_DIR}/Documentation OUT=${CMAKE_BINARY_DIR}/Documentation/ doc
-		DEPENDS documentationLink
+		${CMAKE_MAKE_PROGRAM} -C ${CMAKE_SOURCE_DIR}/Documentation doc
 	)
+	add_dependencies(install_documentation build_documentation)
 endif()

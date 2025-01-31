@@ -11,7 +11,7 @@ extraction:
                 - bash -x ./scripts/build-libdivecomputer.sh
                 - mkdir _lgtm_build_dir
                 - cd _lgtm_build_dir
-                - cmake -DLIBGIT2_DYNAMIC=ON -DNO_DOCS=ON -DCMAKE_VERBOSE_MAKEFILE=ON ..
+                - cmake -DLIBGIT2_DYNAMIC=ON -DCMAKE_VERBOSE_MAKEFILE=ON ..
 
 queries:
     - exclude: "cpp/short-global-name"

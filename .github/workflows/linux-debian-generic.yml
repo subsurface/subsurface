@@ -4,8 +4,8 @@ on:
   workflow_call:
     inputs:
       container-image:
-        required: true
         type: string
+        required: true
 
 jobs:
   build:

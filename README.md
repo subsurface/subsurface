@@ -88,7 +88,7 @@ SupportedDivecomputers.txt.
 
 Much more detailed end user instructions can be found from inside
 Subsurface by selecting Help (typically F1). When building from source
-this is also available as Documentation/user-manual.html. The
+this is also available as Documentation/user-manual.txt. The
 documentation for the latest release is also available on-line
 http://subsurface-divelog.org/documentation/
 

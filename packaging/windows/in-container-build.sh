@@ -21,6 +21,10 @@ if [[ "$1" == "-release" ]]; then
     shift
 fi
 
+if [[ "$*" != "" ]]; then
+    BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} $*"
+fi
+
 # build Subsurface
 export MXEBUILDTYPE=x86_64-w64-mingw32.shared
 bash -ex ../subsurface/packaging/windows/mxe-based-build.sh ${BUILD_EXTRA_ARGS} installer

@@ -14,8 +14,14 @@ on:
   workflow_dispatch:
 
 jobs:
+  build-documentation:
+    uses: ./.github/workflows/documentation-build.yml
+    with:
+      container-image: ubuntu:20.04
+
   build:
-    runs-on: ubuntu-latest
+    needs: build-documentation
+    runs-on: ubuntu-24.04
     container:
       image: ubuntu:20.04
 
@@ -25,8 +31,8 @@ jobs:
         echo "--------------------------------------------------------------"
         echo "update distro and install dependencies"
 
-        apt-get update
-        apt-get dist-upgrade -y
+        apt-get -y update
+        apt-get -y dist-upgrade
         DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
         autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
         libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
@@ -43,12 +49,22 @@ jobs:
         git config --global user.name "Subsurface CI"
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
+
     # needs git from the previous step
     - name: checkout sources
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
         submodules: recursive
+
+    - name: load the documentation from cache
+      id: load-cache
+      uses: actions/cache@v4
+      with:
+        path: Documentation/output
+        key: documentation-${{ hashFiles('Documentation') }}
+        enableCrossOsArchive: true
+        fail-on-cache-miss: true
 
     - name: set the version information
       id: version_number
@@ -69,7 +85,7 @@ jobs:
 
         # now build the appimage
         cd ..
-        bash -e -x subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit ${BUILD_EXTRA_ARGS}
+        bash -e -x subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit -install-docs ${BUILD_EXTRA_ARGS}
 
     - name: test desktop build
       run: |
