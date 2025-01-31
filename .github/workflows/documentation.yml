@@ -5,13 +5,13 @@ on:
     branches:
     - master
     paths:
-    - Documentation
+    - Documentation/**
     - .github/workflows/
   pull_request:
     branches:
     - master
     paths:
-    - Documentation
+    - Documentation/**
     - .github/workflows/
   workflow_dispatch:
 

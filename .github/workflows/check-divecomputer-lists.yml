@@ -8,7 +8,7 @@ on:
     - libdivecomputer/src/descriptor.c
     - SupportedDivecomputers.txt
     - SupportedDivecomputers.html
-    - scripts
+    - scripts/**
     - .github/workflows/check-divecomputer-lists.yml
   pull_request:
     branches:
@@ -17,7 +17,7 @@ on:
     - libdivecomputer/src/descriptor.c
     - SupportedDivecomputers.txt
     - SupportedDivecomputers.html
-    - scripts
+    - scripts/**
     - .github/workflows/check-divecomputer-lists.yml
 
 jobs:
