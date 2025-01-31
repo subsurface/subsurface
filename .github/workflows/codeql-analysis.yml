@@ -6,11 +6,18 @@ on:
   push:
     # once this works, this should be
     # branches: [master]
-    branches: [master, codeQL]
+    branches:
+      - master
+      - codeQL
+    paths-ignore:
+      - scripts/docker/**
 
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [master]
+    branches:
+      - master
+    paths-ignore:
+      - scripts/docker/**
 
   schedule:
     - cron: '0 2 * * 6'
@@ -25,7 +32,9 @@ jobs:
       matrix:
         # Override automatic language detection by changing the below list
         # Supported options are ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
-        language: ['c-cpp', 'javascript-typescript']
+        language:
+          - c-cpp
+          - javascript-typescript
 
     steps:
     - name: Checkout repository
