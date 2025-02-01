@@ -544,21 +544,21 @@ degrees_t degminsec_to_udeg(float a[3])
 #ifdef LIBRAW_SUPPORT
 static bool parseRaw(const char *fn, metadata *metadata)
 {
-	LibRaw raw; // Might think about reusing that
+	// Might think about reusing that
+	auto raw = std::make_unique<LibRaw>();
 
 	// TODO: Convert filename to UTF-16 for windows
-	if (raw.open_file(fn) != LIBRAW_SUCCESS)
+	if (raw->open_file(fn) != LIBRAW_SUCCESS)
 		return false;
 
-	metadata->timestamp = raw.imgdata.other.timestamp;
-	metadata->location.lat = degminsec_to_udeg(raw.imgdata.other.parsed_gps.latitude);
+	metadata->timestamp = raw->imgdata.other.timestamp;
+	metadata->location.lat = degminsec_to_udeg(raw->imgdata.other.parsed_gps.latitude);
 #if LIBRAW_MINOR_VERSION < 20
 	// what a funny typo in the structure...
-	metadata->location.lon = degminsec_to_udeg(raw.imgdata.other.parsed_gps.longtitude);
+	metadata->location.lon = degminsec_to_udeg(raw->imgdata.other.parsed_gps.longtitude);
 #else
-	metadata->location.lon = degminsec_to_udeg(raw.imgdata.other.parsed_gps.longitude);
+	metadata->location.lon = degminsec_to_udeg(raw->imgdata.other.parsed_gps.longitude);
 #endif
-
 	return true;
 }
 #endif
