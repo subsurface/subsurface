@@ -85,24 +85,25 @@ static bool hasVideoFileExtension(const QString &filename)
 #ifdef LIBRAW_SUPPORT
 QImage fetchRawThumbnail(const QString &filename)
 {
-	LibRaw raw; // Might think about reusing that, one instance per thread
+	// Might think about reusing that, one instance per thread
+	// This is quite heavy, so better not allocate it on the stack
+	auto raw = std::make_unique<LibRaw>();
 
-	// TODO: Convert filename to UTF-16 for windows
-	if (raw.open_file(qPrintable(filename)) != LIBRAW_SUCCESS ||
-	    raw.unpack_thumb() != LIBRAW_SUCCESS) {
+	       // TODO: Convert filename to UTF-16 for windows
+	if (raw->open_file(qPrintable(filename)) != LIBRAW_SUCCESS ||
+	    raw->unpack_thumb() != LIBRAW_SUCCESS)
 		return QImage();
-	}
 
-	switch (raw.imgdata.thumbnail.tformat) {
+	switch (raw->imgdata.thumbnail.tformat) {
 	case LIBRAW_THUMBNAIL_JPEG: {
 		QImage res;
-		res.loadFromData(reinterpret_cast<unsigned char *>(raw.imgdata.thumbnail.thumb),
-				 raw.imgdata.thumbnail.tlength);
+		res.loadFromData(reinterpret_cast<unsigned char *>(raw->imgdata.thumbnail.thumb),
+				 raw->imgdata.thumbnail.tlength);
 		return res;
 	}
 	case LIBRAW_THUMBNAIL_BITMAP:
-		return QImage(reinterpret_cast<unsigned char *>(raw.imgdata.thumbnail.thumb),
-			      raw.imgdata.thumbnail.twidth, raw.imgdata.thumbnail.theight,
+		return QImage(reinterpret_cast<unsigned char *>(raw->imgdata.thumbnail.thumb),
+			      raw->imgdata.thumbnail.twidth, raw->imgdata.thumbnail.theight,
 			      QImage::Format_RGB888);
 	default: // Unsupported
 		return QImage();
