@@ -1231,6 +1231,9 @@ void ProfileWidget2::plotPicturesInternal(const struct dive *d, bool synchronous
 	if (!d)
 		return;
 
+	if (!prefs.show_pictures_in_profile)
+		return;
+
 	// Fetch all pictures of the dive, but consider only those that are within the dive time.
 	// For each picture, create a PictureEntry object in the pictures-vector.
 	// emplace_back() constructs an object at the end of the vector. The parameters are passed directly to the constructor.
