@@ -93,6 +93,34 @@ int DiveTypeSelectionModel::rowCount(const QModelIndex&) const
 	return diveTypes.size();
 }
 
+SensorSelectionModel::SensorSelectionModel(const divecomputer &dc, QObject *parent)
+	: QAbstractListModel(parent)
+{
+	sensorNames = get_tank_sensor_list(dc);
+}
+
+QVariant SensorSelectionModel::data(const QModelIndex &index, int role) const
+{
+	if (!index.isValid())
+		return QVariant();
+
+	switch (role) {
+	case Qt::FontRole:
+		return defaultModelFont();
+	case Qt::DisplayRole:
+		return sensorNames.at(index.row()).second;
+	case Qt::UserRole:
+		return sensorNames.at(index.row()).first;
+	}
+
+	return QVariant();
+}
+
+int SensorSelectionModel::rowCount(const QModelIndex&) const
+{
+	return sensorNames.size();
+}
+
 // Language Model, The Model to populate the list of possible Languages.
 
 LanguageModel *LanguageModel::instance()
