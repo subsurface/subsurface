@@ -20,6 +20,7 @@
 #include "treemodel.h"
 
 struct dive;
+struct divecomputer;
 
 class GasSelectionModel : public QAbstractListModel {
 	Q_OBJECT
@@ -39,6 +40,16 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 private:
 	std::vector<std::pair<int, QString>> diveTypes;
+};
+
+class SensorSelectionModel : public QAbstractListModel {
+	Q_OBJECT
+public:
+	SensorSelectionModel(const divecomputer &dc, QObject *parent);
+	QVariant data(const QModelIndex &index, int role) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+private:
+	std::vector<std::pair<int, QString>> sensorNames;
 };
 
 class LanguageModel : public QAbstractListModel {

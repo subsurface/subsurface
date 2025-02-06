@@ -15,7 +15,7 @@ WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	tempRow(-1)
 {
 	//enum Column {REMOVE, TYPE, WEIGHT};
-	setHeaderDataStrings(QStringList() << tr("") << tr("Type") << tr("Weight"));
+	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Weight"));
 	connect(&diveListNotifier, &DiveListNotifier::weightsystemsReset, this, &WeightModel::weightsystemsReset);
 	connect(&diveListNotifier, &DiveListNotifier::weightAdded, this, &WeightModel::weightAdded);
 	connect(&diveListNotifier, &DiveListNotifier::weightRemoved, this, &WeightModel::weightRemoved);
