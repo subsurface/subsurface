@@ -19,6 +19,7 @@
 #include "exif.h"
 #include "file.h"
 #include "picture.h"
+#include "sample.h"
 #include "selection.h"
 #include "tag.h"
 #include "imagedownloader.h"
@@ -1170,6 +1171,37 @@ std::vector<std::pair<int, QString>> get_dive_gas_list(const struct dive *d, int
 			continue;
 
 		list.push_back(std::pair(i, get_dive_gas(d, dcNr, i)));
+	}
+
+	return list;
+}
+
+std::vector<std::pair<int, QString>> get_tank_sensor_list(const divecomputer &dc)
+{
+	std::vector<std::tuple<int, pressure_t, pressure_t>> sensorRecords;
+	for (const auto &sample: dc.samples) {
+		for (int s = 0; s < MAX_SENSORS; ++s) {
+			if (sample.pressure[s].mbar) {
+				int sensorNumber = sample.sensor[s];
+				auto sensorRecord = std::find_if(sensorRecords.begin(), sensorRecords.end(), [sensorNumber](const auto sensorRecord ) { return std::get<0>(sensorRecord) == sensorNumber; });
+				if (sensorRecord == sensorRecords.end()) {
+					sensorRecords.push_back({ sensorNumber, sample.pressure[s], sample.pressure[s] });
+				} else {
+					if (sample.pressure[s].mbar > std::get<1>(*(sensorRecord)).mbar)
+						std::get<1>(*(sensorRecord)) = sample.pressure[s];
+					if (sample.pressure[s].mbar < std::get<2>(*(sensorRecord)).mbar)
+						std::get<2>(*(sensorRecord)) = sample.pressure[s];
+				}
+			}
+		}
+	}
+
+	std::sort(sensorRecords.begin(), sensorRecords.end(), [](const auto &a, const auto &b) { return std::get<0>(a) < std::get<0>(b); });
+
+	std::vector<std::pair<int, QString>> list;
+	for (auto &sensorRecord: sensorRecords) {
+		int sensorNumber = std::get<0>(sensorRecord);
+		list.push_back(std::pair(std::get<0>(sensorRecord), QStringLiteral("%1: %2 to %3 ").arg(sensorNumber >= 0 ? QString::number(sensorNumber + 1) : "-").arg(get_pressure_string(std::get<1>(sensorRecord), true), get_pressure_string(std::get<2>(sensorRecord), true))));
 	}
 
 	return list;
