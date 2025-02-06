@@ -84,14 +84,15 @@ private:
 	int *currentDcNr;
 };
 
-class SensorDelegate : public QStyledItemDelegate {
+class SensorDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
 	explicit SensorDelegate(QObject *parent = 0);
-	void setCurrentDC(divecomputer *dc);
+	void setCurrentDc(divecomputer *dc);
 private:
 	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	const divecomputer *getCurrentDc() const;
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
 	divecomputer *currentdc;
 };
 

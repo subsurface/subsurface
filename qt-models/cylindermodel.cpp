@@ -22,7 +22,7 @@ CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableMode
 {
 	setHeaderDataStrings(QStringList() << "#" << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
 					   << tr("Deco switch at") << tr("Bot. MOD") << tr("MND") << tr("Use") << ""
-					   << "" << tr("Sensors"));
+					   << "" << tr("Sensor"));
 
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &CylindersModel::cylinderAdded);
@@ -34,6 +34,8 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 {
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal && inPlanner && section == WORKINGPRESS)
 		return tr("Start press.");
+	else if (role == Qt::SizeHintRole && orientation == Qt::Horizontal && section == REMOVE)
+		return QSize(0, 0);
 	else
 		return CleanerTableModel::headerData(section, orientation, role);
 }
@@ -259,7 +261,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 				for (int s = 0; s < MAX_SENSORS; ++s) {
 					if (sample.pressure[s].mbar) {
 						if (sample.sensor[s] == index.row())
-							return QString::number(sample.sensor[s]);
+							return "X";
 					}
 				}
 			}
@@ -268,7 +270,6 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		}
 		break;
 	case Qt::DecorationRole:
-	case Qt::SizeHintRole:
 		if (index.column() == REMOVE) {
 			if ((inPlanner && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
 				(!inPlanner && d->is_cylinder_prot(index.row()))) {
@@ -276,6 +277,10 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			}
 			return trashIcon();
 		}
+		break;
+	case Qt::SizeHintRole:
+		if (index.column() == REMOVE)
+			return QSize(0, 0);
 		break;
 	case Qt::ToolTipRole:
 		switch (index.column()) {
@@ -301,7 +306,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case MND:
 			return tr("Calculated using Best Mix END preference. Setting MND adjusts He%, set to '*' for best He% for max. depth.");
 		case SENSORS:
-			return tr("Index of cylinder that you want to move sensor data from.");
+			return tr("Select the tank pressure sensor id for this cylinder.");
 		}
 		break;
 	}
@@ -324,6 +329,9 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	int row = index.row();
 	if (row < 0 || row >= numRows)
 		return false;
+
+	if (index.column() == NUMBER)
+		return true;
 
 	// Here we handle a few cases that allow us to set / commit / revert
 	// a temporary row. This is a horribly misuse of the model/view system.
