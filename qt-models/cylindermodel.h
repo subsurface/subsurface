@@ -13,6 +13,7 @@ class CylindersModel : public CleanerTableModel {
 	Q_OBJECT
 public:
 	enum Column {
+		NUMBER,
 		REMOVE,
 		TYPE,
 		SIZE,

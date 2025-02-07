@@ -20,8 +20,7 @@ CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableMode
 	numRows(0),
 	tempRow(-1)
 {
-	//	enum {REMOVE, TYPE, SIZE, WORKINGPRESS, START, END, O2, HE, DEPTH, MOD, MND, USE, WORKINGPRESS_INT, SIZE_INT, SENSORS};
-	setHeaderDataStrings(QStringList() << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
+	setHeaderDataStrings(QStringList() << "#" << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
 					   << tr("Deco switch at") << tr("Bot. MOD") << tr("MND") << tr("Use") << ""
 					   << "" << tr("Sensors"));
 
@@ -203,6 +202,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::DisplayRole:
 	case Qt::EditRole:
 		switch (index.column()) {
+		case NUMBER:
+			return index.row() + 1;
 		case TYPE:
 			return QString::fromStdString(cyl->type.description);
 		case SIZE:
@@ -533,7 +534,7 @@ void CylindersModel::updateDive(dive *dIn, int dcNrIn)
 
 Qt::ItemFlags CylindersModel::flags(const QModelIndex &index) const
 {
-	if (index.column() == REMOVE)
+	if (index.column() == NUMBER || index.column() == REMOVE)
 		return Qt::ItemIsEnabled;
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
