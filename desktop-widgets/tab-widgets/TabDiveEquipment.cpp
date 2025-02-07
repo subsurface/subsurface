@@ -15,7 +15,7 @@
 
 static bool ignoreHiddenFlag(int i)
 {
-	return i == CylindersModel::REMOVE || i == CylindersModel::TYPE ||
+	return i == CylindersModel::NUMBER || i == CylindersModel::REMOVE || i == CylindersModel::TYPE ||
 	       i == CylindersModel::WORKINGPRESS_INT || i == CylindersModel::SIZE_INT;
 }
 
@@ -184,7 +184,7 @@ void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 			}
 		}
 		divesEdited(Command::removeCylinder(index.row(), false));
-	} else {
+	} else if (index.column() != CylindersModel::NUMBER) {
 		ui.cylinders->edit(index);
 	}
 }
