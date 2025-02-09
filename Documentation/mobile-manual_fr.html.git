@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 10.2.0" />
 <title></title>
 <style type="text/css">
 /*
@@ -16,7 +17,7 @@
  */
 
 *   { padding: 0;  margin: 0; }
-img { border: 0; }
+img { border: 0; margin: 15px; max-width:90% }
 
 /*** Layout ***/
 
@@ -77,12 +78,12 @@ body                        { font-family: Verdana, sans-serif; }
 #footer                     { font-size: 0.8em; }
 
 h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
-h2                          { font-size: 1.5em; }
+h2                          { font-size: 160%; }
 .sectionbody                { font-size: 0.85em; }
 .sectionbody .sectionbody   { font-size: inherit; }
-h3                          { font-size: 159%; } /* 1.35em */
-h4                          { font-size: 141%; } /* 1.2em */
-h5                          { font-size: 118%; } /* 1em */
+h3                          { font-size: 150%; } /* 1.35em */
+h4                          { font-size: 140%; } /* 1.2em */
+h5                          { font-size: 130%; } /* 1em */
 .title                      { font-size: 106%;   /* 0.9em */
 			      font-weight: bold;
 			    }
@@ -463,7 +464,7 @@ Télécharger des données de plongées directement depuis plusieurs ordinateurs
 <li>
 <p>
 Modifier de nombreux champs des données de plongées, comme le moniteur, le
-  binôme, l'équipement ou les notes relatives à la plongée.
+  binôme, l&#8217;équipement ou les notes relatives à la plongée.
 </p>
 </li>
 <li>
@@ -1023,7 +1024,7 @@ characteristics of the mobile device and the font characteristics used by
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-11-05 09:24:27 CET
+ 2019-08-09 10:19:56 PDT
 </div>
 </div>
 </body>

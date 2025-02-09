@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 10.1.2" />
+<meta name="generator" content="AsciiDoc 10.2.0" />
 <title></title>
 <style type="text/css">
 /*
@@ -807,11 +807,9 @@ cellspacing="0" cellpadding="4">
 <col width="50%" />
 <tbody>
 <tr>
-<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
-<div class="content">
+<td align="left" valign="top"><div><div class="paragraph"><p><span class="image">
 <img src="mobile-images/USB-OTG.jpg" alt="FIGURE: USB-OTG cable" />
-</div>
-</div></div></td>
+</span></p></div></div></td>
 <td align="left" valign="top"><p class="table">Most current Android devices now have a USB
 Type C port and come with a simple A-to-C adapter plug, which lets you plug in
 the dive computer cable into the phone or tablet.
@@ -986,11 +984,9 @@ cellspacing="0" cellpadding="4">
 <col width="60%" />
 <tbody>
 <tr>
-<td align="left" valign="top"><div><div class="imageblock" style="float:left;">
-<div class="content">
+<td align="left" valign="top"><div><div class="paragraph"><p><span class="image">
 <img src="mobile-images/StatsPanel.jpg" alt="Image: Statistics panel" />
-</div>
-</div></div></td>
+</span></p></div></div></td>
 <td align="left" valign="top"><p class="table">Creating meaningful statistics that convey the information you are looking for is surprisingly hard.
 Different users have very different needs and very different expectations. Subsurface-Mobile provides
 a rather detailed set of statistics features to summarize information from the dive log in a graphical
@@ -1173,11 +1169,9 @@ cellspacing="0" cellpadding="4">
 <col width="60%" />
 <tbody>
 <tr>
-<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
-<div class="content">
+<td align="left" valign="top"><div><div class="paragraph"><p><span class="image">
 <img src="mobile-images/StatsRegression.jpg" alt="Regression data example" />
-</div>
-</div></div></td>
+</span></p></div></div></td>
 <td align="left" valign="top"><p class="table">Sometimes you might wish to investigate the relationship between two dive variables. Has my SAC rate decreased over
 the years? Is the water temperature colder at greater dive depth? One of the ways of investigating these questions
 is to draw a scattergraph where the values of one variable is plotted against the other variable (see image on the left).</p></td>
@@ -1288,11 +1282,9 @@ cellspacing="0" cellpadding="4">
 <col width="50%" />
 <tbody>
 <tr>
-<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
-<div class="content">
+<td align="left" valign="top"><div><div class="paragraph"><p><span class="image">
 <img src="mobile-images/ThemeSettings.jpg" alt="FIGURE: Theme Settings" />
-</div>
-</div></div></td>
+</span></p></div></div></td>
 <td align="left" valign="top"><p class="table">Besides the default blue color scheme, <em>Subsurface-mobile</em> supports two additional color schemes
 for users with different tastes (see image on left). All screenshots shown in this user manual are
 based on the blue default color scheme. You can pick the <em>pink</em> or <em>dark</em> color theme from
@@ -1378,7 +1370,7 @@ you to reset the password for your <em>Subsurface Cloud</em> account.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2024-02-08 09:34:56 PST
+ 2025-02-09 14:01:24 PST
 </div>
 </div>
 </body>
