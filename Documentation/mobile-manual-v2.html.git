@@ -1,879 +1,731 @@
-<!DOCTYPE html>
-<html lang="en">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.10">
-<title>Introducing Subsurface-mobile</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
-<style>
-/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
-/* Uncomment @import statement to use as custom stylesheet */
-/*@import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700";*/
-article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section{display:block}
-audio,video{display:inline-block}
-audio:not([controls]){display:none;height:0}
-html{font-family:sans-serif;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}
-a{background:none}
-a:focus{outline:thin dotted}
-a:active,a:hover{outline:0}
-h1{font-size:2em;margin:.67em 0}
-abbr[title]{border-bottom:1px dotted}
-b,strong{font-weight:bold}
-dfn{font-style:italic}
-hr{-moz-box-sizing:content-box;box-sizing:content-box;height:0}
-mark{background:#ff0;color:#000}
-code,kbd,pre,samp{font-family:monospace;font-size:1em}
-pre{white-space:pre-wrap}
-q{quotes:"\201C" "\201D" "\2018" "\2019"}
-small{font-size:80%}
-sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
-sup{top:-.5em}
-sub{bottom:-.25em}
-img{border:0}
-svg:not(:root){overflow:hidden}
-figure{margin:0}
-fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
-legend{border:0;padding:0}
-button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
-button,input{line-height:normal}
-button,select{text-transform:none}
-button,html input[type="button"],input[type="reset"],input[type="submit"]{-webkit-appearance:button;cursor:pointer}
-button[disabled],html input[disabled]{cursor:default}
-input[type="checkbox"],input[type="radio"]{box-sizing:border-box;padding:0}
-button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
-textarea{overflow:auto;vertical-align:top}
-table{border-collapse:collapse;border-spacing:0}
-*,*::before,*::after{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
-html,body{font-size:100%}
-body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;font-weight:400;font-style:normal;line-height:1;position:relative;cursor:auto;tab-size:4;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
-a:hover{cursor:pointer}
-img,object,embed{max-width:100%;height:auto}
-object,embed{height:100%}
-img{-ms-interpolation-mode:bicubic}
-.left{float:left!important}
-.right{float:right!important}
-.text-left{text-align:left!important}
-.text-right{text-align:right!important}
-.text-center{text-align:center!important}
-.text-justify{text-align:justify!important}
-.hide{display:none}
-img,object,svg{display:inline-block;vertical-align:middle}
-textarea{height:auto;min-height:50px}
-select{width:100%}
-.center{margin-left:auto;margin-right:auto}
-.stretch{width:100%}
-.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
-div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0;direction:ltr}
-a{color:#2156a5;text-decoration:underline;line-height:inherit}
-a:hover,a:focus{color:#1d4b8f}
-a img{border:0}
-p{font-family:inherit;font-weight:400;font-size:1em;line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
-p aside{font-size:.875em;line-height:1.35;font-style:italic}
-h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
-h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
-h1{font-size:2.125em}
-h2{font-size:1.6875em}
-h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
-h4,h5{font-size:1.125em}
-h6{font-size:1em}
-hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em;height:0}
-em,i{font-style:italic;line-height:inherit}
-strong,b{font-weight:bold;line-height:inherit}
-small{font-size:60%;line-height:inherit}
-code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
-ul,ol,dl{font-size:1em;line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
-ul,ol{margin-left:1.5em}
-ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0;font-size:1em}
-ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
-ul.square{list-style-type:square}
-ul.circle{list-style-type:circle}
-ul.disc{list-style-type:disc}
-ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
-dl dt{margin-bottom:.3125em;font-weight:bold}
-dl dd{margin-bottom:1.25em}
-abbr,acronym{text-transform:uppercase;font-size:90%;color:rgba(0,0,0,.8);border-bottom:1px dotted #ddd;cursor:help}
-abbr{text-transform:none}
-blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
-blockquote cite{display:block;font-size:.9375em;color:rgba(0,0,0,.6)}
-blockquote cite::before{content:"\2014 \0020"}
-blockquote cite a,blockquote cite a:visited{color:rgba(0,0,0,.6)}
-blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
-@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
-h1{font-size:2.75em}
-h2{font-size:2.3125em}
-h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
-h4{font-size:1.4375em}}
-table{background:#fff;margin-bottom:1.25em;border:solid 1px #dedede}
-table thead,table tfoot{background:#f7f8f7}
-table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
-table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
-table tr.even,table tr.alt{background:#f8f8f7}
-table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{display:table-cell;line-height:1.6}
-h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
-h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
-.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
-.clearfix::after,.float-group::after{clear:both}
-:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;-webkit-border-radius:4px;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed;word-wrap:break-word}
-:not(pre)>code.nobreak{word-wrap:normal}
-:not(pre)>code.nowrap{white-space:nowrap}
-pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
-pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
-pre>code{display:block}
-pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
-em em{font-style:normal}
-strong strong{font-weight:400}
-.keyseq{color:rgba(51,51,51,.8)}
-kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;-webkit-border-radius:3px;border-radius:3px;-webkit-box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em white inset;box-shadow:0 1px 0 rgba(0,0,0,.2),0 0 0 .1em #fff inset;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
-.keyseq kbd:first-child{margin-left:0}
-.keyseq kbd:last-child{margin-right:0}
-.menuseq,.menuref{color:#000}
-.menuseq b:not(.caret),.menuref{font-weight:inherit}
-.menuseq{word-spacing:-.02em}
-.menuseq b.caret{font-size:1.25em;line-height:.8}
-.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
-b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
-b.button::before{content:"[";padding:0 3px 0 2px}
-b.button::after{content:"]";padding:0 2px 0 3px}
-p a>code:hover{color:rgba(0,0,0,.9)}
-#header,#content,#footnotes,#footer{width:100%;margin-left:auto;margin-right:auto;margin-top:0;margin-bottom:0;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
-#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
-#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
-#content{margin-top:1.25em}
-#content::before{content:none}
-#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
-#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
-#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:-ms-flexbox;display:-webkit-flex;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap}
-#header .details span:first-child{margin-left:-.125em}
-#header .details span.email a{color:rgba(0,0,0,.85)}
-#header .details br{display:none}
-#header .details br+span::before{content:"\00a0\2013\00a0"}
-#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
-#header .details br+span#revremark::before{content:"\00a0|\00a0"}
-#header #revnumber{text-transform:capitalize}
-#header #revnumber::after{content:"\00a0"}
-#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
-#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
-#toc>ul{margin-left:.125em}
-#toc ul.sectlevel0>li>a{font-style:italic}
-#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
-#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
-#toc li{line-height:1.3334;margin-top:.3334em}
-#toc a{text-decoration:none}
-#toc a:active{text-decoration:underline}
-#toctitle{color:#7a2518;font-size:1.2em}
-@media screen and (min-width:768px){#toctitle{font-size:1.375em}
-body.toc2{padding-left:15em;padding-right:0}
-#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
-#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
-#toc.toc2>ul{font-size:.9em;margin-bottom:0}
-#toc.toc2 ul ul{margin-left:0;padding-left:1em}
-#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
-body.toc2.toc-right{padding-left:0;padding-right:15em}
-body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
-@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
-#toc.toc2{width:20em}
-#toc.toc2 #toctitle{font-size:1.375em}
-#toc.toc2>ul{font-size:.95em}
-#toc.toc2 ul ul{padding-left:1.25em}
-body.toc2.toc-right{padding-left:0;padding-right:20em}}
-#content #toc{border-style:solid;border-width:1px;border-color:#e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;-webkit-border-radius:4px;border-radius:4px}
-#content #toc>:first-child{margin-top:0}
-#content #toc>:last-child{margin-bottom:0}
-#footer{max-width:100%;background:rgba(0,0,0,.8);padding:1.25em}
-#footer-text{color:rgba(255,255,255,.8);line-height:1.44}
-#content{margin-bottom:.625em}
-.sect1{padding-bottom:.625em}
-@media screen and (min-width:768px){#content{margin-bottom:1.25em}
-.sect1{padding-bottom:1.25em}}
-.sect1:last-child{padding-bottom:0}
-.sect1+.sect1{border-top:1px solid #e7e7e9}
-#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
-#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
-#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
-#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
-#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
-details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
-details>summary:first-of-type{cursor:pointer;display:list-item;outline:none;margin-bottom:.75em}
-.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
-table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
-.paragraph.lead>p,#preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
-table.tableblock #preamble>.sectionbody>[class="paragraph"]:first-of-type p{font-size:inherit}
-.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
-.admonitionblock>table td.icon{text-align:center;width:80px}
-.admonitionblock>table td.icon img{max-width:none}
-.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
-.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6)}
-.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
-.exampleblock>.content{border-style:solid;border-width:1px;border-color:#e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;-webkit-border-radius:4px;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
-.sidebarblock{border-style:solid;border-width:1px;border-color:#dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;-webkit-border-radius:4px;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
-.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
-.literalblock pre,.listingblock>.content>pre{-webkit-border-radius:4px;border-radius:4px;word-wrap:break-word;overflow-x:auto;padding:1em;font-size:.8125em}
-@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
-@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
-.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class="highlight"],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
-.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
-.listingblock>.content{position:relative}
-.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
-.listingblock:hover code[data-lang]::before{display:block}
-.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
-.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
-.listingblock pre.highlightjs{padding:0}
-.listingblock pre.highlightjs>code{padding:1em;-webkit-border-radius:4px;border-radius:4px}
-.listingblock pre.prettyprint{border-width:0}
-.prettyprint{background:#f7f7f8}
-pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
-pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
-pre.prettyprint li code[data-lang]::before{opacity:1}
-pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
-table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
-table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
-table.linenotable td.code{padding-left:.75em}
-table.linenotable td.linenos{border-right:1px solid currentColor;opacity:.35;padding-right:.5em}
-pre.pygments .lineno{border-right:1px solid currentColor;opacity:.35;display:inline-block;margin-right:.75em}
-pre.pygments .lineno::before{content:"";margin-right:-.125em}
-.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
-.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
-.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
-.quoteblock blockquote{margin:0;padding:0;border:0}
-.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
-.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
-.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
-.verseblock{margin:0 1em 1.25em}
-.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
-.verseblock pre strong{font-weight:400}
-.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
-.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
-.quoteblock .attribution br,.verseblock .attribution br{display:none}
-.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
-.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
-.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
-.quoteblock.abstract{margin:0 1em 1.25em;display:block}
-.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
-.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
-.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
-.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
-.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;text-align:left;margin-right:0}
-table.tableblock{max-width:100%;border-collapse:separate}
-p.tableblock:last-child{margin-bottom:0}
-td.tableblock>.content>:last-child{margin-bottom:-1.25em}
-td.tableblock>.content>:last-child.sidebarblock{margin-bottom:0}
-table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
-table.grid-all>thead>tr>.tableblock,table.grid-all>tbody>tr>.tableblock{border-width:0 1px 1px 0}
-table.grid-all>tfoot>tr>.tableblock{border-width:1px 1px 0 0}
-table.grid-cols>*>tr>.tableblock{border-width:0 1px 0 0}
-table.grid-rows>thead>tr>.tableblock,table.grid-rows>tbody>tr>.tableblock{border-width:0 0 1px}
-table.grid-rows>tfoot>tr>.tableblock{border-width:1px 0 0}
-table.grid-all>*>tr>.tableblock:last-child,table.grid-cols>*>tr>.tableblock:last-child{border-right-width:0}
-table.grid-all>tbody>tr:last-child>.tableblock,table.grid-all>thead:last-child>tr>.tableblock,table.grid-rows>tbody>tr:last-child>.tableblock,table.grid-rows>thead:last-child>tr>.tableblock{border-bottom-width:0}
-table.frame-all{border-width:1px}
-table.frame-sides{border-width:0 1px}
-table.frame-topbot,table.frame-ends{border-width:1px 0}
-table.stripes-all tr,table.stripes-odd tr:nth-of-type(odd),table.stripes-even tr:nth-of-type(even),table.stripes-hover tr:hover{background:#f8f8f7}
-th.halign-left,td.halign-left{text-align:left}
-th.halign-right,td.halign-right{text-align:right}
-th.halign-center,td.halign-center{text-align:center}
-th.valign-top,td.valign-top{vertical-align:top}
-th.valign-bottom,td.valign-bottom{vertical-align:bottom}
-th.valign-middle,td.valign-middle{vertical-align:middle}
-table thead th,table tfoot th{font-weight:bold}
-tbody tr th{display:table-cell;line-height:1.6;background:#f7f8f7}
-tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
-p.tableblock>code:only-child{background:none;padding:0}
-p.tableblock{font-size:1em}
-ol{margin-left:1.75em}
-ul li ol{margin-left:1.5em}
-dl dd{margin-left:1.125em}
-dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
-ol>li p,ul>li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
-ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
-ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
-ul.unstyled,ol.unstyled{margin-left:0}
-ul.checklist{margin-left:.625em}
-ul.checklist li>p:first-child>.fa-square-o:first-child,ul.checklist li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
-ul.checklist li>p:first-child>input[type="checkbox"]:first-child{margin-right:.25em}
-ul.inline{display:-ms-flexbox;display:-webkit-box;display:flex;-ms-flex-flow:row wrap;-webkit-flex-flow:row wrap;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
-ul.inline>li{margin-left:1.25em}
-.unstyled dl dt{font-weight:400;font-style:normal}
-ol.arabic{list-style-type:decimal}
-ol.decimal{list-style-type:decimal-leading-zero}
-ol.loweralpha{list-style-type:lower-alpha}
-ol.upperalpha{list-style-type:upper-alpha}
-ol.lowerroman{list-style-type:lower-roman}
-ol.upperroman{list-style-type:upper-roman}
-ol.lowergreek{list-style-type:lower-greek}
-.hdlist>table,.colist>table{border:0;background:none}
-.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
-td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
-td.hdlist1{font-weight:bold;padding-bottom:1.25em}
-.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
-.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
-.colist td:not([class]):first-child img{max-width:none}
-.colist td:not([class]):last-child{padding:.25em 0}
-.thumb,.th{line-height:0;display:inline-block;border:solid 4px #fff;-webkit-box-shadow:0 0 0 1px #ddd;box-shadow:0 0 0 1px #ddd}
-.imageblock.left{margin:.25em .625em 1.25em 0}
-.imageblock.right{margin:.25em 0 1.25em .625em}
-.imageblock>.title{margin-bottom:0}
-.imageblock.thumb,.imageblock.th{border-width:6px}
-.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
-.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
-.image.left{margin-right:.625em}
-.image.right{margin-left:.625em}
-a.image{text-decoration:none;display:inline-block}
-a.image object{pointer-events:none}
-sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
-sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
-#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
-#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
-#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
-#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
-#footnotes .footnote:last-of-type{margin-bottom:0}
-#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
-.gist .file-data>table{border:0;background:#fff;width:100%;margin-bottom:0}
-.gist .file-data>table td.line-data{width:99%}
-div.unbreakable{page-break-inside:avoid}
-.big{font-size:larger}
-.small{font-size:smaller}
-.underline{text-decoration:underline}
-.overline{text-decoration:overline}
-.line-through{text-decoration:line-through}
-.aqua{color:#00bfbf}
-.aqua-background{background:#00fafa}
-.black{color:#000}
-.black-background{background:#000}
-.blue{color:#0000bf}
-.blue-background{background:#0000fa}
-.fuchsia{color:#bf00bf}
-.fuchsia-background{background:#fa00fa}
-.gray{color:#606060}
-.gray-background{background:#7d7d7d}
-.green{color:#006000}
-.green-background{background:#007d00}
-.lime{color:#00bf00}
-.lime-background{background:#00fa00}
-.maroon{color:#600000}
-.maroon-background{background:#7d0000}
-.navy{color:#000060}
-.navy-background{background:#00007d}
-.olive{color:#606000}
-.olive-background{background:#7d7d00}
-.purple{color:#600060}
-.purple-background{background:#7d007d}
-.red{color:#bf0000}
-.red-background{background:#fa0000}
-.silver{color:#909090}
-.silver-background{background:#bcbcbc}
-.teal{color:#006060}
-.teal-background{background:#007d7d}
-.white{color:#bfbfbf}
-.white-background{background:#fafafa}
-.yellow{color:#bfbf00}
-.yellow-background{background:#fafa00}
-span.icon>.fa{cursor:default}
-a span.icon>.fa{cursor:inherit}
-.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
-.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
-.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
-.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
-.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
-.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
-.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);-webkit-border-radius:100px;border-radius:100px;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
-.conum[data-value] *{color:#fff!important}
-.conum[data-value]+b{display:none}
-.conum[data-value]::after{content:attr(data-value)}
-pre .conum[data-value]{position:relative;top:-.125em}
-b.conum *{color:inherit!important}
-.conum:not([data-value]):empty{display:none}
-dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
-h1,h2,p,td.content,span.alt{letter-spacing:-.01em}
-p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt{font-size:1.0625rem}
-p{margin-bottom:1.25rem}
-.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
-.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;-webkit-box-shadow:0 1px 4px #e0e0dc;box-shadow:0 1px 4px #e0e0dc}
-.print-only{display:none!important}
-@page{margin:1.25cm .75cm}
-@media print{*{-webkit-box-shadow:none!important;box-shadow:none!important;text-shadow:none!important}
-html{font-size:80%}
-a{color:inherit!important;text-decoration:underline!important}
-a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
-a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
-abbr[title]::after{content:" (" attr(title) ")"}
-pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
-thead{display:table-header-group}
-svg{max-width:100%}
-p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
-h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
-#toc,.sidebarblock,.exampleblock>.content{background:none!important}
-#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
-body.book #header{text-align:center}
-body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
-body.book #header .details{border:0!important;display:block;padding:0!important}
-body.book #header .details span:first-child{margin-left:0!important}
-body.book #header .details br{display:block}
-body.book #header .details br+span::before{content:none!important}
-body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
-body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
-.listingblock code[data-lang]::before{display:block}
-#footer{padding:0 .9375em}
-.hide-on-print{display:none!important}
-.print-only{display:block!important}
-.hide-for-print{display:none!important}
-.show-for-print{display:inherit!important}}
-@media print,amzn-kf8{#header>h1:first-child{margin-top:1.25rem}
-.sect1{padding:0!important}
-.sect1+.sect1{border:0}
-#footer{background:none}
-#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
-@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="generator" content="AsciiDoc 10.2.0" />
+<title></title>
+<style type="text/css">
+/*
+ * compact_subsurface.css, a special style sheet for Subsurface,
+ *  modified by Willem Ferguson and derived from:
+ *		compact.css, version 1.3 by Alex Efros <powerman@powerman.name>
+ * Licence: Public Domain
+ *
+ * Usage: asciidoc -a theme=compact_subsurface ...
+ */
+
+*   { padding: 0;  margin: 0; }
+img { border: 0; margin: 15px; max-width:90% }
+
+/*** Layout ***/
+
+body                        { margin: 10px 20px; }
+#header br                  { display: none; }
+#revnumber                  { display: block; }
+#toc                        { margin: 1em 0; }
+.toclevel2                  { margin-left: 1em; }
+.toclevel3		    { margin-left: 2em; }
+#footer                     { margin-top: 2em; }
+
+#preamble .sectionbody,
+h2,
+h3,
+h4,
+h5                          { margin: 1em 0 0 0; }
+
+.admonitionblock,
+.listingblock,
+.sidebarblock,
+.exampleblock,
+.tableblock,
+.literalblock               { margin: 1em 0; }
+.admonitionblock td.icon    { padding-right: 0.5em; }
+.admonitionblock td.content { padding-left:  0.5em; }
+.listingblock .content      { padding: 0.5em; }
+.sidebarblock > .content    { padding: 0.5em; }
+.exampleblock > .content    { padding: 0 0.5em; }
+.tableblock caption         { padding: 0 0 0.5em 0; }
+.tableblock thead th,
+.tableblock tbody td,
+.tableblock tfoot td        { padding: 0 0.5em; }
+.quoteblock                 { padding: 0 2.0em; }
+
+.paragraph                  { margin: 1em 0 0 0; }
+.sidebarblock .paragraph:first-child,
+.exampleblock .paragraph:first-child,
+.admonitionblock .paragraph:first-child  { margin: 0; }
+
+   .ulist,    .olist,    .dlist,    .hdlist,    .qlist   { margin: 1em 0; }
+li .ulist, li .olist, li .dlist, li .hdlist, li .qlist,
+dd .ulist, dd .olist, dd .dlist, dd .hdlist, dd .qlist   { margin: 0; }
+ul                          { margin-left: 1.5em; }
+ol                          { margin-left: 2em; }
+dd                          { margin-left: 3em; }
+td.hdlist1                  { padding-right: 1em; }
+
+/*** Fonts ***/
+
+body                        { font-family: Verdana, sans-serif; }
+#header                     { font-family: Arial,   sans-serif; }
+#header h1                  { font-family: Arial,   sans-serif; }
+#footer                     { font-family: Georgia, serif;      }
+#email                      { font-size: 0.85em; }
+#revnumber                  { font-size: 0.75em; }
+#toc                        { font-size: 0.9em;  }
+#toctitle                   { font-weight: bold; }
+#footer                     { font-size: 0.8em; }
+
+h2, h3, h4, h5, .title      { font-family: Arial,   sans-serif; }
+h2                          { font-size: 160%; }
+.sectionbody                { font-size: 0.85em; }
+.sectionbody .sectionbody   { font-size: inherit; }
+h3                          { font-size: 150%; } /* 1.35em */
+h4                          { font-size: 140%; } /* 1.2em */
+h5                          { font-size: 130%; } /* 1em */
+.title                      { font-size: 106%;   /* 0.9em */
+			      font-weight: bold;
+			    }
+
+tt, .monospaced             { font-family: monospace; font-size: 106%; } /* 0.9em */
+dt, td.hdlist1, .qlist em   { font-family: Times New Roman, serif;
+			      font-size: 118%;   /* 1em */
+			      font-style: italic;
+			    }
+.tableblock tfoot td        { font-weight: bold; }
+
+/*** Colors and Backgrounds ***/
+
+h1                          { color: #527bbd; border-bottom: 2px solid silver; }
+#footer                     {                 border-top:    2px solid silver; }
+
+h2                          { color: #527bbd; border-bottom: 2px solid silver; }
+h3                          { color: #5D7EAE; border-bottom: 2px solid silver; }
+h3                          { display: inline-block; }
+h4,h5                       { color: #5D7EAE; }
+
+.admonitionblock td.content { border-left: 2px solid silver; }
+.listingblock .content      { background: #f4f4f4;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.sidebarblock > .content    { background: #ffffee;   border: 1px solid silver; border-left: 5px solid #e0e0e0; }
+.exampleblock > .content    {                   border-left: 2px solid silver; }
+.quoteblock                 {                   border-left: 5px solid #e0e0e0; }
+.tableblock table {
+    border-collapse: collapse;
+    border-width: 3px;
+    border-color: #527bbd;
+}
+.tableblock table[frame=hsides] { border-style: solid none; }
+.tableblock table[frame=border] { border-style: solid;      }
+.tableblock table[frame=void]   { border-style: none;       }
+.tableblock table[frame=vsides] { border-style: none solid; }
+.tableblock table[rules=all] tbody tr *,
+.tableblock table[rules=rows] tbody tr * {
+    border-top: 1px solid #527bbd;
+}
+.tableblock table[rules=all] tr *,
+.tableblock table[rules=cols] tr * {
+    border-left: 1px solid #527bbd;
+}
+.tableblock table tbody tr:first-child * {
+    border-top: 1px solid white; /* none don't work here... %-[] */
+}
+.tableblock table tr *:first-child {
+    border-left: none;
+}
+.tableblock table[frame] thead tr *,
+.tableblock table[frame] thead tr * {
+    border-top: 1px solid white;
+    border-bottom: 2px solid #527bbd;
+}
+.tableblock table tr td p.table,
+.tableblock table tr td p.table * {
+    border: 0px;
+}
+
+tt, .monospaced             { color: navy; }
+
+li                          { color: #a0a0a0; }
+li > *                      { color: black; }
+
+span.aqua { color: aqua; }
+span.black { color: black; }
+span.blue { color: blue; }
+span.fuchsia { color: fuchsia; }
+span.gray { color: gray; }
+span.green { color: green; }
+span.lime { color: lime; }
+span.maroon { color: maroon; }
+span.navy { color: navy; }
+span.olive { color: olive; }
+span.purple { color: purple; }
+span.red { color: red; }
+span.silver { color: silver; }
+span.teal { color: teal; }
+span.white { color: white; }
+span.yellow { color: yellow; }
+
+span.aqua-background { background: aqua; }
+span.black-background { background: black; }
+span.blue-background { background: blue; }
+span.fuchsia-background { background: fuchsia; }
+span.gray-background { background: gray; }
+span.green-background { background: green; }
+span.lime-background { background: lime; }
+span.maroon-background { background: maroon; }
+span.navy-background { background: navy; }
+span.olive-background { background: olive; }
+span.purple-background { background: purple; }
+span.red-background { background: red; }
+span.silver-background { background: silver; }
+span.teal-background { background: teal; }
+span.white-background { background: white; }
+span.yellow-background { background: yellow; }
+
+span.big { font-size: 2em; }
+span.small { font-size: 0.6em; }
+
+span.underline { text-decoration: underline; }
+span.overline { text-decoration: overline; }
+span.line-through { text-decoration: line-through; }
+
+/*** Misc ***/
+
+.admonitionblock td.icon    { vertical-align: top; }
+.attribution                { text-align: right; }
+
+ul                          { list-style-type: disc; }
+ol.arabic                   { list-style-type: decimal; }
+ol.loweralpha               { list-style-type: lower-alpha; }
+ol.upperalpha               { list-style-type: upper-alpha; }
+ol.lowerroman               { list-style-type: lower-roman; }
+ol.upperroman               { list-style-type: upper-roman; }
+.hdlist td                  { vertical-align: top; }
+
+
 </style>
+<script type="text/javascript">
+/*<![CDATA[*/
+var asciidoc = {  // Namespace.
+
+/////////////////////////////////////////////////////////////////////
+// Table Of Contents generator
+/////////////////////////////////////////////////////////////////////
+
+/* Author: Mihai Bazon, September 2002
+ * http://students.infoiasi.ro/~mishoo
+ *
+ * Table Of Content generator
+ * Version: 0.4
+ *
+ * Feel free to use this script under the terms of the GNU General Public
+ * License, as long as you do not remove or alter this notice.
+ */
+
+ /* modified by Troy D. Hanson, September 2006. License: GPL */
+ /* modified by Stuart Rackham, 2006, 2009. License: GPL */
+
+// toclevels = 1..4.
+toc: function (toclevels) {
+
+  function getText(el) {
+    var text = "";
+    for (var i = el.firstChild; i != null; i = i.nextSibling) {
+      if (i.nodeType == 3 /* Node.TEXT_NODE */) // IE doesn't speak constants.
+        text += i.data;
+      else if (i.firstChild != null)
+        text += getText(i);
+    }
+    return text;
+  }
+
+  function TocEntry(el, text, toclevel) {
+    this.element = el;
+    this.text = text;
+    this.toclevel = toclevel;
+  }
+
+  function tocEntries(el, toclevels) {
+    var result = new Array;
+    var re = new RegExp('[hH]([1-'+(toclevels+1)+'])');
+    // Function that scans the DOM tree for header elements (the DOM2
+    // nodeIterator API would be a better technique but not supported by all
+    // browsers).
+    var iterate = function (el) {
+      for (var i = el.firstChild; i != null; i = i.nextSibling) {
+        if (i.nodeType == 1 /* Node.ELEMENT_NODE */) {
+          var mo = re.exec(i.tagName);
+          if (mo && (i.getAttribute("class") || i.getAttribute("className")) != "float") {
+            result[result.length] = new TocEntry(i, getText(i), mo[1]-1);
+          }
+          iterate(i);
+        }
+      }
+    }
+    iterate(el);
+    return result;
+  }
+
+  var toc = document.getElementById("toc");
+  if (!toc) {
+    return;
+  }
+
+  // Delete existing TOC entries in case we're reloading the TOC.
+  var tocEntriesToRemove = [];
+  var i;
+  for (i = 0; i < toc.childNodes.length; i++) {
+    var entry = toc.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div'
+     && entry.getAttribute("class")
+     && entry.getAttribute("class").match(/^toclevel/))
+      tocEntriesToRemove.push(entry);
+  }
+  for (i = 0; i < tocEntriesToRemove.length; i++) {
+    toc.removeChild(tocEntriesToRemove[i]);
+  }
+
+  // Rebuild TOC entries.
+  var entries = tocEntries(document.getElementById("content"), toclevels);
+  for (var i = 0; i < entries.length; ++i) {
+    var entry = entries[i];
+    if (entry.element.id == "")
+      entry.element.id = "_toc_" + i;
+    var a = document.createElement("a");
+    a.href = "#" + entry.element.id;
+    a.appendChild(document.createTextNode(entry.text));
+    var div = document.createElement("div");
+    div.appendChild(a);
+    div.className = "toclevel" + entry.toclevel;
+    toc.appendChild(div);
+  }
+  if (entries.length == 0)
+    toc.parentNode.removeChild(toc);
+},
+
+
+/////////////////////////////////////////////////////////////////////
+// Footnotes generator
+/////////////////////////////////////////////////////////////////////
+
+/* Based on footnote generation code from:
+ * http://www.brandspankingnew.net/archive/2005/07/format_footnote.html
+ */
+
+footnotes: function () {
+  // Delete existing footnote entries in case we're reloading the footnodes.
+  var i;
+  var noteholder = document.getElementById("footnotes");
+  if (!noteholder) {
+    return;
+  }
+  var entriesToRemove = [];
+  for (i = 0; i < noteholder.childNodes.length; i++) {
+    var entry = noteholder.childNodes[i];
+    if (entry.nodeName.toLowerCase() == 'div' && entry.getAttribute("class") == "footnote")
+      entriesToRemove.push(entry);
+  }
+  for (i = 0; i < entriesToRemove.length; i++) {
+    noteholder.removeChild(entriesToRemove[i]);
+  }
+
+  // Rebuild footnote entries.
+  var cont = document.getElementById("content");
+  var spans = cont.getElementsByTagName("span");
+  var refs = {};
+  var n = 0;
+  for (i=0; i<spans.length; i++) {
+    if (spans[i].className == "footnote") {
+      n++;
+      var note = spans[i].getAttribute("data-note");
+      if (!note) {
+        // Use [\s\S] in place of . so multi-line matches work.
+        // Because JavaScript has no s (dotall) regex flag.
+        note = spans[i].innerHTML.match(/\s*\[([\s\S]*)]\s*/)[1];
+        spans[i].innerHTML =
+          "[<a id='_footnoteref_" + n + "' href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+        spans[i].setAttribute("data-note", note);
+      }
+      noteholder.innerHTML +=
+        "<div class='footnote' id='_footnote_" + n + "'>" +
+        "<a href='#_footnoteref_" + n + "' title='Return to text'>" +
+        n + "</a>. " + note + "</div>";
+      var id =spans[i].getAttribute("id");
+      if (id != null) refs["#"+id] = n;
+    }
+  }
+  if (n == 0)
+    noteholder.parentNode.removeChild(noteholder);
+  else {
+    // Process footnoterefs.
+    for (i=0; i<spans.length; i++) {
+      if (spans[i].className == "footnoteref") {
+        var href = spans[i].getElementsByTagName("a")[0].getAttribute("href");
+        href = href.match(/#.*/)[0];  // Because IE return full URL.
+        n = refs[href];
+        spans[i].innerHTML =
+          "[<a href='#_footnote_" + n +
+          "' title='View footnote' class='footnote'>" + n + "</a>]";
+      }
+    }
+  }
+},
+
+install: function(toclevels) {
+  var timerId;
+
+  function reinstall() {
+    asciidoc.footnotes();
+    if (toclevels) {
+      asciidoc.toc(toclevels);
+    }
+  }
+
+  function reinstallAndRemoveTimer() {
+    clearInterval(timerId);
+    reinstall();
+  }
+
+  timerId = setInterval(reinstall, 500);
+  if (document.addEventListener)
+    document.addEventListener("DOMContentLoaded", reinstallAndRemoveTimer, false);
+  else
+    window.onload = reinstallAndRemoveTimer;
+}
+
+}
+asciidoc.install(3);
+/*]]>*/
+</script>
 </head>
 <body class="article">
 <div id="header">
-<div id="toc" class="toc">
-<div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#_introducing_subsurface_mobile">1. Introducing Subsurface-mobile</a></li>
-<li><a href="#_installing_subsurface_mobile_on_your_mobile_device">2. Installing <em>Subsurface-mobile</em> on your mobile device</a></li>
-<li><a href="#_using_subsurface_mobile_for_the_first_time">3. Using <em>Subsurface-mobile</em> for the first time</a>
-<ul class="sectlevel2">
-<li><a href="#_when_not_using_cloud_storage">3.1. When NOT Using Cloud Storage</a></li>
-<li><a href="#_using_cloud_storage">3.2. Using Cloud Storage</a></li>
-<li><a href="#_changing_the_existing_login_credentials_on_the_subsurface_cloud">3.3. Changing the existing login credentials on the <em>Subsurface</em> cloud</a></li>
-</ul>
-</li>
-<li><a href="#_getting_support">4. Getting Support</a></li>
-<li><a href="#_menu_structure_and_user_interface">5. Menu Structure and User Interface</a></li>
-<li><a href="#_the_dive_list">6. The Dive List</a></li>
-<li><a href="#_filter_the_dive_list">7. Filter the dive list</a></li>
-<li><a href="#_viewing_the_locations_of_all_dives_in_the_dive_list">8. Viewing the locations of all dives in the dive list</a></li>
-<li><a href="#_viewing_the_location_of_a_dive_on_google_maps">9. Viewing the location of a dive on <em>Google Maps</em></a></li>
-<li><a href="#S_View_Dive">10. View a dive</a></li>
-<li><a href="#S_Edit_Dive">11. Edit a particular dive</a></li>
-<li><a href="#S_Add_Dive">12. Manually adding a new dive to the dive list</a></li>
-<li><a href="#_copy_dive_information_from_one_dive_to_another">13. Copy dive information from one dive to another</a></li>
-<li><a href="#_deleting_a_dive">14. Deleting a dive</a></li>
-<li><a href="#S_Download">15. Download dives from a dive computer</a></li>
-<li><a href="#_dive_log_management">16. Dive log management</a>
-<ul class="sectlevel2">
-<li><a href="#_add_new_dive_manually">16.1. Add new dive manually</a></li>
-<li><a href="#_download_from_dc">16.2. Download from DC</a></li>
-<li><a href="#_apply_gps_fixes">16.3. Apply GPS fixes</a></li>
-<li><a href="#_manually_sync_the_dive_log_with_the_subsurface_cloud_storage">16.4. Manually sync the dive log with the <em>Subsurface</em> cloud storage</a></li>
-<li><a href="#_enable_cloud_auto_sync">16.5. Enable cloud auto sync</a></li>
-</ul>
-</li>
-<li><a href="#_recording_dive_locations_using_gps">17. Recording dive locations using GPS</a>
-<ul class="sectlevel2">
-<li><a href="#S_ConfigureGPS">17.1. Configuring the GPS service</a></li>
-<li><a href="#_collecting_gps_positions">17.2. Collecting GPS positions</a></li>
-<li><a href="#_viewing_gps_data">17.3. Viewing GPS data</a></li>
-<li><a href="#_applying_gps_data_to_dives_in_the_dive_log">17.4. Applying GPS data to dives in the dive log</a></li>
-</ul>
-</li>
-<li><a href="#S_Settings">18. Specifying the settings for <em>Subsurface-mobile</em>.</a>
-<ul class="sectlevel2">
-<li><a href="#S_ChangeCloudAccount">18.1. Changing to a different <em>Subsurface</em> cloud account</a></li>
-<li><a href="#_changing_the_color_theme_of_subsurface_mobile">18.2. Changing the color theme of <em>Subsurface-mobile</em></a></li>
-<li><a href="#_configuring_the_gps_webservice">18.3. Configuring the GPS webservice</a></li>
-<li><a href="#_activating_the_developer_sub_menu">18.4. Activating the Developer sub-menu</a></li>
-<li><a href="#_app_log">18.5. App log</a></li>
-<li><a href="#_theme_information">18.6. Theme information</a></li>
-</ul>
-</li>
-</ul>
-</div>
 </div>
 <div id="content">
-<div class="imageblock text-center">
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Banner.jpg" alt="Banner">
+<img src="mobile-images/Banner.jpg" alt="Banner" />
 </div>
 </div>
-<div class="paragraph">
-<p><span class="big">Subsurface-mobile USER MANUAL</span></p>
-</div>
-<div class="paragraph">
-<p><strong>Manual authors</strong>: Willem Ferguson, Dirk Hohndel</p>
-</div>
-<div class="paragraph">
-<p><span class="blue"><em>Version 2.1.5, December 2018</em></span></p>
-</div>
-<div class="paragraph">
-<p>Welcome as a user of <em>Subsurface</em> and <em>Subsurface-mobile</em>, advanced dive logging
+<div class="paragraph"><p><span class="big">Subsurface-mobile USER MANUAL</span></p></div>
+<div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Dirk Hohndel</p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 2.1.5, December 2018</em></span></p></div>
+<div class="paragraph"><p>Welcome as a user of <em>Subsurface</em> and <em>Subsurface-mobile</em>, advanced dive logging
 software with extensive infrastructure to describe, organize, and interpret scuba
 and free dives. <em>Subsurface</em> offers many advantages over other similar
 software solutions, including compatibility with Windows, macOS, Linux (many
 distributions), Android and iOS. In addition, <em>Subsurface</em> is
 open-source software that allows downloading dive
-information from many dive computers.</p>
-</div>
+information from many dive computers.</p></div>
 <div class="sect1">
 <h2 id="_introducing_subsurface_mobile">1. Introducing Subsurface-mobile</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><em>Subsurface-mobile</em> is a limited mobile version of <em>Subsurface</em>
+<div class="paragraph"><p><em>Subsurface-mobile</em> is a limited mobile version of <em>Subsurface</em>
 aimed at Android and iOS smartphone and tablet devices, allowing viewing, entering, sharing, and storage of dive information at dive sites where a desktop
 computer is not useful. While the desktop version of <em>Subsurface</em> shows much more detailed information
 for each dive, the mobile version allows a more accessible dive log
 on a dive trip, useful for proving dive experience to dive shops or to review
 previous dives. <em>Subsurface-mobile</em> also allows
-the gathering of GPS locations where dives are performed.</p>
-</div>
-<div class="paragraph">
-<p>Users of <em>Subsurface-mobile</em> typically use the
+the gathering of GPS locations where dives are performed.</p></div>
+<div class="paragraph"><p>Users of <em>Subsurface-mobile</em> typically use the
 mobile app as a companion to the laptop/desktop version of <em>Subsurface</em>,  sharing dive information
 between the mobile and the desktop versions. However <em>Subsurface-mobile</em> can
 also be used independently of the desktop version and does not require the use of
-cloud storage.</p>
-</div>
-<div class="paragraph">
-<p><em>Subsurface-mobile</em> allows:</p>
-</div>
-<div class="ulist">
-<ul>
+cloud storage.</p></div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> allows:</p></div>
+<div class="ulist"><ul>
 <li>
-<p>Download and storage of dive log information using the <em>Subsurface</em> cloud.</p>
+<p>
+Download and storage of dive log information using the <em>Subsurface</em> cloud.
+</p>
 </li>
 <li>
-<p>Viewing this information on a mobile device.</p>
+<p>
+Viewing this information on a mobile device.
+</p>
 </li>
 <li>
-<p>Manually creating and adding new dive records to your dive log.</p>
+<p>
+Manually creating and adding new dive records to your dive log.
+</p>
 </li>
 <li>
-<p>Download dive data directly from many dive computers.</p>
+<p>
+Download dive data directly from many dive computers.
+</p>
 </li>
 <li>
-<p>Editing many of the dive log data fields, e.g. dive-master, buddy,
-equipment or notes relating to a dive.</p>
+<p>
+Editing many of the dive log data fields, e.g. dive-master, buddy,
+  equipment or notes relating to a dive.
+</p>
 </li>
 <li>
-<p>Recording, storing and applying GPS positions of dives.</p>
+<p>
+Recording, storing and applying GPS positions of dives.
+</p>
 </li>
 <li>
-<p>Viewing the localities of recorded GPS positions and of dives
-on a map.</p>
+<p>
+Viewing the localities of recorded GPS positions and of dives
+  on a map.
+</p>
 </li>
-</ul>
-</div>
-<div class="paragraph">
-<p>These items are discussed in greater detail in the following text.
+</ul></div>
+<div class="paragraph"><p>These items are discussed in greater detail in the following text.
 <em>Subsurface-mobile</em> does not support download of dive data from all the
 dive computers that the desktop/laptop version can. This limitation is
 mainly caused by the inability of accessing some types of devices on the
 two mobile platforms. On Android, a subset of
 dive computers that use a FTDI USB interface or a Bluetooth / Bluetooth LE interface
 are accessible by <em>Subsurface-mobile</em>. On iOS, only Bluetooth LE based
-dive computers are supported.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_installing_subsurface_mobile_on_your_mobile_device">2. Installing <em>Subsurface-mobile</em> on your mobile device</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Find <em>Subsurface-mobile</em> in the <em>Google Play Store</em> or the <em>iTunes Store</em>
-and install it. Please note that both stores also contain the older <em>Subsurface</em> companion app (used only for tracking GPS positions) - make sure you actually install <em>Subsurface-mobile</em>.</p>
-</div>
+dive computers are supported.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_using_subsurface_mobile_for_the_first_time">3. Using <em>Subsurface-mobile</em> for the first time</h2>
+<h2 id="_installing_em_subsurface_mobile_em_on_your_mobile_device">2. Installing <em>Subsurface-mobile</em> on your mobile device</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>When you start <em>Subsurface-mobile</em> for the first time, a Subsurface
+<div class="paragraph"><p>Find <em>Subsurface-mobile</em> in the <em>Google Play Store</em> or the <em>iTunes Store</em>
+and install it. Please note that both stores also contain the older <em>Subsurface</em> companion app (used only for tracking GPS positions) - make sure you actually install <em>Subsurface-mobile</em>.</p></div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_em_subsurface_mobile_em_for_the_first_time">3. Using <em>Subsurface-mobile</em> for the first time</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>When you start <em>Subsurface-mobile</em> for the first time, a Subsurface
 splash screen is shown while the program loads. On some devices this
 may take several seconds. After loading, the <em>Cloud Credentials screen</em> appears
-(see image below on left).</p>
-</div>
-<div class="imageblock text-center">
+(see image below on left).</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Credentials.jpg" alt="FIGURE: Mobile credentials screen">
+<img src="mobile-images/Credentials.jpg" alt="FIGURE: Mobile credentials screen" />
 </div>
 </div>
 <div class="sect2">
 <h3 id="_when_not_using_cloud_storage">3.1. When NOT Using Cloud Storage</h3>
-<div class="paragraph">
-<p>Tap the "No cloud mode" button. The app will not access the <em>Subsurface</em>
+<div class="paragraph"><p>Tap the "No cloud mode" button. The app will not access the <em>Subsurface</em>
 cloud storage server
 to obtain dive log information. This means that dive log information is
 stored on the mobile device only. If no dives have been entered into the dive log
-yet (the usual case), an empty dive log is created.</p>
-</div>
+yet (the usual case), an empty dive log is created.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_using_cloud_storage">3.2. Using Cloud Storage</h3>
-<div class="paragraph">
-<p>The <em>Subsurface</em> developers provide a dedicated and
+<div class="paragraph"><p>The <em>Subsurface</em> developers provide a dedicated and
 free Internet cloud storage account that can be used for
 storing dive log information. This account can be created either from <em>Subsurface</em> on the desktop or from <em>Subsurface-mobile</em>
 using a mobile device; you can
 do full maintenance of a dive log from <em>Subsurface-mobile</em> alone. By using the same
 credentials with <em>Subsurface-mobile</em> and <em>Subsurface</em> for desktop, the <em>Subsurface</em> cloud storage allows sharing of a dive
-log between both (or even more than two) devices.</p>
-</div>
-<div class="paragraph">
-<p>The dive data on the cloud are cached locally both on the mobile device as well as on the desktop - it is easy to create backups of the data (for example in XML format) on the desktop: both mobile device and desktop keep a local copy of the data so that the dive log is always accessible, even without Internet connection. The Subsurface team never accesses a user&#8217;s dive data without explicit permission to do so, the data are not used for any purpose other than providing them to the user who created them. There are no ads and no harvesting / analysis of the data stored in the Subsurface cloud storage.</p>
-</div>
-<div class="paragraph">
-<p>1) Enter an e-mail address and a password in the fields indicated on the screen (see image above).
+log between both (or even more than two) devices.</p></div>
+<div class="paragraph"><p>The dive data on the cloud are cached locally both on the mobile device as well as on the desktop - it is easy to create backups of the data (for example in XML format) on the desktop: both mobile device and desktop keep a local copy of the data so that the dive log is always accessible, even without Internet connection. The Subsurface team never accesses a user&#8217;s dive data without explicit permission to do so, the data are not used for any purpose other than providing them to the user who created them. There are no ads and no harvesting / analysis of the data stored in the Subsurface cloud storage.</p></div>
+<div class="paragraph"><p>1) Enter an e-mail address and a password in the fields indicated on the screen (see image above).
 The e-mail address should be in lower case and the password should contain a combination of
 letters from the alphabet (upper and lower case) and/or numbers.
 Tap the "Sign-in or Register" button. If you have already set
 up an account from the <em>Subsurface</em> desktop application, enter the same credentials here.
 Once the dive
 list has been downloaded from the cloud, <em>Subsurface-mobile</em> usually works only with the the local
-copy on the mobile device. This avoids long delays or even failure of operations if there is a bad (or no) internet connection, a situation fairly common at many dive sites. Once registered, <em>Subsurface-mobile</em> remembers the cloud credentials and it is not necessary to provide these again when launching the program.</p>
-</div>
-<div class="paragraph">
-<p>2) If this is a new cloud account, a PIN screen will open (see image on right, above). A PIN is e-mailed
+copy on the mobile device. This avoids long delays or even failure of operations if there is a bad (or no) internet connection, a situation fairly common at many dive sites. Once registered, <em>Subsurface-mobile</em> remembers the cloud credentials and it is not necessary to provide these again when launching the program.</p></div>
+<div class="paragraph"><p>2) If this is a new cloud account, a PIN screen will open (see image on right, above). A PIN is e-mailed
 to the email address entered in the previous step. Enter this PIN into the field indicated
 and tap the <em>Register</em> button. The user
 information is stored on the cloud server and access to the cloud is enabled. In this case
 the dive list is initially empty. Start entering dives in the dive
-log or download dive information from a supported dive computer.</p>
-</div>
+log or download dive information from a supported dive computer.</p></div>
 <div class="sidebarblock">
 <div class="content">
-<div class="admonitionblock important">
-<table>
-<tr>
+<div class="admonitionblock">
+<table><tr>
 <td class="icon">
-<img src="./images/icons/images/icons/important.png" alt="Important">
+<img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">
-<strong>Cloud problems: FAQ</strong>
-</td>
-</tr>
-</table>
+<td class="content"><strong>Cloud problems: FAQ</strong></td>
+</tr></table>
 </div>
-<div class="paragraph">
-<p><span class="blue">After filling in the correct information and submitting it, I did not receive a PIN by email</span></p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
+<div class="paragraph"><p><span class="blue">After filling in the correct information and submitting it, I did not receive a PIN by email</span></p></div>
+<div class="olist arabic"><ol class="arabic">
 <li>
-<p>Check <strong>carefully</strong> that there is not a spelling mistake in the email address you provided.</p>
+<p>
+Check <strong>carefully</strong> that there is not a spelling mistake in the email address you provided.
+</p>
 </li>
 <li>
-<p>Check that the return email containing the PIN is not in the SPAM folder of your email client.</p>
+<p>
+Check that the return email containing the PIN is not in the SPAM folder of your email client.
+</p>
 </li>
 <li>
-<p>Wait for 24 hours and check again for an email with a PIN.</p>
+<p>
+Wait for 24 hours and check again for an email with a PIN.
+</p>
 </li>
 <li>
-<p>If there is still no email containing a PIN, send mail to <a href="mailto:in-app-support@subsurface-divelog.org">in-app-support@subsurface-divelog.org</a></p>
+<p>
+If there is still no email containing a PIN, send mail to <a href="mailto:in-app-support@subsurface-divelog.org">in-app-support@subsurface-divelog.org</a>
+</p>
 </li>
-</ol>
-</div>
-<div class="paragraph">
-<p><span class="blue">I want to access the Subsurface cloud facility but I have forgotten my password. How can I reset my password?</span></p>
-</div>
-<div class="paragraph">
-<p>Open the following web address: <a href="https://cloud.subsurface-divelog.org/passwordreset" class="bare">https://cloud.subsurface-divelog.org/passwordreset</a></p>
-</div>
-<div class="paragraph">
-<p>This will require that you enter the same email address that you used during cloud registration.</p>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>The dive log can be updated automatically. If there is Internet connectivity, <em>Subsurface-mobile</em> accesses
+</ol></div>
+<div class="paragraph"><p><span class="blue">I want to access the Subsurface cloud facility but I have forgotten my password. How can I reset my password?</span></p></div>
+<div class="paragraph"><p>Open the following web address: <a href="https://cloud.subsurface-divelog.org/passwordreset">https://cloud.subsurface-divelog.org/passwordreset</a></p></div>
+<div class="paragraph"><p>This will require that you enter the same email address that you used during cloud registration.</p></div>
+</div></div>
+<div class="paragraph"><p>The dive log can be updated automatically. If there is Internet connectivity, <em>Subsurface-mobile</em> accesses
 the cloud-based dive log to verify that the local copy of the dive log is still the
 same as the log in the cloud server. If not, the local copy and the copy on
-the server are synchronized.</p>
-</div>
+the server are synchronized.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_changing_the_existing_login_credentials_on_the_subsurface_cloud">3.3. Changing the existing login credentials on the <em>Subsurface</em> cloud</h3>
-<div class="paragraph">
-<p>The login credentials can be changed, for example to work with
-multiple accounts. See the section on <a href="#S_ChangeCloudAccount">Changing to a different <em>Subsurface</em> cloud account</a>.</p>
-</div>
+<h3 id="_changing_the_existing_login_credentials_on_the_em_subsurface_em_cloud">3.3. Changing the existing login credentials on the <em>Subsurface</em> cloud</h3>
+<div class="paragraph"><p>The login credentials can be changed, for example to work with
+multiple accounts. See the section on <a href="#S_ChangeCloudAccount">Changing to a different <em>Subsurface</em> cloud account</a>.</p></div>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_getting_support">4. Getting Support</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>The best place to get support is the Subsurface User Forum. Additionally, Subsurface-mobile allows you to send a support email by tapping on <em>Ask for support</em> in the main menu. This will open an email to our in app support address in the native email client, including the relevant logs.</p>
-</div>
+<div class="paragraph"><p>The best place to get support is the Subsurface User Forum. Additionally, Subsurface-mobile allows you to send a support email by tapping on <em>Ask for support</em> in the main menu. This will open an email to our in app support address in the native email client, including the relevant logs.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_menu_structure_and_user_interface">5. Menu Structure and User Interface</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>At the bottom of many <em>Subsurface-mobile</em> screens is a round button that provides for
+<div class="paragraph"><p>At the bottom of many <em>Subsurface-mobile</em> screens is a round button that provides for
 several actions (see image below). The most common choice is indicated in a round colored <em>action button</em> (in the case below, edit a dive). Alternative actions are indicated in a white <em>action bar</em>.
 On Android devices, use the Android Back
 button for "cancel", "discard" or "back" actions. For example, when
 editing dive information, tapping the action button saves the changes while the
-Android back button can be used to cancel the edit without saving changes.</p>
-</div>
-<div class="imageblock text-center">
+Android back button can be used to cancel the edit without saving changes.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Actionbutton.jpg" alt="FIGURE: Action Button">
+<img src="mobile-images/Actionbutton.jpg" alt="FIGURE: Action Button" />
 </div>
 </div>
-<div class="paragraph">
-<p>On iOS devices, on screens where a "back" action is enabled, a back arrow
-is shown in the top left corner of the screen.</p>
-</div>
-<div class="paragraph">
-<p>For a consistent experience between iOS and Android,
+<div class="paragraph"><p>On iOS devices, on screens where a "back" action is enabled, a back arrow
+is shown in the top left corner of the screen.</p></div>
+<div class="paragraph"><p>For a consistent experience between iOS and Android,
 <em>Subsurface-mobile</em> on Android does not use the traditional "hamburger"
 menu button in the top left or right corner of the screen to open menus.
 Instead, <em>Subsurface-mobile</em> uses a
 different user interaction philosophy based on the Kirigami framework
-developed by the Plasma developers. There are three ways to open the main menu:</p>
-</div>
-<div class="ulist">
-<ul>
+developed by the Plasma developers. There are three ways to open the main menu:</p></div>
+<div class="ulist"><ul>
 <li>
-<p>Tap the "hamburger" symbol in the lower left corner of the screen
-(easy to reach for hand held devices)</p>
+<p>
+Tap the "hamburger" symbol in the lower left corner of the screen
+  (easy to reach for hand held devices)
+</p>
 </li>
 <li>
-<p>Swipe towards the right across the left edge of the screen</p>
+<p>
+Swipe towards the right across the left edge of the screen
+</p>
 </li>
-</ul>
-</div>
-<div class="imageblock text-center">
+</ul></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Menusystem.jpg" alt="FIGURE: Dive management sub-panel">
+<img src="mobile-images/Menusystem.jpg" alt="FIGURE: Dive management sub-panel" />
 </div>
 </div>
-<div class="paragraph">
-<p>The image above indicates some of the important features of the menu system.
+<div class="paragraph"><p>The image above indicates some of the important features of the menu system.
 On the left is the main menu, activated as described above. On the right of the image
-are the items of all the sub-menus accessible.</p>
-</div>
-<div class="paragraph">
-<p>All screenshots in this user manual are currently from the Android
-version. The iOS screens look similar.</p>
-</div>
+are the items of all the sub-menus accessible.</p></div>
+<div class="paragraph"><p>All screenshots in this user manual are currently from the Android
+version. The iOS screens look similar.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_the_dive_list">6. The Dive List</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Most of the actions of <em>Subsurface-mobile</em> center around the dives on the
+<div class="paragraph"><p>Most of the actions of <em>Subsurface-mobile</em> center around the dives on the
 dive list. While the dive list is loading from the cloud,
 a message appears at the bottom of the screen, indicating that the cloud is
 being accessed, after which the dive list is shown. Once the list is loaded you can scroll up and down through your dive history.
 To upload dives from a dive computer, tap the blue action button. If you wish
 to add a dive manually, tap the + button in the action bar (described below).
 Tapping an existing dive on the list brings up a display of the <em>Details View</em> for that dive
-including the dive profile, notes and additional information.</p>
-</div>
-<div class="imageblock text-center">
+including the dive profile, notes and additional information.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Divelist2.jpg" alt="FIGURE: Dive list screen">
+<img src="mobile-images/Divelist2.jpg" alt="FIGURE: Dive list screen" />
 </div>
 </div>
-<div class="paragraph">
-<p>You can view other dives by swiping the <em>Details view</em> to the right (for the
+<div class="paragraph"><p>You can view other dives by swiping the <em>Details view</em> to the right (for the
 previous dive) or to the left (following dive).
 Using the Action Bar, it is also possible to delete the dive (tap the dustbin
 on the Action Bar) or to view the dive
 location on a map viewer (Google Maps on Android, the Google Maps web site
-on iOS; tap the GPS icon on the Action Bar.).</p>
-</div>
+on iOS; tap the GPS icon on the Action Bar.).</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_filter_the_dive_list">7. Filter the dive list</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Use this action button:</p>
-</div>
-<div class="imageblock text-center">
+<div class="paragraph"><p>Use this action button:</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/FilterButton.jpg" alt="FIGURE: Filter button">
+<img src="mobile-images/FilterButton.jpg" alt="FIGURE: Filter button" />
 </div>
 </div>
-<div class="paragraph">
-<p>at the bottom of the dive list to perform filtering of the dive list (see image on left above).</p>
-</div>
-<div class="imageblock text-center">
+<div class="paragraph"><p>at the bottom of the dive list to perform filtering of the dive list (see image on left above).</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Filter.jpg" alt="FIGURE: Filter tool">
+<img src="mobile-images/Filter.jpg" alt="FIGURE: Filter tool" />
 </div>
 </div>
-<div class="paragraph">
-<p>By default, all the dives in the dive log are shown in the dive list. After several years your dive log can become quite long and, sometimes, you might like to list only the dives of a particular type, e.g. those at a particular dive site or those with a specific buddy or dive master. Use the Filter to achieve this. The filter mechanism searches through all the information for each dive, looking for one or more key words. Only the dives containing these key words are listed in the dive list. In the <a href="#S_Settings"><em>Settings</em></a> screen there two options that affect the way the filter searches for appropriate information. Firstly, you can select <em>Match filter case sensitive</em> which causes the search of key words to be case sensitive. Secondly, you can select <em>Include notes in full text filtering</em>. If this option is not selected, the filter does not search through the dive notes for key words. Selecting the <em>Filter</em> action button brings up a text box at the top of the dive list. Type the key words to be searched for. In the image on the left, the dive list has been filtered for the word "Nitrox" and 265 dives were found containing this word as a tag. For each trip in the dive list the number of dives containing "Nitrox" as a tag is shown. To clear the filter, remove the key words from the text box and select the Filter action button to switch off filtering.</p>
-</div>
+<div class="paragraph"><p>By default, all the dives in the dive log are shown in the dive list. After several years your dive log can become quite long and, sometimes, you might like to list only the dives of a particular type, e.g. those at a particular dive site or those with a specific buddy or dive master. Use the Filter to achieve this. The filter mechanism searches through all the information for each dive, looking for one or more key words. Only the dives containing these key words are listed in the dive list. In the <a href="#S_Settings"><em>Settings</em></a> screen there two options that affect the way the filter searches for appropriate information. Firstly, you can select <em>Match filter case sensitive</em> which causes the search of key words to be case sensitive. Secondly, you can select <em>Include notes in full text filtering</em>. If this option is not selected, the filter does not search through the dive notes for key words. Selecting the <em>Filter</em> action button brings up a text box at the top of the dive list. Type the key words to be searched for. In the image on the left, the dive list has been filtered for the word "Nitrox" and 265 dives were found containing this word as a tag. For each trip in the dive list the number of dives containing "Nitrox" as a tag is shown. To clear the filter, remove the key words from the text box and select the Filter action button to switch off filtering.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_viewing_the_locations_of_all_dives_in_the_dive_list">8. Viewing the locations of all dives in the dive list</h2>
 <div class="sectionbody">
-<div class="imageblock text-center">
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/DivesMap.jpg" alt="FIGURE: Map of all dive sites">
+<img src="mobile-images/DivesMap.jpg" alt="FIGURE: Map of all dive sites" />
 </div>
 </div>
-<div class="paragraph">
-<p>The locations of all dives in the dive list can be viewed from the <em>Main Menu</em> by selecting the <em>Map</em> option.
+<div class="paragraph"><p>The locations of all dives in the dive list can be viewed from the <em>Main Menu</em> by selecting the <em>Map</em> option.
 A satellite image of the world is shown. At that scale no dive sites are shown. If you zoom into a particular region
 of the world the dive sites appear, indicated by red flags. Zooming in even closer indicates the names of each
-of the different dive sites.</p>
-</div>
+of the different dive sites.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_viewing_the_location_of_a_dive_on_google_maps">9. Viewing the location of a dive on <em>Google Maps</em></h2>
+<h2 id="_viewing_the_location_of_a_dive_on_em_google_maps_em">9. Viewing the location of a dive on <em>Google Maps</em></h2>
 <div class="sectionbody">
-<div class="imageblock text-center">
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Map.jpg" alt="FIGURE: Map of dive site">
+<img src="mobile-images/Map.jpg" alt="FIGURE: Map of dive site" />
 </div>
 </div>
-<div class="paragraph">
-<p>In the <em>Details View</em>, the Action Bar at the bottom has a GPS pin on the
+<div class="paragraph"><p>In the <em>Details View</em>, the Action Bar at the bottom has a GPS pin on the
 left hand side. Tap that pin and the dive site is shown in Google Maps. Close Google Maps by using the Android <em>Back</em> button
-or tapping on the <em>Subsurface-mobile</em> link in the top left corner on iOS.</p>
-</div>
-<div class="paragraph">
-<p>Alternatively, the <em>Details View</em> has a button at the top right hand marked
-<em>Map it</em>. Tap this button to open Google Maps showing the dive site (image on left).</p>
-</div>
+or tapping on the <em>Subsurface-mobile</em> link in the top left corner on iOS.</p></div>
+<div class="paragraph"><p>Alternatively, the <em>Details View</em> has a button at the top right hand marked
+<em>Map it</em>. Tap this button to open Google Maps showing the dive site (image on left).</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="S_View_Dive">10. View a dive</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>When you tap on a dive in the <em>Dive List</em>, a new screen with the dive profile
+<div class="paragraph"><p>When you tap on a dive in the <em>Dive List</em>, a new screen with the dive profile
 and many important details about the dive is opened. You can use a pich gesture
 to zoom into the profile, and tapping with one finger, waiting briefly until
 the profile becomes translucent, and then dragging the finger around allows you
-to pan the profile so the interesting parts are shown.</p>
-</div>
+to pan the profile so the interesting parts are shown.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="S_Edit_Dive">11. Edit a particular dive</h2>
 <div class="sectionbody">
-<div class="imageblock text-center">
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Editdive.jpg" alt="FIGURE: Dive edit screen">
+<img src="mobile-images/Editdive.jpg" alt="FIGURE: Dive edit screen" />
 </div>
 </div>
-<div class="paragraph">
-<p>At the bottom of the <em>Dive Details</em> screen the action button is a pencil.
+<div class="paragraph"><p>At the bottom of the <em>Dive Details</em> screen the action button is a pencil.
 Tapping the pencil button changes the page and enables edit boxes that allow
 modifying the existing dive information, e.g. adding text to the dive notes
 or changing the names or values of some of the information (see image on left).
@@ -881,15 +733,13 @@ It may be necessary to scroll the window to access all the information.
 At the bottom of the edit screen is a <em>Save</em> action button. Tap this to save
 the new information, after which the dive list screen is
 updated and shown. To cancel any edits, tap the Android <em>Back</em> Button or
-the application back button at the top left of the screen on iOS.</p>
-</div>
+the application back button at the top left of the screen on iOS.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="S_Add_Dive">12. Manually adding a new dive to the dive list</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>You can manually add a dive to the existing dive list. On the dive list
+<div class="paragraph"><p>You can manually add a dive to the existing dive list. On the dive list
 tap the "plus" sign in the action bar, or use the
 main menu and tap <em>Dive management  &#8594;  Add dive manually</em>. This opens  a screen that is
 identical to the editing screen discussed above. When a dive is added manually, you
@@ -898,11 +748,10 @@ dive computer, the duration, depth and several other bits of information about
 the new dive can be entered. The <em>Action button</em> at the bottom of the screen
 contains a disk symbol. Tap this to save the new dive. To cancel any edits, tap the <em>Back</em> button.
 The left-hand image below shows a screenshot of a dive being created and the right-hand image shows
-the same dive in <em>Details View</em>.</p>
-</div>
-<div class="imageblock text-center">
+the same dive in <em>Details View</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Manualdive.jpg" alt="FIGURE: Manual dive entry screen">
+<img src="mobile-images/Manualdive.jpg" alt="FIGURE: Manual dive entry screen" />
 </div>
 </div>
 </div>
@@ -910,56 +759,42 @@ the same dive in <em>Details View</em>.</p>
 <div class="sect1">
 <h2 id="_copy_dive_information_from_one_dive_to_another">13. Copy dive information from one dive to another</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>When editing dives it is possible to transfer information from one dive to another. For instance,
+<div class="paragraph"><p>When editing dives it is possible to transfer information from one dive to another. For instance,
 when diving with the same buddy and the same equipment configuration during a particular dive trip
 it can be efficient to simply copy all this information from the previous dive into the dive that
-is being edited. Currently a standard list of dive information is copied to the clipboard:</p>
-</div>
-<div class="paragraph">
-<p>Divemaster, Buddy, Suit, Tags, Cylinders, Weights.</p>
-</div>
-<div class="paragraph">
-<p>Copy and paste dive information is performed on the Dive List. Long-press on a dive. A panel
-with three icons appears on top the selected dive :</p>
-</div>
-<div class="imageblock text-center">
+is being edited. Currently a standard list of dive information is copied to the clipboard:</p></div>
+<div class="paragraph"><p>Divemaster, Buddy, Suit, Tags, Cylinders, Weights.</p></div>
+<div class="paragraph"><p>Copy and paste dive information is performed on the Dive List. Long-press on a dive. A panel
+with three icons appears on top the selected dive :</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/CopyDeleteDive.jpg" alt="FIGURE: Copy/Delete dive information">
+<img src="mobile-images/CopyDeleteDive.jpg" alt="FIGURE: Copy/Delete dive information" />
 </div>
 </div>
-<div class="paragraph">
-<p>To copy the above information to the clipboard, select the leftmost of the three icons. A "Copy"
+<div class="paragraph"><p>To copy the above information to the clipboard, select the leftmost of the three icons. A "Copy"
 notification briefly appears on the screen. Now long-press the dive into which the copied information
 needs to be pasted. The same three icons appear on the target dive. Select the middle icon. A "Paste"
 notification briefly appears on the screen. This completes the copy-and-paste action. Continue by
-reviewing this new (pasted) information by manually editing the target dive.</p>
-</div>
-<div class="paragraph">
-<p>To choose what dive details to copy, long-press the copy button. This will open
+reviewing this new (pasted) information by manually editing the target dive.</p></div>
+<div class="paragraph"><p>To choose what dive details to copy, long-press the copy button. This will open
 up a configuration page where you can toggle the details you want to copy over
-to the destination.</p>
-</div>
+to the destination.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_deleting_a_dive">14. Deleting a dive</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Delete a dive from the dive list by long-pressing a dive
+<div class="paragraph"><p>Delete a dive from the dive list by long-pressing a dive
 until a red dustbin appears on the right-hand side (see image above). Tap the dustbin.
 The dive is deleted without asking any confirmation because <em>Subsurface-mobile</em> assumes that the
 combination of a long tap on the dive with another tap on the red dustbin is an unambiguous
-instruction to delete the dive.</p>
-</div>
-<div class="paragraph">
-<p>To choose what dive details to copy, long-press the copy button. This will open
+instruction to delete the dive.</p></div>
+<div class="paragraph"><p>To choose what dive details to copy, long-press the copy button. This will open
 up a configuration page where you can toggle the details you want to copy over
-to the destination. By default, the following fields are copied:</p>
-</div>
-<div class="imageblock text-center">
+to the destination. By default, the following fields are copied:</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Delete_undo.jpg" alt="FIGURE: Undo delete dive">
+<img src="mobile-images/Delete_undo.jpg" alt="FIGURE: Undo delete dive" />
 </div>
 </div>
 </div>
@@ -967,8 +802,7 @@ to the destination. By default, the following fields are copied:</p>
 <div class="sect1">
 <h2 id="S_Download">15. Download dives from a dive computer</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>From the main menu,
+<div class="paragraph"><p>From the main menu,
 tap <em>Manage dives &#8594;  Download from DC</em>. A screen is shown requiring that the user specify
 the names of the vendor and model of the dive computer. For instance, when using a Shearwater Petrel dive
 computer, the vendor is <em>Shearwater</em> and the Dive computer name is <em>Petrel</em>(see image on the left, below).
@@ -984,31 +818,30 @@ buttons appear below the drop-downs to easily switch between them. In the <a hre
 you can remove these buttons, a useful feature for removing buttons of dive
 computers that are not used any more. Achieve this by selecting the option
 <em>Forget remembered dive computers</em> in the <a href="#S_Settings"><em>Settings</em></a> menu.
-After all these caveats, let us proceed with download.</p>
-</div>
-<div class="paragraph">
-<p><strong>For USB FTDI dive computers:</strong>
+After all these caveats, let us proceed with download.</p></div>
+<div class="paragraph"><p><strong>For USB FTDI dive computers:</strong>
 This feature is not supported on iOS and on most newer Android devices. It still works on some older
 Android devices (typically Android 7 and older) and is kept enabled for this
 reason. Note: USB cables "normally" used for uploading dives to a
 desktop/laptop computer do NOT work; these
 cables usually have a full-sized ("Type A") male USB plug
 on one end which plugs into the USB port of a desktop/laptop computer. For downloads to a mobile device
-one needs a USB OTG (USB On-The-Go) cable.</p>
-</div>
-<table class="tableblock frame-None grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
+one needs a USB OTG (USB On-The-Go) cable.</p></div>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame=""
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock text-center">
+<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/USB-OTG.jpg" alt="FIGURE: USB-OTG cable">
+<img src="mobile-images/USB-OTG.jpg" alt="FIGURE: USB-OTG cable" />
 </div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">In most cases it is required to plug the USB
+<td align="left" valign="top"><p class="table">In most cases it is required to plug the USB
 cable "normally" used with the dive computer into a USB OTG cable which,
 in turn, plugs into the mini-USB (or sometimes a USB "Type C")
 receptacle of the mobile device. The
@@ -1021,26 +854,22 @@ does usually not support cable based downloads, except on some older Android dev
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p><em>Subsurface</em> remembers the settings for dive computers that
+</div>
+<div class="paragraph"><p><em>Subsurface</em> remembers the settings for dive computers that
 have been successfully used (image on right, below). These appear
 as buttons under a heading "<em>Previously used dive computers</em>".
 Select the appropriate button. Having connected the USB dive computer to the
 <em>Subsurface</em> computer and having selected the appropriate vendor and dive computer,
-ensure that the Connection text box shows "FTDI".</p>
-</div>
-<div class="paragraph">
-<p><strong>For BLUETOOTH/BTLE dive computers:</strong> The process for Bluetooth download is slightly different between Android and iOS.
+ensure that the Connection text box shows "FTDI".</p></div>
+<div class="paragraph"><p><strong>For BLUETOOTH/BTLE dive computers:</strong> The process for Bluetooth download is slightly different between Android and iOS.
 In our testing we got the best results on iOS when the dive computer was
 in Bluetooth mode before <em>Subsurface-mobile</em> is started. On most dive
 computers this is done through a menu entry, others (like the Suunto
 models) always respond to BTLE requests. However, on Android devices,
 you should first establish a link between the
 Bluetooth or Bluetooth LE dive computer and the mobile device using
-Android utilities. See below for more details.</p>
-</div>
-<div class="paragraph">
-<p>For Bluetooth-equipped dive computers and Android devices, establish a Bluetooth connection between the dive computer and the
+Android utilities. See below for more details.</p></div>
+<div class="paragraph"><p>For Bluetooth-equipped dive computers and Android devices, establish a Bluetooth connection between the dive computer and the
 mobile device. Use the tools on the mobile device to achieve pairing between the Bluetooth dice computer
 and the mobile device. For many Android devices,
 the Settings &#8594; Bluetooth tool of Android is probably appropriate.
@@ -1049,25 +878,20 @@ The appropriate choice of Bluetooth communication is often made by the software 
 For dive computers with both Bluetooth and Bluetooth-low-energy (BTLE), a separate button is presented on the download
 screen for each mode of communication, allowing a choice. Use the <em>Connection</em> value to distinguish between the
 two options. In the image on the right, below, there are three buttons labeled "Shearwater Petrel 2". These represent two Shearwater Petrel dive computers, one of which can communicate in both Bluetooth as well as BTLE. The <em>Connection</em>
-information indicates that the Petrel with no BTLE is selected.</p>
-</div>
-<div class="paragraph">
-<p><strong>DOWNLOAD:</strong> With communication between dive computer and <em>Subsurface-mobile</em>
+information indicates that the Petrel with no BTLE is selected.</p></div>
+<div class="paragraph"><p><strong>DOWNLOAD:</strong> With communication between dive computer and <em>Subsurface-mobile</em>
 having been set up, tap the <em>Download</em> button. Be patient because the download can take a few minutes.
 As a matter of fact, a complete first download from some dive computers can take 45 minutes or longer.
 The downloaded dives appear in the bottom part of the screen,
-the most recent dive at the top (see image on right, below).</p>
-</div>
-<div class="paragraph">
-<p>Each dive has a check-box on the left hand side, used for selecting which dives you want to be added to the
+the most recent dive at the top (see image on right, below).</p></div>
+<div class="paragraph"><p>Each dive has a check-box on the left hand side, used for selecting which dives you want to be added to the
 <em>Subsurface-mobile</em> dive list: dives that are not checked are ignored. With the appropriate downloaded dives
 having been checked, tap the button at the bottom left labeled <em>Accept</em>. All the selected dives appear on
 the <em>Subsurface-mobile</em> dive list. The downloaded dive information can now be edited as described in the section
-above <a href="#S_Edit_Dive">Edit a dive</a>.</p>
-</div>
-<div class="imageblock text-center">
+above <a href="#S_Edit_Dive">Edit a dive</a>.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/DC-Download.jpg" alt="FIGURE: DC download screen">
+<img src="mobile-images/DC-Download.jpg" alt="FIGURE: DC download screen" />
 </div>
 </div>
 </div>
@@ -1075,48 +899,37 @@ above <a href="#S_Edit_Dive">Edit a dive</a>.</p>
 <div class="sect1">
 <h2 id="_dive_log_management">16. Dive log management</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>A central  part of <em>Subsurface-mobile</em> is the ability to store the dive
+<div class="paragraph"><p>A central  part of <em>Subsurface-mobile</em> is the ability to store the dive
 log using the <em>Subsurface</em> cloud storage.
 This provides security against loss or damage of the dive information in a local copy
 and allows the desktop version of <em>Subsurface</em> to
 access changes made using the mobile device. This ability is accessed
 through the main menu
 (by tapping the "Hamburger" icon at the bottom left of the screen).
-Tap the option <em>Dive management</em>, enabling a number of options:</p>
-</div>
+Tap the option <em>Dive management</em>, enabling a number of options:</p></div>
 <div class="sect2">
 <h3 id="_add_new_dive_manually">16.1. Add new dive manually</h3>
-<div class="paragraph">
-<p>This is described above under the section dealing with <a href="#S_Add_Dive">Manually adding a new dive to the dive list</a>.</p>
-</div>
+<div class="paragraph"><p>This is described above under the section dealing with <a href="#S_Add_Dive">Manually adding a new dive to the dive list</a>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_download_from_dc">16.2. Download from DC</h3>
-<div class="paragraph">
-<p>This is described above under the section dealing with <a href="#S_Download">Download dives from a dive computer</a>.</p>
-</div>
+<div class="paragraph"><p>This is described above under the section dealing with <a href="#S_Download">Download dives from a dive computer</a>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_apply_gps_fixes">16.3. Apply GPS fixes</h3>
-<div class="paragraph">
-<p>This is described in the following main section, below.</p>
-</div>
+<div class="paragraph"><p>This is described in the following main section, below.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_manually_sync_the_dive_log_with_the_subsurface_cloud_storage">16.4. Manually sync the dive log with the <em>Subsurface</em> cloud storage</h3>
-<div class="paragraph">
-<p>Upload the dives contained on the mobile device
+<h3 id="_manually_sync_the_dive_log_with_the_em_subsurface_em_cloud_storage">16.4. Manually sync the dive log with the <em>Subsurface</em> cloud storage</h3>
+<div class="paragraph"><p>Upload the dives contained on the mobile device
 to the <em>Subsurface</em> cloud storage by tapping the option <em>Manual sync with cloud</em>.
 This synchronizes the local changes to
 the dive log with the cloud storage. It also downloads changes made to
-the dive log using another device or computer and stored in shared cloud storage.</p>
-</div>
+the dive log using another device or computer and stored in shared cloud storage.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_enable_cloud_auto_sync">16.5. Enable cloud auto sync</h3>
-<div class="paragraph">
-<p>By default <em>Subsurface-mobile</em> runs offline and only syncs the dive list
+<div class="paragraph"><p>By default <em>Subsurface-mobile</em> runs offline and only syncs the dive list
 with cloud storage when explicitly told to do so (see above).
 You can choose to always sync with the cloud servers. This is not
 recommended unless you are in
@@ -1124,16 +937,14 @@ an area with a fast and reliable internet connection, as otherwise
 <em>Subsurface-mobile</em> might appear to hang between operations as it tries to
 connect to the cloud server. Selecting <em>Enable cloud auto sync</em> causes
 the local dive log to be synchronized with the copy in the cloud every time that
-<em>Subsurface-mobile</em> is closed.</p>
-</div>
+<em>Subsurface-mobile</em> is closed.</p></div>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_recording_dive_locations_using_gps">17. Recording dive locations using GPS</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>The fact that most smartphones have GPS facilities allows
+<div class="paragraph"><p>The fact that most smartphones have GPS facilities allows
 <em>Subsurface-mobile</em> to record
 the locations of dives. <strong>IMPORTANT: GPS-derived coordinates on a smartphone
 are not always accurate and can have an error greater than 1 km. GPS accuracy
@@ -1142,39 +953,38 @@ smartphone as well as by the GPS settings selected within Android/iOS.
 As of Android V6 select Android <em>Settings &#8594; Communication &#8594; Location &#8594; High accuracy.</em></strong>
 If the smartphone is taken on the boat
 during a dive, locations will be automatically recorded at regular intervals.
-These locations can then be applied to dives in the dive list. Here is how it&#8217;s done:</p>
-</div>
+These locations can then be applied to dives in the dive list. Here is how it&#8217;s done:</p></div>
 <div class="sect2">
 <h3 id="S_ConfigureGPS">17.1. Configuring the GPS service</h3>
-<div class="paragraph">
-<p>From the <em>Main Menu</em>, select <a href="#S_Settings"><em>Settings</em></a> screen which has a section for
+<div class="paragraph"><p>From the <em>Main Menu</em>, select <a href="#S_Settings"><em>Settings</em></a> screen which has a section for
 configuring the GPS service (image below). GPS location data
 are collected at regular intervals, e.g. every 5 minutes, or at regular
 distances, e.g. after the boat has moved more than 200m, or a combination of
 both of these approaches. Provide the appropriate information and
-tap the <em>Back</em> button. The program is now ready to collect GPS positions.</p>
-</div>
-<div class="imageblock text-center">
+tap the <em>Back</em> button. The program is now ready to collect GPS positions.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/GPS-config.jpg" alt="FIGURE: GPS configure">
+<img src="mobile-images/GPS-config.jpg" alt="FIGURE: GPS configure" />
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_collecting_gps_positions">17.2. Collecting GPS positions</h3>
-<table class="tableblock frame-None grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame=""
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock text-center">
+<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/GPSstart.jpg" alt="FIGURE: GPS start">
+<img src="mobile-images/GPSstart.jpg" alt="FIGURE: GPS start" />
 </div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">On the <em>Main Menu</em> select <em>GPS &#8594; Run location service</em>.
+<td align="left" valign="top"><p class="table">On the <em>Main Menu</em> select <em>GPS &#8594; Run location service</em>.
 <em>Subsurface-mobile</em> starts to collect GPS locations automatically,
 following the preferences specified as described above. While the GPS
 location service is running, all menus have a GPS symbol at the bottom
@@ -1186,72 +996,67 @@ of all menus disappears.</p></td>
 </tbody>
 </table>
 </div>
+</div>
 <div class="sect2">
 <h3 id="_viewing_gps_data">17.3. Viewing GPS data</h3>
-<div class="paragraph">
-<p>From the <em>GPS</em> submenu select <em>Show GPS fixes</em>. This brings
+<div class="paragraph"><p>From the <em>GPS</em> submenu select <em>Show GPS fixes</em>. This brings
 up a list of GPS positions obtained by the location service (image
 below). Two actions are possible for each of the locations, enabled by
 dragging the right part of a location to the left. This exposes two
 options. Tapping the dustbin deletes this particular GPS location. Tapping the
 teardrop-shaped icon (actually a Google Maps pin) opens up Google Maps with a pin
 indicating the exact map position of the GPS record being viewed. The two above
-options can be hidden by drawing the GPS record to the right.</p>
-</div>
-<div class="imageblock text-center">
+options can be hidden by drawing the GPS record to the right.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/gpsmanagement.jpg" alt="FIGURE: GPS management">
+<img src="mobile-images/gpsmanagement.jpg" alt="FIGURE: GPS management" />
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_applying_gps_data_to_dives_in_the_dive_log">17.4. Applying GPS data to dives in the dive log</h3>
-<div class="paragraph">
-<p>Assuming that all the dives have been entered into the dive log or have
+<div class="paragraph"><p>Assuming that all the dives have been entered into the dive log or have
 been downloaded from the <em>Subsurface</em> cloud, apply the GPS positions to
 these dives. GPS positions can only be applied to dives in the dive list.
 From the <em>Dive management</em> sub-panel, tap <em>Apply GPS fixes</em>. The dive list contains the start
 and end times of each dive. Now, <em>Subsurface-mobile</em> applies the first
 GPS position that falls within the dive period of each dive. This results
-in a GPS position for each dive that is saved as part of the dive log.</p>
-</div>
+in a GPS position for each dive that is saved as part of the dive log.</p></div>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="S_Settings">18. Specifying the settings for <em>Subsurface-mobile</em>.</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>The <em>Settings</em> screen allows the customization of <em>Subsurface-mobile</em>. Many of the settings involve dragging a slider switch to activate or deactivate a particular setting.</p>
-</div>
+<div class="paragraph"><p>The <em>Settings</em> screen allows the customization of <em>Subsurface-mobile</em>. Many of the settings involve dragging a slider switch to activate or deactivate a particular setting.</p></div>
 <div class="sect2">
 <h3 id="S_ChangeCloudAccount">18.1. Changing to a different <em>Subsurface</em> cloud account</h3>
-<div class="paragraph">
-<p>Some users have more than one <em>Subsurface</em> cloud account and have a need to switch between accounts. Tap <em>Settings</em> on the Main menu and scroll to the section titled <em>Cloud status</em> (see image below).
+<div class="paragraph"><p>Some users have more than one <em>Subsurface</em> cloud account and have a need to switch between accounts. Tap <em>Settings</em> on the Main menu and scroll to the section titled <em>Cloud status</em> (see image below).
 Tap the <em>Change</em> button. This opens the <em>Cloud credentials</em> screen.
-change the credential information, then tap the button <em>Sign-in or register</em>. The appropriate dive list is shown.</p>
-</div>
-<div class="imageblock text-center">
+change the credential information, then tap the button <em>Sign-in or register</em>. The appropriate dive list is shown.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/SettingsCloudTheme.jpg" alt="FIGURE: Settings: Cloud &amp; Theme">
+<img src="mobile-images/SettingsCloudTheme.jpg" alt="FIGURE: Settings: Cloud &amp; Theme" />
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_changing_the_color_theme_of_subsurface_mobile">18.2. Changing the color theme of <em>Subsurface-mobile</em></h3>
-<table class="tableblock frame-None grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
+<h3 id="_changing_the_color_theme_of_em_subsurface_mobile_em">18.2. Changing the color theme of <em>Subsurface-mobile</em></h3>
+<div class="tableblock">
+<table rules="all"
+width="100%"
+frame=""
+cellspacing="0" cellpadding="4">
+<col width="50%" />
+<col width="50%" />
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><div class="content"><div class="imageblock text-center">
+<td align="left" valign="top"><div><div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/PinkTheme.jpg" alt="FIGURE: GPS start">
+<img src="mobile-images/PinkTheme.jpg" alt="FIGURE: GPS start" />
 </div>
 </div></div></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em>Subsurface-mobile</em> has three color schemes to please users with different
+<td align="left" valign="top"><p class="table"><em>Subsurface-mobile</em> has three color schemes to please users with different
 tastes (see image above). This user manual shows the default color scheme, comprising blue
 colors. Change to a pink or a dark color scheme by opening the main menu,
 tap <em>Settings</em>, and scroll to the section with heading <em>Theme</em> (see image above).
@@ -1261,41 +1066,36 @@ On the left is the dive list after selecting the Pink theme.</p></td>
 </tbody>
 </table>
 </div>
+</div>
 <div class="sect2">
 <h3 id="_configuring_the_gps_webservice">18.3. Configuring the GPS webservice</h3>
-<div class="paragraph">
-<p>The Settings screen allows one to set up the way in which GPS positions are collected during dives. See the section on <a href="#S_ConfigureGPS">Configuring the GPS service</a>.</p>
-</div>
+<div class="paragraph"><p>The Settings screen allows one to set up the way in which GPS positions are collected during dives. See the section on <a href="#S_ConfigureGPS">Configuring the GPS service</a>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_activating_the_developer_sub_menu">18.4. Activating the Developer sub-menu</h3>
-<div class="paragraph">
-<p>The information in the subsurface.log generated while running <em>Subsurface-mobile</em>, plus some additional information for understanding the screen rendering of dive information as well as the way in which <em>Subsurface-mobile</em> processed information during a specific occasion while running the app (see section below) is available through a <em>Developer</em> menu at run time. Activate (or deactivate) this menu item on the Main Menu by dragging the slider switch in the Settings screen.
+<div class="paragraph"><p>The information in the subsurface.log generated while running <em>Subsurface-mobile</em>, plus some additional information for understanding the screen rendering of dive information as well as the way in which <em>Subsurface-mobile</em> processed information during a specific occasion while running the app (see section below) is available through a <em>Developer</em> menu at run time. Activate (or deactivate) this menu item on the Main Menu by dragging the slider switch in the Settings screen.
 If <em>Display developer menu</em> has been activated in the <em>Settings screen</em>, the Main menu has a <em>Developer</em> item. By tapping this one has two options that are relevant within
-the context of program development and debugging.</p>
-</div>
+the context of program development and debugging.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_app_log">18.5. App log</h3>
-<div class="paragraph">
-<p>This option shows the messages that <em>Subsurface-mobile</em> generates while running. While
+<div class="paragraph"><p>This option shows the messages that <em>Subsurface-mobile</em> generates while running. While
 most users are not aware of these messages, they are often crucial in detecting any
-abnormal behavior of the app. The App log can be found in the root directory of the local storage of the mobile device.</p>
-</div>
+abnormal behavior of the app. The App log can be found in the root directory of the local storage of the mobile device.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_theme_information">18.6. Theme information</h3>
-<div class="paragraph">
-<p>This option provides a wealth of information about the screen characteristics of the mobile
-device and the font characteristics used by <em>Subsurface-mobile</em>.</p>
+<div class="paragraph"><p>This option provides a wealth of information about the screen characteristics of the mobile
+device and the font characteristics used by <em>Subsurface-mobile</em>.</p></div>
 </div>
 </div>
 </div>
 </div>
-</div>
+<div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2020-05-05 17:43:53 -0700
+Last updated
+ 2020-05-05 17:55:34 PDT
 </div>
 </div>
 </body>
