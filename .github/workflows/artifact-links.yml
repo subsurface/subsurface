@@ -3,7 +3,7 @@ name: Add artifact links to pull request
 on:
   workflow_run:
     workflows: 
-      - Ubuntu 16.04 / Qt 5.15-- for AppImage
+      - Ubuntu 20.04 / Qt 5 for AppImage
       - Mac
       - Windows
       - Android
