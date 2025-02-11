@@ -16,6 +16,7 @@ class qPrefTechnicalDetails : public QObject {
 	Q_PROPERTY(bool dcceiling READ dcceiling WRITE set_dcceiling NOTIFY dcceilingChanged)
 	Q_PROPERTY(deco_mode display_deco_mode READ display_deco_mode WRITE set_display_deco_mode NOTIFY display_deco_modeChanged)
 	Q_PROPERTY(bool ead READ ead WRITE set_ead NOTIFY eadChanged)
+	Q_PROPERTY(double gasplot_frac READ gasplot_frac WRITE set_gasplot_frac NOTIFY gasplot_fracChanged)
 	Q_PROPERTY(int gfhigh READ gfhigh WRITE set_gfhigh NOTIFY gfhighChanged)
 	Q_PROPERTY(int gflow READ gflow WRITE set_gflow NOTIFY gflowChanged)
 	Q_PROPERTY(bool gf_low_at_maxdepth READ gf_low_at_maxdepth WRITE set_gf_low_at_maxdepth NOTIFY gf_low_at_maxdepthChanged)
@@ -53,6 +54,7 @@ public:
 	static bool decoinfo() { return prefs.decoinfo; }
 	static bool dcceiling() { return prefs.dcceiling; }
 	static deco_mode display_deco_mode() { return prefs.display_deco_mode; }
+	static double gasplot_frac() { return prefs.gasplot_frac; }
 	static bool ead() { return prefs.ead; }
 	static int gfhigh() { return prefs.gfhigh; }
 	static int gflow() { return prefs.gflow; }
@@ -84,6 +86,7 @@ public slots:
 	static void set_dcceiling(bool value);
 	static void set_display_deco_mode(deco_mode value);
 	static void set_ead(bool value);
+	static void set_gasplot_frac(double value);
 	static void set_gfhigh(int value);
 	static void set_gflow(int value);
 	static void set_gf_low_at_maxdepth(bool value);
@@ -114,6 +117,7 @@ signals:
 	void dcceilingChanged(bool value);
 	void display_deco_modeChanged(deco_mode value);
 	void eadChanged(bool value);
+	void gasplot_fracChanged(double value);
 	void gfhighChanged(int value);
 	void gflowChanged(int value);
 	void gf_low_at_maxdepthChanged(bool value);
@@ -146,6 +150,7 @@ private:
 	static void disk_dcceiling(bool doSync);
 	static void disk_display_deco_mode(bool doSync);
 	static void disk_ead(bool doSync);
+	static void disk_gasplot_frac(bool doSync);
 	static void disk_gfhigh(bool doSync);
 	static void disk_gflow(bool doSync);
 	static void disk_gf_low_at_maxdepth(bool doSync);
