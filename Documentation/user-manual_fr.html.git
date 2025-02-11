@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 10.1.2" />
+<meta name="generator" content="AsciiDoc 10.2.0" />
 <title></title>
 <style type="text/css">
 /*
@@ -7664,10 +7664,14 @@ the <em>Media</em> tab. By default this is a nonspecific placeholder thumbnail. 
 see thumbnails that represent individual videos, <em>Subsurface</em> uses an
 external program calle <em>FFmpeg</em>.  To create thumbnails for videos, do two
 things:</p></div>
-<div class="paragraph"><p>Install <em>FFmpeg</em> on the computer that runs <em>Subsurface</em>. The program can be
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Install <em>FFmpeg</em> on the computer that runs <em>Subsurface</em>. The program can be
 downloaded from the FFmpeg web site:
 <a href="https://www.ffmpeg.org/download.html">https://www.ffmpeg.org/download.html</a>. Most Linux distributions ship with an
-<em>ffmpeg</em> package and therefore do not need an additional download.</p></div>
+<em>ffmpeg</em> package and therefore do not need an additional download.
+</p>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -7675,15 +7679,15 @@ On Windows, put the <em>ffmpeg.exe</em> file in the directory containing the <em
 On Mac and Linux, make sure the <em>ffmpeg</em> command is in the path. This should be the case for
 <em>FFmpeg</em> installed from official packages.
 </p>
-<div class="olist arabic"><ol class="arabic">
+</li>
+</ul></div>
+</li>
 <li>
 <p>
 In the <em>General</em> tab of the <a href="#S_Preferences"><em>Preferences</em></a>, set the
    preferences for generating video thumbnails. This is achieved by:
 </p>
-</li>
-</ol></div>
-</li>
+<div class="ulist"><ul>
 <li>
 <p>
 Checking the <em>Extract video thumbnails</em> box. If <em>Subsurface</em> fails to load the <em>FFmpeg</em> executable,
@@ -7705,6 +7709,8 @@ of the video will be used.
 </p>
 </li>
 </ul></div>
+</li>
+</ol></div>
 <div class="paragraph"><p>This should complete the setup of video thumbnails and they should now
 appear on the dive profile and in the <em>Media</em> tab.</p></div>
 </div>
@@ -7787,7 +7793,7 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2024-02-08 08:51:28 PST
+ 2025-02-09 14:01:24 PST
 </div>
 </div>
 </body>

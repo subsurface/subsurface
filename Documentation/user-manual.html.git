@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 10.1.2" />
+<meta name="generator" content="AsciiDoc 10.2.0" />
 <title></title>
 <style type="text/css">
 /*
@@ -1974,6 +1974,11 @@ Poseidon MK VI eCCR dive logs
 CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
 </p>
 </li>
+<li>
+<p>
+Scubapro&#8217;s LogTrak .script and .asd files (.asd also exported from SmartTrak).
+</p>
+</li>
 </ul></div>
 <div class="paragraph"><p>Selecting the appropriate format from the dropdown list and then the specific log file in the main window
 containing the file list. Then select the <em>Open</em> button near the bottom right.</p></div>
@@ -2059,6 +2064,11 @@ The application is not currently supported on Mac.</p></div>
 <div class="paragraph"><p>It can also be built for Linux systems. Two dependencies need to be met in your
 system before building: <em>glib2.0</em> and <em>mdbtools</em> (see below).</p></div>
 <div class="paragraph"><p>In addition, a web service is available for divelog conversions from SmartTrak to <em>Subsurface</em> (see below).</p></div>
+<div class="paragraph"><p>Currently there is a third option; exporting the divelog from SmartTrak to an
+.asd file and then importing this in subsurface <a href="#S_ImportingLogTrak">using
+the regular import dialog in <em>Subsurface</em></a>. This option should be avoided if
+possible, as a lot of information avaliable in SmartTrak is lost in the export
+to .asd file process.</p></div>
 <div class="paragraph"><p>Feel free to contact the <em>Subsurface</em> development team on <a href="mailto:subsurface@subsurface-divelog.org">our mailing list</a>
 for assistance in importing <em>SmartTrak</em> dive logs.</p></div>
 <div class="sect4">
@@ -2192,7 +2202,29 @@ application. Simply locate the database file on your computer, then use the
 location.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingCSVData">4.3.7. Importing data in CSV format</h4>
+<h4 id="S_ImportingLogTrak">4.3.7. Importing dives from Scubapro&#8217;s LogTrak</h4>
+<div class="paragraph"><p><em>Subsurface</em> can directly import the Scubapro LogTrak generated files in two
+different ways:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+You can generate an .asd file with LogTrak&#8217;s export option (also valid for
+SmartTrak software) and import this file into <em>Suburface</em> from the
+<a href="#Unified_import">universal import dialog</a> selecting <em>Scubapro ASD</em> if
+needed to abreviate the file list.
+</p>
+</li>
+<li>
+<p>
+Or you can import the original divelog&#8217;s database using the
+<a href="#Unified_import">universal import dialog</a>. In windows this file is commonly
+placed in the user folder .jtrak\DB_V4\jtrak.script
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect3">
+<h4 id="S_ImportingCSVData">4.3.8. Importing data in CSV format</h4>
 <div class="paragraph"><p>A comma-separated file (.csv) can be used to import dive information either as dive profiles
 (as in the case of the APD Inspiration and Evolution closed circuit rebreathers) or as dive
 metadata (in case the user keeps dive data in a spreadsheet). The <em>CSV</em> format is a universal
@@ -2669,15 +2701,51 @@ it (single-click) and then by pressing the <em>Del</em> key on the keyboard. Thi
 from the <em>Media</em> tab as well as the dive profile.</p></div>
 <div class="paragraph"><p>By right-clicking on a video and selecting the "Save dive data as subtitles" option, a subtitles
 file with the same name as the video but with an ".ass" extension is created that contains
-time dependent dive data (runtime, depth, temperature, NDL, TTS, surface GF) to be overlayed
-with the video. The VLC video player automatically finds this file upon playing the video
-and overlays the dive data. Alternatively, the ffmpeg video encoder can be used to create a
+time dependent dive data to be overlayed with the video. The format of the subtitle is specified
+in the <em>Media preferences</em> (<em>File&#8594;Preferences&#8594;Media</em>). The tags used in the format string are
+replaced with the actual values, if present, or removed if not present in the data.
+The VLC video player automatically finds this file upon playing
+the video and overlays the dive data. Alternatively, the ffmpeg video encoder can be used to create a
 new video file with the dive data encoded in the video stream. To do so run</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code>ffmpeg -v video.mp4 -vf "ass=video.ass" video_with_data.mp4</code></pre>
 </div></div>
 <div class="paragraph"><p>from the command line. You need to have the libass library installed.</p></div>
+<div class="paragraph"><p>Available tags are:
+* Dive time: [time]
+* Depth: [depth]
+* Temperature: [temperature]
+* Ceiling: [ceiling]
+* NDL: [ndl]
+* TTS: [tts]
+* RBT: [rbt]
+* Stop time: [stoptime]
+* Stop depth: [stopdepth]
+* CNS: [cns]
+* SAC: [sac]
+* pO₂: [p_o2]
+* pN₂: [p_n2]
+* pHe: [p_he]
+* O₂ pressure (rebreather): [o2_pressure]
+* O₂ setpoint: [o2_setpoint]
+* SCR ΔpO₂: [scr_oc_po2]
+* MOD: [mod]
+* EAD: [ead]
+* END: [end]
+* EADD: [eadd]
+* Vertical speed: [speed]
+* In deco (calculated): [in_deco]
+* NDL (calculated): [ndl_calc]
+* TTS (calculated): [tts_calc]
+* Stop time (calculated): [stoptime_calc]
+* Stop depth (calculated): [stopdepth_calc]
+* Heartrate: [heartrate]
+* Bearing: [bearing]
+* Surface GF: [surface_gf]
+* Current GF: [current_gf]
+* Density: [density]
+* ICD Warning: [icd_warning]</p></div>
 </div>
 <div class="sect3">
 <h4 id="_media_on_an_external_hard_disk">4.5.4. Media on an external hard disk</h4>
@@ -5448,18 +5516,15 @@ A user who is not absolutely sure about any of the above requirements should not
 </div></div>
 <div class="sect2">
 <h3 id="_the_em_subsurface_em_dive_planner_screen">13.1. The <em>Subsurface</em> dive planner screen</h3>
-<div class="paragraph"><p>Like the <em>Subsurface</em> dive log, the planner screen is divided into several sections (see image below). The <strong>setup</strong>
-parameters for a dive are entered into the sections on the left hand and bottom side of the screen.
-They are: Available Gases, Rates, Planning, Gas Options and Notes.</p></div>
-<div class="paragraph"><p>At the top right hand is a green <strong>design panel</strong> on which the profile of the dive can be
-manipulated directly by dragging and clicking as explained below. This feature makes the
-<em>Subsurface</em> dive planner unique in ease of use.</p></div>
-<div class="paragraph"><p>At the bottom right is a text panel with a heading of <em>Dive Plan Details</em>. This is where the details of
-the dive plan are provided in a way that can easily be copied to other software. This is also where
-any warning messages about the dive plan are printed.</p></div>
+<div class="paragraph"><p>Like the <em>Subsurface</em> dive log, the planner screen is divided into several sections (see image below):
+- At the top left of the screen are the <strong>dive parameters</strong> that will be stored with the planned dive, like dive time, dive mode, and water type.
+- Below this are tables that allow the user to configure the <strong>cylinders</strong> used on the dive, and the <strong>depth / time and breathing gas</strong> used for the individual parts of the planned dive.
+- At the bottom of the screen are the <strong>parameters used by the planner</strong> to plan the dive, like ascent / descent rates, planning parameters, and gas options.
+- At the top right hand is a green <strong>design panel</strong> on which the profile of the dive can be manipulated directly by dragging and clicking as explained below. This feature makes the <em>Subsurface</em> dive planner unique in ease of use.
+- On the bottom right is a field for the <strong>dive plan details</strong> - this is where the planner will show the dive plan in text form, which will also persisted to the dive notes when the planned dive is saved. This field is designe to be easily copied to other software. It also shows any warning messages about the dive plan.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/PlannerWindow1.jpg" alt="FIGURE: Dive planner startup window" />
+<img src="images/PlannerWindow1.png" alt="FIGURE: Dive planner startup window" />
 </div>
 </div>
 </div>
@@ -5468,7 +5533,7 @@ any warning messages about the dive plan are printed.</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Towards the center bottom of the planner (circled in blue in the image above) is a dropdown list with three options. Select the appropriate one of these:
+In the top left of the planner (circled in blue in the image above) is a dropdown list with three options. Select the appropriate one of these:
 </p>
 <div class="ulist"><ul>
 <li>
@@ -5560,16 +5625,25 @@ Drag the waypoints
 The most efficient way to create a dive profile is to enter the appropriate values into the table
     marked <em>Dive planner points</em>. The first line of the table represents the duration and the final
     depth of the descent from the surface. Subsequent segments describe the bottom phase of the dive.
-    The <em>CC setpoint</em> column is only relevant for closed circuit divers.
     The ascent is usually not specified because this is what the planner is supposed to calculate.
     Add additional segments to the profile by selecting the "+" icon at the top right hand of the
     table. Segments entered into the <em>Dive planner points</em> table automatically appear in the <strong>Dive
     Profile</strong> diagram.
 </p>
 </li>
+<li>
+<p>
+If the <em>Dive mode</em> of the planned dive is changed after gases and segments have been added, it can happen that the <em>Use</em> of a gasmix or the <em>Used gas</em> selected for a segment are not appropriate for the selected <em>Dive mode</em>. In this case <em>Subsurface</em> will highlight the problematic selection with a red background to help the user identify and correct the issue. The dive plan will not be calculated until all issues are resolved.
+</p>
+</li>
 </ul></div>
 </li>
 </ul></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Planner_issues.png" alt="FIGURE: Dive planner: Issue display" />
+</div>
+</div>
 <div class="sect3">
 <h4 id="_recreational_dives">13.2.1. Recreational dives</h4>
 <div class="paragraph"><p>Recreational mode is intended for what most divers would call "recreational", "sports"or "nontechnical" dives,
@@ -5668,7 +5742,7 @@ To build additional safety into the dive plan (over and above those of recreatio
 minutes, there remains a significant amount of air in the cylinder at the end of the dive.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_rec1.jpg" alt="FIGURE: A recreational dive plan: setup" />
+<img src="images/Planner_OC_rec1.png" alt="FIGURE: A recreational dive plan: setup" />
 </div>
 </div>
 <div class="paragraph"><p>The dive profile in the planner shows the maximum dive time within no-deco limits using the
@@ -5682,7 +5756,7 @@ it means that recreational dive limits are exceeded and either the dive duration
 a larger safety margin.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_rec2.jpg" alt="FIGURE: A recreational dive plan: gradient factors setup" />
+<img src="images/Planner_OC_rec2.png" alt="FIGURE: A recreational dive plan: gradient factors setup" />
 </div>
 </div>
 </div>
@@ -5808,12 +5882,18 @@ the surface.</p></div>
 double-clicking a cell in this column. By default, a large number of sizes are listed,
 and a new cylinder size can be created by typing this into the text box. The cylinder size, start pressure
 and default switch depths are initialized automatically. Specify the gas composition
-(e.g. helium and oxygen content). A non-zero value in the "CC setpoint" column of the table of dive planner points
-indicates a valid setpoint for oxygen partial pressure and that the segment
-is dived using a closed circuit rebreather (CCR). If the last manually entered
-segment is a CCR segment, the decompression phase is computed assuming the diver
+(e.g. helium and oxygen content) and - in the case of planning a CCR dive, the intended use as diluent or OC bailout gas.
+When planning CCR dives, a segment is calculated as a closed circuit segment if the gas that is used is a <em>diluent</em>, and as an open circuit segment if the gas is an <em>OC-gas</em>. If the user enables the <em>Allow open circuit gas to be used as bailout</em> option in the <em>Tech setup</em> preferences, then an additional column will be shown allowing the user to select the <em>Dive mode</em> for each segment dived on an <em>OC-gas</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Planner_OC_gas_for_CCR.png" alt="FIGURE: Planning a dive: OC as CCR" />
+</div>
+</div>
+<div class="paragraph"><p>For CCR dives, an additional column is shown in the <em>Dive planner points</em> table, allowing the user to specify the <em>Setpoint</em> for each closed circuit segment.
+If the last manually entered
+segment is a closed circuit segment, the decompression phase is computed assuming the diver
 uses a CCR with the specified set-point. If the last segment (however
-short) is on open circuit (OC, indicated by a zero set-point) the
+short) is on open circuit the
 decompression is computed in OC mode and the planner only considers gas
 changes in OC mode.</p></div>
 <div class="paragraph"><p>Enter dive profile segments in the <em>Dive planner points</em> table by providing a time duration for
@@ -5825,21 +5905,24 @@ If required, insert a row in the <em>Dive planner points</em> table by adding a 
 you wish to use this gas during the very start of the dive (the other gas is not breathable at the surface).
 Upon pressing Enter on the keyboard, that segment is moved to the top of that table and the plan is adjusted
 automatically to take into account this new segment of the dive plan (image B below).</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/planner1.jpg" alt="FIGURE: Planning a dive: segments" />
-</div>
-</div>
+<div class="paragraph"><p><strong>A:</strong>
+<span class="image">
+<img src=":images/planner1.png" alt="FIGURE: Planning a dive: segments 1/2" />
+</span>
+<strong>B:</strong>
+<span class="image">
+<img src=":images/planner2.png" alt="FIGURE: Planning a dive: segments 2/2" />
+</span></p></div>
 <div class="paragraph"><p>Below is an example of a dive plan to 55m using Tx20/30 and the Bühlmann algorithm,
 followed by an ascent using EAN50 and using the settings as described above.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_deco.jpg" alt="FIGURE: Planning a dive: setup" />
+<img src="images/Planner_OC_deco.png" alt="FIGURE: Planning a dive: setup" />
 </div>
 </div>
 <div class="paragraph"><p>Once the above steps have been completed, save by clicking the <em>Save</em> button
 towards the top middle of the planner. The saved dive plan will appear
-in the <strong>Dive List</strong> panel of <em>Subsurface</em>.</p></div>
+in the <em>Dive List</em> panel of <em>Subsurface</em>.</p></div>
 <div class="paragraph"><p><strong>The dive plan details</strong></p></div>
 <div class="paragraph"><p>On the bottom right panel of the dive planner, under <em>Dive Plan Details</em>, the details
 of the dive plan are provided. These may be modified by checking any of the
@@ -5982,7 +6065,7 @@ to that of the CCR dive below, but note the longer ascent duration due to the lo
 in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_pSCR.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
+<img src="images/Planner_pSCR.png" alt="FIGURE: Planning a pSCR dive: setup" />
 </div>
 </div>
 <div class="sect3">
@@ -6036,19 +6119,14 @@ columns, as in the cave example, above. See the example of bailout for a CCR div
 <div class="sect2">
 <h3 id="_planning_ccr_dives">13.4. Planning CCR dives</h3>
 <div class="paragraph"><p>To plan a dive using a closed circuit rebreather, select the <em>CCR</em> option in the dropdown
-list, circled in blue in the image below.</p></div>
+list.</p></div>
 <div class="paragraph"><p><strong>Available gases</strong>: In the <em>Available gases</em> table, enter the cylinder information for the
 diluent cylinder and for any bail-out cylinders. Do NOT enter the information for the oxygen
 cylinder since it is implied when the <em>CCR</em> dropdown selection is made.</p></div>
 <div class="paragraph"><p><strong>Entering setpoints</strong>: Specify a default setpoint in the Preferences tab, by selecting <em>File &#8594;  Preferences &#8594;  Tech setup</em> from
 the main menu. All user-entered segments in the <em>Dive planner points</em> table
 use the default setpoint value. Then, different setpoints can be specified for dive segments
-in the <em>Dive planner points</em> table. A zero setpoint
-means the diver bails out to open circuit mode for that segment. Decompression is always calculated
-using the setpoint of the last manually entered segment. So, to plan a bail out ascent for a
-CCR dive, add a one-minute dive segment to the end with a setpoint value of 0. The decompression
-algorithm does not switch deco-gases automatically while in CCR mode (i.e. when a positive setpoint is specified) but
-this is calculated for bail out ascents.</p></div>
+in the <em>Dive planner points</em> table.</p></div>
 <div class="paragraph"><p>If you want the setpoint to change during the planned ascent at a specified depth, you can do this
 using a "fake" cylinder that you add to the gas list: Give that cylinder a name of "SP 1.4" (or use
 a different number) and set the "Deco switch value" to the depth at which you want to set the new
@@ -6057,48 +6135,38 @@ there on.</p></div>
 <div class="paragraph"><p>The dive profile for a CCR dive may look something like the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_CCR.jpg" alt="FIGURE: Planning a CCR dive: setup" />
+<img src="images/Planner_CCR.png" alt="FIGURE: Planning a CCR dive: setup" />
 </div>
 </div>
 <div class="paragraph"><p>Note that, in the <em>Dive plan details</em>, the gas consumption for a CCR segment is not calculated,
 so gas consumptions of 0 liters are the norm.</p></div>
 <div class="sect3">
 <h4 id="_planning_for_ccr_bailout">13.4.1. Planning for CCR bailout</h4>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/CCR_b1.jpg" alt="Note" />
-</td>
-<td class="content">It is often necessary to plan for a worst-case bailout event in order to ensure sufficient bailout gas to reach the
-surface, taking into account decompression. This is done by 1) checking the <em>Bailout</em> checkbox of the dive planner
-(bailout will be calculated starting at the last segment of the dive specified in the <em>Dive planner points</em> table);
-2) defining a 1-minute segment at the end of the bottom part
-of the dive, as in the image on the left where a CCR dive to 40m for 21 minutes is planned;
-3) changing to an OC-gas during any segment in the <em>Dive planner points</em> table.</td>
-</tr></table>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CCR_b1.png" alt="FIGURE: Planning a CCR dive: closed circuit deco" />
 </div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/CCR_b2.jpg" alt="Note" />
-</td>
-<td class="content">In the <em>Dive planner points
-table</em>, change the <em>Dive mode</em> of this 1-minute segment to <em>OC</em>. This signifies bailout. In this case there is bailout to
-the existing diluent cylinder (assuming this cylinder has sufficient gas). The appropriate pO<sub>2</sub> and cylinder pressure
-graphs are shown in the dive profile, as in the image on the left. Note that the setpoint drops to zero after bailout, since
-this value does not apply to breathed bailout gas.</td>
-</tr></table>
 </div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/CCR_b3.jpg" alt="Note" />
-</td>
-<td class="content">In order to plan for bailout to an external bailout cylinder, change  the <em>Used gas</em> for the 1-minute segment to the
-appropriate cylinder, as in the example on the left. Note that the cylinder change as well as the bailout are indicated with
-overlapping icons.</td>
-</tr></table>
+<div class="paragraph"><p>It is often necessary to plan for a worst-case bailout event in order to ensure sufficient bailout gas to reach the
+surface, taking into account decompression. This is done by checking the <em>Rebreather: Bailout / Deco on OC</em> checkbox of the dive planner
+(bailout will be calculated starting at the last segment of the dive specified in the <em>Dive planner points</em> table):</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CCR_b2.png" alt="FIGURE: Planning a CCR dive: open circuit bailout" />
 </div>
+</div>
+<div class="paragraph"><p>In the <em>Available gases</em>
+table, change the <em>Use</em> of the gas used for the last segment to <em>OC-gas</em>. This signifies bailout.
+The appropriate pO<sub>2</sub> and cylinder pressure
+graphs are shown in the dive profile:</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CCR_b3.png" alt="FIGURE: Planning a CCR dive: open circuit bailout by cylinder selection" />
+</div>
+</div>
+<div class="paragraph"><p>In order to plan for bailout to an external bailout cylinder, change  the <em>Used gas</em> for the 1-minute segment to the
+appropriate cylinder, as in the example above. Note that the cylinder change as well as the bailout are indicated with
+overlapping icons.</p></div>
 <div class="paragraph"><p>The volumes of gases required for bailout can be found at the bottom of the <strong>Dive plan details</strong> panel.</p></div>
 </div>
 </div>
@@ -6107,7 +6175,7 @@ overlapping icons.</td>
 <div class="paragraph"><p>Normally, when a dive plan has been saved, it is accessible from the <strong>Dive List</strong>, like any
 other dive log. Within the <strong>Dive List</strong> there is no way to change a saved dive plan.
 To change a dive plan, select it on the <strong>Dive List</strong>. Then, in the main menu,
-select <em>Log &#8594;  Re-plan dive</em>. This will open the selected dive plan within the dive planner,
+select <em>Log &#8594;  Edit dive in planner</em>. This will open the selected dive plan within the dive planner,
 allowing changes to be made and saved as usual.</p></div>
 <div class="paragraph"><p>In addition, there is the option "Save new". This keeps the original
 planned dive and adds a (possibly modified, - earlier dives are now taken into account -) copy to the dive list. If
@@ -8227,7 +8295,7 @@ cannot be salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2024-02-08 08:33:02 PST
+ 2025-02-09 14:01:24 PST
 </div>
 </div>
 </body>
