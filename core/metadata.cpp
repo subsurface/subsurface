@@ -571,7 +571,7 @@ mediatype_t get_metadata(const char *filename_in, metadata *data)
 	data->location.lon.udeg = 0;
 
 #ifdef LIBRAW_SUPPORT
-	if (parseRaw(filename_in, data))
+	if (hasFileExtension(filename_in, rawExtensionsList) && parseRaw(filename_in, data))
 		return MEDIATYPE_PICTURE;
 #endif
 
