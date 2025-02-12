@@ -63,7 +63,7 @@ private:
 	};
 
 	Thumbnailer();
-	Thumbnail fetchVideoThumbnail(const QString &filename, const QString &originalFilename, duration_t duration);
+	Thumbnail fetchVideoThumbnail(const QString &filename, const QString &originalFilename, duration_t duration, bool unknownFiletype = false);
 	Thumbnail extractVideoThumbnail(const QString &picture_filename, duration_t duration);
 	Thumbnail addPictureThumbnailToCache(const QString &picture_filename, const QImage &thumbnail);
 	Thumbnail addVideoThumbnailToCache(const QString &picture_filename, duration_t duration, const QImage &thumbnail, duration_t position);
