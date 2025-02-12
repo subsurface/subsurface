@@ -74,14 +74,6 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->deleteLater();
 }
 
-static bool hasVideoFileExtension(const QString &filename)
-{
-	for (const QString &ext: videoExtensionsList)
-		if (filename.endsWith(ext, Qt::CaseInsensitive))
-			return true;
-	return false;
-}
-
 #ifdef LIBRAW_SUPPORT
 QImage fetchRawThumbnail(const QString &filename)
 {
@@ -147,14 +139,7 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &urlfilename, const
 		}
 
 		// Neither our code, nor Qt could determine the type of this object from looking at the data.
-		// Try to check for a video-file extension. Since we couldn't parse the video file,
-		// we pass 0 as the duration.
-		if (hasVideoFileExtension(filename))
-			return fetchVideoThumbnail(filename, originalFilename, duration_t());
-
-		// Give up: we simply couldn't determine what this thing is.
-		// But since we managed to read this file, mark this file in the cache as unknown.
-		return addUnknownThumbnailToCache(originalFilename);
+		return fetchVideoThumbnail(filename, originalFilename, duration_t());
 	} else if (tryDownload) {
 		// This has to be done in UI main thread, because QNetworkManager refuses
 		// to treat requests from other threads. invokeMethod() is Qt's way of calling a
