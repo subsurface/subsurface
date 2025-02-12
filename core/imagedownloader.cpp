@@ -74,14 +74,6 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->deleteLater();
 }
 
-static bool hasVideoFileExtension(const QString &filename)
-{
-	for (const QString &ext: videoExtensionsList)
-		if (filename.endsWith(ext, Qt::CaseInsensitive))
-			return true;
-	return false;
-}
-
 #ifdef LIBRAW_SUPPORT
 QImage fetchRawThumbnail(const QString &filename)
 {
@@ -127,10 +119,14 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &urlfilename, const
 		mediatype_t type = get_metadata(qPrintable(filename), &md);
 
 		// For io error or video, return early with the appropriate dummy-icon.
-		if (type == MEDIATYPE_IO_ERROR)
+		if (type == MEDIATYPE_IO_ERROR) {
 			return { failImage, MEDIATYPE_IO_ERROR, duration_t() };
-		else if (type == MEDIATYPE_VIDEO)
-			return fetchVideoThumbnail(filename, originalFilename, md.duration);
+		} else if (type == MEDIATYPE_VIDEO) {
+			if (prefs.extract_video_thumbnails)
+				return fetchVideoThumbnail(filename, originalFilename, md.duration);
+			else
+				return addVideoThumbnailToCache(originalFilename, md.duration, QImage(), duration_t());
+		}
 
 		// Try if Qt can parse this image. If it does, use this as a thumbnail.
 		QImage thumb(filename);
@@ -147,10 +143,8 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &urlfilename, const
 		}
 
 		// Neither our code, nor Qt could determine the type of this object from looking at the data.
-		// Try to check for a video-file extension. Since we couldn't parse the video file,
-		// we pass 0 as the duration.
-		if (hasVideoFileExtension(filename))
-			return fetchVideoThumbnail(filename, originalFilename, duration_t());
+		if (prefs.extract_video_thumbnails)
+			return fetchVideoThumbnail(filename, originalFilename, duration_t(), true);
 
 		// Give up: we simply couldn't determine what this thing is.
 		// But since we managed to read this file, mark this file in the cache as unknown.
@@ -347,18 +341,11 @@ Thumbnailer::Thumbnail Thumbnailer::addVideoThumbnailToCache(const QString &pict
 	return { videoImage, MEDIATYPE_VIDEO, duration };
 }
 
-Thumbnailer::Thumbnail Thumbnailer::fetchVideoThumbnail(const QString &filename, const QString &originalFilename, duration_t duration)
+Thumbnailer::Thumbnail Thumbnailer::fetchVideoThumbnail(const QString &filename, const QString &originalFilename, duration_t duration, bool unknownFiletype)
 {
-	if (prefs.extract_video_thumbnails) {
-		// Video-thumbnailing is enabled. Fetch thumbnail in background thread and in the meanwhile
-		// return a dummy image.
-		QMetaObject::invokeMethod(VideoFrameExtractor::instance(), "extract", Qt::AutoConnection,
-					  Q_ARG(QString, originalFilename), Q_ARG(QString, filename), Q_ARG(duration_t, duration));
-		return { videoImage, MEDIATYPE_VIDEO, duration };
-	} else {
-		// Video-thumbnailing is disabled. Write a thumbnail without picture.
-		return addVideoThumbnailToCache(originalFilename, duration, QImage(), duration_t());
-	}
+	QMetaObject::invokeMethod(VideoFrameExtractor::instance(), "extract", Qt::AutoConnection,
+				  Q_ARG(QString, originalFilename), Q_ARG(QString, filename), Q_ARG(duration_t, duration));
+	return { unknownFiletype ? unknownImage : videoImage, unknownFiletype ? MEDIATYPE_UNKNOWN : MEDIATYPE_VIDEO, duration };
 }
 
 Thumbnailer::Thumbnail Thumbnailer::addPictureThumbnailToCache(const QString &picture_filename, const QImage &thumbnail)
