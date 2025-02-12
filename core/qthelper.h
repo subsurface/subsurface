@@ -40,10 +40,8 @@ std::optional<std::string> getCloudURL(); // move to prefs.h, probably.
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 void init_proxy();
 QStringList getWaterTypesAsString();
-extern const QStringList videoExtensionsList;
 QStringList mediaExtensionFilters();
 QStringList imageExtensionFilters();
-QStringList videoExtensionFilters();
 QString get_depth_string(depth_t depth, bool showunit = false, bool showdecimal = true);
 QString get_depth_string(int mm, bool showunit = false, bool showdecimal = true);
 QString get_depth_unit(bool metric);
