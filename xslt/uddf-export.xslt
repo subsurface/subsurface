@@ -679,18 +679,13 @@
             <link ref="{concat(../@number, ':', @filename, '@', @offset)}"/>
           </xsl:for-each>
         </notes>
-        <rating>
-          <ratingvalue>
-            <xsl:choose>
-              <xsl:when test="./@rating = 0">
-                <xsl:value-of select="'1'"/>
-              </xsl:when>
-              <xsl:when test="./@rating != ''">
-                <xsl:value-of select="./@rating * 2"/>
-              </xsl:when>
-            </xsl:choose>
-          </ratingvalue>
-        </rating>
+        <xsl:if test="./@rating">
+          <rating>
+            <ratingvalue>
+              <xsl:value-of select="round(1 + ((./@rating - 1) div 4 * 9))"/>
+            </ratingvalue>
+          </rating>
+        </xsl:if>
         <visibility>
             <xsl:choose>
               <xsl:when test="./@visibility = 1">
