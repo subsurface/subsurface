@@ -129,11 +129,14 @@ slots:
 	void parseOstcFwVersion(QNetworkReply *reply);
 	void saveOstcFirmware(QNetworkReply *reply);
 
+signals:
+	void checkCompleted();
+
 private:
 	void upgradeFirmware(const QString &filename);
 	device_data_t devData;
 	QString latestFirmwareAvailable;
-	QString latestFirmwareHexFile;
+	QUrl latestFirmwareHexFile;
 	QString storeFirmware;
 	QWidget *parent;
 	QNetworkAccessManager manager;
