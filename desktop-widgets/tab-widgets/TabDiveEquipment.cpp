@@ -19,15 +19,6 @@ static bool ignoreHiddenFlag(int i)
 	       i == CylindersModel::WORKINGPRESS_INT || i == CylindersModel::SIZE_INT;
 }
 
-static bool hiddenByDefault(int i)
-{
-	switch (i) {
-	case CylindersModel::SENSORS:
-		return true;
-	}
-	return false;
-}
-
 TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 	cylindersModel(new CylindersModel(false, this)),
 	weightModel(new WeightModel(this))
@@ -87,11 +78,11 @@ TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 		if (ignoreHiddenFlag(i))
 			continue;
 		auto setting = s.value(QString("column%1_hidden").arg(i));
-		bool checked = setting.isValid() ? setting.toBool() : hiddenByDefault(i) ;
+		bool hidden = setting.isValid() ? setting.toBool() : false;
 		QAction *action = new QAction(cylindersModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString(), ui.cylinders->view());
 		action->setCheckable(true);
 		action->setData(i);
-		action->setChecked(!checked);
+		action->setChecked(!hidden);
 		connect(action, &QAction::triggered, this, &TabDiveEquipment::toggleTriggeredColumn);
 		ui.cylinders->view()->setColumnHidden(i, checked);
 		ui.cylinders->view()->horizontalHeader()->addAction(action);
