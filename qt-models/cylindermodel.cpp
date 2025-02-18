@@ -22,7 +22,7 @@ CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableMode
 {
 	setHeaderDataStrings(QStringList() << "#" << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
 					   << tr("Deco switch at") << tr("Bot. MOD") << tr("MND") << tr("Use") << ""
-					   << "" << tr("Has Sensor"));
+					   << "" << tr("Sensor"));
 
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &CylindersModel::cylinderAdded);
