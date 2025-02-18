@@ -44,6 +44,7 @@ private:
 	TankUseDelegate tankUseDelegate;
 	SensorDelegate sensorDelegate;
 	WSInfoDelegate wsInfoDelegate;
+	void setCylinderColumnVisibility();
 };
 
 #endif // TAB_DIVE_EQUIPMENT_H
