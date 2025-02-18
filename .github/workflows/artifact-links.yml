@@ -8,6 +8,7 @@ on:
       - Windows
       - Android
       - iOS
+      - Documentation
     types:
       - completed
 

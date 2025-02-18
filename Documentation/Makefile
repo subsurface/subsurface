@@ -7,7 +7,7 @@
 # submitting patches to the user manual, only submit the changes to the .txt
 # file - the maintainer will recreate the .html.git file
 
-DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_nl mobile-manual-v3
+DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_nl mobile-manual-v3 mobile-manual-v2 mobile-manual_es mobile-manual_fr
 
 HTMLDOCS = $(patsubst %,$(OUT)%.html,$(DOCNAMES))
 TEXTDOCS = $(patsubst %,$(OUT)%.text,$(DOCNAMES))
