@@ -573,9 +573,12 @@ void DownloadFromDCWidget::on_ok_clicked()
 
 	diveImportedModel->recordDives(flags);
 
-	if (ostcFirmwareCheck && currentState == DONE)
+	if (ostcFirmwareCheck && currentState == DONE) {
+		connect(ostcFirmwareCheck.get(), &OstcFirmwareCheck::checkCompleted, this, &DownloadFromDCWidget::accept);
 		ostcFirmwareCheck->checkLatest(this, diveImportedModel->thread.data()->internalData(), filename);
-	accept();
+	} else {
+		accept();
+	}
 }
 
 void DownloadFromDCWidget::updateDeviceEnabled()

@@ -268,14 +268,14 @@ OstcFirmwareCheck::OstcFirmwareCheck(const QString &product) : parent(0)
 	QUrl url;
 	devData = device_data_t();
 	if (product == "OSTC 3" || product == "OSTC 3+" || product == "OSTC cR" || product == "OSTC Plus") {
-		url = QUrl("http://www.heinrichsweikamp.net/autofirmware/ostc3_changelog.txt");
-		latestFirmwareHexFile = QString("http://www.heinrichsweikamp.net/autofirmware/ostc3_firmware.hex");
+		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc3_changelog.txt");
+		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc3_firmware.hex");
 	} else if (product == "OSTC Sport") {
-		url = QUrl("http://www.heinrichsweikamp.net/autofirmware/ostc_sport_changelog.txt");
-		latestFirmwareHexFile = QString("http://www.heinrichsweikamp.net/autofirmware/ostc_sport_firmware.hex");
+		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_changelog.txt");
+		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_firmware.hex");
 	} else if (product == "OSTC 4") {
-		url = QUrl("http://www.heinrichsweikamp.net/autofirmware/ostc4_changelog.txt");
-		latestFirmwareHexFile = QString("http://www.heinrichsweikamp.net/autofirmware/ostc4_firmware.bin");
+		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_changelog.txt");
+		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_firmware.bin");
 	} else { // not one of the known dive computers
 		return;
 	}
@@ -290,6 +290,7 @@ void OstcFirmwareCheck::parseOstcFwVersion(QNetworkReply *reply)
 	int firstOpenBracket = parse.indexOf('[');
 	int firstCloseBracket = parse.indexOf(']');
 	latestFirmwareAvailable = parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket - 1);
+	reply->close();
 	disconnect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::parseOstcFwVersion);
 }
 
@@ -329,7 +330,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 		QString message = tr("A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2.\nNot using the latest available stable firmware version on your dive computer means that Subsurface may not work correctly with it.")
 					  .arg(firmwareOnDeviceString)
 					  .arg(latestFirmwareAvailable);
-		message += tr("\n\nIf your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update");
+		message += tr("\n\nIf your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update");
 		response.addButton(tr("Not now"), QMessageBox::RejectRole);
 		response.addButton(tr("Update firmware"), QMessageBox::AcceptRole);
 		response.setText(message);
@@ -339,14 +340,15 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 		int ret = response.exec();
 		if (ret == QMessageBox::Accepted)
 			upgradeFirmware(filename);
+		else
+			emit checkCompleted();
 	}
 }
 
 void OstcFirmwareCheck::upgradeFirmware(const QString &filename)
 {
 	// start download of latestFirmwareHexFile
-	QString saveFileName = latestFirmwareHexFile;
-	saveFileName.replace("http://www.heinrichsweikamp.net/autofirmware/", "");
+	QString saveFileName = latestFirmwareHexFile.fileName();
 	saveFileName.replace("firmware", latestFirmwareAvailable);
 	QFileInfo fi(filename);
 	saveFileName = fi.absolutePath().append(QDir::separator()).append(saveFileName);
@@ -362,14 +364,15 @@ void OstcFirmwareCheck::upgradeFirmware(const QString &filename)
 
 void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 {
-	// firmware is downloaded
-	// call config->startFirmwareUpdate() with that file and the device data
-
 	QByteArray firmwareData = reply->readAll();
 	QFile file(storeFirmware);
 	file.open(QIODevice::WriteOnly);
 	file.write(firmwareData);
 	file.close();
+
+	reply->close();
+	emit checkCompleted();
+
 	QProgressDialog *dialog = new QProgressDialog("Updating firmware", "", 0, 100);
 	dialog->setCancelButton(0);
 	dialog->setAutoClose(true);
