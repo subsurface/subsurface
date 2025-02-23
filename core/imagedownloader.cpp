@@ -206,7 +206,7 @@ Thumbnailer::Thumbnailer() : failImage(QPixmap(":filter-close").scaled(maxThumbn
 	connect(ImageDownloader::instance(), &ImageDownloader::failed, this, &Thumbnailer::imageDownloadFailed);
 	connect(VideoFrameExtractor::instance(), &VideoFrameExtractor::extracted, this, &Thumbnailer::frameExtracted);
 	connect(VideoFrameExtractor::instance(), &VideoFrameExtractor::failed, this, &Thumbnailer::frameExtractionFailed);
-	connect(VideoFrameExtractor::instance(), &VideoFrameExtractor::failed, this, &Thumbnailer::frameExtractionInvalid);
+	connect(VideoFrameExtractor::instance(), &VideoFrameExtractor::invalid, this, &Thumbnailer::frameExtractionInvalid);
 }
 
 Thumbnailer *Thumbnailer::instance()
