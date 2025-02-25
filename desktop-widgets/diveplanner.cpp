@@ -44,6 +44,8 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::GAS, new GasTypesDelegate(planned_dive, dcNr, this));
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::DIVEMODE, new DiveTypesDelegate(planned_dive, dcNr, this));
 
+	ui.tableWidget->view()->horizontalHeader()->setStretchLastSection(true);
+
 	ui.cylinderTableWidget->setTitle(tr("Available gases"));
 	ui.cylinderTableWidget->setBtnToolTip(tr("Add cylinder"));
 	ui.cylinderTableWidget->setModel(cylinders);
@@ -64,6 +66,8 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	connect(cylinders, &CylindersModel::dataChanged, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
 	connect(cylinders, &CylindersModel::rowsInserted, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
 	connect(cylinders, &CylindersModel::rowsRemoved, plannerModel, &DivePlannerPointsModel::cylinderModelEdited);
+
+	ui.cylinderTableWidget->view()->horizontalHeader()->setStretchLastSection(true);
 
 	ui.waterType->setItemData(0, FRESHWATER_SALINITY);
 	ui.waterType->setItemData(1, SEAWATER_SALINITY);
