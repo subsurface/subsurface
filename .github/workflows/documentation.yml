@@ -83,7 +83,7 @@ jobs:
         for file in user-manual*.html.git mobile-manual-v3.html.git; do
           diff -uw <(tail -n +8 $file | head -n -5) <(tail -n +8 ${file%.git} | head -n -5)
           if [ $? -ne 0 ] ; then
-            echo "The html version of the documentation in the repository (\`$file\`) does not match the does not match the latest generated html version.\nPlease grab the latest version from the artifacts of the 'Documentation' workflow (\`${file%.git}\`) and commit it to the repository as \`$file\`."
+            echo "The html version of the documentation in the repository (\`$file\`) does not match the latest generated html version.\nPlease grab the latest version from the artifacts of the 'Documentation' workflow (\`${file%.git}\`) and commit it to the repository as \`$file\`."
             exit 1
           fi
         done
