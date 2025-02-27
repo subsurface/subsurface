@@ -68,8 +68,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	QSettings s;
 	s.beginGroup("DiveListColumnState");
 	for (int i = 0; i < model()->columnCount(); i++) {
-		QString title = QString("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
-		QString settingName = QString("showColumn%1").arg(i);
+		QString title = QStringLiteral("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
+		QString settingName = QStringLiteral("showColumn%1").arg(i);
 		QAction *a = new QAction(title, header());
 		bool showHeaderFirstRun = i == DiveTripModelBase::NR ||
 					  i == DiveTripModelBase::DATE ||
@@ -103,11 +103,11 @@ DiveListView::~DiveListView()
 			continue;
 		// we used to hardcode them all to 100 - so that might still be in the settings
 		if (columnWidth(i) == 100 || columnWidth(i) == initialColumnWidths[i])
-			settings.remove(QString("colwidth%1").arg(i));
+			settings.remove(QStringLiteral("colwidth%1").arg(i));
 		else
-			settings.setValue(QString("colwidth%1").arg(i), columnWidth(i));
+			settings.setValue(QStringLiteral("colwidth%1").arg(i), columnWidth(i));
 	}
-	settings.remove(QString("colwidth%1").arg(DiveTripModelBase::COLUMNS - 1));
+	settings.remove(QStringLiteral("colwidth%1").arg(DiveTripModelBase::COLUMNS - 1));
 	settings.endGroup();
 }
 
@@ -176,7 +176,7 @@ void DiveListView::setColumnWidths()
 	for (int i = DiveTripModelBase::NR; i < DiveTripModelBase::COLUMNS; i++) {
 		if (isColumnHidden(i))
 			continue;
-		QVariant width = settings.value(QString("colwidth%1").arg(i));
+		QVariant width = settings.value(QStringLiteral("colwidth%1").arg(i));
 		if (width.isValid())
 			setColumnWidth(i, width.toInt());
 		else
@@ -831,15 +831,11 @@ void DiveListView::shiftTimes()
 void DiveListView::loadImages()
 {
 	QStringList m_filters = mediaExtensionFilters();
-	QStringList i_filters = imageExtensionFilters();
-	QStringList v_filters = videoExtensionFilters();
 	QStringList fileNames = QFileDialog::getOpenFileNames(this,
 							      tr("Open media files"),
 							      lastUsedImageDir(),
-							      QString("%1 (%2);;%3 (%4);;%5 (%6);;%7 (*.*)")
+							      QStringLiteral("%1 (%2);;%3 (*.*)")
 							      .arg(tr("Media files"), m_filters.join(" ")
-							      , tr("Image files"), i_filters.join(" ")
-							      , tr("Video files"), v_filters.join(" ")
 							      , tr("All files")));
 
 	if (fileNames.isEmpty())
