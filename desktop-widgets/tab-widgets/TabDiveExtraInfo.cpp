@@ -12,6 +12,8 @@ TabDiveExtraInfo::TabDiveExtraInfo(MainTab *parent) :
 {
 	ui->setupUi(this);
 	ui->extraData->setModel(extraDataModel);
+
+	ui->extraData->horizontalHeader()->setStretchLastSection(true);
 }
 
 TabDiveExtraInfo::~TabDiveExtraInfo()

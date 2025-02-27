@@ -58,6 +58,8 @@ TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 	ui.cylinders->view()->setColumnHidden(CylindersModel::WORKINGPRESS_INT, true);
 	ui.cylinders->view()->setColumnHidden(CylindersModel::SIZE_INT, true);
 
+	ui.cylinders->view()->horizontalHeader()->setStretchLastSection(true);
+
 	ui.cylinders->setTitle(tr("Cylinders"));
 	ui.cylinders->setBtnToolTip(tr("Add cylinder"));
 	connect(ui.cylinders, &TableView::addButtonClicked, this, &TabDiveEquipment::addCylinder_clicked);
@@ -65,6 +67,8 @@ TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 	ui.weights->setTitle(tr("Weights"));
 	ui.weights->setBtnToolTip(tr("Add weight system"));
 	connect(ui.weights, &TableView::addButtonClicked, this, &TabDiveEquipment::addWeight_clicked);
+
+	ui.weights->view()->horizontalHeader()->setStretchLastSection(true);
 
 	QAction *action = new QAction(tr("OK"), this);
 	connect(action, &QAction::triggered, this, &TabDiveEquipment::closeWarning);
