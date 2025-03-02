@@ -339,8 +339,6 @@ cables usually have a full-sized ("Type A") male USB plug
 on one end which plugs into the USB port of a desktop/laptop computer. For downloads to a mobile device
 one needs a USB OTG (USB On-The-Go) cable.
 
-[width="100%", frame="None"]
-|=======
 a|image::mobile-images/USB-OTG.jpg["FIGURE: USB-OTG cable",align="center"] | 
 In most cases it is required to plug the USB
 cable "normally" used with the dive computer into a USB OTG cable which,
@@ -352,7 +350,6 @@ of the USB cable "normally" used (see image below). This means that two cables a
 the dive computer to the mobile device. *Not all Android devices support OTG cables*
 and even on some devices that do support those cables in general, as mentioned above _Subsurface-mobile_
 does usually not support cable based downloads, except on some older Android devices.
-|=======
 
 _Subsurface_ remembers the settings for dive computers that
 have been successfully used (image on right, below). These appear
@@ -465,8 +462,6 @@ image::mobile-images/GPS-config.jpg["FIGURE: GPS configure",align="center"]
 
 === Collecting GPS positions
 
-[width="100%", frame="None"]
-|=======
 a|image::mobile-images/GPSstart.jpg["FIGURE: GPS start",align="center"] | 
 On the _Main Menu_ select _GPS -> Run location service_.
 _Subsurface-mobile_ starts to collect GPS locations automatically,
@@ -476,7 +471,6 @@ of the menu, indicating that the service is active. After return from
 the dive trip, deactivate the collection of GPS data by tapping
 the option _GPS -> Disable location service_. The GPS symbol at the bottom
 of all menus disappears.
-|=======
 
 === Viewing GPS data
 
@@ -517,8 +511,6 @@ image::mobile-images/SettingsCloudTheme.jpg["FIGURE: Settings: Cloud &amp; Theme
 
 === Changing the color theme of _Subsurface-mobile_
 
-[width="100%", frame="None"]
-|=======
 a|image::mobile-images/PinkTheme.jpg["FIGURE: GPS start",align="center"] | 
 _Subsurface-mobile_ has three color schemes to please users with different
 tastes (see image above). This user manual shows the default color scheme, comprising blue
@@ -526,7 +518,6 @@ colors. Change to a pink or a dark color scheme by opening the main menu,
 tap _Settings_, and scroll to the section with heading _Theme_ (see image above).
 Select the appropriate color theme by dragging the appropriate slider on the right-hand.
 On the left is the dive list after selecting the Pink theme.
-|=======
 
 === Configuring the GPS webservice
 

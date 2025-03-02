@@ -146,6 +146,8 @@ else
 	touch Release
 fi
 
+BUILD_EXTRA_ARGS="$@"
+
 cd "$BASEDIR"/subsurface
 
 # libdivecomputer
@@ -303,6 +305,7 @@ cd "$BUILDDIR"/subsurface
 	-DFTDISUPPORT=$FTDI \
 	-DLIBRAW_SUPPORT=$LIBRAW \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \
+	$BUILD_EXTRA_ARGS \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
