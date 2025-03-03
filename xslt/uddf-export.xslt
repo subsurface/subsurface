@@ -687,25 +687,27 @@
             </ratingvalue>
           </rating>
         </xsl:if>
-        <visibility>
-            <xsl:choose>
-              <xsl:when test="./@visibility = 1">
-                <xsl:value-of select="1"/>
-              </xsl:when>
-              <xsl:when test="./@visibility = 2">
-                <xsl:value-of select="3"/>
-              </xsl:when>
-              <xsl:when test="./@visibility = 3">
-                <xsl:value-of select="5"/>
-              </xsl:when>
-              <xsl:when test="./@visibility = 4">
-                <xsl:value-of select="10"/>
-              </xsl:when>
-              <xsl:when test="./@visibility = 5">
-                <xsl:value-of select="15"/>
-              </xsl:when>
-            </xsl:choose>
-        </visibility>
+        <xsl:if test="./@visibility">
+          <visibility>
+              <xsl:choose>
+                <xsl:when test="./@visibility = 1">
+                  <xsl:value-of select="1"/>
+                </xsl:when>
+                <xsl:when test="./@visibility = 2">
+                  <xsl:value-of select="3"/>
+                </xsl:when>
+                <xsl:when test="./@visibility = 3">
+                  <xsl:value-of select="5"/>
+                </xsl:when>
+                <xsl:when test="./@visibility = 4">
+                  <xsl:value-of select="10"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="15"/>
+                </xsl:when>
+              </xsl:choose>
+          </visibility>
+        </xsl:if>
       </informationafterdive>
 
     </dive>
