@@ -111,6 +111,7 @@ private:
 	void dragMoveEvent(QDragMoveEvent *event) override;
 
 	void replot();
+	void diveComputerEdited(dive &dive, divecomputer &dc);
 	void setZoom(int level);
 	void addGasSwitch(int tank, int seconds);
 	void changeGas(int index, int newCylinderId);

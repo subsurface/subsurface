@@ -1063,43 +1063,43 @@ int check_dc_cylinder_use(struct dive &dive, struct divecomputer &dc)
 }
 
 
-static void fixup_dive_dc(struct dive &dive, struct divecomputer &dc)
+void dive::fixup_dive_dc(struct divecomputer &dc)
 {
 	/* Fixup duration and mean depth */
 	fixup_dc_duration(dc);
 
 	/* Fix up sample depth data */
-	fixup_dc_depths(dive, dc);
+	fixup_dc_depths(*this, dc);
 
 	/* Fix up first sample ndl data */
 	fixup_dc_ndl(dc);
 
 	/* Fix up dive temperatures based on dive computer samples */
-	fixup_dc_temp(dive, dc);
+	fixup_dc_temp(*this, dc);
 
 	/* Fix up gas switch events */
-	fixup_dc_gasswitch(dive, dc);
+	fixup_dc_gasswitch(*this, dc);
 
 	/* Fix up cylinder ids in pressure sensors */
-	fixup_dc_sample_sensors(dive, dc);
+	fixup_dc_sample_sensors(*this, dc);
 
 	/* Fix up cylinder pressures based on DC info */
-	fixup_dive_pressures(dive, dc);
+	fixup_dive_pressures(*this, dc);
 
-	fixup_dc_events(dive, dc);
+	fixup_dc_events(*this, dc);
 
 	/* Fixup CCR / PSCR dives with o2sensor values, but without no_o2sensors */
 	fixup_no_o2sensors(dc);
 
 	/* Check cylinder use */
-	check_dc_cylinder_use(dive, dc);
+	check_dc_cylinder_use(*this, dc);
 
 	/* If there are no samples, generate a fake profile based on depth and time */
 	if (dc.samples.empty())
 		fake_dc(&dc);
 }
 
-void dive::fixup_no_cylinder()
+void dive::fixup_dive()
 {
 	sanitize_cylinder_info(*this);
 	maxcns = cns;
@@ -1112,7 +1112,7 @@ void dive::fixup_no_cylinder()
 	update_min_max_temperatures(*this, watertemp);
 
 	for (auto &dc: dcs)
-		fixup_dive_dc(*this, dc);
+		fixup_dive_dc(dc);
 
 	fixup_water_salinity(*this);
 	if (!surface_pressure.mbar)

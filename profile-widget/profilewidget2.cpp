@@ -83,7 +83,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &ProfileWidget2::pictureOffsetChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &ProfileWidget2::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::deviceEdited, this, &ProfileWidget2::replot);
-	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, &ProfileWidget2::replot);
+	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, &ProfileWidget2::diveComputerEdited);
 #endif // SUBSURFACE_MOBILE
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
@@ -164,6 +164,12 @@ void ProfileWidget2::setupItemOnScene()
 	mouseFollowerHorizontal->setZValue(9996);
 	mouseFollowerVertical->setZValue(9995);
 #endif
+}
+
+void ProfileWidget2::diveComputerEdited(dive &dive, divecomputer &dc)
+{
+	if (d == &dive && d->get_dc(this->dc) == &dc)
+		replot();
 }
 
 void ProfileWidget2::replot()
