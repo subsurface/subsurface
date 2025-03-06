@@ -33,6 +33,7 @@ private slots:
 	void editWeightWidget(const QModelIndex &index);
 	void on_suit_editingFinished();
 	void divesEdited(int count);
+	void diveComputerEdited(dive &dive, divecomputer &dc);
 
 private:
 	Ui::TabDiveEquipment ui;
@@ -44,6 +45,7 @@ private:
 	TankUseDelegate tankUseDelegate;
 	SensorDelegate sensorDelegate;
 	WSInfoDelegate wsInfoDelegate;
+	void setCylinderColumnVisibility();
 };
 
 #endif // TAB_DIVE_EQUIPMENT_H
