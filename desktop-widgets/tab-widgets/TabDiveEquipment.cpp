@@ -49,6 +49,7 @@ TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
 	connect(cylindersModel, &CylindersModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 	connect(weightModel, &WeightModel::divesEdited, this, &TabDiveEquipment::divesEdited);
+	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, &TabDiveEquipment::diveComputerEdited);
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, &tankInfoDelegate);
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, &tankUseDelegate);
@@ -242,6 +243,11 @@ void TabDiveEquipment::divesEdited(int i)
 	ui.multiDiveWarningMessage->setCloseButtonVisible(false);
 	ui.multiDiveWarningMessage->setText(tr("Warning: edited %1 dives").arg(i));
 	ui.multiDiveWarningMessage->show();
+}
+
+void TabDiveEquipment::diveComputerEdited(dive &dive, divecomputer &dc)
+{
+	dive.fixup_dive_dc(dc);
 }
 
 void TabDiveEquipment::on_suit_editingFinished()

@@ -1311,7 +1311,7 @@ void EditSensors::mapSensors(int toCyl, int fromCyl)
 				sample.sensor[s] = fromCyl;
 		}
 	}
-	emit diveListNotifier.diveComputerEdited(dc);
+	emit diveListNotifier.diveComputerEdited(*d, *dc);
 	d->invalidate_cache(); // Ensure that dive is written in git_save()
 }
 

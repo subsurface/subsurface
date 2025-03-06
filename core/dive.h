@@ -89,7 +89,8 @@ struct dive {
 
 	void clear();
 	int number_of_computers() const;
-	void fixup_no_cylinder();		/* to fix cylinders, we need the divelist (to calculate cns) */
+	void fixup_dive();
+	void fixup_dive_dc(struct divecomputer &dc);
 	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
 	temperature_t dc_airtemp() const;	/* average over divecomputers */
