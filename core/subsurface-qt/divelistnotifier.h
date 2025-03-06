@@ -95,7 +95,7 @@ signals:
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
 	void divesImported(); // A general signal when multiple dives have been imported.
 
-	void diveComputerEdited(divecomputer *dc);
+	void diveComputerEdited(dive &dive, divecomputer &dc);
 
 	void cylindersReset(const QVector<dive *> &dives);
 	void cylinderAdded(dive *d, int pos);
