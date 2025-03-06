@@ -339,30 +339,48 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	if (height <= 50.0 * dpr)
 		return clear();
 
-	// The rest is laid out dynamically. Give at least 50% to the actual profile.
-	// The max heights are given for DPR=1, i.e. a ca. 800x600 pixels profile.
-	const double minProfileFraction = 0.5;
-        VerticalAxisLayout secondaryAxes[] = {
+	// The fraction of the gasYAxis can be customized through prefs.gasplot_frac
+	// Fractions for other YAxes (percentagegraph, HartBeat, temperature) are fixed (for now)
+	// The profile should have at least minProfileFraction
+	const double minProfileFraction = 0.1;		// changed this to 0.1, to allow for much larger gasplot_frac!
+	const double heartBeatFraction = 0.125;		// these fraction were determined by their earlier pixel-
+	const double percentagegraphFraction = 0.083;	//  height dived by 600. looks much like before.
+	double temperatureFraction = 0.14;        //  0.14 looks like before
+
+	// first we sum up the fixed fractions of all displayed axes
+	double _sumOfFractions = 0;
+	if (!(ppGraphsEnabled(currentdc, simplified) && simplified) )  // dont add temperature in 'simplified' with ppGraphs
+		_sumOfFractions += temperatureFraction;
+	if (prefs.hrgraph && diveHasHeartBeat)
+		_sumOfFractions += heartBeatFraction;
+	if (prefs.percentagegraph)
+		_sumOfFractions += percentagegraphFraction;
+
+	// lower gasplot_frac until minProfileFraction is reached
+	// the max value of 0.7 as set through tec-settings may be too mauch in some circumstances
+	while ( (1 - (_sumOfFractions + prefs.gasplot_frac)) < minProfileFraction )
+		prefs.gasplot_frac -= 0.05;
+
+	double _used_gasplot_frac;
+	if (prefs.zoomed_plot) {
+		_used_gasplot_frac = prefs.gasplot_frac;
+		if (ppGraphsEnabled(currentdc, simplified))
+			temperatureFraction = 0.083;  // with gasplot-zoom slightly reduce temp-plot
+	} else {
+		_used_gasplot_frac = 0.1;
+	}
+
+	if (simplified)  // simplified-mobile (make them a bit larger)
+		_used_gasplot_frac = 0.2;		// until configurable we'll use a larger fixed value
+
+	VerticalAxisLayout secondaryAxes[] = {
 		// Note: axes are listed from bottom to top, since they are added that way.
-		{ heartBeatAxis, 75.0, 0.0, prefs.hrgraph && diveHasHeartBeat },
-		{ percentageAxis, 50.0, 0.0, prefs.percentagegraph },
-		{ gasYAxis, 75.0, 0.0, ppGraphsEnabled(currentdc, simplified) },
-		{ temperatureAxis, 50.0, 2.0, true },
+		// using absolute numbers here causes troubles with small windows! all changed to fractions of height
+		{ heartBeatAxis, heartBeatFraction * height, 0.0, prefs.hrgraph && diveHasHeartBeat },
+		{ percentageAxis, percentagegraphFraction * height, 0.0, prefs.percentagegraph },
+		{ gasYAxis, _used_gasplot_frac * height, 0.0, ppGraphsEnabled(currentdc, simplified) },
+		{ temperatureAxis, temperatureFraction * height, 2.0, !(ppGraphsEnabled(currentdc, simplified) && simplified) }, //set temp invisible for simplified with ppGraphs
         };
-
-	// A loop is probably easier to read than std::accumulate.
-	double totalSecondaryHeight = 0.0;
-	for (const VerticalAxisLayout &l: secondaryAxes) {
-		if (l.visible)
-			totalSecondaryHeight += l.height * dpr;
-	}
-
-	if (totalSecondaryHeight > height * minProfileFraction) {
-		// Use 50% for the profile and the rest for the remaining graphs, scaled by their maximum height.
-		double remainingSpace = height * minProfileFraction;
-		for (VerticalAxisLayout &l: secondaryAxes)
-			l.height *= remainingSpace / totalSecondaryHeight;
-	}
 
 	for (const VerticalAxisLayout &l: secondaryAxes) {
 		l.axis->setVisible(l.visible);

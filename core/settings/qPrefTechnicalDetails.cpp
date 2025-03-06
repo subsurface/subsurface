@@ -22,6 +22,7 @@ void qPrefTechnicalDetails::loadSync(bool doSync)
 	disk_dcceiling(doSync);
 	disk_display_deco_mode(doSync);
 	disk_ead(doSync);
+	disk_gasplot_frac(doSync);
 	disk_gfhigh(doSync);
 	disk_gflow(doSync);
 	disk_gf_low_at_maxdepth(doSync);
@@ -58,6 +59,8 @@ HANDLE_PREFERENCE_BOOL(TechnicalDetails, "dcceiling", dcceiling);
 HANDLE_PREFERENCE_ENUM(TechnicalDetails, deco_mode, "display_deco_mode", display_deco_mode);
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "ead", ead);
+
+HANDLE_PREFERENCE_DOUBLE(TechnicalDetails, "gasplot_frac", gasplot_frac);
 
 void qPrefTechnicalDetails::set_gfhigh(int value)
 {
