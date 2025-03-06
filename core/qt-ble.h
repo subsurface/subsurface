@@ -28,6 +28,7 @@ public:
 	dc_status_t write(const void* data, size_t size, size_t *actual);
 	dc_status_t read(void* data, size_t size, size_t *actual);
 	dc_status_t get_name(char *res, size_t size);
+	dc_status_t read_characteristic(const QBluetoothUuid &uuid, char *res, size_t size);
 	dc_status_t poll(int timeout);
 
 	inline QLowEnergyService *preferredService() { return preferred; }
@@ -43,7 +44,8 @@ public slots:
 	dc_status_t setupHwTerminalIo(const QList<QLowEnergyCharacteristic> &allC);
 	dc_status_t setHwCredit(unsigned int c);
 private:
-	QVector<QLowEnergyService *> services;
+	QVector<QLowEnergyService *> serialCandidateServices;
+	QVector<QLowEnergyService *> allSafeServices;
 
 	QLowEnergyController *controller;
 	QLowEnergyService *preferred = nullptr;
