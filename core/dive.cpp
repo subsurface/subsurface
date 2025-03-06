@@ -850,8 +850,8 @@ static void fixup_dc_temp(struct dive &dive, struct divecomputer &dc)
 /* Remove redundant pressure information */
 static void simplify_dc_pressures(struct divecomputer &dc)
 {
-	int lastindex[2] = { -1, -1 };
-	int lastpressure[2] = { 0 };
+	int lastindex[MAX_SENSORS] = { NO_SENSOR };
+	int lastpressure[MAX_SENSORS] = { 0 };
 
 	for (auto &sample: dc.samples) {
 		int j;
@@ -1015,7 +1015,7 @@ static void fixup_dc_sample_sensors(struct dive &dive, struct divecomputer &dc)
 			int sensor = sample.sensor[j];
 
 			// No invalid sensor ID's, please
-			if (sensor < 0 || sensor > MAX_SENSORS) {
+			if (sensor < 0) {
 				sample.sensor[j] = NO_SENSOR;
 				sample.pressure[j] = 0_bar;
 				continue;
