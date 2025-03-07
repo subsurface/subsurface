@@ -205,9 +205,6 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		return;
 	}
 
-	auto service = controller->createServiceObject(newService, this);
-	allSafeServices.append(service);
-
 	//
 	// If it's a known serial service, clear any other previous
 	// services we've found - we'll use this one.
@@ -227,7 +224,7 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	details = is_known_serial_service(newService);
 	if (details) {
 		report_info(" .. recognized service %s", details);
-		serialCandidateServices.clear();
+		services.clear();
 	} else {
 		bool isStandardUuid = false;
 
@@ -238,7 +235,7 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		}
 	}
 
-
+	auto service = controller->createServiceObject(newService, this);
 	if (service) {
 		// provide some visibility into what's happening in the log
 		service->connect(service, &QLowEnergyService::stateChanged,[=](QLowEnergyService::ServiceState newState) {
@@ -252,7 +249,7 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 				 [=](QLowEnergyService::ServiceError newError) {
 			report_info("error discovering service details %d", static_cast<int>(newError));
 		});
-		serialCandidateServices.append(service);
+		services.append(service);
 		report_info("starting service characteristics discovery");
 		service->discoverDetails();
 	}
@@ -271,7 +268,7 @@ BLEObject::~BLEObject()
 {
 	report_info("Deleting BLE object");
 
-	qDeleteAll(allSafeServices);
+	qDeleteAll(services);
 
 	delete controller;
 }
@@ -420,7 +417,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 dc_status_t BLEObject::select_preferred_service()
 {
 	// Wait for each service to finish discovering
-	for (const QLowEnergyService *s: serialCandidateServices) {
+	for (const QLowEnergyService *s: services) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 		WAITFOR(s->state() != QLowEnergyService::RemoteServiceDiscovering, BLE_TIMEOUT);
 		if (s->state() == QLowEnergyService::RemoteServiceDiscovering)
@@ -432,7 +429,7 @@ dc_status_t BLEObject::select_preferred_service()
 	}
 
 	// Print out the services for debugging
-	for (const QLowEnergyService *s: serialCandidateServices) {
+	for (const QLowEnergyService *s: services) {
 		report_info("Found service %s %s", to_str(s->serviceUuid()).c_str(), qPrintable(s->serviceName()));
 
 		for (const QLowEnergyCharacteristic &c: s->characteristics()) {
@@ -444,7 +441,7 @@ dc_status_t BLEObject::select_preferred_service()
 	}
 
 	// Pick the preferred one
-	for (QLowEnergyService *s: serialCandidateServices) {
+	for (QLowEnergyService *s: services) {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 		if (s->state() != QLowEnergyService::RemoteServiceDiscovered)
 #else
@@ -769,27 +766,30 @@ dc_status_t BLEObject::get_name(char *data, size_t size)
 
 dc_status_t BLEObject::read_characteristic(const QBluetoothUuid &uuid, char *res, size_t size)
 {
-	for (QLowEnergyService *s: allSafeServices) {
-		const QList<QLowEnergyCharacteristic> chars = s->characteristics();
-		for (const QLowEnergyCharacteristic& ch : chars) {
-			if (ch.uuid() == uuid) {
-				report_info("Reading BLE characteristic %s from service %s",
-					to_str(uuid).c_str(),
-					to_str(s->serviceUuid()).c_str());
-				s->readCharacteristic(ch);
-				QByteArray val = ch.value();
-				if ((size_t)val.size() != size) {
-					report_error("unexpected read characteristic size (%lld): expected %lld", (long long)val.size(), (long long)size);
-					return DC_STATUS_DATAFORMAT;
-				}
-				report_info("Obtained characteristic value: %s", val.toHex().toStdString().c_str());
-				memcpy(res, val.data(), size);
-				return DC_STATUS_SUCCESS;
-			}
-		}
+	auto s = preferredService();
+	if (!s) {
+		return DC_STATUS_NODEVICE;
 	}
+
+	const QList<QLowEnergyCharacteristic> chars = s->characteristics();
+	for (const QLowEnergyCharacteristic& ch : chars) {
+		if (ch.uuid() != uuid) {
+			continue;
+		}
+		report_info("Reading BLE characteristic %s", to_str(uuid).c_str());
+		s->readCharacteristic(ch);
+		QByteArray val = ch.value();
+		if ((size_t)val.size() != size) {
+			report_error("Unexpected read characteristic size (%lld): expected %lld", (long long)val.size(), (long long)size);
+			return DC_STATUS_DATAFORMAT;
+		}
+		report_info("Obtained characteristic value: %s", val.toHex().toStdString().c_str());
+		memcpy(res, val.data(), size);
+		return DC_STATUS_SUCCESS;
+	}
+
 	// Not found
-	report_error("characteristic %s not found in any of the services", to_str(uuid).c_str());
+	report_error("characteristic %s not found", to_str(uuid).c_str());
 	return DC_STATUS_NOACCESS;
 }
 
