@@ -138,7 +138,7 @@ static const char *match_uuid_list(const QBluetoothUuid &match, const struct uui
 
 //
 // Known BLE GATT service UUID's that we should prefer for the serial
-// emulation.
+// emulation. Services listed first have higher precendence.
 //
 // The Bluetooth SIG is a disgrace, and never standardized any serial
 // communication over BLE. They should just have specified a standard
@@ -154,6 +154,7 @@ static const char *match_uuid_list(const QBluetoothUuid &match, const struct uui
 // Oh. It did, didn't it?
 //
 static const struct uuid_match serial_service_uuids[] = {
+	{ "6e400001-b5a3-f393-e0a9-e50e24dc10b8", "Cressi"},
 	{ "0000fefb-0000-1000-8000-00805f9b34fb", "Heinrichs-Weikamp (Telit/Stollmann)" },
 	{ "2456e1b9-26e2-8f83-e744-f34f01e9d701", "Heinrichs-Weikamp (U-Blox)" },
 	{ "544e326b-5b72-c6b0-1c46-41c1bc448118", "Mares BlueLink Pro" },
@@ -205,10 +206,6 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		return;
 	}
 
-	//
-	// If it's a known serial service, clear any other previous
-	// services we've found - we'll use this one.
-	//
 	// Note that if it's not _known_ to be good, we'll ignore
 	// any standard services. They are usually things like battery
 	// status or device name services.
@@ -224,7 +221,6 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	details = is_known_serial_service(newService);
 	if (details) {
 		report_info(" .. recognized service %s", details);
-		services.clear();
 	} else {
 		bool isStandardUuid = false;
 
@@ -426,6 +422,29 @@ dc_status_t BLEObject::select_preferred_service()
 		if (s->state() == QLowEnergyService::DiscoveringServices)
 #endif
 			report_info(" .. service %s still hasn't completed discovery - trouble ahead", to_str(s->serviceUuid()).c_str());
+	}
+
+	// Discard every other service if a known service is found
+	QLowEnergyService *known = NULL;
+	for (QLowEnergyService *s: services) {
+		const struct uuid_match *array = serial_service_uuids;
+		const char *uuid;
+
+		// prioritize known services according to their ordering in serial_service_uuids
+		while ((uuid = array->uuid) != NULL) {
+			if (s->serviceUuid() == QBluetoothUuid(QUuid(uuid))) {
+				known = s;
+				break;
+			}
+			array++;
+		}
+		if (known) {
+			break;
+		}
+	}
+	if (known) {
+		services.clear();
+		services.append(known);
 	}
 
 	// Print out the services for debugging
