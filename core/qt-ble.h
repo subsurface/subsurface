@@ -44,8 +44,7 @@ public slots:
 	dc_status_t setupHwTerminalIo(const QList<QLowEnergyCharacteristic> &allC);
 	dc_status_t setHwCredit(unsigned int c);
 private:
-	QVector<QLowEnergyService *> serialCandidateServices;
-	QVector<QLowEnergyService *> allSafeServices;
+	QVector<QLowEnergyService *> services;
 
 	QLowEnergyController *controller;
 	QLowEnergyService *preferred = nullptr;
