@@ -154,17 +154,17 @@ static const char *match_uuid_list(const QBluetoothUuid &match, const struct uui
 // Oh. It did, didn't it?
 //
 static const struct uuid_match serial_service_uuids[] = {
-	{ "6e400001-b5a3-f393-e0a9-e50e24dc10b8", "Cressi"},
 	{ "0000fefb-0000-1000-8000-00805f9b34fb", "Heinrichs-Weikamp (Telit/Stollmann)" },
 	{ "2456e1b9-26e2-8f83-e744-f34f01e9d701", "Heinrichs-Weikamp (U-Blox)" },
 	{ "544e326b-5b72-c6b0-1c46-41c1bc448118", "Mares BlueLink Pro" },
-	{ "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
 	{ "98ae7120-e62e-11e3-badd-0002a5d5c51b", "Suunto (EON Steel/Core, G5)" },
 	{ "cb3c4555-d670-4670-bc20-b61dbc851e9a", "Pelagic (i770R, i200C, Pro Plus X, Geo 4.0)" },
 	{ "ca7b0001-f785-4c38-b599-c7c5fbadb034", "Pelagic (i330R, DSX)" },
 	{ "fdcdeaaa-295d-470e-bf15-04217b7aa0a0", "ScubaPro (G2, G3)"},
 	{ "fe25c237-0ece-443c-b0aa-e02033e7029d", "Shearwater (Perdix/Teric/Peregrine/Tern)" },
 	{ "0000fcef-0000-1000-8000-00805f9b34fb", "Divesoft" },
+        { "6e400001-b5a3-f393-e0a9-e50e24dc10b8", "Cressi"}, // Must have higher priority than Nordic UART
+        { "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
 	{ NULL, }
 };
 
