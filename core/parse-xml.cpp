@@ -35,6 +35,7 @@
 #include "range.h"
 #include "sample.h"
 #include "tag.h"
+#include "tanksensormapping.h"
 #include "version.h"
 #include "xmlparams.h"
 
@@ -282,6 +283,17 @@ static void extra_data_end(struct parser_state *state)
 	// don't save partial structures - we must have both key and value
 	if (!state->cur_extra_data.key.empty() && !state->cur_extra_data.value.empty())
 		add_extra_data(get_dc(state), state->cur_extra_data.key.c_str(), state->cur_extra_data.value.c_str());
+}
+
+static void tank_sensor_mapping_start(struct parser_state *state)
+{
+	state->cur_tank_sensor_mapping.sensor_id = 0;
+	state->cur_tank_sensor_mapping.cylinder_index = 0;
+}
+
+static void tank_sensor_mapping_end(struct parser_state *state)
+{
+	get_dc(state)->tank_sensor_mappings.push_back(tank_sensor_mapping { state->cur_tank_sensor_mapping.sensor_id, state->cur_tank_sensor_mapping.cylinder_index });
 }
 
 static void weight(const char *buffer, weight_t *weight, struct parser_state *state)
@@ -816,6 +828,10 @@ static int match_dc_data_fields(struct divecomputer *dc, const char *name, char 
 	if (MATCH("key.extradata", utf8_string_std, &state->cur_extra_data.key))
 		return 1;
 	if (MATCH("value.extradata", utf8_string_std, &state->cur_extra_data.value))
+		return 1;
+	if (MATCH("sensorid.tanksensormapping", get_index, (int *)&state->cur_tank_sensor_mapping.sensor_id))
+		return 1;
+	if (MATCH("cylinderindex.tanksensormapping", get_index, (int *)&state->cur_tank_sensor_mapping.cylinder_index))
 		return 1;
 	if (MATCH("divemode", get_dc_type, &dc->divemode))
 		return 1;
@@ -1664,6 +1680,7 @@ static struct nesting {
 	  { "userid", userid_start, userid_stop},
 	  { "picture", picture_start, picture_end },
 	  { "extradata", extra_data_start, extra_data_end },
+	  { "tanksensormapping", tank_sensor_mapping_start, tank_sensor_mapping_end },
 
 	  /* Import type recognition */
 	  { "Divinglog", DivingLog_importer },

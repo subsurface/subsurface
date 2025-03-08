@@ -10,6 +10,7 @@
 struct extra_data;
 struct event;
 struct sample;
+struct tank_sensor_mapping;
 
 /* Is this header the correct place? */
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
@@ -43,6 +44,7 @@ struct divecomputer {
 	std::vector<struct sample> samples;
 	std::vector<struct event> events;
 	std::vector<struct extra_data> extra_data;
+	std::vector<struct tank_sensor_mapping> tank_sensor_mappings;
 
 	divecomputer();
 	~divecomputer();

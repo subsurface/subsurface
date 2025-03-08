@@ -24,6 +24,7 @@
 #include "sample.h"
 #include "subsurface-string.h"
 #include "subsurface-time.h"
+#include "tanksensormapping.h"
 #include "trip.h"
 #include "file.h"
 #include "membuffer.h"
@@ -399,6 +400,16 @@ static void save_extra_data(struct membuffer *b, const struct divecomputer &dc)
 	}
 }
 
+static void save_tank_sensor_mappings(struct membuffer *b, const struct divecomputer &dc)
+{
+	for (const auto &tank_sensor_mapping: dc.tank_sensor_mappings) {
+		put_string(b, "  <tanksensormapping");
+		show_integer(b, tank_sensor_mapping.sensor_id, "sensorid='", "'");
+		show_integer(b, tank_sensor_mapping.cylinder_index, "cylinderindex='", "'");
+		put_string(b, " />\n");
+	}
+}
+
 static void show_date(struct membuffer *b, timestamp_t when)
 {
 	struct tm tm;
@@ -455,6 +466,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 	save_salinity(b, dc);
 	put_duration(b, dc.surfacetime, "  <surfacetime>", " min</surfacetime>\n");
 	save_extra_data(b, dc);
+	save_tank_sensor_mappings(b, dc);
 	save_events(b, dive, dc);
 	save_samples(b, dive, dc);
 
