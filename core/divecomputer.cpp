@@ -5,6 +5,7 @@
 #include "event.h"
 #include "extradata.h"
 #include "pref.h"
+#include "tanksensormapping.h"
 #include "sample.h"
 #include "subsurface-string.h"
 

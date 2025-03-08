@@ -36,6 +36,7 @@
 #include "range.h"
 #include "gettext.h"
 #include "tag.h"
+#include "tanksensormapping.h"
 #include "subsurface-time.h"
 
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
@@ -124,6 +125,13 @@ static void save_extra_data(struct membuffer *b, const struct divecomputer &dc)
 	for (const auto &ed: dc.extra_data) {
 		if (!ed.key.empty() && !ed.value.empty())
 			put_format(b, "keyvalue \"%s\" \"%s\"\n", ed.key.c_str(), ed.value.c_str());
+	}
+}
+
+static void save_tank_sensor_mappings(struct membuffer *b, const struct divecomputer &dc)
+{
+	for (const auto &tank_sensor_mapping: dc.tank_sensor_mappings) {
+		put_format(b, "tanksensormapping \"%d\" \"%d\"\n", tank_sensor_mapping.sensor_id, tank_sensor_mapping.cylinder_index);
 	}
 }
 
@@ -429,6 +437,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 	put_duration(b, dc.surfacetime, "surfacetime ", "min\n");
 
 	save_extra_data(b, dc);
+	save_tank_sensor_mappings(b, dc);
 	save_events(b, dive, dc);
 	save_samples(b, dive, dc);
 }

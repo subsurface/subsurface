@@ -26,6 +26,7 @@
 #include "range.h"
 #include "sample.h"
 #include "tag.h"
+#include "tanksensormapping.h"
 #include "trip.h"
 
 // For user visible text but still not translated
@@ -1304,6 +1305,19 @@ static void merge_extra_data(struct divecomputer &res,
 	}
 }
 
+static void merge_tank_sensor_mappings(struct divecomputer &res,
+			  const struct divecomputer &a, const struct divecomputer &b)
+{
+	for (auto &tank_sensor_mapping: b.tank_sensor_mappings) {
+		if (std::find_if(a.tank_sensor_mappings.begin(), a.tank_sensor_mappings.end(), [&tank_sensor_mapping](const struct tank_sensor_mapping &a) {
+			return a.sensor_index == tank_sensor_mapping.sensor_index;
+		}) != a.tank_sensor_mappings.end())
+			continue;
+
+		res.tank_sensor_mappings.push_back(tank_sensor_mapping);
+	}
+}
+
 static std::string merge_text(const std::string &a, const std::string &b, const char *sep)
 {
 	if (a.empty())
@@ -2176,6 +2190,7 @@ static void interleave_dive_computers(struct dive &res,
 			merge_events(res, newdc, dc1, *match, cylinders_map_a, cylinders_map_b, offset);
 			merge_samples(newdc, dc1, *match, cylinders_map_a, cylinders_map_b, offset);
 			merge_extra_data(newdc, dc1, *match);
+			merge_tank_sensor_mappings(newdc, dc1, *match);
 			/* Use the diveid of the later dive! */
 			if (offset > 0)
 				newdc.diveid = match->diveid;

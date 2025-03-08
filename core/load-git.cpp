@@ -29,6 +29,7 @@
 #include "subsurface-string.h"
 #include "subsurface-time.h"
 #include "tag.h"
+#include "tanksensormapping.h"
 #include "trip.h"
 #include "version.h"
 
@@ -824,6 +825,15 @@ static void parse_dc_keyvalue(char *line, struct git_parser_state *state)
 	add_extra_data(state->active_dc, state->converted_strings[0], state->converted_strings[1]);
 }
 
+static void parse_dc_tanksensormapping(char *line, struct git_parser_state *state)
+{
+	// Let's make sure we have two strings...
+	if (state->converted_strings.size() != 2)
+		return;
+
+	state->active_dc->tank_sensor_mappings.push_back(tank_sensor_mapping { (int16_t)atoi(state->converted_strings[0].c_str()), (unsigned int)atoi(state->converted_strings[1].c_str()) });
+}
+
 static void parse_dc_event(char *line, struct git_parser_state *state)
 {
 	int m, s = 0;
@@ -1058,7 +1068,7 @@ static const std::array dc_action {
 #define D(x) keyword_action { #x, parse_dc_ ## x }
 	D(airtemp), D(date), D(dctype), D(deviceid), D(diveid), D(duration),
 	D(event), D(keyvalue), D(lastmanualtime), D(maxdepth), D(meandepth), D(model), D(numberofoxygensensors),
-	D(salinity), D(surfacepressure), D(surfacetime), D(time), D(watertemp)
+	D(salinity), D(surfacepressure), D(surfacetime), D(tanksensormapping), D(time), D(watertemp)
 };
 
 /* Sample lines start with a space or a number */
