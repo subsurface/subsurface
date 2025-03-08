@@ -764,13 +764,49 @@ dc_status_t BLEObject::get_name(char *data, size_t size)
 	return DC_STATUS_SUCCESS;
 }
 
+dc_status_t BLEObject::read_characteristic(const QBluetoothUuid &uuid, char *res, size_t size)
+{
+	auto s = preferredService();
+	if (!s) {
+		return DC_STATUS_NODEVICE;
+	}
+
+	const QList<QLowEnergyCharacteristic> chars = s->characteristics();
+	for (const QLowEnergyCharacteristic& ch : chars) {
+		if (ch.uuid() != uuid) {
+			continue;
+		}
+		report_info("Reading BLE characteristic %s", to_str(uuid).c_str());
+		s->readCharacteristic(ch);
+		QByteArray val = ch.value();
+		if ((size_t)val.size() != size) {
+			report_error("Unexpected read characteristic size (%lld): expected %lld", (long long)val.size(), (long long)size);
+			return DC_STATUS_DATAFORMAT;
+		}
+		report_info("Obtained characteristic value: %s", val.toHex().toStdString().c_str());
+		memcpy(res, val.data(), size);
+		return DC_STATUS_SUCCESS;
+	}
+
+	// Not found
+	report_error("characteristic %s not found", to_str(uuid).c_str());
+	return DC_STATUS_NOACCESS;
+}
+
 dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size)
 {
 	BLEObject *ble = (BLEObject *) io;
-
 	switch (request) {
 	case DC_IOCTL_BLE_GET_NAME:
 		return ble->get_name((char *) data, size);
+	case DC_IOCTL_BLE_CHARACTERISTIC_READ:
+		struct quint128 uuid;
+		memcpy(uuid.data, data, sizeof(uuid.data));
+		size_t readsize;
+		readsize = size - sizeof(uuid.data);
+		char *p;
+		p = ((char*)data) +  sizeof(uuid.data);
+		return ble->read_characteristic(QBluetoothUuid(uuid), p, readsize);
 	default:
 		return DC_STATUS_UNSUPPORTED;
 	}
