@@ -106,7 +106,7 @@ void TabDiveNotes::divesChanged(const QVector<dive *> &dives, DiveField field)
 	if (field.duration)
 		ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
 	if (field.depth)
-		ui.depth->setText(get_depth_string(currentDive->maxdepth, true));
+		ui.depth->setText(get_depth_string(currentDive->maxdepth, true, prefs.units.show_mdecimal));
 	if (field.rating)
 		ui.rating->setCurrentStars(currentDive->rating);
 	if (field.notes)
@@ -267,7 +267,7 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.buddy->setText(QString::fromStdString(currentDive->buddy));
 	}
 	ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
-	ui.depth->setText(get_depth_string(currentDive->maxdepth, true));
+	ui.depth->setText(get_depth_string(currentDive->maxdepth, true, prefs.units.show_mdecimal));
 
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 	/* unset the special value text for date and time, just in case someone dove at midnight */
