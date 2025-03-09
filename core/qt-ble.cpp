@@ -138,7 +138,7 @@ static const char *match_uuid_list(const QBluetoothUuid &match, const struct uui
 
 //
 // Known BLE GATT service UUID's that we should prefer for the serial
-// emulation.
+// emulation. Services listed first have higher precendence.
 //
 // The Bluetooth SIG is a disgrace, and never standardized any serial
 // communication over BLE. They should just have specified a standard
@@ -157,13 +157,14 @@ static const struct uuid_match serial_service_uuids[] = {
 	{ "0000fefb-0000-1000-8000-00805f9b34fb", "Heinrichs-Weikamp (Telit/Stollmann)" },
 	{ "2456e1b9-26e2-8f83-e744-f34f01e9d701", "Heinrichs-Weikamp (U-Blox)" },
 	{ "544e326b-5b72-c6b0-1c46-41c1bc448118", "Mares BlueLink Pro" },
-	{ "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
 	{ "98ae7120-e62e-11e3-badd-0002a5d5c51b", "Suunto (EON Steel/Core, G5)" },
 	{ "cb3c4555-d670-4670-bc20-b61dbc851e9a", "Pelagic (i770R, i200C, Pro Plus X, Geo 4.0)" },
 	{ "ca7b0001-f785-4c38-b599-c7c5fbadb034", "Pelagic (i330R, DSX)" },
 	{ "fdcdeaaa-295d-470e-bf15-04217b7aa0a0", "ScubaPro (G2, G3)"},
 	{ "fe25c237-0ece-443c-b0aa-e02033e7029d", "Shearwater (Perdix/Teric/Peregrine/Tern)" },
 	{ "0000fcef-0000-1000-8000-00805f9b34fb", "Divesoft" },
+        { "6e400001-b5a3-f393-e0a9-e50e24dc10b8", "Cressi"}, // Must have higher priority than Nordic UART
+        { "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
 	{ NULL, }
 };
 
@@ -205,10 +206,6 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		return;
 	}
 
-	//
-	// If it's a known serial service, clear any other previous
-	// services we've found - we'll use this one.
-	//
 	// Note that if it's not _known_ to be good, we'll ignore
 	// any standard services. They are usually things like battery
 	// status or device name services.
@@ -224,7 +221,6 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	details = is_known_serial_service(newService);
 	if (details) {
 		report_info(" .. recognized service %s", details);
-		services.clear();
 	} else {
 		bool isStandardUuid = false;
 
@@ -426,6 +422,29 @@ dc_status_t BLEObject::select_preferred_service()
 		if (s->state() == QLowEnergyService::DiscoveringServices)
 #endif
 			report_info(" .. service %s still hasn't completed discovery - trouble ahead", to_str(s->serviceUuid()).c_str());
+	}
+
+	// Discard every other service if a known service is found
+	QLowEnergyService *known = NULL;
+	for (QLowEnergyService *s: services) {
+		const struct uuid_match *array = serial_service_uuids;
+		const char *uuid;
+
+		// prioritize known services according to their ordering in serial_service_uuids
+		while ((uuid = array->uuid) != NULL) {
+			if (s->serviceUuid() == QBluetoothUuid(QUuid(uuid))) {
+				known = s;
+				break;
+			}
+			array++;
+		}
+		if (known) {
+			break;
+		}
+	}
+	if (known) {
+		services.clear();
+		services.append(known);
 	}
 
 	// Print out the services for debugging
