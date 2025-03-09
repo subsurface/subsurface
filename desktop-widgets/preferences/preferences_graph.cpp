@@ -39,6 +39,7 @@ void PreferencesGraph::refreshSettings()
 		on_buehlmann_toggled(false);
 	}
 
+	ui->gasplot_frac->setValue(prefs.gasplot_frac);
 	ui->gflow->setValue(prefs.gflow);
 	ui->gfhigh->setValue(prefs.gfhigh);
 	ui->vpmb_conservatism->setValue(prefs.vpmb_conservatism);
@@ -67,6 +68,7 @@ void PreferencesGraph::syncSettings()
 	qPrefTechnicalDetails::set_modpO2(ui->maxpo2->value());
 	qPrefTechnicalDetails::set_redceiling(ui->red_ceiling->isChecked());
 	prefs.planner_deco_mode = ui->buehlmann->isChecked() ? BUEHLMANN : VPMB;
+	qPrefTechnicalDetails::set_gasplot_frac(ui->gasplot_frac->value());
 	qPrefTechnicalDetails::set_gflow(ui->gflow->value());
 	qPrefTechnicalDetails::set_gfhigh(ui->gfhigh->value());
 	qPrefTechnicalDetails::set_vpmb_conservatism(ui->vpmb_conservatism->value());
