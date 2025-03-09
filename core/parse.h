@@ -82,6 +82,7 @@ struct parser_state {
 	int o2pressure_sensor = 0;
 	int sample_rate = 0;
 	struct { std::string key; std::string value; } cur_extra_data;
+	struct { unsigned int sensor_index; int cylinder_id; } cur_tank_sensor_mapping;
 	struct units xml_parsing_units;
 	struct divelog *log = nullptr;				/* non-owning */
 	std::vector<fingerprint_record> *fingerprints = nullptr;
