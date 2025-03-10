@@ -40,6 +40,20 @@ static struct modelPattern model[] = {
 	{ 0x4744, "Aqualung", "i330R" },
 };
 
+// The Cressi BT interfaces for Goa-style computers advertise names with pattern:
+//  <model number>_<4 digit lowercase hex serial number>
+// The source of truth for model numbers is in libdivecomputer/src/descriptor.c
+static QRegularExpression cressiBTNamePattern("^([1-9][0-9]?)_[0-9a-f]{4}$");
+static QMap<int, QString> cressiModelNumToProduct{
+	{ 1, "Cartesio"},
+	{ 2, "Goa"},
+	{ 3, "Leonardo 2.0"},
+	{ 4, "Donatello"},
+        { 5, "Michelangelo"},
+	{ 9, "Neon"},
+	{10, "Nepto"}
+};
+
 struct namePattern {
 	const char *prefix;
 	const char *vendor;
@@ -136,6 +150,12 @@ static dc_descriptor_t *getDeviceType(QString btName)
 				product = model[i].product;
 				break;
 			}
+		}
+	} else if (auto m = cressiBTNamePattern.match(btName); m.hasMatch()) {
+		auto num = m.captured(1);
+		product = cressiModelNumToProduct.value(num.toInt());
+		if (!product.isEmpty()) {
+			vendor = "Cressi";
 		}
 	} else { // finally try all the string prefix based ones
 		for (uint16_t i = 0; i < sizeof(name) / sizeof(struct namePattern); i++) {

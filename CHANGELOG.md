@@ -1,4 +1,4 @@
-core: add support for Cressi Bluetooth interfaces #4460
+core: add support for Cressi Bluetooth interfaces #4460 #4469
 desktop: add support to import .asd and .script files from Scubapro's LogTrak and SmartTrak
 desktop: update "Save dive data as subtitles" feature to make it more configurable.
 bluetooth: fix crash on MacOS when doing first download from a new BLE device
