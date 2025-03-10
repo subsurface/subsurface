@@ -128,11 +128,13 @@ static void save_extra_data(struct membuffer *b, const struct divecomputer &dc)
 	}
 }
 
-static void save_tank_sensor_mappings(struct membuffer *b, const struct divecomputer &dc)
+static void save_tank_sensor_mappings(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc)
 {
-	for (const auto &tank_sensor_mapping: dc.tank_sensor_mappings) {
-		put_format(b, "tanksensormapping \"%d\" \"%d\"\n", tank_sensor_mapping.sensor_id, tank_sensor_mapping.cylinder_index);
-	}
+	const auto mappings = get_non_default_tank_sensor_mappings(dive, dc);
+	if (mappings)
+		for (const auto &mapping: *mappings) {
+			put_format(b, "tanksensormapping \"%d\" \"%d\"\n", mapping.sensor_id, mapping.cylinder_index);
+		}
 }
 
 static void put_gasmix(struct membuffer *b, struct gasmix mix)
@@ -437,7 +439,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 	put_duration(b, dc.surfacetime, "surfacetime ", "min\n");
 
 	save_extra_data(b, dc);
-	save_tank_sensor_mappings(b, dc);
+	save_tank_sensor_mappings(b, dive, dc);
 	save_events(b, dive, dc);
 	save_samples(b, dive, dc);
 }
