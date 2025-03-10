@@ -11,6 +11,7 @@
 #include "core/selection.h"
 #include "core/subsurface-string.h"
 #include "core/tag.h"
+#include "core/tanksensormapping.h"
 #include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/tankinfomodel.h"
 #ifdef SUBSURFACE_MOBILE
@@ -1291,8 +1292,8 @@ void EditCylinder::undo()
 	redo();
 }
 
-EditSensors::EditSensors(int toCylinderIn, int fromCylinderIn, int dcNr)
-	: d(current_dive), dc(d->get_dc(dcNr)), toCylinder(toCylinderIn), fromCylinder(fromCylinderIn)
+EditSensors::EditSensors(unsigned int cylinderIndexIn, int16_t sensorIdIn, int dcNr)
+	: d(current_dive), dc(d->get_dc(dcNr)), cylinderIndex(cylinderIndexIn), sensorId(sensorIdIn), oldTankSensorMappings(dc->tank_sensor_mappings)
 {
 	if (!d || !dc)
 		return;
@@ -1300,29 +1301,53 @@ EditSensors::EditSensors(int toCylinderIn, int fromCylinderIn, int dcNr)
 	setText(Command::Base::tr("Edit sensors"));
 }
 
-void EditSensors::mapSensors(int toCyl, int fromCyl)
+void EditSensors::undo()
 {
-	for (auto &sample: dc->samples) {
-		for (int s = 0; s < MAX_SENSORS; ++s) {
-			if (sample.pressure[s].mbar && sample.sensor[s] == fromCyl)
-				sample.sensor[s] = toCyl;
-			// In case the cylinder we are moving to has a sensor attached, move it to the other cylinder
-			else if (sample.pressure[s].mbar && sample.sensor[s] == toCyl)
-				sample.sensor[s] = fromCyl;
-		}
-	}
+	dc->tank_sensor_mappings = oldTankSensorMappings;
+
 	emit diveListNotifier.diveComputerEdited(*d, *dc);
 	d->invalidate_cache(); // Ensure that dive is written in git_save()
 }
 
-void EditSensors::undo()
-{
-	mapSensors(fromCylinder, toCylinder);
-}
-
 void EditSensors::redo()
 {
-	mapSensors(toCylinder, fromCylinder);
+	bool found = false;
+	for (auto it = dc->tank_sensor_mappings.begin(); it != dc->tank_sensor_mappings.end();) {
+		if (sensorId == NO_SENSOR) {
+			if ((*it).cylinder_index == cylinderIndex) {
+				it = dc->tank_sensor_mappings.erase(it);
+
+				break;
+			}
+		} else if ((*it).sensor_id == sensorId) {
+			if (!found) {
+				(*it).cylinder_index = cylinderIndex;
+				found = true;
+			} else {
+				it = dc->tank_sensor_mappings.erase(it);
+
+				continue;
+			}
+		} else if ((*it).cylinder_index == cylinderIndex) {
+			if (!found) {
+				(*it).sensor_id = sensorId;
+				found = true;
+			} else {
+				it = dc->tank_sensor_mappings.erase(it);
+
+				continue;
+			}
+		}
+
+		it++;
+	}
+
+	if (!found) {
+		dc->tank_sensor_mappings.push_back(tank_sensor_mapping { sensorId, cylinderIndex });
+	}
+
+	emit diveListNotifier.diveComputerEdited(*d, *dc);
+	d->invalidate_cache(); // Ensure that dive is written in git_save()
 }
 
 bool EditSensors::workToBeDone()

@@ -400,12 +400,13 @@ static void save_extra_data(struct membuffer *b, const struct divecomputer &dc)
 	}
 }
 
-static void save_tank_sensor_mappings(struct membuffer *b, const struct divecomputer &dc)
+static void save_tank_sensor_mappings(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc)
 {
-	for (const auto &tank_sensor_mapping: dc.tank_sensor_mappings) {
+	const auto mappings = get_tank_sensor_mappings_for_storage(dive, dc);
+	for (const auto &mapping: mappings) {
 		put_string(b, "  <tanksensormapping");
-		show_integer(b, tank_sensor_mapping.sensor_id, "sensorid='", "'");
-		show_integer(b, tank_sensor_mapping.cylinder_index, "cylinderindex='", "'");
+		show_integer(b, mapping.sensor_id, "sensorid='", "'");
+		show_integer(b, mapping.cylinder_index, "cylinderindex='", "'");
 		put_string(b, " />\n");
 	}
 }
@@ -466,7 +467,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 	save_salinity(b, dc);
 	put_duration(b, dc.surfacetime, "  <surfacetime>", " min</surfacetime>\n");
 	save_extra_data(b, dc);
-	save_tank_sensor_mappings(b, dc);
+	save_tank_sensor_mappings(b, dive, dc);
 	save_events(b, dive, dc);
 	save_samples(b, dive, dc);
 
