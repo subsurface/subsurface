@@ -62,18 +62,18 @@ divecomputer &divecomputer::operator=(const divecomputer &) = default;
  *
  *   (max_d*max_t) - (max_d*t1) - (max_d-d)*(t4-t3) = avg_d*max_t
  *      max_d*(max_t-t1-(1-d_frac)*(t4-t3)) = avg_d*max_t
- *             max_t-t1-(1-d_frac)*(t4-t3) = avg_d*max_t/max_d
- *                   t1+(1-d_frac)*(t4-t3) = max_t*(1-avg_d/max_d)
+ *	     max_t-t1-(1-d_frac)*(t4-t3) = avg_d*max_t/max_d
+ *		   t1+(1-d_frac)*(t4-t3) = max_t*(1-avg_d/max_d)
  *
  * and descent slope must match ascent slopes:
  *
  *   t1 / max_d = (t3-t2) / (max_d*(1-d_frac))
- *           t1 = (t3-t2)/(1-d_frac)
+ *	   t1 = (t3-t2)/(1-d_frac)
  *
  * and
  *
  *   t1 / max_d = (max_t-t4) / (max_d*d_frac)
- *           t1 = (max_t-t4)/d_frac
+ *	   t1 = (max_t-t4)/d_frac
  *
  * In general, we have more free variables than we have constraints,
  * but we can aim for certain basics, like a good ascent slope.
@@ -257,6 +257,36 @@ struct sample *prepare_sample(struct divecomputer *dc)
 void append_sample(const struct sample &sample, struct divecomputer *dc)
 {
 	dc->samples.push_back(sample);
+}
+
+std::set<int16_t> get_tank_sensor_ids(const struct divecomputer &dc)
+{
+	auto result = std::set<int16_t>();
+	for (const auto &sample: dc.samples)
+		for (int i = 0; i < MAX_SENSORS; i++)
+			if (sample.pressure[i].mbar)
+				result.insert(sample.sensor[i]);
+
+	return result;
+}
+
+void fixup_dc_sample_sensors(struct divecomputer &dc)
+{
+	for (auto &sample: dc.samples)
+		for (int j = 0; j < MAX_SENSORS; j++) {
+			int sensor = sample.sensor[j];
+
+			// No invalid sensor ID's, please
+			if (sensor < 0) {
+				sample.sensor[j] = NO_SENSOR;
+				sample.pressure[j] = 0_bar;
+				continue;
+			}
+
+			// Don't bother tracking sensors with no data
+			if (!sample.pressure[j].mbar)
+				sample.sensor[j] = NO_SENSOR;
+		}
 }
 
 /*

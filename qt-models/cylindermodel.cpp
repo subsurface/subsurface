@@ -11,6 +11,7 @@
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/subsurface-string.h"
+#include "core/tanksensormapping.h"
 #include <string>
 
 CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableModel(parent),
@@ -255,16 +256,10 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case SIZE_INT:
 			return static_cast<int>(cyl->type.size.mliter);
 		case SENSORS: {
-			std::vector<int16_t> sensors;
-			const struct divecomputer *currentdc = d->get_dc(dcNr);
-			for (const auto &sample: currentdc->samples) {
-				for (int s = 0; s < MAX_SENSORS; ++s) {
-					if (sample.pressure[s].mbar) {
-						if (sample.sensor[s] == index.row())
-							return "X";
-					}
-				}
-			}
+			for (const auto &mapping: d->get_dc(dcNr)->tank_sensor_mappings)
+				if ((int)mapping.cylinder_index == index.row())
+					return QString::number(mapping.sensor_id + 1);
+
 			return QString();
 		}
 		}
@@ -369,7 +364,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		}
 		return false;
 	case COMMIT_ROLE:
-		commitTempCyl(index.row());
+		commitTempCyl(row);
 		return true;
 	case REVERT_ROLE:
 		clearTempCyl();
@@ -479,8 +474,9 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	case SENSORS: {
 		bool ok = false;
 		int s = vString.toInt(&ok);
-		if (ok) {
-			Command::editSensors(index.row(), s, dcNr);
+		const struct divecomputer &dc = *d->get_dc(dcNr);
+		if (ok && std::find_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(), [row, s](const auto &mapping) { return (const int)mapping.cylinder_index == row && mapping.sensor_id == s - 1; }) == dc.tank_sensor_mappings.end()) {
+			Command::editSensors(row, s, dcNr);
 			// We don't use the edit cylinder command and editing sensors is not relevant for planner
 			return true;
 		}

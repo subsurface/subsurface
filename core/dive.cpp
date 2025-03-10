@@ -11,6 +11,7 @@
 #include "subsurface-string.h"
 #include "libdivecomputer.h"
 #include "device.h"
+#include "divecomputer.h"
 #include "divelist.h"
 #include "divesite.h"
 #include "equipment.h"
@@ -1007,39 +1008,34 @@ static void fixup_no_o2sensors(struct divecomputer &dc)
 	}
 }
 
-static void fixup_dc_sample_sensors(struct dive &dive, struct divecomputer &dc)
+static void fixup_sensor_mappings(struct dive &dive, struct divecomputer &dc)
 {
-	unsigned long sensor_mask = 0;
+	if (dc.tank_sensor_mappings.size() == 0) {
+		// Add the implied mappings
+		for (auto sensor_id: get_tank_sensor_ids(dc))
+			if (sensor_id >= 0 && (unsigned int)sensor_id < dive.cylinders.size())
+				dc.tank_sensor_mappings.push_back(tank_sensor_mapping { sensor_id, (unsigned int)sensor_id });
+	} else {
+		// Remove mappings where the sensor id does not exist
+		// or the cylinder index is out of range
+		auto sensor_ids = get_tank_sensor_ids(dc);
+		dc.tank_sensor_mappings.erase(std::remove_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(),
+			[sensor_ids, &dive](const tank_sensor_mapping &mapping) {
+				return sensor_ids.find(mapping.sensor_id) == sensor_ids.end()
+					|| mapping.cylinder_index >= dive.cylinders.size();
+			}), dc.tank_sensor_mappings.end());
 
-	for (auto &sample: dc.samples) {
-		for (int j = 0; j < MAX_SENSORS; j++) {
-			int sensor = sample.sensor[j];
+		// Remove any mappings that have a duplicate sensor id
+		dc.tank_sensor_mappings.erase(std::unique(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(),
+			[](const tank_sensor_mapping &a, const tank_sensor_mapping &b) {
+				return a.sensor_id == b.sensor_id;
+			}), dc.tank_sensor_mappings.end());
 
-			// No invalid sensor ID's, please
-			if (sensor < 0) {
-				sample.sensor[j] = NO_SENSOR;
-				sample.pressure[j] = 0_bar;
-				continue;
-			}
-
-			// Don't bother tracking sensors with no data
-			if (!sample.pressure[j].mbar) {
-				sample.sensor[j] = NO_SENSOR;
-				continue;
-			}
-
-			// Remember the set of sensors we had
-			sensor_mask |= 1ul << sensor;
-		}
-	}
-
-	// Ignore the sensors we have cylinders for
-	sensor_mask >>= dive.cylinders.size();
-
-	// Do we need to add empty cylinders?
-	while (sensor_mask) {
-		dive.cylinders.emplace_back();
-		sensor_mask >>= 1;
+		// Remove any mappings that have the same cylinder index
+		dc.tank_sensor_mappings.erase(std::unique(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(),
+			[](const tank_sensor_mapping &a, const tank_sensor_mapping &b) {
+				return a.cylinder_index == b.cylinder_index;
+			}), dc.tank_sensor_mappings.end());
 	}
 }
 
@@ -1082,7 +1078,9 @@ void dive::fixup_dive_dc(struct divecomputer &dc)
 	fixup_dc_gasswitch(*this, dc);
 
 	/* Fix up cylinder ids in pressure sensors */
-	fixup_dc_sample_sensors(*this, dc);
+	fixup_dc_sample_sensors(dc);
+
+	fixup_sensor_mappings(*this, dc);
 
 	/* Fix up cylinder pressures based on DC info */
 	fixup_dive_pressures(*this, dc);
@@ -1310,7 +1308,7 @@ static void merge_tank_sensor_mappings(struct divecomputer &res,
 {
 	for (auto &tank_sensor_mapping: b.tank_sensor_mappings) {
 		if (std::find_if(a.tank_sensor_mappings.begin(), a.tank_sensor_mappings.end(), [&tank_sensor_mapping](const struct tank_sensor_mapping &a) {
-			return a.sensor_index == tank_sensor_mapping.sensor_index;
+			return a.sensor_id == tank_sensor_mapping.sensor_id;
 		}) != a.tank_sensor_mappings.end())
 			continue;
 
@@ -1717,6 +1715,33 @@ std::tuple<divemode_t, int, const struct gasmix *> get_dive_status_at(const stru
 	}
 
 	return std::make_tuple(divemode, cylinder_index, gasmix);
+}
+
+const std::vector<struct tank_sensor_mapping> get_tank_sensor_mappings_for_storage(const struct dive &dive, const struct divecomputer &dc)
+{
+	std::set<int16_t> sensor_ids = get_tank_sensor_ids(dc);
+	// If we don't have any mappings, return a mapping between the first
+	// cylinder and an invalid sensor id. This is used to distinguish
+	// from the case of having a full 1 : 1 mapping which is encoded
+	// as no mapping in order to retain backwards compatibility.
+	if (dc.tank_sensor_mappings.empty() && !dive.cylinders.empty() && !sensor_ids.empty())
+		return std::vector<struct tank_sensor_mapping>({ tank_sensor_mapping { NO_SENSOR, 0 } });
+	// Check if any of the mappings are not 1 : 1
+	for (const auto &mapping: dc.tank_sensor_mappings)
+		if (mapping.sensor_id != (int16_t)mapping.cylinder_index)
+			return dc.tank_sensor_mappings;
+
+	// Check if there is a cylinder that does not have a mapping
+	for (const auto &sensor_id: sensor_ids)
+		if (sensor_id >= 0 && sensor_id < (int16_t)dive.cylinders.size()
+			&& std::find_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(),
+				[&sensor_id](const struct tank_sensor_mapping &mapping) {
+					return mapping.sensor_id == sensor_id;
+				}) == dc.tank_sensor_mappings.end())
+			return dc.tank_sensor_mappings;
+
+	// If all cylinders have a mapping, return an empty mapping
+	return std::vector<struct tank_sensor_mapping>();
 }
 
 /*

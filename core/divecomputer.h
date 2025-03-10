@@ -4,6 +4,7 @@
 
 #include "divemode.h"
 #include "units.h"
+#include <set>
 #include <string>
 #include <vector>
 
@@ -58,6 +59,8 @@ extern void free_dc_contents(struct divecomputer *dc);
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void append_sample(const struct sample &sample, struct divecomputer *dc);
+extern std::set<int16_t> get_tank_sensor_ids(const struct divecomputer &dc);
+extern void fixup_dc_sample_sensors(struct divecomputer &dc);
 extern void fixup_dc_duration(struct divecomputer &dc);
 extern int add_event_to_dc(struct divecomputer *dc, struct event ev); // event structure is consumed, returns index of inserted event
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const std::string &name);

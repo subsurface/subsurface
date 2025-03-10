@@ -9,6 +9,7 @@
 #include "core/qthelper.h"
 #include "core/dive.h"
 #include "core/gettextfromc.h"
+#include "core/sample.h" // for NO_SENSOR
 
 #include <QDir>
 #include <QLocale>
@@ -97,6 +98,7 @@ SensorSelectionModel::SensorSelectionModel(const divecomputer &dc, QObject *pare
 	: QAbstractListModel(parent)
 {
 	sensorNames = get_tank_sensor_list(dc);
+	sensorNames.insert(sensorNames.begin(), std::make_pair(NO_SENSOR, "<" + tr("none") + ">"));
 }
 
 QVariant SensorSelectionModel::data(const QModelIndex &index, int role) const

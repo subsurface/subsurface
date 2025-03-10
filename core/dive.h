@@ -156,6 +156,7 @@ extern int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct d
 extern bool is_cylinder_use_appropriate(const struct divecomputer &dc, const cylinder_t &cyl, bool allowNonUsable);
 extern divemode_t get_effective_divemode(const struct divecomputer &dc, const struct cylinder_t &cylinder);
 extern std::tuple<divemode_t, int, const struct gasmix *> get_dive_status_at(const struct dive &dive, const struct divecomputer &dc, int seconds, divemode_loop *loop_mode = nullptr, gasmix_loop *loop_gas = nullptr);
+extern const std::vector<struct tank_sensor_mapping> get_tank_sensor_mappings_for_storage(const struct dive &dive, const struct divecomputer &dc);
 
 /* Data stored when copying a dive */
 struct dive_paste_data {
