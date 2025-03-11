@@ -1,13 +1,7 @@
-#
-# in order for "normal" developers not to have to install asciidoc (which
-# brings in a couple hundred MB of dependencies) we now include both the
-# user-manual.txt and a copy of the generated .html file in git
-#
-# in order to avoid unnecessary thrash with minor version differences, when
-# submitting patches to the user manual, only submit the changes to the .txt
-# file - the maintainer will recreate the .html.git file
+DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_nl mobile-manual-v3 mobile-manual-v2 mobile-manual_es mobile-manual_fr
 
-DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_nl mobile-manual-v3
+OUT ?= output
+OUT := $(OUT)/
 
 HTMLDOCS = $(patsubst %,$(OUT)%.html,$(DOCNAMES))
 TEXTDOCS = $(patsubst %,$(OUT)%.text,$(DOCNAMES))
@@ -19,38 +13,47 @@ BROWSER = firefox
 THEME = compact_subsurface
 PWD = $(realpath .)
 
-all: $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
+.PHONY: all doc images show clean
 
-doc: $(HTMLDOCS)
+mkdir = @mkdir -p $(@D)
+
+all: $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS) images
+
+doc: $(HTMLDOCS) images
+
+images:
+	@cp -r images $(OUT)
+	@cp -r mobile-images $(OUT)
 
 $(OUT)%.text: %.txt
-	$(A2X) -f text $<
+	$(mkdir)
+	$(A2X) -f text --destination-dir=$(OUT) $<
 
 $(OUT)%.pdf: %.txt
-	-$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf $<
+	$(mkdir)
+	-$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf --destination-dir=$(OUT) $<
 
 $(OUT)%.html: %.txt
-	$(ASCIIDOC) --version > /dev/null 2>&1 || echo "if asciidoc isn't found the html file included in the sources is copied"
-	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -o $@ $< || \
-		cp $(<:%.txt=%.html.git) $@
+	$(mkdir)
+	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -o $@ $<
 
 # for the web facing version of the desktop manual, just use the post-processing script
-user-manual.html.wp: user-manual.html
+user-manual.html.wp: $(OUT)user-manual.html
+	$(mkdir)
 	bash ../scripts/prep-manual.sh $<
 
 # for the web facing version of the mobile manual, re-create the HTML with only one level in
 # the table of context and then post process
 mobile-manual-v3.html.wp: mobile-manual-v3.txt
+	$(mkdir)
 	$(ASCIIDOC) -a toc -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -o $(<:%.txt=%.html.tmp) $< && \
 		bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp) && \
-		mv $(<:%.txt=%.html.tmp.wp) $@
-
-# Alternatively::
-$(OUT)$(DOCNAME).xhtml: $(DOCSOURCE)
-	$(A2X) --icons -f xhtml $<
+		rm $(<:%.txt=%.html.tmp) && \
+		mv $(<:%.txt=%.html.tmp.wp) $(OUT)$@
 
 show: $(HTMLDOC)
 	$(BROWSER) $<
 
 clean:
-	rm -f *~ *.xml docbook-xsl.css $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
+	rm -f *~ *.xml docbook-xsl.css
+	rm -rf $(OUT)
