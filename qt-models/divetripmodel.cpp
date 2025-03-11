@@ -280,9 +280,9 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::IdRole: return d->id;
 	case MobileListModel::NumberRole: return d->number;
 	case MobileListModel::LocationRole: return QString::fromStdString(d->get_location());
-	case MobileListModel::DepthRole: return get_depth_string(d->dcs[0].maxdepth.mm, true, true);
+	case MobileListModel::DepthRole: return get_depth_string(d->dcs[0].maxdepth.mm, true, prefs.units.show_mdecimal); //maybe later via show_mdecimal?
 	case MobileListModel::DurationRole: return formatDiveDuration(d);
-	case MobileListModel::DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dcs[0].maxdepth.mm, true, true),
+	case MobileListModel::DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dcs[0].maxdepth.mm, true, prefs.units.show_mdecimal),
 										      formatDiveDuration(d));
 	case MobileListModel::RatingRole: return d->rating;
 	case MobileListModel::VizRole: return d->visibility;
@@ -325,7 +325,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case DATE:
 			return get_dive_date_string(d->when);
 		case DEPTH:
-			return get_depth_string(d->maxdepth, prefs.units.show_units_table);
+			return get_depth_string(d->maxdepth, prefs.units.show_units_table, prefs.units.show_mdecimal);
 		case DURATION:
 			return displayDuration(d);
 		case TEMPERATURE:
