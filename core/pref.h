@@ -181,6 +181,7 @@ struct preferences {
 	bool                        dcceiling;
 	enum deco_mode              display_deco_mode;
 	bool                        ead;
+	double                      gasplot_frac;
 	int                         gfhigh;
 	int                         gflow;
 	bool                        gf_low_at_maxdepth;
