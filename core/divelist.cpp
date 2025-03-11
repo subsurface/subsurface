@@ -111,36 +111,6 @@ static int active_o2(const struct dive &dive, const struct divecomputer *dc, dur
 	return get_o2(gas);
 }
 
-// Do not call on first sample as it acccesses the previous sample
-static int get_sample_o2(const struct dive &dive, const struct divecomputer *dc, const struct sample &sample, const struct sample &psample)
-{
-	int po2i, po2f, po2;
-	// Use sensor[0] if available
-	depth_t depth = sample.depth;
-	depth_t pdepth = psample.depth;
-	if ((dc->divemode == CCR || dc->divemode == PSCR) && sample.o2sensor[0].mbar) {
-		po2i = psample.o2sensor[0].mbar;
-		po2f = sample.o2sensor[0].mbar;	// then use data from the first o2 sensor
-		po2 = (po2f + po2i) / 2;
-	} else if (sample.setpoint.mbar > 0) {
-		po2 = std::min((int) sample.setpoint.mbar,
-				dive.depth_to_mbar(depth));
-	} else {
-		double amb_presure = dive.depth_to_bar(depth);
-		double pamb_pressure = dive.depth_to_bar(pdepth);
-		if (dc->divemode == PSCR) {
-			po2i = pscr_o2(pamb_pressure, dive.get_gasmix_at_time(*dc, psample.time));
-			po2f = pscr_o2(amb_presure, dive.get_gasmix_at_time(*dc, sample.time));
-		} else {
-			int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
-			po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
-			po2f = lrint(o2 * amb_presure);	// (final) po2 at end of segment
-		}
-		po2 = (po2i + po2f) / 2;
-	}
-	return po2;
-}
-
 /* Calculate OTU for a dive - this only takes the first divecomputer into account.
    Implement the protocol in Erik Baker's document "Oxygen Toxicity Calculations". This code
    implements a third-order continuous approximation of Baker's Eq. 2 and enables OTU
@@ -151,34 +121,37 @@ static int get_sample_o2(const struct dive &dive, const struct divecomputer *dc,
 static int calculate_otu(const struct dive &dive)
 {
 	double otu = 0.0;
-	const struct divecomputer *dc = &dive.dcs[0];
-	for (auto [psample, sample]: pairwise_range(dc->samples)) {
+	const struct divecomputer &dc = dive.dcs[0];
+	gasmix_loop loop_gas(dive, dc);
+	divemode_loop loop_mode(dc);
+	for (auto [psample, sample]: pairwise_range(dc.samples)) {
 		int po2i, po2f;
 		double pm;
 		int t = (sample.time - psample.time).seconds;
 		depth_t depth = sample.depth;
 		depth_t pdepth = psample.depth;
 		// if there is sensor data use sensor[0]
-		if ((dc->divemode == CCR || dc->divemode == PSCR) && sample.o2sensor[0].mbar) {
+		if ((dc.divemode == CCR || dc.divemode == PSCR) && psample.o2sensor[0].mbar) {
 			po2i = psample.o2sensor[0].mbar;
-			po2f = sample.o2sensor[0].mbar;	// ... use data from the first o2 sensor
+			if (sample.o2sensor[0].mbar)
+				po2f = sample.o2sensor[0].mbar;
+			else
+				po2f = po2i;	// ... use data from the first o2 sensor
 		} else {
-			if (sample.setpoint.mbar > 0) {
-				po2f = std::min((int) sample.setpoint.mbar,
+			[[maybe_unused]] auto [divemode, _cylinder_index, gasmix] = get_dive_status_at(dive, dc, psample.time.seconds, &loop_mode, &loop_gas);
+			if (divemode == CCR) {
+				po2i = std::min((int) psample.setpoint.mbar,
+						 dive.depth_to_mbar(pdepth));
+				po2f = std::min((int) psample.setpoint.mbar,
 						 dive.depth_to_mbar(depth));
-				if (psample.setpoint.mbar > 0)
-					po2i = std::min((int) psample.setpoint.mbar,
-							 dive.depth_to_mbar(pdepth));
-				else
-					po2i = po2f;
 			} else {						// For OC and rebreather without o2 sensor/setpoint
 				double amb_presure = dive.depth_to_bar(depth);
 				double pamb_pressure = dive.depth_to_bar(pdepth);
-				if (dc->divemode == PSCR) {
-					po2i = pscr_o2(pamb_pressure, dive.get_gasmix_at_time(*dc, psample.time));
-					po2f = pscr_o2(amb_presure, dive.get_gasmix_at_time(*dc, sample.time));
+				if (dc.divemode == PSCR) {
+					po2i = pscr_o2(pamb_pressure, dive.get_gasmix_at_time(dc, psample.time));
+					po2f = pscr_o2(amb_presure, dive.get_gasmix_at_time(dc, sample.time));
 				} else {
-					int o2 = active_o2(dive, dc, psample.time);	// 	... calculate po2 from depth and FiO2.
+					int o2 = active_o2(dive, &dc, psample.time);	//	... calculate po2 from depth and FiO2.
 					po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
 					po2f = lrint(o2 * amb_presure);	// (final) po2 at end of segment
 				}
@@ -213,13 +186,43 @@ static int calculate_otu(const struct dive &dive)
    to the end of the segment, assuming a constant rate of change in po2 (i.e. depth) with time. */
 static double calculate_cns_dive(const struct dive &dive)
 {
-	const struct divecomputer *dc = &dive.dcs[0];
+	const struct divecomputer dc = dive.dcs[0];
 	double cns = 0.0;
 	double rate;
+	gasmix_loop loop_gas(dive, dc);
+	divemode_loop loop_mode(dc);
 	/* Calculate the CNS for each sample in this dive and sum them */
-	for (auto [psample, sample]: pairwise_range(dc->samples)) {
+	for (auto [psample, sample]: pairwise_range(dc.samples)) {
 		int t = (sample.time - psample.time).seconds;
-		int po2 = get_sample_o2(dive, dc, sample, psample);
+		int po2i, po2f, po2;
+		// Use sensor[0] if available
+		depth_t depth = sample.depth;
+		depth_t pdepth = psample.depth;
+		[[maybe_unused]] auto [divemode, _cylinder_index, _gasmix] = get_dive_status_at(dive, dc, psample.time.seconds, &loop_mode, &loop_gas);
+		if ((dc.divemode == CCR || dc.divemode == PSCR) && psample.o2sensor[0].mbar) {
+			po2i = psample.o2sensor[0].mbar;
+			if (sample.o2sensor[0].mbar)
+				po2f = sample.o2sensor[0].mbar;
+			else
+				po2f = po2i;	// then use data from the first o2 sensor
+			po2 = (po2f + po2i) / 2;
+		} else if (divemode == CCR) {
+			po2 = std::min((int) psample.setpoint.mbar,
+					dive.depth_to_mbar(pdepth));
+		} else {
+			double amb_presure = dive.depth_to_bar(depth);
+			double pamb_pressure = dive.depth_to_bar(pdepth);
+			if (dc.divemode == PSCR) {
+				po2i = pscr_o2(pamb_pressure, dive.get_gasmix_at_time(dc, psample.time));
+				po2f = pscr_o2(amb_presure, dive.get_gasmix_at_time(dc, sample.time));
+			} else {
+				int o2 = active_o2(dive, &dc, psample.time);	//	... calculate po2 from depth and FiO2.
+				po2i = lrint(o2 * pamb_pressure);	// (initial) po2 at start of segment
+				po2f = lrint(o2 * amb_presure);	// (final) po2 at end of segment
+			}
+			po2 = (po2i + po2f) / 2;
+		}
+
 		/* Don't increase CNS when po2 below 500 matm */
 		if (po2 <= 500)
 			continue;
@@ -422,18 +425,18 @@ static int calculate_sac(const struct dive &dive)
 /* for now we do this based on the first divecomputer */
 static void add_dive_to_deco(struct deco_state *ds, const struct dive &dive, bool in_planner)
 {
-	const struct divecomputer *dc = &dive.dcs[0];
+	const struct divecomputer &dc = dive.dcs[0];
 
-	gasmix_loop loop_gas(dive, dive.dcs[0]);
-	divemode_loop loop_mode(dive.dcs[0]);
-	for (auto [psample, sample]: pairwise_range(dc->samples)) {
+	gasmix_loop loop_gas(dive, dc);
+	divemode_loop loop_mode(dc);
+	for (auto [psample, sample]: pairwise_range(dc.samples)) {
 		int t0 = psample.time.seconds;
 		int t1 = sample.time.seconds;
 		int j;
 
 		for (j = t0; j < t1; j++) {
 			depth_t depth = interpolate(psample.depth, sample.depth, j - t0, t1 - t0);
-			[[maybe_unused]] auto [divemode, _cylinder_index, gasmix] = get_dive_status_at(dive, dive.dcs[0], j);
+			[[maybe_unused]] auto [divemode, _cylinder_index, gasmix] = get_dive_status_at(dive, dc, j, &loop_mode, &loop_gas);
 			add_segment(ds, dive.depth_to_bar(depth), *gasmix, 1, sample.setpoint.mbar,
 				    divemode, dive.sac,
 				    in_planner);

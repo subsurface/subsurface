@@ -32,7 +32,7 @@
   <sample time='41:00 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive number='1' otu='97' cns='34%' date='2014-04-01' time='10:00:00' duration='77:54 min'>
+<dive number='1' otu='95' cns='34%' date='2014-04-01' time='10:00:00' duration='77:54 min'>
   <notes>CCR dive</notes>
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Oxy2' o2='100.0%' start='190.0 bar' end='130.0 bar' use='oxygen' />
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Dil2' start='185.0 bar' end='130.0 bar' use='diluent' />
@@ -2529,7 +2529,7 @@
   <sample time='82:50 min' depth='0.235 m' ndl='0:00 min' stoptime='0:00 min' cns='0%' po2='0.0 bar' />
   </divecomputer>
 </dive>
-<dive number='1' otu='97' cns='34%' date='2014-04-02' time='10:00:00' duration='77:54 min'>
+<dive number='1' otu='95' cns='34%' date='2014-04-02' time='10:00:00' duration='77:54 min'>
   <notes>CCR dive</notes>
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Oxy2' o2='100.0%' start='190.0 bar' end='130.0 bar' use='oxygen' />
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Dil2' start='185.0 bar' end='130.0 bar' use='diluent' />
