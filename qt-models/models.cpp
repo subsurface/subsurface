@@ -97,6 +97,7 @@ SensorSelectionModel::SensorSelectionModel(const divecomputer &dc, QObject *pare
 	: QAbstractListModel(parent)
 {
 	sensorNames = get_tank_sensor_list(dc);
+	sensorNames.insert(sensorNames.begin(), std::make_pair(-1, "<" + tr("none") + ">"));
 }
 
 QVariant SensorSelectionModel::data(const QModelIndex &index, int role) const
