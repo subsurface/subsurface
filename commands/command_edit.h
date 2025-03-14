@@ -445,14 +445,14 @@ private:
 class EditSensors : public Base
 {
 public:
-	EditSensors(int cylIndex, int fromCylinder, int dcNr);
+	EditSensors(unsigned int cylIndex, int16_t fromCylinder, int dcNr);
 
 private:
 	struct dive *d;
 	struct divecomputer *dc;
-	int toCylinder;
-	int fromCylinder;
-	void mapSensors(int toCyl, int fromCyl);
+	unsigned int cylinderIndex;
+	int16_t	sensorId;
+	std::vector<struct tank_sensor_mapping> oldTankSensorMappings;
 	void undo() override;
 	void redo() override;
 	bool workToBeDone() override;

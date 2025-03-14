@@ -16,6 +16,7 @@
 #include "interpolate.h"
 #include "sample.h"
 #include "subsurface-string.h"
+#include "tanksensormapping.h"
 
 #include "planner.h"
 #include "profile.h"
@@ -416,10 +417,15 @@ static void populate_plot_entries(const struct dive *dive, const struct divecomp
 		} else {
 			entry.pressures.o2 = sample.setpoint.mbar / 1000.0;
 		}
-		if (sample.pressure[0].mbar && sample.sensor[0] != NO_SENSOR)
-			set_plot_pressure_data(pi, pi.entry.size() - 1, SENSOR_PR, sample.sensor[0], sample.pressure[0].mbar);
-		if (sample.pressure[1].mbar && sample.sensor[1] != NO_SENSOR)
-			set_plot_pressure_data(pi, pi.entry.size() - 1, SENSOR_PR, sample.sensor[1], sample.pressure[1].mbar);
+
+		for (auto &mapping: dc->tank_sensor_mappings)
+			for (int i = 0; i < MAX_SENSORS; i++)
+				if (sample.sensor[i] == mapping.sensor_id && sample.pressure[i].mbar) {
+					set_plot_pressure_data(pi, pi.entry.size() - 1, SENSOR_PR, mapping.cylinder_index, sample.pressure[i].mbar);
+
+					break;
+				}
+
 		if (sample.temperature.mkelvin)
 			entry.temperature = lasttemp = sample.temperature.mkelvin;
 		else
@@ -641,10 +647,15 @@ static void populate_secondary_sensor_data(const struct divecomputer &dc, struct
 				// or this is the last entry so use for the last sensor readings if there are any.
 				break;
 		}
-		for (int s = 0; s < MAX_SENSORS; ++s)
+
+		for (auto &mapping: dc.tank_sensor_mappings)
 			// Copy sensor data if available, but don't add if this dc already has sensor data
-			if (sample.sensor[s] != NO_SENSOR && seen[sample.sensor[s]] < 3 && sample.pressure[s].mbar)
-				set_plot_pressure_data(pi, idx, SENSOR_PR, sample.sensor[s], sample.pressure[s].mbar);
+			for (int i = 0; i < MAX_SENSORS; i++)
+				if (sample.sensor[i] == mapping.sensor_id && sample.pressure[i].mbar && seen[mapping.cylinder_index] < 3) {
+					set_plot_pressure_data(pi, pi.entry.size() - 1, SENSOR_PR, mapping.cylinder_index, sample.pressure[i].mbar);
+
+					break;
+				}
 	}
 }
 

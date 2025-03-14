@@ -25,21 +25,19 @@ void add_sample_pressure(struct sample *sample, int sensor, int mbar)
 		return;
 
 	/* Do we already have a slot for this sensor */
-	for (idx = 0; idx < MAX_SENSORS; idx++) {
-		if (sensor != sample->sensor[idx])
-			continue;
-		sample->pressure[idx].mbar = mbar;
-		return;
-	}
+	for (idx = 0; idx < MAX_SENSORS; idx++)
+		if (sensor == sample->sensor[idx]) {
+			sample->pressure[idx].mbar = mbar;
+			return;
+		}
 
 	/* Pick the first unused index if we couldn't reuse one */
-	for (idx = 0; idx < MAX_SENSORS; idx++) {
-		if (sample->pressure[idx].mbar)
-			continue;
-		sample->sensor[idx] = sensor;
-		sample->pressure[idx].mbar = mbar;
-		return;
-	}
+	for (idx = 0; idx < MAX_SENSORS; idx++)
+		if (!sample->pressure[idx].mbar) {
+			sample->sensor[idx] = sensor;
+			sample->pressure[idx].mbar = mbar;
+			return;
+		}
 
 	/* We do not have enough slots for the pressure samples. */
 	/* Should we warn the user about dropping pressure data? */
