@@ -437,6 +437,7 @@ static void write_trips(struct membuffer *b, const char *photos_dir, bool select
 	char sep_ = ' ';
 	char *sep = &sep_;
 
+	put_string(b, "[");
 	for (auto &trip: divelog.trips)
 		trip->saved = 0;
 
@@ -454,21 +455,21 @@ static void write_trips(struct membuffer *b, const char *photos_dir, bool select
 
 	/*Save all remaining trips into Others*/
 	write_no_trip(b, &dive_no, selected_only, photos_dir, list_only, sep);
-}
-
-void export_list(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
-{
-	put_string(b, "trips=[");
-	write_trips(b, photos_dir, selected_only, list_only);
 	put_string(b, "]");
 }
 
-void export_HTML(const char *file_name, const char *photos_dir, const bool selected_only, const bool list_only)
+void export_list_as_JS(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only)
+{
+	put_string(b, "trips=");
+	write_trips(b, photos_dir, selected_only, list_only);
+}
+
+void export_JS(const char *file_name, const char *photos_dir, const bool selected_only, const bool list_only)
 {
 	FILE *f;
 
 	membuffer buf;
-	export_list(&buf, photos_dir, selected_only, list_only);
+	export_list_as_JS(&buf, photos_dir, selected_only, list_only);
 
 	f = subsurface_fopen(file_name, "w+");
 	if (!f) {
