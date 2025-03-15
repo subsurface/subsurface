@@ -19,6 +19,8 @@ void put_HTML_volume_units(struct membuffer *b, unsigned int ml, const char *pre
 
 void export_JS(const char *file_name, const char *photos_dir, const bool selected_only, const bool list_only);
 void export_list_as_JS(struct membuffer *b, const char *photos_dir, bool selected_only, const bool list_only);
+void export_JSON(const char *file_name, const bool selected_only, const bool list_only);
+void export_list_as_JSON(struct membuffer *b, const bool selected_only, const bool list_only);
 void export_translation(const char *file_name);
 
 #endif
