@@ -28,7 +28,7 @@ void uploadDiveShare::doUpload(bool selected, const QString &uid, bool noPublic)
 {
 	//generate json
 	membuffer buf;
-	export_list(&buf, NULL, selected, false);
+	export_list_as_JS(&buf, NULL, selected, false);
 	QByteArray json_data(buf.buffer, buf.len);
 
 	//Request to server

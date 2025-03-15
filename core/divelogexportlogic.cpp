@@ -128,7 +128,7 @@ void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes)
 	QString exportFiles = file.fileName() + "_files" + QDir::separator();
 	mainDir.mkdir(exportFiles);
 
-	QString json_dive_data = exportFiles + "file.js";
+	QString js_dive_data = exportFiles + "file.js";
 	QString json_settings = exportFiles + "settings.js";
 	QString translation = exportFiles + "translation.js";
 	QString stat_file = exportFiles + "stat.js";
@@ -142,7 +142,7 @@ void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes)
 	exportHTMLstatistics(stat_file, hes);
 	export_translation(qPrintable(translation));
 
-	export_HTML(qPrintable(json_dive_data), qPrintable(photosDirectory), hes.selectedOnly, hes.listOnly);
+	export_JS(qPrintable(js_dive_data), qPrintable(photosDirectory), hes.selectedOnly, hes.listOnly);
 
 	QString searchPath = getSubsurfaceDataPath("theme");
 	if (searchPath.isEmpty()) {
