@@ -480,6 +480,27 @@ void export_JS(const char *file_name, const char *photos_dir, const bool selecte
 	}
 }
 
+void export_list_as_JSON(struct membuffer *b, const bool selected_only, const bool list_only)
+{
+	write_trips(b, /* photos_dir */ nullptr, selected_only, list_only);
+}
+
+void export_JSON(const char *file_name, const bool selected_only, const bool list_only)
+{
+	FILE *f;
+
+	membuffer buf;
+	export_list_as_JSON(&buf, selected_only, list_only);
+
+	f = subsurface_fopen(file_name, "w+");
+	if (!f) {
+		report_error(translate("gettextFromC", "Can't open file %s"), file_name);
+	} else {
+		flush_buffer(&buf, f); /*check for writing errors? */
+		fclose(f);
+	}
+}
+
 void export_translation(const char *file_name)
 {
 	FILE *f;
