@@ -34,6 +34,7 @@ private slots:
 	void on_suit_editingFinished();
 	void divesEdited(int count);
 	void diveComputerEdited(dive &dive, divecomputer &dc);
+	void cylinderRemoved(struct dive *dive, int);
 
 private:
 	Ui::TabDiveEquipment ui;

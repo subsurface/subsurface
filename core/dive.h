@@ -204,7 +204,6 @@ extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, 
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
-extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
 
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
 

@@ -1174,8 +1174,8 @@ static void merge_one_sample(const struct sample &sample, struct divecomputer &d
 	append_sample(sample, &dc);
 }
 
-static void renumber_last_sample(struct divecomputer &dc, const int mapping[]);
-static void sample_renumber(struct sample &s, const struct sample *next, const int mapping[]);
+static void sensors_renumber_last_sample(struct divecomputer &dc, const int mapping[]);
+static void sensors_renumber(struct sample &s, const struct sample *next, const int mapping[]);
 
 /*
  * Merge samples. Dive 'a' is "offset" seconds before Dive 'b'
@@ -1216,7 +1216,7 @@ static void merge_samples(struct divecomputer &res,
 		if (bt < 0) {
 		add_sample_a:
 			merge_one_sample(*as, res);
-			renumber_last_sample(res, cylinders_map_a);
+			sensors_renumber_last_sample(res, cylinders_map_a);
 			as++;
 			continue;
 		}
@@ -1227,7 +1227,7 @@ static void merge_samples(struct divecomputer &res,
 			struct sample sample = *bs;
 			sample.time.seconds += offset;
 			merge_one_sample(sample, res);
-			renumber_last_sample(res, cylinders_map_b);
+			sensors_renumber_last_sample(res, cylinders_map_b);
 			bs++;
 			continue;
 		}
@@ -1240,7 +1240,7 @@ static void merge_samples(struct divecomputer &res,
 		/* same-time sample: add a merged sample. Take the non-zero ones */
 		struct sample sample = *bs;
 		sample.time.seconds += offset;
-		sample_renumber(sample, nullptr, cylinders_map_b);
+		sensors_renumber(sample, nullptr, cylinders_map_b);
 		if (as->depth.mm)
 			sample.depth = as->depth;
 		if (as->temperature.mkelvin)
@@ -1448,14 +1448,14 @@ static void add_initial_gaschange(struct dive &dive, struct divecomputer &dc, in
 	add_gas_switch_event(&dive, &dc, offset, idx);
 }
 
-static void sample_renumber(struct sample &s, const struct sample *prev, const int mapping[])
+static void sensors_renumber(struct sample &s, const struct sample *prev, const int mapping[])
 {
 	for (int j = 0; j < MAX_SENSORS; j++) {
-		int sensor = -1;
+		int sensor = NO_SENSOR;
 
 		if (s.sensor[j] != NO_SENSOR)
 			sensor = mapping[s.sensor[j]];
-		if (sensor == -1) {
+		if (sensor == NO_SENSOR) {
 			// Remove sensor and gas pressure info
 			if (!prev) {
 				s.sensor[j] = 0;
@@ -1470,12 +1470,12 @@ static void sample_renumber(struct sample &s, const struct sample *prev, const i
 	}
 }
 
-static void renumber_last_sample(struct divecomputer &dc, const int mapping[])
+static void sensors_renumber_last_sample(struct divecomputer &dc, const int mapping[])
 {
 	if (dc.samples.empty())
 		return;
 	sample *prev = dc.samples.size() > 1 ? &dc.samples[dc.samples.size() - 2] : nullptr;
-	sample_renumber(dc.samples.back(), prev, mapping);
+	sensors_renumber(dc.samples.back(), prev, mapping);
 }
 
 static void event_renumber(struct event &ev, const int mapping[])
@@ -1487,11 +1487,25 @@ static void event_renumber(struct event &ev, const int mapping[])
 	ev.gas.index = mapping[ev.gas.index];
 }
 
+static void dc_tank_sensor_mappings_renumber(struct divecomputer &dc, const int mapping[])
+{
+	for (auto it = dc.tank_sensor_mappings.begin(); it != dc.tank_sensor_mappings.end();) {
+		int cylinder_index = mapping[(*it).cylinder_index];
+		if (cylinder_index == NO_SENSOR) {
+			it = dc.tank_sensor_mappings.erase(it);
+
+			break;
+		}
+
+		(*it).cylinder_index = cylinder_index;
+
+		it++;
+	}
+}
+
 static void dc_cylinder_renumber(struct dive &dive, struct divecomputer &dc, const int mapping[])
 {
-	/* Remap or delete the sensor indices */
-	for (auto [i, sample]: enumerated_range(dc.samples))
-		sample_renumber(sample, i > 0 ? &dc.samples[i-1] : nullptr, mapping);
+	dc_tank_sensor_mappings_renumber(dc, mapping);
 
 	/* Remap the gas change indices */
 	for (auto &ev: dc.events)
@@ -1726,6 +1740,7 @@ const std::vector<struct tank_sensor_mapping> get_tank_sensor_mappings_for_stora
 	// as no mapping in order to retain backwards compatibility.
 	if (dc.tank_sensor_mappings.empty() && !dive.cylinders.empty() && !sensor_ids.empty())
 		return std::vector<struct tank_sensor_mapping>({ tank_sensor_mapping { NO_SENSOR, 0 } });
+
 	// Check if any of the mappings are not 1 : 1
 	for (const auto &mapping: dc.tank_sensor_mappings)
 		if (mapping.sensor_id != (int16_t)mapping.cylinder_index)
@@ -2764,22 +2779,6 @@ std::pair<gasmix, int> gasmix_loop::get_last_gasmix()
 struct gasmix dive::get_gasmix_at_time(const struct divecomputer &dc, duration_t time) const
 {
 	return gasmix_loop(*this, dc).at(time.seconds).first;
-}
-
-/* Does that cylinder have any pressure readings? */
-bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id)
-{
-	for (const auto &dc: dive->dcs) {
-		for (const auto &sample: dc.samples) {
-			for (int j = 0; j < MAX_SENSORS; ++j) {
-				if (!sample.pressure[j].mbar)
-					continue;
-				if (sample.sensor[j] == cylinder_id)
-					return true;
-			}
-		}
-	}
-	return false;
 }
 
 /*
