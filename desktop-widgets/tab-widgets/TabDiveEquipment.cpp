@@ -50,6 +50,7 @@ TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 	connect(cylindersModel, &CylindersModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 	connect(weightModel, &WeightModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, &TabDiveEquipment::diveComputerEdited);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &TabDiveEquipment::cylinderRemoved);
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, &tankInfoDelegate);
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, &tankUseDelegate);
@@ -209,15 +210,6 @@ void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 		return;
 
 	if (index.column() == CylindersModel::REMOVE) {
-		for (dive *d: getDiveSelection()) {
-			if (cylinder_with_sensor_sample(d, index.row())) {
-				if (QMessageBox::warning(this, tr("Remove cylinder?"),
-							 tr("The deleted cylinder has sensor readings, which will be lost.\n"
-							    "Do you want to continue?"),
-							 QMessageBox::Yes|QMessageBox::No) != QMessageBox::Yes)
-					return;
-			}
-		}
 		divesEdited(Command::removeCylinder(index.row(), false));
 	} else if (index.column() != CylindersModel::NUMBER) {
 		ui.cylinders->edit(index);
@@ -247,7 +239,15 @@ void TabDiveEquipment::divesEdited(int i)
 
 void TabDiveEquipment::diveComputerEdited(dive &dive, divecomputer &dc)
 {
-	dive.fixup_dive_dc(dc);
+	if (parent.currentDive == &dive && parent.currentDive->get_dc(parent.currentDC) == &dc)
+		dive.fixup_dive_dc(dc);
+}
+
+void TabDiveEquipment::cylinderRemoved(struct dive *dive, int)
+{
+	if (parent.currentDive == dive)
+		for (auto &dc: dive->dcs)
+			dive->fixup_dive_dc(dc);
 }
 
 void TabDiveEquipment::on_suit_editingFinished()
