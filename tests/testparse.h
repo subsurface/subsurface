@@ -18,6 +18,7 @@ private slots:
 	int parseV2NoQuestion();
 	int parseV3();
 	void testParse();
+	void testParseTankSensors();
 
 	void testParseDM4();
 	void testParseDM5();
@@ -25,6 +26,7 @@ private slots:
 	void testParseNewFormat();
 	void testParseDLD();
 	void testParseMerge();
+	void testParseMergeTankSensors();
 
 	int parseCSVmanual(int, std::string);
 	void exportSubsurfaceCSV();
