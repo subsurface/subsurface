@@ -137,6 +137,16 @@ void TestParse::testParse()
 		     SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
 }
 
+void TestParse::testParseTankSensors()
+{
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test-tank-sensor-mapping.xml", &divelog), 0);
+	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
+
+	QCOMPARE(save_dives("./testouttanksensors.ssrf"), 0);
+	FILE_COMPARE("./testouttanksensors.ssrf",
+		     SUBSURFACE_TEST_DATA "/dives/test-tank-sensors.xml");
+}
+
 void TestParse::testParseDM4()
 {
 	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.db", &_sqlite3_handle), 0);
@@ -265,6 +275,22 @@ void TestParse::testParseMerge()
 	QCOMPARE(save_dives("./testmerge.ssrf"), 0);
 	FILE_COMPARE("./testmerge.ssrf",
 		     SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
+}
+
+void TestParse::testParseMergeTankSensors()
+{
+	/*
+	 * check that we correctly merge mixed cylinder dives with tank sensors
+	 */
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test-tank-sensor-mapping.xml", &divelog), 0);
+
+	struct divelog divelogToMerge;
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test-tank-sensor-mapping-merge.xml", &divelogToMerge), 0);
+	divelog.add_imported_dives(divelogToMerge, import_flags::merge_all_trips);
+
+	QCOMPARE(save_dives("./testmergetanksensors.ssrf"), 0);
+	FILE_COMPARE("./testmergetanksensors.ssrf",
+		     SUBSURFACE_TEST_DATA "/dives/merged-tank-sensors.xml");
 }
 
 int TestParse::parseCSVmanual(int units, std::string file)
