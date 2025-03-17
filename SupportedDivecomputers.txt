@@ -14,7 +14,7 @@ Dive Rite: NiTek Q, NiTek Trio
 DiveSystem: Orca, iDive DAN, iDive Deep, iDive Easy, iDive Free, iDive Pro, iDive Reb, iDive Stealth, iDive Tech, iDive X3M
 Divesoft: Freedom, Liberty
 FIT: File import
-Garmin: Descent Mk1, Descent Mk2(i)/Mk3(i)
+Garmin: Descent Mk1, Descent Mk2(i)/Mk3(i)(S)/G1/G2/X50i
 Genesis: Centauri, React Pro, React Pro White
 Heinrichs Weikamp: Frog, OSTC, OSTC 2, OSTC 2 TR, OSTC 2C, OSTC 2N, OSTC 3, OSTC 4, OSTC Mk2, OSTC Plus, OSTC Sport, OSTC cR
 Hollis: DG02, DG03, TX1
