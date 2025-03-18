@@ -345,7 +345,7 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 	const double minProfileFraction = 0.1;		// changed this to 0.1, to allow for much larger gasplot_frac!
 	const double heartBeatFraction = 0.125;		// these fraction were determined by their earlier pixel-
 	const double percentagegraphFraction = 0.083;	//  height dived by 600. looks much like before.
-	double temperatureFraction = 0.14;        //  0.14 looks like before
+	double temperatureFraction = 0.14;	//  0.14 looks like before
 
 	// first we sum up the fixed fractions of all displayed axes
 	double _sumOfFractions = 0;
@@ -357,13 +357,12 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 		_sumOfFractions += percentagegraphFraction;
 
 	// lower gasplot_frac until minProfileFraction is reached
-	// the max value of 0.7 as set through tec-settings may be too mauch in some circumstances
-	while ( (1 - (_sumOfFractions + prefs.gasplot_frac)) < minProfileFraction )
-		prefs.gasplot_frac -= 0.05;
-
-	double _used_gasplot_frac;
+	// the max value of 0.7 as set through tec-settings may be too much in some circumstances
+	double _used_gasplot_frac = prefs.gasplot_frac;
 	if (prefs.zoomed_plot) {
-		_used_gasplot_frac = prefs.gasplot_frac;
+		while ( (1 - (_sumOfFractions + _used_gasplot_frac)) < minProfileFraction )
+			_used_gasplot_frac -= 0.05;
+
 		if (ppGraphsEnabled(currentdc, simplified))
 			temperatureFraction = 0.083;  // with gasplot-zoom slightly reduce temp-plot
 	} else {
@@ -380,7 +379,7 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 		{ percentageAxis, percentagegraphFraction * height, 0.0, prefs.percentagegraph },
 		{ gasYAxis, _used_gasplot_frac * height, 0.0, ppGraphsEnabled(currentdc, simplified) },
 		{ temperatureAxis, temperatureFraction * height, 2.0, !(ppGraphsEnabled(currentdc, simplified) && simplified) }, //set temp invisible for simplified with ppGraphs
-        };
+	};
 
 	for (const VerticalAxisLayout &l: secondaryAxes) {
 		l.axis->setVisible(l.visible);
