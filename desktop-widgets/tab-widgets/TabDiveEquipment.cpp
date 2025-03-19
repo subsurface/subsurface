@@ -3,6 +3,7 @@
 #include "maintab.h"
 #include "desktop-widgets/modeldelegates.h"
 #include "core/dive.h"
+#include "core/sample.h"
 #include "core/selection.h"
 #include "commands/command.h"
 
@@ -15,17 +16,16 @@
 
 static bool ignoreHiddenFlag(int i)
 {
-	return i == CylindersModel::NUMBER || i == CylindersModel::REMOVE || i == CylindersModel::TYPE ||
-	       i == CylindersModel::WORKINGPRESS_INT || i == CylindersModel::SIZE_INT;
-}
-
-static bool hiddenByDefault(int i)
-{
 	switch (i) {
-	case CylindersModel::SENSORS:
+	case CylindersModel::NUMBER:
+	case CylindersModel::REMOVE:
+	case CylindersModel::TYPE:
+	case CylindersModel::WORKINGPRESS_INT:
+	case CylindersModel::SIZE_INT:
 		return true;
+	default:
+		return false;
 	}
-	return false;
 }
 
 TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
@@ -49,6 +49,8 @@ TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 	connect(ui.weights, &TableView::itemClicked, this, &TabDiveEquipment::editWeightWidget);
 	connect(cylindersModel, &CylindersModel::divesEdited, this, &TabDiveEquipment::divesEdited);
 	connect(weightModel, &WeightModel::divesEdited, this, &TabDiveEquipment::divesEdited);
+	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, &TabDiveEquipment::diveComputerEdited);
+	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &TabDiveEquipment::cylinderRemoved);
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, &tankInfoDelegate);
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, &tankUseDelegate);
@@ -87,15 +89,16 @@ TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 		if (ignoreHiddenFlag(i))
 			continue;
 		auto setting = s.value(QString("column%1_hidden").arg(i));
-		bool checked = setting.isValid() ? setting.toBool() : hiddenByDefault(i) ;
+		bool hidden = setting.isValid() ? setting.toBool() : false;
 		QAction *action = new QAction(cylindersModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString(), ui.cylinders->view());
 		action->setCheckable(true);
 		action->setData(i);
-		action->setChecked(!checked);
+		action->setChecked(!hidden);
 		connect(action, &QAction::triggered, this, &TabDiveEquipment::toggleTriggeredColumn);
-		ui.cylinders->view()->setColumnHidden(i, checked);
 		ui.cylinders->view()->horizontalHeader()->addAction(action);
+		ui.cylinders->view()->setColumnHidden(i, hidden);
 	}
+	setCylinderColumnVisibility();
 	ui.cylinders->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
 	ui.weights->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
 	suitCompleter = new QCompleter(&suitModel, ui.suit);
@@ -114,6 +117,39 @@ TabDiveEquipment::~TabDiveEquipment()
 	}
 }
 
+void TabDiveEquipment::setCylinderColumnVisibility()
+{
+	bool showSensors = true;
+	if (parent.currentDive && parent.currentDC >= 0) {
+		showSensors = false;
+		const struct divecomputer *dc = parent.currentDive->get_dc(parent.currentDC);
+		for (const auto &sample: dc->samples) {
+			auto pressure = std::find_if(std::begin(sample.pressure), std::end(sample.pressure), [](const pressure_t &pressure) {
+				return pressure.mbar;
+			});
+			if (pressure != std::end(sample.pressure)) {
+				showSensors = true;
+				break;
+			}
+		}
+	}
+
+	if (showSensors) {
+		QList<QAction *> actions = ui.cylinders->view()->horizontalHeader()->actions();
+		auto action = std::find_if(actions.begin(), actions.end(), [](QAction *a) {
+			return a->data().toInt() == CylindersModel::SENSORS;
+		});
+		if (action != actions.end())
+			showSensors = (*action)->isChecked();
+	}
+	ui.cylinders->view()->setColumnHidden(CylindersModel::SENSORS, !showSensors);
+
+	// This is needed as Qt sets the column width to 0 when hiding a column
+	ui.cylinders->view()->setVisible(false); // This will cause the resize to include rows outside the current viewport
+	ui.cylinders->view()->resizeColumnsToContents();
+	ui.cylinders->view()->setVisible(true);
+}
+
 // This function gets called if a field gets updated by an undo command.
 // Refresh the corresponding UI field.
 void TabDiveEquipment::divesChanged(const QVector<dive *> &dives, DiveField field)
@@ -129,15 +165,9 @@ void TabDiveEquipment::toggleTriggeredColumn()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
 	int col = action->data().toInt();
-	QTableView *view = ui.cylinders->view();
+	ui.cylinders->view()->setColumnHidden(col, !action->isChecked());
 
-	if (action->isChecked()) {
-		view->showColumn(col);
-		if (view->columnWidth(col) <= 15)
-			view->setColumnWidth(col, 80);
-	} else {
-		view->hideColumn(col);
-	}
+	setCylinderColumnVisibility();
 }
 
 void TabDiveEquipment::updateData(const std::vector<dive *> &, dive *currentDive, int currentDC)
@@ -146,10 +176,12 @@ void TabDiveEquipment::updateData(const std::vector<dive *> &, dive *currentDive
 
 	cylindersModel->updateDive(currentDive, currentDC);
 	weightModel->updateDive(currentDive);
-	sensorDelegate.setCurrentDC(dc);
+	sensorDelegate.setCurrentDc(dc);
 	tankUseDelegate.setDiveDc(*currentDive, currentDC);
 
-	if (currentDive && !currentDive->suit.empty())
+	setCylinderColumnVisibility();
+
+	if (!currentDive->suit.empty())
 		ui.suit->setText(QString::fromStdString(currentDive->suit));
 	else
 		ui.suit->clear();
@@ -178,15 +210,6 @@ void TabDiveEquipment::editCylinderWidget(const QModelIndex &index)
 		return;
 
 	if (index.column() == CylindersModel::REMOVE) {
-		for (dive *d: getDiveSelection()) {
-			if (cylinder_with_sensor_sample(d, index.row())) {
-				if (QMessageBox::warning(this, tr("Remove cylinder?"),
-							 tr("The deleted cylinder has sensor readings, which will be lost.\n"
-							    "Do you want to continue?"),
-							 QMessageBox::Yes|QMessageBox::No) != QMessageBox::Yes)
-					return;
-			}
-		}
 		divesEdited(Command::removeCylinder(index.row(), false));
 	} else if (index.column() != CylindersModel::NUMBER) {
 		ui.cylinders->edit(index);
@@ -212,6 +235,19 @@ void TabDiveEquipment::divesEdited(int i)
 	ui.multiDiveWarningMessage->setCloseButtonVisible(false);
 	ui.multiDiveWarningMessage->setText(tr("Warning: edited %1 dives").arg(i));
 	ui.multiDiveWarningMessage->show();
+}
+
+void TabDiveEquipment::diveComputerEdited(dive &dive, divecomputer &dc)
+{
+	if (parent.currentDive == &dive && parent.currentDive->get_dc(parent.currentDC) == &dc)
+		dive.fixup_dive_dc(dc);
+}
+
+void TabDiveEquipment::cylinderRemoved(struct dive *dive, int)
+{
+	if (parent.currentDive == dive)
+		for (auto &dc: dive->dcs)
+			dive->fixup_dive_dc(dc);
 }
 
 void TabDiveEquipment::on_suit_editingFinished()

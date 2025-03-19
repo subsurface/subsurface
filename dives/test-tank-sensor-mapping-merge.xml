@@ -1,0 +1,120 @@
+<divelog program='subsurface' version='3'>
+<settings>
+</settings>
+<divesites>
+</divesites>
+<dives>
+<dive number='2' otu='38' cns='4%' date='2025-03-11' time='20:46:51' duration='27:22 min'>
+  <notes>no sensors mapped</notes>
+  <cylinder description='first_2' o2='40.0%' depth='22.086 m' />
+  <cylinder description='second_2' o2='25.0 %' depth='66.249 m' />
+  <cylinder description='third_2' o2='16.0%' he='45.0%' depth='96.7 m' />
+  <cylinder description='fourth_2' o2='15.0%' he='46.0%' use='diluent' depth='96.7 m' />
+  <divecomputer model='Divecomputer 2' last-manual-time='20:00 min' dctype='CCR' no_o2sensors='3'>
+  <depth max='40.965 m' mean='11.968 m' />
+  <temperature water='26.667 C' />
+  <surface pressure='1.013 bar' />
+  <water salinity='1020 g/l' />
+  <tanksensormapping sensorid='-1' cylinderindex='0' />
+  <event time='20:01 min' type='25' value='2949135' name='gaschange' cylinder='2' o2='15.0%' he='45.0%' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='0:10 min' depth='1.067 m' temp='26.667 C' pressure0='109.213 bar' pressure1='159.407 bar' tts='1:00 min' cns='4%' sensor1='0.777 bar' sensor2='0.777 bar' sensor3='0.756 bar' dc_supplied_ppo2='0.66 bar' po2='0.7 bar' />
+  <sample time='0:50 min' depth='15.0 m' />
+  <sample time='10:00 min' depth='15.0 m' pressure0='63.57 bar' pressure1='158.855 bar' sensor1='1.323 bar' sensor2='1.323 bar' sensor3='1.344 bar' dc_supplied_ppo2='1.15 bar' />
+  <sample time='20:00 min' depth='15.0 m' />
+  <sample time='20:01 min' depth='15.0 m' />
+  <sample time='20:42 min' depth='11.0 m' />
+  <sample time='21:10 min' depth='10.0 m' pressure0='52.676 bar' pressure1='153.615 bar' tts='9:00 min' sensor1='1.344 bar' sensor2='1.344 bar' sensor3='1.365 bar' dc_supplied_ppo2='1.17 bar' />
+  <sample time='21:16 min' depth='7.128 m' />
+  <sample time='21:26 min' depth='6.0 m' />
+  <sample time='24:40 min' depth='3.0 m' pressure0='40.541 bar' tts='14:00 min' sensor1='1.47 bar' sensor2='1.449 bar' sensor3='1.47 bar' dc_supplied_ppo2='1.26 bar' />
+  <sample time='27:22 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='3' otu='42' cns='4%' date='2025-03-11' time='20:47:03' duration='29:58 min'>
+  <notes>default mapping, single tank</notes>
+  <cylinder description='first_2' o2='45.0%' use='diluent' depth='22.086 m' />
+  <divecomputer model='Divecomputer 2' last-manual-time='20:00 min' dctype='CCR' no_o2sensors='3'>
+  <depth max='40.965 m' mean='9.564 m' />
+  <temperature water='26.667 C' />
+  <surface pressure='1.013 bar' />
+  <water salinity='1020 g/l' />
+  <event time='20:01 min' type='25' value='2949135' name='gaschange' cylinder='2' o2='15.0%' he='45.0%' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='0:10 min' depth='1.067 m' temp='26.667 C' pressure0='109.213 bar' pressure1='159.407 bar' tts='1:00 min' cns='4%' sensor1='0.777 bar' sensor2='0.777 bar' sensor3='0.756 bar' dc_supplied_ppo2='0.66 bar' po2='0.7 bar' />
+  <sample time='0:50 min' depth='15.0 m' />
+  <sample time='10:00 min' depth='10.0 m' pressure0='63.57 bar' pressure1='158.855 bar' sensor1='1.323 bar' sensor2='1.323 bar' sensor3='1.344 bar' dc_supplied_ppo2='1.15 bar' />
+  <sample time='20:00 min' depth='15.0 m' />
+  <sample time='20:01 min' depth='15.0 m' />
+  <sample time='20:42 min' depth='11.0 m' />
+  <sample time='21:10 min' depth='10.0 m' pressure0='52.676 bar' pressure1='153.615 bar' tts='9:00 min' sensor1='1.344 bar' sensor2='1.344 bar' sensor3='1.365 bar' dc_supplied_ppo2='1.17 bar' />
+  <sample time='21:16 min' depth='7.128 m' />
+  <sample time='21:26 min' depth='6.0 m' />
+  <sample time='24:24 min' depth='3.0 m' />
+  <sample time='24:40 min' depth='3.0 m' pressure0='40.541 bar' tts='14:00 min' sensor1='1.47 bar' sensor2='1.449 bar' sensor3='1.47 bar' dc_supplied_ppo2='1.26 bar' />
+  <sample time='27:00 min' depth='3.0 m' />
+  <sample time='29:58 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='4' otu='62' cns='4%' date='2025-03-11' time='20:47:27' duration='41:58 min'>
+  <notes>sensors swapped</notes>
+  <cylinder description='first_2' o2='40.0%' depth='22.086 m' />
+  <cylinder description='second_2' o2='25.0%' depth='66.249 m' />
+  <cylinder description='third_2' o2='16.0%' he='45.0%' depth='96.7 m' />
+  <cylinder description='fourth_2' o2='15.0%' he='46.0%' use='diluent' depth='96.7 m' />
+  <divecomputer model='Divecomputer 2' last-manual-time='20:00 min' dctype='CCR' no_o2sensors='3'>
+  <depth max='40.965 m' mean='8.829 m' />
+  <temperature water='26.667 C' />
+  <surface pressure='1.013 bar' />
+  <water salinity='1020 g/l' />
+  <tanksensormapping sensorid='0' cylinderindex='1' />
+  <tanksensormapping sensorid='1' cylinderindex='0' />
+  <event time='20:01 min' type='25' value='2949135' name='gaschange' cylinder='2' o2='15.0%' he='45.0%' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='0:10 min' depth='1.067 m' temp='26.667 C' pressure0='109.213 bar' pressure1='159.407 bar' tts='1:00 min' cns='4%' sensor1='0.777 bar' sensor2='0.777 bar' sensor3='0.756 bar' dc_supplied_ppo2='0.66 bar' po2='0.7 bar' />
+  <sample time='0:50 min' depth='15.0 m' />
+  <sample time='10:00 min' depth='15.0 m' pressure0='63.57 bar' pressure1='158.855 bar' sensor1='1.323 bar' sensor2='1.323 bar' sensor3='1.344 bar' dc_supplied_ppo2='1.15 bar' />
+  <sample time='20:00 min' depth='15.0 m' />
+  <sample time='20:01 min' depth='15.0 m' />
+  <sample time='20:42 min' depth='11.0 m' />
+  <sample time='21:10 min' depth='10.0 m' pressure0='52.676 bar' pressure1='153.615 bar' tts='9:00 min' sensor1='1.344 bar' sensor2='1.344 bar' sensor3='1.365 bar' dc_supplied_ppo2='1.17 bar' />
+  <sample time='21:16 min' depth='7.128 m' />
+  <sample time='21:26 min' depth='6.0 m' />
+  <sample time='24:24 min' depth='3.0 m' />
+  <sample time='24:40 min' depth='3.0 m' pressure0='40.541 bar' tts='14:00 min' sensor1='1.47 bar' sensor2='1.449 bar' sensor3='1.47 bar' dc_supplied_ppo2='1.26 bar' />
+  <sample time='38:40 min' depth='3.0 m' pressure0='31.578 bar' pressure1='147.548 bar' tts='19:00 min' sensor1='1.428 bar' sensor2='1.407 bar' sensor3='1.428 bar' dc_supplied_ppo2='1.23 bar' />
+  <sample time='39:00 min' depth='3.0 m' />
+  <sample time='41:58 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='5' otu='84' cns='4%' date='2025-03-11' time='20:47:33' duration='54:58 min'>
+  <notes>default mapping</notes>
+  <cylinder description='first_2' o2='50.0%' depth='22.086 m' />
+  <cylinder description='second_2' depth='66.249 m' />
+  <cylinder description='third_2' o2='15.0%' he='45.0%' depth='96.7 m' />
+  <cylinder description='fourth_2' o2='15.0%' he='45.0%' use='diluent' depth='96.7 m' />
+  <divecomputer model='Divecomputer 2' last-manual-time='20:00 min' dctype='CCR' no_o2sensors='3'>
+  <depth max='40.965 m' mean='7.45 m' />
+  <temperature water='26.667 C' />
+  <surface pressure='1.013 bar' />
+  <water salinity='1020 g/l' />
+  <event time='20:01 min' type='25' value='2949135' name='gaschange' cylinder='2' o2='15.0%' he='45.0%' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='0:10 min' depth='1.067 m' temp='26.667 C' pressure0='109.213 bar' pressure2='159.407 bar' tts='1:00 min' cns='4%' sensor1='0.777 bar' sensor2='0.777 bar' sensor3='0.756 bar' dc_supplied_ppo2='0.66 bar' po2='0.7 bar' />
+  <sample time='0:50 min' depth='15.0 m' />
+  <sample time='10:00 min' depth='15.0 m' pressure0='63.57 bar' pressure1='158.855 bar' sensor1='1.323 bar' sensor2='1.323 bar' sensor3='1.344 bar' dc_supplied_ppo2='1.15 bar' />
+  <sample time='20:00 min' depth='15.0 m' />
+  <sample time='20:01 min' depth='15.0 m' />
+  <sample time='20:42 min' depth='11.0 m' />
+  <sample time='21:10 min' depth='10.0 m' pressure0='52.676 bar' pressure1='153.615 bar' tts='9:00 min' sensor1='1.344 bar' sensor2='1.344 bar' sensor3='1.365 bar' dc_supplied_ppo2='1.17 bar' />
+  <sample time='21:16 min' depth='7.128 m' />
+  <sample time='21:26 min' depth='6.0 m' />
+  <sample time='24:24 min' depth='3.0 m' />
+  <sample time='24:40 min' depth='3.0 m' pressure0='40.541 bar' tts='14:00 min' sensor1='1.47 bar' sensor2='1.449 bar' sensor3='1.47 bar' dc_supplied_ppo2='1.26 bar' />
+  <sample time='38:40 min' depth='3.0 m' pressure0='31.578 bar' pressure1='147.548 bar' tts='19:00 min' sensor1='1.428 bar' sensor2='1.407 bar' sensor3='1.428 bar' dc_supplied_ppo2='1.23 bar' />
+  <sample time='52:00 min' depth='3.0 m' />
+  <sample time='54:58 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

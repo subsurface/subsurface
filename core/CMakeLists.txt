@@ -181,6 +181,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	subsurfacesysinfo.h
 	tag.cpp
 	tag.h
+	tanksensormapping.h
 	taxonomy.cpp
 	taxonomy.h
 	time.cpp

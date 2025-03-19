@@ -5,7 +5,7 @@ translations/*.qm
 *.exe
 *.dmg
 *.patch
-*.xml
+*.bak
 ssrf-version.h
 !dives/*.xml
 *~
@@ -46,3 +46,4 @@ gh_release_notes.md
 release_content_title.txt
 /output/
 /Documentation/output/
+/metainfo/subsurface.metainfo.xml

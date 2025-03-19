@@ -9,6 +9,7 @@
 #include "core/qthelper.h"
 #include "core/dive.h"
 #include "core/gettextfromc.h"
+#include "core/sample.h" // for NO_SENSOR
 
 #include <QDir>
 #include <QLocale>
@@ -91,6 +92,35 @@ QVariant DiveTypeSelectionModel::data(const QModelIndex &index, int role) const
 int DiveTypeSelectionModel::rowCount(const QModelIndex&) const
 {
 	return diveTypes.size();
+}
+
+SensorSelectionModel::SensorSelectionModel(const divecomputer &dc, QObject *parent)
+	: QAbstractListModel(parent)
+{
+	sensorNames = get_tank_sensor_list(dc);
+	sensorNames.insert(sensorNames.begin(), std::make_pair(NO_SENSOR, "<" + tr("none") + ">"));
+}
+
+QVariant SensorSelectionModel::data(const QModelIndex &index, int role) const
+{
+	if (!index.isValid())
+		return QVariant();
+
+	switch (role) {
+	case Qt::FontRole:
+		return defaultModelFont();
+	case Qt::DisplayRole:
+		return sensorNames.at(index.row()).second;
+	case Qt::UserRole:
+		return sensorNames.at(index.row()).first;
+	}
+
+	return QVariant();
+}
+
+int SensorSelectionModel::rowCount(const QModelIndex&) const
+{
+	return sensorNames.size();
 }
 
 // Language Model, The Model to populate the list of possible Languages.

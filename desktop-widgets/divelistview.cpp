@@ -397,7 +397,6 @@ static void check_cylinder_use(struct dive &dive)
 	for (auto &divecomputer: dive.dcs)
 		check_dc_cylinder_use(dive, divecomputer);
 }
-	
 
 void DiveListView::divesChanged(const QVector<dive *> &dives, DiveField field)
 {

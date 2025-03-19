@@ -89,7 +89,8 @@ struct dive {
 
 	void clear();
 	int number_of_computers() const;
-	void fixup_no_cylinder();		/* to fix cylinders, we need the divelist (to calculate cns) */
+	void fixup_dive();
+	void fixup_dive_dc(struct divecomputer &dc);
 	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
 	temperature_t dc_airtemp() const;	/* average over divecomputers */
@@ -155,6 +156,7 @@ extern int same_gasmix_cylinder(const cylinder_t &cyl, int cylid, const struct d
 extern bool is_cylinder_use_appropriate(const struct divecomputer &dc, const cylinder_t &cyl, bool allowNonUsable);
 extern divemode_t get_effective_divemode(const struct divecomputer &dc, const struct cylinder_t &cylinder);
 extern std::tuple<divemode_t, int, const struct gasmix *> get_dive_status_at(const struct dive &dive, const struct divecomputer &dc, int seconds, divemode_loop *loop_mode = nullptr, gasmix_loop *loop_gas = nullptr);
+extern const std::vector<struct tank_sensor_mapping> get_tank_sensor_mappings_for_storage(const struct dive &dive, const struct divecomputer &dc);
 
 /* Data stored when copying a dive */
 struct dive_paste_data {
@@ -202,7 +204,6 @@ extern void copy_events_until(const struct dive *sd, struct dive *dd, int dcNr, 
 extern void copy_used_cylinders(const struct dive *s, struct dive *d, bool used_only);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx);
-extern bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id);
 
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
 

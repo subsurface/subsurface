@@ -4,12 +4,14 @@
 
 #include "divemode.h"
 #include "units.h"
+#include <set>
 #include <string>
 #include <vector>
 
 struct extra_data;
 struct event;
 struct sample;
+struct tank_sensor_mapping;
 
 /* Is this header the correct place? */
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
@@ -43,6 +45,7 @@ struct divecomputer {
 	std::vector<struct sample> samples;
 	std::vector<struct event> events;
 	std::vector<struct extra_data> extra_data;
+	std::vector<struct tank_sensor_mapping> tank_sensor_mappings;
 
 	divecomputer();
 	~divecomputer();
@@ -56,6 +59,8 @@ extern void free_dc_contents(struct divecomputer *dc);
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void append_sample(const struct sample &sample, struct divecomputer *dc);
+extern std::set<int16_t> get_tank_sensor_ids(const struct divecomputer &dc);
+extern void fixup_dc_sample_sensors(struct divecomputer &dc);
 extern void fixup_dc_duration(struct divecomputer &dc);
 extern int add_event_to_dc(struct divecomputer *dc, struct event ev); // event structure is consumed, returns index of inserted event
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const std::string &name);

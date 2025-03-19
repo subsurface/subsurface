@@ -33,7 +33,7 @@ void dive_table::record_dive(std::unique_ptr<dive> d)
 
 void dive_table::fixup_dive(struct dive &dive) const
 {
-	dive.fixup_no_cylinder();
+	dive.fixup_dive();
 	update_cylinder_related_info(dive);
 }
 

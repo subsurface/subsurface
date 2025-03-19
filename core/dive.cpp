@@ -11,6 +11,7 @@
 #include "subsurface-string.h"
 #include "libdivecomputer.h"
 #include "device.h"
+#include "divecomputer.h"
 #include "divelist.h"
 #include "divesite.h"
 #include "equipment.h"
@@ -26,6 +27,7 @@
 #include "range.h"
 #include "sample.h"
 #include "tag.h"
+#include "tanksensormapping.h"
 #include "trip.h"
 
 // For user visible text but still not translated
@@ -850,8 +852,8 @@ static void fixup_dc_temp(struct dive &dive, struct divecomputer &dc)
 /* Remove redundant pressure information */
 static void simplify_dc_pressures(struct divecomputer &dc)
 {
-	int lastindex[2] = { -1, -1 };
-	int lastpressure[2] = { 0 };
+	int lastindex[MAX_SENSORS] = { NO_SENSOR };
+	int lastpressure[MAX_SENSORS] = { 0 };
 
 	for (auto &sample: dc.samples) {
 		int j;
@@ -1006,39 +1008,34 @@ static void fixup_no_o2sensors(struct divecomputer &dc)
 	}
 }
 
-static void fixup_dc_sample_sensors(struct dive &dive, struct divecomputer &dc)
+static void fixup_sensor_mappings(struct dive &dive, struct divecomputer &dc)
 {
-	unsigned long sensor_mask = 0;
+	if (dc.tank_sensor_mappings.size() == 0) {
+		// Add the implied mappings
+		for (auto sensor_id: get_tank_sensor_ids(dc))
+			if (sensor_id >= 0 && (unsigned int)sensor_id < dive.cylinders.size())
+				dc.tank_sensor_mappings.push_back(tank_sensor_mapping { sensor_id, (unsigned int)sensor_id });
+	} else {
+		// Remove mappings where the sensor id does not exist
+		// or the cylinder index is out of range
+		auto sensor_ids = get_tank_sensor_ids(dc);
+		dc.tank_sensor_mappings.erase(std::remove_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(),
+			[sensor_ids, &dive](const tank_sensor_mapping &mapping) {
+				return sensor_ids.find(mapping.sensor_id) == sensor_ids.end()
+					|| mapping.cylinder_index >= dive.cylinders.size();
+			}), dc.tank_sensor_mappings.end());
 
-	for (auto &sample: dc.samples) {
-		for (int j = 0; j < MAX_SENSORS; j++) {
-			int sensor = sample.sensor[j];
+		// Remove any mappings that have a duplicate sensor id
+		dc.tank_sensor_mappings.erase(std::unique(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(),
+			[](const tank_sensor_mapping &a, const tank_sensor_mapping &b) {
+				return a.sensor_id == b.sensor_id;
+			}), dc.tank_sensor_mappings.end());
 
-			// No invalid sensor ID's, please
-			if (sensor < 0 || sensor > MAX_SENSORS) {
-				sample.sensor[j] = NO_SENSOR;
-				sample.pressure[j] = 0_bar;
-				continue;
-			}
-
-			// Don't bother tracking sensors with no data
-			if (!sample.pressure[j].mbar) {
-				sample.sensor[j] = NO_SENSOR;
-				continue;
-			}
-
-			// Remember the set of sensors we had
-			sensor_mask |= 1ul << sensor;
-		}
-	}
-
-	// Ignore the sensors we have cylinders for
-	sensor_mask >>= dive.cylinders.size();
-
-	// Do we need to add empty cylinders?
-	while (sensor_mask) {
-		dive.cylinders.emplace_back();
-		sensor_mask >>= 1;
+		// Remove any mappings that have the same cylinder index
+		dc.tank_sensor_mappings.erase(std::unique(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(),
+			[](const tank_sensor_mapping &a, const tank_sensor_mapping &b) {
+				return a.cylinder_index == b.cylinder_index;
+			}), dc.tank_sensor_mappings.end());
 	}
 }
 
@@ -1063,43 +1060,45 @@ int check_dc_cylinder_use(struct dive &dive, struct divecomputer &dc)
 }
 
 
-static void fixup_dive_dc(struct dive &dive, struct divecomputer &dc)
+void dive::fixup_dive_dc(struct divecomputer &dc)
 {
 	/* Fixup duration and mean depth */
 	fixup_dc_duration(dc);
 
 	/* Fix up sample depth data */
-	fixup_dc_depths(dive, dc);
+	fixup_dc_depths(*this, dc);
 
 	/* Fix up first sample ndl data */
 	fixup_dc_ndl(dc);
 
 	/* Fix up dive temperatures based on dive computer samples */
-	fixup_dc_temp(dive, dc);
+	fixup_dc_temp(*this, dc);
 
 	/* Fix up gas switch events */
-	fixup_dc_gasswitch(dive, dc);
+	fixup_dc_gasswitch(*this, dc);
 
 	/* Fix up cylinder ids in pressure sensors */
-	fixup_dc_sample_sensors(dive, dc);
+	fixup_dc_sample_sensors(dc);
+
+	fixup_sensor_mappings(*this, dc);
 
 	/* Fix up cylinder pressures based on DC info */
-	fixup_dive_pressures(dive, dc);
+	fixup_dive_pressures(*this, dc);
 
-	fixup_dc_events(dive, dc);
+	fixup_dc_events(*this, dc);
 
 	/* Fixup CCR / PSCR dives with o2sensor values, but without no_o2sensors */
 	fixup_no_o2sensors(dc);
 
 	/* Check cylinder use */
-	check_dc_cylinder_use(dive, dc);
+	check_dc_cylinder_use(*this, dc);
 
 	/* If there are no samples, generate a fake profile based on depth and time */
 	if (dc.samples.empty())
 		fake_dc(&dc);
 }
 
-void dive::fixup_no_cylinder()
+void dive::fixup_dive()
 {
 	sanitize_cylinder_info(*this);
 	maxcns = cns;
@@ -1112,7 +1111,7 @@ void dive::fixup_no_cylinder()
 	update_min_max_temperatures(*this, watertemp);
 
 	for (auto &dc: dcs)
-		fixup_dive_dc(*this, dc);
+		fixup_dive_dc(dc);
 
 	fixup_water_salinity(*this);
 	if (!surface_pressure.mbar)
@@ -1175,8 +1174,8 @@ static void merge_one_sample(const struct sample &sample, struct divecomputer &d
 	append_sample(sample, &dc);
 }
 
-static void renumber_last_sample(struct divecomputer &dc, const int mapping[]);
-static void sample_renumber(struct sample &s, const struct sample *next, const int mapping[]);
+static void sensors_renumber_last_sample(struct divecomputer &dc, const int mapping[]);
+static void sensors_renumber(struct sample &s, const struct sample *next, const int mapping[]);
 
 /*
  * Merge samples. Dive 'a' is "offset" seconds before Dive 'b'
@@ -1217,7 +1216,7 @@ static void merge_samples(struct divecomputer &res,
 		if (bt < 0) {
 		add_sample_a:
 			merge_one_sample(*as, res);
-			renumber_last_sample(res, cylinders_map_a);
+			sensors_renumber_last_sample(res, cylinders_map_a);
 			as++;
 			continue;
 		}
@@ -1228,7 +1227,7 @@ static void merge_samples(struct divecomputer &res,
 			struct sample sample = *bs;
 			sample.time.seconds += offset;
 			merge_one_sample(sample, res);
-			renumber_last_sample(res, cylinders_map_b);
+			sensors_renumber_last_sample(res, cylinders_map_b);
 			bs++;
 			continue;
 		}
@@ -1241,7 +1240,7 @@ static void merge_samples(struct divecomputer &res,
 		/* same-time sample: add a merged sample. Take the non-zero ones */
 		struct sample sample = *bs;
 		sample.time.seconds += offset;
-		sample_renumber(sample, nullptr, cylinders_map_b);
+		sensors_renumber(sample, nullptr, cylinders_map_b);
 		if (as->depth.mm)
 			sample.depth = as->depth;
 		if (as->temperature.mkelvin)
@@ -1301,6 +1300,19 @@ static void merge_extra_data(struct divecomputer &res,
 			continue;
 
 		res.extra_data.push_back(ed);
+	}
+}
+
+static void merge_tank_sensor_mappings(struct divecomputer &res,
+			  const struct divecomputer &a, const struct divecomputer &b)
+{
+	for (auto &tank_sensor_mapping: b.tank_sensor_mappings) {
+		if (std::find_if(a.tank_sensor_mappings.begin(), a.tank_sensor_mappings.end(), [&tank_sensor_mapping](const struct tank_sensor_mapping &a) {
+			return a.sensor_id == tank_sensor_mapping.sensor_id;
+		}) != a.tank_sensor_mappings.end())
+			continue;
+
+		res.tank_sensor_mappings.push_back(tank_sensor_mapping);
 	}
 }
 
@@ -1436,14 +1448,14 @@ static void add_initial_gaschange(struct dive &dive, struct divecomputer &dc, in
 	add_gas_switch_event(&dive, &dc, offset, idx);
 }
 
-static void sample_renumber(struct sample &s, const struct sample *prev, const int mapping[])
+static void sensors_renumber(struct sample &s, const struct sample *prev, const int mapping[])
 {
 	for (int j = 0; j < MAX_SENSORS; j++) {
-		int sensor = -1;
+		int sensor = NO_SENSOR;
 
 		if (s.sensor[j] != NO_SENSOR)
 			sensor = mapping[s.sensor[j]];
-		if (sensor == -1) {
+		if (sensor == NO_SENSOR) {
 			// Remove sensor and gas pressure info
 			if (!prev) {
 				s.sensor[j] = 0;
@@ -1458,12 +1470,12 @@ static void sample_renumber(struct sample &s, const struct sample *prev, const i
 	}
 }
 
-static void renumber_last_sample(struct divecomputer &dc, const int mapping[])
+static void sensors_renumber_last_sample(struct divecomputer &dc, const int mapping[])
 {
 	if (dc.samples.empty())
 		return;
 	sample *prev = dc.samples.size() > 1 ? &dc.samples[dc.samples.size() - 2] : nullptr;
-	sample_renumber(dc.samples.back(), prev, mapping);
+	sensors_renumber(dc.samples.back(), prev, mapping);
 }
 
 static void event_renumber(struct event &ev, const int mapping[])
@@ -1475,11 +1487,25 @@ static void event_renumber(struct event &ev, const int mapping[])
 	ev.gas.index = mapping[ev.gas.index];
 }
 
+static void dc_tank_sensor_mappings_renumber(struct divecomputer &dc, const int mapping[])
+{
+	for (auto it = dc.tank_sensor_mappings.begin(); it != dc.tank_sensor_mappings.end();) {
+		int cylinder_index = mapping[(*it).cylinder_index];
+		if (cylinder_index == NO_SENSOR) {
+			it = dc.tank_sensor_mappings.erase(it);
+
+			break;
+		}
+
+		(*it).cylinder_index = cylinder_index;
+
+		it++;
+	}
+}
+
 static void dc_cylinder_renumber(struct dive &dive, struct divecomputer &dc, const int mapping[])
 {
-	/* Remap or delete the sensor indices */
-	for (auto [i, sample]: enumerated_range(dc.samples))
-		sample_renumber(sample, i > 0 ? &dc.samples[i-1] : nullptr, mapping);
+	dc_tank_sensor_mappings_renumber(dc, mapping);
 
 	/* Remap the gas change indices */
 	for (auto &ev: dc.events)
@@ -1703,6 +1729,34 @@ std::tuple<divemode_t, int, const struct gasmix *> get_dive_status_at(const stru
 	}
 
 	return std::make_tuple(divemode, cylinder_index, gasmix);
+}
+
+const std::vector<struct tank_sensor_mapping> get_tank_sensor_mappings_for_storage(const struct dive &dive, const struct divecomputer &dc)
+{
+	std::set<int16_t> sensor_ids = get_tank_sensor_ids(dc);
+	// If we don't have any mappings, return a mapping between the first
+	// cylinder and an invalid sensor id. This is used to distinguish
+	// from the case of having a full 1 : 1 mapping which is encoded
+	// as no mapping in order to retain backwards compatibility.
+	if (dc.tank_sensor_mappings.empty() && !dive.cylinders.empty() && !sensor_ids.empty())
+		return std::vector<struct tank_sensor_mapping>({ tank_sensor_mapping { NO_SENSOR, 0 } });
+
+	// Check if any of the mappings are not 1 : 1
+	for (const auto &mapping: dc.tank_sensor_mappings)
+		if (mapping.sensor_id != (int16_t)mapping.cylinder_index)
+			return dc.tank_sensor_mappings;
+
+	// Check if there is a cylinder that does not have a mapping
+	for (const auto &sensor_id: sensor_ids)
+		if (sensor_id >= 0 && sensor_id < (int16_t)dive.cylinders.size()
+			&& std::find_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(),
+				[&sensor_id](const struct tank_sensor_mapping &mapping) {
+					return mapping.sensor_id == sensor_id;
+				}) == dc.tank_sensor_mappings.end())
+			return dc.tank_sensor_mappings;
+
+	// If all cylinders have a mapping, return an empty mapping
+	return std::vector<struct tank_sensor_mapping>();
 }
 
 /*
@@ -2176,6 +2230,7 @@ static void interleave_dive_computers(struct dive &res,
 			merge_events(res, newdc, dc1, *match, cylinders_map_a, cylinders_map_b, offset);
 			merge_samples(newdc, dc1, *match, cylinders_map_a, cylinders_map_b, offset);
 			merge_extra_data(newdc, dc1, *match);
+			merge_tank_sensor_mappings(newdc, dc1, *match);
 			/* Use the diveid of the later dive! */
 			if (offset > 0)
 				newdc.diveid = match->diveid;
@@ -2724,22 +2779,6 @@ std::pair<gasmix, int> gasmix_loop::get_last_gasmix()
 struct gasmix dive::get_gasmix_at_time(const struct divecomputer &dc, duration_t time) const
 {
 	return gasmix_loop(*this, dc).at(time.seconds).first;
-}
-
-/* Does that cylinder have any pressure readings? */
-bool cylinder_with_sensor_sample(const struct dive *dive, int cylinder_id)
-{
-	for (const auto &dc: dive->dcs) {
-		for (const auto &sample: dc.samples) {
-			for (int j = 0; j < MAX_SENSORS; ++j) {
-				if (!sample.pressure[j].mbar)
-					continue;
-				if (sample.sensor[j] == cylinder_id)
-					return true;
-			}
-		}
-	}
-	return false;
 }
 
 /*
