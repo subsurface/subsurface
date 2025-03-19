@@ -65,6 +65,21 @@ jobs:
         cd build-mobile/tests
         # xvfb-run --auto-servernum ./TestGitStorage -v2
         xvfb-run --auto-servernum make check
+        if [ $? -ne 0 ]; then
+          echo "Tests failed - adding the build output as artifacts"
+          exit 1
+        fi
+
+    - name: upload test artifacts
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-output-mobile-${{ steps.version_number.outputs.version }}
+        path: |
+          build-mobile/tests/
+          !build-mobile/tests/CMakeFiles/
+          !build-mobile/tests/Test*
+          build-mobile/tests/Testing/
 
     - name: build subsurface
       run: |
@@ -88,6 +103,21 @@ jobs:
         cd build/tests
         # xvfb-run --auto-servernum ./TestGitStorage -v2
         xvfb-run --auto-servernum make check
+        if [ $? -ne 0 ]; then
+          echo "Tests failed - adding the build output as artifacts"
+          exit 1
+        fi
+
+    - name: upload test artifacts
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-output-${{ steps.version_number.outputs.version }}
+        path: |
+          build/tests/
+          !build/tests/CMakeFiles/
+          !build/tests/Test*
+          build/tests/Testing/
 
     - name: build subsurface-downloader
       run: |
