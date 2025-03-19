@@ -87,14 +87,6 @@ jobs:
         cd ..
         bash -e -x subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit -install-docs ${BUILD_EXTRA_ARGS}
 
-    - name: test desktop build
-      run: |
-        echo "--------------------------------------------------------------"
-        echo "running tests for desktop"
-        cd build/tests
-        # xvfb-run --auto-servernum ./TestGitStorage -v2
-        xvfb-run --auto-servernum make check
-
     - name: build appimage
       env:
         VERSION: ${{ steps.version_number.outputs.version }}

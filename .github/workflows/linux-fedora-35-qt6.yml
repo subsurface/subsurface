@@ -72,4 +72,18 @@ jobs:
         echo "running tests for desktop"
         cd build/tests
         xvfb-run --auto-servernum make check
+        if [ $? -ne 0 ]; then
+          echo "Tests failed - adding the build output as artifacts"
+          exit 1
+        fi
 
+    - name: upload test artifacts
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-output-${{ steps.version_number.outputs.version }}
+        path: |
+          build/tests/
+          !build/tests/CMakeFiles/
+          !build/tests/Test*
+          build/tests/Testing/
