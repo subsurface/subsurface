@@ -7413,6 +7413,7 @@ Fixed in commit aa0cd792bbe3e5c2dbaaaaff77688f4ee96c694c</notes>
 <trip date='2014-04-01' time='07:00:00' location='Test dive with heart rate'>
 <dive number='35' date='2014-04-01' time='07:00:00' duration='29:30 min'>
   <notes>Pretend XML from CCR.</notes>
+  <cylinder description='diluent' use='diluent' />
   <divecomputer model='made up' deviceid='00001111' diveid='00001111' dctype='CCR' no_o2sensors='3'>
   <depth max='70.0 m' mean='29.364 m' />
   <sample time='0:00 min' depth='0.0 m' />
