@@ -94,6 +94,8 @@ endfunction()
 add_definitions(-g)
 add_definitions(-DSUBSURFACE_TEST_DATA="${SUBSURFACE_TEST_DATA}")
 
+target_compile_definitions(subsurface_corelib PRIVATE -DSUBSURFACE_TESTING)
+
 # Build QML test runner
 add_executable(TestQML testqml.cpp)
 target_link_libraries(
