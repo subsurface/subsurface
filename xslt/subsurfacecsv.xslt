@@ -142,12 +142,15 @@
           </xsl:attribute>
         </xsl:if>
 
+        <xsl:variable name="divemode">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="7"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+	</xsl:variable>
         <divecomputer deviceid="ffffffff" model="SubsurfaceCSV">
           <xsl:attribute name="dctype">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="7"/>
-              <xsl:with-param name="line" select="$line"/>
-            </xsl:call-template>
+            <xsl:value-of select="$divemode"/>
           </xsl:attribute>
         </divecomputer>
 
@@ -236,6 +239,7 @@
           <xsl:with-param name="cylinders" select="$cylinders"/>
           <xsl:with-param name="count" select="'0'"/>
           <xsl:with-param name="index" select="'10'"/>
+          <xsl:with-param name="divemode" select="$divemode"/>
         </xsl:call-template>
 
         <location>
@@ -368,6 +372,7 @@
     <xsl:param name="cylinders"/>
     <xsl:param name="count"/>
     <xsl:param name="index"/>
+    <xsl:param name="divemode"/>
 
     <xsl:variable name="field">
       <xsl:call-template name="getFieldByIndex">
@@ -473,6 +478,12 @@
             <xsl:value-of select="$he"/>
           </xsl:attribute>
         </xsl:if>
+
+	<xsl:if test="$divemode = 'CCR' and number($o2) >= 21">
+          <xsl:attribute name="use">
+            diluent
+          </xsl:attribute>
+        </xsl:if>
       </cylinder>
 
       <xsl:call-template name="parseCylinders">
@@ -480,6 +491,7 @@
         <xsl:with-param name="cylinders" select="$cylinders"/>
         <xsl:with-param name="count" select="$count + 1"/>
         <xsl:with-param name="index" select="$index + 5"/>
+        <xsl:with-param name="divemode" select="$divemode"/>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>

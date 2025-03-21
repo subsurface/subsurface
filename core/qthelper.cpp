@@ -1413,8 +1413,12 @@ void parse_seabear_header(const char *filename, struct xml_params *params)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		QString needle = "//Mode: ";
 		if (parseLine.contains(needle)) {
-			xml_params_add(params, "diveMode",
-				       qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
+			QString mode = parseLine.replace(needle, QString::fromLatin1(""));
+			if (mode == "CCR" || mode == "CCR SENSORBOARD")
+				// If this is a CCR dive, add a default setpoint to trigger the creation of a diluent cylinder
+				xml_params_add_int(params, "setpointField", 1300);
+
+			xml_params_add(params, "diveMode", qPrintable(mode.prepend("\"").append("\"")));
 		}
 	}
 	f.seek(0);
