@@ -704,7 +704,7 @@
                 </xsl:when>
                 <xsl:otherwise>
                   <xsl:value-of select="15"/>
-                </xsl:when>
+                </xsl:otherwise>
               </xsl:choose>
           </visibility>
         </xsl:if>
