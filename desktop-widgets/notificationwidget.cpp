@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "notificationwidget.h"
 
+#include "core/errorhelper.h"
+
 NotificationWidget::NotificationWidget(QWidget *parent) : KMessageWidget(parent)
 {
 	connect(&future_watcher, SIGNAL(finished()), this, SLOT(finish()));
@@ -31,12 +33,16 @@ QString NotificationWidget::getNotificationText()
 	return text();
 }
 
-void NotificationWidget::setFuture(const QFuture<int> &future)
+void NotificationWidget::setFuture(const QFuture<std::pair<int, std::string>> &future)
 {
 	future_watcher.setFuture(future);
 }
 
 void NotificationWidget::finish()
 {
-	hideNotification();
+	auto result = future_watcher.result();
+	if (result.first)
+		report_error("%s", result.second.c_str());
+	else
+		hideNotification();
 }

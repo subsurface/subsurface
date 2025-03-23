@@ -16,7 +16,7 @@ class NotificationWidget : public KMessageWidget {
 
 public:
 	explicit NotificationWidget(QWidget *parent = 0);
-	void setFuture(const QFuture<int> &future);
+	void setFuture(const QFuture<std::pair<int, std::string>> &future);
 	void showNotification(QString message, KMessageWidget::MessageType type);
 	void hideNotification();
 	QString getNotificationText();
@@ -25,7 +25,7 @@ public
 slots:
 	void showError(QString message);
 private:
-	QFutureWatcher<int> future_watcher;
+	QFutureWatcher<std::pair<int, std::string>> future_watcher;
 
 private
 slots:
