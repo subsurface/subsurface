@@ -326,7 +326,7 @@ std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly)
 }
 
 #if !defined(SUBSURFACE_MOBILE)
-QFuture<int> exportUsingStyleSheet(const QString &filename, bool doExport, int units,
+QFuture<std::pair<int, std::string>> exportUsingStyleSheet(const QString &filename, bool doExport, int units,
 	const QString &stylesheet, bool anonymize)
 {
 	return QtConcurrent::run(export_dives_xslt, filename.toUtf8(), doExport, units, stylesheet.toUtf8(), anonymize);
