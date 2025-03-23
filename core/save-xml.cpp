@@ -21,6 +21,7 @@
 #include "event.h"
 #include "filterconstraint.h"
 #include "filterpreset.h"
+#include "format.h"
 #include "sample.h"
 #include "subsurface-string.h"
 #include "subsurface-time.h"
@@ -805,30 +806,33 @@ int save_dives_logic(const char *filename, const bool select_only, bool anonymiz
 	return error;
 }
 
+// This is executed in a separate thread with QtConcurrent::run
+// so we don't have access to NotificationWidget
 
-static int export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize);
-int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt, bool anonymize)
+static std::pair<int, std::string> export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize);
+
+std::pair<int, std::string> export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt, bool anonymize)
 {
 	struct xml_params *params = alloc_xml_params();
-	int ret = export_dives_xslt_doit(filename, params, selected, units, export_xslt, anonymize);
+	auto ret = export_dives_xslt_doit(filename, params, selected, units, export_xslt, anonymize);
 	free_xml_params(params);
 	return ret;
 }
 
-static int export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize)
+static std::pair<int, std::string> export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize)
 {
 	FILE *f;
 	membuffer buf;
 	xmlDoc *doc;
 	xsltStylesheetPtr xslt = NULL;
 	xmlDoc *transformed;
-	int res = 0;
+	auto res = std::make_pair(0, std::string());
 
 	if (verbose)
 		report_info("export_dives_xslt with stylesheet %s", export_xslt);
 
 	if (!filename)
-		return report_error("No filename for export");
+		return std::make_pair(-1, translate("gettextFromC", "No filename for export"));
 
 	/* Save XML to file and convert it into a memory buffer */
 	save_dives_buffer(&buf, selected, anonymize);
@@ -840,12 +844,12 @@ static int export_dives_xslt_doit(const char *filename, struct xml_params *param
 	 */
 	doc = xmlReadMemory(buf.buffer, buf.len, "divelog", NULL, XML_PARSE_HUGE);
 	if (!doc)
-		return report_error("Failed to read XML memory");
+		return std::make_pair(-1, translate("gettextFromC", "Failed to read XML memory"));
 
 	/* Convert to export format */
 	xslt = get_stylesheet(export_xslt);
 	if (!xslt)
-		return report_error("Failed to open export conversion stylesheet");
+		return std::make_pair(-1, translate("gettextFromC", "Failed to open export conversion stylesheet"));
 
 	xml_params_add_int(params, "units", units);
 
@@ -859,7 +863,7 @@ static int export_dives_xslt_doit(const char *filename, struct xml_params *param
 		fclose(f);
 		/* Check write errors? */
 	} else {
-		res = report_error("Failed to open %s for writing (%s)", filename, strerror(errno));
+		res = std::make_pair(-1, format_string_std(translate("gettextFromC", "Failed to open %s for writing (%s)"), filename, strerror(errno)));
 	}
 	xsltFreeStylesheet(xslt);
 	xmlFreeDoc(transformed);
