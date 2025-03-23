@@ -157,9 +157,9 @@ static void put_headers(struct membuffer *b, int nr_cylinders)
 	put_csv_string(b, "pressuren2");
 	put_csv_string(b, "pressurehe");
 	put_csv_string(b, "o2pressure");
-	put_csv_string(b, "o2sensor0");
-	put_csv_string(b, "o2sensor1");
-	put_csv_string(b, "o2sensor2");
+	for (int i = 0; i < MAX_O2_SENSORS; i++) {
+		put_format(b, "\"o2sensor%d\",", i);
+	}
 	put_csv_string(b, "o2setpoint");
 	put_csv_string(b, "scr_oc_po2");
 	put_csv_string(b, "mod");
