@@ -15,7 +15,7 @@
 
 static void put_int(struct membuffer *b, int val)
 {
-	put_format(b, "\"%d\", ", val);
+	put_format(b, "\"%d\",", val);
 }
 
 static void put_int_with_nl(struct membuffer *b, int val)
@@ -25,7 +25,7 @@ static void put_int_with_nl(struct membuffer *b, int val)
 
 static void put_csv_string(struct membuffer *b, const char *val)
 {
-	put_format(b, "\"%s\", ", val);
+	put_format(b, "\"%s\",", val);
 }
 
 static void put_csv_string_with_nl(struct membuffer *b, const char *val)
@@ -35,7 +35,7 @@ static void put_csv_string_with_nl(struct membuffer *b, const char *val)
 
 static void put_double(struct membuffer *b, double val)
 {
-	put_format(b, "\"%f\", ", val);
+	put_format(b, "\"%f\",", val);
 }
 
 static std::string video_time(int secs)
@@ -134,16 +134,16 @@ static void put_headers(struct membuffer *b, int nr_cylinders)
 	put_csv_string(b, "in_deco");
 	put_csv_string(b, "sec");
 	for (int c = 0; c < nr_cylinders; c++) {
-		put_format(b, "\"pressure_%d_cylinder\", ", c);
-		put_format(b, "\"pressure_%d_interpolated\", ", c);
+		put_format(b, "\"pressure_%d_cylinder\",", c);
+		put_format(b, "\"pressure_%d_interpolated\",", c);
 	}
 	put_csv_string(b, "temperature");
 	put_csv_string(b, "depth");
 	put_csv_string(b, "ceiling");
 	for (int i = 0; i < 16; i++)
-		put_format(b, "\"ceiling_%d\", ", i);
+		put_format(b, "\"ceiling_%d\",", i);
 	for (int i = 0; i < 16; i++)
-		put_format(b, "\"percentage_%d\", ", i);
+		put_format(b, "\"percentage_%d\",", i);
 	put_csv_string(b, "ndl");
 	put_csv_string(b, "tts");
 	put_csv_string(b, "rbt");
