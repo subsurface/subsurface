@@ -34,10 +34,10 @@ private slots:
 	int parseCSVprofile(int, std::string);
 	void exportCSVDiveProfile();
 	void exportUDDF();
-	void testExport();
 
 	void parseDL7();
 
+	void importApdInspirationUddf();
 private:
 	sqlite3 *_sqlite3_handle = NULL;
 };

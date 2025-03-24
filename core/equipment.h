@@ -90,7 +90,7 @@ extern enum cylinderuse cylinderuse_from_text(const char *text);
 extern void copy_cylinder_types(const struct dive *s, struct dive *d);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
-extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders);
+extern int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders, const enum cylinderuse *use);
 extern void fill_default_cylinder(const struct dive *dive, cylinder_t *cyl); /* dive is needed to fill out MOD, which depends on salinity. */
 extern cylinder_t default_cylinder(const struct dive *d);
 extern cylinder_t create_new_manual_cylinder(const struct dive *dive); /* dive is needed to fill out MOD, which depends on salinity. */
