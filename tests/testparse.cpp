@@ -352,8 +352,6 @@ void TestParse::exportCSVDiveDetails()
 	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt", false);
 	FILE_COMPARE("testcsvexportmanual2.csv",
 		     "testcsvexportmanual.csv");
-
-	clear_dive_file_data();
 }
 
 void TestParse::exportSubsurfaceCSV()
@@ -383,8 +381,6 @@ void TestParse::exportSubsurfaceCSV()
 	export_dives_xslt("testcsvexportmanual2-cyl.csv", 0, 0, "xml2manualcsv.xslt", false);
 	FILE_COMPARE("testcsvexportmanual2-cyl.csv",
 		     "testcsvexportmanual-cyl.csv");
-
-	clear_dive_file_data();
 }
 
 int TestParse::parseCSVprofile(int units, std::string file)
@@ -421,8 +417,6 @@ void TestParse::exportCSVDiveProfile()
 	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2csv.xslt", false);
 	FILE_COMPARE("testcsvexportprofile2.csv",
 		     "testcsvexportprofile.csv");
-
-	clear_dive_file_data();
 }
 
 void TestParse::exportUDDF()
@@ -438,16 +432,6 @@ void TestParse::exportUDDF()
 	export_dives_xslt("testuddfexport2.uddf", 0, 1, "uddf-export.xslt", false);
 	FILE_COMPARE("testuddfexport.uddf",
 		     "testuddfexport2.uddf");
-
-	clear_dive_file_data();
-}
-
-void TestParse::testExport()
-{
-	exportCSVDiveDetails();
-	exportSubsurfaceCSV();
-	exportCSVDiveProfile();
-	exportUDDF();
 }
 
 void TestParse::parseDL7()
@@ -488,7 +472,15 @@ void TestParse::parseDL7()
 	QCOMPARE(save_dives("./testdl7out.ssrf"), 0);
 	FILE_COMPARE("./testdl7out.ssrf",
 		     SUBSURFACE_TEST_DATA "/dives/DL7.xml");
-	clear_dive_file_data();
+}
+
+void TestParse::importApdInspirationUddf()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test-apd-inspiration.uddf", &divelog);
+
+	QCOMPARE(save_dives("./testapdinspiration.xml"), 0);
+	FILE_COMPARE("./testapdinspiration.xml",
+		     SUBSURFACE_TEST_DATA "/dives/test-apd-inspiration-reference.xml");
 }
 
 

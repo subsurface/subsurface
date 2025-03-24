@@ -185,11 +185,13 @@ volume_t cylinder_t::gas_volume(pressure_t p) const
 	return volume_t { .mliter = int_cast<int>(type.size.mliter * bar_to_atm(bar) / z_factor) };
 }
 
-int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders)
+int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylinders, const enum cylinderuse *use)
 {
 	int best = -1, score = INT_MAX;
 
 	for (auto [i, match]: enumerated_range(cylinders)) {
+		if (use && match.cylinder_use != *use)
+			continue;
 		int distance = gasmix_distance(mix, match.gasmix);
 		if (distance >= score)
 			continue;
