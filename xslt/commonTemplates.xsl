@@ -72,9 +72,9 @@
       <xsl:value-of select="translate($value, 'e', 'E')"/>
     </xsl:variable>
 
-    <xsl:choose>
-      <xsl:when test="contains($number, 'E')">
-        <xsl:variable name="pressure">
+    <xsl:variable name="pressure">
+      <xsl:choose>
+        <xsl:when test="contains($number, 'E')">
           <xsl:choose>
             <xsl:when test="$value != ''">
               <xsl:variable name="Exp" select="substring-after($number, 'E')"/>
@@ -91,14 +91,14 @@
             </xsl:when>
             <xsl:otherwise>0</xsl:otherwise>
           </xsl:choose>
-        </xsl:variable>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$value"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
 
-        <xsl:value-of select="$pressure div 100000"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="$value"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:value-of select="$pressure div 100000"/>
   </xsl:template>
 
   <xsl:template name="time2sec">

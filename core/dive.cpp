@@ -126,19 +126,25 @@ const cylinder_t *dive::get_cylinder(int idx) const
 	return &cylinders[idx];
 }
 
-/* warning: does not test idx for validity */
-struct event create_gas_switch_event(struct dive *dive, struct divecomputer *dc, int seconds, int idx)
+static int get_libdivecomputer_gasmix_value(const struct gasmix &mix)
 {
-	/* The gas switch event format is insane for historical reasons */
-	struct gasmix mix = dive->get_cylinder(idx)->gasmix;
 	int o2 = get_o2(mix);
 	int he = get_he(mix);
 
+	/* Convert to odd libdivecomputer format */
 	o2 = (o2 + 5) / 10;
 	he = (he + 5) / 10;
-	int value = o2 + (he << 16);
 
-	struct event ev(seconds, he ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, value, "gaschange");
+	return o2 + (he << 16);
+}
+
+/* warning: does not test idx for validity */
+struct event create_gas_switch_event(struct dive *dive, int seconds, int idx)
+{
+	/* The gas switch event format is insane for historical reasons */
+	struct gasmix mix = dive->get_cylinder(idx)->gasmix;
+
+	struct event ev(seconds, get_he(mix) ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, get_libdivecomputer_gasmix_value(mix), "gaschange");
 	ev.gas.index = idx;
 	ev.gas.mix = mix;
 	return ev;
@@ -154,7 +160,7 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 		report_error("Unknown cylinder index: %d", idx);
 		return;
 	}
-	struct event ev = create_gas_switch_event(dive, dc, seconds, idx);
+	struct event ev = create_gas_switch_event(dive, seconds, idx);
 	add_event_to_dc(dc, std::move(ev));
 }
 
@@ -325,7 +331,7 @@ int dive::get_cylinder_index(const struct event &ev, const struct divecomputer &
 	report_info("Still looking up cylinder based on gas mix in get_cylinder_index()!");
 
 	gasmix mix = get_gasmix_from_event(ev, dc).first;
-	int best = find_best_gasmix_match(mix, cylinders);
+	int best = find_best_gasmix_match(mix, cylinders, nullptr);
 	return best < 0 ? 0 : best;
 }
 
@@ -933,9 +939,6 @@ static void fixup_dive_pressures(struct dive &dive, struct divecomputer &dc)
  */
 static bool validate_gaschange(struct dive &dive, struct event &event)
 {
-	int index;
-	int o2, he, value;
-
 	/* We'll get rid of the per-event gasmix, but for now sanitize it */
 	if (gasmix_is_air(event.gas.mix))
 		event.gas.mix.o2 = 0_percent;
@@ -944,24 +947,38 @@ static bool validate_gaschange(struct dive &dive, struct event &event)
 	if (event.gas.index >= 0)
 		return true;
 
-	index = find_best_gasmix_match(event.gas.mix, dive.cylinders);
+	enum cylinderuse use;
+	enum cylinderuse *use_ptr = nullptr;
+	if (event.flags == 1) {
+		switch (event.value) {
+		case CCR:
+			use = DILUENT;
+
+			break;
+		case FREEDIVE:
+			use = NOT_USED;
+
+			break;
+		default:
+			use = OC_GAS;
+
+			break;
+		}
+		use_ptr = &use;
+	}
+	int index = find_best_gasmix_match(event.gas.mix, dive.cylinders, use_ptr);
+
 	if (index < 0 || static_cast<size_t>(index) >= dive.cylinders.size())
 		return false;
 
 	/* Fix up the event to have the right information */
+	event.flags = 0;
 	event.gas.index = index;
 	event.gas.mix = dive.cylinders[index].gasmix;
 
-	/* Convert to odd libdivecomputer format */
-	o2 = get_o2(event.gas.mix);
-	he = get_he(event.gas.mix);
+	event.value = get_libdivecomputer_gasmix_value(event.gas.mix);
 
-	o2 = (o2 + 5) / 10;
-	he = (he + 5) / 10;
-	value = o2 + (he << 16);
-
-	event.value = value;
-	if (he)
+	if (get_he(event.gas.mix))
 		event.type = SAMPLE_EVENT_GASCHANGE2;
 
 	return true;
