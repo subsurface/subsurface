@@ -176,7 +176,7 @@ AddGasSwitch::AddGasSwitch(struct dive *d, int dcNr, int seconds, int tank) : Ev
 			cylinders.push_back(ev.gas.index); // cylinders might have changed their status
 	}
 
-	eventsToAdd.push_back(create_gas_switch_event(d, dc, seconds, tank));
+	eventsToAdd.push_back(create_gas_switch_event(d, seconds, tank));
 }
 
 bool AddGasSwitch::workToBeDone()
