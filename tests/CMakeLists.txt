@@ -63,7 +63,7 @@ function(TEST NAME FILE)
 		${NAME}
 		subsurface_backend_shared
 		${TEST_SPECIFIC_LIBRARIES}
-		subsurface_corelib
+		subsurface_corelib_testing
 		RESOURCE_LIBRARY
 		${QT_TEST_LIBRARIES}
 		${SUBSURFACE_LINK_LIBRARIES}
@@ -94,13 +94,11 @@ endfunction()
 add_definitions(-g)
 add_definitions(-DSUBSURFACE_TEST_DATA="${SUBSURFACE_TEST_DATA}")
 
-target_compile_definitions(subsurface_corelib PRIVATE -DSUBSURFACE_TESTING)
-
 # Build QML test runner
 add_executable(TestQML testqml.cpp)
 target_link_libraries(
 	TestQML
-	subsurface_corelib
+	subsurface_corelib_testing
 	RESOURCE_LIBRARY
 	${QT_TEST_LIBRARIES}
 	${SUBSURFACE_LINK_LIBRARIES}
