@@ -85,7 +85,7 @@
        <property name="title">
         <string>Chart</string>
        </property>
-       <layout class="QVBoxLayout" name="chartLayout">
+       <layout class="QVBoxLayout" name="chartLayout1">
         <item>
          <widget class="QComboBox" name="chartType" />
         </item>
@@ -100,7 +100,7 @@
        <property name="title">
         <string>Sorting</string>
        </property>
-       <layout class="QVBoxLayout" name="chartLayout">
+       <layout class="QVBoxLayout" name="chartLayout2">
         <item>
          <widget class="QComboBox" name="var1Sort" />
         </item>
