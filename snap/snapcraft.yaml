@@ -137,7 +137,6 @@ parts:
     after: [desktop-qt5, googlemaps, libdc]
     plugin: cmake
     cmake-parameters:
-    - -DMAKE_TESTS=OFF
     - -DLIBGIT2_DYNAMIC=ON
     - -DFTDISUPPORT=ON
     - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/usr/local/lib/libdivecomputer.so

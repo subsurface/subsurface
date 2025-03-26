@@ -150,6 +150,10 @@ while [[ $# -gt 0 ]] ; do
 			# build the user manual
 			BUILD_DOCS="1"
 			;;
+		-build-tests)
+			# build the tests
+			BUILD_TESTS="1"
+			;;
 		-install-docs)
 			# include the user manual files in the packages
 			INSTALL_DOCS="1"
@@ -164,7 +168,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-all] [-both] [-build-deps] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-prep-only] [-quick] [-release] [-build-docs] [-install-docs] [-src-dir <SUBSURFACE directory>] "
+			echo "Usage: build.sh [-all] [-both] [-build-deps] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-prep-only] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
 			exit 1
 			;;
 	esac
@@ -636,6 +640,9 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	fi
 	if [ "$BUILD_WITH_QT6" = "1" ] ; then
 		EXTRA_OPTS="$EXTRA_OPTS -DBUILD_WITH_QT6=ON"
+	fi
+	if [ "$BUILD_TESTS" = "1" ] ; then
+		EXTRA_OPTS="$EXTRA_OPTS -DBUILD_TESTS=ON"
 	fi
 
 	cd "$SRC"/${SRC_DIR}

@@ -64,7 +64,7 @@ jobs:
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
         git config --global --get-all safe.directory
-        bash -e -x subsurface/scripts/build.sh -desktop -build-with-qt6 ${BUILD_EXTRA_ARGS}
+        bash -e -x subsurface/scripts/build.sh -desktop -build-with-qt6 -build-tests ${BUILD_EXTRA_ARGS}
 
     - name: test desktop build
       run: |

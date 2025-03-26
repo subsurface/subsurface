@@ -55,7 +55,7 @@ jobs:
         echo "--------------------------------------------------------------"
         echo "building mobile"
         cd ..
-        bash -e -x subsurface/scripts/build.sh -mobile
+        bash -e -x subsurface/scripts/build.sh -mobile -build-tests
 
     - name: test mobile build
       run: |
@@ -94,7 +94,7 @@ jobs:
 
         # now build for the desktop version (including WebKit)
         cd ..
-        bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit ${BUILD_EXTRA_ARGS}
+        bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit -build-tests ${BUILD_EXTRA_ARGS}
 
     - name: test desktop build
       run: |

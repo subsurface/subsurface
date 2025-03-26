@@ -56,7 +56,7 @@ option(FTDISUPPORT "enable support for libftdi based serial" OFF)
 option(LIBRAW_SUPPORT "enable support for LibRaw images" ON)
 
 # Options regarding What should we build on subsurface
-option(MAKE_TESTS "Make the tests" ON)
+option(BUILD_TESTS "Build the tests" OFF)
 
 # Option whether we should try to build against Qt6, if it is available
 option(BUILD_WITH_QT6 "try to build against Qt6 (incomplete)" OFF)
@@ -306,7 +306,7 @@ endif()
 if(ANDROID)
 	set(NO_PRINTING ON)
 	set(NO_USERMANUAL ON)
-	set(MAKE_TESTS OFF)
+	set(BUILD_TESTS OFF)
 	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -llog)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -389,7 +389,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	# let's pick a version that's not ancient
 	find_package(Qt${QT_VERSION_MAJOR} 5.11 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
-	set(MAKE_TESTS OFF)
+	set(BUILD_TESTS OFF)
 endif()
 
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
@@ -749,7 +749,7 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
 endif()
 
-if (MAKE_TESTS)
+if (BUILD_TESTS)
 	enable_testing()
 	add_subdirectory(tests)
 endif()

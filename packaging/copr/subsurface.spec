@@ -84,7 +84,6 @@ mkdir -p install-root
         make -j4 ; \
         make install_target INSTALL_ROOT=%{_builddir}/install-root )
 %cmake -DCMAKE_BUILD_TYPE=Release \
-                -DMAKE_TESTS=OFF \
                 -DLRELEASE=lrelease-qt5 \
                 -DLIBDIVECOMPUTER_INCLUDE_DIR=%{_builddir}/install-root/include \
                 -DLIBGIT2_INCLUDE_DIR=%{_builddir}/install-root/include \
