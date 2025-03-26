@@ -75,7 +75,7 @@
      <property name="title">
       <string>Video thumbnails</string>
      </property>
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QFormLayout" name="formLayout1">
       <property name="horizontalSpacing">
        <number>5</number>
       </property>
@@ -175,7 +175,7 @@
      <property name="title">
       <string>Dive data as subtitles</string>
      </property>
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QFormLayout" name="formLayout2">
       <property name="horizontalSpacing">
        <number>5</number>
       </property>
