@@ -1,0 +1,85 @@
+name:  Ubuntu 24.04 / Qt 5 for export-html binary
+
+on:
+  push:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+  pull_request:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+    - name: get container ready for build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "update distro and install dependencies"
+
+        sudo apt-get update
+        sudo apt-get dist-upgrade -y
+        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y -q \
+        autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
+        libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
+        libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
+        libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
+        pkg-config qml-module-qtlocation qml-module-qtpositioning \
+        qml-module-qtquick2 qt5-qmake qtchooser qtconnectivity5-dev \
+        qtdeclarative5-dev qtdeclarative5-private-dev qtlocation5-dev \
+        qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
+        qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev libraw-dev \
+        mdbtools-dev
+
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
+
+    # needs git from the previous step
+    - name: checkout sources
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        no-increment: true
+
+    - name: build subsurface
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building desktop"
+
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
+        # now build for the desktop version (including WebKit)
+        cd ..
+        bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit ${BUILD_EXTRA_ARGS}
+
+    - name: build export-html
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building export-html"
+
+        cd ..
+        make -C subsurface/build export-html
+
+    - name: artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Subsurface-export-html-${{ steps.version_number.outputs.version }}
+        path: build/export-html
