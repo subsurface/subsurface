@@ -2,9 +2,9 @@
 #ifndef TESTQPREFMEDIA_H
 #define TESTQPREFMEDIA_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefMedia : public QObject {
+class TestQPrefMedia : public TestBase {
 	Q_OBJECT
 
 private slots:

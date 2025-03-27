@@ -2,9 +2,9 @@
 #ifndef TESTQPREFGENERAL_H
 #define TESTQPREFGENERAL_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefGeneral : public QObject {
+class TestQPrefGeneral : public TestBase {
 	Q_OBJECT
 
 private slots:

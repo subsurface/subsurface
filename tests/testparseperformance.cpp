@@ -17,8 +17,7 @@
 
 void TestParsePerformance::initTestCase()
 {
-	/* we need to manually tell that the resource exists, because we are using it as library. */
-	Q_INIT_RESOURCE(subsurface);
+	TestBase::initTestCase();
 
 	// Set UTF8 text codec as in real applications
 	QTextCodec::setCodecForLocale(QTextCodec::codecForMib(106));

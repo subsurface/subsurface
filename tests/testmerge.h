@@ -2,9 +2,9 @@
 #ifndef TESTMERGE_H
 #define TESTMERGE_H
 
-#include <QtTest>
+#include "testbase.h"
 
-class TestMerge : public QObject {
+class TestMerge : public TestBase {
 	Q_OBJECT
 private slots:
 	void initTestCase();

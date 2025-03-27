@@ -2,9 +2,9 @@
 #ifndef TESTGPSCOORDS_H
 #define TESTGPSCOORDS_H
 
-#include <QtTest>
+#include "testbase.h"
 
-class TestGpsCoords : public QObject {
+class TestGpsCoords : public TestBase {
 	Q_OBJECT
 private slots:
 	void testISO6709DParse();

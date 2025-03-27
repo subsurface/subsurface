@@ -2,9 +2,9 @@
 #ifndef TESTQPREFUNITS_H
 #define TESTQPREFUNITS_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefUnits : public QObject {
+class TestQPrefUnits : public TestBase {
 	Q_OBJECT
 
 private slots:

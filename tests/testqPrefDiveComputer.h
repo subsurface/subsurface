@@ -2,9 +2,9 @@
 #ifndef TESTQPREFDIVECOMPUTER_H
 #define TESTQPREFDIVECOMPUTER_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefDiveComputer : public QObject {
+class TestQPrefDiveComputer : public TestBase {
 	Q_OBJECT
 
 private slots:

@@ -2,10 +2,11 @@
 #ifndef TESTPARSE_H
 #define TESTPARSE_H
 
-#include <QtTest>
 #include <sqlite3.h>
 
-class TestParse : public QObject {
+#include "testbase.h"
+
+class TestParse : public TestBase {
 	Q_OBJECT
 private slots:
 	void initTestCase();

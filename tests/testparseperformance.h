@@ -2,9 +2,9 @@
 #ifndef TESTPARSEPERFORMANCE_H
 #define TESTPARSEPERFORMANCE_H
 
-#include <QtTest>
+#include "testbase.h"
 
-class TestParsePerformance : public QObject {
+class TestParsePerformance : public TestBase {
 	Q_OBJECT
 private slots:
 	void initTestCase();

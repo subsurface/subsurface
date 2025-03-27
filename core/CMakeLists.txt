@@ -260,7 +260,3 @@ source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
 
 add_library(subsurface_corelib STATIC ${SUBSURFACE_CORE_LIB_SRCS})
 target_link_libraries(subsurface_corelib ${QT_LIBRARIES})
-
-add_library(subsurface_corelib_testing STATIC ${SUBSURFACE_CORE_LIB_SRCS})
-target_link_libraries(subsurface_corelib_testing ${QT_LIBRARIES})
-target_compile_definitions(subsurface_corelib_testing PRIVATE -DSUBSURFACE_TESTING)

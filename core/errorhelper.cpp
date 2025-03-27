@@ -4,10 +4,6 @@
 
 #include <stdarg.h>
 
-#if defined(SUBSURFACE_TESTING)
-#include <stdexcept>
-#endif
-
 #if !defined(Q_OS_ANDROID) && !defined(__ANDROID__)
 #define LOG_MSG(fmt, s)	fprintf(stderr, fmt, s)
 #else
@@ -42,10 +38,6 @@ int report_error(const char *fmt, ...)
 	va_start(args, fmt);
 	std::string s = vformat_string_std(fmt, args);
 	va_end(args);
-
-#if defined(SUBSURFACE_TESTING)
-	throw std::runtime_error(s);
-#endif
 
 	LOG_MSG("ERROR: %s\n", s.c_str());
 

@@ -2,9 +2,9 @@
 #ifndef TESTGITSTORAGE_H
 #define TESTGITSTORAGE_H
 
-#include <QTest>
+#include "testbase.h"
 
-class TestGitStorage : public QObject {
+class TestGitStorage : public TestBase {
 	Q_OBJECT
 private slots:
 	void initTestCase();

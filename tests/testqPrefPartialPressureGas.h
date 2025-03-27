@@ -2,9 +2,9 @@
 #ifndef TESTQPREFPARTIALPRESSUREGAS_H
 #define TESTQPREFPARTIALPRESSUREGAS_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefPartialPressureGas : public QObject {
+class TestQPrefPartialPressureGas : public TestBase {
 	Q_OBJECT
 
 private slots:

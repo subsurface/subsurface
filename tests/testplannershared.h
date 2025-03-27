@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #ifndef TESTPLANNERSHARED_H
 #define TESTPLANNERSHARED_H
-#include <QObject>
 
-class TestPlannerShared : public QObject {
+#include "testbase.h"
+
+class TestPlannerShared : public TestBase {
 	Q_OBJECT
 
 private slots:

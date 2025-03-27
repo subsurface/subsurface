@@ -2,9 +2,9 @@
 #ifndef TESTRENUMBER_H
 #define TESTRENUMBER_H
 
-#include <QtTest>
+#include "testbase.h"
 
-class TestRenumber : public QObject {
+class TestRenumber : public TestBase {
 	Q_OBJECT
 private slots:
 	void setup();

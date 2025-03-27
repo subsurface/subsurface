@@ -2,9 +2,9 @@
 #ifndef TESTQPREFTECHNICALDETAILS_H
 #define TESTQPREFTECHNICALDETAILS_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefTechnicalDetails : public QObject {
+class TestQPrefTechnicalDetails : public TestBase {
 	Q_OBJECT
 
 private slots:

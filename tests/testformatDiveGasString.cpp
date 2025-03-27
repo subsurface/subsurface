@@ -3,10 +3,6 @@
 #include "../core/dive.h"
 #include "../core/string-format.h"
 
-void TestformatDiveGasString::init()
-{
-}
-
 void TestformatDiveGasString::test_empty()
 {
 	struct dive dive;

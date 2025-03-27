@@ -2,9 +2,9 @@
 #ifndef TESTQPREFUPDATEMANAGER_H
 #define TESTQPREFUPDATEMANAGER_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefUpdateManager : public QObject {
+class TestQPrefUpdateManager : public TestBase {
 	Q_OBJECT
 
 private slots:
