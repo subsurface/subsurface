@@ -2,9 +2,9 @@
 #ifndef TESTQPREFCLOUDSTORAGE_H
 #define TESTQPREFCLOUDSTORAGE_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefCloudStorage : public QObject {
+class TestQPrefCloudStorage : public TestBase {
 	Q_OBJECT
 
 private slots:

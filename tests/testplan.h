@@ -2,9 +2,9 @@
 #ifndef TESTPLAN_H
 #define TESTPLAN_H
 
-#include <QTest>
+#include "testbase.h"
 
-class TestPlan : public QObject {
+class TestPlan : public TestBase {
 	Q_OBJECT
 private slots:
 	void testMetric();

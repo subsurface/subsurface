@@ -5,6 +5,8 @@
 
 void TestTagList::initTestCase()
 {
+	TestBase::initTestCase();
+
 	taglist_init_global();
 }
 

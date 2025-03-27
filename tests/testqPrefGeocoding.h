@@ -2,9 +2,9 @@
 #ifndef TESTQPREFGEOCODING_H
 #define TESTQPREFGEOCODING_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefGeocoding : public QObject {
+class TestQPrefGeocoding : public TestBase {
 	Q_OBJECT
 
 private slots:

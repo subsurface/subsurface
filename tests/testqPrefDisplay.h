@@ -2,9 +2,9 @@
 #ifndef TESTQPREFDISPLAY_H
 #define TESTQPREFDISPLAY_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefDisplay : public QObject {
+class TestQPrefDisplay : public TestBase {
 	Q_OBJECT
 private slots:
 	void initTestCase();

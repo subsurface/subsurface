@@ -18,7 +18,11 @@ if(NOT SUBSURFACE_TEST_DATA)
 	endif()
 endif()
 
-add_library(RESOURCE_LIBRARY STATIC ${SUBSURFACE_TEST_RESOURCES})
+add_library(RESOURCE_LIBRARY STATIC ${SUBSURFACE_TEST_RESOURCES} testbase.cpp)
+target_link_libraries(RESOURCE_LIBRARY
+	subsurface_corelib
+	${QT_TEST_LIBRARIES}
+	)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 
@@ -63,7 +67,7 @@ function(TEST NAME FILE)
 		${NAME}
 		subsurface_backend_shared
 		${TEST_SPECIFIC_LIBRARIES}
-		subsurface_corelib_testing
+		subsurface_corelib
 		RESOURCE_LIBRARY
 		${QT_TEST_LIBRARIES}
 		${SUBSURFACE_LINK_LIBRARIES}
@@ -98,7 +102,7 @@ add_definitions(-DSUBSURFACE_TEST_DATA="${SUBSURFACE_TEST_DATA}")
 add_executable(TestQML testqml.cpp)
 target_link_libraries(
 	TestQML
-	subsurface_corelib_testing
+	subsurface_corelib
 	RESOURCE_LIBRARY
 	${QT_TEST_LIBRARIES}
 	${SUBSURFACE_LINK_LIBRARIES}

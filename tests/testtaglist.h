@@ -2,9 +2,9 @@
 #ifndef TESTTAGLIST_H
 #define TESTTAGLIST_H
 
-#include <QtTest>
+#include "testbase.h"
 
-class TestTagList : public QObject {
+class TestTagList : public TestBase {
 	Q_OBJECT
 private slots:
 	void initTestCase();

@@ -2,9 +2,9 @@
 #ifndef TESTQPREFLOG_H
 #define TESTQPREFLOG_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefLog : public QObject {
+class TestQPrefLog : public TestBase {
 	Q_OBJECT
 
 private slots:

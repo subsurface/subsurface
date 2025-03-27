@@ -2,9 +2,9 @@
 #ifndef TESTQPREFDIVEPLANNER_H
 #define TESTQPREFDIVEPLANNER_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefDivePlanner : public QObject {
+class TestQPrefDivePlanner : public TestBase {
 	Q_OBJECT
 
 private slots:

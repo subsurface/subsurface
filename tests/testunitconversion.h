@@ -2,9 +2,9 @@
 #ifndef TESTUNITCONVERSION_H
 #define TESTUNITCONVERSION_H
 
-#include <QtTest>
+#include "testbase.h"
 
-class TestUnitConversion : public QObject {
+class TestUnitConversion : public TestBase {
 	Q_OBJECT
 private slots:
 	void testUnitConversions();

@@ -2,9 +2,9 @@
 #ifndef TESTPICTURE_H
 #define TESTPICTURE_H
 
-#include <QtTest>
+#include "testbase.h"
 
-class TestAirPressure : public QObject {
+class TestAirPressure : public TestBase {
 	Q_OBJECT
 private slots:
 	void initTestCase();

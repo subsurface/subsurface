@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 
-#include <QtTest>
+#include "testbase.h"
 
-class TestformatDiveGasString : public QObject {
+class TestformatDiveGasString : public TestBase {
 	Q_OBJECT
 private slots:
-	void init();
 	void test_empty();
 	void test_air();
 	void test_nitrox();

@@ -2,9 +2,9 @@
 #ifndef TESTQPREFPROXY_H
 #define TESTQPREFPROXY_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefProxy : public QObject {
+class TestQPrefProxy : public TestBase {
 	Q_OBJECT
 
 private slots:

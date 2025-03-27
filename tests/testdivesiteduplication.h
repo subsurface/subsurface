@@ -2,9 +2,9 @@
 #ifndef TESTDIVESITEDUPLICATION_H
 #define TESTDIVESITEDUPLICATION_H
 
-#include <QTest>
+#include "testbase.h"
 
-class TestDiveSiteDuplication : public QObject {
+class TestDiveSiteDuplication : public TestBase {
 	Q_OBJECT
 private slots:
 	void testReadV2();

@@ -3,9 +3,9 @@
 #ifndef TESTPROFILE_H
 #define TESTPROFILE_H
 
-#include <QtTest>
+#include "testbase.h"
 
-class TestProfile : public QObject {
+class TestProfile : public TestBase {
 	Q_OBJECT
 private slots:
 	void init();

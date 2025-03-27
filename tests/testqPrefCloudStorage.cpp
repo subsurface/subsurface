@@ -10,6 +10,8 @@
 
 void TestQPrefCloudStorage::initTestCase()
 {
+	TestBase::initTestCase();
+
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefCloudStorage");

@@ -2,9 +2,9 @@
 #ifndef TESTQPREFLANGUAGE_H
 #define TESTQPREFLANGUAGE_H
 
-#include <QObject>
+#include "testbase.h"
 
-class TestQPrefLanguage : public QObject {
+class TestQPrefLanguage : public TestBase {
 	Q_OBJECT
 
 private slots:

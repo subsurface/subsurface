@@ -11,6 +11,8 @@
 
 void TestQPrefMedia::initTestCase()
 {
+	TestBase::initTestCase();
+
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefMedia");
