@@ -818,6 +818,7 @@ dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size
 	switch (request) {
 	case DC_IOCTL_BLE_GET_NAME:
 		return ble->get_name((char *) data, size);
+#if 0
 	case DC_IOCTL_BLE_CHARACTERISTIC_READ:
 		quint128 uuid;
 		memcpy(&uuid, data, sizeof(uuid));
@@ -826,6 +827,7 @@ dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size
 		char *p;
 		p = ((char*)data) +  sizeof(uuid);
 		return ble->read_characteristic(QBluetoothUuid(uuid), p, readsize);
+#endif
 	default:
 		return DC_STATUS_UNSUPPORTED;
 	}
