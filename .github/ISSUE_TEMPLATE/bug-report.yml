@@ -1,0 +1,76 @@
+name: Bug Report
+description: File a bug report.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+
+        Please provide as much detail as possible to help us identify and fix the issue.
+  - type: textarea
+    attributes:
+      label: Description
+      description: Please provide a detailed description of the problem.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Subsurface Version
+      description: What version of Subsurface are you using when the problem is happening?
+      placeholder: ex. 6.0.5123
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Platform(s)
+      description: What platform(s) are you seeing the problem on?
+      multiple: true
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Android
+        - iOS
+        - N/A
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Platform Version
+      description: What version / distribution of the platform does the problem happen on?
+      placeholder: ex. Windows 10, Ubuntu 24.04
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Divecomputer Model
+      description: What model of dive computer are you using (if this is relevant for the problem)?
+      placeholder: ex. Heinrichs Weikamp OSTC 4
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      description: Please provide the sequence of steps that lead to the problem.
+      placeholder: |
+        ex.
+        1. Open Subsurface
+        2. Select 'Add Dive' from the menu
+        3. Type 'my divesite' into the 'Location' field
+        ...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Logs
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: input
+    attributes:
+      label: Mentions
+      description: Mention any specific people you would like to take a look at this issue.
+      placeholder: ex. @octocat
+  - type: markdown
+    attributes:
+      value: |
+
+        **Thank you for supporting Subsurface with your bug report!**
