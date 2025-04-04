@@ -113,7 +113,7 @@ struct DiveComputerEntry {
 static const DiveComputerEntry supportedDiveComputers[] = {
 	{ "Heinrichs Weikamp", "OSTC 2N", DC_TRANSPORT_SERIAL, true, false },
 	{ "Heinrichs Weikamp", "OSTC Plus", DC_TRANSPORT_BLUETOOTH, true, false },
-	{ "Heinrichs Weikamp", "OSTC 4", DC_TRANSPORT_BLUETOOTH, true, true },
+	{ "Heinrichs Weikamp", "OSTC 4/5", DC_TRANSPORT_BLUETOOTH, true, true },
 	{ "Suunto", "Vyper", DC_TRANSPORT_SERIAL, false, false },
 };
 
@@ -273,7 +273,7 @@ OstcFirmwareCheck::OstcFirmwareCheck(const QString &product) : parent(0)
 	} else if (product == "OSTC Sport") {
 		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_changelog.txt");
 		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_firmware.hex");
-	} else if (product == "OSTC 4") {
+	} else if (product == "OSTC 4/5") {
 		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_changelog.txt");
 		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_firmware.bin");
 	} else { // not one of the known dive computers
@@ -312,7 +312,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 	QStringList fwParts = latestFirmwareAvailable.split(".");
 	int latestFirmwareAvailableNumber;
 
-	if (data->product == "OSTC 4") {
+	if (data->product == "OSTC 4/5") {
 		unsigned char X, Y, Z, beta;
 		X = (firmwareOnDevice & 0xF800) >> 11;
 		Y = (firmwareOnDevice & 0x07C0) >> 6;
