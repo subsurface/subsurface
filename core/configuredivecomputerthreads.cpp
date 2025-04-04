@@ -918,7 +918,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails &devic
 		return DC_STATUS_UNSUPPORTED;
 	}
 
-	if (deviceDetails.model == "OSTC 4")
+	if (deviceDetails.model == "OSTC 4/5")
 		return read_ostc4_settings(device, deviceDetails, progress_cb, userdata);
 
 	EMIT_PROGRESS();
@@ -2180,7 +2180,7 @@ void WriteSettingsThread::run()
 		break;
 	case DC_FAMILY_HW_OSTC3:
 		// Is this the best way?
-		if (m_deviceDetails.model == "OSTC 4")
+		if (m_deviceDetails.model == "OSTC 4/5")
 			rc = write_ostc4_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 		else
 			rc = write_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
