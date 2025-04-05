@@ -239,7 +239,7 @@
       </item>
       <item>
        <property name="text">
-        <string>OSTC 4</string>
+        <string>OSTC 4/5</string>
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
