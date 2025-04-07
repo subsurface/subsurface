@@ -243,7 +243,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:dc-ostc-4-icon</normaloff>:dc-ostc-4-icon</iconset>
+         <normaloff>:dc-ostc-5-icon</normaloff>:dc-ostc-5-icon</iconset>
        </property>
       </item>
       <item>
