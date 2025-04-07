@@ -75,6 +75,7 @@ public:
 
 	DCDeviceData *data();
 	std::string error;
+	bool successful;
 	struct divelog log;
 
 private:

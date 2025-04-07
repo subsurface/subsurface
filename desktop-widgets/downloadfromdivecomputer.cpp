@@ -249,6 +249,16 @@ void DownloadFromDCWidget::updateProgressBar()
 	last_text = progress_bar_text;
 }
 
+void DownloadFromDCWidget::checkShowError(states state)
+{
+	if (!diveImportedModel->thread.error.empty()) {
+		if (state == DONE)
+			QMessageBox::warning(this, TITLE_OR_TEXT(tr("Warning"), QString::fromStdString(diveImportedModel->thread.error)), QMessageBox::Ok);
+		else
+			QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), QString::fromStdString(diveImportedModel->thread.error)), QMessageBox::Ok);
+	}
+}
+
 void DownloadFromDCWidget::updateState(states state)
 {
 	if (state == currentState)
@@ -290,6 +300,7 @@ void DownloadFromDCWidget::updateState(states state)
 		// on mac we show the text in a label
 		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
+		checkShowError(state);
 	}
 
 	// DOWNLOAD is finally done, but we don't know if there was an error as libdivecomputer doesn't pass
@@ -311,6 +322,7 @@ void DownloadFromDCWidget::updateState(states state)
 		// on mac we show the text in a label
 		ui.progressText->setText(QString::fromStdString(progress_bar_text));
 #endif
+		checkShowError(state);
 	}
 
 	// DOWNLOAD is started.
@@ -327,8 +339,7 @@ void DownloadFromDCWidget::updateState(states state)
 	else if (state == ERRORED) {
 		timer->stop();
 
-		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"),
-					QString::fromStdString(diveImportedModel->thread.error)), QMessageBox::Ok);
+		checkShowError(state);
 		markChildrenAsEnabled();
 		progress_bar_text.clear();
 		ui.progressBar->hide();
@@ -539,7 +550,7 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	showRememberedDCs();
 
 	if (currentState == DOWNLOADING) {
-		if (diveImportedModel->thread.error.empty())
+		if (diveImportedModel->thread.successful)
 			updateState(DONE);
 		else
 			updateState(ERRORED);
