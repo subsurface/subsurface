@@ -299,8 +299,11 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 	devData = *data;
 	parent = _parent;
 	// If we didn't find a current firmware version stop this whole thing here.
-	if (latestFirmwareAvailable.isEmpty())
+	if (latestFirmwareAvailable.isEmpty()) {
+		emit checkCompleted();
+
 		return;
+	}
 
 	// libdivecomputer gives us the firmware on device as an integer
 	// for the OSTC that means highbyte.lowbyte is the version number
@@ -354,8 +357,11 @@ void OstcFirmwareCheck::upgradeFirmware(const QString &filename)
 	saveFileName = fi.absolutePath().append(QDir::separator()).append(saveFileName);
 	storeFirmware = QFileDialog::getSaveFileName(parent, tr("Save the downloaded firmware as"),
 						     saveFileName, tr("Firmware files") + " (*.hex *.bin)");
-	if (storeFirmware.isEmpty())
+	if (storeFirmware.isEmpty()) {
+		emit checkCompleted();
+
 		return;
+	}
 
 	connect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::saveOstcFirmware);
 	QNetworkRequest download(latestFirmwareHexFile);
