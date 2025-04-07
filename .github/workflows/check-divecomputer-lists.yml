@@ -5,7 +5,7 @@ on:
     branches:
     - master
     paths:
-    - libdivecomputer/src/descriptor.c
+    - libdivecomputer
     - SupportedDivecomputers.txt
     - SupportedDivecomputers.html
     - scripts/**
@@ -14,7 +14,7 @@ on:
     branches:
     - master
     paths:
-    - libdivecomputer/src/descriptor.c
+    - libdivecomputer
     - SupportedDivecomputers.txt
     - SupportedDivecomputers.html
     - scripts/**
