@@ -103,6 +103,7 @@ void DownloadThread::run()
 	std::string errorText;
 	import_thread_cancelled = false;
 	error.clear();
+	successful = false;
 	if (internalData->vendor == "Uemis")
 		errorText = do_uemis_import(internalData);
 	else
@@ -112,6 +113,7 @@ void DownloadThread::run()
 					  internalData->vendor.c_str(), internalData->product.c_str());
 		report_info("Finishing download thread: %s", error.c_str());
 	} else {
+		successful = true;
 		if (log.dives.empty())
 			error = tr("No new dives downloaded from dive computer").toStdString();
 		report_info("Finishing download thread: %d dives downloaded", static_cast<int>(log.dives.size()));
