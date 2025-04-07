@@ -66,7 +66,7 @@
         <file alias="window-close-icon">icons/subsurface/32x32/actions/window-close.png</file>
         <file alias="dc-ostc-2n-icon">icons/ostc2n.png</file>
         <file alias="dc-ostc-3-icon">icons/ostc3.png</file>
-        <file alias="dc-ostc-4-icon">icons/ostc4.png</file>
+        <file alias="dc-ostc-5-icon">icons/ostc5.png</file>
         <file alias="dc-suunto-vyper-icon">icons/suunto_vyper.png</file>
         <file alias="edit-clear-icon">icons/edit-undo.svg</file>
         <file alias="filter-close">icons/process-stop.svg</file>
