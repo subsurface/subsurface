@@ -111,7 +111,7 @@ fi
 if [ "$(which curl)" == "" ] ; then
 	CURL="wget "
 else
-	CURL="curl -O "
+	CURL="curl -L -O "
 fi
 COMMON_PACKAGES=(libzip libgit2 googlemaps)
 case ${PLATFORM} in
@@ -193,7 +193,7 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library libftdi1 $CURRENT_LIBFTDI git://developer.intra2net.com/libftdi
 			;;
 		sqlite)
-			curl_download_library sqlite https://www.sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
+			curl_download_library sqlite https://sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
 			;;
 		mdbtools)
 			git_checkout_library mdbtools $CURRENT_MDBTOOLS https://github.com/mdbtools/mdbtools.git
