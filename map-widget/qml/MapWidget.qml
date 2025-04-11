@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.5
-import QtLocation 5.3
-import QtPositioning 5.3
+import QtQuick 
+import QtLocation 
+import QtPositioning 
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
@@ -15,7 +15,7 @@ Item {
 		id: mapHelper
 		map: map
 		editMode: false
-		onSelectedDivesChanged: rootItem.selectedDivesChanged(list)
+		onSelectedDivesChanged: (list) => { rootItem.selectedDivesChanged(list) }
 		onEditModeChanged: editMessage.isVisible = editMode === true ? 1 : 0
 		onCoordinatesChanged: {}
 		Component.onCompleted: {
@@ -29,7 +29,6 @@ Item {
 		id: map
 		anchors.fill: parent
 		zoomLevel: defaultZoomIn
-
 		property var mapType
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property real defaultZoomIn: 12.0
@@ -41,12 +40,46 @@ Item {
 		property real newZoomOut: 1.0
 		property var clickCoord: QtPositioning.coordinate(0, 0)
 		property bool isReady: false
-
 		Component.onCompleted: isReady = true
 		onZoomLevelChanged: {
 			if (isReady)
 				mapHelper.calculateSmallCircleRadius(map.center)
 		}
+        property geoCoordinate startCentroid
+        startCentroid: newCenter
+
+        PinchHandler {
+            id: pinch
+            target: null
+            onActiveChanged: if (active) {
+                map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
+            }
+            onScaleChanged: (delta) => {
+                map.zoomLevel += Math.log2(delta)
+                map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+            }
+            onRotationChanged: (delta) => {
+                map.bearing -= delta
+                map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+            }
+            grabPermissions: PointerHandler.TakeOverForbidden
+        }
+        WheelHandler {
+            id: wheel
+            // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
+            // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
+            // and we don't yet distinguish mice and trackpads on Wayland either
+            acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
+                             ? PointerDevice.Mouse | PointerDevice.TouchPad
+                             : PointerDevice.Mouse
+            rotationScale: 1/120
+            property: "zoomLevel"
+        }
+        DragHandler {
+            id: drag
+            target: null
+            onTranslationChanged: (delta) => map.pan(-delta.x, -delta.y)
+        }
 
 		MapItemView {
 			id: mapItemView
@@ -67,7 +100,9 @@ Item {
 					}
 					MouseArea {
 						drag.target: (mapHelper.editMode && model.isSelected) ? mapItem : undefined
-						anchors.fill: parent
+            anchors.fill: parent
+            hoverEnabled: true
+
 						onClicked: {
 							if (!mapHelper.editMode && model.divesite)
 								mapHelper.selectedLocationChanged(model.divesite)
@@ -122,8 +157,8 @@ Item {
 
 		MouseArea {
 			anchors.fill: parent
-			onPressed: { map.stopZoomAnimations(); mouse.accepted = false }
-			onWheel: { map.stopZoomAnimations(); wheel.accepted = false }
+			onPressed: (mouse) => { map.stopZoomAnimations(); mouse.accepted = false }
+			onWheel: (wheel) => { map.stopZoomAnimations(); wheel.accepted = false }
 			onDoubleClicked: map.doubleClickHandler(map.toCoordinate(Qt.point(mouseX, mouseY)))
 		}
 
