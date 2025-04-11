@@ -71,4 +71,9 @@ android {
     lintOptions {
         abortOnError false
     }
+
+    packagingOptions {
+        /* Exclude this as it is included in more than one dependency. */
+        exclude 'META-INF/androidx/annotation/annotation/LICENSE.txt'
+    }
 }
