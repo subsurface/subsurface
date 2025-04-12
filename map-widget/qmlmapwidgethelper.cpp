@@ -252,7 +252,11 @@ QString MapWidgetHelper::pluginObject()
 	QString lang = getUiLanguage().replace('_', '-');
 	QString cacheFolder = QString::fromStdString(system_default_directory() + "/googlemaps").replace("\\", "/");
 	return QStringLiteral("import QtQuick 2.0;"
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+			      "import QtLocation 6.0;"
+#else
 			      "import QtLocation 5.3;"
+#endif
 			      "Plugin {"
 			      "    id: mapPlugin;"
 			      "    name: 'googlemaps';"
