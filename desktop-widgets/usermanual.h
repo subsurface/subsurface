@@ -2,7 +2,11 @@
 #ifndef USERMANUAL_H
 #define USERMANUAL_H
 
-#include <QWebView>
+#ifdef USE_WEBENGINE
+# include <QWebEngineView>
+#else
+# include <QWebView>
+#endif
 #include <QDialog>
 #include "ui_searchbar.h"
 
@@ -45,7 +49,23 @@ slots:
 private:
 	SearchBar *searchBar;
 	QString mLastText;
+#ifdef USE_WEBENGINE
+	QWebEngineView *userManual;
+#else
 	QWebView *userManual;
-	void search(QString, QWebPage::FindFlags);
+#endif
+	void search(QString, bool backward = false);
 };
+
+#ifdef USE_WEBENGINE
+class UserManualPage : public QWebEnginePage {
+	Q_OBJECT
+
+public:
+	explicit UserManualPage(QObject* parent = 0) : QWebEnginePage(parent) {}
+
+protected:
+	bool acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame);
+};
+#endif
 #endif // USERMANUAL_H

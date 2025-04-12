@@ -2,6 +2,9 @@
 #include <QDesktopServices>
 #include <QShortcut>
 #include <QFile>
+#ifdef USE_WEBENGINE
+# include <QWebEngineFindTextResult>
+#endif
 
 #include "desktop-widgets/usermanual.h"
 #include "desktop-widgets/mainwindow.h"
@@ -55,12 +58,24 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	setWindowTitle(tr("User manual"));
 	setWindowIcon(QIcon(":subsurface-icon"));
 
+#ifdef USE_WEBENGINE
+	userManual = new QWebEngineView(this);
+#else
 	userManual = new QWebView(this);
+#endif
 	QString colorBack = palette().highlight().color().name(QColor::HexRgb);
 	QString colorText = palette().highlightedText().color().name(QColor::HexRgb);
-	userManual->setStyleSheet(QString("QWebView { selection-background-color: %1; selection-color: %2; }")
+	userManual->setStyleSheet(QString(
+#ifdef USE_WEBENGINE
+				"QWebEngineView"
+#else
+				"QWebView"
+#endif
+				" { selection-background-color: %1; selection-color: %2; }")
 		.arg(colorBack).arg(colorText));
+#ifndef USE_WEBENGINE
 	userManual->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
+#endif
 	QString searchPath = getSubsurfaceDataPath("Documentation");
 	if (searchPath.size()) {
 		// look for localized versions of the manual first
@@ -75,7 +90,13 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 			userManual->setHtml(tr("Cannot find the Subsurface manual"));
 		} else {
 			QString urlString = QString("file:///") + manual.fileName();
+#ifdef USE_WEBENGINE
+			UserManualPage* page = new UserManualPage(userManual);
+			page->setUrl(urlString);
+			userManual->setPage(page);
+#else
 			userManual->setUrl(QUrl(urlString, QUrl::TolerantMode));
+#endif
 		}
 	} else {
 		userManual->setHtml(tr("Cannot find the Subsurface manual"));
@@ -95,16 +116,42 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	vboxLayout->addWidget(userManual);
 	vboxLayout->addWidget(searchBar);
 	setLayout(vboxLayout);
+
+#ifdef USE_WEBENGINE
+	resize(700, 500);
+#endif
 }
 
-void UserManual::search(QString text, QWebPage::FindFlags flags = QFlag(0))
+#ifdef USE_WEBENGINE
+void UserManual::search(QString text, bool backward)
 {
-	if (userManual->findText(text, QWebPage::FindWrapsAroundDocument | flags) || text.length() == 0) {
+	QWebEnginePage::FindFlags flags = QFlag(0);
+	if (backward)
+		flags |= QWebEnginePage::FindBackward;
+	if (text.length() == 0)
+		searchBar->setStyleSheet("");
+	else
+		userManual->findText(text, flags,
+			[this](const QWebEngineFindTextResult &result) {
+				if (result.numberOfMatches() == 0)
+					searchBar->setStyleSheet("QLineEdit{background: red;}");
+				else
+					searchBar->setStyleSheet("");
+			});
+}
+#else
+void UserManual::search(QString text, bool backward)
+{
+	QWebPage::FindFlags flags = QWebPage::FindWrapsAroundDocument;
+	if (backward)
+		flags |= QWebPage::FindBackward;
+	if (userManual->findText(text, flags) || text.length() == 0) {
 		searchBar->setStyleSheet("");
 	} else {
 		searchBar->setStyleSheet("QLineEdit{background: red;}");
 	}
 }
+#endif
 
 void UserManual::searchTextChanged(const QString& text)
 {
@@ -119,7 +166,7 @@ void UserManual::searchNext()
 
 void UserManual::searchPrev()
 {
-	search(mLastText, QWebPage::FindBackward);
+	search(mLastText, true);
 }
 
 void UserManual::linkClickedSlot(const QUrl& url)
@@ -146,5 +193,17 @@ void UserManual::hideEvent(QHideEvent *e)
 	if (filterAction != NULL)
 		filterAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
 	closeAction = filterAction = NULL;
+}
+#endif
+
+#ifdef USE_WEBENGINE
+bool UserManualPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
+{
+	if (type == QWebEnginePage::NavigationTypeLinkClicked
+			&& (url.scheme() == "http" || url.scheme() == "https")) {
+		QDesktopServices::openUrl(url);
+		return false;
+	}
+	return QWebEnginePage::acceptNavigationRequest(url, type, isMainFrame);
 }
 #endif
