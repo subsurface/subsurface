@@ -10,7 +10,7 @@
 SearchBar::SearchBar(QWidget *parent): QWidget(parent)
 {
 	ui.setupUi(this);
-	#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
+	#if defined(Q_OS_MAC) || defined(Q_OS_WIN) || defined(Q_OS_UNIX)
 	ui.findNext->setIcon(QIcon(":go-down-icon"));
 	ui.findPrev->setIcon(QIcon(":go-up-icon"));
 	ui.findClose->setIcon(QIcon(":window-close-icon"));
