@@ -60,7 +60,7 @@ double get_volume_units(unsigned int ml, int *frac, const char **units)
 	case units::LITER:
 	default:
 		vol = ml / 1000.0;
-		unit = translate("gettextFromC", "ℓ");
+		unit = translate("gettextFromC", "L");
 		decimals = 1;
 		break;
 	case units::CUFT:

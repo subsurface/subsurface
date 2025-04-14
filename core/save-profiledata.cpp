@@ -380,19 +380,19 @@ static std::string format_st_event(const plot_data &entry, const plot_data &next
 	if (entry.current_gf > 0.0) {
 		replace_all(format_string, "[current_gf]", format_string_std("%.1f%%", entry.current_gf));
 	} else {
-		replace_all(format_string, "[current_gf]", "");	
+		replace_all(format_string, "[current_gf]", "");
 	}
 
 	if (entry.density > 0) {
-		replace_all(format_string, "[density]", format_string_std("%.1fg/ℓ", entry.density));
+		replace_all(format_string, "[density]", format_string_std("%.1fg/L", entry.density));
 	} else {
-		replace_all(format_string, "[density]", "");	
+		replace_all(format_string, "[density]", "");
 	}
 
 	if (entry.icd_warning) {
 		replace_all(format_string, "[icd_warning]", translate("gettextFromC", "ICD in leading tissue"));
 	} else {
-		replace_all(format_string, "[icd_warning]", "");	
+		replace_all(format_string, "[icd_warning]", "");
 	}
 
 	res += format_string;

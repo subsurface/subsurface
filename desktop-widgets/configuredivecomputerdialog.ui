@@ -441,7 +441,7 @@
             <item row="3" column="6">
              <widget class="QDoubleSpinBox" name="salinityDoubleSpinBox_3">
               <property name="suffix">
-               <string>kg/ℓ</string>
+               <string>kg/L</string>
               </property>
               <property name="minimum">
                <double>1.000000000000000</double>
@@ -852,7 +852,7 @@
             <item row="12" column="4">
              <widget class="QSpinBox" name="decoGasConsumption_3">
               <property name="suffix">
-               <string>ℓ/min</string>
+               <string>L/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -868,7 +868,7 @@
             <item row="11" column="4">
              <widget class="QSpinBox" name="bottomGasConsumption_3">
               <property name="suffix">
-               <string>ℓ/min</string>
+               <string>L/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -2081,7 +2081,7 @@
             <item row="12" column="4">
              <widget class="QSpinBox" name="bottomGasConsumption">
               <property name="suffix">
-               <string>ℓ/min</string>
+               <string>L/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -2097,7 +2097,7 @@
             <item row="13" column="4">
              <widget class="QSpinBox" name="decoGasConsumption">
               <property name="suffix">
-               <string>ℓ/min</string>
+               <string>L/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -3123,7 +3123,7 @@
             <item row="12" column="4">
              <widget class="QSpinBox" name="travelGasConsumption_4">
               <property name="suffix">
-               <string>ℓ/min</string>
+               <string>L/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -3139,7 +3139,7 @@
             <item row="13" column="4">
              <widget class="QSpinBox" name="bottomGasConsumption_4">
               <property name="suffix">
-               <string>ℓ/min</string>
+               <string>L/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -3155,7 +3155,7 @@
             <item row="14" column="4">
              <widget class="QSpinBox" name="decoGasConsumption_4">
               <property name="suffix">
-               <string>ℓ/min</string>
+               <string>L/min</string>
               </property>
               <property name="minimum">
                <number>5</number>

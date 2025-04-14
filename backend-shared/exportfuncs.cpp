@@ -115,8 +115,8 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 	put_format(&buf, "\n%% These fields contain the units used in other fields below. They may be\n");
 	put_format(&buf, "%% referenced as needed in TeX templates.\n");
 	put_format(&buf, "%% \n");
-	put_format(&buf, "%% By default, Subsurface exports units of volume as \"ℓ\" and \"cuft\", which do\n");
-	put_format(&buf, "%% not render well in TeX/LaTeX.  The code below substitutes \"L\" and \"ft$^{3}$\",\n");
+	put_format(&buf, "%% By default, Subsurface exports imperial units of volume as \"cuft\", which does\n");
+	put_format(&buf, "%% not render well in TeX/LaTeX.  The code below substitutes \"ft$^{3}$\",\n");
 	put_format(&buf, "%% respectively.  If you wish to display the original values, you may edit this\n");
 	put_format(&buf, "%% list and all calls to those units will be updated in your document.\n");
 
