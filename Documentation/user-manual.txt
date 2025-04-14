@@ -947,7 +947,7 @@ image::images/Newcyl-selection.png["FIGURE: Selecting cylinder name in cylinder 
 This activates the cursor on the cylinder type. Overtype the cylinder type with your new cylinder type (image below).
 *Important:* Overtyping a cylinder type does not affect the name that is being overtyped. The usual convention is that
 double cylinders are prefixed with a "D" to indicate "double". In our case we have a manifolded twinset of two
-7-litre 300 bar cylinders. This could be named "D7ℓ 300 bar" rather than "14ℓ 300 bar". However, use a rule that works for you.
+7-litre 300 bar cylinders. This could be named "D7L 300 bar" rather than "14L 300 bar". However, use a rule that works for you.
 
 image::images/Newcyl-name.png["FIGURE: Typing new cylinder name",align="center"]
 

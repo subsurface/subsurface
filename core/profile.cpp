@@ -1323,19 +1323,19 @@ static std::vector<std::string> plot_string(const struct dive *d, const struct p
 			if (entry.ead.mm > 0) {
 				ead.mm = lrint(get_depth_units(entry.ead, NULL, &depth_unit));
 				res.push_back(casprintf_loc(translate("gettextFromC", "EAD: %d%s"), ead.mm, depth_unit));
-				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/ℓ"), eadd.mm, depth_unit, entry.density));
+				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/L"), eadd.mm, depth_unit, entry.density));
 				break;
 			}
 		case plot_info::TRIMIX:
 			if (entry.end.mm > 0) {
 				end.mm = lrint(get_depth_units(entry.end, NULL, &depth_unit));
 				res.push_back(casprintf_loc(translate("gettextFromC", "END: %d%s"), end.mm, depth_unit));
-				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/ℓ"), eadd.mm, depth_unit, entry.density));
+				res.push_back(casprintf_loc(translate("gettextFromC", "EADD: %d%s / %.1fg/L"), eadd.mm, depth_unit, entry.density));
 				break;
 			}
 		case plot_info::AIR:
 			if (entry.density > 0) {
-				res.push_back(casprintf_loc(translate("gettextFromC", "Density: %.1fg/ℓ"), entry.density));
+				res.push_back(casprintf_loc(translate("gettextFromC", "Density: %.1fg/L"), entry.density));
 			}
 		case plot_info::FREEDIVING:
 			/* nothing */

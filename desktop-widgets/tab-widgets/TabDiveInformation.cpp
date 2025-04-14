@@ -342,7 +342,7 @@ void TabDiveInformation::divesChanged(const QVector<dive *> &dives, DiveField fi
 		salinity_value = currentDive->salinity;
 	setIndexNoSignal(ui->waterTypeCombo, updateSalinityComboIndex(salinity_value));
 	ui->waterTypeText->setText(get_water_type_string(salinity_value));
-	ui->salinityText->setText(QString("%L1g/ℓ").arg(salinity_value / 10.0));
+	ui->salinityText->setText(QString("%L1g/L").arg(salinity_value / 10.0));
 }
 
 void TabDiveInformation::on_visibility_valueChanged(int value)
