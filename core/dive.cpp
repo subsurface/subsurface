@@ -1304,16 +1304,31 @@ static void merge_extra_data(struct divecomputer &res,
 }
 
 static void merge_tank_sensor_mappings(struct divecomputer &res,
-			  const struct divecomputer &a, const struct divecomputer &b)
+                         const struct divecomputer &src1_in, const struct divecomputer &src2_in,
+                         const int *cylinders_map1, const int *cylinders_map2,
+			 int offset)
 {
-	for (auto &tank_sensor_mapping: b.tank_sensor_mappings) {
-		if (std::find_if(a.tank_sensor_mappings.begin(), a.tank_sensor_mappings.end(), [&tank_sensor_mapping](const struct tank_sensor_mapping &a) {
-			return a.sensor_id == tank_sensor_mapping.sensor_id;
-		}) != a.tank_sensor_mappings.end())
-			continue;
-
-		res.tank_sensor_mappings.push_back(tank_sensor_mapping);
+	/* If two cylinders are merged and both have a sensor assigned, use the sensor associated with the earliest part of the log */
+	auto src1 = &src1_in;
+	auto src2 = &src2_in;
+	if (offset < 0) {
+		std::swap(src1, src2);
+		std::swap(cylinders_map1, cylinders_map2); // The pointers, not the contents are swapped.
 	}
+
+	res.tank_sensor_mappings.clear();
+
+	for (auto &mapping: src2->tank_sensor_mappings)
+		res.tank_sensor_mappings.push_back(tank_sensor_mapping {
+			(int16_t)(mapping.sensor_id == NO_SENSOR ? NO_SENSOR : cylinders_map2[mapping.sensor_id]),
+			(unsigned int)cylinders_map2[mapping.cylinder_index]
+		});
+
+	for (auto &mapping: src1->tank_sensor_mappings)
+		res.tank_sensor_mappings.push_back(tank_sensor_mapping {
+			(int16_t)(mapping.sensor_id == NO_SENSOR ? NO_SENSOR : cylinders_map1[mapping.sensor_id]),
+			(unsigned int)cylinders_map1[mapping.cylinder_index]
+		});
 }
 
 static std::string merge_text(const std::string &a, const std::string &b, const char *sep)
@@ -2230,7 +2245,7 @@ static void interleave_dive_computers(struct dive &res,
 			merge_events(res, newdc, dc1, *match, cylinders_map_a, cylinders_map_b, offset);
 			merge_samples(newdc, dc1, *match, cylinders_map_a, cylinders_map_b, offset);
 			merge_extra_data(newdc, dc1, *match);
-			merge_tank_sensor_mappings(newdc, dc1, *match);
+			merge_tank_sensor_mappings(newdc, dc1, *match, cylinders_map_a, cylinders_map_b, offset);
 			/* Use the diveid of the later dive! */
 			if (offset > 0)
 				newdc.diveid = match->diveid;
