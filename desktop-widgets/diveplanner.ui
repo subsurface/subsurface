@@ -241,7 +241,7 @@
           <string extracomment="Custom water density"/>
          </property>
          <property name="suffix">
-          <string>kg/ℓ</string>
+          <string>kg/L</string>
          </property>
          <property name="minimum">
           <double>0.990000000000000</double>

@@ -60,7 +60,7 @@ static QString get_cylinder_string(const cylinder_t *cyl)
 	} else {
 		value = ml / 1000.0;
 		decimals = 1;
-		unit = CylindersModel::tr("ℓ");
+		unit = CylindersModel::tr("L");
 	}
 
 	return QString("%L1").arg(value, 0, 'f', decimals) + unit;

@@ -624,7 +624,7 @@
           <item row="1" column="1">
            <widget class="QDoubleSpinBox" name="decoStopSAC">
             <property name="suffix">
-             <string>ℓ/min</string>
+             <string>L/min</string>
             </property>
             <property name="decimals">
              <number>0</number>
@@ -686,7 +686,7 @@
           <item row="0" column="1">
            <widget class="QDoubleSpinBox" name="bottomSAC">
             <property name="suffix">
-             <string>ℓ/min</string>
+             <string>L/min</string>
             </property>
             <property name="decimals">
              <number>0</number>

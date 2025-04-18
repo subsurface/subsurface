@@ -581,7 +581,7 @@ QString get_volume_string(volume_t volume, bool showunit)
 QString get_volume_unit(bool metric)
 {
 	if (metric)
-		return gettextFromC::tr("ℓ");
+		return gettextFromC::tr("L");
 	else
 		return gettextFromC::tr("cuft");
 }
@@ -604,7 +604,7 @@ QString get_pressure_string(pressure_t pressure, bool showunit)
 
 QString get_salinity_string(int salinity)
 {
-	return QStringLiteral("%L1%2").arg(salinity / 10.0).arg(gettextFromC::tr("g/ℓ"));
+	return QStringLiteral("%L1%2").arg(salinity / 10.0).arg(gettextFromC::tr("g/L"));
 }
 
 // the water types need to match the watertypes enum
@@ -1296,7 +1296,7 @@ volume_t string_to_volume(const char *str, pressure_t workp)
 	QString local_cuft = gettextFromC::tr("cuft");
 	volume_t volume;
 
-	if (rest.startsWith("l") || rest.startsWith("ℓ") || rest.startsWith(local_l))
+	if (rest.startsWith("L") || rest.startsWith("l") || rest.startsWith("ℓ") || rest.startsWith(local_l))
 		goto l;
 	if (rest.startsWith("cuft") || rest.startsWith(local_cuft))
 		goto cuft;

@@ -207,8 +207,8 @@ int find_best_gasmix_match(struct gasmix mix, const struct cylinder_table &cylin
 static void add_default_tank_infos(std::vector<tank_info> &table)
 {
 	/* Size-only metric cylinders */
-	add_tank_info_metric(table, "10.0ℓ", 10000, 0);
-	add_tank_info_metric(table, "11.1ℓ", 11100, 0);
+	add_tank_info_metric(table, "10.0L", 10000, 0);
+	add_tank_info_metric(table, "11.1L", 11100, 0);
 
 	/* Most common AL cylinders */
 	add_tank_info_imperial(table, "AL40", 40, 3000);
@@ -236,16 +236,16 @@ static void add_default_tank_infos(std::vector<tank_info> &table)
 	add_tank_info_imperial(table, "HP130", 130, 3442);
 
 	/* Common European steel cylinders */
-	add_tank_info_metric(table, "3ℓ 232 bar", 3000, 232);
-	add_tank_info_metric(table, "3ℓ 300 bar", 3000, 300);
-	add_tank_info_metric(table, "10ℓ 200 bar", 10000, 200);
-	add_tank_info_metric(table, "10ℓ 232 bar", 10000, 232);
-	add_tank_info_metric(table, "10ℓ 300 bar", 10000, 300);
-	add_tank_info_metric(table, "12ℓ 200 bar", 12000, 200);
-	add_tank_info_metric(table, "12ℓ 232 bar", 12000, 232);
-	add_tank_info_metric(table, "12ℓ 300 bar", 12000, 300);
-	add_tank_info_metric(table, "15ℓ 200 bar", 15000, 200);
-	add_tank_info_metric(table, "15ℓ 232 bar", 15000, 232);
+	add_tank_info_metric(table, "3L 232 bar", 3000, 232);
+	add_tank_info_metric(table, "3L 300 bar", 3000, 300);
+	add_tank_info_metric(table, "10L 200 bar", 10000, 200);
+	add_tank_info_metric(table, "10L 232 bar", 10000, 232);
+	add_tank_info_metric(table, "10L 300 bar", 10000, 300);
+	add_tank_info_metric(table, "12L 200 bar", 12000, 200);
+	add_tank_info_metric(table, "12L 232 bar", 12000, 232);
+	add_tank_info_metric(table, "12L 300 bar", 12000, 300);
+	add_tank_info_metric(table, "15L 200 bar", 15000, 200);
+	add_tank_info_metric(table, "15L 232 bar", 15000, 232);
 	add_tank_info_metric(table, "D7 232 bar", 14000, 232);
 	add_tank_info_metric(table, "D7 300 bar", 14000, 300);
 	add_tank_info_metric(table, "D8.5 232 bar", 17000, 232);

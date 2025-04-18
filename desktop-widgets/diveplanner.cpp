@@ -199,7 +199,7 @@ void DivePlannerWidget::waterTypeUpdateTexts()
 		if (ui.waterType->itemData(i) != QVariant::Invalid) {
 			QString densityText = ui.waterType->itemText(i).split("(")[0].trimmed();
 			double density = ui.waterType->itemData(i).toInt() / 10000.0;
-			densityText.append(QStringLiteral(" (%L1%2)").arg(density, 0, 'f', 3).arg(tr("kg/ℓ")));
+			densityText.append(QStringLiteral(" (%L1%2)").arg(density, 0, 'f', 3).arg(tr("kg/L")));
 			ui.waterType->setItemText(i, densityText);
 		}
 	}
@@ -497,8 +497,8 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.bottomSAC->setValue(PlannerShared::bottomsac());
 		ui.decoStopSAC->setValue(PlannerShared::decosac());
 	} else {
-		ui.bottomSAC->setSuffix(tr("ℓ/min"));
-		ui.decoStopSAC->setSuffix(tr("ℓ/min"));
+		ui.bottomSAC->setSuffix(tr("L/min"));
+		ui.decoStopSAC->setSuffix(tr("L/min"));
 		ui.bottomSAC->setDecimals(0);
 		ui.bottomSAC->setSingleStep(1);
 		ui.decoStopSAC->setDecimals(0);

@@ -269,7 +269,7 @@ QString filter_constraint_get_unit(enum filter_constraint_type type)
 	case FILTER_CONSTRAINT_VOLUMETRIC_FLOW_UNIT:
 		return get_volume_unit() + "/min";
 	case FILTER_CONSTRAINT_DENSITY_UNIT:
-		return "g/ℓ";
+		return "g/L";
 	case FILTER_CONSTRAINT_PERCENTAGE_UNIT:
 		return "%";
 	}
