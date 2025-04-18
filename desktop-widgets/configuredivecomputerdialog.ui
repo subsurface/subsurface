@@ -155,6 +155,16 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="dateTimeSyncCheckBox">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Sync dive computer time with PC</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -419,13 +429,6 @@
                 <string>YY/MM/DD</string>
                </property>
               </item>
-             </widget>
-            </item>
-            <item row="3" column="0" colspan="4">
-             <widget class="QCheckBox" name="dateTimeSyncCheckBox_3">
-              <property name="text">
-               <string>Sync dive computer time with PC</string>
-              </property>
              </widget>
             </item>
             <item row="3" column="5">
@@ -1582,13 +1585,6 @@
               </item>
              </widget>
             </item>
-            <item row="6" column="0" colspan="3">
-             <widget class="QCheckBox" name="dateTimeSyncCheckBox">
-              <property name="text">
-               <string>Sync dive computer time with PC</string>
-              </property>
-             </widget>
-            </item>
             <item row="5" column="0">
              <widget class="QLabel">
               <property name="text">
@@ -2541,7 +2537,14 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="4">
+            <item row="8" column="3" colspan="3">
+             <widget class="QCheckBox" name="flipScreenCheckBox_4">
+              <property name="text">
+               <string>Flip screen</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="4">
              <widget class="QComboBox" name="languageComboBox_4">
               <item>
                <property name="text">
@@ -2582,7 +2585,7 @@
             <item row="0" column="0">
              <widget class="QLabel">
               <property name="text">
-               <string>Serial No.</string>
+               <string>Serial no.</string>
               </property>
               <property name="buddy">
                <cstring>serialNoLineEdit_4</cstring>
@@ -2612,7 +2615,7 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="4">
+            <item row="4" column="4">
              <widget class="QComboBox" name="dateFormatComboBox_4">
               <item>
                <property name="text">
@@ -2638,7 +2641,7 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="3">
+            <item row="3" column="3">
              <widget class="QLabel">
               <property name="text">
                <string>Language</string>
@@ -2648,7 +2651,7 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="3">
+            <item row="4" column="3">
              <widget class="QLabel">
               <property name="text">
                <string>Date format</string>
@@ -2741,6 +2744,9 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="placeholderToStopQtFromCollapsingRow2"/>
+            </item>
             <item row="1" column="4">
              <widget class="QLineEdit" name="modelLineEdit_4">
               <property name="readOnly">
@@ -2748,7 +2754,7 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="1">
+            <item row="3" column="1">
              <widget class="QComboBox" name="diveModeComboBox_4">
               <item>
                <property name="text">
@@ -2772,7 +2778,7 @@
               </item>
              </widget>
             </item>
-            <item row="2" column="0">
+            <item row="3" column="0">
              <widget class="QLabel">
               <property name="text">
                <string>Dive mode</string>
@@ -2782,7 +2788,7 @@
               </property>
              </widget>
             </item>
-            <item row="5" column="1">
+            <item row="4" column="1">
              <widget class="QComboBox" name="diveModeColour_4">
               <item>
                <property name="text">
@@ -2806,14 +2812,7 @@
               </item>
              </widget>
             </item>
-            <item row="6" column="0" colspan="3">
-             <widget class="QCheckBox" name="dateTimeSyncCheckBox_4">
-              <property name="text">
-               <string>Sync dive computer time with PC</string>
-              </property>
-             </widget>
-            </item>
-            <item row="5" column="0">
+            <item row="4" column="0">
              <widget class="QLabel">
               <property name="text">
                <string>Dive mode color</string>
@@ -2823,14 +2822,14 @@
               </property>
              </widget>
             </item>
-            <item row="7" column="0" colspan="3">
+            <item row="5" column="0" colspan="3">
              <widget class="QCheckBox" name="safetyStopCheckBox_4">
               <property name="text">
                <string>Show safety stop</string>
               </property>
              </widget>
             </item>
-            <item row="8" column="1">
+            <item row="6" column="1">
              <widget class="QSpinBox" name="safetyStopLengthSpinBox_4">
               <property name="enabled">
                <bool>false</bool>
@@ -2849,21 +2848,21 @@
               </property>
              </widget>
             </item>
-            <item row="8" column="0">
+            <item row="6" column="0">
              <widget class="QLabel">
               <property name="text">
                <string>Length</string>
               </property>
              </widget>
             </item>
-            <item row="9" column="0">
+            <item row="7" column="0">
              <widget class="QLabel">
               <property name="text">
-               <string>Start Depth</string>
+               <string>Start depth</string>
               </property>
              </widget>
             </item>
-            <item row="9" column="1">
+            <item row="7" column="1">
              <widget class="QDoubleSpinBox" name="safetyStopStartDepthDoubleSpinBox_4">
               <property name="enabled">
                <bool>false</bool>
@@ -2895,14 +2894,7 @@
             <string>Advanced settings</string>
            </attribute>
            <layout class="QGridLayout" name="gridLayout_8">
-            <item row="12" column="3">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Travel gas consumption</string>
-              </property>
-             </widget>
-            </item>
-            <item row="11" column="4">
+            <item row="12" column="4">
              <widget class="QSpinBox" name="buttonSensitivity_4">
               <property name="suffix">
                <string>%</string>
@@ -2918,7 +2910,7 @@
               </property>
              </widget>
             </item>
-            <item row="11" column="3">
+            <item row="12" column="3">
              <widget class="QLabel">
               <property name="text">
                <string>Button sensitivity</string>
@@ -2932,6 +2924,13 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="3">
+             <widget class="QLabel">
+              <property name="text">
+               <string>Compass declination</string>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="3">
              <widget class="QLabel">
               <property name="text">
@@ -2939,14 +2938,14 @@
               </property>
              </widget>
             </item>
-            <item row="2" column="3">
+            <item row="3" column="3">
              <widget class="QLabel">
               <property name="text">
                <string>GFLow</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="4">
+            <item row="3" column="4">
              <widget class="QSpinBox" name="gfLowSpinBox_4">
               <property name="suffix">
                <string>%</string>
@@ -2962,14 +2961,14 @@
               </property>
              </widget>
             </item>
-            <item row="3" column="3">
+            <item row="4" column="3">
              <widget class="QLabel">
               <property name="text">
                <string>GFHigh</string>
               </property>
              </widget>
             </item>
-            <item row="3" column="4">
+            <item row="4" column="4">
              <widget class="QSpinBox" name="gfHighSpinBox_4">
               <property name="suffix">
                <string>%</string>
@@ -3005,7 +3004,7 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="4">
+            <item row="5" column="4">
              <widget class="QSpinBox" name="aGFLowSpinBox_4">
               <property name="suffix">
                <string>%</string>
@@ -3018,6 +3017,19 @@
               </property>
               <property name="value">
                <number>60</number>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="4">
+             <widget class="QSpinBox" name="compassDeclinationSpinBox_4">
+              <property name="suffix">
+               <string>°</string>
+              </property>
+              <property name="minimum">
+               <number>-99</number>
+              </property>
+              <property name="maximum">
+               <number>99</number>
               </property>
              </widget>
             </item>
@@ -3076,14 +3088,14 @@
               </property>
              </widget>
             </item>
-            <item row="4" column="3">
+            <item row="5" column="3">
              <widget class="QLabel">
               <property name="text">
                <string>Alt GFLow</string>
               </property>
              </widget>
             </item>
-            <item row="7" column="4">
+            <item row="8" column="4">
              <widget class="QSpinBox" name="aGFHighSpinBox_4">
               <property name="suffix">
                <string>%</string>
@@ -3099,7 +3111,7 @@
               </property>
              </widget>
             </item>
-            <item row="7" column="3">
+            <item row="8" column="3">
              <widget class="QLabel">
               <property name="text">
                <string>Alt GFHigh</string>
@@ -3120,24 +3132,8 @@
               </property>
              </widget>
             </item>
-            <item row="12" column="4">
-             <widget class="QSpinBox" name="travelGasConsumption_4">
-              <property name="suffix">
-               <string>L/min</string>
-              </property>
-              <property name="minimum">
-               <number>5</number>
-              </property>
-              <property name="maximum">
-               <number>50</number>
-              </property>
-              <property name="value">
-               <number>20</number>
-              </property>
-             </widget>
-            </item>
             <item row="13" column="4">
-             <widget class="QSpinBox" name="bottomGasConsumption_4">
+             <widget class="QSpinBox" name="travelGasConsumption_4">
               <property name="suffix">
                <string>L/min</string>
               </property>

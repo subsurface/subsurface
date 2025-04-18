@@ -105,16 +105,17 @@ struct DiveComputerEntry {
 	unsigned int transport;
 	bool fwUpgradePossible;
 	bool forcedFirmwareUpgradeSupported;
+	bool timeSyncSupported;
 };
 
 //WARNING: Do not edit this list or even just change its order without
 // making corresponding changes to the `DiveComputerList` element
 // in `configuredivecomputerdialog.ui` or this functionality will stop working.
 static const DiveComputerEntry supportedDiveComputers[] = {
-	{ "Heinrichs Weikamp", "OSTC 2N", DC_TRANSPORT_SERIAL, true, false },
-	{ "Heinrichs Weikamp", "OSTC Plus", DC_TRANSPORT_BLUETOOTH, true, false },
-	{ "Heinrichs Weikamp", "OSTC 4/5", DC_TRANSPORT_BLUETOOTH, true, true },
-	{ "Suunto", "Vyper", DC_TRANSPORT_SERIAL, false, false },
+	{ "Heinrichs Weikamp", "OSTC 2N", DC_TRANSPORT_SERIAL, true, false, true },
+	{ "Heinrichs Weikamp", "OSTC Plus", DC_TRANSPORT_BLUETOOTH, true, false, true },
+	{ "Heinrichs Weikamp", "OSTC 4/5", DC_TRANSPORT_BLUETOOTH, true, true, true },
+	{ "Suunto", "Vyper", DC_TRANSPORT_SERIAL, false, false, false },
 };
 
 ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(const QString &filename, QWidget *parent) : QDialog(parent),
@@ -137,6 +138,7 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(const QString &filename
 	connect(ui.resetButton_4, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::resetSettings);
 	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
 	connect(ui.chooseLogFile, &QToolButton::clicked, this, &ConfigureDiveComputerDialog::pickLogFile);
+	connect(ui.dateTimeSyncCheckBox, &QCheckBox::stateChanged, this, &ConfigureDiveComputerDialog::changeTimeSync);
 	connect(ui.logToFile, &QCheckBox::stateChanged, this, &ConfigureDiveComputerDialog::checkLogFile);
 	connect(ui.connectButton, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::dc_open);
 	connect(ui.disconnectButton, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::dc_close);
@@ -484,7 +486,6 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	deviceDetails.language = ui.languageComboBox->currentIndex();
 	deviceDetails.dateFormat = ui.dateFormatComboBox->currentIndex();
 	deviceDetails.compassGain = ui.compassGainComboBox->currentIndex();
-	deviceDetails.syncTime = ui.dateTimeSyncCheckBox->isChecked();
 	deviceDetails.safetyStop = ui.safetyStopCheckBox->isChecked();
 	deviceDetails.gfHigh = ui.gfHighSpinBox->value();
 	deviceDetails.gfLow = ui.gfLowSpinBox->value();
@@ -627,7 +628,6 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC()
 	deviceDetails.samplingRate = ui.samplingRateSpinBox_3->value();
 	deviceDetails.salinity = lrint(ui.salinityDoubleSpinBox_3->value() * 100);
 	deviceDetails.dateFormat = ui.dateFormatComboBox_3->currentIndex();
-	deviceDetails.syncTime = ui.dateTimeSyncCheckBox_3->isChecked();
 	deviceDetails.safetyStop = ui.safetyStopCheckBox_3->isChecked();
 	deviceDetails.gfHigh = ui.gfHighSpinBox_3->value();
 	deviceDetails.gfLow = ui.gfLowSpinBox_3->value();
@@ -779,10 +779,10 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC4()
 	deviceDetails.diveModeColor = ui.diveModeColour_4->currentIndex();
 	deviceDetails.language = ui.languageComboBox_4->currentIndex();
 	deviceDetails.dateFormat = ui.dateFormatComboBox_4->currentIndex();
-	deviceDetails.syncTime = ui.dateTimeSyncCheckBox_4->isChecked();
 	deviceDetails.safetyStop = ui.safetyStopCheckBox_4->isChecked();
 	deviceDetails.gfHigh = ui.gfHighSpinBox_4->value();
 	deviceDetails.gfLow = ui.gfLowSpinBox_4->value();
+	deviceDetails.compassGain = ui.compassDeclinationSpinBox_4->value();
 	deviceDetails.pressureSensorOffset = ui.pressureSensorOffsetSpinBox_4->value();
 	deviceDetails.ppO2Min = ui.ppO2MinSpinBox_4->value();
 	deviceDetails.ppO2Max = ui.ppO2MaxSpinBox_4->value();
@@ -791,10 +791,10 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC4()
 	deviceDetails.decoType = ui.decoTypeComboBox_4->currentIndex();
 	deviceDetails.aGFHigh = ui.aGFHighSpinBox_4->value();
 	deviceDetails.aGFLow = ui.aGFLowSpinBox_4->value();
+	deviceDetails.flipScreen = ui.flipScreenCheckBox_4->isChecked();
 	deviceDetails.vpmConservatism = ui.vpmConservatismSpinBox->value();
 	deviceDetails.setPointFallback = ui.setPointFallbackCheckBox_4->isChecked();
 	deviceDetails.buttonSensitivity = ui.buttonSensitivity_4->value();
-	deviceDetails.bottomGasConsumption = ui.bottomGasConsumption_4->value();
 	deviceDetails.decoGasConsumption = ui.decoGasConsumption_4->value();
 	deviceDetails.travelGasConsumption = ui.travelGasConsumption_4->value();
 	deviceDetails.alwaysShowppO2 = ui.alwaysShowppO2_4->isChecked();
@@ -1315,6 +1315,7 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC4()
 	ui.safetyStopCheckBox_4->setChecked(deviceDetails.safetyStop);
 	ui.gfHighSpinBox_4->setValue(deviceDetails.gfHigh);
 	ui.gfLowSpinBox_4->setValue(deviceDetails.gfLow);
+	ui.compassDeclinationSpinBox_4->setValue(deviceDetails.compassGain);
 	ui.pressureSensorOffsetSpinBox_4->setValue(deviceDetails.pressureSensorOffset);
 	ui.ppO2MinSpinBox_4->setValue(deviceDetails.ppO2Min);
 	ui.ppO2MaxSpinBox_4->setValue(deviceDetails.ppO2Max);
@@ -1323,10 +1324,10 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC4()
 	ui.decoTypeComboBox_4->setCurrentIndex(deviceDetails.decoType);
 	ui.aGFHighSpinBox_4->setValue(deviceDetails.aGFHigh);
 	ui.aGFLowSpinBox_4->setValue(deviceDetails.aGFLow);
+	ui.flipScreenCheckBox_4->setChecked(deviceDetails.flipScreen);
 	ui.vpmConservatismSpinBox->setValue(deviceDetails.vpmConservatism);
 	ui.setPointFallbackCheckBox_4->setChecked(deviceDetails.setPointFallback);
 	ui.buttonSensitivity_4->setValue(deviceDetails.buttonSensitivity);
-	ui.bottomGasConsumption_4->setValue(deviceDetails.bottomGasConsumption);
 	ui.decoGasConsumption_4->setValue(deviceDetails.decoGasConsumption);
 	ui.travelGasConsumption_4->setValue(deviceDetails.travelGasConsumption);
 	ui.alwaysShowppO2_4->setChecked(deviceDetails.alwaysShowppO2);
@@ -1467,6 +1468,8 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 		ui.progressBar->setValue(0);
 		ui.progressBar->setFormat("%p%");
 		ui.progressBar->setTextVisible(true);
+		ui.forceUpdateFirmware->setEnabled(false);
+		ui.dateTimeSyncCheckBox->setEnabled(false);
 
 		config->startFirmwareUpdate(firmwarePath, &device_data, ui.forceUpdateFirmware->isChecked());
 	}
@@ -1482,6 +1485,13 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 		ui.connectBluetoothButton->setEnabled(false);
 
 	fill_device_list(transport);
+}
+
+void ConfigureDiveComputerDialog::changeTimeSync(int state)
+{
+	bool newState = state == Qt::Checked;
+	ui.dateTimeSyncCheckBox->setEnabled(newState);
+	device_data.sync_time = newState;
 }
 
 void ConfigureDiveComputerDialog::checkLogFile(int state)
@@ -1548,6 +1558,7 @@ void ConfigureDiveComputerDialog::dc_open()
 	const DiveComputerEntry selectedDiveComputer = supportedDiveComputers[ui.DiveComputerList->currentRow()];
 	ui.updateFirmwareButton->setEnabled(selectedDiveComputer.fwUpgradePossible);
 	ui.forceUpdateFirmware->setEnabled(selectedDiveComputer.forcedFirmwareUpgradeSupported);
+	ui.dateTimeSyncCheckBox->setEnabled(selectedDiveComputer.timeSyncSupported);
 
 	ui.progressBar->setFormat(tr("Connected to device"));
 
@@ -1574,6 +1585,7 @@ void ConfigureDiveComputerDialog::dc_close()
 	ui.logToFile->setEnabled(true);
 	ui.updateFirmwareButton->setEnabled(false);
 	ui.forceUpdateFirmware->setEnabled(false);
+	ui.dateTimeSyncCheckBox->setEnabled(false);
 	ui.progressBar->setFormat(tr("Disconnected from device"));
 	ui.progressBar->setValue(0);
 }
