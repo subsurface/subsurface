@@ -1429,6 +1429,21 @@ static dc_status_t sync_divecomputer_time(dc_device_t *device)
 	return dc_device_timesync(device, &now);
 }
 
+dc_loglevel_t get_libdivecomputer_loglevel()
+{
+	switch (verbose) {
+	case 0:
+		return DC_LOGLEVEL_ERROR;
+	case 1:
+		return DC_LOGLEVEL_WARNING;
+	case 2:
+		return DC_LOGLEVEL_INFO;
+	case 3:
+	default:
+		return DC_LOGLEVEL_DEBUG;
+	}
+}
+
 std::string do_libdivecomputer_import(device_data_t *data)
 {
 	dc_status_t rc;
@@ -1456,6 +1471,8 @@ std::string do_libdivecomputer_import(device_data_t *data)
 		dc_context_set_logfunc(data->context, logfunc, fp);
 		fprintf(data->libdc_logfile, "Subsurface: v%s, ", subsurface_git_version());
 		fprintf(data->libdc_logfile, "built with libdivecomputer v%s\n", dc_version(NULL));
+	} else {
+		dc_context_set_loglevel(data->context, get_libdivecomputer_loglevel());
 	}
 
 	std::string err = translate("gettextFromC", "Unable to open %s %s (%s)");

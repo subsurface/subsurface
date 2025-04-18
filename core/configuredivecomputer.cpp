@@ -587,6 +587,8 @@ QString ConfigureDiveComputer::dc_open(device_data_t *data)
 		dc_context_set_logfunc(data->context, logfunc, fp);
 		fprintf(data->libdc_logfile, "Subsurface: v%s, ", subsurface_git_version());
 		fprintf(data->libdc_logfile, "built with libdivecomputer v%s\n", dc_version(NULL));
+	} else {
+		dc_context_set_loglevel(data->context, get_libdivecomputer_loglevel());
 	}
 
 	rc = divecomputer_device_open(data);
