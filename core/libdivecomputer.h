@@ -69,6 +69,7 @@ dc_status_t rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, 
 dc_status_t ftdi_open(dc_iostream_t **iostream, dc_context_t *context);
 dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context, void *androidUsbDevice);
 
+dc_loglevel_t get_libdivecomputer_loglevel();
 dc_status_t divecomputer_device_open(device_data_t *data);
 
 unsigned int get_supported_transports(device_data_t *data);
