@@ -63,6 +63,7 @@ public:
 
 private
 slots:
+	void changeTimeSync(int state);
 	void checkLogFile(int state);
 	void pickLogFile();
 	void readSettings();

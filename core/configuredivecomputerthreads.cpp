@@ -52,6 +52,7 @@
 #define OSTC3_LEFT_BUTTON_SENSIVITY	0x3A
 #define OSTC3_RIGHT_BUTTON_SENSIVITY	0x3B
 #define OSTC4_BUTTON_SENSIVITY		0x3A
+#define OSTC4_BUTTON_BALANCE		0x3B
 #define OSTC3_BOTTOM_GAS_CONSUMPTION	0x3C
 #define OSTC3_DECO_GAS_CONSUMPTION	0x3D
 #define OSTC3_MOD_WARNING		0x3E
@@ -288,7 +289,7 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 	unsigned char data2[2];
 	int time;
 
-	// Maybee we should read the model from the device to sanity check it here too..
+	// Maybe we should read the model from the device to sanity check it here too..
 	// For now we just check that we actually read a device before writing to one.
 	if (deviceDetails.model == "")
 		return DC_STATUS_UNSUPPORTED;
@@ -360,8 +361,28 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 	EMIT_PROGRESS();
 	return rc;
 }
+#undef EMIT_PROGRESS
 
-static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+#define EMIT_PROGRESS()	do { \
+		progress.current++; \
+		progress_cb(device_data.device, DC_EVENT_PROGRESS, &progress, userdata); \
+	} while (0)
+
+static dc_status_t ostc3_sync_time(device_data_t &data)
+{
+	dc_status_t rc = DC_STATUS_SUCCESS;
+
+	if (data.sync_time) {
+		dc_datetime_t now;
+		dc_datetime_localtime(&now, dc_datetime_now());
+
+		rc = dc_device_timesync(data.device, &now);
+	}
+
+	return rc;
+}
+
+static dc_status_t read_ostc4_settings(device_data_t &device_data, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	// This code is really similar to the OSTC3 code, but there are minor
 	// differences in what the data means, and how to communicate with the
@@ -369,7 +390,7 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails &devic
 	dc_status_t rc = DC_STATUS_SUCCESS;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 47;
+	progress.maximum = 51;
 
 	EMIT_PROGRESS();
 
@@ -381,6 +402,7 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails &devic
 	gas gas5;
 	unsigned char gasData[4] = { 0, 0, 0, 0 };
 
+	dc_device_t *device = device_data.device;
 	rc = hw_ostc3_device_config_read(device, OSTC3_GAS1, gasData, sizeof(gasData));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
@@ -573,7 +595,9 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails &devic
 	READ_SETTING(OSTC3_AGF_LOW, aGFLow);
 	READ_SETTING(OSTC4_VPM_CONSERVATISM, vpmConservatism);
 	READ_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
+	READ_SETTING(OSTC3_FLIP_SCREEN, flipScreen);
 	READ_SETTING(OSTC4_BUTTON_SENSIVITY, buttonSensitivity);
+	READ_SETTING(OSTC4_BUTTON_BALANCE, buttonBalance);
 	READ_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
 	READ_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
 	READ_SETTING(OSTC4_TRAVEL_GAS_CONSUMPTION, travelGasConsumption);
@@ -607,6 +631,13 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails &devic
 	deviceDetails.tempSensorOffset = (signed char)uData[0];
 	EMIT_PROGRESS();
 
+	rc = hw_ostc3_device_config_read(device, OSTC3_COMPASS_GAIN, uData, sizeof(uData));
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+	// OSTC4 stores the compass declination in two-complement
+	deviceDetails.compassGain = (signed char)uData[0];
+	EMIT_PROGRESS();
+
 	//read firmware settings
 	unsigned char fData[64] = { 0 };
 	rc = hw_ostc3_device_version(device, fData, sizeof(fData));
@@ -625,10 +656,13 @@ static dc_status_t read_ostc4_settings(dc_device_t *device, DeviceDetails &devic
 	deviceDetails.customText = ar.trimmed();
 	EMIT_PROGRESS();
 
+	rc = ostc3_sync_time(device_data);
+	EMIT_PROGRESS();
+
 	return rc;
 }
 
-static dc_status_t write_ostc4_settings(dc_device_t *device, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t write_ostc4_settings(device_data_t &device_data, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	// This code is really similar to the OSTC3 code, but there are minor
 	// differences in what the data means, and how to communicate with the
@@ -636,7 +670,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, const DeviceDetails
 	dc_status_t rc = DC_STATUS_SUCCESS;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 21;
+	progress.maximum = 24;
 
 	//write gas values
 	unsigned char gas1Data[4] = {
@@ -673,6 +707,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, const DeviceDetails
 		deviceDetails.gas5.type,
 		deviceDetails.gas5.depth
 	};
+	dc_device_t *device = device_data.device;
 	//gas 1
 	rc = hw_ostc3_device_config_write(device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
 	if (rc != DC_STATUS_SUCCESS)
@@ -837,6 +872,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, const DeviceDetails
 	WRITE_SETTING(OSTC3_DIVEMODE_COLOR, diveModeColor);
 	WRITE_SETTING(OSTC3_LANGUAGE, language);
 	WRITE_SETTING(OSTC3_DATE_FORMAT, dateFormat);
+	WRITE_SETTING(OSTC3_COMPASS_GAIN, compassGain);
 	WRITE_SETTING(OSTC3_SAFETY_STOP, safetyStop);
 	WRITE_SETTING(OSTC3_GF_HIGH, gfHigh);
 	WRITE_SETTING(OSTC3_GF_LOW, gfLow);
@@ -849,7 +885,9 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, const DeviceDetails
 	WRITE_SETTING(OSTC3_AGF_LOW, aGFLow);
 	WRITE_SETTING(OSTC4_VPM_CONSERVATISM, vpmConservatism);
 	WRITE_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
+	WRITE_SETTING(OSTC3_FLIP_SCREEN, flipScreen);
 	WRITE_SETTING(OSTC4_BUTTON_SENSIVITY, buttonSensitivity);
+	WRITE_SETTING(OSTC4_BUTTON_BALANCE, buttonBalance);
 	WRITE_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
 	WRITE_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
 	WRITE_SETTING(OSTC4_TRAVEL_GAS_CONSUMPTION, travelGasConsumption);
@@ -883,28 +921,19 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, const DeviceDetails
 		return rc;
 	EMIT_PROGRESS();
 
-
-	//sync date and time
-	if (deviceDetails.syncTime) {
-		dc_datetime_t now;
-		dc_datetime_localtime(&now, dc_datetime_now());
-
-		rc = dc_device_timesync(device, &now);
-	}
-
+	if (rc == DC_STATUS_SUCCESS)
+		rc = ostc3_sync_time(device_data);
 	EMIT_PROGRESS();
 
 	return rc;
 }
 
-static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t read_ostc3_settings(device_data_t &device_data, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
-	dc_event_progress_t progress;
-	progress.current = 0;
-	progress.maximum = 56;
 	unsigned char hardware[1];
 
+	dc_device_t *device = device_data.device;
 	//Read hardware type
 	rc = hw_ostc3_device_hardware (device, hardware, sizeof (hardware));
 	if (rc != DC_STATUS_SUCCESS)
@@ -919,7 +948,12 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails &devic
 	}
 
 	if (deviceDetails.model == "OSTC 4/5")
-		return read_ostc4_settings(device, deviceDetails, progress_cb, userdata);
+		return read_ostc4_settings(device_data, deviceDetails, progress_cb, userdata);
+
+	dc_event_progress_t progress {
+		.current = 0,
+		.maximum = 57,
+	};
 
 	EMIT_PROGRESS();
 
@@ -1169,10 +1203,14 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails &devic
 	deviceDetails.customText = ar.trimmed();
 	EMIT_PROGRESS();
 
+	if (rc == DC_STATUS_SUCCESS)
+		rc = ostc3_sync_time(device_data);
+	EMIT_PROGRESS();
+
 	return rc;
 }
 
-static dc_status_t write_ostc3_settings(dc_device_t *device, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t write_ostc3_settings(device_data_t &device_data, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
 	dc_event_progress_t progress;
@@ -1214,6 +1252,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, const DeviceDetails
 		deviceDetails.gas5.type,
 		deviceDetails.gas5.depth
 	};
+	dc_device_t *device = device_data.device;
 	//gas 1
 	rc = hw_ostc3_device_config_write(device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
 	if (rc != DC_STATUS_SUCCESS)
@@ -1423,30 +1462,27 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, const DeviceDetails
 		return rc;
 	EMIT_PROGRESS();
 
-	//sync date and time
-	if (deviceDetails.syncTime) {
-		dc_datetime_t now;
-		dc_datetime_localtime(&now, dc_datetime_now());
-
-		rc = dc_device_timesync(device, &now);
-	}
+	if (rc == DC_STATUS_SUCCESS)
+		rc = ostc3_sync_time(device_data);
 	EMIT_PROGRESS();
 
 	return rc;
 }
 
-static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+
+static dc_status_t read_ostc_settings(device_data_t &device_data, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 3;
+	progress.maximum = 4;
 
 	unsigned char data[256] = {};
 #ifdef DEBUG_OSTC_CF
 	// open question: how should we report settings not supported back?
 	unsigned char max_CF = 0;
 #endif
+	dc_device_t *device = device_data.device;
 	rc = hw_ostc_device_eeprom_read(device, 0, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
@@ -1753,10 +1789,25 @@ static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails &device
 		printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
 #endif
 
+	//sync date and time
+	if (device_data.sync_time) {
+		QDateTime timeToSet = QDateTime::currentDateTime();
+		dc_datetime_t time = { 0 };
+		time.year = timeToSet.date().year();
+		time.month = timeToSet.date().month();
+		time.day = timeToSet.date().day();
+		time.hour = timeToSet.time().hour();
+		time.minute = timeToSet.time().minute();
+		time.second = timeToSet.time().second();
+		time.timezone = DC_TIMEZONE_NONE;
+		rc = dc_device_timesync(device, &time);
+	}
+	EMIT_PROGRESS();
+
 	return rc;
 }
 
-static dc_status_t write_ostc_settings(dc_device_t *device, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t write_ostc_settings(device_data_t &device_data, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
 	dc_event_progress_t progress;
@@ -1767,6 +1818,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, const DeviceDetails 
 
 	// Because we write whole memory blocks, we read all the current
 	// values out and then change then ones we should change.
+	dc_device_t *device = device_data.device;
 	rc = hw_ostc_device_eeprom_read(device, 0, data, sizeof(data));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
@@ -2069,7 +2121,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, const DeviceDetails 
 	EMIT_PROGRESS();
 
 	//sync date and time
-	if (deviceDetails.syncTime) {
+	if (device_data.sync_time) {
 		QDateTime timeToSet = QDateTime::currentDateTime();
 		dc_datetime_t time = { 0 };
 		time.year = timeToSet.date().year();
@@ -2132,7 +2184,7 @@ void ReadSettingsThread::run()
 		}
 		break;
 	case DC_FAMILY_HW_OSTC3:
-		rc = read_ostc3_settings(m_data->device, deviceDetails, DeviceThread::event_cb, this);
+		rc = read_ostc3_settings(*m_data, deviceDetails, DeviceThread::event_cb, this);
 		if (rc == DC_STATUS_SUCCESS)
 			emit devicedetails(std::move(deviceDetails));
 		else
@@ -2143,7 +2195,7 @@ void ReadSettingsThread::run()
 	case DC_FAMILY_NULL:
 #endif
 	case DC_FAMILY_HW_OSTC:
-		rc = read_ostc_settings(m_data->device, deviceDetails, DeviceThread::event_cb, this);
+		rc = read_ostc_settings(*m_data, deviceDetails, DeviceThread::event_cb, this);
 		if (rc == DC_STATUS_SUCCESS)
 			emit devicedetails(std::move(deviceDetails));
 		else
@@ -2179,11 +2231,11 @@ void WriteSettingsThread::run()
 		}
 		break;
 	case DC_FAMILY_HW_OSTC3:
-		// Is this the best way?
+		// We trust m_deviceDetails because they were read from the device in read_ostc3_settings()
 		if (m_deviceDetails.model == "OSTC 4/5")
-			rc = write_ostc4_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+			rc = write_ostc4_settings(*m_data, m_deviceDetails, DeviceThread::event_cb, this);
 		else
-			rc = write_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+			rc = write_ostc3_settings(*m_data, m_deviceDetails, DeviceThread::event_cb, this);
 		if (rc != DC_STATUS_SUCCESS)
 			emit error(tr("Failed!"));
 		break;
@@ -2191,7 +2243,7 @@ void WriteSettingsThread::run()
 	case DC_FAMILY_NULL:
 #endif
 	case DC_FAMILY_HW_OSTC:
-		rc = write_ostc_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
+		rc = write_ostc_settings(*m_data, m_deviceDetails, DeviceThread::event_cb, this);
 		if (rc != DC_STATUS_SUCCESS)
 			emit error(tr("Failed!"));
 		break;

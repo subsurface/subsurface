@@ -117,12 +117,9 @@ bool ConfigureDiveComputer::saveXMLBackup(const QString &fileName, const DeviceD
 
 	//Other Settings
 	writer.writeTextElement("DiveMode", QString::number(details.diveMode));
-	writer.writeTextElement("Saturation", QString::number(details.saturation));
-	writer.writeTextElement("Desaturation", QString::number(details.desaturation));
 	writer.writeTextElement("LastDeco", QString::number(details.lastDeco));
 	writer.writeTextElement("Brightness", QString::number(details.brightness));
 	writer.writeTextElement("Units", QString::number(details.units));
-	writer.writeTextElement("SamplingRate", QString::number(details.samplingRate));
 	writer.writeTextElement("Salinity", QString::number(details.salinity));
 	writer.writeTextElement("DiveModeColor", QString::number(details.diveModeColor));
 	writer.writeTextElement("Language", QString::number(details.language));
@@ -137,22 +134,35 @@ bool ConfigureDiveComputer::saveXMLBackup(const QString &fileName, const DeviceD
 	writer.writeTextElement("FutureTTS", QString::number(details.futureTTS));
 	writer.writeTextElement("CcrMode", QString::number(details.ccrMode));
 	writer.writeTextElement("DecoType", QString::number(details.decoType));
-	writer.writeTextElement("AGFSelectable", QString::number(details.aGFSelectable));
 	writer.writeTextElement("AGFHigh", QString::number(details.aGFHigh));
 	writer.writeTextElement("AGFLow", QString::number(details.aGFLow));
-	writer.writeTextElement("CalibrationGas", QString::number(details.calibrationGas));
 	writer.writeTextElement("FlipScreen", QString::number(details.flipScreen));
 	writer.writeTextElement("SetPointFallback", QString::number(details.setPointFallback));
-	writer.writeTextElement("LeftButtonSensitivity", QString::number(details.leftButtonSensitivity));
-	writer.writeTextElement("RightButtonSensitivity", QString::number(details.rightButtonSensitivity));
-	writer.writeTextElement("BottomGasConsumption", QString::number(details.bottomGasConsumption));
+	writer.writeTextElement("AlwaysShowppO2", QString::number(details.alwaysShowppO2));
 	writer.writeTextElement("DecoGasConsumption", QString::number(details.decoGasConsumption));
+
+	writer.writeComment("Heinrichs Weikamp OSTC4 only:");
+	writer.writeTextElement("TravelGasConsumption", QString::number(details.travelGasConsumption));
+	writer.writeTextElement("VPMConservatism", QString::number(details.vpmConservatism));
+	writer.writeTextElement("ButtonSensitivity", QString::number(details.buttonSensitivity));
+	writer.writeTextElement("ButtonBalance", QString::number(details.buttonBalance));
+
+	writer.writeComment("Not used on Heinrichs Weikamp OSTC4:");
+	writer.writeTextElement("BottomGasConsumption", QString::number(details.bottomGasConsumption));
+	writer.writeTextElement("Saturation", QString::number(details.saturation));
+	writer.writeTextElement("Desaturation", QString::number(details.desaturation));
+	writer.writeTextElement("SamplingRate", QString::number(details.samplingRate));
+	writer.writeTextElement("AGFSelectable", QString::number(details.aGFSelectable));
+	writer.writeTextElement("CalibrationGas", QString::number(details.calibrationGas));
+	writer.writeTextElement("RightButtonSensitivity", QString::number(details.rightButtonSensitivity));
+	writer.writeTextElement("LeftButtonSensitivity", QString::number(details.leftButtonSensitivity));
 	writer.writeTextElement("ModWarning", QString::number(details.modWarning));
 	writer.writeTextElement("DynamicAscendRate", QString::number(details.dynamicAscendRate));
 	writer.writeTextElement("GraphicalSpeedIndicator", QString::number(details.graphicalSpeedIndicator));
-	writer.writeTextElement("AlwaysShowppO2", QString::number(details.alwaysShowppO2));
+	writer.writeTextElement("SafetyStopEndDepth", QString::number(details.safetyStopResetDepth));
+	writer.writeTextElement("SafetyStopEndDepth", QString::number(details.safetyStopResetDepth));
 
-	// Suunto vyper settings.
+	writer.writeComment("Suunto vyper specific settings:");
 	writer.writeTextElement("Altitude", QString::number(details.altitude));
 	writer.writeTextElement("PersonalSafety", QString::number(details.personalSafety));
 	writer.writeTextElement("TimeFormat", QString::number(details.timeFormat));
@@ -414,6 +424,9 @@ bool ConfigureDiveComputer::restoreXMLBackup(const QString &fileName, DeviceDeta
 			if (settingName == "DecoType")
 				details.decoType = keyString.toInt();
 
+			if (settingName == "VPMConservatism")
+				details.vpmConservatism = keyString.toInt();
+
 			if (settingName == "AGFSelectable")
 				details.aGFSelectable = keyString.toInt();
 
@@ -438,17 +451,32 @@ bool ConfigureDiveComputer::restoreXMLBackup(const QString &fileName, DeviceDeta
 			if (settingName == "RightButtonSensitivity")
 				details.rightButtonSensitivity = keyString.toInt();
 
+			if (settingName == "ButtonSensitivity")
+				details.buttonSensitivity = keyString.toInt();
+
+			if (settingName == "ButtonBalance")
+				details.buttonBalance = keyString.toInt();
+
 			if (settingName == "BottomGasConsumption")
 				details.bottomGasConsumption = keyString.toInt();
 
 			if (settingName == "DecoGasConsumption")
 				details.decoGasConsumption = keyString.toInt();
 
+			if (settingName == "TravelGasConsumption")
+				details.travelGasConsumption = keyString.toInt();
+
 			if (settingName == "ModWarning")
 				details.modWarning = keyString.toInt();
 
 			if (settingName == "DynamicAscendRate")
 				details.dynamicAscendRate = keyString.toInt();
+
+			if (settingName == "SafetyStopEndDepth")
+				details.safetyStopEndDepth = keyString.toInt();
+
+			if (settingName == "SafetyStopResetDepth")
+				details.safetyStopResetDepth = keyString.toInt();
 
 			if (settingName == "GraphicalSpeedIndicator")
 				details.graphicalSpeedIndicator = keyString.toInt();

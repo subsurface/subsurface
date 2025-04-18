@@ -12,7 +12,6 @@ setpoint::setpoint(unsigned char sp, unsigned char depth) :
 }
 
 DeviceDetails::DeviceDetails() :
-	syncTime(false),
 	setPointFallback(0),
 	ccrMode(0),
 	calibrationGas(0),
@@ -54,6 +53,7 @@ DeviceDetails::DeviceDetails() :
 	leftButtonSensitivity(0),
 	rightButtonSensitivity(0),
 	buttonSensitivity(0),
+	buttonBalance(0),
 	bottomGasConsumption(0),
 	decoGasConsumption(0),
 	travelGasConsumption(0),
