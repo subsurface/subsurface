@@ -165,6 +165,7 @@ static const struct uuid_match serial_service_uuids[] = {
 	{ "0000fcef-0000-1000-8000-00805f9b34fb", "Divesoft" },
         { "6e400001-b5a3-f393-e0a9-e50e24dc10b8", "Cressi"}, // Must have higher priority than Nordic UART
         { "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
+	{ "00000001-8c3b-4f2c-a59e-8c08224f3253", "Halcyon Symbios" },
 	{ NULL, }
 };
 
@@ -290,10 +291,21 @@ static const struct uuid_match skip_characteristics[] = {
 	{ NULL, }
 };
 
+static const struct uuid_match skip_characteristics_read[] = {
+	{ "00000101-8c3b-4f2c-a59e-8c08224f3253", "Halcyon Symbios Rx" },
+	{ NULL, }
+};
+
+static const struct uuid_match skip_characteristics_write[] = {
+	{ "00000201-8c3b-4f2c-a59e-8c08224f3253", "Halcyon Symbios Tx" },
+	{ NULL, }
+};
+
 // a write characteristic needs Write or WriteNoResponse
 static bool is_write_characteristic(const QLowEnergyCharacteristic &c)
 {
-	if (match_uuid_list(c.uuid(), skip_characteristics))
+	if (match_uuid_list(c.uuid(), skip_characteristics) ||
+		match_uuid_list(c.uuid(), skip_characteristics_write))
 		return false;
 	return c.properties() &
 		 (QLowEnergyCharacteristic::Write |
@@ -304,7 +316,8 @@ static bool is_write_characteristic(const QLowEnergyCharacteristic &c)
 // a descriptor to enable it
 static bool is_read_characteristic(const QLowEnergyCharacteristic &c)
 {
-	if (match_uuid_list(c.uuid(), skip_characteristics))
+	if (match_uuid_list(c.uuid(), skip_characteristics) ||
+		match_uuid_list(c.uuid(), skip_characteristics_read))
 		return false;
 	return !c.descriptors().empty() &&
 		(c.properties() &
