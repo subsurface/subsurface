@@ -30,7 +30,6 @@ public:
 	QString firmwareVersion;
 	QString customText;
 	QString model;
-	bool syncTime;
 	gas gas1;
 	gas gas2;
 	gas gas3;
@@ -89,6 +88,7 @@ public:
 	int leftButtonSensitivity;
 	int rightButtonSensitivity;
 	int buttonSensitivity;
+	int buttonBalance;
 	int bottomGasConsumption;
 	int decoGasConsumption;
 	int travelGasConsumption;
