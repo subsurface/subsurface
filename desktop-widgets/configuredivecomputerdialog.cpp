@@ -343,9 +343,9 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 		int ret = response.exec();
 		if (ret == QMessageBox::Accepted)
 			upgradeFirmware(filename);
-		else
-			emit checkCompleted();
 	}
+
+	emit checkCompleted();
 }
 
 void OstcFirmwareCheck::upgradeFirmware(const QString &filename)
