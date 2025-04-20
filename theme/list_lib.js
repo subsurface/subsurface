@@ -748,6 +748,7 @@ function toggleTrips()
 	var trip_button = document.getElementById('trip_button');
 	var controller = document.getElementById('controller');
 	var no_dives_selector = document.getElementById('no_dives_selector');
+	var dives_controller = document.getElementById('controller');
 	if (tripsShown) {
 		tripsShown = false;
 		trip_button.style.backgroundColor = BACKGROUND_COLOR;
