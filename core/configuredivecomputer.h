@@ -47,7 +47,7 @@ signals:
 	void progress(int percent);
 	void message(QString msg);
 	void error(QString err);
-	void stateChanged(states newState);
+	void stateChanged(states oldState, states newState);
 	void deviceDetailsChanged(DeviceDetails newDetails);
 
 private:
@@ -60,10 +60,7 @@ private:
 private
 slots:
 	void progressEvent(int percent);
-	void readThreadFinished();
-	void writeThreadFinished();
-	void resetThreadFinished();
-	void firmwareThreadFinished();
+	void threadFinished();
 	void setError(QString err);
 };
 

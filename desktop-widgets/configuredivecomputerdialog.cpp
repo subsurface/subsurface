@@ -131,6 +131,7 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(const QString &filename
 	connect(config, &ConfigureDiveComputer::error, this, &ConfigureDiveComputerDialog::configError);
 	connect(config, &ConfigureDiveComputer::message, this, &ConfigureDiveComputerDialog::configMessage);
 	connect(config, &ConfigureDiveComputer::deviceDetailsChanged, this, &ConfigureDiveComputerDialog::deviceDetailsReceived);
+	connect(config, &ConfigureDiveComputer::stateChanged, this, &ConfigureDiveComputerDialog::processStateChanged);
 	connect(ui.retrieveDetails, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::readSettings);
 	connect(ui.resetButton, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::resetSettings);
 	connect(ui.resetButton_4, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::resetSettings);
@@ -984,6 +985,15 @@ void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails newDeviceD
 {
 	deviceDetails = std::move(newDeviceDetails);
 	reloadValues();
+}
+
+void ConfigureDiveComputerDialog::processStateChanged(ConfigureDiveComputer::states oldState, ConfigureDiveComputer::states newState)
+{
+	if (oldState == ConfigureDiveComputer::states::FWUPDATE && newState == ConfigureDiveComputer::states::DONE) {
+		// Close the bluetooth connection to trigger the start of the update on the device
+		// instead of making it wait for a timeout
+		dc_close();
+	}
 }
 
 void ConfigureDiveComputerDialog::reloadValues()

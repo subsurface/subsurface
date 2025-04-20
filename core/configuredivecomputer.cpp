@@ -22,7 +22,7 @@ ConfigureDiveComputer::ConfigureDiveComputer() : readThread(0),
 
 void ConfigureDiveComputer::connectThreadSignals(DeviceThread *thread)
 {
-	connect(thread, &DeviceThread::finished, this, &ConfigureDiveComputer::readThreadFinished, Qt::QueuedConnection);
+	connect(thread, &DeviceThread::finished, this, &ConfigureDiveComputer::threadFinished, Qt::QueuedConnection);
 	connect(thread, &DeviceThread::error, this, &ConfigureDiveComputer::setError);
 	connect(thread, &DeviceThread::progress, this, &ConfigureDiveComputer::progressEvent, Qt::QueuedConnection);
 }
@@ -521,8 +521,10 @@ void ConfigureDiveComputer::progressEvent(int percent)
 
 void ConfigureDiveComputer::setState(ConfigureDiveComputer::states newState)
 {
+	ConfigureDiveComputer::states oldState = currentState;
 	currentState = newState;
-	emit stateChanged(currentState);
+
+	emit stateChanged(oldState, currentState);
 }
 
 void ConfigureDiveComputer::setError(QString err)
@@ -531,40 +533,12 @@ void ConfigureDiveComputer::setError(QString err)
 	emit error(std::move(err));
 }
 
-void ConfigureDiveComputer::readThreadFinished()
+void ConfigureDiveComputer::threadFinished()
 {
 	setState(DONE);
-	if (lastError.isEmpty()) {
-		//No error
-		emit message(tr("Dive computer details read successfully"));
-	}
-}
 
-void ConfigureDiveComputer::writeThreadFinished()
-{
-	setState(DONE);
-	if (lastError.isEmpty()) {
-		//No error
-		emit message(tr("Setting successfully written to device"));
-	}
-}
-
-void ConfigureDiveComputer::firmwareThreadFinished()
-{
-	setState(DONE);
-	if (lastError.isEmpty()) {
-		//No error
-		emit message(tr("Device firmware successfully updated"));
-	}
-}
-
-void ConfigureDiveComputer::resetThreadFinished()
-{
-	setState(DONE);
-	if (lastError.isEmpty()) {
-		//No error
-		emit message(tr("Device settings successfully reset"));
-	}
+	if (lastError.isEmpty())
+		emit message(tr("The operation completed successfully"));
 }
 
 QString ConfigureDiveComputer::dc_open(device_data_t *data)
