@@ -72,6 +72,7 @@ slots:
 	void on_close_clicked();
 	void on_saveSettingsPushButton_clicked();
 	void deviceDetailsReceived(DeviceDetails newDeviceDetails);
+	void processStateChanged(ConfigureDiveComputer::states oldState, ConfigureDiveComputer::states newState);
 	void reloadValues();
 	void on_backupButton_clicked();
 
