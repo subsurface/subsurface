@@ -1421,12 +1421,15 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	return rc;
 }
 
-static dc_status_t sync_divecomputer_time(dc_device_t *device)
+dc_status_t divecomputer_sync_time(const device_data_t &data)
 {
+	if (!data.sync_time)
+		return DC_STATUS_SUCCESS;
+
 	dc_datetime_t now;
 	dc_datetime_localtime(&now, dc_datetime_now());
 
-	return dc_device_timesync(device, &now);
+	return dc_device_timesync(data.device, &now);
 }
 
 dc_loglevel_t get_libdivecomputer_loglevel()
@@ -1500,7 +1503,7 @@ std::string do_libdivecomputer_import(device_data_t *data)
 
 			if (err.empty() && data->sync_time) {
 				dev_info("Syncing dive computer time ...");
-				rc = sync_divecomputer_time(data->device);
+				rc = divecomputer_sync_time(*data);
 
 				switch (rc) {
 				case DC_STATUS_SUCCESS:

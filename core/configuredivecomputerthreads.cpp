@@ -368,20 +368,6 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 		progress_cb(device_data.device, DC_EVENT_PROGRESS, &progress, userdata); \
 	} while (0)
 
-static dc_status_t ostc3_sync_time(device_data_t &data)
-{
-	dc_status_t rc = DC_STATUS_SUCCESS;
-
-	if (data.sync_time) {
-		dc_datetime_t now;
-		dc_datetime_localtime(&now, dc_datetime_now());
-
-		rc = dc_device_timesync(data.device, &now);
-	}
-
-	return rc;
-}
-
 static dc_status_t read_ostc4_settings(device_data_t &device_data, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	// This code is really similar to the OSTC3 code, but there are minor
@@ -656,7 +642,7 @@ static dc_status_t read_ostc4_settings(device_data_t &device_data, DeviceDetails
 	deviceDetails.customText = ar.trimmed();
 	EMIT_PROGRESS();
 
-	rc = ostc3_sync_time(device_data);
+	rc = divecomputer_sync_time(device_data);
 	EMIT_PROGRESS();
 
 	return rc;
@@ -921,8 +907,7 @@ static dc_status_t write_ostc4_settings(device_data_t &device_data, const Device
 		return rc;
 	EMIT_PROGRESS();
 
-	if (rc == DC_STATUS_SUCCESS)
-		rc = ostc3_sync_time(device_data);
+	rc = divecomputer_sync_time(device_data);
 	EMIT_PROGRESS();
 
 	return rc;
@@ -1203,8 +1188,7 @@ static dc_status_t read_ostc3_settings(device_data_t &device_data, DeviceDetails
 	deviceDetails.customText = ar.trimmed();
 	EMIT_PROGRESS();
 
-	if (rc == DC_STATUS_SUCCESS)
-		rc = ostc3_sync_time(device_data);
+	rc = divecomputer_sync_time(device_data);
 	EMIT_PROGRESS();
 
 	return rc;
@@ -1462,8 +1446,7 @@ static dc_status_t write_ostc3_settings(device_data_t &device_data, const Device
 		return rc;
 	EMIT_PROGRESS();
 
-	if (rc == DC_STATUS_SUCCESS)
-		rc = ostc3_sync_time(device_data);
+	rc = divecomputer_sync_time(device_data);
 	EMIT_PROGRESS();
 
 	return rc;
@@ -1789,19 +1772,7 @@ static dc_status_t read_ostc_settings(device_data_t &device_data, DeviceDetails 
 		printf("CF %d: %d\n", cf, read_ostc_cf(data, cf));
 #endif
 
-	//sync date and time
-	if (device_data.sync_time) {
-		QDateTime timeToSet = QDateTime::currentDateTime();
-		dc_datetime_t time = { 0 };
-		time.year = timeToSet.date().year();
-		time.month = timeToSet.date().month();
-		time.day = timeToSet.date().day();
-		time.hour = timeToSet.time().hour();
-		time.minute = timeToSet.time().minute();
-		time.second = timeToSet.time().second();
-		time.timezone = DC_TIMEZONE_NONE;
-		rc = dc_device_timesync(device, &time);
-	}
+	rc = divecomputer_sync_time(device_data);
 	EMIT_PROGRESS();
 
 	return rc;
@@ -2120,19 +2091,7 @@ static dc_status_t write_ostc_settings(device_data_t &device_data, const DeviceD
 		return rc;
 	EMIT_PROGRESS();
 
-	//sync date and time
-	if (device_data.sync_time) {
-		QDateTime timeToSet = QDateTime::currentDateTime();
-		dc_datetime_t time = { 0 };
-		time.year = timeToSet.date().year();
-		time.month = timeToSet.date().month();
-		time.day = timeToSet.date().day();
-		time.hour = timeToSet.time().hour();
-		time.minute = timeToSet.time().minute();
-		time.second = timeToSet.time().second();
-		time.timezone = DC_TIMEZONE_NONE;
-		rc = dc_device_timesync(device, &time);
-	}
+	rc = divecomputer_sync_time(device_data);
 	EMIT_PROGRESS();
 	return rc;
 }

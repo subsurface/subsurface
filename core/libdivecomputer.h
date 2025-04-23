@@ -71,6 +71,7 @@ dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *cont
 
 dc_loglevel_t get_libdivecomputer_loglevel();
 dc_status_t divecomputer_device_open(device_data_t *data);
+dc_status_t divecomputer_sync_time(const device_data_t &data);
 
 unsigned int get_supported_transports(device_data_t *data);
 
