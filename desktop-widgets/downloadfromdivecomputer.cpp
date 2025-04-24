@@ -368,7 +368,7 @@ void DownloadFromDCWidget::on_vendor_currentTextChanged(const QString &vendor)
 
 void DownloadFromDCWidget::on_product_currentTextChanged(const QString &)
 {
-	updateDeviceEnabled();
+	updateTransportSelection();
 }
 
 void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
@@ -592,20 +592,37 @@ void DownloadFromDCWidget::on_ok_clicked()
 	}
 }
 
-void DownloadFromDCWidget::updateDeviceEnabled()
+void DownloadFromDCWidget::updateTransportSelection()
 {
-	// Set up the DC descriptor
-	dc_descriptor_t *descriptor = NULL;
-	descriptor = descriptorLookup.value(ui.vendor->currentText().toLower() + ui.product->currentText().toLower());
+	unsigned int transports = dc_descriptor_get_transports(descriptorLookup.value(ui.vendor->currentText().toLower() + ui.product->currentText().toLower()));
 
 	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
-	if (dc_descriptor_get_transports(descriptor) & (DC_TRANSPORT_SERIAL | DC_TRANSPORT_USBSTORAGE)) {
+	if (transports & (DC_TRANSPORT_SERIAL | DC_TRANSPORT_USBSTORAGE)) {
 		// if the dc_transport_t is DC_TRANSPORT_SERIAL, then enable the device node box.
 		ui.device->setEnabled(true);
 	} else {
 		// otherwise disable the device node box
 		ui.device->setEnabled(false);
 	}
+
+#if defined(BT_SUPPORT)
+	if (transports & (DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE)) {
+		if (!(transports & ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE))) {
+			// only bluetooth is supported by the dive computer, pre-select it
+			ui.bluetoothMode->setChecked(true);
+			ui.bluetoothMode->setEnabled(false);
+			ui.chooseBluetoothDevice->setEnabled(true);
+		} else {
+			ui.bluetoothMode->setEnabled(true);
+			ui.chooseBluetoothDevice->setEnabled(true);
+		}
+	} else {
+
+		ui.bluetoothMode->setChecked(false);
+		ui.bluetoothMode->setEnabled(false);
+		ui.chooseBluetoothDevice->setEnabled(false);
+	}
+#endif
 }
 
 void DownloadFromDCWidget::markChildrenAsDisabled()
@@ -631,7 +648,7 @@ void DownloadFromDCWidget::markChildrenAsDisabled()
 
 void DownloadFromDCWidget::markChildrenAsEnabled()
 {
-	updateDeviceEnabled();
+	updateTransportSelection();
 	ui.vendor->setEnabled(true);
 	ui.product->setEnabled(true);
 	ui.forceDownload->setEnabled(true);
@@ -646,10 +663,6 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 	ui.chooseDumpFile->setEnabled(true);
 	ui.selectAllButton->setEnabled(true);
 	ui.unselectAllButton->setEnabled(true);
-#if defined(BT_SUPPORT)
-	ui.bluetoothMode->setEnabled(true);
-	ui.chooseBluetoothDevice->setEnabled(true);
-#endif
 	ui.syncDiveComputerTime->setEnabled(true);
 }
 
@@ -671,8 +684,7 @@ void DownloadFromDCWidget::bluetoothSelectionDialogIsFinished(int result)
 		/* Make the selected Bluetooth device default */
 		ui.device->setEditText(btDeviceSelectionDialog->getSelectedDeviceText());
 	} else if (result == QDialog::Rejected) {
-		/* Disable Bluetooth download mode */
-		ui.bluetoothMode->setChecked(false);
+		updateTransportSelection();
 	}
 }
 
