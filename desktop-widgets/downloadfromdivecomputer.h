@@ -71,7 +71,7 @@ slots:
 private:
 	void markChildrenAsDisabled();
 	void markChildrenAsEnabled();
-	void updateTransportSelection();
+	void updateTransportSelection(bool changeSelection);
 	void showRememberedDCs();
 	void checkShowError(states state);
 

@@ -368,7 +368,7 @@ void DownloadFromDCWidget::on_vendor_currentTextChanged(const QString &vendor)
 
 void DownloadFromDCWidget::on_product_currentTextChanged(const QString &)
 {
-	updateTransportSelection();
+	updateTransportSelection(true);
 }
 
 void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
@@ -592,7 +592,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 	}
 }
 
-void DownloadFromDCWidget::updateTransportSelection()
+void DownloadFromDCWidget::updateTransportSelection(bool changeSelection)
 {
 	unsigned int transports = dc_descriptor_get_transports(descriptorLookup.value(ui.vendor->currentText().toLower() + ui.product->currentText().toLower()));
 
@@ -607,17 +607,20 @@ void DownloadFromDCWidget::updateTransportSelection()
 
 #if defined(BT_SUPPORT)
 	if (transports & (DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE)) {
-		if (!(transports & ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE))) {
-			// only bluetooth is supported by the dive computer, pre-select it
+		unsigned int nonBluetoothTransports = transports & ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
+		if (!nonBluetoothTransports) {
 			ui.bluetoothMode->setChecked(true);
 			ui.bluetoothMode->setEnabled(false);
 			ui.chooseBluetoothDevice->setEnabled(true);
 		} else {
+			if (changeSelection && nonBluetoothTransports == DC_TRANSPORT_SERIAL)
+				// only bluetooth and (virtual bluetooth) serial port are supported - prefer bluetooth
+				ui.bluetoothMode->setChecked(true);
+
 			ui.bluetoothMode->setEnabled(true);
 			ui.chooseBluetoothDevice->setEnabled(true);
 		}
 	} else {
-
 		ui.bluetoothMode->setChecked(false);
 		ui.bluetoothMode->setEnabled(false);
 		ui.chooseBluetoothDevice->setEnabled(false);
@@ -648,7 +651,7 @@ void DownloadFromDCWidget::markChildrenAsDisabled()
 
 void DownloadFromDCWidget::markChildrenAsEnabled()
 {
-	updateTransportSelection();
+	updateTransportSelection(false);
 	ui.vendor->setEnabled(true);
 	ui.product->setEnabled(true);
 	ui.forceDownload->setEnabled(true);
@@ -684,7 +687,7 @@ void DownloadFromDCWidget::bluetoothSelectionDialogIsFinished(int result)
 		/* Make the selected Bluetooth device default */
 		ui.device->setEditText(btDeviceSelectionDialog->getSelectedDeviceText());
 	} else if (result == QDialog::Rejected) {
-		updateTransportSelection();
+		updateTransportSelection(false);
 	}
 }
 
