@@ -5,6 +5,11 @@
 <script>
 //////////////////////////////////
 //advance settings window//
+
+// Because fetching the JSON file is async, we need a way to wait that it's
+// fetched and parsed. This promise will be assigned in load_script below, and
+// awaited in the onload function.
+let waitForTripsLoadPromise;
 load_scripts();
 
 function load_script_sync(name)
@@ -16,8 +21,15 @@ function load_script_sync(name)
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 }
 
+async function loadTrips() {
+	const fetchResponse = await fetch(location.pathname + "_files/trips.json");
+	const trips = await fetchResponse.json();
+	window.trips = trips;
+}
+
 function load_scripts()
 {
+	waitForTripsLoadPromise = loadTrips();
 	var fileref=document.createElement("link");
 	fileref.setAttribute("rel", "stylesheet");
 	fileref.setAttribute("type", "text/css");
@@ -94,7 +106,9 @@ function loadSettings(){
 
 var searchingModules = new Array();
 
-window.onload=function(){
+window.onload = async function(){
+	// Wait that the trips JSON file is loaded before going on.
+	await waitForTripsLoadPromise;
 
 	//initialize settings
 	loadSettings();
