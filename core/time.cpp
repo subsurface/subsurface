@@ -170,6 +170,21 @@ int utc_weekday(timestamp_t timestamp)
 }
 
 /*
+ * Extract month of the year from 64-bit timestamp.
+ * Returns 0-11 where 0 is Jan and 11 is Dec.
+ *
+ * Same comment as for utc_year(): Modern compilers are good
+ * at throwing out unused calculations, so this is more efficient
+ * than it looks.
+ */
+int utc_month(timestamp_t timestamp)
+{
+	struct tm tm;
+	utc_mkdate(timestamp, &tm);
+	return tm.tm_mon;
+}
+
+/*
  * Try to parse datetime of the form "YYYY-MM-DD hh:mm:ss" or as
  * an 64-bit decimal and return 64-bit timestamp. On failure or
  * if passed an empty string, return 0.
