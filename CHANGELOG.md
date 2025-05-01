@@ -1,3 +1,4 @@
+statistics: add month-of-year binning
 core: add support for Cressi Bluetooth interfaces #4460 #4469
 desktop: add support to import .asd and .script files from Scubapro's LogTrak and SmartTrak
 desktop: update "Save dive data as subtitles" feature to make it more configurable.

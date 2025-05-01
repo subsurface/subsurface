@@ -1899,6 +1899,29 @@ struct DayOfWeekVariable : public StatsVariableTemplate<StatsVariable::Type::Dis
 	}
 };
 
+// ============ Month of the year ============
+struct MonthOfYearBinner : public SimpleBinner<MonthOfYearBinner, IntBin> {
+	QString format(const StatsBin &bin) const override {
+		return QString(monthname(derived_bin(bin).value));
+	}
+	int to_bin_value(const dive *d) const {
+		return utc_month(d->when);
+	}
+};
+
+static MonthOfYearBinner month_of_year_binner;
+struct MonthOfYearVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Month of year");
+	}
+	QString diveCategories(const dive *d) const override {
+		return QString(monthname(utc_month(d->when)));
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &month_of_year_binner };
+	}
+};
+
 // ============ Rating ============
 struct RatingBinner : public SimpleBinner<RatingBinner, IntBin> {
 	QString format(const StatsBin &bin) const override {
@@ -1975,6 +1998,7 @@ static CylinderTypeVariable cylinder_type_variable;
 static LocationVariable location_variable;
 static TripVariable trip_variable;
 static DayOfWeekVariable day_of_week_variable;
+static MonthOfYearVariable month_of_year_variable;
 static RatingVariable rating_variable;
 static VisibilityVariable visibility_variable;
 
@@ -1985,5 +2009,5 @@ const std::vector<const StatsVariable *> stats_variables = {
 	&dive_mode_variable, &people_variable, &buddy_variable, &dive_guide_variable, &tag_variable,
 	&gas_type_variable, &suit_variable,
 	&weightsystem_variable, &cylinder_type_variable, &location_variable, &trip_variable, &day_of_week_variable,
-	&rating_variable, &visibility_variable
+	&month_of_year_variable, &rating_variable, &visibility_variable
 };

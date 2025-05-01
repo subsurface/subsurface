@@ -10,6 +10,7 @@ extern timestamp_t utc_mktime(const struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);
 extern int utc_year(timestamp_t timestamp);
 extern int utc_weekday(timestamp_t timestamp);
+extern int utc_month(timestamp_t timestamp);
 extern int gettimezoneoffset();
 
 /* parse and format date times of the form YYYY-MM-DD hh:mm:ss */
