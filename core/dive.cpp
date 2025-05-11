@@ -2135,7 +2135,7 @@ bool dive::likely_same(const struct dive &b) const
 	/* don't merge manually added dives with anything */
 	if (is_dc_manually_added_dive(&dcs[0]) ||
 	    is_dc_manually_added_dive(&b.dcs[0]))
-		return 0;
+		return false;
 
 	/*
 	 * Do some basic sanity testing of the values we
@@ -2145,10 +2145,10 @@ bool dive::likely_same(const struct dive &b) const
 	    (meandepth.mm && b.meandepth.mm && !similar(meandepth.mm, b.meandepth.mm, 1000)) ||
 	    !duration.seconds || !b.duration.seconds ||
 	    !similar(duration.seconds, b.duration.seconds, 5 * 60))
-		return 0;
+		return false;
 
-	/* See if we can get an exact match on the dive computer */
-	if (match_dc_dive(*this, b))
+	/* See if we can get an exact match on one dive computer */
+	if (match_dc_dive(*this, b) > 0)
 		return true;
 
 	/*
