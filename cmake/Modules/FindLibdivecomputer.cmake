@@ -19,7 +19,7 @@ NAMES
     libdivecomputer/descriptor.h
 HINTS
     ${CMAKE_CURRENT_SOURCE_DIR}/../install-root/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libdivecomputer/include/
+    ${CMAKE_CURRENT_SOURCE_DIR}/libdivecomputer/include/
 PATHS
     /opt/out/include
 )
@@ -27,10 +27,9 @@ PATHS
 FIND_LIBRARY( LIBDIVECOMPUTER_LIBRARIES
 NAMES
     libdivecomputer.a
-    divecomputer
 HINTS
     ${CMAKE_CURRENT_SOURCE_DIR}/../install-root/lib
-    ${CMAKE_CURRENT_SOURCE_DIR}/../libdivecomputer/src/.libs/
+    ${CMAKE_CURRENT_SOURCE_DIR}/libdivecomputer/src/.libs/
 PATHS
     /opt/out/lib
 )
