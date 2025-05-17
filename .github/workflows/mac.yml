@@ -28,7 +28,8 @@ jobs:
         submodules: recursive
 
     - name: setup Homebrew
-      run: brew install hidapi libxslt libjpg libmtp libraw create-dmg confuse automake
+      run: |
+        brew install hidapi libxslt libjpg libmtp libraw create-dmg confuse automake gettext
 
     - name: checkout Qt resources
       uses: actions/checkout@v4
