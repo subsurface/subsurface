@@ -27,13 +27,9 @@ jobs:
         fetch-depth: 0
         submodules: recursive
 
-    - name: install MacPorts
-      uses: melusina-org/setup-macports@v1
-
-    - name: install additional packages
+    - name: install additional packages with Homebrew
       run: |
-        brew install hidapi libxslt libjpg libmtp libraw create-dmg confuse automake
-        port install glib2-devel gettext
+        brew install hidapi libxslt libjpg libraw create-dmg confuse automake
 
     - name: checkout Qt resources
       uses: actions/checkout@v4
