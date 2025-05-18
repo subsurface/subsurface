@@ -507,15 +507,6 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make install
 	popd
 
-	./${SRC_DIR}/scripts/get-dep-lib.sh single . libmtp
-	pushd libmtp
-	autoupdate
-	echo 'N' | NOCONFIGURE="1" bash ./autogen.sh
-	CFLAGS="$MAC_OPTS" ./configure --prefix="$INSTALL_ROOT"
-	make -j4
-	make install
-	popd
-
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . libftdi1
 	pushd libftdi1
 	mkdir -p build
@@ -553,7 +544,9 @@ if [ ! -f "$SRC"/${SRC_DIR}/libdivecomputer/configure ] ; then
 	autoreconf --install "$SRC"/${SRC_DIR}/libdivecomputer
 	autoreconf --install "$SRC"/${SRC_DIR}/libdivecomputer
 fi
+
 CFLAGS="$MAC_OPTS -I$INSTALL_ROOT/include $LIBDC_CFLAGS" "$SRC"/${SRC_DIR}/libdivecomputer/configure --prefix="$INSTALL_ROOT" --disable-examples
+
 if [ "$PLATFORM" = Darwin ] ; then
 	# remove some copmpiler options that aren't supported on Mac
 	# otherwise the log gets very noisy

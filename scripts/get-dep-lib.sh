@@ -17,7 +17,7 @@ CURRENT_KIRIGAMI="v5.76.0"
 CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
 CURRENT_MDBTOOLS="v1.0.0"
 CURRENT_QT_ANDROID_CMAKE="master"
-CURRENT_LIBMTP="db707349f441061bdf1ca3248c32ea21f4316917"
+CURRENT_LIBMTP="v1.1.22"
 
 # Checkout library from git
 # Ensure specified version is checked out,
