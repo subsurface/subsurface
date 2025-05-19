@@ -243,7 +243,7 @@ static void show_index(struct membuffer *b, int value, const char *pre, const ch
  *
  * For parsing, look at the units to figure out what the numbers are.
  */
-static void save_sample(struct membuffer *b, const struct sample &sample, struct sample &old, int o2sensor)
+static void save_sample(struct membuffer *b, const struct sample &sample, struct sample &old)
 {
 	int idx;
 
@@ -255,36 +255,13 @@ static void save_sample(struct membuffer *b, const struct sample &sample, struct
 		pressure_t p = sample.pressure[idx];
 		int sensor = sample.sensor[idx];
 
-		if (sensor == NO_SENSOR)
+		if (sensor == NO_SENSOR || !p.mbar || (old.sensor[idx] == sensor && old.pressure[idx].mbar == p.mbar))
 			continue;
 
-		if (!p.mbar)
-			continue;
-
-		/* Old-style "o2sensor" syntax for CCR dives? */
-		if (o2sensor >= 0) {
-			if (sensor == o2sensor) {
-				put_pressure(b, sample.pressure[1]," o2pressure=","bar");
-				continue;
-			}
-
-			put_pressure(b, p, " ", "bar");
-
-			/*
-			 * Note: regardless of which index we used for the non-O2
-			 * sensor, we know there is only one non-O2 sensor in legacy
-			 * mode, and "old.sensor[0]" contains that index.
-			 */
-			if (sensor != old.sensor[0]) {
-				put_format(b, " sensor=%d", sensor);
-				old.sensor[0] = sensor;
-			}
-			continue;
-		}
-
-		/* The new-style format is much simpler: the sensor is always encoded */
 		put_pressure(b, p, " ", "bar");
 		put_format(b, ":%d", sensor);
+		old.sensor[idx] = sensor;
+		old.pressure[idx] = p;
 	}
 
 	/* the deco/ndl values are stored whenever they change */
@@ -370,20 +347,11 @@ static void save_sample(struct membuffer *b, const struct sample &sample, struct
 	put_format(b, "\n");
 }
 
-static void save_samples(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc)
+static void save_samples(struct membuffer *b, const struct divecomputer &dc)
 {
-	int o2sensor;
 	struct sample dummy;
-
-	/* Is this a CCR dive with the old-style "o2pressure" sensor? */
-	o2sensor = legacy_format_o2pressures(&dive, &dc);
-	if (o2sensor >= 0) {
-		dummy.sensor[0] = !o2sensor;
-		dummy.sensor[1] = o2sensor;
-	}
-
 	for (const auto &s: dc.samples)
-		save_sample(b, s, dummy, o2sensor);
+		save_sample(b, s, dummy);
 }
 
 static void save_one_event(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc, const struct event &ev)
@@ -439,7 +407,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 	save_extra_data(b, dc);
 	save_tank_sensor_mappings(b, dive, dc);
 	save_events(b, dive, dc);
-	save_samples(b, dive, dc);
+	save_samples(b, dc);
 }
 
 /*
