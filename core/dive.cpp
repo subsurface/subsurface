@@ -66,47 +66,6 @@ static int get_cylinder_idx_by_use(const struct dive &dive, enum cylinderuse cyl
 	return it != dive.cylinders.end() ? it - dive.cylinders.begin() : -1;
 }
 
-/*
- * The legacy format for sample pressures has a single pressure
- * for each sample that can have any sensor, plus a possible
- * "o2pressure" that is fixed to the Oxygen sensor for a CCR dive.
- *
- * For more complex pressure data, we have to use explicit
- * cylinder indices for each sample.
- *
- * This function returns a negative number for "no legacy mode",
- * or a non-negative number that indicates the o2 sensor index.
- */
-int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc)
-{
-	int o2sensor;
-
-	o2sensor = (dc->divemode == CCR) ? get_cylinder_idx_by_use(*dive, OXYGEN) : -1;
-	for (const auto &s: dc->samples) {
-		int seen_pressure = 0, idx;
-
-		for (idx = 0; idx < MAX_SENSORS; idx++) {
-			int sensor = s.sensor[idx];
-			pressure_t p = s.pressure[idx];
-
-			if (!p.mbar)
-				continue;
-			if (sensor == o2sensor)
-				continue;
-			if (seen_pressure)
-				return -1;
-			seen_pressure = 1;
-		}
-	}
-
-	/*
-	 * Use legacy mode: if we have no O2 sensor we return a
-	 * positive sensor index that is guaranmteed to not match
-	 * any sensor (we encode it as 8 bits).
-	 */
-	return o2sensor < 0 ? 256 : o2sensor;
-}
-
 /* access to cylinders is controlled by two functions:
  * - get_cylinder() returns the cylinder of a dive and supposes that
  *   the cylinder with the given index exists. If it doesn't, an error
