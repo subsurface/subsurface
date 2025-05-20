@@ -93,9 +93,9 @@ static void exportHTMLstatistics(const QString filename, struct htmlExportSettin
 			out << "\"AVERAGE_TIME\":\"" << formatMinutes(s.total_time.seconds / s.selection_size) << "\",";
 			out << "\"SHORTEST_TIME\":\"" << formatMinutes(s.shortest_time.seconds) << "\",";
 			out << "\"LONGEST_TIME\":\"" << formatMinutes(s.longest_time.seconds) << "\",";
-			out << "\"AVG_DEPTH\":\"" << get_depth_string(s.avg_depth) << "\",";
-			out << "\"MIN_DEPTH\":\"" << get_depth_string(s.min_depth) << "\",";
-			out << "\"MAX_DEPTH\":\"" << get_depth_string(s.max_depth) << "\",";
+			out << "\"AVG_DEPTH\":\"" << get_depth_string(s.avg_depth,false, true) << "\","; // on export we should not truncate decimals
+			out << "\"MIN_DEPTH\":\"" << get_depth_string(s.min_depth,false, true) << "\",";
+			out << "\"MAX_DEPTH\":\"" << get_depth_string(s.max_depth,false, true) << "\",";
 			out << "\"AVG_SAC\":\"" << get_volume_string(s.avg_sac) << "\",";
 			out << "\"MIN_SAC\":\"" << get_volume_string(s.min_sac) << "\",";
 			out << "\"MAX_SAC\":\"" << get_volume_string(s.max_sac) << "\",";

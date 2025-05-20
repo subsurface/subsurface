@@ -75,13 +75,13 @@ void TabDiveStatistics::updateData(const std::vector<dive *> &, dive *currentDiv
 	stats_t stats_selection = calculate_stats_selected();
 	clear();
 	if (amount_selected > 1 && stats_selection.selection_size >= 1) {
-		ui->depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true));
-		ui->depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, true));
-		ui->depthLimits->setAverage(get_depth_string(stats_selection.combined_max_depth.mm / stats_selection.selection_size, true));
+		ui->depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true, true));  // for the statistics we should always use a decimal!
+		ui->depthLimits->setMinimum(get_depth_string(stats_selection.min_depth, true, true));
+		ui->depthLimits->setAverage(get_depth_string(stats_selection.combined_max_depth.mm / stats_selection.selection_size, true, true));
 	} else {
 		ui->depthLimits->setMaximum("");
 		ui->depthLimits->setMinimum("");
-		ui->depthLimits->setAverage(get_depth_string(stats_selection.max_depth, true));
+		ui->depthLimits->setAverage(get_depth_string(stats_selection.max_depth, true, true));
 	}
 
 	if (stats_selection.max_sac.mliter && (stats_selection.max_sac.mliter != stats_selection.avg_sac.mliter))
