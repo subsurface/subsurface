@@ -223,7 +223,7 @@ static void show_index(struct membuffer *b, int value, const char *pre, const ch
 		show_integer(b, value, pre, post);
 }
 
-static void save_sample(struct membuffer *b, const struct sample &sample, struct sample &old, int o2sensor)
+static void save_sample(struct membuffer *b, const struct sample &sample, struct sample &old)
 {
 	int idx;
 
@@ -242,29 +242,13 @@ static void save_sample(struct membuffer *b, const struct sample &sample, struct
 		pressure_t p = sample.pressure[idx];
 		int sensor = sample.sensor[idx];
 
-		if (sensor == NO_SENSOR)
+		if (sensor == NO_SENSOR || !p.mbar || (sensor == old.sensor[idx] && p.mbar == old.pressure[idx].mbar))
 			continue;
 
-		if (!p.mbar)
-			continue;
-
-		/* Legacy o2pressure format? */
-		if (o2sensor >= 0) {
-			if (sensor == o2sensor) {
-				put_pressure(b, p, " o2pressure='", " bar'");
-				continue;
-			}
-			put_pressure(b, p, " pressure='", " bar'");
-			if (sensor != old.sensor[0]) {
-				put_format(b, " sensor='%d'", sensor);
-				old.sensor[0] = sensor;
-			}
-			continue;
-		}
-
-		/* The new-style format is much simpler: the sensor is always encoded */
 		put_format(b, " pressure%d=", sensor);
 		put_pressure(b, p, "'", " bar'");
+		old.sensor[idx] = sensor;
+		old.pressure[idx] = p;
 	}
 
 	/* the deco/ndl values are stored whenever they change */
@@ -425,19 +409,11 @@ static void show_date(struct membuffer *b, timestamp_t when)
 			   tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
-static void save_samples(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc)
+static void save_samples(struct membuffer *b, const struct divecomputer &dc)
 {
 	struct sample dummy;
-
-	/* Set up default pressure sensor indices */
-	int o2sensor = legacy_format_o2pressures(&dive, &dc);
-	if (o2sensor >= 0) {
-		dummy.sensor[0] = !o2sensor;
-		dummy.sensor[1] = o2sensor;
-	}
-
 	for (const auto &s: dc.samples)
-		save_sample(b, s, dummy, o2sensor);
+		save_sample(b, s, dummy);
 }
 
 static void save_dc(struct membuffer *b, const struct dive &dive, const struct divecomputer &dc)
@@ -470,7 +446,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 	save_extra_data(b, dc);
 	save_tank_sensor_mappings(b, dive, dc);
 	save_events(b, dive, dc);
-	save_samples(b, dive, dc);
+	save_samples(b, dc);
 
 	put_format(b, "  </divecomputer>\n");
 }

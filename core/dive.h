@@ -193,8 +193,6 @@ extern void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bo
 
 extern void copy_dive(const struct dive *s, struct dive *d);
 
-extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
-
 extern bool dive_less_than(const struct dive &a, const struct dive &b);
 extern bool dive_less_than_ptr(const struct dive *a, const struct dive *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
