@@ -15,6 +15,13 @@
 #include <QProgressDialog>
 #include <QSettings>
 
+
+#define OSTC4_VERSION_MAJOR_SHIFT 11
+#define OSTC4_VERSION_MINOR_SHIFT 6
+#define OSTC4_VERSION_PATCH_SHIFT 1
+#define OSTC4_VERSION_MASK 0x001F
+#define OSTC4_VERSION_BETA_MASK 0x0001
+
 GasSpinBoxItemDelegate::GasSpinBoxItemDelegate(QObject *parent, column_type type) : QStyledItemDelegate(parent), type(type)
 {
 }
@@ -310,28 +317,33 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 
 	// libdivecomputer gives us the firmware on device as an integer
 	// for the OSTC that means highbyte.lowbyte is the version number
-	// For OSTC 4's its stored as XXXX XYYY YYZZ ZZZB, -> X.Y.Z beta?
+	// For OSTC 4's its stored as XXXX XYYY YYZZ ZZZB, -> X.Y.Z-beta?
 
 	int firmwareOnDevice = devData.devinfo.firmware;
-	QString firmwareOnDeviceString;
 	// Convert the latestFirmwareAvailable to a integer we can compare with
 	QStringList fwParts = latestFirmwareAvailable.split(".");
-	int latestFirmwareAvailableNumber;
 
+	QString firmwareOnDeviceString;
+	bool canBeUpdated = false;
 	if (data->product == "OSTC 4/5") {
-		unsigned char X, Y, Z, beta;
-		X = (firmwareOnDevice & 0xF800) >> 11;
-		Y = (firmwareOnDevice & 0x07C0) >> 6;
-		Z = (firmwareOnDevice & 0x003E) >> 1;
-		beta = firmwareOnDevice & 0x0001;
-		firmwareOnDeviceString = QString("%1.%2.%3%4").arg(X).arg(Y).arg(Z).arg(beta ? " beta" : "");
-		latestFirmwareAvailableNumber = (fwParts[0].toInt() << 11) + (fwParts[1].toInt() << 6) + (fwParts[2].toInt() << 1);
+		unsigned char first = (firmwareOnDevice >> OSTC4_VERSION_MAJOR_SHIFT) & OSTC4_VERSION_MASK;
+		unsigned char second = (firmwareOnDevice >> OSTC4_VERSION_MINOR_SHIFT) & OSTC4_VERSION_MASK;
+		unsigned char third = (firmwareOnDevice >> OSTC4_VERSION_PATCH_SHIFT) & OSTC4_VERSION_MASK;
+		bool beta = firmwareOnDevice & OSTC4_VERSION_BETA_MASK;
+		firmwareOnDeviceString = QString("%1.%2.%3%4").arg(first).arg(second).arg(third).arg(beta ? "-beta" : "");
+		int latestFirmwareAvailableNumber = (fwParts[0].toInt() << 10) + (fwParts[1].toInt() << 5) + fwParts[2].toInt();
+		if (latestFirmwareAvailableNumber > firmwareOnDevice >> OSTC4_VERSION_PATCH_SHIFT || (latestFirmwareAvailableNumber == firmwareOnDevice >> OSTC4_VERSION_PATCH_SHIFT && beta)) {
+			canBeUpdated = true;
+		}
 	} else { // OSTC 3, Sport, Cr
 		firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
-		latestFirmwareAvailableNumber = fwParts[0].toInt() * 256 + fwParts[1].toInt();
+		int latestFirmwareAvailableNumber = fwParts[0].toInt() * 256 + fwParts[1].toInt();
+		if (firmwareOnDevice < latestFirmwareAvailableNumber) {
+			canBeUpdated = true;
+		}
 	}
 
-	if (latestFirmwareAvailableNumber > firmwareOnDevice) {
+	if (canBeUpdated) {
 		QMessageBox response(parent);
 		QString message = tr("A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2.\nNot using the latest available stable firmware version on your dive computer means that Subsurface may not work correctly with it.")
 					  .arg(firmwareOnDeviceString)
