@@ -966,7 +966,7 @@ std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, str
 					bottom_time, dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure.mbar / 1000.0, divemode);
 				laststoptime = new_clock - clock;
 				/* Finish infinite deco */
-				if (laststoptime >= 48 * 3600 && depth.mm >= 6000) {
+				if (laststoptime >= 48 * 3600 && depth.mm >= 6000 && !o2breaking) {
 					error = PLAN_ERROR_TIMEOUT;
 
 					break;
