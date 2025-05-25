@@ -599,7 +599,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 						if (!o2warning_exist)
 							buf += "<div>\n";
 						o2warning_exist = true;
-						temp = casprintf_loc(translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
+						temp = casprintf_loc(translate("gettextFromC", "high pO₂ value %.3f bar at %d:%02u with gas %s at depth %.*f %s"),
 							pressures.o2, FRACTION_TUPLE(dp.time, 60), gasmix.name().c_str(), decimals, depth_value, depth_unit);
 						buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp.c_str());
 					} else if (pressures.o2 < 0.16) {
@@ -609,7 +609,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 						if (!o2warning_exist)
 							buf += "<div>";
 						o2warning_exist = true;
-						temp = casprintf_loc(translate("gettextFromC", "low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
+						temp = casprintf_loc(translate("gettextFromC", "low pO₂ value %.3f bar at %d:%02u with gas %s at depth %.*f %s"),
 							pressures.o2, FRACTION_TUPLE(dp.time, 60), gasmix.name().c_str(), decimals, depth_value, depth_unit);
 						buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp.c_str());
 					}
