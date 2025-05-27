@@ -325,13 +325,6 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 {
 	if (actual) *actual = 0;
 
-	if (!receivedPackets.isEmpty()) {
-		report_info(".. write HIT with still incoming packets in queue");
-		do {
-			receivedPackets.takeFirst();
-		} while (!receivedPackets.isEmpty());
-	}
-
 	for (const QLowEnergyCharacteristic &c: preferredService()->characteristics()) {
 		if (!is_write_characteristic(c))
 			continue;
