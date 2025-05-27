@@ -300,7 +300,7 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 		.write		= qt_ble_write,
 		.ioctl		= qt_ble_ioctl,
 		.flush		= nullptr,
-		.purge		= nullptr,
+		.purge		= qt_ble_purge,
 		.sleep		= qt_custom_sleep,
 		.close		= qt_ble_close,
 	};

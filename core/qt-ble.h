@@ -30,6 +30,7 @@ public:
 	dc_status_t get_name(char *res, size_t size);
 	dc_status_t read_characteristic(const QBluetoothUuid &uuid, char *res, size_t size);
 	dc_status_t poll(int timeout);
+	dc_status_t purge(dc_direction_t direction);
 
 	inline QLowEnergyService *preferredService() { return preferred; }
 	inline int descriptorWritten() { return desc_written; }
@@ -74,6 +75,7 @@ dc_status_t qt_ble_poll(void *io, int timeout);
 dc_status_t qt_ble_read(void *io, void* data, size_t size, size_t *actual);
 dc_status_t qt_ble_write(void *io, const void* data, size_t size, size_t *actual);
 dc_status_t qt_ble_ioctl(void *io, unsigned int request, void *data, size_t size);
+dc_status_t qt_ble_purge(void *io, dc_direction_t direction);
 dc_status_t qt_ble_close(void *io);
 
 #endif
