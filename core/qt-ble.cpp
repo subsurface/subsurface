@@ -371,6 +371,14 @@ dc_status_t BLEObject::poll(int timeout)
 	return DC_STATUS_SUCCESS;
 }
 
+dc_status_t BLEObject::purge(dc_direction_t direction)
+{
+	if (direction & DC_DIRECTION_INPUT)
+		receivedPackets.clear();
+
+	return DC_STATUS_SUCCESS;
+}
+
 dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 {
 	dc_status_t rc;
@@ -782,6 +790,12 @@ dc_status_t qt_ble_poll(void *io, int timeout)
 	BLEObject *ble = (BLEObject *) io;
 
 	return ble->poll(timeout);
+}
+
+dc_status_t qt_ble_purge(void *io, dc_direction_t direction)
+{
+	BLEObject *ble = (BLEObject *) io;
+	return ble->purge(direction);
 }
 
 dc_status_t BLEObject::get_name(char *data, size_t size)
