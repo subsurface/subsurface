@@ -121,8 +121,8 @@ void TabDiveInformation::updateProfile()
 	dive *currentDive = parent.currentDive;
 	ui->maxcnsText->setText(QString("%L1\%").arg(currentDive->maxcns));
 	ui->otuText->setText(QString("%L1").arg(currentDive->otu));
-	ui->maximumDepthText->setText(get_depth_string(currentDive->maxdepth, true));
-	ui->averageDepthText->setText(get_depth_string(currentDive->meandepth, true));
+	ui->maximumDepthText->setText(get_depth_string(currentDive->maxdepth, true, true)); // always show decimals
+	ui->averageDepthText->setText(get_depth_string(currentDive->meandepth, true, true));
 
 	std::vector<volume_t> gases = get_gas_used(currentDive);
 	QString volumes;
