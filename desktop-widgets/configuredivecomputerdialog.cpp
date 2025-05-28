@@ -333,7 +333,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 		firmwareOnDeviceString = QString("%1.%2.%3%4").arg(first).arg(second).arg(third).arg(beta ? "-beta" : "");
 		int latestFirmwareAvailableNumber = (fwParts[0].toInt() << OSTC4_VERSION_MAJOR_SHIFT) + (fwParts[1].toInt() << OSTC4_VERSION_MINOR_SHIFT) + (fwParts[2].toInt() << OSTC4_VERSION_PATCH_SHIFT);
 		int firmwareOnDeviceWithoutBeta = firmwareOnDevice & ~OSTC4_VERSION_BETA_MASK;
-		if (firmwareOnDeviceWithoutBeta < latestFirmwareAvailableNumber|| (firmwareOnDeviceWithoutBeta == latestFirmwareAvailableNumber && beta)) {
+		if (firmwareOnDeviceWithoutBeta < latestFirmwareAvailableNumber || (firmwareOnDeviceWithoutBeta == latestFirmwareAvailableNumber && beta)) {
 			canBeUpdated = true;
 		}
 	} else { // OSTC 3, Sport, Cr
