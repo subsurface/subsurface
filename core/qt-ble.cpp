@@ -310,9 +310,17 @@ static bool is_write_characteristic(const QLowEnergyCharacteristic &c)
 		  QLowEnergyCharacteristic::WriteNoResponse);
 }
 
+static bool is_read_characteristic(const QLowEnergyCharacteristic &c)
+{
+	if (match_uuid_list(c.uuid(), skip_characteristics, ACCESS_READ))
+		return false;
+	return c.properties() &
+		 (QLowEnergyCharacteristic::Read);
+}
+
 // We need a Notify or Indicate for the reading side, and
 // a descriptor to enable it
-static bool is_read_characteristic(const QLowEnergyCharacteristic &c)
+static bool is_notify_characteristic(const QLowEnergyCharacteristic &c)
 {
 	if (match_uuid_list(c.uuid(), skip_characteristics, ACCESS_READ))
 		return false;
@@ -379,6 +387,25 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 
 	if (actual)
 		*actual = 0;
+
+	if (!notify) {
+		bool found = false;
+		auto service = preferredService();
+		for (const QLowEnergyCharacteristic &ch: service->characteristics()) {
+			if (!is_read_characteristic(ch))
+				continue;
+
+			report_info("Reading BLE characteristic %s", to_str(ch.uuid()).c_str());
+			service->readCharacteristic(ch);
+			found = true;
+			break;
+		}
+
+		if (!found) {
+			report_error("No read characteristic found.");
+			return DC_STATUS_IO;
+		}
+	}
 
 	// Wait for a packet
 	rc = poll(timeout);
@@ -477,17 +504,19 @@ dc_status_t BLEObject::select_preferred_service()
 #endif
 			continue;
 
+		bool hasnotify = false;
 		bool hasread = false;
 		bool haswrite = false;
 		QBluetoothUuid uuid = s->serviceUuid();
 
 		for (const QLowEnergyCharacteristic &c: s->characteristics()) {
+			hasnotify |= is_notify_characteristic(c);
 			hasread |= is_read_characteristic(c);
 			haswrite |= is_write_characteristic(c);
 		}
 
-		if (!hasread) {
-			report_info(" .. ignoring service without read characteristic %s", to_str(uuid).c_str());
+		if (!hasnotify && !hasread) {
+			report_info(" .. ignoring service without read/notify characteristic %s", to_str(uuid).c_str());
 			continue;
 		}
 
@@ -498,6 +527,7 @@ dc_status_t BLEObject::select_preferred_service()
 
 		// We now know that the service has both read and write characteristics
 		preferred = s;
+		notify = hasnotify;
 		report_info("Using service %s as preferred service", to_str(s->serviceUuid()).c_str());
 		break;
 	}
@@ -509,6 +539,7 @@ dc_status_t BLEObject::select_preferred_service()
 	}
 
 	connect(preferred, &QLowEnergyService::stateChanged, this, &BLEObject::serviceStateChanged);
+	connect(preferred, &QLowEnergyService::characteristicRead, this, &BLEObject::characteristcStateChanged);
 	connect(preferred, &QLowEnergyService::characteristicChanged, this, &BLEObject::characteristcStateChanged);
 	connect(preferred, &QLowEnergyService::characteristicWritten, this, &BLEObject::characteristicWritten);
 	connect(preferred, &QLowEnergyService::descriptorWritten, this, &BLEObject::writeCompleted);
@@ -702,7 +733,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 		}
 	} else {
 		for (const QLowEnergyCharacteristic &c: list) {
-			if (!is_read_characteristic(c))
+			if (!is_notify_characteristic(c))
 				continue;
 
 			report_info("Using read characteristic %s", to_str(c.uuid()).c_str());
