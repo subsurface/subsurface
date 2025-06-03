@@ -172,6 +172,7 @@ static const struct uuid_match serial_service_uuids[] = {
         { "6e400001-b5a3-f393-e0a9-e50e24dc10b8", "Cressi"}, // Must have higher priority than Nordic UART
         { "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
 	{ "00000001-8c3b-4f2c-a59e-8c08224f3253", "Halcyon Symbios" },
+	{ "84968ffe-d26d-478a-b953-5010bcf58bca", "Seac" },
 	{ NULL, }
 };
 
