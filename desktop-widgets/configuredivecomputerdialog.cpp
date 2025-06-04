@@ -357,8 +357,11 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 		response.setIcon(QMessageBox::Question);
 		response.setWindowModality(Qt::WindowModal);
 		int ret = response.exec();
-		if (ret == QMessageBox::Accepted)
+		if (ret == QMessageBox::Accepted) {
 			upgradeFirmware(filename);
+
+			return;
+		}
 	}
 
 	emit checkCompleted();
