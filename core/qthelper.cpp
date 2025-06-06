@@ -424,9 +424,8 @@ void initUiLanguage()
 	QString timeFormat;
 
 	// set loc as system language or selected language
-	if (!qPrefLanguage::use_system_language()) {
-		loc = QLocale(qPrefLanguage::lang_locale());
-	} else {
+	loc = QLocale(qPrefLanguage::lang_locale());
+	if (qPrefLanguage::use_system_language() && !QLocale().uiLanguages().isEmpty()) {
 		loc = QLocale(QLocale().uiLanguages().first());
 	}
 
