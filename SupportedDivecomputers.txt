@@ -6,7 +6,7 @@ Atomic Aquatics: Cobalt, Cobalt 2
 Beuchat: Mundial 2, Mundial 3, Voyager 2G
 Citizen: Hyper Aqualand
 Cochran: Commander I, Commander II, Commander TM, EMC-14, EMC-16, EMC-20H
-Cressi: Cartesio, Donatello, Drake, Edy, Giotto, Goa, Leonardo, Leonardo 2.0, Michelangelo, Neon, Nepto, Newton
+Cressi: Archimede, Cartesio, Donatello, Drake, Edy, Giotto, Goa, Leonardo, Leonardo 2.0, Michelangelo, Neon, Nepto, Newton
 Crest: CR-4
 Deep Six: Excursion
 Deepblu: Cosmiq+
@@ -16,10 +16,11 @@ Divesoft: Freedom, Liberty
 FIT: File import
 Garmin: Descent Mk1, Descent Mk2(i)/Mk3(i)(S)/G1/G2/X50i
 Genesis: Centauri, React Pro, React Pro White
+Halcyon: Symbios HUD, Symbios Handset
 Heinrichs Weikamp: Frog, OSTC, OSTC 2, OSTC 2 TR, OSTC 2C, OSTC 2N, OSTC 3, OSTC 4/5, OSTC Mk2, OSTC Plus, OSTC Sport, OSTC cR
 Hollis: DG02, DG03, TX1
 Liquivision: Kaon, Lynx, Xen, Xeo
-Mares: Airlab, Darwin, Darwin Air, Genius, Horizon, Icon HD, Icon HD Net Ready, M1, M2, Matrix, Nemo, Nemo Air, Nemo Apneist, Nemo Excel, Nemo Steel, Nemo Titanium, Nemo Wide, Nemo Wide 2, Puck, Puck 2, Puck 4, Puck Air, Puck Air 2, Puck Pro, Puck Pro +, Quad, Quad Air, Quad Ci, Sirius, Smart, Smart Air, Smart Apnea
+Mares: Airlab, Darwin, Darwin Air, Genius, Horizon, Icon HD, Icon HD Net Ready, M1, M2, Matrix, Nemo, Nemo Air, Nemo Apneist, Nemo Excel, Nemo Steel, Nemo Titanium, Nemo Wide, Nemo Wide 2, Puck, Puck 2, Puck 4, Puck Air, Puck Air 2, Puck Lite, Puck Pro, Puck Pro +, Quad, Quad Air, Quad Ci, Sirius, Smart, Smart Air, Smart Apnea
 McLean: Extreme
 Oceanic: Atom 1.0, Atom 2.0, Atom 3.0, Atom 3.1, Datamask, F10, F11, Geo, Geo 2.0, Geo 4.0, Geo Air, OC1, OCS, OCi, Pro Plus 2, Pro Plus 2.1, Pro Plus 3, Pro Plus 4, Pro Plus X, VT 4.1, VT Pro, VT3, VT4, VTX, Veo 1.0, Veo 180, Veo 2.0, Veo 200, Veo 250, Veo 3.0, Veo 4.0, Versa Pro
 Oceans: S1
@@ -28,7 +29,7 @@ Reefnet: Sensus, Sensus Pro, Sensus Ultra
 Scorpena: Alpha
 Scubapro: Aladin A1, Aladin A2, Aladin H Matrix, Aladin Sport Matrix, Aladin Square, Chromis, G2, G2 Console, G2 HUD, G2 TEK, G3, Luna 2.0, Luna 2.0 AI, Mantis, Mantis 2, Meridian, XTender 5
 Seabaer: T1, H3, HUDC
-Seac: Action, Guru, Jack, Screen
+Seac: Action, Guru, Jack, Screen, Tablet
 Seemann: XP5
 Shearwater: Nerd, Nerd 2, Perdix, Perdix 2, Perdix AI, Peregrine, Peregrine TX, Petrel, Petrel 2, Petrel 3, Predator, Teric, Tern, Tern TX
 Sherwood: Amphos, Amphos 2.0, Amphos Air, Amphos Air 2.0, Beacon, Insight, Insight 2, Sage, Vision, Wisdom, Wisdom 2, Wisdom 3, Wisdom 4
