@@ -11,6 +11,7 @@
 #include <string>
 
 #include "core/libdivecomputer.h"
+#include "core/downloadfromdcthread.h"
 #include "desktop-widgets/configuredivecomputerdialog.h"
 
 #include "ui_downloadfromdivecomputer.h"
@@ -74,6 +75,7 @@ private:
 	void updateTransportSelection(bool changeSelection);
 	void showRememberedDCs();
 	void checkShowError(states state);
+	void showUpdateDialog();
 
 	QStringListModel vendorModel;
 	QStringListModel productModel;

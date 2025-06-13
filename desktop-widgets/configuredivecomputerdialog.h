@@ -8,7 +8,6 @@
 #include "core/libdivecomputer.h"
 #include "core/configuredivecomputer.h"
 #include <QStyledItemDelegate>
-#include <QNetworkAccessManager>
 #ifdef BT_SUPPORT
 #include "desktop-widgets/btdeviceselectiondialog.h"
 #endif
@@ -119,29 +118,6 @@ private:
 #ifdef BT_SUPPORT
 	BtDeviceSelectionDialog *btDeviceSelectionDialog;
 #endif
-};
-
-class OstcFirmwareCheck : public QObject {
-	Q_OBJECT
-public:
-	explicit OstcFirmwareCheck(const QString &product);
-	void checkLatest(QWidget *parent, device_data_t *data, const QString &filename);
-public
-slots:
-	void parseOstcFwVersion(QNetworkReply *reply);
-	void saveOstcFirmware(QNetworkReply *reply);
-
-signals:
-	void checkCompleted();
-
-private:
-	void upgradeFirmware(const QString &filename);
-	device_data_t devData;
-	QString latestFirmwareAvailable;
-	QUrl latestFirmwareHexFile;
-	QString storeFirmware;
-	QWidget *parent;
-	QNetworkAccessManager manager;
 };
 
 #endif // CONFIGUREDIVECOMPUTERDIALOG_H

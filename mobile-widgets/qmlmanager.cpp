@@ -80,7 +80,6 @@ static void progressCallback(const std::string &text)
 	QMLManager *self = QMLManager::instance();
 	if (self) {
 		QString s = QString::fromStdString(text);
-		self->appendTextToLog(s);
 		self->setProgressMessage(s);
 	}
 }
@@ -385,7 +384,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		 * 1) we have cloud credentials, but there is no local repo (yet).
 		 *    This implies that the PIN verify is still to be done.
 		 * 2) we are in a very clean state after installing the app, and
-		 *    want to use a NO CLOUD setup. The intial repo has no initial
+		 *    want to use a NO CLOUD setup. The initial repo has no initial
 		 *    commit in it, so its master branch does not yet exist. We do not
 		 *    care about this, as the very first commit of dive data to the
 		 *    no cloud repo solves this.
@@ -1874,6 +1873,8 @@ QStringList QMLManager::defaultCylinderListInit() const
 void QMLManager::setProgressMessage(QString text)
 {
 	m_progressMessage = text;
+	appendTextToLog(QStringLiteral("setProgressMessage: ") + text);
+
 	emit progressMessageChanged();
 }
 
@@ -2384,4 +2385,74 @@ QString QMLManager::getPasswordState() const
 	if (credStatus == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD)
 		return tr("(incorrect cloud email or password)");
 	return QString();
+}
+
+void QMLManager::createFirmwareUpdater(QString product)
+{
+	if (appLogFileOpen) {
+		// We need to be able to store the firmware file
+		ostcFirmwareCheck.reset(getOstcFirmwareCheck(product));
+	} else {
+		ostcFirmwareCheck.reset();
+	}
+}
+
+bool QMLManager::checkFirmwareAvailable(DiveImportedModel *diveImportedModel)
+{
+	if (ostcFirmwareCheck) {
+		return !ostcFirmwareCheck->checkLatest(diveImportedModel->thread.data()->internalData());
+	}
+
+	return false;
+}
+
+void QMLManager::startFirmwareUpdate()
+{
+	setProgressMessage(QStringLiteral("Downloading firmware %1").arg(ostcFirmwareCheck->getLatestFirmwareAvailable()));
+	QString saveFileName = appLogFileName;
+	saveFileName.replace("/subsurface.log", "/" + ostcFirmwareCheck->getLatestFirmwareFileName());
+
+	ConfigureDiveComputer *config = new ConfigureDiveComputer();
+	connect(config, &ConfigureDiveComputer::message, this, &QMLManager::setProgressMessage);
+	connect(config, &ConfigureDiveComputer::error, this, &QMLManager::setErrorMessage);
+	connect(config, &ConfigureDiveComputer::progress, this, &QMLManager::setProgress);
+
+	ostcFirmwareCheck->startFirmwareUpdate(saveFileName, config);
+}
+
+QString QMLManager::getFirmwareOnDevice() const
+{
+	if (ostcFirmwareCheck)
+		return ostcFirmwareCheck->getFirmwareOnDevice();
+
+	return QString();
+}
+
+QString QMLManager::getLatestFirmwareAvailable() const
+{
+	if (ostcFirmwareCheck)
+		return ostcFirmwareCheck->getLatestFirmwareAvailable();
+
+	return QString();
+}
+
+void QMLManager::setErrorMessage(QString text)
+{
+	setProgressMessage(QStringLiteral("Error: ") + text);
+
+	emit errorSignal();
+}
+
+void QMLManager::setProgress(qreal progress)
+{
+	if (m_progress != progress) {
+		m_progress = progress;
+
+		emit progressChanged();
+	}
+}
+
+qreal QMLManager::progress() const
+{
+	return m_progress;
 }

@@ -11,16 +11,9 @@
 #include <array>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QNetworkReply>
 #include <QProgressDialog>
 #include <QSettings>
 
-
-#define OSTC4_VERSION_MAJOR_SHIFT 11
-#define OSTC4_VERSION_MINOR_SHIFT 6
-#define OSTC4_VERSION_PATCH_SHIFT 1
-#define OSTC4_VERSION_MASK 0x001F
-#define OSTC4_VERSION_BETA_MASK 0x0001
 
 GasSpinBoxItemDelegate::GasSpinBoxItemDelegate(QObject *parent, column_type type) : QStyledItemDelegate(parent), type(type)
 {
@@ -271,142 +264,6 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(const QString &filename
 	}
 	settings.endGroup();
 	settings.endGroup();
-}
-
-OstcFirmwareCheck::OstcFirmwareCheck(const QString &product) : parent(0)
-{
-	QUrl url;
-	devData = device_data_t();
-	if (product == "OSTC 3" || product == "OSTC 3+" || product == "OSTC cR" || product == "OSTC Plus") {
-		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc3_changelog.txt");
-		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc3_firmware.hex");
-	} else if (product == "OSTC Sport") {
-		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_changelog.txt");
-		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_firmware.hex");
-	} else if (product == "OSTC 4/5") {
-		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_changelog.txt");
-		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_firmware.bin");
-	} else { // not one of the known dive computers
-		return;
-	}
-	connect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::parseOstcFwVersion);
-	QNetworkRequest download(url);
-	manager.get(download);
-}
-
-void OstcFirmwareCheck::parseOstcFwVersion(QNetworkReply *reply)
-{
-	QString parse = reply->readAll();
-	int firstOpenBracket = parse.indexOf('[');
-	int firstCloseBracket = parse.indexOf(']');
-	latestFirmwareAvailable = parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket - 1);
-	reply->close();
-	disconnect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::parseOstcFwVersion);
-}
-
-void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const QString &filename)
-{
-	devData = *data;
-	parent = _parent;
-	// If we didn't find a current firmware version stop this whole thing here.
-	if (latestFirmwareAvailable.isEmpty()) {
-		emit checkCompleted();
-
-		return;
-	}
-
-	// libdivecomputer gives us the firmware on device as an integer
-	// for the OSTC that means highbyte.lowbyte is the version number
-	// For OSTC 4/5's its stored as XXXX XYYY YYZZ ZZZB, -> X.Y.Z-beta?
-
-	int firmwareOnDevice = devData.devinfo.firmware;
-	// Convert the latestFirmwareAvailable to a integer we can compare with
-	QStringList fwParts = latestFirmwareAvailable.split(".");
-
-	QString firmwareOnDeviceString;
-	bool canBeUpdated = false;
-	if (data->product == "OSTC 4/5") {
-		unsigned char first = (firmwareOnDevice >> OSTC4_VERSION_MAJOR_SHIFT) & OSTC4_VERSION_MASK;
-		unsigned char second = (firmwareOnDevice >> OSTC4_VERSION_MINOR_SHIFT) & OSTC4_VERSION_MASK;
-		unsigned char third = (firmwareOnDevice >> OSTC4_VERSION_PATCH_SHIFT) & OSTC4_VERSION_MASK;
-		bool beta = firmwareOnDevice & OSTC4_VERSION_BETA_MASK;
-		firmwareOnDeviceString = QString("%1.%2.%3%4").arg(first).arg(second).arg(third).arg(beta ? "-beta" : "");
-		int latestFirmwareAvailableNumber = (fwParts[0].toInt() << OSTC4_VERSION_MAJOR_SHIFT) + (fwParts[1].toInt() << OSTC4_VERSION_MINOR_SHIFT) + (fwParts[2].toInt() << OSTC4_VERSION_PATCH_SHIFT);
-		int firmwareOnDeviceWithoutBeta = firmwareOnDevice & ~OSTC4_VERSION_BETA_MASK;
-		if (firmwareOnDeviceWithoutBeta < latestFirmwareAvailableNumber || (firmwareOnDeviceWithoutBeta == latestFirmwareAvailableNumber && beta)) {
-			canBeUpdated = true;
-		}
-	} else { // OSTC 3, Sport, Cr
-		firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
-		int latestFirmwareAvailableNumber = fwParts[0].toInt() * 256 + fwParts[1].toInt();
-		if (firmwareOnDevice < latestFirmwareAvailableNumber) {
-			canBeUpdated = true;
-		}
-	}
-
-	if (canBeUpdated) {
-		QMessageBox response(parent);
-		QString message = tr("A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2.\nNot using the latest available stable firmware version on your dive computer means that Subsurface may not work correctly with it.")
-					  .arg(firmwareOnDeviceString)
-					  .arg(latestFirmwareAvailable);
-		message += tr("\n\nIf your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update");
-		response.addButton(tr("Not now"), QMessageBox::RejectRole);
-		response.addButton(tr("Update firmware"), QMessageBox::AcceptRole);
-		response.setText(message);
-		response.setWindowTitle(tr("Firmware upgrade notice"));
-		response.setIcon(QMessageBox::Question);
-		response.setWindowModality(Qt::WindowModal);
-		int ret = response.exec();
-		if (ret == QMessageBox::Accepted) {
-			upgradeFirmware(filename);
-
-			return;
-		}
-	}
-
-	emit checkCompleted();
-}
-
-void OstcFirmwareCheck::upgradeFirmware(const QString &filename)
-{
-	// start download of latestFirmwareHexFile
-	QString saveFileName = latestFirmwareHexFile.fileName();
-	saveFileName.replace("firmware", latestFirmwareAvailable);
-	QFileInfo fi(filename);
-	saveFileName = fi.absolutePath().append(QDir::separator()).append(saveFileName);
-	storeFirmware = QFileDialog::getSaveFileName(parent, tr("Save the downloaded firmware as"),
-						     saveFileName, tr("Firmware files") + " (*.hex *.bin)");
-	if (storeFirmware.isEmpty()) {
-		emit checkCompleted();
-
-		return;
-	}
-
-	connect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::saveOstcFirmware);
-	QNetworkRequest download(latestFirmwareHexFile);
-	manager.get(download);
-}
-
-void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
-{
-	QByteArray firmwareData = reply->readAll();
-	QFile file(storeFirmware);
-	file.open(QIODevice::WriteOnly);
-	file.write(firmwareData);
-	file.close();
-
-	reply->close();
-	emit checkCompleted();
-
-	QProgressDialog *dialog = new QProgressDialog("Updating firmware", "", 0, 100);
-	dialog->setCancelButton(0);
-	dialog->setAutoClose(true);
-	ConfigureDiveComputer *config = new ConfigureDiveComputer();
-	connect(config, &ConfigureDiveComputer::message, dialog, &QProgressDialog::setLabelText);
-	connect(config, &ConfigureDiveComputer::error, dialog, &QProgressDialog::setLabelText);
-	connect(config, &ConfigureDiveComputer::progress, dialog, &QProgressDialog::setValue);
-	config->dc_open(&devData);
-	config->startFirmwareUpdate(storeFirmware, &devData, false);
 }
 
 ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
