@@ -132,8 +132,13 @@ void UserManual::search(QString text, bool backward)
 		searchBar->setStyleSheet("");
 	else
 		userManual->findText(text, flags,
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 			[this](const QWebEngineFindTextResult &result) {
 				if (result.numberOfMatches() == 0)
+#else
+			[this](bool found) {
+				if (!found)
+#endif
 					searchBar->setStyleSheet("QLineEdit{background: red;}");
 				else
 					searchBar->setStyleSheet("");
