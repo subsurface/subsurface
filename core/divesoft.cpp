@@ -26,7 +26,7 @@ int divesoft_import(const std::string &buffer, struct divelog *log)
 		return report_error("%s", translate("gettextFromC", "Unknown DC"));
 
 	auto d = std::make_unique<dive>();
-	d->dcs[0].model = devdata.vendor + " " + devdata.model + " (Imported from file)";
+	d->dcs[0].model = devdata.vendor + " (Imported from file)";
 
 	// Parse the dive data
 	dc_status_t rc = libdc_buffer_parser(d.get(), &devdata, (const unsigned char *)buffer.data(), buffer.size());
