@@ -483,5 +483,26 @@ void TestParse::importApdInspirationUddf()
 		     SUBSURFACE_TEST_DATA "/dives/test-apd-inspiration-reference.xml");
 }
 
+void TestParse::importDlf_v1()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing DLF import on SUBSURFACE_MOBILE");
+#endif
+	parse_file(SUBSURFACE_TEST_DATA "/dives/00000023.DLF", &divelog);
+	QCOMPARE(save_dives("./test_importDlf_v1.xml"), 0);
+	FILE_COMPARE("./test_importDlf_v1.xml",
+			SUBSURFACE_TEST_DATA "/dives/00000023.DLF.new.xml");
+}
+
+void TestParse::importDlf_v2()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing DLF import on SUBSURFACE_MOBILE");
+#endif
+	parse_file(SUBSURFACE_TEST_DATA "/dives/L_Dive-01478656.dlf", &divelog);
+	QCOMPARE(save_dives("./test_importDlf_v2.xml"), 0);
+	FILE_COMPARE("./test_importDlf_v2.xml",
+			SUBSURFACE_TEST_DATA "/dives/L_Dive-01478656.dlf.xml");
+}
 
 QTEST_GUILESS_MAIN(TestParse)
