@@ -18,9 +18,7 @@
 #include "core/subsurface-time.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefUnit.h"
-#if !defined(SUBSURFACE_TESTING)
 #include "commands/command.h"
-#endif // !SUBSURFACE_TESTING
 #include "core/gettextfromc.h"
 #include "core/deco.h"
 #include <QApplication>
@@ -1280,9 +1278,7 @@ static void addDive(dive *d, bool autogroup, bool newNumber)
 	// Create a new dive and clear out the old one.
 	auto new_d = std::make_unique<dive>();
 	std::swap(*d, *new_d);
-#if !defined(SUBSURFACE_TESTING)
 	Command::addDive(std::move(new_d), autogroup, newNumber);
-#endif // !SUBSURFACE_TESTING
 }
 
 void DivePlannerPointsModel::createPlan(bool saveAsNew)
@@ -1350,9 +1346,7 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 			addDive(d, false, false);
 		} else {
 			// we were planning an old dive and rewrite the plan
-#if !defined(SUBSURFACE_TESTING)
 			Command::replanDive(d);
-#endif // !SUBSURFACE_TESTING
 		}
 	}
 
