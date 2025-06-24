@@ -6,6 +6,12 @@
 
 class TestBase : public QObject {
 	Q_OBJECT
+public:
+	static TestBase* instance();
+	static void failOnError(const std::string& error);
+	static bool skipErrors;
+protected:
+	void setSkipErrors(bool enabled);
 protected slots:
 	void initTestCase();
 };
