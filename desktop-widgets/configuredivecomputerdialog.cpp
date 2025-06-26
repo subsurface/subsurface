@@ -317,7 +317,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data, const
 
 	// libdivecomputer gives us the firmware on device as an integer
 	// for the OSTC that means highbyte.lowbyte is the version number
-	// For OSTC 4's its stored as XXXX XYYY YYZZ ZZZB, -> X.Y.Z-beta?
+	// For OSTC 4/5's its stored as XXXX XYYY YYZZ ZZZB, -> X.Y.Z-beta?
 
 	int firmwareOnDevice = devData.devinfo.firmware;
 	// Convert the latestFirmwareAvailable to a integer we can compare with
