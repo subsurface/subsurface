@@ -251,7 +251,7 @@ Kirigami.ScrollablePage {
 	property QtObject addDiveToTripAboveAction: Kirigami.Action {
 		text: visible ? qsTr ("Add dive %1 to trip above").arg(currentItem.myData.number) : ""
 		icon { name: ":/icons/expand_less.svg" }
-		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.tripAbove !== -1
+		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.diveInTrip === false && currentItem.myData.tripAbove !== -1
 		onTriggered: {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripAbove)
 		}
@@ -259,7 +259,7 @@ Kirigami.ScrollablePage {
 	property QtObject addDiveToTripBelowAction: Kirigami.Action {
 		text: visible ? qsTr ("Add dive %1 to trip below").arg(currentItem.myData.number) : ""
 		icon { name: ":/icons/expand_more.svg" }
-		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.tripBelow !== -1
+		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.diveInTrip === false && currentItem.myData.tripBelow !== -1
 		onTriggered: {
 			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripBelow)
 		}
@@ -267,7 +267,7 @@ Kirigami.ScrollablePage {
 	property QtObject createTripForDiveAction: Kirigami.Action {
 		text: visible ? qsTr("Create trip with dive %1").arg(currentItem.myData.number) : ""
 		icon { name: ":/icons/list-add" }
-		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.isTopLevel
+        visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.diveInTrip === false
 		onTriggered: {
 			manager.addTripForDive(currentItem.myData.id)
 		}
