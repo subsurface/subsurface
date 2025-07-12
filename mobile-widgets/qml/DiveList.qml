@@ -40,7 +40,7 @@ Kirigami.ScrollablePage {
 		id: diveOrTripDelegate
 		Kirigami.AbstractListItem {
 			// this allows us to access properties of the currentItem from outside
-			property variant myData: model
+			property variant modelData: model
 			property var view: ListView.view
 			property bool selected: !isTrip && current // don't use 'checked' for this as that confuses QML as it tries
 			property bool invalid: isInvalid === true
@@ -241,67 +241,84 @@ Kirigami.ScrollablePage {
 	property alias currentItem: diveListView.currentItem
 
 	property QtObject removeDiveFromTripAction: Kirigami.Action {
-		text: visible ? qsTr ("Remove dive %1 from trip").arg(currentItem.myData.number) : ""
+		text: visible ? qsTr ("Remove dive %1 from trip").arg(currentItem.modelData.number) : ""
 		icon { name: ":/icons/chevron_left.svg" }
-		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.diveInTrip === true
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.diveInTrip === true
 		onTriggered: {
-			manager.removeDiveFromTrip(currentItem.myData.id)
+			manager.removeDiveFromTrip(currentItem.modelData.id)
 		}
 	}
 	property QtObject addDiveToTripAboveAction: Kirigami.Action {
-		text: visible ? qsTr ("Add dive %1 to trip above").arg(currentItem.myData.number) : ""
+		text: visible ? qsTr ("Add dive %1 to trip above").arg(currentItem.modelData.number) : ""
 		icon { name: ":/icons/expand_less.svg" }
-		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.diveInTrip === false && currentItem.myData.tripAbove !== -1
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.diveInTrip === false && currentItem.modelData.tripAbove !== -1
 		onTriggered: {
-			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripAbove)
+			manager.addDiveToTrip(currentItem.modelData.id, currentItem.modelData.tripAbove)
 		}
 	}
 	property QtObject addDiveToTripBelowAction: Kirigami.Action {
-		text: visible ? qsTr ("Add dive %1 to trip below").arg(currentItem.myData.number) : ""
+		text: visible ? qsTr ("Add dive %1 to trip below").arg(currentItem.modelData.number) : ""
 		icon { name: ":/icons/expand_more.svg" }
-		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.diveInTrip === false && currentItem.myData.tripBelow !== -1
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.diveInTrip === false && currentItem.modelData.tripBelow !== -1
 		onTriggered: {
-			manager.addDiveToTrip(currentItem.myData.id, currentItem.myData.tripBelow)
+			manager.addDiveToTrip(currentItem.modelData.id, currentItem.modelData.tripBelow)
 		}
 	}
 	property QtObject createTripForDiveAction: Kirigami.Action {
-		text: visible ? qsTr("Create trip with dive %1").arg(currentItem.myData.number) : ""
+		text: visible ? qsTr("Create trip with dive %1").arg(currentItem.modelData.number) : ""
 		icon { name: ":/icons/list-add" }
-        visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.diveInTrip === false
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.diveInTrip === false
 		onTriggered: {
-			manager.addTripForDive(currentItem.myData.id)
+			manager.addTripForDive(currentItem.modelData.id)
+		}
+	}
+
+	property QtObject mergeWithDiveAboveAction: Kirigami.Action {
+		text: visible ? qsTr ("Merge dive %1 with dive above").arg(currentItem.modelData.number) : ""
+		icon { name: ":/icons/expand_less.svg" }
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.diveAbove !== -1 && manager.canMerge(currentItem.modelData.id, currentItem.modelData.diveAbove)
+		onTriggered: {
+			manager.mergeDives(currentItem.modelData.id, currentItem.modelData.diveAbove)
+		}
+	}
+	property QtObject mergeWithDiveBelowAction: Kirigami.Action {
+		text: visible ? qsTr ("Merge dive %1 with dive below").arg(currentItem.modelData.number) : ""
+		icon { name: ":/icons/expand_more.svg" }
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.diveBelow !== -1 && manager.canMerge(currentItem.modelData.id, currentItem.modelData.diveBelow)
+		onTriggered: {
+			manager.mergeDives(currentItem.modelData.id, currentItem.modelData.diveBelow)
 		}
 	}
 
 	property QtObject toggleInvalidAction: Kirigami.Action {
-		text: currentItem && currentItem.myData && currentItem.myData.isInvalid ? qsTr("Mark dive as valid") : qsTr("Mark dive as invalid")
+		text: currentItem && currentItem.modelData && currentItem.modelData.isInvalid ? qsTr("Mark dive as valid") : qsTr("Mark dive as invalid")
 		// icon: { name: "TBD" }
-		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip
-		onTriggered: manager.toggleDiveInvalid(currentItem.myData.id)
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip
+		onTriggered: manager.toggleDiveInvalid(currentItem.modelData.id)
 	}
 	property QtObject deleteAction: Kirigami.Action {
 		text: qsTr("Delete dive")
 		icon { name: ":/icons/trash-empty.svg" }
-		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip
-		onTriggered: manager.deleteDive(currentItem.myData.id)
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip
+		onTriggered: manager.deleteDive(currentItem.modelData.id)
 	}
 	property QtObject mapAction: Kirigami.Action {
 		text: qsTr("Show on map")
 		icon { name: ":/icons/gps" }
-		visible: currentItem && currentItem.myData && !currentItem.myData.isTrip && currentItem.myData.gps !== ""
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.gps !== ""
 		onTriggered: {
 			showMap()
-			mapPage.centerOnDiveSite(currentItem.myData.diveSite)
+			mapPage.centerOnDiveSite(currentItem.modelData.diveSite)
 		}
 	}
 	property QtObject tripDetailsEdit: Kirigami.Action {
 		text: qsTr("Edit trip details")
 		icon { name: ":/icons/trip_details.svg" }
-		visible: currentItem && currentItem.myData && currentItem.myData.isTrip
+		visible: currentItem && currentItem.modelData && currentItem.modelData.isTrip
 		onTriggered: {
-			tripEditWindow.tripId = currentItem.myData.tripId
-			tripEditWindow.tripLocation = currentItem.myData.tripLocation
-			tripEditWindow.tripNotes = currentItem.myData.tripNotes
+			tripEditWindow.tripId = currentItem.modelData.tripId
+			tripEditWindow.tripLocation = currentItem.modelData.tripLocation
+			tripEditWindow.tripNotes = currentItem.modelData.tripNotes
 			showPage(tripEditWindow)
 		}
 	}
@@ -318,7 +335,7 @@ Kirigami.ScrollablePage {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
+	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, mergeWithDiveAboveAction, mergeWithDiveBelowAction, toggleInvalidAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
 
 	function setupActions() {
 		if (Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD) {
@@ -508,7 +525,7 @@ Kirigami.ScrollablePage {
 		// pick the dive in the dive list and make sure its trip is expanded
 		diveListView.currentIndex = idx
 		if (diveListModel)
-			diveListModel.setActiveTrip(diveListView.currentItem.myData.tripId)
+			diveListModel.setActiveTrip(diveListView.currentItem.modelData.tripId)
 
 		// updating the index of the ListView triggers a non-linear scroll
 		// animation that can be very slow. the fix is to stop this animation

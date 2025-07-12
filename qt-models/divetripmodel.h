@@ -124,7 +124,6 @@ public slots:
 
 public:
 	DiveTripModelTree(QObject *parent = nullptr);
-	int tripInDirection(const struct dive *d, int direction) const;
 private:
 	int rowCount(const QModelIndex &parent) const override;
 	void clearData() override;
@@ -179,6 +178,8 @@ private:
 	QModelIndex diveToIdx(const dive *d) const;		// Find _any_ dive
 	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
 	int findInsertionIndex(const dive_trip *trip) const;	// Where to insert trip
+	int diveInDirection(const struct dive *d, int direction) const;
+	int tripInDirection(const struct dive *d, int direction) const;
 
 	// Comparison function between dive and arbitrary entry
 	static bool dive_before_entry(const dive *d, const Item &entry);
