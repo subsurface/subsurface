@@ -938,6 +938,10 @@ QVariant DiveTripModelTree::data(const QModelIndex &index, int role) const
 		return tripData(entry.trip, index.column(), role);
 	} else if (entry.dive) {
 #if defined(SUBSURFACE_MOBILE)
+		if (role == MobileListModel::DiveAbove)
+			return diveInDirection(entry.dive, +1);
+		if (role == MobileListModel::DiveBelow)
+			return diveInDirection(entry.dive, -1);
 		if (role == MobileListModel::TripAbove)
 			return tripInDirection(entry.dive, +1);
 		if (role == MobileListModel::TripBelow)
@@ -1108,6 +1112,37 @@ static QVector<dive *> visibleDives(const QVector<dive *> &dives)
 }
 
 #ifdef SUBSURFACE_MOBILE
+int DiveTripModelTree::diveInDirection(const struct dive *d, int direction) const
+{
+    for (auto [i, item]: enumerated_range(items)) {
+        if (!d->divetrip) {
+		    if (item.d_or_t.dive == d) {
+			    int offset = direction;
+			    while (i + offset >= 0 && i + offset < (int)items.size()) {
+				    if (items[i + offset].d_or_t.dive)
+					    return items[i + offset].d_or_t.dive->id;
+
+				    offset += direction;
+			    }
+
+			    break;
+		    }
+	    } else {
+		    if (item.d_or_t.trip) {
+                int j = findDiveInTrip(i, d);
+                if (j != -1) {
+                    if (j + direction >= 0 && j + direction < (int)items[i].dives.size())
+                        return items[i].dives[j + direction]->id;
+
+                    break;
+                }
+            }
+        }
+    }
+
+	return -1;
+}
+
 int DiveTripModelTree::tripInDirection(const struct dive *d, int direction) const
 {
 	for (auto [i, item]: enumerated_range(items)) {

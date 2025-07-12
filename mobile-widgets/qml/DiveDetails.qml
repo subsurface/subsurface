@@ -95,7 +95,7 @@ Kirigami.Page {
 	property QtObject createTripForDiveAction: Kirigami.Action {
 		text: qsTr("Create trip with dive")
 		icon { name: ":/icons/list-add" }
-		enabled: currentItem && currentItem.modelData && !currentItem.modelData.isTrip && currentItem.modelData.isTopLevel
+		enabled: currentItem && currentItem.modelData && currentItem.modelData.diveInTrip === false
 		onTriggered: manager.addTripForDive(currentItem.modelData.id)
 	}
 	property QtObject toggleInvalidAction: Kirigami.Action {
@@ -115,7 +115,7 @@ Kirigami.Page {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, addDiveToTripAboveAction, addDiveToTripBelowAction, deleteAction, undoAction, redoAction ]
+	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, undoAction, redoAction ]
 
 	states: [
 		State {
