@@ -189,6 +189,8 @@ public slots:
 	void removeDiveFromTrip(int id);
 	void addTripForDive(int id);
 	void addDiveToTrip(int id, int tripId);
+	bool canMerge(int diveId, int mergeIntoDiveId);
+	void mergeDives(int diveId, int mergeIntoDiveId);
 	void changesNeedSaving(bool fromUndo = false);
 	void openNoCloudRepo();
 	void saveChangesCloud(bool forceRemoteSync);

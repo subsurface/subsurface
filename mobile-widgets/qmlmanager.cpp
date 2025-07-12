@@ -1461,6 +1461,41 @@ void QMLManager::addDiveToTrip(int id, int tripId)
 	changesNeedSaving();
 }
 
+bool QMLManager::canMerge(int diveId, int mergeIntoDiveId)
+{
+	struct dive *dive = divelog.dives.get_by_uniq_id(diveId);
+	struct dive *mergeIntoDive = divelog.dives.get_by_uniq_id(mergeIntoDiveId);
+	if (!dive || !mergeIntoDive)
+		return false;
+
+	/* Don't merge dives if there's more than half an hour between them */
+	if ((dive->when <= mergeIntoDive->when && dive->endtime() + 30 * 60 >= mergeIntoDive->when) || (mergeIntoDive->when <= dive->when && mergeIntoDive->endtime() + 30 * 60 >= dive->when))
+		return true;
+
+	return false;
+}
+
+void QMLManager::mergeDives(int diveId, int mergeIntoDiveId)
+{
+	struct dive *dive = divelog.dives.get_by_uniq_id(diveId);
+	if (!dive) {
+		appendTextToLog(QString("Asked to merge non-existing dive with id %1 into dive with id %2.").arg(diveId).arg(mergeIntoDiveId));
+		return;
+	}
+	struct dive *mergeIntoDive = divelog.dives.get_by_uniq_id(mergeIntoDiveId);
+	if (!mergeIntoDive) {
+		appendTextToLog(QString("Asked to merge dive with id %1 into non-existing dive with id %2.").arg(diveId).arg(mergeIntoDiveId));
+		return;
+	}
+
+	if (dive->when > mergeIntoDive->when)
+		std::swap(dive, mergeIntoDive);
+
+	QVector<struct dive *> batch = { dive, mergeIntoDive };
+	Command::mergeDives(batch);
+	changesNeedSaving();
+}
+
 void QMLManager::saveUnsaved()
 {
 	// There might have been spurious signals, so let's check if there is anything to save first.

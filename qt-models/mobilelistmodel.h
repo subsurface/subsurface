@@ -56,6 +56,8 @@ public:
 		FirstGasRole,
 		SelectedRole,
 		DiveInTripRole,
+		DiveAbove,
+		DiveBelow,
 		TripAbove,
 		TripBelow,
 		TripLocationRole,
