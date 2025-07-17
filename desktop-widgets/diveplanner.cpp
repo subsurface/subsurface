@@ -569,6 +569,12 @@ PlannerWidgets::PlannerWidgets() :
 	connect(plannerDetails.printPlan(), &QPushButton::pressed, this, &PlannerWidgets::printDecoPlan);
 	connect(DivePlannerPointsModel::instance(), &DivePlannerPointsModel::calculatedPlanNotes,
 		&plannerDetails, &PlannerDetails::setPlanNotes);
+
+	plannerMenu = new QMenu(tr("&Planner"), MainWindow::instance()->getMenuBar());
+	QAction *reverseProfileAction = new QAction(tr("Add &reverse profile"), plannerMenu);
+	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	connect(reverseProfileAction, &QAction::triggered, plannerModel, &DivePlannerPointsModel::addReverseProfile);
+	plannerMenu->addAction(reverseProfileAction);
 }
 
 PlannerWidgets::~PlannerWidgets()

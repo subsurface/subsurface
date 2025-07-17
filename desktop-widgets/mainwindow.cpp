@@ -1550,7 +1550,16 @@ void MainWindow::setApplicationState(ApplicationState state)
 	ui.actionViewInfo->setEnabled(allowChange);
 	ui.actionViewMap->setEnabled(allowChange);
 	ui.actionViewDiveSites->setEnabled(allowChange);
+	ui.actionStats->setEnabled(allowChange);
 	ui.actionFilterTags->setEnabled(allowChange);
+
+	if (customAction) {
+		ui.menubar->removeAction(customAction);
+		customAction = nullptr;
+	}
+
+	if (state == ApplicationState::PlanDive)
+		customAction = ui.menubar->insertMenu(ui.menuHelp->menuAction(), plannerWidgets->getCustomMenu());
 }
 
 void MainWindow::showProgressBar()

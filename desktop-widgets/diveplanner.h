@@ -89,6 +89,8 @@ public:
 	int getDcNr();
 	divemode_t getDiveMode() const;
 	void settingsChanged();
+	QMenu *getCustomMenu() const { return plannerMenu; }
+
 public
 slots:
 	void printDecoPlan();
@@ -96,6 +98,7 @@ slots:
 private:
 	std::unique_ptr<dive> planned_dive;
 	int dcNr;
+	QMenu *plannerMenu;
 public:
 	DivePlannerWidget plannerWidget;
 	PlannerSettingsWidget plannerSettingsWidget;

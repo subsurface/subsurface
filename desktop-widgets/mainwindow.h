@@ -84,6 +84,8 @@ public:
 	std::unique_ptr<DiveListView> diveList;
 	std::unique_ptr<ProfileWidget> profile;
 	std::unique_ptr<MapWidget> mapWidget;
+
+	QMenuBar *getMenuBar() const { return ui.menubar; }
 private
 slots:
 	/* file menu action */
@@ -237,6 +239,8 @@ private:
 	QMenu *connections;
 	QAction *share_on_fb;
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
+
+	QAction *customAction;
 };
 
 #endif // MAINWINDOW_H
