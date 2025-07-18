@@ -1,6 +1,8 @@
-//Please add release notes on top of the file /CHANGELOG.md
-
 = _Subsurface_ Release Notes
+
+New in _Subsurface_ 6
+~~~~~~~~~~~~~~~~~~~~~
+- moved to an automatic, CICD-based release process
 
 New in _Subsurface_ 5.0.10
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1046,7 +1048,7 @@ divelogs.de
 
 Fixed several issues with downloads from the UEMIS SDA
 
-added support for the new models of the Heinrichs & Weikamp OSTC 2 and OSTC 3
+added support for the new models of the Heinrichs Weikamp OSTC 2 and OSTC 3
 
 added support for the Tusa IQ-700
 

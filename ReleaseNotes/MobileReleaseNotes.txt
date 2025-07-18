@@ -1,5 +1,9 @@
 = _Subsurface-mobile_ Release Notes
 
+New in _Subsurface_ 6
+~~~~~~~~~~~~~~~~~~~~~
+- moved to an automatic, CICD-based release process
+
 New in Subsurface-mobile 3.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
