@@ -34,8 +34,6 @@ public:
 	void edit(const QModelIndex &index);
 	int  defaultColumnWidth(int col); // default column width for column col
 	QTableView *view();
-	void showMirrorButton();
-	QPushButton *mirrorButton();
 
 protected:
 	void showEvent(QShowEvent *) override;
@@ -47,7 +45,7 @@ signals:
 
 private:
 	Ui::TableView ui;
-	QPushButton *plusBtn, *mirrorBtn;
+	QPushButton *plusBtn;
 	TableMetrics metrics;
 };
 

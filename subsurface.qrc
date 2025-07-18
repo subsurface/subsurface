@@ -6,7 +6,6 @@
         <file alias="subsurface-icon">icons/subsurface-icon.svg</file>
         <file alias="subsurface-mobile-icon">icons/subsurface-mobile-icon.png</file>
         <file alias="list-add-icon">icons/plus.png</file>
-        <file alias="mirror-icon">icons/mirror-icon.png</file>
         <file alias="list-remove-icon">icons/trash.png</file>
         <file alias="list-remove-disabled-icon">icons/trash-forbidden.png</file>
         <file alias="units-icon">icons/units.png</file>

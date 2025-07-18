@@ -816,7 +816,7 @@ void DivePlannerPointsModel::addStop(depth_t depth, int seconds)
 	updateDiveProfile();
 }
 
-void DivePlannerPointsModel::addReverseProfile(){
+void DivePlannerPointsModel::addReverseProfile() {
 	if (divepoints.size() <= 1)
 		return;
 
@@ -837,11 +837,6 @@ void DivePlannerPointsModel::addReverseProfile(){
 	endInsertRows();
 
 	emitDataChanged();
-}
-
-void DivePlannerPointsModel::mirror_clicked()
-{
-	addReverseProfile();
 }
 
 // cylinderid_in == -1 means same gas as before.
