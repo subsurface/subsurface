@@ -7,7 +7,7 @@
 # submitting patches to the user manual, only submit the changes to the .txt
 # file - the maintainer will recreate the .html.git file
 
-DOCNAMES = ReleaseNotes
+DOCNAMES = ReleaseNotes MobileReleaseNotes
 
 HTMLDOCS = $(patsubst %,$(OUT)%.html,$(DOCNAMES))
 TEXTDOCS = $(patsubst %,$(OUT)%.text,$(DOCNAMES))

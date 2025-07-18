@@ -77,31 +77,6 @@ The preferred way to write a commit message is using [imperative mood][11], e.g.
 _Example with gitk_
 
 
-### Changelog
-
-Additionally when important changes to behaviors, fixes or new feature are introduced an entry must be added to `CHANGELOG.md` file. Always add new entries at the very top of the file above other existing entries. Use this layout for new entries:
-
-    Area: Details about the change [reference thread / issue]
-
-When multiple areas are affected list the areas separated with a /:
-
-    Area1/Area2: Detail about the change [reference thread / issue]
-
-Here is a (non exhaustive) list of Areas that can be used:
-
-* Bluetooth
-* Cloud-storage
-* Desktop
-* Dive pictures
-* Import
-* Libdivecomputer
-* Map-widget
-* Mobile
-* Planner
-* Printing
-* Profile
-
-
 ### Coding Style
 
 In order to make reviews simpler and have contributions merged faster in the code base, please follow Subsurface project's coding style and coding conventions described in the [CodingStyle][10] file.
