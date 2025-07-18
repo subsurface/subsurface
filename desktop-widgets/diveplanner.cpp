@@ -50,9 +50,6 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	ui.cylinderTableWidget->setBtnToolTip(tr("Add cylinder"));
 	ui.cylinderTableWidget->setModel(cylinders);
 
-	ui.tableWidget->showMirrorButton();
-	connect(ui.tableWidget->mirrorButton(), &QPushButton::clicked, plannerModel, &DivePlannerPointsModel::mirror_clicked);
-
 	QTableView *view = ui.cylinderTableWidget->view();
 	connect(ui.cylinderTableWidget, &TableView::itemClicked, cylinders, &CylindersModel::remove);
 	view->setColumnHidden(CylindersModel::START, true);
@@ -94,10 +91,7 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, &QShortcut::activated, plannerModel, &DivePlannerPointsModel::cancelPlan);
 
-	QShortcut *mirrorProfileShortcut = new QShortcut(QKeySequence(Qt::Key_M + Qt::CTRL), this);
-	connect(mirrorProfileShortcut, &QShortcut::activated, plannerModel, &DivePlannerPointsModel::addReverseProfile);
-
-	// This makes shure the spinbox gets a setMinimum(0) on it so we can't have negative time or depth.
+	// This makes sure the spinbox gets a setMinimum(0) on it so we can't have negative time or depth.
 	// Limit segments to a depth of 1000 m/3300 ft and a duration of 100 h. Setting the limit for
 	// the depth will be done in settingChanged() since this depends on the chosen units.
 	ui.tableWidget->view()->setItemDelegateForColumn(DivePlannerPointsModel::RUNTIME, new SpinBoxDelegate(0, INT_MAX, 1, this));

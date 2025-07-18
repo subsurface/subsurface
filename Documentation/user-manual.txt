@@ -3954,7 +3954,7 @@ image::images/PlannerWindow1.png["FIGURE: Dive planner startup window",align="ce
 image::images/Planner_issues.png["FIGURE: Dive planner: Issue display",align="center"]
 
 
-- With the _mirror button_ on the top of the table, you can add copies
+- using the _Planner_ / _Add reverse profile_ menu action, you can add copies
   of the dive points in reverse order to mirror the dive profile. This
   can be useful for example when planning a cave dive when the way
   back will follow the same depth profile as the way in. The same can
@@ -4158,7 +4158,7 @@ whole dive profile by editing the _Dive Planner Points_ dialog.
 
 For planning a dive which has an exit profile which is a mirror image of the entry
 (e.g. cave diving), there is a shortcut to mirror the first half of the dive. Once the intial half of
-the dive is planned, press CTRL+M to create a mirrored exit profile.
+the dive is planned, use the _Planner_ / _Add reverse profile_ menu action to create a mirrored exit profile.
 
 Show any changes in gas cylinder used by indicating gas changes as explained
 in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should
