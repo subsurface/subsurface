@@ -313,6 +313,9 @@ Kirigami.Page {
 				manager.appendTextToLog(message)
 				progressBar.visible = true
 				divesDownloaded = false // this allows the progressMessage to be displayed
+				// Make sure the setting is applied to the configuration data for the current download
+				Backend.sync_dc_time = syncTimeWithDiveComputer.checked
+
 				importModel.startDownload()
 			}
 
