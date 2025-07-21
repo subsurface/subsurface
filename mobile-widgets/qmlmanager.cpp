@@ -2389,7 +2389,12 @@ QString QMLManager::getPasswordState() const
 
 void QMLManager::createFirmwareUpdater(QString product)
 {
-	if (appLogFileOpen) {
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+	bool canStoreFiles = appLogFileOpen;
+#else
+	bool canStoreFiles = true;
+#endif
+	if (canStoreFiles) {
 		// We need to be able to store the firmware file
 		ostcFirmwareCheck.reset(getOstcFirmwareCheck(product));
 	} else {
@@ -2409,7 +2414,11 @@ bool QMLManager::checkFirmwareAvailable(DiveImportedModel *diveImportedModel)
 void QMLManager::startFirmwareUpdate()
 {
 	setProgressMessage(QStringLiteral("Downloading firmware %1").arg(ostcFirmwareCheck->getLatestFirmwareAvailable()));
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString saveFileName = appLogFileName;
+#else
+	QString saveFileName = QString::fromStdString(system_default_directory());
+#endif
 	saveFileName.replace("/subsurface.log", "/" + ostcFirmwareCheck->getLatestFirmwareFileName());
 
 	ConfigureDiveComputer *config = new ConfigureDiveComputer();
