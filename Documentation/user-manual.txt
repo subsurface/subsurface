@@ -3954,6 +3954,14 @@ image::images/PlannerWindow1.png["FIGURE: Dive planner startup window",align="ce
 image::images/Planner_issues.png["FIGURE: Dive planner: Issue display",align="center"]
 
 
+- With the _mirror button_ on the top of the table, you can add copies
+  of the dive points in reverse order to mirror the dive profile. This
+  can be useful for example when planning a cave dive when the way
+  back will follow the same depth profile as the way in. The same can
+  be done by pressing Ctrl-M. If this results in waypoints above
+  the ceiling (and the background turns red) you have to adjust them
+  manually not to violate decompression obligations.
+
 ==== Recreational dives
 
 Recreational mode is intended for what most divers would call "recreational", "sports"or "nontechnical" dives,
@@ -4147,6 +4155,10 @@ dive. A waypoint can also be moved by selecting it and by using the arrow keys.
 The waypoints listed in the _Dive Planner Points_ dialog can be edited by hand in
 order to get a precise presentation of the dive plan. In fact, it is sometimes more easy to create the
 whole dive profile by editing the _Dive Planner Points_ dialog.
+
+For planning a dive which has an exit profile which is a mirror image of the entry
+(e.g. cave diving), there is a shortcut to mirror the first half of the dive. Once the intial half of
+the dive is planned, press CTRL+M to create a mirrored exit profile.
 
 Show any changes in gas cylinder used by indicating gas changes as explained
 in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should

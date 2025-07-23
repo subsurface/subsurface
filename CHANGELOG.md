@@ -1,3 +1,4 @@
+planner: allow mirroring of profile with Ctrl-M or button
 statistics: add month-of-year binning
 htmlexport: export dives as a json file as well
 core: add support for Cressi Bluetooth interfaces #4460 #4469

@@ -71,6 +71,7 @@ public
 slots:
 	void addDefaultStop();
 	void addCylinder_clicked();
+	void mirror_clicked();
 	void setGFHigh(const int gfhigh);
 	void setGFLow(const int gflow);
 	void setVpmbConservatism(int level);
@@ -108,6 +109,7 @@ slots:
 	void setAscratestopsDisplay(int rate);
 	void setAscratelast6mDisplay(int rate);
 	void setDescrateDisplay(int rate);
+	void addReverseProfile();
 
 signals:
 	void planCreated();
