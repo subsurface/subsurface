@@ -11,6 +11,9 @@
 #include "core/subsurface-string.h"
 #endif
 
+#include <QFile>
+#include <QNetworkReply>
+
 QStringList vendorList;
 QHash<QString, QStringList> productList;
 static QHash<QString, QStringList> mobileProductList; // BT, BLE or FTDI supported DCs for mobile
@@ -403,4 +406,142 @@ int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText)
 		return btDCs.first().productIdx;
 #endif
 	return -1;
+}
+
+#define OSTC4_VERSION_MAJOR_SHIFT 11
+#define OSTC4_VERSION_MINOR_SHIFT 6
+#define OSTC4_VERSION_PATCH_SHIFT 1
+#define OSTC4_VERSION_MASK 0x001F
+#define OSTC4_VERSION_BETA_MASK 0x0001
+
+OstcFirmwareCheck::OstcFirmwareCheck(const QString &product)
+{
+	QUrl url;
+	devData = device_data_t();
+	if (product == "OSTC 3" || product == "OSTC 3+" || product == "OSTC cR" || product == "OSTC Plus") {
+		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc3_changelog.txt");
+		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc3_firmware.hex");
+	} else if (product == "OSTC Sport") {
+		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_changelog.txt");
+		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_firmware.hex");
+	} else if (product == "OSTC 4/5") {
+		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_changelog.txt");
+		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_firmware.bin");
+	} else { // not one of the known dive computers
+		return;
+	}
+	connect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::parseOstcFwVersion);
+	QNetworkRequest download(url);
+	manager.get(download);
+	report_info("Started download of latest OSTC firmware version information for %s.", qPrintable(product));
+}
+
+void OstcFirmwareCheck::parseOstcFwVersion(QNetworkReply *reply)
+{
+	QString parse = reply->readAll();
+	int firstOpenBracket = parse.indexOf('[');
+	int firstCloseBracket = parse.indexOf(']');
+	latestFirmwareAvailable = parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket - 1);
+	report_info("Found latest OSTC firmware version: %s.", qPrintable(latestFirmwareAvailable));
+
+	reply->close();
+	disconnect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::parseOstcFwVersion);
+}
+
+bool OstcFirmwareCheck::checkLatest(device_data_t *data)
+{
+	devData = *data;
+	// If we didn't find a current firmware version stop this whole thing here.
+	if (latestFirmwareAvailable.isEmpty()) {
+		emit checkCompleted();
+
+		return true;
+	}
+
+	// libdivecomputer gives us the firmware on device as an integer
+	// for the OSTC that means highbyte.lowbyte is the version number
+	// For OSTC 4/5 it is stored as XXXX XYYY YYZZ ZZZB, -> X.Y.Z-beta?
+
+	int firmwareOnDevice = devData.devinfo.firmware;
+	// Convert the latestFirmwareAvailable to a integer we can compare with
+	QStringList fwParts = latestFirmwareAvailable.split(".");
+
+	bool canBeUpdated = false;
+	if (data->product == "OSTC 4/5") {
+		unsigned char first = (firmwareOnDevice >> OSTC4_VERSION_MAJOR_SHIFT) & OSTC4_VERSION_MASK;
+		unsigned char second = (firmwareOnDevice >> OSTC4_VERSION_MINOR_SHIFT) & OSTC4_VERSION_MASK;
+		unsigned char third = (firmwareOnDevice >> OSTC4_VERSION_PATCH_SHIFT) & OSTC4_VERSION_MASK;
+		bool beta = firmwareOnDevice & OSTC4_VERSION_BETA_MASK;
+		firmwareOnDeviceString = QString("%1.%2.%3%4").arg(first).arg(second).arg(third).arg(beta ? "-beta" : "");
+		int latestFirmwareAvailableNumber = (fwParts[0].toInt() << OSTC4_VERSION_MAJOR_SHIFT) + (fwParts[1].toInt() << OSTC4_VERSION_MINOR_SHIFT) + (fwParts[2].toInt() << OSTC4_VERSION_PATCH_SHIFT);
+		int firmwareOnDeviceWithoutBeta = firmwareOnDevice & ~OSTC4_VERSION_BETA_MASK;
+		if (firmwareOnDeviceWithoutBeta < latestFirmwareAvailableNumber || (firmwareOnDeviceWithoutBeta == latestFirmwareAvailableNumber && beta))
+			canBeUpdated = true;
+	} else { // OSTC 3, Sport, Cr
+		firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
+		int latestFirmwareAvailableNumber = fwParts[0].toInt() * 256 + fwParts[1].toInt();
+		if (firmwareOnDevice < latestFirmwareAvailableNumber)
+			canBeUpdated = true;
+	}
+
+	if (canBeUpdated)
+		report_info("Found %s that can be updated from %s to %s.", data->product.c_str(), qPrintable(firmwareOnDeviceString), qPrintable(latestFirmwareAvailable));
+
+	return !canBeUpdated;
+}
+
+QString OstcFirmwareCheck::getLatestFirmwareFileName()
+{
+	QString fileName = latestFirmwareHexFile.fileName();
+	fileName.replace("firmware", latestFirmwareAvailable);
+
+	return fileName;
+}
+
+QString OstcFirmwareCheck::getLatestFirmwareAvailable()
+{
+	return latestFirmwareAvailable;
+}
+
+QString OstcFirmwareCheck::getFirmwareOnDevice()
+{
+	return firmwareOnDeviceString;
+}
+
+void OstcFirmwareCheck::startFirmwareUpdate(const QString &filename, ConfigureDiveComputer *configureDiveComputer)
+{
+	storeFirmware = filename;
+	config = configureDiveComputer;
+
+	// start download of latestFirmwareHexFile
+	connect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::saveOstcFirmware);
+	QNetworkRequest download(latestFirmwareHexFile);
+	manager.get(download);
+	report_info("Started download of latest OSTC firmware %s to %s.", qPrintable(latestFirmwareAvailable), qPrintable(storeFirmware));
+}
+
+void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
+{
+	QByteArray firmwareData = reply->readAll();
+	QFile file(storeFirmware);
+	file.open(QIODevice::WriteOnly);
+	file.write(firmwareData);
+	file.close();
+	report_info("Downloaded OSTC firmware %s to %s.", qPrintable(latestFirmwareAvailable), qPrintable(storeFirmware));
+
+	reply->close();
+	emit checkCompleted();
+
+	config->dc_open(&devData);
+	config->startFirmwareUpdate(storeFirmware, &devData, false);
+}
+
+OstcFirmwareCheck *getOstcFirmwareCheck(const QString &product)
+{
+	if (product == "OSTC 3" || product == "OSTC 3+" || product == "OSTC cR" ||
+		product == "OSTC Sport" || product == "OSTC 4/5" || product == "OSTC Plus") {
+				return new OstcFirmwareCheck(product);
+		}
+
+	return nullptr;
 }

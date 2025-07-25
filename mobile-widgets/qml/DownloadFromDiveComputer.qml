@@ -24,6 +24,8 @@ Kirigami.Page {
 	property alias product: comboProduct.currentIndex
 	property alias connection: comboConnection.currentIndex
 	property bool setupUSB: false
+	property int firmwareUpdateState: 0
+	property double progress: manager.progress
 
 	DCImportModel {
 		id: importModel
@@ -39,6 +41,35 @@ Kirigami.Page {
 			}
 			manager.appendTextToLog("DCDownloadThread finished")
 		}
+	}
+
+	function closePage() {
+		pageStack.pop(downloadFromDc)
+		rootItem.showDiveList()
+		acceptButton.text = qsTr("Accept")
+		downloadButton.text = qsTr("Download")
+		divesDownloaded = false
+		firmwareUpdateState = 0
+		progressBar.visible = false
+		progressBar.indeterminate = true
+		manager.progress = 0.0
+		manager.progressMessage = ""
+
+		manager.appendTextToLog("exit DCDownload screen")
+	}
+
+	function checkFirmwareUpdateAvailable() {
+		if (manager.checkFirmwareAvailable(importModel)) {
+			manager.appendTextToLog("Firmware update found")
+			downloadButton.text = qsTr("Update firmware")
+			firmwareUpdateNoteLabel.firmwareOnDevice = manager.getFirmwareOnDevice()
+			firmwareUpdateNoteLabel.latestFirmwareAvailable = manager.getLatestFirmwareAvailable()
+			firmwareUpdateState = 1
+
+			return true
+		}
+
+		return false
 	}
 
 	ColumnLayout {
@@ -215,7 +246,23 @@ Kirigami.Page {
 							break
 						}
 					}
-					download.text = qsTr("Download")
+					downloadButton.text = qsTr("Download")
+				}
+				function disableDC(inx) {
+					switch (inx) {
+						case 1:
+							dc1.enabled = false
+							break;
+						case 2:
+							dc2.enabled = false
+							break;
+						case 3:
+							dc3.enabled = false
+							break;
+						case 4:
+							dc4.enabled = false
+							break;
+					}
 				}
 			}
 		}
@@ -236,22 +283,6 @@ Kirigami.Page {
 				comboVendor.currentIndex = comboVendor.find(vendor);
 				comboProduct.currentIndex = comboProduct.find(product);
 				comboConnection.currentIndex = manager.getConnectionIndex(device);
-			}
-			function disableDC(inx) {
-				switch (inx) {
-					case 1:
-						dc1.enabled = false
-						break;
-					case 2:
-						dc2.enabled = false
-						break;
-					case 3:
-						dc3.enabled = false
-						break;
-					case 4:
-						dc4.enabled = false
-						break;
-				}
 			}
 
 			TemplateButton {
@@ -313,6 +344,9 @@ Kirigami.Page {
 				manager.appendTextToLog(message)
 				progressBar.visible = true
 				divesDownloaded = false // this allows the progressMessage to be displayed
+
+				manager.createFirmwareUpdater(manager.DC_product)
+
 				// Make sure the setting is applied to the configuration data for the current download
 				Backend.sync_dc_time = syncTimeWithDiveComputer.checked
 
@@ -321,64 +355,81 @@ Kirigami.Page {
 
 			Connections {
 				target: manager
+
 				function onRestartDownloadSignal() {
 					buttonBar.doDownload()
 				}
+
+				function onErrorSignal() {
+					if (firmwareUpdateState != 0) {
+						firmwareUpdateState = 3
+						progressBar.visible = false
+					}
+				}
 			}
 
 			TemplateButton {
-				id: download
+				id: downloadButton
 				text: qsTr("Download")
-				enabled: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 && comboConnection.currentIndex != -1
+				enabled: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 && comboConnection.currentIndex != -1 && !progressBar.visible && firmwareUpdateState < 2
 				onClicked: {
-					text = qsTr("Retry")
+					if (firmwareUpdateState == 0) {
+						text = qsTr("Retry")
 
-					var connectionString = comboConnection.currentText
-					// separate BT address and BT name (if applicable)
-					// pattern that matches BT addresses
-					var btAddr = "(LE:)?([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}";
+						var connectionString = comboConnection.currentText
+						// separate BT address and BT name (if applicable)
+						// pattern that matches BT addresses
+						var btAddr = "(LE:)?([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}";
 
-					// On iOS we store UUID instead of device address.
-					if (Qt.platform.os === 'ios')
-						btAddr = "(LE:)?\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}";
+						// On iOS we store UUID instead of device address.
+						if (Qt.platform.os === 'ios')
+							btAddr = "(LE:)?\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}";
 
-					var pattern = new RegExp(btAddr);
-					var devAddress = "";
-					devAddress = pattern.exec(connectionString);
-					if (devAddress !== null) {
-						manager.DC_bluetoothMode = true;
-						manager.DC_devName = devAddress[0]; // exec returns an array with the matched text in element 0
-						manager.retrieveBluetoothName();
-						manager.appendTextToLog("setting btName to " + manager.DC_devBluetoothName);
-					} else {
-						manager.DC_bluetoothMode = false;
-						manager.DC_devName = connectionString;
+						var pattern = new RegExp(btAddr);
+						var devAddress = "";
+						devAddress = pattern.exec(connectionString);
+						if (devAddress !== null) {
+							manager.DC_bluetoothMode = true;
+							manager.DC_devName = devAddress[0]; // exec returns an array with the matched text in element 0
+							manager.retrieveBluetoothName();
+							manager.appendTextToLog("setting btName to " + manager.DC_devBluetoothName);
+						} else {
+							manager.DC_bluetoothMode = false;
+							manager.DC_devName = connectionString;
+						}
+						buttonBar.doDownload()
+					} else if (firmwareUpdateState == 1) {
+						progressBar.visible = true
+						progressBar.indeterminate = false
+						progressBar.to = 100.0
+						firmwareUpdateState = 2
+
+						manager.startFirmwareUpdate()
 					}
-					buttonBar.doDownload()
 				}
 			}
 			TemplateButton {
-				id:quitbutton
+				id: quitButton
 				text: progressBar.visible ? qsTr("Cancel") : qsTr("Quit")
+				enabled: firmwareUpdateState != 2
 				onClicked: {
-					manager.cancelDownloadDC()
-					if (!progressBar.visible) {
-						// remove the download page and show dive list
-						pageStack.pop(downloadFromDc)
-						rootItem.showDiveList()
-						download.text = qsTr("Download")
-						divesDownloaded = false
-						manager.progressMessage = ""
-						manager.appendTextToLog("exit DCDownload screen")
-					} else {
+					if (firmwareUpdateState == 0) {
+						manager.cancelDownloadDC()
+
 						manager.appendTextToLog("cancel download")
+					}
+
+					if (!progressBar.visible) {
+						if (firmwareUpdateState != 0 || !checkFirmwareUpdateAvailable()) {
+							closePage();
+						}
 					}
 				}
 			}
 			TemplateButton {
 				id:rescanbutton
 				text: qsTr("Rescan")
-				enabled: manager.btEnabled
+				enabled: manager.btEnabled && !progressBar.visible && firmwareUpdateState == 0
 				onClicked: {
 					// refresh both USB and BT/BLE and make sure a reasonable entry is selected
 					var current = comboConnection.currentText
@@ -393,10 +444,20 @@ Kirigami.Page {
 
 			TemplateLabel {
 				Layout.fillWidth: true
-				text: divesDownloaded ? qsTr(" Downloaded dives") :
+				text: (divesDownloaded && firmwareUpdateState == 0) ? qsTr(" Downloaded dives") :
 							(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : btMessage)
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			}
+		}
+
+		TemplateLabel {
+			id: firmwareUpdateNoteLabel
+			property string firmwareOnDevice: ""
+			property string latestFirmwareAvailable: ""
+			Layout.fillWidth: true
+			visible: firmwareUpdateState == 1 || firmwareUpdateState == 2
+			text: qsTr("A firmware update for your dive computer is available: you have version ") + firmwareOnDevice + qsTr(" but the latest stable version is ") + latestFirmwareAvailable + qsTr(". \nIf your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update.")
+			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 		}
 
 		RowLayout {
@@ -407,7 +468,7 @@ Kirigami.Page {
 			TemplateCheckBox {
 				id: forceAll
 				checked: manager.DC_forceDownload
-				enabled: forceAllLabel.visible
+				enabled: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 && comboConnection.currentIndex != -1 && !progressBar.visible && firmwareUpdateState == 0
 				visible: enabled
 				height: forceAllLabel.height - Kirigami.Units.smallSpacing;
 				width: height
@@ -418,8 +479,7 @@ Kirigami.Page {
 			TemplateLabel {
 				id: forceAllLabel
 				text: qsTr("force downloading all dives")
-				visible: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 &&
-					 comboConnection.currentIndex != -1
+				visible: forceAll.visible
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			}
 		}
@@ -432,7 +492,7 @@ Kirigami.Page {
 			TemplateCheckBox {
 				id: syncTimeWithDiveComputer
 				checked: Backend.sync_dc_time
-				enabled: syncTimeLabel.visible
+				enabled: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 && comboConnection.currentIndex != -1 && !progressBar.visible && firmwareUpdateState == 0
 				visible: enabled
 				height: syncTimeLabel.height - Kirigami.Units.smallSpacing;
 				width: height
@@ -443,8 +503,7 @@ Kirigami.Page {
 			TemplateLabel {
 				id: syncTimeLabel
 				text: qsTr("Sync dive computer time")
-				visible: comboVendor.currentIndex != -1 && comboProduct.currentIndex != -1 &&
-					 comboConnection.currentIndex != -1
+				visible: syncTimeWithDiveComputer.visible
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			}
 		}
@@ -489,6 +548,7 @@ Kirigami.Page {
 				text: qsTr("Accept")
 				bottomPadding: Kirigami.Units.gridUnit / 2
 				onClicked: {
+					progressBar.visible = false
 					manager.appendTextToLog("Save downloaded dives that were selected")
 					busy = true
 					rootItem.showBusy("Save selected dives")
@@ -497,12 +557,13 @@ Kirigami.Page {
 					// it's important to save the changes because the app could get killed once
 					// it's in the background - and the freshly downloaded dives would get lost
 					manager.changesNeedSaving()
-					pageStack.pop()
-					showDiveList()
-					download.text = qsTr("Download")
-					busy = false
 					rootItem.hideBusy()
+					busy = false
 					divesDownloaded = false
+
+					if (!checkFirmwareUpdateAvailable()) {
+						closePage()
+					}
 				}
 			}
 			TemplateLabel {
@@ -545,6 +606,17 @@ Kirigami.Page {
 					// also check if there are USB devices (this only has an effect on Android)
 					manager.usbRescan()
 				}
+			}
+		}
+	}
+
+	onProgressChanged: {
+		progressBar.value = manager.progress
+
+		if (progressBar.value >= progressBar.to) {
+			if (firmwareUpdateState != 0) {
+				firmwareUpdateState = 3
+				progressBar.visible = false
 			}
 		}
 	}
