@@ -4902,17 +4902,18 @@ After establishing the RFCOMM connection and while the dive computer's upload mo
 Some Uwatec and Subgear dive computers like the Uwatec Galileo use infra red (IrDA) communication
 between the dive computer and Subsurface.
 
+
 The dive computers using IrDA include:
 
 Uwatec:
 
+- Aladin 2G
 - Aladin One
 - Aladin Prime
 - Aladin Sport
 - Aladin Tec
 - Aladin Tec 2G
 - Aladin Tec 3G
-- Aladin 2G
 - Galileo Luna
 - Galileo Sol
 - Galileo Terra
@@ -4924,21 +4925,24 @@ Uwatec:
 
 Subgear:
 
-- XP Air
 - XP-10
 - XP-3G
+- XP Air
 
-The Uwatec / Subgear hardware uses
-a USB dongle based on the serial infra-red (SIR) protocol and the
-MCS7780 IrDA controller manufactured by MosChip
-and marketed by Scubapro and some electronics companies.
-Under current Linux, the kernel
-already provides for communication using the IrDA protocol. However,
-the user additionally needs to load a driver for the IrDA interface
-with the dive computer. The easiest way is to load the *irda-tools*
+
+For Windows, IrDA is only available as an https://github.com/inthehand/32feet/wiki/Enable-IrDA-in-Windows-10-and-above[optional, installable feature] for Windows 10 and higher.
+
+For the Apple Mac, IrDA communication via the MCS7780 link is not available for OSX 10.6 or higher.
+
+For linux, the IrDA stack has been phased out in pretty much all current distributions.
+
+This is old technology and, even though it is currently more robust, fast and efficient than many other technologies such as Bluetooth, it is not fashionable. If IrDA communication is required for an operating system that does not support it, an easy solution is to run Subsurface in a virtual machine (VM) that contains support for IrDA. A VM (e.g. VMWare or VirtualBox) can be installed on most modern operating systems. The only hardware setup required is to route the USB port of the host OS through to the guest OS.
+
+
+The Uwatec / Subgear hardware uses a USB dongle based on the serial infra-red (SIR) protocol and the MCS7780 IrDA controller manufactured by MosChip and marketed by Scubapro and some electronics companies.
+In older Linux distributions, the kernel provided for communication using the IrDA protocol. However, the user additionally needs to load a driver for the IrDA interface with the dive computer. The easiest way is to load the *irda-tools*
 package from the https://irda.sourceforge.net/docs/startirda.html[Linux IrDA Project].
-After the installation of the irda-tools, the *root user* can specify a device name
-from the console as follows:
+After the installation of the irda-tools, the *root user* can specify a device name from the console as follows:
 
 +irattach irda0+
 
@@ -4946,15 +4950,7 @@ After executing this command, Subsurface will recognize the
 dive computer and download dive information.
 
 Under Windows, a similar situation exists. Drivers for the MCS7780 are
-available from some Internet web sites e.g.
-https://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com]. Windows-based IrDA
-drivers for the Uwatec can also be downloaded from the ScubaPro web site, with drivers located on
-the download page for the ScubaPro SmartTrak software.
-
-For Windows, IrDA is not available for Windows 10 and higher.
-For the Apple Mac, IrDA communication via the MCS7780 link is not
-available for OSX 10.6 or higher.
-In addition the IrDA stack has been phased out in Linux. This is old technology and, even though it is currently more robust, fast and efficient than many other technologies such as Bluetooth, it is not fashionable. If IrDA communication is required for an operating system that does not support it, an easy solution is to run Subsurface in a virtual machine (VM) that contains support for IrDA. A VM (e.g. VMWare or vitualbox) can be installed on most modern operating systems. The only hardware setup required is to route the USB port of the host OS through to the guest OS.
+available from some Internet web sites e.g. https://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com]. Windows-based IrDA drivers for the Uwatec can also be downloaded from the ScubaPro web site, with drivers located on the download page for the ScubaPro SmartTrak software.
 
 
 ****
@@ -4962,11 +4958,15 @@ In addition the IrDA stack has been phased out in Linux. This is old technology 
 [icon="images/icons/important.png"]
 [IMPORTANT]
 
-Many of the new desktop operation systems (e.g. Windows 10, Linux kernel 4.17 and newer) do not provide support for IrDA-based communication. The underlying kernel drivers for IrDA
-are not provided any more because IrDA is an old technology, not well-maintained any more, thus creating problems on new operating systems such as Windows or Linux. However, in this case, do not stop using your IrDA-dependent dive computer. A way to solve this problem is to create a virtual machine on your desktop with a guest operating system that still does support IrDA. Your existing desktop acts as a host, with the IrDA-supporting operating system running as a guest on your host desktop. This is not a
-complex task but is best done with the help of an IT support person. Virtualization software can be found for all desktop operating systems. In the Microsoft environment, Hyper-V allows virtual machines, as does Parallels on the Apple Mac: however these are proprietary software. VMware is probably the most sophisticated virtualization software, running on all operating systems, but it is also proprietary. Within the open source environment, VirtualBox is available free of
-charge for most current operation systems. Older, potential guest operating systems with IrDA support include Windows 8 and Linux Ubuntu 18.04 LTS (Linux kernel 4.15 or older). Creating a virtual machine allows, for instance, Windows 8 to be run as a guest on
-your Windows 10 (or later) machine. After installing Subsurface on the Windows 8 guest operating system, its IrDA facilities can be used to access an IrDA dongle plugged into the USB port of your Windows 10 (or later) host machine, allowing dive computers dependent on IrDA to download dive data to the guest operating system (Windows 8 in this case). Host and guest can share directories, which facilitates dive log transfer between the two systems.
+Many of the new desktop operation systems (e.g. MacOS 10.6 or higher, Linux kernel 4.17 and newer) do not provide support for IrDA-based communication. The underlying kernel drivers for IrDA are not provided any more because IrDA is an old technology, not well-maintained any more, thus creating problems on newer operating systems.
+
+However, in this case, do not stop using your IrDA-dependent dive computer. A way to solve this problem is to create a virtual machine on your desktop with a guest operating system that still does support IrDA. Your existing desktop acts as a host, with the IrDA-supporting operating system running as a guest on your host desktop. This is not a complex task but is best done with the help of an IT support person. Virtualization software can be found for all desktop operating systems.
+
+In the Microsoft environment, Hyper-V allows virtual machines, as does Parallels on the Apple Mac: however these are proprietary software. VMware is probably the most sophisticated virtualization software, running on all operating systems, but it is also proprietary.
+
+Within the open source environment, VirtualBox is available free of charge for most current operation systems. Older, potential guest operating systems with IrDA support include Linux Ubuntu 18.04 LTS (Linux kernel 4.15 or older).
+
+Creating a virtual machine allows, for instance, Ubuntu 18.04 LTS to be run as a guest on your machine running a more recent version of Linux. After installing Subsurface on the guest operating system, its IrDA facilities can be used to access an IrDA dongle plugged into the USB port of your host machine, allowing dive computers dependent on IrDA to download dive data to the guest operating system. Host and guest can share directories, which facilitates dive log transfer between the two systems.
 
 The downside of this solution is that the guest operating system needs to be started specially for the IrDA-based download from a dive computer. Install a scaled down version of the guest operating system to minimize its demands on the host system.
 
