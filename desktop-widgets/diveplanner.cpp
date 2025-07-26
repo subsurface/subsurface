@@ -49,6 +49,7 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	ui.cylinderTableWidget->setTitle(tr("Available gases"));
 	ui.cylinderTableWidget->setBtnToolTip(tr("Add cylinder"));
 	ui.cylinderTableWidget->setModel(cylinders);
+
 	QTableView *view = ui.cylinderTableWidget->view();
 	connect(ui.cylinderTableWidget, &TableView::itemClicked, cylinders, &CylindersModel::remove);
 	view->setColumnHidden(CylindersModel::START, true);
@@ -107,6 +108,13 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
+
+	plannerMenu = new QMenu(tr("&Planner"), MainWindow::instance()->menuBar());
+
+	QAction *reverseProfileAction = new QAction(tr("Add &reverse profile"), plannerMenu);
+	connect(reverseProfileAction, &QAction::triggered, plannerModel, &DivePlannerPointsModel::addReverseProfile);
+
+	plannerMenu->addAction(reverseProfileAction);
 }
 
 DivePlannerWidget::~DivePlannerWidget()
@@ -235,6 +243,16 @@ void DivePlannerWidget::setColumnVisibility(int mode)
 	ui.tableWidget->view()->setVisible(false); // This will cause the resize to include rows outside the current viewport
 	ui.tableWidget->view()->resizeColumnsToContents();
 	ui.tableWidget->view()->setVisible(true);
+}
+
+void DivePlannerWidget::showEvent(QShowEvent *)
+{
+	MainWindow::instance()->menuBar()->insertMenu(MainWindow::instance()->helpMenu()->menuAction(), plannerMenu);
+}
+
+void DivePlannerWidget::hideEvent(QHideEvent *)
+{
+	MainWindow::instance()->menuBar()->removeAction(plannerMenu->menuAction());
 }
 
 void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)

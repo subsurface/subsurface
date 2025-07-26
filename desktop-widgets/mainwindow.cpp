@@ -1550,6 +1550,7 @@ void MainWindow::setApplicationState(ApplicationState state)
 	ui.actionViewInfo->setEnabled(allowChange);
 	ui.actionViewMap->setEnabled(allowChange);
 	ui.actionViewDiveSites->setEnabled(allowChange);
+	ui.actionStats->setEnabled(allowChange);
 	ui.actionFilterTags->setEnabled(allowChange);
 }
 

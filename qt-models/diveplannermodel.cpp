@@ -58,7 +58,6 @@ void DivePlannerPointsModel::removeSelectedPoints(const std::vector<int> &rows)
 {
 	removePoints(rows);
 
-	updateDiveProfile();
 	emitDataChanged();
 	cylinders.updateTrashIcon();
 }
@@ -187,7 +186,6 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 		addStop(0_m, dc->duration.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 	preserved_until = d->duration;
 
-	updateDiveProfile();
 	emitDataChanged();
 }
 
@@ -809,13 +807,38 @@ void DivePlannerPointsModel::addDefaultStop()
 {
 	removeDeco();
 	addStop(0_m, 0, -1, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
+
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::addStop(depth_t depth, int seconds)
 {
 	removeDeco();
 	addStop(depth, seconds, -1, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
-	updateDiveProfile();
+	emitDataChanged();
+}
+
+void DivePlannerPointsModel::addReverseProfile() {
+	if (divepoints.size() <= 1)
+		return;
+
+	int runtime = divepoints.back().time;
+
+	beginInsertRows(QModelIndex(), divepoints.size(), 2 * divepoints.size() - (prefs.drop_stone_mode ? 1 : 2));
+	for (int i = divepoints.count() - 2; i >= 0; --i) {
+		divepoints << divepoints[i];
+		runtime += divepoints[i+1].time - divepoints[i].time;
+		divepoints.back().time = runtime;
+	}
+
+	if (prefs.drop_stone_mode) {
+		divepoints << divepoints[0];
+		divepoints.back().time = runtime + divepoints[0].time - divepoints[0].depth.mm / prefs.descrate;
+	}
+
+	endInsertRows();
+
+	emitDataChanged();
 }
 
 // cylinderid_in == -1 means same gas as before.
@@ -885,6 +908,7 @@ int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_i
 	point.divemode = divemode;
 	divepoints.insert(divepoints.begin() + row, point);
 	endInsertRows();
+
 	return row;
 }
 
@@ -977,7 +1001,6 @@ void DivePlannerPointsModel::removeControlPressed(const QModelIndex &index)
 	if (divepoints[0].cylinderid != old_first_cylid)
 		cylinders.moveAtFirst(divepoints[0].cylinderid);
 
-	updateDiveProfile();
 	emitDataChanged();
 }
 
@@ -1014,7 +1037,6 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 	if (divepoints[0].cylinderid != old_first_cylid)
 		cylinders.moveAtFirst(divepoints[0].cylinderid);
 
-	updateDiveProfile();
 	emitDataChanged();
 }
 

@@ -114,7 +114,7 @@ void TableView::setModel(QAbstractItemModel *model)
 	ui.tableView->horizontalHeader()->setMinimumHeight(metrics.header_ht);
 }
 
-void TableView::fixPlusPosition()
+void TableView::fixButtonPosition()
 {
 	QStyleOptionGroupBox option;
 	initStyleOption(&option);
@@ -126,14 +126,14 @@ void TableView::fixPlusPosition()
 // We need to manually position the 'plus' on cylinder and weight.
 void TableView::resizeEvent(QResizeEvent *event)
 {
-	fixPlusPosition();
+	fixButtonPosition();
 	QWidget::resizeEvent(event);
 }
 
 void TableView::showEvent(QShowEvent *event)
 {
 	QWidget::showEvent(event);
-	fixPlusPosition();
+	fixButtonPosition();
 }
 
 void TableView::edit(const QModelIndex &index)

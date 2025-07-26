@@ -30,7 +30,7 @@ public:
 	~TableView();
 	void setModel(QAbstractItemModel *model);
 	void setBtnToolTip(const QString &tooltip);
-	void fixPlusPosition();
+	void fixButtonPosition();
 	void edit(const QModelIndex &index);
 	int  defaultColumnWidth(int col); // default column width for column col
 	QTableView *view();
