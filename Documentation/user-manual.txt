@@ -499,7 +499,7 @@ existing pairings and start by scanning for Bluetooth devices from an empty list
 (on the desktop) of Bluetooth devices. Once _Subsurface_ has recognized the Bluetooth dive
 computer, subsequent divelog downloads are likely to be simple.
 
-On the _Linux_ or _MacOS_ platforms the name
+On the _Linux_ or _macOS_ platforms the name
 of the _Subsurface_ computer and its Bluetooth address are shown on the right hand side.
 The power state (on/off) of the Bluetooth adapter is shown below
 the address and can be changed by checking the _Turn on/off_ box.
@@ -557,7 +557,7 @@ shown on the right-hand side of the download dialog.
 ===== On Windows:
 image::images/DC_import_Bluetooth_Windows.jpg["FIGURE: Download Bluetooth on Windows",align="center"]
 
-Bluetooth download on Windows is much the same as on Linux and MacOS.
+Bluetooth download on Windows is much the same as on Linux and macOS.
 A log message on the bottom left of the _Remote Bluetooth device selection_
 shows details about the current status of the Bluetooth agent (see image above).
 
@@ -1216,10 +1216,10 @@ available, as in dialog *B*, above. Currently these are:
 
  - XML-formatted dive logs (DivingLog 5.0, MacDive and several other dive log systems)
  - Cochran dive logs
- - UDDF-formatted dive logs (e.g. Kenozooid)
+ - UDDF-formatted dive logs (e.g. APD Inspiration, Kenozooid)
  - UDCF-formatted dive logs
  - Poseidon MkVI CCR logs
- - APD Inspiration/Evolution CCR logs
+ - APD Inspiration CCR legacy data files
  - LiquiVision logs
  - divelogs.de logs
  - OSTC Tools logs
@@ -1441,7 +1441,7 @@ placed in the user folder .jtrak\DB_V4\jtrak.script
 ==== Importing data in CSV format
 
 A comma-separated file (.csv) can be used to import dive information either as dive profiles
-(as in the case of the APD Inspiration and Evolution closed circuit rebreathers) or as dive
+(as in the case of the APD Inspiration closed circuit rebreathers) or as dive
 metadata (in case the user keeps dive data in a spreadsheet). The _CSV_ format is a universal
 simplified format that allows easy information exchange between different computers or
 software packages. For an introduction to CSV-formatted files see xref:S_CSV_Intro[A Diver's
@@ -2672,9 +2672,9 @@ image::images/Ceilings2.jpg["Figure: Ceiling with 3m resolution",align="center"]
 
 Gradient Factor settings strongly affect the calculated ceilings and their depths. For more information about Gradient factors, see the section on xref:GradientFactors_Ref[Gradient Factor Preference settings]. The currently used gradient factors (e.g. GF 35/75) are shown above the depth profile if the appropriate toolbar buttons are activated. N.B.: The indicated gradient factors are NOT the gradient factors in use by the dive computer, but those used by Subsurface to calculate deco obligations during the dive. For more information external to this manual see:
 
- *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ *** link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 ===============================================================================================================
 
 
@@ -2757,7 +2757,7 @@ The colors of the heat map are not affected by the gradient factor settings.
 This is because the heat map indicates tissue pressures relative to the Bühlmann M-value gradient, and
 not relative to any specific gradient factor. For more information external to this manual see:
 
-http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
 Since the colors of the heat map are not affected by the gradient factor(s), the heat map is also
 applicable when using the VPM-B decompression model.
@@ -3244,17 +3244,17 @@ A dive log or part of it can be saved in several formats:
 * _Subsurface dive sites XML_. Export the dive sites in XML format. This allows the
   sharing of dive sites with other divers or software.
 
-* Universal Dive Data Format (_UDDF_). Refer to _http://uddf.org_ for more information.
+* Universal Dive Data Format (_UDDF_). Refer to _https://uddf.org/_ for more information.
   UDDF is a generic format that enables communication among many dive computers
   and computer programs.
 
 * _Divelogs.de_, an Internet-based dive log repository. In order to upload to _Divelogs.de_,
-  you need a user-ID as well as a password for _Divelogs.de_. Log into _http://en.divelogs.de_
+  you need a user-ID as well as a password for _Divelogs.de_. Log into _https://en.divelogs.de/_
   and subscribe to this service to upload dive log data from _Subsurface_.
 
 * _DiveShare_ is also a dive log repository on the Internet focusing on recreational
   dives. To upload dives, you need a user ID, so registration with
-  _http://scubadiveshare.com_ is required.
+  _https://scubadiveshare.com/_ is required.
 
 * _CSV summary dive details_, that includes the most critical information of the dive
   profile. Included information of a dive is: dive number, date, time, buddy,
@@ -3291,7 +3291,7 @@ image::images/mapview_f20.jpg["Figure: HTML Map export view",align="center"]
 * _TeX_ format, a file for printing using the TeX typesetting
   software. Choose a filename with a '.tex' extension. You will also
   need a template file, that can be obtained from
-  link:http://www.atdotde.de/%7erobert/subsurfacetemplate/[http://www.atdotde.de/~robert/subsurfacetemplate/] in the same
+  link:https://www.atdotde.de/%7erobert/subsurfacetemplate/[https://www.atdotde.de/~robert/subsurfacetemplate/] in the same
   directory as the '.tex' file. The file can then be processed with
   plain TeX (not LaTeX), for example by running 'pdftex filename.tex'
   on the command line.
@@ -3808,9 +3808,9 @@ these items mainly pertain to oxygen management:
    harsh.
    For more information see:
 
- *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ *** link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
 === Georeference
 
@@ -4081,8 +4081,8 @@ next to the first ascent waypoint in the table on the left hand side.
 
 For more information external to this manual see:
 
- * link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
- * link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ * link:https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ * link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
  * link:https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
 An excellent non-technical review that discusses both the Bühlmann deco model and the VPM-B model.
 
@@ -4620,7 +4620,7 @@ ways to find out what the device name is:
 Simply try COM1, COM2, etc. The drop down list should contain all connected COM
 devices.
 
-.On MacOS:
+.On macOS:
 
 The drop down box should find all connected dive computers.
 
@@ -4718,7 +4718,7 @@ this COM port already. If not, enter it manually.
 Note: If there are issues afterwards when downloading from the dive computer using
 other software, remove the existing pairing with the dive computer.
 
-==== On MacOS:
+==== On macOS:
 
 Click on the Bluetooth symbol in the menu bar and select _Set up
 Bluetooth Device..._. The dive computer should then show up in the list of devices. Select it and go
@@ -4936,7 +4936,7 @@ Under current Linux, the kernel
 already provides for communication using the IrDA protocol. However,
 the user additionally needs to load a driver for the IrDA interface
 with the dive computer. The easiest way is to load the *irda-tools*
-package from the http://irda.sourceforge.net/docs/startirda.html[Linux IrDA Project].
+package from the https://irda.sourceforge.net/docs/startirda.html[Linux IrDA Project].
 After the installation of the irda-tools, the *root user* can specify a device name
 from the console as follows:
 
@@ -4947,7 +4947,7 @@ dive computer and download dive information.
 
 Under Windows, a similar situation exists. Drivers for the MCS7780 are
 available from some Internet web sites e.g.
-http://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com]. Windows-based IrDA
+https://www.drivers-download.com/Drv/MosChip/MCS7780/[www.drivers-download.com]. Windows-based IrDA
 drivers for the Uwatec can also be downloaded from the ScubaPro web site, with drivers located on
 the download page for the ScubaPro SmartTrak software.
 
@@ -5029,45 +5029,22 @@ can be downloaded at a time, in three files:
 _Subsurface_ accesses the .txt and the .csv files to get dive log information.
 
 
-=== Importing from APD Inspiration/Evolution CCR
+=== Importing from APD Inspiration CCR
 
 [icon="images/APDComputer.jpg"]
 [NOTE]
-The dive logs of an APD Inspiration or similar CCR dive computer are downloaded using
-a communications adapter and _AP Communicator_, obtained when
-purchasing the equipment. The dive logs can be viewed using the _AP Log Viewer_,
-within Windows or Mac/OS. However, APD logs can be viewed and managed from within
-_Subsurface_ (together with dives using many other types of dive computer). The
-APD inspiration dive logs are imported into _Subsurface_ as follows:
+The dive logs of an APD Inspiration (Vision or 2020Vision) CCR dive computer are downloaded using
+a communications adapter included with the unit (Vision), or Bluetooth (2020Vision), and the _AP DiveSight_ software, downloadable from the https://www.apdiving.com/en/rebreathers/resources/software/[AP Diving website].
+The dive logs can be viewed and edited using the _AP DiveSight_ on Windows or macOS. However, APD logs can also be viewed and managed from within _Subsurface_ (together with dives using many other types of dive computer). In order to import the log files into _Subsurface_, _AP DiveSight_ (2.0.0.5 or newer) offers the option to export them in the UDDF format.
 
-- Download the dive using _AP Communicator_.
-- Open a dive within the _AP Log Viewer_.
-- Select the tab at the top of the screen, entitled "_Data_".
-- With the raw dive log data show on the screen, click on "_Copy to Clipboard_".
-- Open a text editor, e.g. Notepad (Windows) or TextWrangler (Mac).
-- Copy the contents of the clipboard into the text editor and save the text file
-  with a filename extension of _.apd_.
-- Within _Subsurface_, select _Import ->  Import log files_ to open the xref:Unified_import[universal import dialog].
-- In the dropdown list towards the bottom right of the dialog (labelled 'Filter:'), select "APD log viewer".
-- On the list of file names select the _.apd_ file  created. An import
-  dialog opens showing the default settings for the data in the
-_.apd_ file. If changes are required,
-  do this as for xref:S_ImportingCSVDives[CSV imports].
+The following options for UDDF export are available in _AP DiveSight_:
 
-image::images/APD_CSVimportF22.jpg["Figure: APD log viewer import",align="center"]
+- in _Settings_, check _Download UDDF files_ - all new log files will be stored as UDDF;
+- open a log file, then click _File -> Save UDDF_ to save an individual file as UDDF;
+- use _Tools -> Batch process UDDF_ to convert multiple existing log files to UDDF
 
-- The top left hand dropdown box in the import panel lets you select the APD dive computer
-  for which the dive log needs to be imported. The default it is DC1, _i.e._ the
-  first of the two dive computers the APD uses. It is possible to sequentially
-  import the data for both dive computers by first importing CD1 and then DC2.(*Hint*: The logs
-  for the two dive computers are viewed by selecting _View  ->  Next DC_ from
-  the Main Menu after the uploading has been completed)
-- Click the _Ok_ button at the bottom of the import panel.
+Once the logs have been stored as UDDF files, they can be imported into _Subsurface_ through _Import -> Import log files_ (one file per dive).
 
-The APD dive log will appear within _Subsurface_. The dive computer- generated ceiling
-provided by the Inspiration can be viewed by selecting the appropriate
-button on the left of the *Dive Profile*. Cylinder pressure data are not logged
-by the APD equipment but can be manually entered in the _Equipment_ Tab.
 
 == APPENDIX C: Exporting Dive log information from external dive log software.
 
