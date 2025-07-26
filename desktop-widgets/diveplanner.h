@@ -36,7 +36,12 @@ slots:
 private:
 	Ui::DivePlanner ui;
 	QAbstractButton *replanButton;
+	QMenu *plannerMenu;
 	void waterTypeUpdateTexts();
+
+	void showEvent(QShowEvent *) override;
+	void hideEvent(QHideEvent *) override;
+
 };
 
 #include "ui_plannerSettings.h"
@@ -89,7 +94,6 @@ public:
 	int getDcNr();
 	divemode_t getDiveMode() const;
 	void settingsChanged();
-	QMenu *getCustomMenu() const { return plannerMenu; }
 
 public
 slots:
@@ -98,7 +102,7 @@ slots:
 private:
 	std::unique_ptr<dive> planned_dive;
 	int dcNr;
-	QMenu *plannerMenu;
+
 public:
 	DivePlannerWidget plannerWidget;
 	PlannerSettingsWidget plannerSettingsWidget;

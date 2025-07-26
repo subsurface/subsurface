@@ -108,6 +108,13 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
+
+	plannerMenu = new QMenu(tr("&Planner"), MainWindow::instance()->menuBar());
+
+	QAction *reverseProfileAction = new QAction(tr("Add &reverse profile"), plannerMenu);
+	connect(reverseProfileAction, &QAction::triggered, plannerModel, &DivePlannerPointsModel::addReverseProfile);
+
+	plannerMenu->addAction(reverseProfileAction);
 }
 
 DivePlannerWidget::~DivePlannerWidget()
@@ -236,6 +243,16 @@ void DivePlannerWidget::setColumnVisibility(int mode)
 	ui.tableWidget->view()->setVisible(false); // This will cause the resize to include rows outside the current viewport
 	ui.tableWidget->view()->resizeColumnsToContents();
 	ui.tableWidget->view()->setVisible(true);
+}
+
+void DivePlannerWidget::showEvent(QShowEvent *)
+{
+	MainWindow::instance()->menuBar()->insertMenu(MainWindow::instance()->helpMenu()->menuAction(), plannerMenu);
+}
+
+void DivePlannerWidget::hideEvent(QHideEvent *)
+{
+	MainWindow::instance()->menuBar()->removeAction(plannerMenu->menuAction());
 }
 
 void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
@@ -563,12 +580,6 @@ PlannerWidgets::PlannerWidgets() :
 	connect(plannerDetails.printPlan(), &QPushButton::pressed, this, &PlannerWidgets::printDecoPlan);
 	connect(DivePlannerPointsModel::instance(), &DivePlannerPointsModel::calculatedPlanNotes,
 		&plannerDetails, &PlannerDetails::setPlanNotes);
-
-	plannerMenu = new QMenu(tr("&Planner"), MainWindow::instance()->getMenuBar());
-	QAction *reverseProfileAction = new QAction(tr("Add &reverse profile"), plannerMenu);
-	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	connect(reverseProfileAction, &QAction::triggered, plannerModel, &DivePlannerPointsModel::addReverseProfile);
-	plannerMenu->addAction(reverseProfileAction);
 }
 
 PlannerWidgets::~PlannerWidgets()

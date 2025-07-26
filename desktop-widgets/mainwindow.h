@@ -76,6 +76,7 @@ public:
 	void enableDisableCloudActions();
 	void editDiveSite(dive_site *ds);
 	void setEnabledToolbar(bool arg1);
+	QMenu *helpMenu() { return ui.menuHelp; }
 
 	std::unique_ptr<MainTab> mainTab;
 	std::unique_ptr<PlannerWidgets> plannerWidgets;
@@ -85,7 +86,6 @@ public:
 	std::unique_ptr<ProfileWidget> profile;
 	std::unique_ptr<MapWidget> mapWidget;
 
-	QMenuBar *getMenuBar() const { return ui.menubar; }
 private
 slots:
 	/* file menu action */
@@ -240,7 +240,6 @@ private:
 	QAction *share_on_fb;
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
 
-	QAction *customAction;
 };
 
 #endif // MAINWINDOW_H
