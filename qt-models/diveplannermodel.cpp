@@ -807,13 +807,15 @@ void DivePlannerPointsModel::addDefaultStop()
 {
 	removeDeco();
 	addStop(0_m, 0, -1, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
+
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::addStop(depth_t depth, int seconds)
 {
 	removeDeco();
 	addStop(depth, seconds, -1, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
-	updateDiveProfile();
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::addReverseProfile() {
@@ -906,6 +908,7 @@ int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_i
 	point.divemode = divemode;
 	divepoints.insert(divepoints.begin() + row, point);
 	endInsertRows();
+
 	return row;
 }
 
