@@ -456,7 +456,7 @@ Kirigami.Page {
 			property string latestFirmwareAvailable: ""
 			Layout.fillWidth: true
 			visible: firmwareUpdateState == 1 || firmwareUpdateState == 2
-			text: qsTr("A firmware update for your dive computer is available: you have version ") + firmwareOnDevice + qsTr(" but the latest stable version is ") + latestFirmwareAvailable + qsTr(". \nIf your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update.")
+			text: qsTr("<br><br>A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2. <br><br><font color=\"red\">If your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update.</font>").arg(firmwareOnDevice).arg(latestFirmwareAvailable)
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 		}
 
