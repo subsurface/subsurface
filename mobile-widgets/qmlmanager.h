@@ -15,6 +15,7 @@
 #include "core/downloadfromdcthread.h"
 #include "qt-models/completionmodels.h"
 #include "qt-models/divelocationmodel.h"
+#include "qt-models/diveimportedmodel.h"
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 
@@ -42,6 +43,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QStringList cloudCacheList READ cloudCacheList NOTIFY cloudCacheListChanged)
 	Q_PROPERTY(QString progressMessage MEMBER m_progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
 	Q_PROPERTY(bool btEnabled MEMBER m_btEnabled WRITE setBtEnabled NOTIFY btEnabledChanged)
+	Q_PROPERTY(qreal progress MEMBER m_progress WRITE setProgress NOTIFY progressChanged)
 
 	Q_PROPERTY(bool pasteDiveSite MEMBER m_pasteDiveSite)
 	Q_PROPERTY(bool pasteNotes MEMBER m_pasteNotes)
@@ -176,6 +178,12 @@ public:
 	QString getSyncState() const;
 	QString getPasswordState() const;
 
+	void setErrorMessage(QString text);
+	void displayProgress(int progress);
+
+	qreal progress() const;
+	void setProgress(qreal progress);
+
 public slots:
 	void appInitialized();
 	void applicationStateChanged(Qt::ApplicationState state);
@@ -226,6 +234,11 @@ public slots:
 	QString getProductVendorConnectionIdx(android_usb_serial_device_descriptor descriptor);
 #endif
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
+	void createFirmwareUpdater(QString product);
+	bool checkFirmwareAvailable(DiveImportedModel *diveImportedModel);
+	void startFirmwareUpdate();
+	QString getFirmwareOnDevice() const;
+	QString getLatestFirmwareAvailable() const;
 
 private:
 	BuddyCompletionModel buddyModel;
@@ -287,6 +300,8 @@ private:
 	IosShare iosshare;
 #endif
 	qPrefCloudStorage::cloud_status m_oldStatus;
+	std::unique_ptr<OstcFirmwareCheck> ostcFirmwareCheck;
+	qreal m_progress;
 
 signals:
 	void verboseEnabledChanged();
@@ -314,10 +329,13 @@ signals:
 	void syncStateChanged();
 	void passwordStateChanged();
 	void changesNeedSavingSignal();
+	void errorSignal();
 
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
 	void uploadProgress(qreal percentage);
+
+	void progressChanged();
 
 private slots:
 	void uploadFinishSlot(bool success, const QString &text, const QByteArray &html);
