@@ -1,4 +1,4 @@
-DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_nl mobile-manual-v3 mobile-manual_es mobile-manual_fr
+DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_nl user-manual_de mobile-manual-v3 mobile-manual_es mobile-manual_fr 
 
 OUT ?= output
 
