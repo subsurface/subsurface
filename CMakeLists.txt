@@ -584,7 +584,8 @@ set(DOCFILES
 	SupportedDivecomputers.txt
 	${CMAKE_BINARY_DIR}/Documentation/user-manual.html
 	${CMAKE_BINARY_DIR}/Documentation/user-manual_es.html
-	${CMAKE_BINARY_DIR}/Documentation/user-manual_fr.html
+        ${CMAKE_BINARY_DIR}/Documentation/user-manual_fr.html
+        ${CMAKE_BINARY_DIR}/Documentation/user-manual_de.html
 )
 
 # add all the translations that we may need
