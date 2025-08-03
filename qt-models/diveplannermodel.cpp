@@ -17,6 +17,7 @@
 #include "core/selection.h"
 #include "core/subsurface-time.h"
 #include "core/settings/qPrefDivePlanner.h"
+#include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefUnit.h"
 #include "commands/command.h"
 #include "core/gettextfromc.h"
@@ -24,6 +25,7 @@
 #include <QApplication>
 #include <QTextDocument>
 #include <QtConcurrent>
+#include <QVariantMap> 
 
 #define VARIATIONS_IN_BACKGROUND 1
 
@@ -856,7 +858,7 @@ int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_i
 	if (seconds == 0 && depth.mm == 0) {
 		if (row == 0) {
 			depth = m_or_ft(5, 15); // 5m / 15ft
-			seconds = 600;		     // 10 min
+			seconds = 600;			// 10 min
 			// Default to the first cylinder
 			cylinderid = 0;
 		} else {
@@ -1196,7 +1198,7 @@ int DivePlannerPointsModel::analyzeVariations(const std::vector<decostop> &min, 
 
 #ifdef DEBUG_STOPVAR
 	printf("Total + %d:%02d/%s +- %d s/%s\n\n", FRACTION_TUPLE((leftsum + rightsum) / 2, 60), unit,
-						       (rightsum - leftsum) / 2, unit);
+							   (rightsum - leftsum) / 2, unit);
 #else
 	Q_UNUSED(unit)
 #endif
@@ -1377,4 +1379,187 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	diveplan.dp.clear();
 
 	planCreated(); // This signal will exit the UI from planner state.
+}
+
+QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersData, const QVariantList &segmentsData,
+												  const QString &date, const QString &time, int diveMode, bool shouldSave)
+{
+	if (d) {
+		delete d;
+	}
+	d = new dive();
+	dcNr = 0;
+
+	// Clear previous plan data
+	diveplan.dp.clear();
+	d->cylinders.clear();
+	d->notes.clear();
+
+	make_planner_dc(&d->dcs[0]);
+
+	// Set Date, Time, and Dive Mode from parameters
+	QString dateTimeString = date + " " + time;
+	QDateTime plannedDateTime = QDateTime::fromString(dateTimeString, "yyyy-MM-dd hh:mm:ss");
+	plannedDateTime.setTimeSpec(Qt::UTC);
+	d->when = static_cast<time_t>(plannedDateTime.toSecsSinceEpoch());
+	diveplan.when = d->when;
+
+	d->dcs[0].divemode = (enum divemode_t)diveMode;
+
+
+
+	// Populate cylinders from QML data
+	for (const QVariant &cylData : cylindersData) {
+		QVariantMap map = cylData.toMap();
+		cylinder_t newCyl;
+		std::pair<volume_t, pressure_t> type_info = get_tank_info_data(tank_info_table, map["type"].toString().toStdString());
+		volume_t size = type_info.first;
+		pressure_t pressure = type_info.second;
+		newCyl.type.size = size;
+		newCyl.type.workingpressure = pressure;
+		newCyl.type.description = map["type"].toString().toStdString();
+		QString mix = map["mix"].toString();
+		newCyl.gasmix.o2.permille = parseGasMixO2(mix);
+		newCyl.gasmix.he.permille = parseGasMixHE(mix);
+		sanitize_gasmix(newCyl.gasmix);
+		if (prefs.units.pressure == units::BAR)
+			newCyl.start.mbar = map["pressure"].toInt() * 1000;
+		else
+			newCyl.start.mbar = psi_to_mbar(map["pressure"].toInt());
+		int useIndex = map["use"].toInt();
+		newCyl.cylinder_use = (enum cylinderuse)useIndex;
+		d->cylinders.add(d->cylinders.size(), newCyl);
+	}
+	this->cylinders.updateDive(d, dcNr);
+	reset_cylinders(d, true);
+
+	// Add available OC gases as "time=0" waypoints for the planner engine
+	pressure_t deco_po2_limit = { .mbar = qPrefDivePlanner::decopo2() };
+	for (size_t i = 0; i < d->cylinders.size(); ++i) {
+		const cylinder_t &cyl = d->cylinders[i];
+		if (cyl.cylinder_use == OC_GAS) {
+			depth_t mod = d->gas_mod(cyl.gasmix, deco_po2_limit, 1_m);
+			divedatapoint point(0, mod, i, 0, false); // time=0, depth=MOD, cylinderid=i
+			diveplan.dp.push_back(point);
+		}
+	}
+
+	// Populate the actual dive plan segments from QML data
+	int currentTimeInSeconds = 0;
+	for (const QVariant &segData : segmentsData) {
+		QVariantMap map = segData.toMap();
+		divedatapoint point;
+		int durationInSeconds = map["duration"].toInt() * 60;
+		currentTimeInSeconds += durationInSeconds;
+		point.time = currentTimeInSeconds;
+		point.depth = units_to_depth(map["depth"].toInt());
+		point.cylinderid = map["gas"].toInt();
+		point.entered = true;
+		diveplan.dp.push_back(point);
+	}
+
+	// Load ALL current settings from the correct preference classes
+	diveplan.gflow = qPrefTechnicalDetails::gflow();
+	diveplan.gfhigh = qPrefTechnicalDetails::gfhigh();
+	diveplan.bottomsac = qPrefDivePlanner::bottomsac();
+	diveplan.decosac = qPrefDivePlanner::decosac();
+	diveplan.surface_pressure = d->get_surface_pressure();
+	diveplan.vpmb_conservatism = qPrefTechnicalDetails::vpmb_conservatism();
+
+	// Run the planner engine
+	if (!diveplan.is_empty()) {
+		deco_state_cache cache;
+		struct deco_state plan_deco_state;
+		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true);
+		updateMaxDepth();
+		d->fixup_dive();
+	}
+	QString notes_qstr = QString::fromStdString(d->notes);
+	notes_qstr.replace("&#10138;", "&#8593;");
+	notes_qstr.replace("&#10136;", "&#8595;");
+	notes_qstr.replace("&#10137;", "&#8594;");
+	d->notes = notes_qstr.toStdString();
+	// Build the results map
+	QVariantMap results;
+	results["notes"] = QString::fromStdString(d->notes);
+	results["maxDepth"] = get_depth_string(d->maxdepth, true);
+	results["duration"] = QString::number(d->duration.seconds / 60) + " min";
+
+	QVariantList profileData;
+	if (d->dcs.size() > 0) {
+		for (const struct sample &sample : d->dcs[0].samples) {
+			QVariantMap point;
+			point["time"] = sample.time.seconds;
+			point["depth"] = sample.depth.mm;
+			profileData.append(point);
+		}
+	}
+	results["profile"] = profileData;
+
+	// Save the dive if requested
+	int newDiveId = -1;
+	if (shouldSave) {
+		std::unique_ptr<dive> d_to_save = std::make_unique<dive>();
+		copy_dive(d, d_to_save.get());
+		newDiveId = d_to_save->id;
+		Command::addDive(std::move(d_to_save), divelog.autogroup, true);
+	}
+	results["newDiveId"] = newDiveId;
+
+	return results;
+}
+
+QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderType, int o2_permille, int he_permille)
+{
+	// Create a temporary dive context for calculations
+	struct dive temp_dive;
+	make_planner_dc(&temp_dive.dcs[0]);
+
+	// Create a temporary cylinder with the specified gas mix
+	cylinder_t temp_cyl;
+
+	// Populate cylinder type info
+	std::pair<volume_t, pressure_t> type_info = get_tank_info_data(tank_info_table, cylinderType.toStdString());
+	volume_t size = type_info.first;
+	pressure_t pressure = type_info.second;
+	temp_cyl.type.size = size;
+	temp_cyl.type.workingpressure = pressure;
+	temp_cyl.type.description = cylinderType.toStdString();
+	
+	// Populate gas mix
+	temp_cyl.gasmix.o2.permille = o2_permille;
+	temp_cyl.gasmix.he.permille = he_permille;
+	sanitize_gasmix(temp_cyl.gasmix);
+
+	// Get narcotic preference
+	int fN2_permille = get_n2(temp_cyl.gasmix);
+
+
+	QVariantList results;
+	// Calculate for a standard range of pO₂ values
+	double po2_values[] = { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8 };
+
+	for (double po2 : po2_values) {
+		pressure_t po2_limit = { .mbar = static_cast<int>(po2 * 1000.0) };
+		
+		// Calculate MOD
+		depth_t mod = temp_dive.gas_mod(temp_cyl.gasmix, po2_limit, 1_m);
+
+		// Calculate EAD at the MOD
+		double p_amb_at_mod_ead = temp_dive.depth_to_atm(mod);
+		double p_n2 = p_amb_at_mod_ead * fN2_permille / 1000.0;
+		depth_t ead = { .mm = 0 };
+		if (fN2_permille > 0) {
+			double ead_atm = p_n2 / 0.79;
+			ead.mm = static_cast<int>((ead_atm - 1.0) * 10000.0);
+			if (ead.mm < 0) ead.mm = 0;
+		}
+
+		QVariantMap row;
+		row["po2"] = QString::number(po2, 'f', 1);
+		row["mod"] = get_depth_string(mod, true);
+		row["ead"] = get_depth_string(ead, true);
+		results.append(row);
+	}
+	return results;
 }

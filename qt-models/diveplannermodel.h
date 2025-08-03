@@ -109,7 +109,10 @@ slots:
 	void setAscratelast6mDisplay(int rate);
 	void setDescrateDisplay(int rate);
 	void addReverseProfile();
-
+	Q_INVOKABLE QVariantMap calculatePlan(const QVariantList &cylinders, const QVariantList &segments,
+					  const QString &date, const QString &time, int diveMode, bool shouldSave);
+	Q_INVOKABLE QVariantList calculateGasInfo(const QString &cylinderType, int o2_permille, int he_permille);
+		
 signals:
 	void planCreated();
 	void planCanceled();

@@ -88,4 +88,7 @@ void QMLInterface::setup(QQmlContext *ct)
 
 	// Make enums available as types
 	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
+
+	qmlRegisterUncreatableType<DivePlannerPointsModel>("org.subsurfacedivelog.mobile", 1, 0, "DivePlannerPointsModel", "Planner model cannot be created in QML.");
+	qmlRegisterUncreatableType<CylindersModel>("org.subsurfacedivelog.mobile", 1, 0, "CylindersModel", "Cylinder model cannot be created in QML.");
 }
