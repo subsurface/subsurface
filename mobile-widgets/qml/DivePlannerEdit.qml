@@ -12,18 +12,81 @@ Kirigami.ScrollablePage {
 	property string pressureUnit: (Backend.pressure === Enums.BAR) ? qsTr("bar") : qsTr("psi")
 	property string depthUnit: (Backend.length === Enums.METERS) ? qsTr("m") : qsTr("ft")
 
+	property string planNotes: ""
+	property string maxDepth: ""
+	property string duration: ""
+	property var profileData: []	
+
 	// --- Data Models ---
 	ListModel { id: cylinderListModel }
 	ListModel { id: segmentListModel }
 	property var gasNumberModel: []
 
 	// --- Functions ---
-		function updateGasNumberList() {
+	function updateGasNumberList() {
 		var newList = [];
 		for (var i = 0; i < cylinderListModel.count; i++) {
 			newList.push(qsTr("Gas %1").arg(i + 1));
 		}
 		gasNumberModel = newList;
+	}
+
+	function updateLivePlanInfo() {
+		if (visible && segmentListModel.count > 0 && cylinderListModel.count > 0) {
+			var cylinderData = []
+			for (var i = 0; i < cylinderListModel.count; i++) {
+				var item = cylinderListModel.get(i)
+				cylinderData.push({
+										"type": item.type, "mix": item.mix,
+										"pressure": item.pressure, "use": item.use
+									})
+			}
+
+			var segmentData = []
+			if (Backend.drop_stone_mode && segmentListModel.count > 0) {
+				var descentRate = Backend.descrate;
+				var firstSegment = segmentListModel.get(0)
+				var descentDuration = 1
+				if (descentRate > 0) {
+                    descentDuration = Math.ceil(firstSegment.depth / descentRate);
+				}
+				segmentData.push({
+										"depth": firstSegment.depth,
+										"duration": descentDuration,
+										"gas": firstSegment.gas
+									})
+			}
+			for (var j = 0; j < segmentListModel.count; j++) {
+				var item = segmentListModel.get(j)
+				segmentData.push({
+									"depth": item.depth,
+									"duration": item.duration,
+									"gas": item.gas
+								})
+			}
+			var planResult = Backend.divePlannerPointsModel.calculatePlan(
+				cylinderData, segmentData, planDate.text, planTime.text,
+				diveModeBox.currentIndex, false
+			)
+			// Handle planResult
+			planNotes = planResult.notes
+			maxDepth = planResult.maxDepth
+			duration = planResult.duration
+			profileData = planResult.profile
+		}
+
+
+	}
+
+    onVisibleChanged: {
+        // This code runs every time the page becomes visible
+        if (visible) {
+            updateLivePlanInfo()
+        }
+	}
+
+	onProfileDataChanged: {
+		profileCanvas.requestPaint();
 	}
 
 	Component.onCompleted: {
@@ -35,18 +98,25 @@ Kirigami.ScrollablePage {
 		});
 
 		segmentListModel.append({
-			"depth": (Backend.length === Enums.METERS) ? 20 : 60,
-			"duration": 1,
+			"depth": (Backend.length === Enums.METERS) ? 14 : 45,
+			"duration": 20,
 			"gas": 0 // Default to the first cylinder (index 0)
 		});
 
 		updateGasNumberList();
+		updateLivePlanInfo();
 	}
 
 	Connections {
 		target: cylinderListModel
-		onRowsInserted: updateGasNumberList()
-		onRowsRemoved: updateGasNumberList()
+		onRowsInserted: {
+			updateGasNumberList();
+			updateLivePlanInfo();
+		}
+		onRowsRemoved: {
+			updateGasNumberList();
+			updateLivePlanInfo();
+		}
 	}
 
 	ColumnLayout {
@@ -54,7 +124,6 @@ Kirigami.ScrollablePage {
 		spacing: Kirigami.Units.gridUnit
 		Layout.margins: Kirigami.Units.gridUnit
 
-// --- NEW: Plan Details Section ---
 		Controls.Label {
 			text: qsTr("Plan Details")
 			font.bold: true
@@ -91,6 +160,85 @@ Kirigami.ScrollablePage {
 			}
 		}
 
+		Canvas {
+			id: profileCanvas
+			Layout.fillWidth: true
+			Layout.preferredHeight: Kirigami.Units.gridUnit * 20
+
+			onPaint: {
+				if (profileData.length < 2) return;
+
+				var ctx = getContext("2d");
+				ctx.reset();
+
+				// --- Find max values and define geometry ---
+				var maxTime = 0;
+				var maxDepthMm = 0;
+				for (var i = 0; i < profileData.length; i++) {
+					if (profileData[i].time > maxTime) maxTime = profileData[i].time;
+					if (profileData[i].depth > maxDepthMm) maxDepthMm = profileData[i].depth * 1.1;
+				}
+				if (maxTime === 0 || maxDepthMm === 0) return;
+
+				var padding = 30; // Increased padding for labels
+				var drawWidth = width - (padding * 1.5);
+				var drawHeight = height - (padding * 1.5);
+				var xScale = drawWidth / maxTime;
+				var yScale = drawHeight / maxDepthMm;
+
+				ctx.strokeStyle = "lightgray";
+				ctx.lineWidth = 0.5;
+				ctx.fillStyle = "gray";
+				ctx.font = "10px sans-serif";
+
+				var numDepthLines = 4;
+				ctx.textAlign = "right";
+				ctx.textBaseline = "middle";
+				for (var i = 1; i <= numDepthLines; i++) {
+					var y = padding + (i * drawHeight / numDepthLines);
+					ctx.beginPath();
+					ctx.moveTo(padding, y);
+					ctx.lineTo(width - padding / 2, y);
+					ctx.stroke();
+
+					var depthValMm = (i / numDepthLines) * maxDepthMm;
+					var depthInUserUnits = (Backend.length === Enums.METERS) ? depthValMm / 1000 : depthValMm / 304.8;
+					ctx.fillText(depthInUserUnits.toFixed(0), padding - 5, y);
+				}
+
+				var numTimeLines = Math.floor(maxTime / 60 / 5); // A line every 5 minutes
+				ctx.textAlign = "center";
+				ctx.textBaseline = "top";
+				for (var j = 1; j <= numTimeLines; j++) {
+					var timeVal = j * 5 * 60; // Every 5 minutes
+					if (timeVal > maxTime) continue;
+					var x = padding + (timeVal * xScale);
+					ctx.beginPath();
+					ctx.moveTo(x, padding);
+					ctx.lineTo(x, height - padding);
+					ctx.stroke();
+					ctx.fillText((timeVal / 60).toFixed(0), x, height - padding + 5);
+				}
+
+				ctx.strokeStyle = Kirigami.Theme.highlightColor;
+				ctx.lineWidth = 2;
+				ctx.beginPath();
+				var firstPoint = profileData[0];
+				var startX = padding + (firstPoint.time * xScale);
+				var startY = padding + (firstPoint.depth * yScale);
+				ctx.moveTo(startX, startY);
+
+				for (var j = 1; j < profileData.length; j++) {
+					var point = profileData[j];
+					var x = padding + (point.time * xScale);
+					var y = padding + (point.depth * yScale);
+					ctx.lineTo(x, y);
+				}
+				ctx.stroke();
+			}
+		}
+
+
 		// --- 1. Cylinders Section ---
 		RowLayout {
 			Controls.Label {
@@ -109,6 +257,7 @@ Kirigami.ScrollablePage {
 							"pressure": (Backend.pressure === Enums.BAR) ? 200 : 3000,
 							"use": 0 // Default to OC_GAS
 						});
+						updateLivePlanInfo();
 					}
 			}
 		}
@@ -153,7 +302,10 @@ Kirigami.ScrollablePage {
 					id: mixField
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 					text: mix
-					onEditingFinished: cylinderListModel.setProperty(index, "mix", text)
+					onEditingFinished: {
+						cylinderListModel.setProperty(index, "mix", text);
+						updateLivePlanInfo();
+					}
 					validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
@@ -168,7 +320,10 @@ Kirigami.ScrollablePage {
 					Layout.fillWidth: true
 					text: pressure.toString()
 					validator: IntValidator { bottom: 0; top: 10000 }
-					onEditingFinished: cylinderListModel.setProperty(index, "pressure", Number(text))
+					onEditingFinished: {
+						cylinderListModel.setProperty(index, "pressure", Number(text));
+						updateLivePlanInfo();
+					}
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
 				TemplateButton {
@@ -176,7 +331,10 @@ Kirigami.ScrollablePage {
 					font.bold: true
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					enabled: cylinderListModel.count > 1
-					onClicked: cylinderListModel.remove(index)
+					onClicked: {
+						cylinderListModel.remove(index);
+						updateLivePlanInfo();
+					}
 				}
 			}
 		}
@@ -200,6 +358,7 @@ Kirigami.ScrollablePage {
 							"duration": 10,
 							"gas": lastSegment.gas
 						});
+						updateLivePlanInfo();
 					}
 				}
 			}
@@ -236,7 +395,10 @@ Kirigami.ScrollablePage {
 					Layout.fillWidth: true
 					text: depth.toString()
 					validator: IntValidator { bottom: 0; top: 300 }
-					onEditingFinished: segmentListModel.setProperty(index, "depth", Number(text))
+					onEditingFinished: {
+						segmentListModel.setProperty(index, "depth", Number(text));
+						updateLivePlanInfo();
+					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
 
@@ -244,7 +406,10 @@ Kirigami.ScrollablePage {
 					Layout.fillWidth: true
 					text: duration.toString()
 					validator: IntValidator { bottom: 1; top: 999 }
-					onEditingFinished: segmentListModel.setProperty(index, "duration", Number(text))
+					onEditingFinished: {
+						segmentListModel.setProperty(index, "duration", Number(text));
+						updateLivePlanInfo();
+					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
 
@@ -257,6 +422,7 @@ Kirigami.ScrollablePage {
 					onCurrentIndexChanged: {
 						if (currentIndex !== -1)
 						   segmentListModel.setProperty(index, "gas", currentValue)
+						updateLivePlanInfo();
 					}
 				}
 
@@ -265,12 +431,29 @@ Kirigami.ScrollablePage {
 					font.bold: true
 					enabled: segmentListModel.count > 1
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-					onClicked: segmentListModel.remove(index)
+					onClicked: {
+						segmentListModel.remove(index);
+						updateLivePlanInfo();
+					}
+						
 				}
 			}
 		}
+		Controls.Label {
+			text: qsTr("Dive Plan Summary")
+			font.bold: true
+			font.pixelSize: Kirigami.Units.gridUnit * 1.2
+		}
+
+		Controls.TextArea {
+			Layout.fillWidth: true
+			readOnly: true
+			wrapMode: Text.Wrap
+			text: planNotes
+			textFormat: Text.RichText
+		}
 	}
-	actions.left: Kirigami.Action {
+	actions.right: Kirigami.Action {
 		icon {
 			name: state = ":/icons/ic_settings.svg"
 			color: subsurfaceTheme.primaryColor
@@ -297,6 +480,19 @@ Kirigami.ScrollablePage {
 			}
 
 			var segmentData = []
+			if (Backend.drop_stone_mode && segmentListModel.count > 0) {
+				var descentRate = Backend.descrate;
+				var firstSegment = segmentListModel.get(0)
+				var descentDuration = 1
+				if (descentRate > 0) {
+                    descentDuration = Math.ceil(firstSegment.depth / descentRate);
+				}
+				segmentData.push({
+										"depth": firstSegment.depth,
+										"duration": descentDuration,
+										"gas": firstSegment.gas
+									})
+			}
 			for (var j = 0; j < segmentListModel.count; j++) {
 				var item = segmentListModel.get(j)
 				segmentData.push({
@@ -316,42 +512,65 @@ Kirigami.ScrollablePage {
 			}
 		}
 	}
-	actions.right: Kirigami.Action {
+	actions.left: Kirigami.Action {
 		icon {
-			name: state = ":/icons/preview.svg" 
+			name: state = ":/icons/undo.svg" 
 			color: subsurfaceTheme.primaryColor
 		}
-		text: "Plan"
+		text: "Back"
 		onTriggered: {
-			var cylinderData = []
-			for (var i = 0; i < cylinderListModel.count; i++) {
-				var item = cylinderListModel.get(i)
-				cylinderData.push({
-										"type": item.type, "mix": item.mix,
-										"pressure": item.pressure, "use": item.use
-									})
-			}
-
-			var segmentData = []
-			for (var j = 0; j < segmentListModel.count; j++) {
-				var item = segmentListModel.get(j)
-				segmentData.push({
-										"depth": item.depth,
-										"duration": item.duration,
-										"gas": item.gas
-									})
-			}
-
-			// 1. Populate the preview page's INPUT properties
-			divePlannerViewWindow.cylindersData = cylinderData
-			divePlannerViewWindow.segmentsData = segmentData
-			divePlannerViewWindow.planDate = planDate.text
-			divePlannerViewWindow.planTime = planTime.text
-			divePlannerViewWindow.diveMode = diveModeBox.currentIndex
-
-			// 2. Navigate to the preview page
-			showPage(divePlannerViewWindow)
+			pageStack.pop()
 		}
 	}
+//	actions.right: Kirigami.Action {
+//		icon {
+//			name: state = ":/icons/preview.svg" 
+//			color: subsurfaceTheme.primaryColor
+//		}
+//		text: "Plan"
+//		onTriggered: {
+//			var cylinderData = []
+//			for (var i = 0; i < cylinderListModel.count; i++) {
+//				var item = cylinderListModel.get(i)
+//				cylinderData.push({
+//										"type": item.type, "mix": item.mix,
+//										"pressure": item.pressure, "use": item.use
+//									})
+//			}
+//
+//			var segmentData = []
+//			if (Backend.drop_stone_mode && segmentListModel.count > 0) {
+//				var descentRate = Backend.descrate;
+//				var firstSegment = segmentListModel.get(0)
+//				var descentDuration = 1
+//				if (descentRate > 0) {
+//					descentDuration = Math.ceil(firstSegment.depth / descentRate);
+//				}
+//				segmentData.push({
+//										"depth": firstSegment.depth,
+//										"duration": descentDuration,
+//										"gas": firstSegment.gas
+//									})
+//			}
+//			for (var j = 0; j < segmentListModel.count; j++) {
+//				var item = segmentListModel.get(j)
+//				segmentData.push({
+//										"depth": item.depth,
+//										"duration": item.duration,
+//										"gas": item.gas
+//									})
+//			}
+//
+//			// 1. Populate the preview page's INPUT properties
+//			divePlannerViewWindow.cylindersData = cylinderData
+//			divePlannerViewWindow.segmentsData = segmentData
+//			divePlannerViewWindow.planDate = planDate.text
+//			divePlannerViewWindow.planTime = planTime.text
+//			divePlannerViewWindow.diveMode = diveModeBox.currentIndex
+//
+//			// 2. Navigate to the preview page
+//			showPage(divePlannerViewWindow)
+//		}
+//	}
 
 }
