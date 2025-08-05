@@ -126,11 +126,18 @@ TemplatePage {
 					to: 99
 					stepSize: 1
 					value: Backend.descrate
-					enabled: !Backend.drop_stone_mode
+					enabled: Backend.drop_stone_mode
 					textFromValue: function (value) { return value.toString() }
 					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.descrate = value
+					}
+				}
+				TemplateCheckBox {
+					text: qsTr("Drop to first depth")
+					checked: Backend.drop_stone_mode
+					onClicked: {
+						Backend.drop_stone_mode = checked
 					}
 				}
 			}
