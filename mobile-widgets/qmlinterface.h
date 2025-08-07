@@ -70,8 +70,8 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(int problemsolvingtime READ problemsolvingtime WRITE set_problemsolvingtime NOTIFY problemsolvingtimeChanged);
 	Q_PROPERTY(int sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactorChanged);
 	Q_PROPERTY(bool o2narcotic READ o2narcotic WRITE set_o2narcotic NOTIFY o2narcoticChanged);
-	Q_PROPERTY(int bottompo2 READ bottompo2 WRITE set_bottompo2 NOTIFY bottompo2Changed);
-	Q_PROPERTY(int decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2Changed);
+	Q_PROPERTY(double bottompo2 READ bottompo2 WRITE set_bottompo2 NOTIFY bottompo2Changed);
+	Q_PROPERTY(double decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2Changed);
 	Q_PROPERTY(int bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixendChanged);
 
 	Q_PROPERTY(bool display_runtime READ display_runtime WRITE set_display_runtime NOTIFY display_runtimeChanged);
@@ -81,6 +81,9 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variationsChanged);
 
 	Q_PROPERTY(bool sync_dc_time READ sync_dc_time WRITE set_sync_dc_time NOTIFY sync_dc_timeChanged);
+
+	Q_PROPERTY(DivePlannerPointsModel *divePlannerPointsModel READ divePlannerPointsModel CONSTANT);
+	Q_PROPERTY(CylindersModel *cylindersModel READ cylindersModel CONSTANT);
 
 public:
 	// function to do the needed setup
@@ -206,8 +209,8 @@ public:
 	int problemsolvingtime() { return prefs.problemsolvingtime; }
 	int sacfactor() { return (int)PlannerShared::sacfactor(); }
 	bool o2narcotic() { return (int)PlannerShared::o2narcotic(); }
-	int bottompo2() { return (int)PlannerShared::bottompo2(); }
-	int decopo2() { return (int)PlannerShared::decopo2(); }
+	double bottompo2() { return PlannerShared::bottompo2() * 100; }
+	double decopo2() { return PlannerShared::decopo2() * 100; }
 	int bestmixend() { return PlannerShared::bestmixend(); }
 
 	bool display_runtime() { return prefs.display_runtime; }
@@ -217,6 +220,9 @@ public:
 	bool display_variations() { return prefs.display_variations; }
 
 	bool sync_dc_time() { return prefs.sync_dc_time; }
+
+	DivePlannerPointsModel *divePlannerPointsModel() { return DivePlannerPointsModel::instance(); }
+	CylindersModel *cylindersModel() { return DivePlannerPointsModel::instance()->cylindersModel(); }
 
 public slots:
 	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }
@@ -258,8 +264,8 @@ public slots:
 	void set_problemsolvingtime(int value) { DivePlannerPointsModel::instance()->setProblemSolvingTime(value); }
 	void set_sacfactor(int value) { PlannerShared::set_sacfactor((double)value); }
 	void set_o2narcotic(bool value) { PlannerShared::set_o2narcotic(value); }
-	void set_bottompo2(int value) { PlannerShared::set_bottompo2((double)value); }
-	void set_decopo2(int value) { PlannerShared::set_decopo2((double)value); }
+	void set_bottompo2(double value) { PlannerShared::set_bottompo2((double)value); }
+	void set_decopo2(double value) { PlannerShared::set_decopo2((double)value); }
 	void set_bestmixend(int value) { PlannerShared::set_bestmixend(value); }
 
 	void set_display_runtime(bool value) { DivePlannerPointsModel::instance()->setDisplayRuntime(value); }
