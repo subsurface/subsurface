@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>455</width>
-    <height>515</height>
+    <width>511</width>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -281,6 +281,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="show_mdecimal">
+        <property name="text">
+         <string>metric depth decimals</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -348,7 +355,6 @@
   <tabstop>duration_show_hours</tabstop>
   <tabstop>duration_no_hours</tabstop>
   <tabstop>duration_mixed</tabstop>
-  <tabstop>show_units_table</tabstop>
   <tabstop>gpsTraditional</tabstop>
   <tabstop>gpsDecimal</tabstop>
  </tabstops>
@@ -532,10 +538,10 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_5"/>
   <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_4"/>
-  <buttongroup name="buttonGroup_5"/>
  </buttongroups>
 </ui>
