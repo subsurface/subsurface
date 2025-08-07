@@ -38,6 +38,9 @@ private slots:
 	void parseDL7();
 
 	void importApdInspirationUddf();
+
+	void importDlf_v1();
+	void importDlf_v2();
 private:
 	sqlite3 *_sqlite3_handle = NULL;
 };
