@@ -98,7 +98,7 @@ void PreferencesLanguage::syncSettings()
 	refreshSettings();
 
 	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended. To avoid this warning wrap the literal parts in quotes (').\nSee https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString");
-	QRegularExpression timeStandardFormat("^([hHmszaApP\\s:\\.]|'[^']*')*$");
+	QRegularExpression timeStandardFormat("^([hHmszaApP\\h:\\.]|'[^']*')*$");
 	if (!timeStandardFormat.match(ui->timeFormatEntry->currentText()).hasMatch())
 		QMessageBox::warning(this, tr("Literal characters"),
 			tr("Non-standard character(s) in time format.\n") + qDateTimeWeb);
