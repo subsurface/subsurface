@@ -90,6 +90,8 @@ Kirigami.ScrollablePage {
 	}
 
 	Component.onCompleted: {
+	    Backend.planner_gflow = PrefTechnicalDetails.gflow;
+        Backend.planner_gfhigh = PrefTechnicalDetails.gfhigh;
 		cylinderListModel.append({
 			"type": PrefEquipment.default_cylinder ? PrefEquipment.default_cylinder : "AL80",
 			"mix": "21/0",
@@ -155,15 +157,219 @@ Kirigami.ScrollablePage {
 			TemplateComboBox {
 				id: diveModeBox
 				Layout.fillWidth: true
+				enabled: false
 				model: [qsTr("Open circuit"), qsTr("CCR"), qsTr("pSCR")]
 				currentIndex: 0 // Default to OC
 			}
 		}
 
+		// --- 1. Cylinders Section ---
+		RowLayout {
+			Controls.Label {
+				text: qsTr("Cylinders")
+				font.bold: true
+				font.pixelSize: Kirigami.Units.gridUnit * 1.2
+			}
+			TemplateButton {
+					contentItem: Text {
+                        text: "+"
+                        horizontalAlignment: Text.AlignHCenter
+                        color: subsurfaceTheme.primaryTextColor
+                    }
+					font.bold: true
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+					onClicked: {
+						cylinderListModel.append({
+							"type": PrefEquipment.default_cylinder ? PrefEquipment.default_cylinder : "AL80",
+							"mix": "21/0",
+							"pressure": (Backend.pressure === Enums.BAR) ? 200 : 3000,
+							"use": 0 // Default to OC_GAS
+						});
+						updateLivePlanInfo();
+					}
+			}
+		}
+		RowLayout {
+			Layout.fillWidth: true
+			spacing: Kirigami.Units.smallSpacing // Reduced spacing
+
+			// Header labels updated for new layout
+			Controls.Label { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 2; font.bold: true }
+			Controls.Label { text: qsTr("Type"); Layout.preferredWidth: Kirigami.Units.gridUnit * 6; font.bold: true }
+			Controls.Label { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 4; font.bold: true }
+			Controls.Label { text: qsTr("Use"); Layout.preferredWidth: Kirigami.Units.gridUnit * 5; font.bold: true }
+			Controls.Label { text: qsTr("[%1]").arg(pressureUnit); Layout.fillWidth: true; font.bold: true }
+			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium }
+		}
+
+				ListView {
+			id: cylinderListView
+			Layout.fillWidth: true
+            Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
+			clip: true
+			model: cylinderListModel
+
+			delegate: RowLayout {
+				width: cylinderListView.width
+				spacing: Kirigami.Units.smallSpacing // Reduced spacing
+
+				Controls.Label {
+					text: index + 1
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+					horizontalAlignment: Text.AlignHCenter
+					verticalAlignment: Text.AlignVCenter
+				}
+				TemplateComboBox {
+					id: typeBox
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+					model: manager.cylinderListInit
+					currentIndex: model.indexOf(type)
+					
+				}
+				TemplateTextField {
+					id: mixField
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					text: mix
+					onTextChanged: {
+						cylinderListModel.setProperty(index, "mix", text);
+						updateLivePlanInfo();
+					}
+					validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
+					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
+				}
+				TemplateComboBox {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
+					model: [qsTr("OC-gas"), qsTr("diluent"), qsTr("oxygen")]
+					enabled: false
+					currentIndex: use
+					onCurrentIndexChanged: if (currentIndex !== -1) cylinderListModel.setProperty(index, "use", currentIndex)
+				}
+				TemplateTextField {
+					id: pressureField
+					Layout.fillWidth: true
+					text: pressure.toString()
+					validator: IntValidator { bottom: 0; top: 10000 }
+					onTextChanged: {
+						cylinderListModel.setProperty(index, "pressure", Number(text));
+						updateLivePlanInfo();
+					}
+					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
+				}
+				TemplateButton {
+					text: "X"
+					font.bold: true
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+					enabled: cylinderListModel.count > 1
+					onClicked: {
+						cylinderListModel.remove(index);
+						updateLivePlanInfo();
+					}
+				}
+			}
+		}
+
+		// --- 2. Dive Segments Section ---
+		RowLayout {
+			Controls.Label {
+				text: qsTr("Dive Segments")
+				font.bold: true
+				font.pixelSize: Kirigami.Units.gridUnit * 1.2
+			}
+			TemplateButton {
+				contentItem: Text {
+                    text: "+"
+                    horizontalAlignment: Text.AlignHCenter
+                    color: subsurfaceTheme.primaryTextColor
+                }
+				font.bold: true
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+				onClicked: {
+					if (segmentListModel.count > 0) {
+						var lastSegment = segmentListModel.get(segmentListModel.count - 1);
+						segmentListModel.append({
+							"depth": lastSegment.depth,
+							"duration": 10,
+							"gas": lastSegment.gas
+						});
+						updateLivePlanInfo();
+					}
+				}
+			}
+		}
+
+		RowLayout {
+			Layout.fillWidth: true
+			spacing: Kirigami.Units.gridUnit
+
+			Controls.Label { text: qsTr("Depth (%1)").arg(depthUnit); Layout.fillWidth: true; font.bold: true }
+			Controls.Label { text: qsTr("Duration (min)"); Layout.fillWidth: true; font.bold: true }
+			Controls.Label { text: qsTr("Gas"); Layout.fillWidth: true; font.bold: true }
+			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium } // Spacer
+		}
+
+		ListView {
+			id: segmentListView
+			Layout.fillWidth: true
+            Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
+			clip: true
+
+			model: segmentListModel
+			delegate: RowLayout {
+				width: segmentListView.width
+				spacing: Kirigami.Units.gridUnit
+
+				TemplateTextField {
+					Layout.fillWidth: true
+					text: depth.toString()
+					validator: IntValidator { bottom: 0; top: 900 }
+					onTextChanged: {
+						segmentListModel.setProperty(index, "depth", Number(text));
+						updateLivePlanInfo();
+					}
+					onActiveFocusChanged: segmentListView.interactive = !activeFocus
+				}
+
+				TemplateTextField {
+					Layout.fillWidth: true
+					text: duration.toString()
+					validator: IntValidator { bottom: 1; top: 999 }
+					onTextChanged: {
+						segmentListModel.setProperty(index, "duration", Number(text));
+						updateLivePlanInfo();
+					}
+					onActiveFocusChanged: segmentListView.interactive = !activeFocus
+				}
+
+				TemplateComboBox {
+					Layout.fillWidth: true
+					Layout.minimumWidth: Kirigami.Units.gridUnit * 6
+					model: gasNumberModel
+
+					currentIndex: gas
+					onCurrentIndexChanged: {
+						if (currentIndex !== -1)
+						   segmentListModel.setProperty(index, "gas", currentValue)
+						updateLivePlanInfo();
+					}
+				}
+
+				TemplateButton {
+					text: "X"
+					font.bold: true
+					enabled: segmentListModel.count > 1
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+					onClicked: {
+						segmentListModel.remove(index);
+						updateLivePlanInfo();
+					}
+						
+				}
+			}
+		}
 		Canvas {
 			id: profileCanvas
 			Layout.fillWidth: true
-			Layout.preferredHeight: Kirigami.Units.gridUnit * 20
+			Layout.preferredHeight: Kirigami.Units.gridUnit * 10
 
 			onPaint: {
 				if (profileData.length < 2) return;
@@ -238,207 +444,6 @@ Kirigami.ScrollablePage {
 			}
 		}
 
-
-		// --- 1. Cylinders Section ---
-		RowLayout {
-			Controls.Label {
-				text: qsTr("Cylinders")
-				font.bold: true
-				font.pixelSize: Kirigami.Units.gridUnit * 1.2
-			}
-			TemplateButton {
-					text: "+"
-					font.bold: true
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-					onClicked: {
-						cylinderListModel.append({
-							"type": PrefEquipment.default_cylinder ? PrefEquipment.default_cylinder : "AL80",
-							"mix": "21/0",
-							"pressure": (Backend.pressure === Enums.BAR) ? 200 : 3000,
-							"use": 0 // Default to OC_GAS
-						});
-						updateLivePlanInfo();
-					}
-			}
-		}
-		RowLayout {
-			Layout.fillWidth: true
-			spacing: Kirigami.Units.smallSpacing // Reduced spacing
-
-			// Header labels updated for new layout
-			Controls.Label { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 2; font.bold: true }
-			Controls.Label { text: qsTr("Type"); Layout.preferredWidth: Kirigami.Units.gridUnit * 6; font.bold: true }
-			Controls.Label { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 4; font.bold: true }
-			Controls.Label { text: qsTr("Use"); Layout.preferredWidth: Kirigami.Units.gridUnit * 5; font.bold: true }
-			Controls.Label { text: qsTr("(%1)").arg(pressureUnit); Layout.fillWidth: true; font.bold: true }
-			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium }
-		}
-
-				ListView {
-			id: cylinderListView
-			Layout.fillWidth: true
-			Layout.preferredHeight: Kirigami.Units.gridUnit * 8
-			clip: true
-			model: cylinderListModel
-
-			delegate: RowLayout {
-				width: cylinderListView.width
-				spacing: Kirigami.Units.smallSpacing // Reduced spacing
-
-				Controls.Label {
-					text: index + 1
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-					horizontalAlignment: Text.AlignHCenter
-					verticalAlignment: Text.AlignVCenter
-				}
-				TemplateComboBox {
-					id: typeBox
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
-					model: manager.cylinderListInit
-					currentIndex: model.indexOf(type)
-					
-				}
-				TemplateTextField {
-					id: mixField
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-					text: mix
-					onEditingFinished: {
-						cylinderListModel.setProperty(index, "mix", text);
-						updateLivePlanInfo();
-					}
-					validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
-					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
-				}
-				TemplateComboBox {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
-					model: [qsTr("OC-gas"), qsTr("diluent"), qsTr("oxygen")]
-					currentIndex: use
-					onCurrentIndexChanged: if (currentIndex !== -1) cylinderListModel.setProperty(index, "use", currentIndex)
-				}
-				TemplateTextField {
-					id: pressureField
-					Layout.fillWidth: true
-					text: pressure.toString()
-					validator: IntValidator { bottom: 0; top: 10000 }
-					onEditingFinished: {
-						cylinderListModel.setProperty(index, "pressure", Number(text));
-						updateLivePlanInfo();
-					}
-					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
-				}
-				TemplateButton {
-					text: "X"
-					font.bold: true
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-					enabled: cylinderListModel.count > 1
-					onClicked: {
-						cylinderListModel.remove(index);
-						updateLivePlanInfo();
-					}
-				}
-			}
-		}
-
-		// --- 2. Dive Segments Section ---
-		RowLayout {
-			Controls.Label {
-				text: qsTr("Dive Segments")
-				font.bold: true
-				font.pixelSize: Kirigami.Units.gridUnit * 1.2
-			}
-			TemplateButton {
-				text: "+"
-				font.bold: true
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-				onClicked: {
-					if (segmentListModel.count > 0) {
-						var lastSegment = segmentListModel.get(segmentListModel.count - 1);
-						segmentListModel.append({
-							"depth": lastSegment.depth,
-							"duration": 10,
-							"gas": lastSegment.gas
-						});
-						updateLivePlanInfo();
-					}
-				}
-			}
-		}
-		Controls.Label {
-			text: qsTr("Dive Segments")
-			font.bold: true
-			font.pixelSize: Kirigami.Units.gridUnit * 1.2
-			Layout.topMargin: Kirigami.Units.largeSpacing
-		}
-
-		RowLayout {
-			Layout.fillWidth: true
-			spacing: Kirigami.Units.gridUnit
-
-			Controls.Label { text: qsTr("Depth (%1)").arg(depthUnit); Layout.fillWidth: true; font.bold: true }
-			Controls.Label { text: qsTr("Duration (min)"); Layout.fillWidth: true; font.bold: true }
-			Controls.Label { text: qsTr("Gas"); Layout.fillWidth: true; font.bold: true }
-			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium } // Spacer
-		}
-
-		ListView {
-			id: segmentListView
-			Layout.fillWidth: true
-			Layout.preferredHeight: Kirigami.Units.gridUnit * 12
-			clip: true
-
-			model: segmentListModel
-			delegate: RowLayout {
-				width: segmentListView.width
-				spacing: Kirigami.Units.gridUnit
-
-				TemplateTextField {
-					Layout.fillWidth: true
-					text: depth.toString()
-					validator: IntValidator { bottom: 0; top: 300 }
-					onEditingFinished: {
-						segmentListModel.setProperty(index, "depth", Number(text));
-						updateLivePlanInfo();
-					}
-					onActiveFocusChanged: segmentListView.interactive = !activeFocus
-				}
-
-				TemplateTextField {
-					Layout.fillWidth: true
-					text: duration.toString()
-					validator: IntValidator { bottom: 1; top: 999 }
-					onEditingFinished: {
-						segmentListModel.setProperty(index, "duration", Number(text));
-						updateLivePlanInfo();
-					}
-					onActiveFocusChanged: segmentListView.interactive = !activeFocus
-				}
-
-				TemplateComboBox {
-					Layout.fillWidth: true
-					Layout.minimumWidth: Kirigami.Units.gridUnit * 6
-					model: gasNumberModel
-
-					currentIndex: gas
-					onCurrentIndexChanged: {
-						if (currentIndex !== -1)
-						   segmentListModel.setProperty(index, "gas", currentValue)
-						updateLivePlanInfo();
-					}
-				}
-
-				TemplateButton {
-					text: "X"
-					font.bold: true
-					enabled: segmentListModel.count > 1
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
-					onClicked: {
-						segmentListModel.remove(index);
-						updateLivePlanInfo();
-					}
-						
-				}
-			}
-		}
 		Controls.Label {
 			text: qsTr("Dive Plan Summary")
 			font.bold: true
@@ -451,6 +456,58 @@ Kirigami.ScrollablePage {
 			wrapMode: Text.Wrap
 			text: planNotes
 			textFormat: Text.RichText
+		}
+
+		TemplateButton {
+			contentItem: Text {
+				text: "Save to plan"
+				horizontalAlignment: Text.AlignHCenter
+				color: subsurfaceTheme.primaryTextColor
+			}
+			font.bold: true
+			Layout.fillWidth: true
+			onClicked: {
+				var cylinderData = []
+				for (var i = 0; i < cylinderListModel.count; i++) {
+					var item = cylinderListModel.get(i)
+					cylinderData.push({
+											"type": item.type, "mix": item.mix,
+											"pressure": item.pressure, "use": item.use
+										})
+				}
+
+				var segmentData = []
+				if (Backend.drop_stone_mode && segmentListModel.count > 0) {
+					var descentRate = Backend.descrate;
+					var firstSegment = segmentListModel.get(0)
+					var descentDuration = 1
+					if (descentRate > 0) {
+						descentDuration = Math.ceil(firstSegment.depth / descentRate);
+					}
+					segmentData.push({
+											"depth": firstSegment.depth,
+											"duration": descentDuration,
+											"gas": firstSegment.gas
+										})
+				}
+				for (var j = 0; j < segmentListModel.count; j++) {
+					var item = segmentListModel.get(j)
+					segmentData.push({
+										"depth": item.depth,
+										"duration": item.duration,
+										"gas": item.gas
+									})
+				}
+				var planResult = Backend.divePlannerPointsModel.calculatePlan(
+					cylinderData, segmentData, planDate.text, planTime.text,
+					diveModeBox.currentIndex, true // shouldSave is true
+				)
+				var newDiveId = planResult.newDiveId
+				if (newDiveId !== -1) {
+					manager.selectDive(newDiveId)
+					showPage(diveList)
+				}
+			}
 		}
 	}
 	actions.right: Kirigami.Action {
@@ -465,51 +522,53 @@ Kirigami.ScrollablePage {
 	}
 	actions.main: Kirigami.Action {
 		icon {
-			name: state = ":/icons/document-save.svg"
+//			name: state = ":/icons/document-save.svg"
+			name: state = ":icons/media-playlist-repeat.svg"
 			color: subsurfaceTheme.primaryColor
 		}
-		text: "Save"
+		text: "Refresh"
 		onTriggered: {
-			var cylinderData = []
-			for (var i = 0; i < cylinderListModel.count; i++) {
-				var item = cylinderListModel.get(i)
-				cylinderData.push({
-										"type": item.type, "mix": item.mix,
-										"pressure": item.pressure, "use": item.use
-									})
-			}
-
-			var segmentData = []
-			if (Backend.drop_stone_mode && segmentListModel.count > 0) {
-				var descentRate = Backend.descrate;
-				var firstSegment = segmentListModel.get(0)
-				var descentDuration = 1
-				if (descentRate > 0) {
-                    descentDuration = Math.ceil(firstSegment.depth / descentRate);
-				}
-				segmentData.push({
-										"depth": firstSegment.depth,
-										"duration": descentDuration,
-										"gas": firstSegment.gas
-									})
-			}
-			for (var j = 0; j < segmentListModel.count; j++) {
-				var item = segmentListModel.get(j)
-				segmentData.push({
-									"depth": item.depth,
-									"duration": item.duration,
-									"gas": item.gas
-								})
-			}
-			var planResult = Backend.divePlannerPointsModel.calculatePlan(
-				cylinderData, segmentData, planDate.text, planTime.text,
-				diveModeBox.currentIndex, true // shouldSave is true
-			)
-			var newDiveId = planResult.newDiveId
-			if (newDiveId !== -1) {
-				manager.selectDive(newDiveId)
-				showPage(diveList)
-			}
+//			var cylinderData = []
+//			for (var i = 0; i < cylinderListModel.count; i++) {
+//				var item = cylinderListModel.get(i)
+//				cylinderData.push({
+//										"type": item.type, "mix": item.mix,
+//										"pressure": item.pressure, "use": item.use
+//									})
+//			}
+//
+//			var segmentData = []
+//			if (Backend.drop_stone_mode && segmentListModel.count > 0) {
+//				var descentRate = Backend.descrate;
+//				var firstSegment = segmentListModel.get(0)
+//				var descentDuration = 1
+//				if (descentRate > 0) {
+//                   descentDuration = Math.ceil(firstSegment.depth / descentRate);
+//				}
+//				segmentData.push({
+//										"depth": firstSegment.depth,
+//										"duration": descentDuration,
+//										"gas": firstSegment.gas
+//									})
+//			}
+//			for (var j = 0; j < segmentListModel.count; j++) {
+//				var item = segmentListModel.get(j)
+//				segmentData.push({
+//									"depth": item.depth,
+//									"duration": item.duration,
+//									"gas": item.gas
+//								})
+//			}
+//			var planResult = Backend.divePlannerPointsModel.calculatePlan(
+//				cylinderData, segmentData, planDate.text, planTime.text,
+//				diveModeBox.currentIndex, true // shouldSave is true
+//			)
+//			var newDiveId = planResult.newDiveId
+//			if (newDiveId !== -1) {
+//				manager.selectDive(newDiveId)
+//				showPage(diveList)
+//			}
+			updateLivePlanInfo()
 		}
 	}
 	actions.left: Kirigami.Action {
