@@ -25,7 +25,7 @@
 #include <QApplication>
 #include <QTextDocument>
 #include <QtConcurrent>
-#include <QVariantMap> 
+#include <QVariantMap>
 
 #define VARIATIONS_IN_BACKGROUND 1
 
@@ -1459,8 +1459,11 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	}
 
 	// Load ALL current settings from the correct preference classes
-	diveplan.gflow = qPrefTechnicalDetails::gflow();
-	diveplan.gfhigh = qPrefTechnicalDetails::gfhigh();
+	
+	//diveplan.gflow = qPrefTechnicalDetails::gflow();
+	//diveplan.gfhigh = qPrefTechnicalDetails::gfhigh();
+	diveplan.gflow = gfLow();
+	diveplan.gfhigh = gfHigh();
 	diveplan.bottomsac = qPrefDivePlanner::bottomsac();
 	diveplan.decosac = qPrefDivePlanner::decosac();
 	diveplan.surface_pressure = d->get_surface_pressure();
@@ -1537,7 +1540,7 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 
 	QVariantList results;
 	// Calculate for a standard range of pO₂ values
-	double po2_values[] = { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8 };
+	double po2_values[] = { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0 };
 
 	for (double po2 : po2_values) {
 		pressure_t po2_limit = { .mbar = static_cast<int>(po2 * 1000.0) };

@@ -11,6 +11,7 @@
 		<file alias="icons/document-edit.svg">breeze-icons/icons-dark/actions/24/document-edit.svg</file>
 		<file alias="icons/document-save.svg">breeze-icons/icons-dark/actions/24/document-save.svg</file>
 		<file alias="icons/preview.svg">breeze-icons/icons-dark/actions/24/preview.svg</file>
+		<file alias="icons/media-playlist-repeat.svg">breeze-icons/icons-dark/actions/24/media-playlist-repeat.svg</file>
 		<file alias="icons/go-up.svg">breeze-icons/icons/actions/24/go-up.svg</file>
 		<file alias="icons/gps.svg">breeze-icons/icons/actions/22/gps.svg</file>
 		<file alias="icons/handle-left.svg">breeze-icons/icons/actions/22/handle-left.svg</file>
@@ -19,6 +20,7 @@
 		<file alias="icons/list-add.svg">breeze-icons/icons/actions/24/list-add.svg</file>
 		<file alias="icons/overflow-menu.svg">breeze-icons/icons/actions/22/overflow-menu.svg</file>
 		<file alias="icons/trash-empty.svg">breeze-icons/icons/actions/24/trash-empty.svg</file>
+		<file alias="icons/dashboard-show.svg">breeze-icons/icons/actions/24/dashboard-show.svg</file>
 		<file alias="icons/edit-copy.svg">breeze-icons/icons/actions/24/edit-copy.svg</file>
 		<file alias="icons/edit-paste.svg">breeze-icons/icons/actions/24/edit-paste.svg</file>
 		<file alias="icons/document-edit-sign.svg">breeze-icons/icons/actions/24/document-edit-sign.svg</file>

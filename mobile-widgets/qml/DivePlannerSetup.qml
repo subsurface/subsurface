@@ -53,7 +53,7 @@ TemplatePage {
 					font.bold: true
 				}
 				TemplateLabel {
-					text: qsTr("below 75% avg. depth (%1)").arg(speedUnit)
+					text: qsTr("below 75% avg. depth [%1]").arg(speedUnit)
 				}
 				TemplateSpinBox {
 					id: spinAscrate75
@@ -68,7 +68,7 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					text: qsTr("75% to 50% avg. depth (%1)").arg(speedUnit)
+					text: qsTr("75% to 50% avg. depth [%1]").arg(speedUnit)
 				}
 				TemplateSpinBox {
 					id: spinAscrate50
@@ -83,7 +83,7 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					text: qsTr("50% avg. depth to 6m (%1)").arg(speedUnit)
+					text: qsTr("50% avg. depth to 6m [%1]").arg(speedUnit)
 				}
 				TemplateSpinBox {
 					id: spinAscratestops
@@ -98,7 +98,7 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					text: qsTr("6m to surface (%1)").arg(speedUnit)
+					text: qsTr("6m to surface [%1]").arg(speedUnit)
 				}
 				TemplateSpinBox {
 					id: spinAscratelast6m
@@ -118,7 +118,7 @@ TemplatePage {
 					font.bold: true
 				}
 				TemplateLabel {
-					text: qsTr("Surface to the bottom (%1)").arg(speedUnit)
+					text: qsTr("Surface to the bottom [%1]").arg(speedUnit)
 				}
 				TemplateSpinBox {
 					id: spinDescrate
@@ -155,18 +155,7 @@ TemplatePage {
 				TemplateLabel {
 					text: qsTr("Dive mode")
 				}
-				TemplateComboBox {
-					editable: false
-					currentIndex: Backend.dive_mode
-					model: ListModel {
-						ListElement {text: qsTr("Open circuit")}
-						ListElement {text: qsTr("CCR")}
-						ListElement {text: qsTr("pSCR")}
-					}
-					onActivated:  {
-						Backend.dive_mode = currentIndex
-					}
-				}
+				//Divemode moved to plan edit
 				TemplateCheckBox {
 					text: qsTr("Bailout: Deco on OC")
 					Layout.columnSpan: 2
@@ -183,7 +172,7 @@ TemplatePage {
 				}
 
 				TemplateLabel {
-					text: qsTr("Reserve gas (%1)").arg(volumeUnit)
+					text: qsTr("Reserve gas [%1]").arg(volumeUnit)
 					leftPadding: Kirigami.Units.smallSpacing * 2
 					enabled: Backend.planner_deco_mode === Enums.RECREATIONAL
 				}
@@ -217,7 +206,35 @@ TemplatePage {
 						Backend.planner_deco_mode = Enums.BUEHLMANN
 					}
 				}
-				//Gradient Factors pulled from main application settings
+				
+				TemplateLabel {
+					text: qsTr("GFLow")
+					leftPadding: Kirigami.Units.smallSpacing * 2
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 150
+					stepSize: 1
+					value: Backend.planner_gflow || 30
+					onValueModified: {
+						Backend.planner_gflow = value
+					}
+				}
+
+				TemplateLabel {
+					text: qsTr("GFHigh")
+					leftPadding: Kirigami.Units.smallSpacing * 2
+				}
+				TemplateSpinBox {
+					from: 1
+					to: 150
+					stepSize: 1
+					value: Backend.planner_gfhigh || 70
+					onValueModified: {
+						Backend.planner_gfhigh = value
+					}
+				}
+
 				TemplateRadioButton {
 					text: qsTr("VPM-B deco")
 					Layout.columnSpan: 2
@@ -313,7 +330,7 @@ TemplatePage {
 				visible: gasoptions.isExpanded
 
 				TemplateLabel {
-					text: qsTr("Bottom SAC (%1)").arg(volumeUnit)
+					text: qsTr("Bottom SAC [%1]").arg(volumeUnit)
 				}
 				TemplateSpinBox {
 					id: spinBottomsac
@@ -333,7 +350,7 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					text: qsTr("Deco SAC (%1)").arg(volumeUnit)
+					text: qsTr("Deco SAC [%1]").arg(volumeUnit)
 				}
 				TemplateSpinBox {
 					id: spinDecosac
@@ -385,7 +402,7 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					text: qsTr("Bottom pO₂ (%1)").arg(pressureUnit)
+					text: qsTr("Bottom pO₂ [%1]").arg(pressureUnit)
 				}
 				TemplateSpinBox {
 					from: 0
@@ -403,7 +420,7 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					text: qsTr("Deco pO₂ (%1)").arg(pressureUnit)
+					text: qsTr("Deco pO₂ [%1]").arg(pressureUnit)
 				}
 				TemplateSpinBox {
 					from: 0
@@ -421,7 +438,7 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					text: qsTr("Best mix END (%1)").arg(speedUnit)
+					text: qsTr("Best mix END [%1]").arg(speedUnit)
 				}
 				TemplateSpinBox {
 					id: spinBestmixend
