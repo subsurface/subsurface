@@ -62,6 +62,9 @@ TemplatePage {
             Layout.alignment: Qt.AlignHCenter
             onClicked: {
                 var cylinderType = typeBox.currentText;
+                if (heBox.value + o2Box.value > 100) {
+                    heBox.value = 100 - o2Box.value;
+                }
                 var o2_permille = o2Box.value * 10;
                 var he_permille = heBox.value * 10;
                 

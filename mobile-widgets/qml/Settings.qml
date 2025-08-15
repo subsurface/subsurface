@@ -598,6 +598,18 @@ TemplatePage {
 					rootItem.settingsChanged()
 					}
 				}
+				TemplateLabel {
+					text: qsTr("Display Technical Diving menu")
+					Layout.fillWidth: true
+					Layout.columnSpan: 2
+				}
+				SsrfSwitch {
+					id: technicalButton
+					checked: PrefDisplay.show_technical
+					onClicked: {
+						PrefDisplay.show_technical = checked
+					}
+				}
 				TemplateLine {
 					visible: sectionAdvanced.isExpanded
 					Layout.columnSpan: 3
@@ -668,7 +680,7 @@ TemplatePage {
 				}
 				TemplateLabel {
 					enabled: PrefTechnicalDetails.calcceiling
-					text: qsTr("GFHigh (10 to 150")
+					text: qsTr("GFHigh (10 to 150)")
 				}
 				TemplateSpinBox {
 					visible: PrefTechnicalDetails.calcceiling
