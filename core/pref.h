@@ -100,6 +100,7 @@ struct preferences {
 	double      font_size;
 	double      mobile_scale;
 	bool        show_developer;
+	bool        show_technical;
 	bool        three_m_based_grid;
 	bool        map_short_names;
 

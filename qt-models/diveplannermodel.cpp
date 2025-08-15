@@ -1297,6 +1297,70 @@ void DivePlannerPointsModel::computeVariationsDone(QString variations)
 	emit calculatedPlanNotes(notes);
 }
 
+QString DivePlannerPointsModel::calculateVariationsSync(const struct diveplan &original_plan, const struct deco_state &ds_in)
+{
+    // nothing to do unless there's an original plan
+    if (original_plan.dp.empty())
+        return QString();
+
+    auto dive = std::make_unique<struct dive>();
+    copy_dive(d, dive.get());
+    deco_state_cache cache, save;
+    struct diveplan plan_copy;
+    struct deco_state ds = ds_in; // Work on a copy of the deco state
+
+    save.cache(&ds);
+
+    duration_t delta_time = 1_min;
+    QString time_units = tr("min");
+    depth_t delta_depth;
+    QString depth_units;
+
+    if (prefs.units.length == units::METERS) {
+        delta_depth = 1_m;
+        depth_units = tr("m");
+    } else {
+        delta_depth = 1_ft;
+        depth_units = tr("ft");
+    }
+
+    plan_copy = original_plan;
+    if (plan_copy.dp.size() < 2)
+        return QString();
+
+    auto original = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+    save.restore(&ds, false);
+
+    plan_copy = original_plan;
+    second_to_last(plan_copy.dp).depth.mm += delta_depth.mm;
+    plan_copy.dp.back().depth.mm += delta_depth.mm;
+    auto deeper = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+    save.restore(&ds, false);
+
+    plan_copy = original_plan;
+    second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
+    plan_copy.dp.back().depth.mm -= delta_depth.mm;
+    auto shallower = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+    save.restore(&ds, false);
+
+    plan_copy = original_plan;
+    plan_copy.dp.back().time += delta_time.seconds;
+    auto longer = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+    save.restore(&ds, false);
+
+    plan_copy = original_plan;
+    plan_copy.dp.back().time -= delta_time.seconds;
+    auto shorter = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+    save.restore(&ds, false);
+
+    std::string buf = format_string_std(", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
+        SIGNED_FRAC_TRIPLET(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
+        SIGNED_FRAC_TRIPLET(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
+
+    // Instead of emitting a signal, we just return the result
+    return QString::fromStdString(buf);
+}
+
 static void addDive(dive *d, bool autogroup, bool newNumber)
 {
 	// Create a new dive and clear out the old one.
@@ -1458,6 +1522,9 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		diveplan.dp.push_back(point);
 	}
 
+    struct diveplan plan_copy = diveplan;
+	
+
 	// Load ALL current settings from the correct preference classes
 	
 	//diveplan.gflow = qPrefTechnicalDetails::gflow();
@@ -1474,6 +1541,16 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		deco_state_cache cache;
 		struct deco_state plan_deco_state;
 		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true);
+
+		if (shouldComputeVariations()) {
+            QString variations = calculateVariationsSync(plan_copy, plan_deco_state);
+            if (!variations.isEmpty()) {
+                QString notes = QString::fromStdString(d->notes);
+                notes = notes.replace("VARIATIONS", variations);
+                d->notes = notes.toStdString();
+            }
+        }
+
 		updateMaxDepth();
 		d->fixup_dive();
 	}
