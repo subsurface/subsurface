@@ -18,6 +18,7 @@ preferences::preferences() :
 	font_size(-1),
 	mobile_scale(1.0),
 	show_developer(true),
+	show_technical(true),
 	three_m_based_grid(false),
 	map_short_names(false),
 	include_unused_tanks(false),

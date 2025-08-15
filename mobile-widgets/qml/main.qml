@@ -433,6 +433,36 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			},
 			Kirigami.Action {
 				icon {
+					name: ":/icons/dashboard-show.svg"
+				}
+				text: qsTr("Technical Diving")
+				visible: PrefDisplay.show_technical
+				Kirigami.Action {
+					icon {
+						name: ":/go-previous-symbolic"
+					}
+					text: qsTr("Back")
+					onTriggered: globalDrawer.pop()
+				}
+				Kirigami.Action {
+					icon.name: ":/icons/document-edit-sign.svg" // Using an existing icon for now
+					text: qsTr("Dive Planner")
+					onTriggered: {
+						globalDrawer.close()
+						showPage(divePlannerEditWindow)
+					}
+				}
+				Kirigami.Action {
+					icon.name: ":/icons/measure.svg" // Using an existing icon for now
+					text: qsTr("Gas Calculator")
+					onTriggered: {
+						globalDrawer.close()
+						showPage(divePlannerCalculatorWindow)
+					}
+				}
+			},
+			Kirigami.Action {
+				icon {
 					name: ":/icons/ic_settings.svg"
 				}
 				text: qsTr("Settings")
@@ -857,9 +887,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		visible: false
 	}
 
-/* this shouldn't be exposed unless someone will finish the work
 	DivePlannerSetup {
 		id: divePlannerSetupWindow
+		visible: false
+	}
+
+	DivePlannerGasCalculator {
+		id: divePlannerCalculatorWindow
 		visible: false
 	}
 
@@ -872,6 +906,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		id: divePlannerViewWindow
 		visible: false
 	}
+/* this shouldn't be exposed unless someone will finish the work
 
 	DivePlannerManager {
 		id: divePlannerManagerWindow

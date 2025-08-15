@@ -109,7 +109,10 @@ slots:
 	void setAscratelast6mDisplay(int rate);
 	void setDescrateDisplay(int rate);
 	void addReverseProfile();
-
+	Q_INVOKABLE QVariantMap calculatePlan(const QVariantList &cylinders, const QVariantList &segments,
+					  const QString &date, const QString &time, int diveMode, bool shouldSave);
+	Q_INVOKABLE QVariantList calculateGasInfo(const QString &cylinderType, int o2_permille, int he_permille);
+		
 signals:
 	void planCreated();
 	void planCanceled();
@@ -134,6 +137,7 @@ private:
 	void computeVariationsDone(QString text);
 	void computeVariations(struct diveplan plan, struct deco_state ds); // Note: works on copies of plan and ds
 	int analyzeVariations(const std::vector<decostop> &min, const std::vector<decostop> &mid, const std::vector<decostop> &max, const char *unit);
+    QString calculateVariationsSync(const struct diveplan &original_plan, const struct deco_state &ds);
 	struct dive *d;
 	int dcNr;
 	CylindersModel cylinders;
