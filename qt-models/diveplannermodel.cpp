@@ -1299,66 +1299,66 @@ void DivePlannerPointsModel::computeVariationsDone(QString variations)
 
 QString DivePlannerPointsModel::calculateVariationsSync(const struct diveplan &original_plan, const struct deco_state &ds_in)
 {
-    // nothing to do unless there's an original plan
-    if (original_plan.dp.empty())
-        return QString();
+	// nothing to do unless there's an original plan
+	if (original_plan.dp.empty())
+		return QString();
 
-    auto dive = std::make_unique<struct dive>();
-    copy_dive(d, dive.get());
-    deco_state_cache cache, save;
-    struct diveplan plan_copy;
-    struct deco_state ds = ds_in; // Work on a copy of the deco state
+	auto dive = std::make_unique<struct dive>();
+	copy_dive(d, dive.get());
+	deco_state_cache cache, save;
+	struct diveplan plan_copy;
+	struct deco_state ds = ds_in; // Work on a copy of the deco state
 
-    save.cache(&ds);
+	save.cache(&ds);
 
-    duration_t delta_time = 1_min;
-    QString time_units = tr("min");
-    depth_t delta_depth;
-    QString depth_units;
+	duration_t delta_time = 1_min;
+	QString time_units = tr("min");
+	depth_t delta_depth;
+	QString depth_units;
 
-    if (prefs.units.length == units::METERS) {
-        delta_depth = 1_m;
-        depth_units = tr("m");
-    } else {
-        delta_depth = 1_ft;
-        depth_units = tr("ft");
-    }
+	if (prefs.units.length == units::METERS) {
+		delta_depth = 1_m;
+		depth_units = tr("m");
+	} else {
+		delta_depth = 1_ft;
+		depth_units = tr("ft");
+	}
 
-    plan_copy = original_plan;
-    if (plan_copy.dp.size() < 2)
-        return QString();
+	plan_copy = original_plan;
+	if (plan_copy.dp.size() < 2)
+		return QString();
 
-    auto original = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
-    save.restore(&ds, false);
+	auto original = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	save.restore(&ds, false);
 
-    plan_copy = original_plan;
-    second_to_last(plan_copy.dp).depth.mm += delta_depth.mm;
-    plan_copy.dp.back().depth.mm += delta_depth.mm;
-    auto deeper = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
-    save.restore(&ds, false);
+	plan_copy = original_plan;
+	second_to_last(plan_copy.dp).depth.mm += delta_depth.mm;
+	plan_copy.dp.back().depth.mm += delta_depth.mm;
+	auto deeper = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	save.restore(&ds, false);
 
-    plan_copy = original_plan;
-    second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
-    plan_copy.dp.back().depth.mm -= delta_depth.mm;
-    auto shallower = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
-    save.restore(&ds, false);
+	plan_copy = original_plan;
+	second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
+	plan_copy.dp.back().depth.mm -= delta_depth.mm;
+	auto shallower = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	save.restore(&ds, false);
 
-    plan_copy = original_plan;
-    plan_copy.dp.back().time += delta_time.seconds;
-    auto longer = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
-    save.restore(&ds, false);
+	plan_copy = original_plan;
+	plan_copy.dp.back().time += delta_time.seconds;
+	auto longer = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	save.restore(&ds, false);
 
-    plan_copy = original_plan;
-    plan_copy.dp.back().time -= delta_time.seconds;
-    auto shorter = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
-    save.restore(&ds, false);
+	plan_copy = original_plan;
+	plan_copy.dp.back().time -= delta_time.seconds;
+	auto shorter = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	save.restore(&ds, false);
 
-    std::string buf = format_string_std(", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
-        SIGNED_FRAC_TRIPLET(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
-        SIGNED_FRAC_TRIPLET(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
+	std::string buf = format_string_std(", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
+		SIGNED_FRAC_TRIPLET(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
+		SIGNED_FRAC_TRIPLET(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
 
-    // Instead of emitting a signal, we just return the result
-    return QString::fromStdString(buf);
+	// Instead of emitting a signal, we just return the result
+	return QString::fromStdString(buf);
 }
 
 static void addDive(dive *d, bool autogroup, bool newNumber)
@@ -1522,7 +1522,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		diveplan.dp.push_back(point);
 	}
 
-    struct diveplan plan_copy = diveplan;
+	struct diveplan plan_copy = diveplan;
 	
 
 	// Load ALL current settings from the correct preference classes
@@ -1543,13 +1543,13 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true);
 
 		if (shouldComputeVariations()) {
-            QString variations = calculateVariationsSync(plan_copy, plan_deco_state);
-            if (!variations.isEmpty()) {
-                QString notes = QString::fromStdString(d->notes);
-                notes = notes.replace("VARIATIONS", variations);
-                d->notes = notes.toStdString();
-            }
-        }
+			QString variations = calculateVariationsSync(plan_copy, plan_deco_state);
+			if (!variations.isEmpty()) {
+				QString notes = QString::fromStdString(d->notes);
+				notes = notes.replace("VARIATIONS", variations);
+				d->notes = notes.toStdString();
+			}
+		}
 
 		updateMaxDepth();
 		d->fixup_dive();
@@ -1612,8 +1612,15 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 	sanitize_gasmix(temp_cyl.gasmix);
 
 	// Get narcotic preference
-	int fN2_permille = get_n2(temp_cyl.gasmix);
-
+	bool o2_is_narcotic = qPrefDivePlanner::o2narcotic();
+	int fNarcotic_permille;
+	if (o2_is_narcotic) {
+		// If O2 is narcotic, the narcotic fraction is N2 + O2.
+		fNarcotic_permille = get_n2(temp_cyl.gasmix) + o2_permille;
+	} else {
+		// Otherwise, it's just N2.
+		fNarcotic_permille = get_n2(temp_cyl.gasmix);
+	}
 
 	QVariantList results;
 	// Calculate for a standard range of pO₂ values
@@ -1625,20 +1632,23 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 		// Calculate MOD
 		depth_t mod = temp_dive.gas_mod(temp_cyl.gasmix, po2_limit, 1_m);
 
-		// Calculate EAD at the MOD
-		double p_amb_at_mod_ead = temp_dive.depth_to_atm(mod);
-		double p_n2 = p_amb_at_mod_ead * fN2_permille / 1000.0;
-		depth_t ead = { .mm = 0 };
-		if (fN2_permille > 0) {
-			double ead_atm = p_n2 / 0.79;
-			ead.mm = static_cast<int>((ead_atm - 1.0) * 10000.0);
-			if (ead.mm < 0) ead.mm = 0;
+		// Calculate EAD/END at the MOD
+		double p_amb_at_mod = temp_dive.depth_to_atm(mod);
+		
+		double p_narcotic = p_amb_at_mod * fNarcotic_permille / 1000.0;
+		
+		depth_t narcotic_depth = { .mm = 0 }; 
+		if (fNarcotic_permille > 0) {
+			double divisor = o2_is_narcotic ? 1.0 : 0.79;
+			double ead_atm = p_narcotic / divisor;
+			narcotic_depth.mm = static_cast<int>((ead_atm - 1.0) * 10000.0);
+			if (narcotic_depth.mm < 0) narcotic_depth.mm = 0;
 		}
 
 		QVariantMap row;
 		row["po2"] = QString::number(po2, 'f', 1);
 		row["mod"] = get_depth_string(mod, true);
-		row["ead"] = get_depth_string(ead, true);
+		row["ead"] = get_depth_string(narcotic_depth, true);
 		results.append(row);
 	}
 	return results;

@@ -15,7 +15,6 @@ class qPrefDisplay : public QObject {
 	Q_PROPERTY(bool display_invalid_dives READ display_invalid_dives WRITE set_display_invalid_dives NOTIFY display_invalid_divesChanged)
 	Q_PROPERTY(QString lastDir READ lastDir WRITE set_lastDir NOTIFY lastDirChanged)
 	Q_PROPERTY(bool show_developer READ show_developer WRITE set_show_developer NOTIFY show_developerChanged)
-	Q_PROPERTY(bool show_technical READ show_technical WRITE set_show_technical NOTIFY show_technicalChanged)
 	Q_PROPERTY(QString theme READ theme WRITE set_theme NOTIFY themeChanged)
 	Q_PROPERTY(QPointF tooltip_position READ tooltip_position WRITE set_tooltip_position NOTIFY tooltip_positionChanged)
 	Q_PROPERTY(QByteArray mainSplitter READ mainSplitter WRITE set_mainSplitter NOTIFY mainSplitterChanged)
@@ -45,7 +44,6 @@ public:
 	static bool display_invalid_dives() { return prefs.display_invalid_dives; }
 	static QString lastDir() { return st_lastDir; }
 	static bool show_developer() { return prefs.show_developer; }
-	static bool show_technical() { return prefs.show_technical; }
 	static QString theme() { return st_theme; }
 	static QPointF tooltip_position() { return st_tooltip_position; }
 	static QByteArray mainSplitter() { return st_mainSplitter; }
@@ -67,7 +65,6 @@ public slots:
 	static void set_display_invalid_dives(bool value);
 	static void set_lastDir(const QString &value);
 	static void set_show_developer(bool value);
-	static void set_show_technical(bool value);
 	static void set_theme(const QString &value);
 	static void set_tooltip_position(const QPointF &value);
 	static void set_mainSplitter(const QByteArray &value);
@@ -89,7 +86,6 @@ signals:
 	void display_invalid_divesChanged(bool value);
 	void lastDirChanged(const QString &value);
 	void show_developerChanged(bool value);
-	void show_technicalChanged(bool value);
 	void themeChanged(const QString &value);
 	void tooltip_positionChanged(const QPointF &value);
 	void mainSplitterChanged(const QByteArray &value);
@@ -113,7 +109,6 @@ private:
 	static void disk_mobile_scale(bool doSync);
 	static void disk_display_invalid_dives(bool doSync);
 	static void disk_show_developer(bool doSync);
-	static void disk_show_technical(bool doSync);
 	static void disk_three_m_based_grid(bool doSync);
 	static void disk_map_short_names(bool doSync);
 

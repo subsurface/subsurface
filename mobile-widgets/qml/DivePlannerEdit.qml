@@ -50,7 +50,7 @@ Kirigami.ScrollablePage {
 				var firstSegment = segmentListModel.get(0)
 				var descentDuration = 1
 				if (descentRate > 0) {
-                    descentDuration = Math.ceil(firstSegment.depth / descentRate);
+					descentDuration = Math.ceil(firstSegment.depth / descentRate);
 				}
 				segmentData.push({
 						"depth": firstSegment.depth,
@@ -63,7 +63,7 @@ Kirigami.ScrollablePage {
 						"duration": firstSegment.duration - descentDuration,
 						"gas": firstSegment.gas
 					});
-    			}
+				}
 			}
 			for (var j = start_index; j < segmentListModel.count; j++) {
 				var item = segmentListModel.get(j)
@@ -87,11 +87,11 @@ Kirigami.ScrollablePage {
 
 	}
 
-    onVisibleChanged: {
-        // This code runs every time the page becomes visible
-        if (visible) {
-            updateLivePlanInfo()
-        }
+	onVisibleChanged: {
+		// This code runs every time the page becomes visible
+		if (visible) {
+			updateLivePlanInfo()
+		}
 	}
 
 	onProfileDataChanged: {
@@ -99,8 +99,8 @@ Kirigami.ScrollablePage {
 	}
 
 	Component.onCompleted: {
-	    Backend.planner_gflow = PrefTechnicalDetails.gflow;
-        Backend.planner_gfhigh = PrefTechnicalDetails.gfhigh;
+		Backend.planner_gflow = PrefTechnicalDetails.gflow;
+		Backend.planner_gfhigh = PrefTechnicalDetails.gfhigh;
 		cylinderListModel.append({
 			"type": PrefEquipment.default_cylinder ? PrefEquipment.default_cylinder : "AL80",
 			"mix": "21/0",
@@ -181,10 +181,10 @@ Kirigami.ScrollablePage {
 			}
 			TemplateButton {
 					contentItem: Text {
-                        text: "+"
-                        horizontalAlignment: Text.AlignHCenter
-                        color: subsurfaceTheme.primaryTextColor
-                    }
+						text: "+"
+						horizontalAlignment: Text.AlignHCenter
+						color: subsurfaceTheme.primaryTextColor
+					}
 					font.bold: true
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					onClicked: {
@@ -214,7 +214,7 @@ Kirigami.ScrollablePage {
 				ListView {
 			id: cylinderListView
 			Layout.fillWidth: true
-            Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
+			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
 			clip: true
 			model: cylinderListModel
 
@@ -244,23 +244,23 @@ Kirigami.ScrollablePage {
 						updateLivePlanInfo();
 					}
 					onEditingFinished: {
-                        var parts = text.split('/');
+						var parts = text.split('/');
 
-                        if (parts.length === 2) {
-                            var o2 = parseInt(parts[0], 10);
-                            var he = parseInt(parts[1], 10);
+						if (parts.length === 2) {
+							var o2 = parseInt(parts[0], 10);
+							var he = parseInt(parts[1], 10);
 
-                            if (!isNaN(o2) && !isNaN(he) && (o2 + he > 100)) {
-                                
-                                var correctedHe = 100 - o2;
-                                if (correctedHe < 0) correctedHe = 0; // Sanity check
+							if (!isNaN(o2) && !isNaN(he) && (o2 + he > 100)) {
+								
+								var correctedHe = 100 - o2;
+								if (correctedHe < 0) correctedHe = 0; // Sanity check
 
-                                var correctedMix = o2 + "/" + correctedHe;
+								var correctedMix = o2 + "/" + correctedHe;
 
-                                text = correctedMix;
-                            }
-                        }
-                    }
+								text = correctedMix;
+							}
+						}
+					}
 					validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
@@ -304,10 +304,10 @@ Kirigami.ScrollablePage {
 			}
 			TemplateButton {
 				contentItem: Text {
-                    text: "+"
-                    horizontalAlignment: Text.AlignHCenter
-                    color: subsurfaceTheme.primaryTextColor
-                }
+					text: "+"
+					horizontalAlignment: Text.AlignHCenter
+					color: subsurfaceTheme.primaryTextColor
+				}
 				font.bold: true
 				Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 				onClicked: {
@@ -337,7 +337,7 @@ Kirigami.ScrollablePage {
 		ListView {
 			id: segmentListView
 			Layout.fillWidth: true
-            Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
+			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
 			clip: true
 
 			model: segmentListModel
