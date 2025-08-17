@@ -436,7 +436,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					name: ":/icons/dashboard-show.svg"
 				}
 				text: qsTr("Technical Diving")
-				visible: PrefDisplay.show_technical
 				Kirigami.Action {
 					icon {
 						name: ":/go-previous-symbolic"

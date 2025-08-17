@@ -55,7 +55,6 @@ void qPrefDisplay::loadSync(bool doSync)
 	disk_mobile_scale(doSync);
 	disk_display_invalid_dives(doSync);
 	disk_show_developer(doSync);
-	disk_show_technical(doSync);
 	if (!doSync) {
 		load_tooltip_position();
 		load_theme();
@@ -79,7 +78,7 @@ void qPrefDisplay::set_divelist_font(const QString &value)
 		newValue = value.left(value.indexOf(","));
 
 	if (newValue.toStdString() != prefs.divelist_font &&
-	    !subsurface_ignore_font(newValue.toStdString())) {
+		!subsurface_ignore_font(newValue.toStdString())) {
 		prefs.divelist_font = value.toStdString();
 		disk_divelist_font(true);
 
@@ -150,8 +149,6 @@ HANDLE_PREFERENCE_INT(Display, "animation_speed", animation_speed);
 HANDLE_PREFERENCE_BOOL(Display, "displayinvalid", display_invalid_dives);
 
 HANDLE_PREFERENCE_BOOL(Display, "show_developer", show_developer);
-
-HANDLE_PREFERENCE_BOOL(Display, "show_technical", show_technical);
 
 HANDLE_PREFERENCE_BOOL(Display, "three_m_based_grid", three_m_based_grid);
 

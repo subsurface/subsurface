@@ -137,7 +137,7 @@ private:
 	void computeVariationsDone(QString text);
 	void computeVariations(struct diveplan plan, struct deco_state ds); // Note: works on copies of plan and ds
 	int analyzeVariations(const std::vector<decostop> &min, const std::vector<decostop> &mid, const std::vector<decostop> &max, const char *unit);
-    QString calculateVariationsSync(const struct diveplan &original_plan, const struct deco_state &ds);
+	QString calculateVariationsSync(const struct diveplan &original_plan, const struct deco_state &ds);
 	struct dive *d;
 	int dcNr;
 	CylindersModel cylinders;
