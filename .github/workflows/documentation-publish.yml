@@ -30,7 +30,7 @@ jobs:
         DEBIAN_FRONTEND=noninteractive sudo apt-get -y -q install asciidoc docbook-xml w3m
 
     - name: checkout sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
         submodules: recursive

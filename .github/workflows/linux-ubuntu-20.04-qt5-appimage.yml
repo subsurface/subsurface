@@ -52,7 +52,7 @@ jobs:
 
     # needs git from the previous step
     - name: checkout sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
         submodules: recursive
