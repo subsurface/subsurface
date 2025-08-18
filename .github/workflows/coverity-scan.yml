@@ -28,7 +28,7 @@ jobs:
         qtquickcontrols2-5-dev libbluetooth-dev libmtp-dev libraw-dev
 
     - name: checkout sources
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         fetch-depth: 0
         submodules: recursive
