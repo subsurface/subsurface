@@ -12,7 +12,7 @@ TemplatePage {
 	id: divePlannerSetupWindow
 
 	property string speedUnit: (Backend.length === Enums.METERS) ? qsTr(" m/min") : qsTr(" ft/min")
-	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr(" l/min") : qsTr(" cuft/min")
+	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr(" L/min") : qsTr(" cuft/min")
 	property string pressureUnit: (Backend.pressure === Enums.BAR) ? "bar" : "psi"
 
 	Connections {
@@ -172,7 +172,7 @@ TemplatePage {
 				}
 
 				TemplateLabel {
-					text: qsTr("Reserve gas [%1]").arg(volumeUnit)
+					text: qsTr("Reserve gas [%1]").arg(pressureUnit)
 					leftPadding: Kirigami.Units.smallSpacing * 2
 					enabled: Backend.planner_deco_mode === Enums.RECREATIONAL
 				}
@@ -208,7 +208,7 @@ TemplatePage {
 				}
 				
 				TemplateLabel {
-					text: qsTr("GFLow")
+					text: qsTr("GFLow [%]")
 					leftPadding: Kirigami.Units.smallSpacing * 2
 				}
 				TemplateSpinBox {
@@ -222,7 +222,7 @@ TemplatePage {
 				}
 
 				TemplateLabel {
-					text: qsTr("GFHigh")
+					text: qsTr("GFHigh [%]")
 					leftPadding: Kirigami.Units.smallSpacing * 2
 				}
 				TemplateSpinBox {
@@ -245,7 +245,7 @@ TemplatePage {
 				}
 
 				TemplateLabel {
-					text: qsTr("Conservatism level (+)")
+					text: qsTr("Conservatism level [+]")
 					leftPadding: 20
 				}
 				TemplateSpinBox {
@@ -287,7 +287,7 @@ TemplatePage {
 				}
 
 				TemplateLabel {
-					text: qsTr("Min switch time")
+					text: qsTr("Min switch time [min]")
 				}
 				TemplateSpinBox {
 					from: 0
@@ -303,7 +303,7 @@ TemplatePage {
 				}
 
 				TemplateLabel {
-					text: qsTr("Surface segment")
+					text: qsTr("Surface segment [min]")
 				}
 				TemplateSpinBox {
 					from: 0
@@ -388,7 +388,7 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					text: qsTr("Problem solving time (min)")
+					text: qsTr("Problem solving time [min]")
 				}
 				TemplateSpinBox {
 					from: 1

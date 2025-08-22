@@ -73,9 +73,20 @@ Kirigami.ScrollablePage {
 									"gas": item.gas
 								})
 			}
+			var salinity = 0
+			if (waterTypeBox.currentIndex == 0) {
+				salinity = 10300;
+			}
+			if (waterTypeBox.currentIndex == 1) {
+				salinity = 10000;
+			}
+			if (waterTypeBox.currentIndex == 2) {
+				salinity = 10200;
+			}
+			
 			var planResult = Backend.divePlannerPointsModel.calculatePlan(
 				cylinderData, segmentData, planDate.text, planTime.text,
-				diveModeBox.currentIndex, false
+				diveModeBox.currentIndex, salinity, false
 			)
 			// Handle planResult
 			planNotes = planResult.notes
@@ -169,6 +180,20 @@ Kirigami.ScrollablePage {
 				enabled: false
 				model: [qsTr("Open circuit"), qsTr("CCR"), qsTr("pSCR")]
 				currentIndex: 0 // Default to OC
+			}
+			Controls.Label {
+				text: qsTr("Water Type")
+				verticalAlignment: Text.AlignVCenter
+			}
+			TemplateComboBox {
+				id: waterTypeBox
+				Layout.fillWidth: true
+				enabled: true
+				model: [qsTr("Sea Water"), qsTr("Fresh Water"), qsTr("EN13319")]
+				currentIndex: 0 // Default to Sea water
+				onCurrentIndexChanged: {
+					updateLivePlanInfo();
+				}
 			}
 		}
 
@@ -534,9 +559,19 @@ Kirigami.ScrollablePage {
 										"gas": item.gas
 									})
 				}
+				var salinity = 0
+				if (waterTypeBox.currentIndex == 0) {
+					salinity = 10300;
+				}
+				if (waterTypeBox.currentIndex == 1) {
+					salinity = 10000;
+				}
+				if (waterTypeBox.currentIndex == 2) {
+					salinity = 10200;
+				}
 				var planResult = Backend.divePlannerPointsModel.calculatePlan(
 					cylinderData, segmentData, planDate.text, planTime.text,
-					diveModeBox.currentIndex, true // shouldSave is true
+					diveModeBox.currentIndex, salinity, true // shouldSave is true
 				)
 				var newDiveId = planResult.newDiveId
 				if (newDiveId !== -1) {
