@@ -1446,7 +1446,8 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 }
 
 QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersData, const QVariantList &segmentsData,
-												  const QString &date, const QString &time, int diveMode, bool shouldSave)
+												  const QString &date, const QString &time, int diveMode, 
+												  int waterType, bool shouldSave)
 {
 	if (d) {
 		delete d;
@@ -1507,6 +1508,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 			diveplan.dp.push_back(point);
 		}
 	}
+	diveplan.salinity = waterType;
 
 	// Populate the actual dive plan segments from QML data
 	int currentTimeInSeconds = 0;
