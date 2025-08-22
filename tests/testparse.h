@@ -39,8 +39,11 @@ private slots:
 
 	void importApdInspirationUddf();
 
-	void importDlf_v1();
-	void importDlf_v2();
+	void importDlfFreedomV1();
+	void importDlfLibertyV1();
+	void importDlfFreedomMixV2();
+	void importDlfFreedomMix2V2();
+	void importDlfFreedomMix2V2FactoryTest();
 private:
 	sqlite3 *_sqlite3_handle = NULL;
 };
