@@ -18,6 +18,7 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:launchMode="singleTop"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="unspecified" >
             <intent-filter>
@@ -88,8 +89,8 @@
         </provider>
     </application>
 
-    <uses-sdk android:minSdkVersion="21"
-	      android:targetSdkVersion="30" />
+    <uses-sdk android:minSdkVersion="26"
+	      android:targetSdkVersion="34" />
 
     <supports-screens
         android:anyDensity="true"
