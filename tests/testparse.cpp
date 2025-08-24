@@ -483,5 +483,59 @@ void TestParse::importApdInspirationUddf()
 		     SUBSURFACE_TEST_DATA "/dives/test-apd-inspiration-reference.xml");
 }
 
+void TestParse::importDlfFreedomV1()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing DLF import on SUBSURFACE_MOBILE");
+#endif
+	parse_file(SUBSURFACE_TEST_DATA "/dives/Freedom_MIX_header_v1_00000115.dlf", &divelog);
+	QCOMPARE(save_dives("./test_import_Freedom_MIX_header_v1_00000115.dlf.xml"), 0);
+	FILE_COMPARE("./test_import_Freedom_MIX_header_v1_00000115.dlf.xml",
+			SUBSURFACE_TEST_DATA "/dives/Freedom_MIX_header_v1_00000115.dlf.xml");
+}
+
+void TestParse::importDlfLibertyV1()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing DLF import on SUBSURFACE_MOBILE");
+#endif
+	parse_file(SUBSURFACE_TEST_DATA "/dives/Liberty_CCR_header_v1_00000011.dlf", &divelog);
+	QCOMPARE(save_dives("./test_import_Liberty_CCR_header_v1_00000011.dlf.xml"), 0);
+	FILE_COMPARE("./test_import_Liberty_CCR_header_v1_00000011.dlf.xml",
+			SUBSURFACE_TEST_DATA "/dives/Liberty_CCR_header_v1_00000011.dlf.xml");
+}
+
+void TestParse::importDlfFreedomMixV2()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing DLF import on SUBSURFACE_MOBILE");
+#endif
+	parse_file(SUBSURFACE_TEST_DATA "/dives/Freedom_MIX_header_v2_00000003.dlf", &divelog);
+	QCOMPARE(save_dives("./test_import_Freedom_MIX_header_v2_00000003.dlf.xml"), 0);
+	FILE_COMPARE("./test_import_Freedom_MIX_header_v2_00000003.dlf.xml",
+			SUBSURFACE_TEST_DATA "/dives/Freedom_MIX_header_v2_00000003.dlf.xml");
+}
+
+void TestParse::importDlfFreedomMix2V2()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing DLF import on SUBSURFACE_MOBILE");
+#endif
+	parse_file(SUBSURFACE_TEST_DATA "/dives/Freedom_MIX2_header_v2_00000007.dlf", &divelog);
+	QCOMPARE(save_dives("./test_import_Freedom_MIX2_header_v2_00000007.dlf.xml"), 0);
+	FILE_COMPARE("./test_import_Freedom_MIX2_header_v2_00000007.dlf.xml",
+			SUBSURFACE_TEST_DATA "/dives/Freedom_MIX2_header_v2_00000007.dlf.xml");
+}
+
+void TestParse::importDlfFreedomMix2V2FactoryTest()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing DLF import on SUBSURFACE_MOBILE");
+#endif
+	parse_file(SUBSURFACE_TEST_DATA "/dives/Freedom_MIX2_header_v2_factory_test_00000001.dlf", &divelog);
+	QCOMPARE(save_dives("./test_import_Freedom_MIX2_header_v2_factory_test_00000001.dlf.xml"), 0);
+	FILE_COMPARE("./test_import_Freedom_MIX2_header_v2_factory_test_00000001.dlf.xml",
+			SUBSURFACE_TEST_DATA "/dives/Freedom_MIX2_header_v2_factory_test_00000001.dlf.xml");
+}
 
 QTEST_GUILESS_MAIN(TestParse)
