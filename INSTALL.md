@@ -308,6 +308,9 @@ git clone https://github.com/Subsurface/subsurface.git
                               #    building Subsurface
 ```
 
+The `build.sh` script uses all cores by default. If you would like to
+use fewer, set MAKEFLAGS="-j<n>".
+
 Now you can run Subsurface like this:
 
 ```
