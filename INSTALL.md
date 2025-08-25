@@ -184,6 +184,19 @@ sudo apt install \
     qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
 ```
 
+On Debian Trixie this seems to work
+```
+sudo apt install \
+    autoconf automake cmake g++ git libbluetooth-dev libcrypto++-dev \
+    libcurl4-openssl-dev libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
+    libsqlite3-dev libssh2-1-dev libssl-dev libtool \
+    libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make pkg-config \
+    qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
+    qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
+    qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
+    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
+```
+
 In order to build and run mobile-on-desktop, you also need
 
 ```
