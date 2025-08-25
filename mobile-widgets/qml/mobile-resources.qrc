@@ -29,10 +29,6 @@
 		<file>DivePlannerEdit.qml</file>
 		<file>DivePlannerSetup.qml</file>
 		<file>DivePlannerGasCalculator.qml</file>
-		<file>DivePlannerView.qml</file>
-		<!-- dive planner is unfinished, disable
-			<file>DivePlannerManager.qml</file>
-		-->
 		<file>DiveSummary.qml</file>
 		<file>Export.qml</file>
 		<file>HintsTextEdit.qml</file>

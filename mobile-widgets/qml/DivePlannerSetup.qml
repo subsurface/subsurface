@@ -11,9 +11,10 @@ TemplatePage {
 	title: qsTr("Dive planner setup")
 	id: divePlannerSetupWindow
 
-	property string speedUnit: (Backend.length === Enums.METERS) ? qsTr(" m/min") : qsTr(" ft/min")
-	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr(" L/min") : qsTr(" cuft/min")
-	property string pressureUnit: (Backend.pressure === Enums.BAR) ? "bar" : "psi"
+	property string speedUnit: (Backend.length === Enums.METERS) ? qsTr("m/min") : qsTr("ft/min")
+	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr("L/min") : qsTr("cuft/min")
+	property string pressureUnit: (Backend.pressure === Enums.BAR) ? qsTr("bar") : qsTr("psi")
+	property string depthUnit: (Backend.length === Enums.METERS) ? qsTr("m") : qsTr("ft")
 
 	Connections {
 		target: Backend
@@ -65,6 +66,7 @@ TemplatePage {
 					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.ascrate75 = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -80,6 +82,7 @@ TemplatePage {
 					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.ascrate50 = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -95,6 +98,7 @@ TemplatePage {
 					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.ascratestops = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -110,6 +114,7 @@ TemplatePage {
 					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.ascratelast6m = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -131,6 +136,7 @@ TemplatePage {
 					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.descrate = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateCheckBox {
@@ -138,6 +144,7 @@ TemplatePage {
 					checked: Backend.drop_stone_mode
 					onClicked: {
 						Backend.drop_stone_mode = checked
+						rootItem.settingsChanged()
 					}
 				}
 			}
@@ -168,6 +175,7 @@ TemplatePage {
 					checked: Backend.planner_deco_mode === Enums.RECREATIONAL
 					onClicked: {
 						Backend.planner_deco_mode = Enums.RECREATIONAL
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -181,10 +189,9 @@ TemplatePage {
 					to: 99
 					stepSize: 1
 					value: Backend.reserve_gas
-					textFromValue: function (value) { return value.toString() }
-					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.reserve_gas = value
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -195,6 +202,7 @@ TemplatePage {
 					checked: Backend.safetystop
 					onClicked: {
 						Backend.safetystop = checked
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -204,6 +212,7 @@ TemplatePage {
 					checked: Backend.planner_deco_mode === Enums.BUEHLMANN
 					onClicked: {
 						Backend.planner_deco_mode = Enums.BUEHLMANN
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -218,6 +227,7 @@ TemplatePage {
 					value: Backend.planner_gflow || 30
 					onValueModified: {
 						Backend.planner_gflow = value
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -232,6 +242,7 @@ TemplatePage {
 					value: Backend.planner_gfhigh || 70
 					onValueModified: {
 						Backend.planner_gfhigh = value
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -241,6 +252,7 @@ TemplatePage {
 					checked: Backend.planner_deco_mode === Enums.VPMB
 					onClicked: {
 						Backend.planner_deco_mode = Enums.VPMB
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -253,10 +265,9 @@ TemplatePage {
 					to: 4
 					stepSize: 1
 					value: Backend.vpmb_conservatism
-					textFromValue: function (value) { return value.toString() }
-					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.vpmb_conservatism = value
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -265,6 +276,7 @@ TemplatePage {
 					Layout.columnSpan: 2
 					onClicked: {
 						Backend.last_stop6m = checked
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -283,6 +295,7 @@ TemplatePage {
 					checked: Backend.switch_at_req_stop
 					onClicked: {
 						Backend.switch_at_req_stop = checked
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -294,11 +307,9 @@ TemplatePage {
 					to: 4
 					stepSize: 1
 					value: Backend.min_switch_duration
-					textFromValue: function (value, locale) {
-						return qsTr("+") + value
-					}
 					onValueModified: {
 						Backend.min_switch_duration = value
+						rootItem.settingsChanged()
 					}
 				}
 
@@ -310,11 +321,9 @@ TemplatePage {
 					to: 4
 					stepSize: 1
 					value: Backend.surface_segment
-					textFromValue: function (value, locale) {
-						return qsTr("+") + value
-					}
 					onValueModified: {
 						Backend.surface_segment = value
+						rootItem.settingsChanged()
 					}
 				}
 			}
@@ -347,6 +356,7 @@ TemplatePage {
 					}
 					onValueModified: {
 						Backend.bottomsac = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -367,6 +377,7 @@ TemplatePage {
 					}
 					onValueModified: {
 						Backend.decosac = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -385,6 +396,7 @@ TemplatePage {
 					}
 					onValueModified: {
 						Backend.sacfactor = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -399,6 +411,7 @@ TemplatePage {
 					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.problemsolvingtime = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -417,6 +430,7 @@ TemplatePage {
 					}
 					onValueModified: {
 						Backend.bottompo2 = value * .01
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
@@ -435,10 +449,11 @@ TemplatePage {
 					}
 					onValueModified: {
 						Backend.decopo2 = value * .01
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateLabel {
-					text: qsTr("Best mix END [%1]").arg(speedUnit)
+					text: qsTr("Best mix END [%1]").arg(depthUnit)
 				}
 				TemplateSpinBox {
 					id: spinBestmixend
@@ -450,6 +465,7 @@ TemplatePage {
 					valueFromText: function(text) { return parseInt(text) }
 					onValueModified: {
 						Backend.bestmixend = value
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateCheckBox {
@@ -457,6 +473,7 @@ TemplatePage {
 					checked: Backend.o2narcotic
 					onClicked: {
 						Backend.o2narcotic = checked
+						rootItem.settingsChanged()
 					}
 				}
 			}
@@ -473,6 +490,7 @@ TemplatePage {
 					checked: Backend.display_runtime
 					onClicked: {
 						Backend.display_runtime = checked
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateCheckBox {
@@ -480,6 +498,7 @@ TemplatePage {
 					checked: Backend.display_duration
 					onClicked: {
 						Backend.display_duration = checked
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateCheckBox {
@@ -487,6 +506,7 @@ TemplatePage {
 					checked: Backend.display_transitions
 					onClicked: {
 						Backend.display_transitions = checked
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateCheckBox {
@@ -494,6 +514,7 @@ TemplatePage {
 					checked: Backend.verbatim_plan
 					onClicked: {
 						Backend.verbatim_plan = checked
+						rootItem.settingsChanged()
 					}
 				}
 				TemplateCheckBox {
@@ -501,6 +522,7 @@ TemplatePage {
 					checked: Backend.display_variations
 					onClicked: {
 						Backend.display_variations = checked
+						rootItem.settingsChanged()
 					}
 				}
 			}
