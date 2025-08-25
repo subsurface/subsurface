@@ -206,7 +206,7 @@ TemplatePage {
 						Backend.planner_deco_mode = Enums.BUEHLMANN
 					}
 				}
-				
+
 				TemplateLabel {
 					text: qsTr("GFLow [%]")
 					leftPadding: Kirigami.Units.smallSpacing * 2
@@ -513,7 +513,7 @@ TemplatePage {
 		}
 		text: "Return"
 		onTriggered: {
-			pageStack.pop()			
+			pageStack.pop()
 		}
 	}
 }

@@ -15,7 +15,7 @@ Kirigami.ScrollablePage {
 	property string planNotes: ""
 	property string maxDepth: ""
 	property string duration: ""
-	property var profileData: []	
+	property var profileData: []
 
 	// --- Data Models ---
 	ListModel { id: cylinderListModel }
@@ -83,7 +83,7 @@ Kirigami.ScrollablePage {
 			if (waterTypeBox.currentIndex == 2) {
 				salinity = 10200;
 			}
-			
+
 			var planResult = Backend.divePlannerPointsModel.calculatePlan(
 				cylinderData, segmentData, planDate.text, planTime.text,
 				diveModeBox.currentIndex, salinity, false
@@ -258,7 +258,7 @@ Kirigami.ScrollablePage {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 					model: manager.cylinderListInit
 					currentIndex: model.indexOf(type)
-					
+
 				}
 				TemplateTextField {
 					id: mixField
@@ -276,7 +276,7 @@ Kirigami.ScrollablePage {
 							var he = parseInt(parts[1], 10);
 
 							if (!isNaN(o2) && !isNaN(he) && (o2 + he > 100)) {
-								
+
 								var correctedHe = 100 - o2;
 								if (correctedHe < 0) correctedHe = 0; // Sanity check
 
@@ -414,7 +414,7 @@ Kirigami.ScrollablePage {
 						segmentListModel.remove(index);
 						updateLivePlanInfo();
 					}
-						
+
 				}
 			}
 		}
@@ -588,7 +588,7 @@ Kirigami.ScrollablePage {
 		}
 		text: "Settings"
 		onTriggered: {
-			showPage(divePlannerSetupWindow)			
+			showPage(divePlannerSetupWindow)
 		}
 	}
 	actions.main: Kirigami.Action {
@@ -603,7 +603,7 @@ Kirigami.ScrollablePage {
 	}
 	actions.left: Kirigami.Action {
 		icon {
-			name: state = ":/icons/undo.svg" 
+			name: state = ":/icons/undo.svg"
 			color: subsurfaceTheme.primaryColor
 		}
 		text: "Back"
