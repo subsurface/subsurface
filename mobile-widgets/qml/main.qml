@@ -901,17 +901,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		visible: false
 	}
 
-	DivePlannerView {
-		id: divePlannerViewWindow
-		visible: false
-	}
-/* this shouldn't be exposed unless someone will finish the work
-
-	DivePlannerManager {
-		id: divePlannerManagerWindow
-		visible: false
-	}
- */
 	DiveSummary {
 		id: diveSummaryWindow
 		visible: false

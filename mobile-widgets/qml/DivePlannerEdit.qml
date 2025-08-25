@@ -141,6 +141,13 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	Connections {
+		target: rootItem
+		function onSettingsChanged() {
+			updateLivePlanInfo();
+		}
+	}
+
 	ColumnLayout {
 		width: parent.width
 		spacing: Kirigami.Units.gridUnit
