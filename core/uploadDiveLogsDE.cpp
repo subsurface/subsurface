@@ -84,8 +84,15 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 	zip = zip_open(QFile::encodeName(QDir::toNativeSeparators(tempfile)), ZIP_CREATE, &error_code);
 	if (!zip) {
 		char buffer[1024];
+#if LIBZIP_VERSION_MAJOR >= 1
+                zip_error_t error;
+                zip_error_init_with_code(&error, error_code);   // from zip_* function return
+                snprintf(buffer, sizeof buffer, "%s", zip_error_strerror(&error));
+                zip_error_fini(&error);
+#else
 		zip_error_to_str(buffer, sizeof buffer, error_code, errno);
 		report_error(qPrintable(tr("Failed to create zip file for upload: %s")), buffer);
+#endif
 		return false;
 	}
 
@@ -171,7 +178,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
 		s = zip_source_buffer(zip, membuf, streamsize, 1); // frees membuffer!
 		if (s) {
-			int64_t ret = zip_add(zip, filename, s);
+                        int64_t ret = zip_file_add(zip, filename, s, ZIP_FL_OVERWRITE);
 			if (ret == -1)
 				report_info("%s failed to include dive: %d", errPrefix, i);
 		}
