@@ -85,14 +85,14 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 	if (!zip) {
 		char buffer[1024];
 #if LIBZIP_VERSION_MAJOR >= 1
-                zip_error_t error;
-                zip_error_init_with_code(&error, error_code);   // from zip_* function return
-                snprintf(buffer, sizeof buffer, "%s", zip_error_strerror(&error));
-                zip_error_fini(&error);
+		zip_error_t error;
+		zip_error_init_with_code(&error, error_code);   // from zip_* function return
+		snprintf(buffer, sizeof buffer, "%s", zip_error_strerror(&error));
+		zip_error_fini(&error);
 #else
 		zip_error_to_str(buffer, sizeof buffer, error_code, errno);
-		report_error(qPrintable(tr("Failed to create zip file for upload: %s")), buffer);
 #endif
+		report_error(qPrintable(tr("Failed to create zip file for upload: %s")), buffer);
 		return false;
 	}
 

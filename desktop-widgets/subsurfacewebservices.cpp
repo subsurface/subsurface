@@ -392,15 +392,15 @@ void DivelogsDeWebServices::downloadFinished()
 	if (!zip) {
 		char buf[512];
 #if LIBZIP_VERSION_MAJOR >= 1
-                zip_error_t error;
-                zip_error_init_with_code(&error, errorcode);   // from zip_* function return
-                snprintf(buf, sizeof buf, "%s", zip_error_strerror(&error));
-                zip_error_fini(&error);
+		zip_error_t error;
+		zip_error_init_with_code(&error, errorcode);   // from zip_* function return
+		snprintf(buf, sizeof buf, "%s", zip_error_strerror(&error));
+		zip_error_fini(&error);
 #else
 		zip_error_to_str(buf, sizeof(buf), errorcode, errno);
+#endif
 		QMessageBox::critical(this, tr("Corrupted download"),
 				      tr("The archive could not be opened:\n%1").arg(QString::fromLocal8Bit(buf)));
-#endif
 		zipFile.close();
 		return;
 	}
