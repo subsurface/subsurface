@@ -178,7 +178,7 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
 		s = zip_source_buffer(zip, membuf, streamsize, 1); // frees membuffer!
 		if (s) {
-                        int64_t ret = zip_file_add(zip, filename, s, ZIP_FL_OVERWRITE);
+			int64_t ret = zip_file_add(zip, filename, s, ZIP_FL_OVERWRITE);
 			if (ret == -1)
 				report_info("%s failed to include dive: %d", errPrefix, i);
 		}
