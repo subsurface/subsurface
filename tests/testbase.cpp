@@ -12,12 +12,12 @@ TestBase *TestBase::instance()
 	return instance.get();
 }
 
-static void failOnError(const std::string& error)
+static void failOnError(const std::string error)
 {
 	TestBase::instance()->failOnError(error);
 }
 
-void TestBase::failOnError(const std::string& error)
+void TestBase::failOnError(const std::string error)
 {
 	if (TestBase::skipErrors)
 		report_info("Skipping error: %s", error.c_str());

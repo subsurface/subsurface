@@ -175,6 +175,17 @@ while [[ $# -gt 0 ]] ; do
 	shift
 done
 
+# Use all cores, unless user set their own MAKEFLAGS
+if [[ -z "${MAKEFLAGS+x}" ]]; then
+	if [[ ${PLATFORM} == "Linux" ]]; then
+		MAKEFLAGS="-j$(nproc)"
+	elif [[ ${PLATFORM} == "Darwin" ]]; then
+		MAKEFLAGS="-j$(sysctl -n hw.logicalcpu)"
+	else
+		MAKEFLAGS="-j4"
+	fi
+fi
+
 # recreate the old default behavior - no flag set implies build desktop
 if [ "$BUILD_MOBILE$BUILD_DOWNLOADER" = "" ] ; then
 	BUILD_DESKTOP="1"
@@ -382,7 +393,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	mkdir -p build
 	cd build
 	cmake $MAC_CMAKE ..
-	make -j4
+	make
 	make install
 	popd
 
@@ -399,7 +410,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 		../Configure --prefix="$INSTALL_ROOT" --openssldir="$INSTALL_ROOT" "$MAC_OPTS_OPENSSL" $OS_ARCH
 		make depend
 		# all the tests fail because the assume that openssl is already installed. Odd? Still things work
-		make -j4 -k
+		make -k
 		make -k install
 		cd ..
 	done
@@ -422,7 +433,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	cd build
 	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --with-openssl \
 		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
-	make -j4
+	make
 	make install
 	popd
 
@@ -431,7 +442,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	mkdir -p build
 	cd build
 	cmake $MAC_CMAKE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
-	make -j4
+	make
 	make install
 	popd
 	if [ "$PLATFORM" = Darwin ] ; then
@@ -454,7 +465,7 @@ if [[ "$LIBGITMAJ" -lt "1" && "$LIBGIT" -lt "26" ]] ; then
 	mkdir -p build
 	cd build
 	cmake $MAC_CMAKE -DBUILD_CLAR=OFF ..
-	make -j4
+	make
 	make install
 	popd
 
@@ -478,7 +489,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	mkdir -p build
 	cd build
 	cmake $MAC_CMAKE ..
-	make -j4
+	make
 	make install
 	popd
 
@@ -489,7 +500,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	mkdir -p build
 	cd build
 	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT"
-	make -j4
+	make
 	make install
 	popd
 
@@ -499,7 +510,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	mkdir -p build
 	cd build
 	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --disable-examples
-	make -j4
+	make
 	make install
 	popd
 
@@ -508,7 +519,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	mkdir -p build
 	cd build
 	cmake $MAC_CMAKE ..
-	make -j4
+	make
 	make install
 	popd
 fi
@@ -559,7 +570,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 	grep CLOCK_GETTIME config.h
 	sed -i .bak 's/^#define HAVE_CLOCK_GETTIME 1/#undef HAVE_CLOCK_GETTIME /' config.h
 fi
-make -j4
+make
 make install
 # make sure we know where the libdivecomputer.a was installed - sometimes it ends up in lib64, sometimes in lib
 STATIC_LIBDC="$INSTALL_ROOT/$(grep ^libdir Makefile | cut -d/ -f2)/libdivecomputer.a"
@@ -583,7 +594,7 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VE
 	else
 		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" ../googlemaps.pro
 	fi
-	make -j4
+	make
 	if [ "$PLATFORM" = Darwin ]  && [[ $QT_VERSION == 6* ]] && [[ $ARCHS == *" "* ]] ; then
 		# we can't build fat binaries directly here, so let's do it in two steps
 		# above we build the 'native' binary, now build the other one
@@ -592,7 +603,7 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VE
 		mkdir -p ../build-$OTHERARCH
 		cd ../build-$OTHERARCH
 		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/../qtlocation/build/include/QtLocation/6.3.0" QMAKE_APPLE_DEVICE_ARCHS=$OTHERARCH ../googlemaps.pro
-		make -j4
+		make
 		# now combine them into one .dylib
 		mkdir -p "$INSTALL_ROOT"/plugins/geoservices
 		lipo -create ./libqtgeoservices_googlemaps.dylib ../build/libqtgeoservices_googlemaps.dylib -output "$INSTALL_ROOT"/plugins/geoservices/libqtgeoservices_googlemaps.dylib
@@ -666,7 +677,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	fi
 
 	if [ ! "$PREP_ONLY" = "1" ] ; then
-		LIBRARY_PATH=$INSTALL_ROOT/lib make -j4
+		LIBRARY_PATH=$INSTALL_ROOT/lib make
 		LIBRARY_PATH=$INSTALL_ROOT/lib make install
 
 		if [ "$CREATE_APPDIR" = "1" ] ; then

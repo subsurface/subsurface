@@ -20,6 +20,16 @@ fi
 
 ../configure --disable-examples --prefix=$INSTALL_ROOT
 
+# Use all cores, unless user set their own MAKEFLAGS
+if [[ -z "${MAKEFLAGS+x}" ]]; then
+	if [[ ${PLATFORM} == "Linux" ]]; then
+		MAKEFLAGS="-j$(nproc)"
+	elif [[ ${PLATFORM} == "Darwin" ]]; then
+		MAKEFLAGS="-j$(sysctl -n hw.logicalcpu)"
+	else
+		MAKEFLAGS="-j4"
+	fi
+fi
 
 make -j4
 make install
