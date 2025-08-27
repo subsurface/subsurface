@@ -57,6 +57,12 @@ jobs:
         qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
         qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev libraw-dev
 
+    - name: set environment variables
+      id: set-variables
+      run: |
+        NUM_CORES=$(nproc)
+        echo "number-cores=$NUM_CORES" >> $GITHUB_OUTPUT
+
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
@@ -68,6 +74,8 @@ jobs:
         # queries: ./path/to/local/query, your-org/your-repo/queries@main
 
     - name: Build
+      env:
+        MAKEFLAGS: "j${{ steps.set-variables.outputs.number-cores }}"
       run: |
         cd ..
         git config --global --add safe.directory $GITHUB_WORKSPACE

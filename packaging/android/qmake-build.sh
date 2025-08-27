@@ -34,6 +34,7 @@ QUICK=""
 ARCHITECTURES=""
 BUILD_ABIS=""
 versionOnly=""
+PLATFORM=$(uname)
 
 while [ "$#" -gt 0 ] ; do
 	case "$1" in
@@ -120,6 +121,17 @@ else
 	exit 1
 fi
 
+# Use all cores, unless user set their own MAKEFLAGS
+if [[ -z "${MAKEFLAGS+x}" ]]; then
+	if [[ ${PLATFORM} == "Linux" ]]; then
+		MAKEFLAGS="-j$(nproc)"
+	elif [[ ${PLATFORM} == "Darwin" ]]; then
+		MAKEFLAGS="-j$(sysctl -n hw.logicalcpu)"
+	else
+		MAKEFLAGS="-j4"
+	fi
+fi
+
 QMAKE=$QT5_ANDROID/android/bin/qmake
 echo $QMAKE
 $QMAKE -query
@@ -182,7 +194,7 @@ if [ "$QUICK" = "" ] ; then
 	    mkdir -p googlemaps-build
 	    pushd googlemaps-build
 	    $QMAKE ANDROID_ABIS="$BUILD_ABIS" ../googlemaps/googlemaps.pro
-	    make -j4
+	    make
             make install
 	    popd
 	fi
