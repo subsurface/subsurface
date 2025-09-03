@@ -14,7 +14,6 @@ jobs:
     - name: add build dependencies
       run: |
         apt-get update
-        apt-get dist-upgrade -y
         DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
         wget curl \
         autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \

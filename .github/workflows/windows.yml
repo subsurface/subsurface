@@ -28,7 +28,6 @@ jobs:
     - name: install packages
       run: |
         apt-get -y update
-        apt-get -y dist-upgrade
 
     - name: checkout sources
       uses: actions/checkout@v5
