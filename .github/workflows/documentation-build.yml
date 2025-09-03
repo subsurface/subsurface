@@ -20,7 +20,6 @@ jobs:
           SUDO=sudo
         fi
         ${SUDO} apt-get -y update
-        ${SUDO} apt-get -y dist-upgrade
         DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get -y -q install git
 
     - name: checkout sources

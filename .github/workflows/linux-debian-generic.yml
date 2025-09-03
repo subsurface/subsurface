@@ -20,7 +20,6 @@ jobs:
         echo "update distro and install dependencies"
 
         apt-get update
-        apt-get dist-upgrade -y
         DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
         autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
         libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
