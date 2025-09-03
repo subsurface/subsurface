@@ -1,7 +1,7 @@
 FROM ubuntu:24.04 as base
 
 RUN apt-get update  && \
-    apt-get dist-upgrade -y && \
+    apt-get full-upgrade -y && \
     apt-get install -y \
     unzip \
     git \
