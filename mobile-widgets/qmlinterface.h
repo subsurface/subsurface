@@ -10,6 +10,7 @@
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/settings/qPrefGeneral.h"
 #include "qt-models/diveplannermodel.h"
+#include "qt-models/gasblendermodel.h"
 #include "backend-shared/plannershared.h"
 
 #include <QObject>
@@ -85,6 +86,7 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(bool sync_dc_time READ sync_dc_time WRITE set_sync_dc_time NOTIFY sync_dc_timeChanged);
 
 	Q_PROPERTY(DivePlannerPointsModel *divePlannerPointsModel READ divePlannerPointsModel CONSTANT);
+	Q_PROPERTY(GasBlenderModel* gasBlenderModel READ gasBlenderModel CONSTANT)
 	Q_PROPERTY(CylindersModel *cylindersModel READ cylindersModel CONSTANT);
 
 public:
@@ -225,6 +227,7 @@ public:
 	bool sync_dc_time() { return prefs.sync_dc_time; }
 
 	DivePlannerPointsModel *divePlannerPointsModel() { return DivePlannerPointsModel::instance(); }
+	GasBlenderModel *gasBlenderModel() { return GasBlenderModel::instance(); }
 	CylindersModel *cylindersModel() { return DivePlannerPointsModel::instance()->cylindersModel(); }
 
 public slots:
