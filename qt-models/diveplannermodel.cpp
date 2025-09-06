@@ -1440,6 +1440,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	d->dcs[dcNr].divemode = static_cast<enum divemode_t>(diveMode);
 
 	// Populate cylinders from QML data
+	std::vector<int> cylinder_start_pressures;
 	for (const QVariant &cylData : cylindersData) {
 		QVariantMap map = cylData.toMap();
 		cylinder_t newCyl;
@@ -1461,7 +1462,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		d->cylinders.add(d->cylinders.size(), newCyl);
 	}
 	this->cylinders.updateDive(d, dcNr);
-	reset_cylinders(d, true);
+	//reset_cylinders(d, true);
 
 	// Add available OC-gases as "time=0" waypoints for the planner engine
 	pressure_t deco_po2_limit = { .mbar = qPrefDivePlanner::decopo2() };
@@ -1471,6 +1472,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 			depth_t mod = d->gas_mod(cyl.gasmix, deco_po2_limit, 1_m);
 			divedatapoint point(0, mod, i, 0, false); // time=0, depth=MOD, cylinderid=i
 			diveplan.dp.push_back(point);
+			//log cylinder pressure
 		}
 	}
 	diveplan.salinity = waterType;
@@ -1546,21 +1548,15 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	return results;
 }
 
-QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderType, int o2_permille, int he_permille)
+QString DivePlannerPointsModel::calculateGasInfo(const QString &cylinderType, int o2_permille, int he_permille)
 {
-	// Create a temporary dive context for calculations
 	struct dive temp_dive;
 	make_planner_dc(&temp_dive.dcs[0]);
-
-	// Create a temporary cylinder with the specified gas mix
 	cylinder_t temp_cyl;
 
-	// Populate cylinder type info
 	std::pair<volume_t, pressure_t> type_info = get_tank_info_data(tank_info_table, cylinderType.toStdString());
-	volume_t size = type_info.first;
-	pressure_t pressure = type_info.second;
-	temp_cyl.type.size = size;
-	temp_cyl.type.workingpressure = pressure;
+	temp_cyl.type.size = type_info.first;
+	temp_cyl.type.workingpressure = type_info.second;
 	temp_cyl.type.description = cylinderType.toStdString();
 
 	// Populate gas mix
@@ -1568,19 +1564,13 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 	temp_cyl.gasmix.he.permille = he_permille;
 	sanitize_gasmix(temp_cyl.gasmix);
 
-	// Get narcotic preference
 	bool o2_is_narcotic = qPrefDivePlanner::o2narcotic();
-	int fNarcotic_permille;
-	if (o2_is_narcotic) {
-		// If O2 is narcotic, the narcotic fraction is N2 + O2.
-		fNarcotic_permille = get_n2(temp_cyl.gasmix) + o2_permille;
-	} else {
-		// Otherwise, it's just N2.
-		fNarcotic_permille = get_n2(temp_cyl.gasmix);
-	}
+	int fNarcotic_permille = o2_is_narcotic ? (get_n2(temp_cyl.gasmix) + o2_permille) : get_n2(temp_cyl.gasmix);
 
-	QVariantList results;
-	// Calculate for a standard range of pO₂ values
+	QString results = "<table width='100%'>";
+	QString ead_header = o2_is_narcotic ? tr("END @ MOD") : tr("EAD @ MOD");
+	results += QString("<tr><th align='center' style='padding-bottom: 5px;'><b>pO₂</b></th><th align='center' style='padding-bottom: 5px;'><b>MOD</b></th><th align='center' style='padding-bottom: 5px;'><b>%1</b></th></tr>").arg(ead_header);
+
 	double po2_values[] = { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0 };
 
 	for (double po2 : po2_values) {
@@ -1588,8 +1578,6 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 
 		// Calculate MOD
 		depth_t mod = temp_dive.gas_mod(temp_cyl.gasmix, po2_limit, 1_m);
-
-		// Calculate EAD/END at the MOD
 		double p_amb_at_mod = temp_dive.depth_to_atm(mod);
 
 		double p_narcotic = p_amb_at_mod * fNarcotic_permille / 1000.0;
@@ -1599,14 +1587,45 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 			double divisor = o2_is_narcotic ? 1.0 : 0.79;
 			double ead_atm = p_narcotic / divisor;
 			narcotic_depth.mm = static_cast<int>((ead_atm - 1.0) * 10000.0);
-			if (narcotic_depth.mm < 0) narcotic_depth.mm = 0;
+			if (narcotic_depth.mm < 0)
+				narcotic_depth.mm = 0;
 		}
 
-		QVariantMap row;
-		row["po2"] = QString::number(po2, 'f', 1);
-		row["mod"] = get_depth_string(mod, true);
-		row["ead"] = get_depth_string(narcotic_depth, true);
-		results.append(row);
+		results += QString("<tr><td align='center'>%1</td><td align='center'>%2</td><td align='center'>%3</td></tr>")
+				   .arg(QString::number(po2, 'f', 1))
+				   .arg(get_depth_string(mod, true))
+				   .arg(get_depth_string(narcotic_depth, true));
 	}
+	results += "</table>";
 	return results;
+}
+
+
+QVariantMap DivePlannerPointsModel::parseGasMix(const QString &mixStr) {
+	QVariantMap gas;
+	QStringList parts = mixStr.split('/');
+	if (parts.size() == 2) {
+		bool o2Ok, heOk;
+		int o2 = parts[0].toInt(&o2Ok);
+		int he = parts[1].toInt(&heOk);
+
+		if (o2Ok && heOk && o2 >= 0 && o2 <= 100 && he >= 0 && he <= 100 && (o2 + he) <= 100) {
+			gas["o2"] = o2;
+			gas["he"] = he;
+			return gas;
+		}
+	}
+	// Return an empty map if parsing fails
+	return QVariantMap();
+}
+
+QString DivePlannerPointsModel::calculateSimpleBlend(
+	const QString &target_start_mix,
+	int target_start_pressure,
+	const QString &target_end_mix,
+	int target_end_pressure,
+	const QVariantList &available_gases_in)
+{
+	// TODO: implement
+	return "Unimplemented";
 }
