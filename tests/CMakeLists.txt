@@ -128,6 +128,7 @@ set(TEST_DIVE_PLANNER_MODEL TestDivePlannerModel)
 endif()
 TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
+TEST(TestGasBlender testgasblending.cpp)
 # this keeps randomly failing and I don't understand why
 # too many false positives, so disabling this test for now
 TEST(TestGitStorage testgitstorage.cpp storageconfig)
