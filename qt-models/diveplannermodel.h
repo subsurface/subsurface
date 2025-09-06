@@ -111,7 +111,12 @@ slots:
 	void addReverseProfile();
 	Q_INVOKABLE QVariantMap calculatePlan(const QVariantList &cylinders, const QVariantList &segments,
 				const QString &date, const QString &time, int diveMode, int waterType, bool shouldSave);
-	Q_INVOKABLE QVariantList calculateGasInfo(const QString &cylinderType, int o2_permille, int he_permille);
+	Q_INVOKABLE QString calculateGasInfo(const QString &cylinderType, int o2_permille, int he_permille);
+    Q_INVOKABLE QString calculateSimpleBlend(const QString &target_start_mix, 
+		        int target_start_pressure, const QString &target_end_mix, int target_end_pressure, 
+				const QVariantList &available_gases);
+    static QVariantMap parseGasMix(const QString &mixStr);
+
 		
 signals:
 	void planCreated();
