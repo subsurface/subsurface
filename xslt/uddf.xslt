@@ -562,7 +562,7 @@
           <!-- APD Inspiration gradient factors - this is not part of the UDDF standard -->
           <extradata key="Deco model">
             <xsl:attribute name="value">
-              <xsl:value-of select="concat('GF ', samples/waypoint[setgflow and divetime > 0][1]/setgflow * 100, '/', samples/waypoint[setgfhigh and divetime > 0][1]/setgfhigh * 100)"/>
+              <xsl:value-of select="concat('GF ', round(samples/waypoint[setgflow and divetime > 0][1]/setgflow * 100), '/', round(samples/waypoint[setgfhigh and divetime > 0][1]/setgfhigh * 100))"/>
                 <!-- The gradient factor readings at the beginning of the dive seem to be bogus -->
             </xsl:attribute>
           </extradata>
