@@ -225,7 +225,7 @@
       </xsl:for-each>
 
       <xsl:variable name="buddies">
-	      <xsl:for-each select="informationbeforedive/link|u:informationbeforedive/u:link">
+              <xsl:for-each select="informationbeforedive/link|u:informationbeforedive/u:link">
           <xsl:variable name="ref">
             <xsl:value-of select="@ref"/>
           </xsl:variable>
@@ -505,6 +505,7 @@
             </extradata>
           </xsl:if>
         </xsl:for-each>
+
         <xsl:if test="/uddf/diver/owner/equipment/rebreather/scrubbermonitor">
           <xsl:choose>
             <xsl:when test="/uddf/diver/owner/equipment/rebreather/scrubbermonitor/@id = 'tempstik' and samples/waypoint/scrubber[@ref = 'tempstik']">
@@ -529,6 +530,7 @@
                 </xsl:attribute>
               </extradata>
             </xsl:when>
+
             <xsl:otherwise>
               <xsl:variable name="scrubber_values" select="samples/waypoint[scrubber]"/>
               <xsl:for-each select="/uddf/diver/owner/equipment/rebreather/scrubbermonitor[@id]">
@@ -554,6 +556,16 @@
               </xsl:for-each>
             </xsl:otherwise>
           </xsl:choose>
+        </xsl:if>
+
+        <xsl:if test="samples/waypoint/setgflow and samples/waypoint/setgfhigh">
+          <!-- APD Inspiration gradient factors - this is not part of the UDDF standard -->
+          <extradata key="Deco model">
+            <xsl:attribute name="value">
+              <xsl:value-of select="concat('GF ', samples/waypoint[setgflow and divetime > 0][1]/setgflow * 100, '/', samples/waypoint[setgfhigh and divetime > 0][1]/setgfhigh * 100)"/>
+                <!-- The gradient factor readings at the beginning of the dive seem to be bogus -->
+            </xsl:attribute>
+          </extradata>
         </xsl:if>
 
         <depth>
