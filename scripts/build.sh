@@ -185,48 +185,6 @@ if [ "$BUILD_DEPS" = "1" ] && [ "$QUICK" = "1" ] ; then
 	exit 1;
 fi
 
-# Verify that the Xcode Command Line Tools are installed
-if [ "$PLATFORM" = Darwin ] ; then
-	if [ -d /Developer/SDKs ] ; then
-		SDKROOT=/Developer/SDKs
-	elif [ -d  /Library/Developer/CommandLineTools/SDKs ] ; then
-		SDKROOT=/Library/Developer/CommandLineTools/SDKs
-	elif [ -d /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ] ; then
-		SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
-	else
-		echo "Cannot find SDK sysroot (usually /Developer/SDKs or"
-		echo "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs)"
-		exit 1;
-	fi
-	# find a 10.x base SDK to use, or if none can be found, find a numbered 11.x base SDK to use
-	BASESDK=$(ls $SDKROOT | grep -E "MacOSX1[0-6]\.[0-9]+\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
-	if [ -z "$BASESDK" ] ; then
-		echo "Cannot find a base SDK of type 1[0-6].x under the SDK root of ${SDKROOT}"
-		exit 1;
-	fi
-	if [ "$ARCHS" != "" ] ; then
-		# we do assume that the two architectures mentioned are x86_64 and arm64 .. that's kinda wrong
-		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/ -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64'"
-		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk -arch arm64 -arch x86_64"
-	else
-		ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
-		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/  -DCMAKE_OSX_ARCHITECTURES=$ARCHS"
-		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
-	fi
-	# OpenSSL can't deal with multi arch build
-	MAC_OPTS_OPENSSL="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
-	echo "Using ${BASESDK} as the BASESDK under ${SDKROOT}"
-
-	if [[ ! -d /usr/include && ! -d "${SDKROOT}/MacOSX${BASESDK}.sdk/usr/include" ]] ; then
-		echo "Error: Xcode Command Line Tools are not installed"
-		echo ""
-		echo "Please run:"
-		echo " xcode-select --install"
-		echo "to install them (you'll have to agree to Apple's licensing terms etc), then run build.sh again"
-		exit 1;
-	fi
-fi
-
 # normally this script builds the desktop version in subsurface/build
 # the user can explicitly pick the builds requested
 # for historic reasons, -both builds mobile and desktop, -all builds the downloader as well
@@ -263,6 +221,48 @@ export INSTALL_ROOT
 
 # make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
 export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
+
+# Verify that the Xcode Command Line Tools are installed
+if [ "$PLATFORM" = Darwin ] ; then
+	if [ -d /Developer/SDKs ] ; then
+		SDKROOT=/Developer/SDKs
+	elif [ -d  /Library/Developer/CommandLineTools/SDKs ] ; then
+		SDKROOT=/Library/Developer/CommandLineTools/SDKs
+	elif [ -d /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ] ; then
+		SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+	else
+		echo "Cannot find SDK sysroot (usually /Developer/SDKs or"
+		echo "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs)"
+		exit 1;
+	fi
+	# find a 10.x base SDK to use, or if none can be found, find a numbered 11.x base SDK to use
+	BASESDK=$(ls $SDKROOT | grep -E "MacOSX1[0-6]\.[0-9]+\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
+	if [ -z "$BASESDK" ] ; then
+		echo "Cannot find a base SDK of type 1[0-6].x under the SDK root of ${SDKROOT}"
+		exit 1;
+	fi
+	if [ "$ARCHS" != "" ] ; then
+		# we do assume that the two architectures mentioned are x86_64 and arm64 .. that's kinda wrong
+		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/ -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64' -DCMAKE_BUILD_TYPE=${DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
+		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk -arch arm64 -arch x86_64"
+	else
+		ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
+		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/ -DCMAKE_OSX_ARCHITECTURES=$ARCHS -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
+		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
+	fi
+	# OpenSSL can't deal with multi arch build
+	MAC_OPTS_OPENSSL="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
+	echo "Using ${BASESDK} as the BASESDK under ${SDKROOT}"
+
+	if [[ ! -d /usr/include && ! -d "${SDKROOT}/MacOSX${BASESDK}.sdk/usr/include" ]] ; then
+		echo "Error: Xcode Command Line Tools are not installed"
+		echo ""
+		echo "Please run:"
+		echo " xcode-select --install"
+		echo "to install them (you'll have to agree to Apple's licensing terms etc), then run build.sh again"
+		exit 1;
+	fi
+fi
 
 echo Building from "$SRC", installing in "$INSTALL_ROOT"
 
@@ -381,9 +381,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	sed -i .bak 's/share\/pkgconfig/pkgconfig/' CMakeLists.txt
 	mkdir -p build
 	cd build
-	cmake $MAC_CMAKE -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
-		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
-		..
+	cmake $MAC_CMAKE ..
 	make -j4
 	make install
 	popd
@@ -432,7 +430,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libssh2
 	mkdir -p build
 	cd build
-	cmake $MAC_CMAKE -DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" -DCMAKE_BUILD_TYPE=$DEBUGRELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+	cmake $MAC_CMAKE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
 	make -j4
 	make install
 	popd
@@ -455,7 +453,7 @@ if [[ "$LIBGITMAJ" -lt "1" && "$LIBGIT" -lt "26" ]] ; then
 	pushd libgit2
 	mkdir -p build
 	cd build
-	cmake $MAC_CMAKE -DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" -DBUILD_CLAR=OFF ..
+	cmake $MAC_CMAKE -DBUILD_CLAR=OFF ..
 	make -j4
 	make install
 	popd
@@ -479,9 +477,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libzip
 	mkdir -p build
 	cd build
-	cmake $MAC_CMAKE -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
-		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
-		..
+	cmake $MAC_CMAKE ..
 	make -j4
 	make install
 	popd
@@ -511,9 +507,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libftdi1
 	mkdir -p build
 	cd build
-	cmake $MAC_CMAKE -DCMAKE_BUILD_TYPE="$DEBUGRELEASE" \
-		-DCMAKE_INSTALL_PREFIX="$INSTALL_ROOT" \
-		..
+	cmake $MAC_CMAKE ..
 	make -j4
 	make install
 	popd
