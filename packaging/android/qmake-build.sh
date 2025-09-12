@@ -162,6 +162,9 @@ for ARCH in $ARCHITECTURES ; do
 	BUILD_ABIS="$BUILD_ABIS $ANDROID_ABI"
 done
 
+# Use all cores, unless user set -j<n>
+MAKEFLAGS="-j$(nproc) ${MAKEFLAGS:-}"
+
 # if this isn't just a quick rebuild, pull kirigami, icons, etc, and finally build the Googlemaps plugin
 if [ "$QUICK" = "" ] ; then
 	pushd "$SUBSURFACE_SOURCE"
@@ -182,7 +185,7 @@ if [ "$QUICK" = "" ] ; then
 	    mkdir -p googlemaps-build
 	    pushd googlemaps-build
 	    $QMAKE ANDROID_ABIS="$BUILD_ABIS" ../googlemaps/googlemaps.pro
-	    make -j4
+	    make
             make install
 	    popd
 	fi
