@@ -1,10 +1,32 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "testparse.h"
 #include "core/errorhelper.h"
+#include "testbase.h"
 
-static void failOnError(std::string error)
+TestBase *TestBase::instance()
 {
-       QFAIL(("Error reported: " + error).c_str()); 
+	static TestBase *instance = nullptr;
+	if (!instance)
+		instance = new TestBase();
+
+	return instance;
+}
+
+static void failOnError(const std::string error)
+{
+	TestBase::instance()->failOnError(error);
+}
+
+void TestBase::failOnError(const std::string error)
+{
+	if (skipErrors)
+		report_info("Skipping error: %s", error.c_str());
+	else
+		QFAIL(("Error reported: " + error).c_str());
+}
+
+void TestBase::setSkipErrors(bool enabled)
+{
+	skipErrors = enabled;
 }
 
 void TestBase::initTestCase()
@@ -14,3 +36,5 @@ void TestBase::initTestCase()
 
 	set_error_cb(&::failOnError);
 }
+
+bool TestBase::skipErrors = false;
