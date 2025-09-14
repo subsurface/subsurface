@@ -18,7 +18,9 @@
 #include "core/selection.h"
 #include "core/taxonomy.h"
 #include "core/sample.h"
+#include "core/string-format.h"
 #include "profile-widget/profilescene.h"
+#include "core/qthelper.h"
 #include <QDir>
 #include <QFileInfo>
 #include <QtConcurrent>
@@ -41,12 +43,42 @@ static constexpr int profileScale = 4;
 static constexpr int profileWidth = 800 * profileScale;
 static constexpr int profileHeight = 600 * profileScale;
 
-static void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename)
+static QString profileText(const struct dive &dive)
+{
+	QString text;
+
+	if (dive.dive_site && dive.dive_site->name.length() > 0)
+		text += "🗺 " + QString::fromStdString(dive.dive_site->name) + " \n";
+	if (dive.when) {
+		text += "🗓 " + formatDiveDateTime(&dive) + "\n";
+	}
+	text += "⏱: " + formatDiveDuration(&dive) + "\n";
+	text += "↧: " + get_depth_string(dive.maxdepth, true) + " \n";
+	if (dive.watertemp.mkelvin)
+		text += "🌡️: " + get_temperature_string(dive.watertemp, true) + " \n";
+	if (dive.visibility)
+		text += "👁: " + QString("⭐").repeated(dive.visibility) + " \n";
+	text += formatGas(&dive);
+
+	return text;
+}
+
+static void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename, bool diveinfo)
 {
 	QImage image = QImage(QSize(profileWidth, profileHeight), QImage::Format_RGB32);
 	QPainter paint;
 	paint.begin(&image);
 	profile.draw(&paint, QRect(0, 0, profileWidth, profileHeight), &dive, 0, nullptr, false);
+	if (diveinfo) {
+		QPixmap logo(":poster-icon");
+		paint.drawPixmap(profileWidth - 210, (int)(profileHeight * 0.9) - 200, 200, 200, logo);
+		QString text = profileText(dive);
+		QPen pen = QPen(Qt::darkBlue);
+		paint.setPen(pen);
+		QFont textfont("Courier", 60, QFont::Bold);
+		paint.setFont(textfont);
+		paint.drawText(QRect(int(0.05 * profileWidth), 0, profileWidth, int(profileHeight * 0.8)), text, Qt::AlignBottom | Qt::AlignLeft);
+	}
 	image.save(filename);
 }
 
@@ -55,7 +87,7 @@ static std::unique_ptr<ProfileScene> getPrintProfile()
 	return std::make_unique<ProfileScene>((double)profileScale, true, false);
 }
 
-void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
+void exportProfile(QString filename, bool selected_only, ExportCallback &cb, bool diveinfo)
 {
 	int count = 0;
 	if (!filename.endsWith(".png", Qt::CaseInsensitive))
@@ -73,7 +105,7 @@ void exportProfile(QString filename, bool selected_only, ExportCallback &cb)
 		cb.setProgress(done++ * 1000 / todo);
 		QString fn = count ? fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix()
 				   : filename;
-		exportProfile(*profile, *dive, fn);
+		exportProfile(*profile, *dive, fn, diveinfo);
 		++count;
 	}
 }
@@ -138,7 +170,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		if (selected_only && !dive->selected)
 			continue;
 		cb.setProgress(done++ * 1000 / todo);
-		exportProfile(*profile, *dive, texdir.filePath(QString("profile%1.png").arg(dive->number)));
+		exportProfile(*profile, *dive, texdir.filePath(QString("profile%1.png").arg(dive->number)), false);
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
