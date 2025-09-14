@@ -13,7 +13,7 @@ struct ExportCallback {
 	virtual bool canceled() const;
 };
 
-void exportProfile(QString filename, bool selected_only, ExportCallback &cb);
+void exportProfile(QString filename, bool selected_only, ExportCallback &cb, bool diveinfo);
 void export_TeX(const char *filename, bool selected_only, bool plain, ExportCallback &cb);
 void export_depths(const char *filename, bool selected_only);
 std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly);
