@@ -22,6 +22,8 @@ TemplatePage {
 	ListModel { id: segmentListModel }
 	property var gasNumberModel: []
 
+	property var cylinderTypesModel: []
+
 	// --- Functions ---
 	function updateGasNumberList() {
 		var newList = [];
@@ -101,6 +103,7 @@ TemplatePage {
 	onVisibleChanged: {
 		// This code runs every time the page becomes visible
 		if (visible) {
+			cylinderTypesModel = manager.cylinderListInit;
 			updateLivePlanInfo()
 		}
 	}
@@ -262,10 +265,18 @@ TemplatePage {
 				}
 				TemplateComboBox {
 					id: typeBox
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
-					model: manager.cylinderListInit
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 10
+					model: divePlannerEditWindow.cylinderTypesModel
 					currentIndex: model.indexOf(type)
-
+					onActivated: {
+						if (currentIndex !== -1) {
+							// Update the 'type' property in the model with the selected cylinder text
+							cylinderListModel.setProperty(parent.index, "type", currentText);
+							
+							// This updates the dive plan summary in real-time
+							updateLivePlanInfo();
+						}
+					}
 				}
 				TemplateTextField {
 					id: mixField
@@ -405,9 +416,9 @@ TemplatePage {
 					model: gasNumberModel
 
 					currentIndex: gas
-					onCurrentIndexChanged: {
+					onActivated: {
 						if (currentIndex !== -1)
-						   segmentListModel.setProperty(index, "gas", currentValue)
+						   segmentListModel.setProperty(parent.index, "gas", currentIndex)
 						updateLivePlanInfo();
 					}
 				}

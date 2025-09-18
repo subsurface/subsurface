@@ -1429,18 +1429,17 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		cylinder_t newCyl;
 		std::pair<volume_t, pressure_t> type_info = get_tank_info_data(tank_info_table, map["type"].toString().toStdString());
 		volume_t size = type_info.first;
-		pressure_t pressure = type_info.second;
 		newCyl.type.size = size;
-		newCyl.type.workingpressure = pressure;
+		if (prefs.units.pressure == units::BAR)
+			newCyl.type.workingpressure.mbar = map["pressure"].toInt() * 1000;
+		else
+			newCyl.type.workingpressure.mbar = psi_to_mbar(map["pressure"].toInt());
 		newCyl.type.description = map["type"].toString().toStdString();
 		QString mix = map["mix"].toString();
 		newCyl.gasmix.o2.permille = parseGasMixO2(mix);
 		newCyl.gasmix.he.permille = parseGasMixHE(mix);
 		sanitize_gasmix(newCyl.gasmix);
-		if (prefs.units.pressure == units::BAR)
-			newCyl.start.mbar = map["pressure"].toInt() * 1000;
-		else
-			newCyl.start.mbar = psi_to_mbar(map["pressure"].toInt());
+
 		int useIndex = map["use"].toInt();
 		newCyl.cylinder_use = (enum cylinderuse)useIndex;
 		d->cylinders.add(d->cylinders.size(), newCyl);
@@ -1488,8 +1487,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	if (!diveplan.is_empty()) {
 		deco_state_cache cache;
 		struct deco_state plan_deco_state;
-		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true, nullptr);
-
+		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true, nullptr);			
 		if (shouldComputeVariations()) {
 			QString variations = computeVariations(plan_copy, plan_deco_state, nullptr);
 			if (!variations.isEmpty()) {
