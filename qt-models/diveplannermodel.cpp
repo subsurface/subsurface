@@ -1474,6 +1474,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 
 
 	// Populate cylinders from QML data
+	std::vector<int> cylinder_start_pressures;
 	for (const QVariant &cylData : cylindersData) {
 		QVariantMap map = cylData.toMap();
 		cylinder_t newCyl;
@@ -1491,6 +1492,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 			newCyl.start.mbar = map["pressure"].toInt() * 1000;
 		else
 			newCyl.start.mbar = psi_to_mbar(map["pressure"].toInt());
+		cylinder_start_pressures.push_back(newCyl.start.mbar);
 		int useIndex = map["use"].toInt();
 		newCyl.cylinder_use = (enum cylinderuse)useIndex;
 		d->cylinders.add(d->cylinders.size(), newCyl);
@@ -1543,7 +1545,21 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		deco_state_cache cache;
 		struct deco_state plan_deco_state;
 		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true);
-
+		//for each cylinder in dive, reset the start pressure
+		for (size_t i = 0; i < d->cylinders.size(); ++i) {
+			int modified_amount = d->cylinders[i].type.workingpressure.mbar - cylinder_start_pressures[i];
+			d->cylinders[i].end.mbar = d->cylinders[i].end.mbar - modified_amount;
+			d->cylinders[i].start.mbar = d->cylinders[i].start.mbar - modified_amount;
+		}
+		//need a way to determine errors..
+		std::string old_notes = d->notes;
+		planner_error_t error;
+		error = PLAN_OK;
+		diveplan.add_plan_to_notes(*d, true, error);
+		//If d->notes has a different beginning ~30 characters, then this is a planner error
+		if (d->notes.substr(0, 30) != old_notes.substr(0, 30))
+			d->notes = old_notes;
+			
 		if (shouldComputeVariations()) {
 			QString variations = calculateVariationsSync(plan_copy, plan_deco_state);
 			if (!variations.isEmpty()) {
