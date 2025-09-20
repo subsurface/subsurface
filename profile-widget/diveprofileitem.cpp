@@ -254,7 +254,7 @@ void DiveProfileItem::replot(const dive *d, int from, int to, bool in_planner)
 void DiveProfileItem::plot_depth_sample(const struct plot_data &entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color)
 {
 	auto item = std::make_unique<DiveTextItem>(dpr, 1.0, flags, this);
-	item->set(get_depth_string(entry.depth, true), color);
+	item->set(get_depth_string(entry.depth, true, prefs.units.show_mdecimal), color); // decimals, choice of user
 	item->setPos(hAxis.posAtValue(entry.sec), vAxis.posAtValue(entry.depth.mm));
 	texts.push_back(std::move(item));
 }
@@ -522,7 +522,7 @@ void DiveMeanDepthItem::createTextItem(double lastSec, double lastMeanDepth)
 {
 	texts.clear();
 	auto text = std::make_unique<DiveTextItem>(dpr, diveMeanDepthItemLabelScale, Qt::AlignRight | Qt::AlignVCenter, this);
-	text->set(get_depth_string(lrint(lastMeanDepth), true), getColor(TEMP_TEXT));
+	text->set(get_depth_string(lrint(lastMeanDepth), true, true), getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis.posAtValue(lastSec) + dpr, vAxis.posAtValue(lastMeanDepth)));
 	texts.push_back(std::move(text));
 }
