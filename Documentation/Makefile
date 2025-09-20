@@ -22,6 +22,7 @@ all: $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS) images
 doc: $(HTMLDOCS) images
 
 images:
+	@mkdir -p $(OUT)
 	@cp -r images $(OUT)
 	@cp -r mobile-images $(OUT)
 
@@ -33,7 +34,7 @@ $(OUT)%.pdf: %.txt
 	$(mkdir)
 	-$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf --destination-dir=$(OUT) $<
 
-$(OUT)%.html: %.txt
+$(OUT)%.html: %.txt images
 	$(mkdir)
 	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -o $@ $<
 
