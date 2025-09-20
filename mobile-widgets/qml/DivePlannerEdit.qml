@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.12
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.4 as Kirigami
 
-Kirigami.ScrollablePage {
+TemplatePage {
 	id: divePlannerEditWindow
 	title: qsTr("New Dive Plan")
 
@@ -153,7 +153,7 @@ Kirigami.ScrollablePage {
 		spacing: Kirigami.Units.gridUnit
 		Layout.margins: Kirigami.Units.gridUnit
 
-		Controls.Label {
+		TemplateLabel {
 			text: qsTr("Plan Details")
 			font.bold: true
 			font.pixelSize: Kirigami.Units.gridUnit * 1.2
@@ -163,21 +163,21 @@ Kirigami.ScrollablePage {
 			Layout.fillWidth: true
 			columns: 2
 
-			Controls.TextField {
+			TemplateTextField {
 				id: planDate
 				Layout.fillWidth: true
 				placeholderText: qsTr("Date")
 				// Use a standard, unambiguous format
 				text: Qt.formatDate(new Date(), "yyyy-MM-dd")
 			}
-			Controls.TextField {
+			TemplateTextField {
 				id: planTime
 				Layout.fillWidth: true
 				placeholderText: qsTr("Time")
 				// Use a standard, unambiguous format
 				text: Qt.formatTime(new Date(), "hh:mm:ss")
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Dive Mode")
 				verticalAlignment: Text.AlignVCenter
 			}
@@ -188,7 +188,7 @@ Kirigami.ScrollablePage {
 				model: [qsTr("Open circuit"), qsTr("CCR"), qsTr("pSCR")]
 				currentIndex: 0 // Default to OC
 			}
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Water Type")
 				verticalAlignment: Text.AlignVCenter
 			}
@@ -206,7 +206,7 @@ Kirigami.ScrollablePage {
 
 		// --- 1. Cylinders Section ---
 		RowLayout {
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Cylinders")
 				font.bold: true
 				font.pixelSize: Kirigami.Units.gridUnit * 1.2
@@ -235,11 +235,11 @@ Kirigami.ScrollablePage {
 			spacing: Kirigami.Units.smallSpacing // Reduced spacing
 
 			// Header labels updated for new layout
-			Controls.Label { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 2; font.bold: true }
-			Controls.Label { text: qsTr("Type"); Layout.preferredWidth: Kirigami.Units.gridUnit * 6; font.bold: true }
-			Controls.Label { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 4; font.bold: true }
-			Controls.Label { text: qsTr("Use"); Layout.preferredWidth: Kirigami.Units.gridUnit * 5; font.bold: true }
-			Controls.Label { text: qsTr("[%1]").arg(pressureUnit); Layout.fillWidth: true; font.bold: true }
+			TemplateLabel { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 2; font.bold: true }
+			TemplateLabel { text: qsTr("Type"); Layout.preferredWidth: Kirigami.Units.gridUnit * 6; font.bold: true }
+			TemplateLabel { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 4; font.bold: true }
+			TemplateLabel { text: qsTr("Use"); Layout.preferredWidth: Kirigami.Units.gridUnit * 5; font.bold: true }
+			TemplateLabel { text: qsTr("[%1]").arg(pressureUnit); Layout.fillWidth: true; font.bold: true }
 			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium }
 		}
 
@@ -254,7 +254,7 @@ Kirigami.ScrollablePage {
 				width: cylinderListView.width
 				spacing: Kirigami.Units.smallSpacing // Reduced spacing
 
-				Controls.Label {
+				TemplateLabel {
 					text: index + 1
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					horizontalAlignment: Text.AlignHCenter
@@ -329,7 +329,7 @@ Kirigami.ScrollablePage {
 
 		// --- 2. Dive Segments Section ---
 		RowLayout {
-			Controls.Label {
+			TemplateLabel {
 				text: qsTr("Dive Segments")
 				font.bold: true
 				font.pixelSize: Kirigami.Units.gridUnit * 1.2
@@ -360,9 +360,9 @@ Kirigami.ScrollablePage {
 			Layout.fillWidth: true
 			spacing: Kirigami.Units.gridUnit
 
-			Controls.Label { text: qsTr("Depth (%1)").arg(depthUnit); Layout.fillWidth: true; font.bold: true }
-			Controls.Label { text: qsTr("Duration (min)"); Layout.fillWidth: true; font.bold: true }
-			Controls.Label { text: qsTr("Gas"); Layout.fillWidth: true; font.bold: true }
+			TemplateLabel { text: qsTr("Depth (%1)").arg(depthUnit); Layout.fillWidth: true; font.bold: true }
+			TemplateLabel { text: qsTr("Duration (min)"); Layout.fillWidth: true; font.bold: true }
+			TemplateLabel { text: qsTr("Gas"); Layout.fillWidth: true; font.bold: true }
 			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium } // Spacer
 		}
 
@@ -503,7 +503,7 @@ Kirigami.ScrollablePage {
 			}
 		}
 
-		Controls.Label {
+		TemplateLabel {
 			text: qsTr("Dive Plan Summary")
 			font.bold: true
 			font.pixelSize: Kirigami.Units.gridUnit * 1.2
@@ -515,6 +515,7 @@ Kirigami.ScrollablePage {
 			wrapMode: Text.Wrap
 			text: planNotes
 			textFormat: Text.RichText
+			color: subsurfaceTheme.textColor
 		}
 
 		TemplateButton {
