@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/errorhelper.h"
 #include "testbase.h"
+#include <memory>
 
 TestBase *TestBase::instance()
 {
-	static TestBase *instance = nullptr;
+	static std::unique_ptr<TestBase> instance = nullptr;
 	if (!instance)
-		instance = new TestBase();
+		instance = std::make_unique<TestBase>();
 
-	return instance;
+	return instance.get();
 }
 
 static void failOnError(const std::string error)
