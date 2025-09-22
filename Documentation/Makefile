@@ -15,11 +15,13 @@ PWD = $(realpath .)
 
 .PHONY: all doc images show clean
 
+.NOTPARALLEL:
+
 mkdir = @mkdir -p $(@D)
 
-all: $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS) images
+all: $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
 
-doc: $(HTMLDOCS) images
+doc: $(HTMLDOCS)
 
 images:
 	@mkdir -p $(OUT)
@@ -28,15 +30,30 @@ images:
 
 $(OUT)%.text: %.txt
 	$(mkdir)
-	$(A2X) -f text --destination-dir=$(OUT) $<
+	@VERSION=$(shell git log -1 --pretty=format:%H $< | xargs ../scripts/get-version-for-changeset.sh); \
+	if [ -z "$$VERSION" ]; then \
+		VERSION="pre-6.0.0"; \
+	fi; \
+	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
+	$(A2X) -f text -a version=$$VERSION -a version-date=$$VERSION_DATE --destination-dir=$(OUT) $<
 
 $(OUT)%.pdf: %.txt
 	$(mkdir)
-	-$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf --destination-dir=$(OUT) $<
+	@VERSION=$(shell git log -1 --pretty=format:%H $< | xargs ../scripts/get-version-for-changeset.sh); \
+	if [ -z "$$VERSION" ]; then \
+		VERSION="pre-6.0.0"; \
+	fi; \
+	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
+	$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf -a version=$$VERSION -a version-date=$$VERSION_DATE --destination-dir=$(OUT) $<
 
 $(OUT)%.html: %.txt images
 	$(mkdir)
-	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -o $@ $<
+	@VERSION=$(shell git log -1 --pretty=format:%H $< | xargs ../scripts/get-version-for-changeset.sh); \
+	if [ -z "$$VERSION" ]; then \
+		VERSION="pre-6.0.0"; \
+	fi; \
+	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
+	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -a version=$$VERSION -a version-date=$$VERSION_DATE -o $@ $<
 
 # for the web facing version of the desktop manual, just use the post-processing script
 user-manual.html.wp: $(OUT)user-manual.html
@@ -47,7 +64,12 @@ user-manual.html.wp: $(OUT)user-manual.html
 # the table of context and then post process
 mobile-manual-v3.html.wp: mobile-manual-v3.txt
 	$(mkdir)
-	$(ASCIIDOC) -a toc -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -o $(<:%.txt=%.html.tmp) $< && \
+	@VERSION=$(shell git log -1 --pretty=format:%H $< | xargs ../scripts/get-version-for-changeset.sh); \
+	if [ -z "$$VERSION" ]; then \
+		VERSION="pre-6.0.0"; \
+	fi; \
+	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
+	$(ASCIIDOC) -a toc -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -a version="$$VERSION" -a version-date="$$VERSION_DATE" -o $(<:%.txt=%.html.tmp) $< && \
 		bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp) && \
 		rm $(<:%.txt=%.html.tmp) && \
 		mv $(<:%.txt=%.html.tmp.wp) $(OUT)$@
