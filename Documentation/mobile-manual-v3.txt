@@ -2,8 +2,8 @@
 // Subsurface-mobile User Manual
 // =============================
 // :author: Manual authors: Willem Ferguson, Dirk Hohndel
-// :revnumber: 3.1.3
-// :revdate: February 2021
+// :revnumber: {version}
+// :revdate: {version-date}
 :icons:
 :toc:
 :toc-placement: manual
@@ -18,7 +18,8 @@ image::mobile-images/Banner.jpg["Banner",align="center"]
 
 // toc::[]
 
-[blue]#_Version 3.4, October 2021_#
+[blue]#_Manual last updated in: +
+Version {version}, {version-date}_#
 
 toc::[]
 

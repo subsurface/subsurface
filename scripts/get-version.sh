@@ -6,9 +6,6 @@
 # we do need to be able to create three digit (M.m.p) and four digit (M.m.p.c) version strings
 # default is VERSION_EXTENSION version - an argument of '1', '3', or '4' gets you a digits only version string
 #
-# we hardcode a base version - this will rarely change
-# (we actually haven't discussed a situation where it would change...)
-SUBSURFACE_BASE_VERSION=6.0
 
 # little silly helper functions
 croak() {
@@ -27,6 +24,7 @@ fi
 
 # figure out where we are in the file system
 pushd "$(dirname "$0")/../" &> /dev/null
+SUBSURFACE_BASE_VERSION=$(< scripts/subsurface-base-version.txt)
 export SUBSURFACE_SOURCE=$PWD
 
 COMMITS_SINCE="0"
