@@ -179,7 +179,7 @@ void PrintDialog::createPrinterObj()
 	if (!printer) {
 		qprinter = new QPrinter;
 		qprinter->setResolution(printOptions.resolution);
-		qprinter->setOrientation((QPrinter::Orientation)printOptions.landscape);
+		qprinter->setPageOrientation((QPageLayout::Orientation)printOptions.landscape);
 		printer = new Printer(qprinter, printOptions, templateOptions, Printer::PRINT, singleDive);
 	}
 }
