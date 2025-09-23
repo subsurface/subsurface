@@ -129,7 +129,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 
 			break;
 		default:
-			message = translate("gettextFromC", "An error occurred during dive plan generation");
+			message = translate("gettextFromC", "An error occurred during dive plan generation!");
 
 			break;
 		}
@@ -393,7 +393,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 					if (!atend && nextdp->setpoint) {
 						buf += casprintf_loc(translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), newgasmix.name().c_str(), (double) nextdp->setpoint / 1000.0);
 					} else {
-						buf += format_string_std(translate("gettextFromC", "Switch gas to %s"), newgasmix.name().c_str());
+						buf += casprintf_loc(translate("gettextFromC", "Switch gas to %s"), newgasmix.name().c_str());
 						if ((isascent) && (get_he(lastprintgasmix) > 0)) {          // For a trimix gas change on ascent:
 							if (isobaric_counterdiffusion(lastprintgasmix, newgasmix, &icdvalues)) // Do icd calculations
 								icdwarning = true;
@@ -491,22 +491,21 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 			/* Warn if the plan uses more gas than is available in a cylinder
 			 * This only works if we have working pressure for the cylinder
 			 * 10bar is a made up number - but it seemed silly to pretend you could breathe cylinder down to 0 */
-			if (cyl.end.mbar < 10000)
+			constexpr pressure_t min_cylinder_pressure = 10_bar;
+			const double min_cylinder_pressure_value = get_pressure_units(min_cylinder_pressure.mbar, &pressure_unit);
+			const std::string min_cylinder_pressure_note = casprintf_loc(translate("gettextFromC", "(end pressure &lt;= %.0f%s)"), min_cylinder_pressure_value, pressure_unit);
+			if (cyl.end.mbar <= min_cylinder_pressure.mbar) {
 				warning = format_string_std("<br/>\n&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 					translate("gettextFromC", "Warning:"),
-					translate("gettextFromC", "this is more gas than available in the specified cylinder!"));
-			else
-				if (cyl.end.mbar / 1000.0 * cyl.type.size.mliter / gas_compressibility_factor(cyl.gasmix, cyl.end.mbar / 1000.0)
-				    < cyl.deco_gas_used.mliter)
+					casprintf_loc(translate("gettextFromC", "this is more gas than available in the specified cylinder %s!"), min_cylinder_pressure_note.c_str()).c_str());
+			} else if ((cyl.end - min_cylinder_pressure).mbar / 1000.0 * cyl.type.size.mliter / gas_compressibility_factor(cyl.gasmix, (cyl.end - min_cylinder_pressure).mbar / 1000.0) < cyl.deco_gas_used.mliter) {
 					warning = format_string_std("<br/>\n&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
-						translate("gettextFromC", "not enough reserve for gas sharing on ascent!"));
+						casprintf_loc(translate("gettextFromC", "not enough reserve for gas sharing on ascent %s!"), min_cylinder_pressure_note.c_str()).c_str());
 
 			/* Do and print minimum gas calculation for last bottom gas, but only for OC mode, */
 			/* not for recreational mode and if no other warning was set before. */
-			else
-				if (lastbottomdp && gasidx == lastbottomdp->cylinderid
-					&& dive.dcs[0].divemode == OC && decoMode(true) != RECREATIONAL) {
+			} else if (lastbottomdp && gasidx == lastbottomdp->cylinderid && dive.dcs[0].divemode == OC && decoMode(true) != RECREATIONAL) {
 					/* Calculate minimum gas volume. */
 					volume_t mingasv;
 					mingasv.mliter = lrint(prefs.sacfactor / 100.0 * prefs.problemsolvingtime * prefs.bottomsac
@@ -521,7 +520,11 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 					mingas_d_pressure = get_pressure_units(lrint((double)cyl.end.mbar + deco_pressure_mbar - lastbottomdp->minimum_gas.mbar), &pressure_unit);
 					mingas_depth = get_depth_units(lastbottomdp->depth, NULL, &depth_unit);
 					/* Print it to results */
-					if (cyl.start.mbar > lastbottomdp->minimum_gas.mbar) {
+					if ((cyl.start - min_cylinder_pressure).mbar <= lastbottomdp->minimum_gas.mbar) {
+						warning = format_string_std("<br/>\n&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
+							translate("gettextFromC", "Warning:"),
+							casprintf_loc(translate("gettextFromC", "not enough gas for problem solving and ascent at end of dive %s!"), min_cylinder_pressure_note.c_str()).c_str());
+					} else {
 						mingas = casprintf_loc("<br/>\n&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): "
 							     "%.0f%s/%.0f%s<span style='color: %s;'>/&Delta;:%+.0f%s</span>",
 							     mingas_d_pressure > 0 ? "green" :"red",
@@ -536,10 +539,6 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 							     mingas_pressure, pressure_unit,
 							     mingas_d_pressure > 0 ? "grey" :"indianred",
 							     mingas_d_pressure, pressure_unit);
-					} else {
-						warning = format_string_std("<br/>\n&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
-							translate("gettextFromC", "Warning:"),
-							translate("gettextFromC", "required minimum gas for ascent already exceeding start pressure of cylinder!"));
 					}
 				}
 			/* Print the gas consumption for every cylinder here to temp buffer. */
@@ -571,7 +570,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 		if (icdwarning) { // If necessary, add warning
 			buf += format_string_std("<span style='color: red;'>%s</span> %s",
 				translate("gettextFromC", "Warning:"),
-				translate("gettextFromC", "Isobaric counterdiffusion conditions exceeded"));
+				translate("gettextFromC", "Isobaric counterdiffusion conditions exceeded!"));
 		}
 		buf += "<br/></div>\n";
 	}
@@ -599,7 +598,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 						if (!o2warning_exist)
 							buf += "<div>\n";
 						o2warning_exist = true;
-						temp = casprintf_loc(translate("gettextFromC", "high pO₂ value %.3f bar at %d:%02u with gas %s at depth %.*f %s"),
+						temp = casprintf_loc(translate("gettextFromC", "high pO₂ value %.3f bar at %d:%02u with gas %s at depth %.*f %s!"),
 							pressures.o2, FRACTION_TUPLE(dp.time, 60), gasmix.name().c_str(), decimals, depth_value, depth_unit);
 						buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp.c_str());
 					} else if (pressures.o2 < 0.16) {
@@ -609,7 +608,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 						if (!o2warning_exist)
 							buf += "<div>";
 						o2warning_exist = true;
-						temp = casprintf_loc(translate("gettextFromC", "low pO₂ value %.3f bar at %d:%02u with gas %s at depth %.*f %s"),
+						temp = casprintf_loc(translate("gettextFromC", "low pO₂ value %.3f bar at %d:%02u with gas %s at depth %.*f %s!"),
 							pressures.o2, FRACTION_TUPLE(dp.time, 60), gasmix.name().c_str(), decimals, depth_value, depth_unit);
 						buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>\n", translate("gettextFromC", "Warning:"), temp.c_str());
 					}
