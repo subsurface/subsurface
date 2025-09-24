@@ -33,7 +33,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: Documentation/output
-        key: documentation${{ inputs.build-extra-name || '' }}-${{ hashFiles('Documentation') }}
+        key: documentation-${{ hashFiles('Documentation') }}
         enableCrossOsArchive: true
 
     - name: install packages for the build
@@ -47,4 +47,5 @@ jobs:
     - name: build the documentation
       if: steps.cache-documentation.outputs.cache-hit != 'true'
       run: |
+        git config --global --add safe.directory $GITHUB_WORKSPACE
         make -C Documentation
