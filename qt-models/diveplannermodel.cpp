@@ -1144,9 +1144,9 @@ void DivePlannerPointsModel::updateDiveProfile()
 
 	// For calculating variations, we need a copy of the plan. We have to copy _before_
 	// calling plan(), because that adds deco stops.
-	bool computeVariations = isPlanner() && shouldComputeVariations();
+	bool doComputeVariations = isPlanner() && shouldComputeVariations();
 	struct diveplan plan_copy;
-	if (computeVariations)
+	if (doComputeVariations)
 		plan_copy = diveplan;
 
 	deco_state_cache cache;
@@ -1155,12 +1155,12 @@ void DivePlannerPointsModel::updateDiveProfile()
 	plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, cache, isPlanner(), false, nullptr);
 	updateMaxDepth();
 
-	if (computeVariations) {
+	if (doComputeVariations) {
 #ifdef VARIATIONS_IN_BACKGROUND
 		QtConcurrent::run([this, plan = std::move(plan_copy), deco = plan_deco_state] ()
-				  { this->computeVariations(std::move(plan), deco); });
+				  { this->computeVariationsAsync(std::move(plan), deco); });
 #else
-		computeVariations(std::move(plan_copy), plan_deco_state);
+		computeVariationsAsync(std::move(plan_copy), plan_deco_state);
 #endif
 		final_deco_state = plan_deco_state;
 	}
@@ -1213,18 +1213,19 @@ auto &second_to_last(T &v)
 	return *std::prev(std::prev(v.end()));
 }
 
-void DivePlannerPointsModel::computeVariations(struct diveplan original_plan, struct deco_state ds)
+QString DivePlannerPointsModel::computeVariations(const struct diveplan &original_plan, const struct deco_state &ds_in, int *instance_id)
 {
 	// nothing to do unless there's an original plan
 	if (original_plan.dp.empty())
-		return;
+		return QString();
+
+	struct deco_state ds = ds_in; // Work on a copy of the deco state
 
 	auto dive = std::make_unique<struct dive>();
 	copy_dive(d, dive.get());
 	deco_state_cache cache, save;
 	struct diveplan plan_copy;
 
-	int my_instance = ++instanceCounter;
 	save.cache(&ds);
 
 	duration_t delta_time = 1_min;
@@ -1242,9 +1243,10 @@ void DivePlannerPointsModel::computeVariations(struct diveplan original_plan, st
 
 	plan_copy = original_plan;
 	if (plan_copy.dp.size() < 2)
-		return;
-	if (my_instance != instanceCounter)
-		return;
+		return QString();
+	if (instance_id && *instance_id != instanceCounter)
+		return QString();
+
 	std::vector<decostop> original;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &original);
 	save.restore(&ds, false);
@@ -1252,8 +1254,8 @@ void DivePlannerPointsModel::computeVariations(struct diveplan original_plan, st
 	plan_copy = original_plan;
 	second_to_last(plan_copy.dp).depth.mm += delta_depth.mm;
 	plan_copy.dp.back().depth.mm += delta_depth.mm;
-	if (my_instance != instanceCounter)
-		return;
+	if (instance_id && *instance_id != instanceCounter)
+		return QString();
 	std::vector<decostop> deeper;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &deeper);
 	save.restore(&ds, false);
@@ -1261,24 +1263,24 @@ void DivePlannerPointsModel::computeVariations(struct diveplan original_plan, st
 	plan_copy = original_plan;
 	second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
 	plan_copy.dp.back().depth.mm -= delta_depth.mm;
-	if (my_instance != instanceCounter)
-		return;
+	if (instance_id && *instance_id != instanceCounter)
+		return QString();
 	std::vector<decostop> shallower;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &shallower);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
 	plan_copy.dp.back().time += delta_time.seconds;
-	if (my_instance != instanceCounter)
-		return;
+	if (instance_id && *instance_id != instanceCounter)
+		return QString();
 	std::vector<decostop> longer;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &longer);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
 	plan_copy.dp.back().time -= delta_time.seconds;
-	if (my_instance != instanceCounter)
-		return;
+	if (instance_id && *instance_id != instanceCounter)
+		return QString();
 	std::vector<decostop> shorter;
 	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &shorter);
 	save.restore(&ds, false);
@@ -1287,8 +1289,19 @@ void DivePlannerPointsModel::computeVariations(struct diveplan original_plan, st
 		SIGNED_FRAC_TRIPLET(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
 		SIGNED_FRAC_TRIPLET(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
 
+	return QString::fromStdString(buf);
+}
+
+void DivePlannerPointsModel::computeVariationsAsync(struct diveplan original_plan, struct deco_state ds)
+{
+	int my_instance = ++instanceCounter;
+
+	QString variations = computeVariations(std::move(original_plan), ds, &my_instance);
+
 	// By using a signal, we can transport the variations to the main thread.
-	emit variationsComputed(QString::fromStdString(buf));
+	if (variations != QString())
+		emit variationsComputed(variations);
+
 #ifdef DEBUG_STOPVAR
 	printf("\n\n");
 #endif
@@ -1300,75 +1313,6 @@ void DivePlannerPointsModel::computeVariationsDone(QString variations)
 	notes = notes.replace("VARIATIONS", variations);
 	d->notes = notes.toStdString();
 	emit calculatedPlanNotes(notes);
-}
-
-QString DivePlannerPointsModel::calculateVariationsSync(const struct diveplan &original_plan, const struct deco_state &ds_in)
-{
-	// nothing to do unless there's an original plan
-	if (original_plan.dp.empty())
-		return QString();
-
-	auto dive = std::make_unique<struct dive>();
-	copy_dive(d, dive.get());
-	deco_state_cache cache, save;
-	struct diveplan plan_copy;
-	struct deco_state ds = ds_in; // Work on a copy of the deco state
-
-	save.cache(&ds);
-
-	duration_t delta_time = 1_min;
-	QString time_units = tr("min");
-	depth_t delta_depth;
-	QString depth_units;
-
-	if (prefs.units.length == units::METERS) {
-		delta_depth = 1_m;
-		depth_units = tr("m");
-	} else {
-		delta_depth = 1_ft;
-		depth_units = tr("ft");
-	}
-
-	plan_copy = original_plan;
-	if (plan_copy.dp.size() < 2)
-		return QString();
-
-	std::vector<decostop> original;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &original);
-	save.restore(&ds, false);
-
-	plan_copy = original_plan;
-	second_to_last(plan_copy.dp).depth.mm += delta_depth.mm;
-	plan_copy.dp.back().depth.mm += delta_depth.mm;
-	std::vector<decostop> deeper;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &deeper);
-	save.restore(&ds, false);
-
-	plan_copy = original_plan;
-	second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
-	plan_copy.dp.back().depth.mm -= delta_depth.mm;
-	std::vector<decostop> shallower;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &shallower);
-	save.restore(&ds, false);
-
-	plan_copy = original_plan;
-	plan_copy.dp.back().time += delta_time.seconds;
-	std::vector<decostop> longer;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &longer);
-	save.restore(&ds, false);
-
-	plan_copy = original_plan;
-	plan_copy.dp.back().time -= delta_time.seconds;
-	std::vector<decostop> shorter;
-	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &shorter);
-	save.restore(&ds, false);
-
-	std::string buf = format_string_std(", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
-		SIGNED_FRAC_TRIPLET(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
-		SIGNED_FRAC_TRIPLET(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
-
-	// Instead of emitting a signal, we just return the result
-	return QString::fromStdString(buf);
 }
 
 static void addDive(dive *d, bool autogroup, bool newNumber)
@@ -1395,7 +1339,7 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, cache, isPlanner(), true, nullptr);
 
 	if (shouldComputeVariations())
-		computeVariations(std::move(plan_copy), ds_after_previous_dives);
+		computeVariationsAsync(std::move(plan_copy), ds_after_previous_dives);
 
 	// Fixup planner notes.
 	if (current_dive && d->id == current_dive->id) {
@@ -1455,9 +1399,7 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	planCreated(); // This signal will exit the UI from planner state.
 }
 
-QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersData, const QVariantList &segmentsData,
-												  const QString &date, const QString &time, int diveMode, 
-												  int waterType, bool shouldSave)
+QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersData, const QVariantList &segmentsData, const QString &date, const QString &time, int diveMode, int waterType, bool shouldSave)
 {
 	if (d) {
 		delete d;
@@ -1480,8 +1422,6 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	diveplan.when = d->when;
 
 	d->dcs[0].divemode = (enum divemode_t)diveMode;
-
-
 
 	// Populate cylinders from QML data
 	for (const QVariant &cylData : cylindersData) {
@@ -1535,12 +1475,8 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	}
 
 	struct diveplan plan_copy = diveplan;
-	
 
 	// Load ALL current settings from the correct preference classes
-	
-	//diveplan.gflow = qPrefTechnicalDetails::gflow();
-	//diveplan.gfhigh = qPrefTechnicalDetails::gfhigh();
 	diveplan.gflow = gfLow();
 	diveplan.gfhigh = gfHigh();
 	diveplan.bottomsac = qPrefDivePlanner::bottomsac();
@@ -1555,7 +1491,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true, nullptr);
 
 		if (shouldComputeVariations()) {
-			QString variations = calculateVariationsSync(plan_copy, plan_deco_state);
+			QString variations = computeVariations(plan_copy, plan_deco_state, nullptr);
 			if (!variations.isEmpty()) {
 				QString notes = QString::fromStdString(d->notes);
 				notes = notes.replace("VARIATIONS", variations);
@@ -1617,7 +1553,7 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 	temp_cyl.type.size = size;
 	temp_cyl.type.workingpressure = pressure;
 	temp_cyl.type.description = cylinderType.toStdString();
-	
+
 	// Populate gas mix
 	temp_cyl.gasmix.o2.permille = o2_permille;
 	temp_cyl.gasmix.he.permille = he_permille;
@@ -1640,16 +1576,16 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 
 	for (double po2 : po2_values) {
 		pressure_t po2_limit = { .mbar = static_cast<int>(po2 * 1000.0) };
-		
+
 		// Calculate MOD
 		depth_t mod = temp_dive.gas_mod(temp_cyl.gasmix, po2_limit, 1_m);
 
 		// Calculate EAD/END at the MOD
 		double p_amb_at_mod = temp_dive.depth_to_atm(mod);
-		
+
 		double p_narcotic = p_amb_at_mod * fNarcotic_permille / 1000.0;
-		
-		depth_t narcotic_depth = { .mm = 0 }; 
+
+		depth_t narcotic_depth = { .mm = 0 };
 		if (fNarcotic_permille > 0) {
 			double divisor = o2_is_narcotic ? 1.0 : 0.79;
 			double ead_atm = p_narcotic / divisor;
