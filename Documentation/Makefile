@@ -23,7 +23,7 @@ all: $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
 
 doc: $(HTMLDOCS)
 
-images:
+images: 
 	@mkdir -p $(OUT)
 	@cp -r images $(OUT)
 	@cp -r mobile-images $(OUT)
@@ -46,7 +46,7 @@ $(OUT)%.pdf: %.txt
 	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
 	$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf -a version=$$VERSION -a version-date=$$VERSION_DATE --destination-dir=$(OUT) $<
 
-$(OUT)%.html: %.txt images
+$(OUT)%.html: %.txt | images
 	$(mkdir)
 	@VERSION=$(shell git log -1 --pretty=format:%H $< | xargs ../scripts/get-version-for-changeset.sh); \
 	if [ -z "$$VERSION" ]; then \
