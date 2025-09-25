@@ -71,5 +71,5 @@ struct decostop {
 };
 
 extern std::string get_planner_disclaimer_formatted();
-extern std::vector<decostop> plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, int dcNr, int timestep, deco_state_cache &cache, bool is_planner, bool show_disclaimer);
+extern planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct dive *dive, int dcNr, int timestep, deco_state_cache &cache, bool is_planner, bool show_disclaimer, std::vector<decostop> *decostoptable);
 #endif // PLANNER_H

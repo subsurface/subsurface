@@ -1152,7 +1152,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 	deco_state_cache cache;
 	struct deco_state plan_deco_state;
 
-	plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, cache, isPlanner(), false);
+	plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, cache, isPlanner(), false, nullptr);
 	updateMaxDepth();
 
 	if (computeVariations) {
@@ -1245,7 +1245,8 @@ void DivePlannerPointsModel::computeVariations(struct diveplan original_plan, st
 		return;
 	if (my_instance != instanceCounter)
 		return;
-	auto original = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> original;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &original);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
@@ -1253,7 +1254,8 @@ void DivePlannerPointsModel::computeVariations(struct diveplan original_plan, st
 	plan_copy.dp.back().depth.mm += delta_depth.mm;
 	if (my_instance != instanceCounter)
 		return;
-	auto deeper = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> deeper;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &deeper);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
@@ -1261,21 +1263,24 @@ void DivePlannerPointsModel::computeVariations(struct diveplan original_plan, st
 	plan_copy.dp.back().depth.mm -= delta_depth.mm;
 	if (my_instance != instanceCounter)
 		return;
-	auto shallower = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> shallower;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &shallower);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
 	plan_copy.dp.back().time += delta_time.seconds;
 	if (my_instance != instanceCounter)
 		return;
-	auto longer = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> longer;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &longer);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
 	plan_copy.dp.back().time -= delta_time.seconds;
 	if (my_instance != instanceCounter)
 		return;
-	auto shorter = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> shorter;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &shorter);
 	save.restore(&ds, false);
 
 	std::string buf = format_string_std(", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
@@ -1328,29 +1333,34 @@ QString DivePlannerPointsModel::calculateVariationsSync(const struct diveplan &o
 	if (plan_copy.dp.size() < 2)
 		return QString();
 
-	auto original = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> original;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &original);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
 	second_to_last(plan_copy.dp).depth.mm += delta_depth.mm;
 	plan_copy.dp.back().depth.mm += delta_depth.mm;
-	auto deeper = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> deeper;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &deeper);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
 	second_to_last(plan_copy.dp).depth.mm -= delta_depth.mm;
 	plan_copy.dp.back().depth.mm -= delta_depth.mm;
-	auto shallower = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> shallower;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &shallower);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
 	plan_copy.dp.back().time += delta_time.seconds;
-	auto longer = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> longer;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &longer);
 	save.restore(&ds, false);
 
 	plan_copy = original_plan;
 	plan_copy.dp.back().time -= delta_time.seconds;
-	auto shorter = plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false);
+	std::vector<decostop> shorter;
+	plan(&ds, plan_copy, dive.get(), dcNr, 1, cache, true, false, &shorter);
 	save.restore(&ds, false);
 
 	std::string buf = format_string_std(", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
@@ -1382,7 +1392,7 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	if (shouldComputeVariations())
 		plan_copy = diveplan;
 
-	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, cache, isPlanner(), true);
+	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, cache, isPlanner(), true, nullptr);
 
 	if (shouldComputeVariations())
 		computeVariations(std::move(plan_copy), ds_after_previous_dives);
@@ -1542,7 +1552,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	if (!diveplan.is_empty()) {
 		deco_state_cache cache;
 		struct deco_state plan_deco_state;
-		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true);
+		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true, nullptr);
 
 		if (shouldComputeVariations()) {
 			QString variations = calculateVariationsSync(plan_copy, plan_deco_state);
