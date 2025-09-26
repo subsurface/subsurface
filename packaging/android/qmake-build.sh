@@ -124,12 +124,16 @@ fi
 # Use all cores, unless user set their own MAKEFLAGS
 if [[ -z "${MAKEFLAGS+x}" ]]; then
 	if [[ ${PLATFORM} == "Linux" ]]; then
-		MAKEFLAGS="-j$(nproc)"
+		NUM_CORES="$(nproc)"
 	elif [[ ${PLATFORM} == "Darwin" ]]; then
-		MAKEFLAGS="-j$(sysctl -n hw.logicalcpu)"
+		NUM_CORES="$(sysctl -n hw.logicalcpu)"
 	else
-		MAKEFLAGS="-j4"
+		NUM_CORES="4"
 	fi
+	echo "Using ${NUM_CORES} cores for the build"
+	export MAKEFLAGS="-j${NUM_CORES}"
+else
+	echo "Using user defined MAKEFLAGS=${MAKEFLAGS}"
 fi
 
 QMAKE=$QT5_ANDROID/android/bin/qmake
@@ -138,11 +142,11 @@ $QMAKE -query
 
 export TOOLCHAIN="$ANDROID_NDK_ROOT"/toolchains/llvm/prebuilt/linux-x86_64
 PATH=$TOOLCHAIN/bin:$PATH
-export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT  # redundant, but that's what openssl wants
+export ANDROID_NDK_HOME=$ANDROID_NDK_ROOT # redundant, but that's what openssl wants
 
 # make sure we have the font that we need for OnePlus phones due to https://bugreports.qt.io/browse/QTBUG-69494
 if [ ! -f "$SUBSURFACE_SOURCE"/android-mobile/Roboto-Regular.ttf ] ; then
-       cp "$ANDROID_SDK_ROOT"/platforms/"$ANDROID_PLATFORMS"/data/fonts/Roboto-Regular.ttf "$SUBSURFACE_SOURCE"/android-mobile || exit 1
+	cp "$ANDROID_SDK_ROOT"/platforms/"$ANDROID_PLATFORMS"/data/fonts/Roboto-Regular.ttf "$SUBSURFACE_SOURCE"/android-mobile || exit 1
 fi
 
 # next, make sure that the libdivecomputer sources are downloaded and
@@ -191,12 +195,12 @@ if [ "$QUICK" = "" ] ; then
 	QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
 	GOOGLEMAPS_BIN=libplugins_geoservices_qtgeoservices_googlemaps_arm64-v8a.so
 	if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
-	    mkdir -p googlemaps-build
-	    pushd googlemaps-build
-	    $QMAKE ANDROID_ABIS="$BUILD_ABIS" ../googlemaps/googlemaps.pro
-	    make
-            make install
-	    popd
+		mkdir -p googlemaps-build
+		pushd googlemaps-build
+		$QMAKE ANDROID_ABIS="$BUILD_ABIS" ../googlemaps/googlemaps.pro
+		make
+		make install
+		popd
 	fi
 fi
 

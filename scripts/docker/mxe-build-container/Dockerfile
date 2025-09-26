@@ -79,12 +79,12 @@ ADD settings.mk .
 ADD qtconnectivity-1.patch src/
 
 # separate download from build so that we can redo the build
-RUN make -j download 2>&1 | tee mxe-build.log
+RUN make -j$(nproc) download 2>&1 | tee mxe-build.log
 
-RUN make -j 2>&1 | tee -a mxe-build.log
+RUN make -j$(nproc) 2>&1 | tee -a mxe-build.log
 
 # for some reason smtk2ssrf needs a static build of mdbtools
-RUN make MXE_TARGETS=x86_64-w64-mingw32.static glib mdbtools -j 2>&1 | tee -a mxe-build.log
+RUN make -j$(nproc) MXE_TARGETS=x86_64-w64-mingw32.static glib mdbtools 2>&1 | tee -a mxe-build.log
 
 RUN rm -rf pkg log docs
 
