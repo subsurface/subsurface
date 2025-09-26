@@ -178,12 +178,16 @@ done
 # Use all cores, unless user set their own MAKEFLAGS
 if [[ -z "${MAKEFLAGS+x}" ]]; then
 	if [[ ${PLATFORM} == "Linux" ]]; then
-		MAKEFLAGS="-j$(nproc)"
+		NUM_CORES="$(nproc)"
 	elif [[ ${PLATFORM} == "Darwin" ]]; then
-		MAKEFLAGS="-j$(sysctl -n hw.logicalcpu)"
+		NUM_CORES="$(sysctl -n hw.logicalcpu)"
 	else
-		MAKEFLAGS="-j4"
+		NUM_CORES="4"
 	fi
+	echo "Using ${NUM_CORES} cores for the build"
+	export MAKEFLAGS="-j${NUM_CORES}"
+else
+	echo "Using user defined MAKEFLAGS=${MAKEFLAGS}"
 fi
 
 # recreate the old default behavior - no flag set implies build desktop

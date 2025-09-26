@@ -9,6 +9,7 @@ DEBUGRELEASE="Release"
 ARCH="arm64"
 TARGET="iphoneos"
 TARGET2="Device"
+PLATFORM=$(uname)
 
 # deal with all the command line arguments
 while [[ $# -gt 0 ]] ; do
@@ -48,6 +49,21 @@ while [[ $# -gt 0 ]] ; do
 	shift
 done
 
+# Use all cores, unless user set their own MAKEFLAGS
+if [[ -z "${MAKEFLAGS+x}" ]]; then
+	if [[ ${PLATFORM} == "Linux" ]]; then
+		NUM_CORES="$(nproc)"
+	elif [[ ${PLATFORM} == "Darwin" ]]; then
+		NUM_CORES="$(sysctl -n hw.logicalcpu)"
+	else
+		NUM_CORES="4"
+	fi
+	echo "Using ${NUM_CORES} cores for the build"
+	export MAKEFLAGS="-j${NUM_CORES}"
+else
+	echo "Using user defined MAKEFLAGS=${MAKEFLAGS}"
+fi
+
 # set up easy to use variables with the important paths
 pushd "$(dirname "$0")/../../"
 export SUBSURFACE_SOURCE=$PWD
@@ -78,11 +94,11 @@ fi
 
 # set up the Subsurface versions by hand
 if [ -z "${CANONICALVERSION+X}" ] ; then
-        CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh)
+	CANONICALVERSION=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh)
 fi
 echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" > "$SUBSURFACE_SOURCE"/ssrf-version.h
 if [ -z "${CANONICALVERSION_4+X}" ] ; then
-        CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 4)
+	CANONICALVERSION_4=$("$SUBSURFACE_SOURCE"/scripts/get-version.sh 4)
 fi
 echo "#define CANONICAL_VERSION_STRING_4 \"$CANONICALVERSION_4\"" >> "$SUBSURFACE_SOURCE"/ssrf-version.h
 CANONICALVERSION_3=${CANONICALVERSION_4%.*}
@@ -179,7 +195,7 @@ if [ "$QUICK" != "1" ] ; then
 		"$PARENT_DIR"/libxml2/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-lzma --without-python --without-iconv --enable-static --disable-shared
 		perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
 		perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
-		make -j
+		make
 		make install
 		popd
 	fi
@@ -192,7 +208,7 @@ if [ "$QUICK" != "1" ] ; then
 		mkdir -p "${PARENT_DIR}/libxslt-build-${ARCH}"
 		pushd "${PARENT_DIR}/libxslt-build-${ARCH}"
 		"$PARENT_DIR"/libxslt/configure --host=$BUILDCHAIN --prefix="$PREFIX" --with-libxml-include-prefix="$INSTALL_ROOT"/include/libxml2 --without-python --without-crypto --enable-static --disable-shared
-		make -j
+		make
 		make install
 		popd
 	fi
@@ -213,7 +229,7 @@ if [ "$QUICK" != "1" ] ; then
 			"${PARENT_DIR}/libzip"
 		# quiet the super noise warnings
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' lib/CMakeFiles/zip.dir/flags.make
-		make -j
+		make
 		make install
 		popd
 		mv CMakeLists.txt.bak CMakeLists.txt
@@ -240,7 +256,7 @@ if [ "$QUICK" != "1" ] ; then
 			-DUSE_SSH=OFF \
 			"${PARENT_DIR}/libgit2/"
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' src/CMakeFiles/git2.dir/flags.make
-		make -j
+		make
 		make install
 		# Patch away pkg-config dependency to zlib, its there, i promise
 		perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' "${PKG_CONFIG_LIBDIR}/libgit2.pc"
@@ -270,7 +286,7 @@ if [ "$QUICK" != "1" ] ; then
 		echo "$CURRENT_SHA" > "${PARENT_DIR}/libdivecomputer-build-${ARCH}/git.SHA"
 		pushd "${PARENT_DIR}/libdivecomputer-build-${ARCH}"
 		"${SUBSURFACE_SOURCE}/libdivecomputer/configure" --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi
-		make -j
+		make
 		make install
 		popd
 	fi
@@ -290,7 +306,7 @@ if [ "$QUICK" != "1" ] ; then
 		"$QMAKE" $QMAKEARG "$PARENT_DIR"/googlemaps/googlemaps.pro \
 			-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=debug
 		make clean
-		make -j
+		make
 	fi
 	popd
 
@@ -300,7 +316,7 @@ if [ "$QUICK" != "1" ] ; then
 	# shellcheck disable=SC2086
 	"$QMAKE" $QMAKEARG "$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami/kirigami.pro \
 		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=release
-	make -j
+	make
 	# since the install prefix for qmake is rather weirdly implemented, let's copy things by hand into the multiarch destination
 	mkdir -p "$INSTALL_ROOT"/lib/qml/
 	cp -a org "$INSTALL_ROOT"/lib/qml/
@@ -311,7 +327,7 @@ if [ "$QUICK" != "1" ] ; then
 		# shellcheck disable=SC2086
 		"$QMAKE" $QMAKEARG "$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami/kirigami.pro \
 			-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=debug
-		make -j
+		make
 		# since the install prefix for qmake is rather weirdly implemented, let's copy things by hand into the multiarch destination
 		mkdir -p "$INSTALL_ROOT"/lib/qml/
 		cp -a org "$INSTALL_ROOT"/lib/qml/
