@@ -385,8 +385,8 @@ void ProfileScene::updateAxes(bool diveHasHeartBeat, bool simplified)
 		l.axis->setVisible(l.visible);
 		if (!l.visible)
 			continue;
-		bottomBorder -= l.height * dpr;
-		l.axis->setPosition(QRectF(leftBorder, bottomBorder, width, (l.height - l.bottom_border) * dpr));
+		bottomBorder -= l.height;
+		l.axis->setPosition(QRectF(leftBorder, bottomBorder, width, (l.height - l.bottom_border)));
 	}
 
 	height = bottomBorder - topBorder;

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>507</width>
-    <height>423</height>
+    <height>556</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -173,6 +173,19 @@
              </property>
              <property name="text">
               <string>Anonymize</string>
+             </property>
+            </widget>
+            <widget class="QCheckBox" name="diveinfo">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>90</y>
+               <width>181</width>
+               <height>23</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Dive info in profle</string>
              </property>
             </widget>
            </widget>
@@ -666,7 +679,7 @@
   </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="exportGroup"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
