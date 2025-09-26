@@ -839,8 +839,10 @@ static bool has_locations(const filter_constraint &c, const struct dive *d)
 	if (d->divetrip)
 		diveLocations.push_back(QString::fromStdString(d->divetrip->location).trimmed());
 
-	if (d->dive_site)
+	if (d->dive_site) {
 		diveLocations.push_back(QString::fromStdString(d->dive_site->name).trimmed());
+		diveLocations.push_back(QString::fromStdString(taxonomy_get_country(d->dive_site->taxonomy)).trimmed());
+	}
 
 	return check(c, diveLocations);
 }
