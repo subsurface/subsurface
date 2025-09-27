@@ -1487,7 +1487,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	if (!diveplan.is_empty()) {
 		deco_state_cache cache;
 		struct deco_state plan_deco_state;
-		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, true, nullptr);			
+		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, shouldSave, nullptr);
 		if (shouldComputeVariations()) {
 			QString variations = computeVariations(plan_copy, plan_deco_state, nullptr);
 			if (!variations.isEmpty()) {
