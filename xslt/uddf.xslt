@@ -365,7 +365,7 @@
 
           <xsl:if test="tankvolume|u:tankvolume|u1:tankvolume != ''">
             <xsl:attribute name="size">
-              <xsl:value-of select="tankvolume|u:tankvolume|u1:tankvolume"/>
+              <xsl:value-of select="number(tankvolume | u:tankvolume | u1:tankvolume) * 1000"/>
             </xsl:attribute>
           </xsl:if>
 
