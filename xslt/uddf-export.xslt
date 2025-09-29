@@ -379,7 +379,7 @@
           <xsl:if test="@size">
 
             <tankvolume>
-              <xsl:value-of select="substring-before(@size, ' ')"/>
+              <xsl:value-of select="number(substring-before(@size, ' ')) div 1000"/>
             </tankvolume>
           </xsl:if>
           <xsl:choose>
