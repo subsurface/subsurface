@@ -176,6 +176,9 @@
              </property>
             </widget>
             <widget class="QCheckBox" name="diveinfo">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
                <x>10</x>
@@ -185,7 +188,7 @@
               </rect>
              </property>
              <property name="text">
-              <string>Dive info in profle</string>
+              <string>Dive info in profile</string>
              </property>
             </widget>
            </widget>
@@ -665,6 +668,102 @@
    <sender>exportCSVDetails</sender>
    <signal>toggled(bool)</signal>
    <receiver>CSVUnits_2</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportSubsurfaceXML</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>anonymize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportSubsurfaceSitesXML</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>anonymize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportUDDF</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>anonymize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportCSV</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>anonymize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportCSVDetails</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>anonymize</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>39</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>322</x>
+     <y>171</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>exportProfile</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>diveinfo</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
