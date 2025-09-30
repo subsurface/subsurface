@@ -424,14 +424,7 @@ void TestParse::exportUDDF()
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
 
 	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt", false);
-
-	clear_dive_file_data();
-
-	parse_file("testuddfexport.uddf", &divelog);
-
-	export_dives_xslt("testuddfexport2.uddf", 0, 1, "uddf-export.xslt", false);
-	FILE_COMPARE("testuddfexport.uddf",
-		     "testuddfexport2.uddf");
+	FILE_COMPARE("testuddfexport.uddf",SUBSURFACE_TEST_DATA "/dives/test40.uddf");
 }
 
 void TestParse::parseDL7()
