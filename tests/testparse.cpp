@@ -424,7 +424,16 @@ void TestParse::exportUDDF()
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
 
 	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt", false);
-	FILE_COMPARE("testuddfexport.uddf",SUBSURFACE_TEST_DATA "/dives/test40.uddf");
+	FILE_COMPARE("testuddfexport.uddf", SUBSURFACE_TEST_DATA "/dives/test40.uddf");
+}
+
+void TestParse::importUDDF()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.uddf", &divelog);
+
+	QCOMPARE(save_dives("./testuddfimport.xml"), 0);
+	FILE_COMPARE("./testuddfimport.xml",
+		     SUBSURFACE_TEST_DATA "/dives/test-40-uddf-import-reference.xml");
 }
 
 void TestParse::parseDL7()
