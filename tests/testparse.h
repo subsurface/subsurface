@@ -34,6 +34,7 @@ private slots:
 	int parseCSVprofile(int, std::string);
 	void exportCSVDiveProfile();
 	void exportUDDF();
+	void importUDDF();
 
 	void parseDL7();
 
