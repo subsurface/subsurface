@@ -44,6 +44,7 @@ public:
 	int shownDives() const;
 	bool diveSiteMode() const; // returns true if we're filtering on dive site (on mobile always returns false)
 	std::vector<dive *> visibleDives() const;
+	std::vector<dive *> invalidDives() const;
 #ifndef SUBSURFACE_MOBILE
 	const std::vector<dive_site *> &filteredDiveSites() const;
 	void startFilterDiveSites(std::vector<dive_site *> ds);
