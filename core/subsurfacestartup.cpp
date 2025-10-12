@@ -25,6 +25,13 @@ std::string testqml;
  */
 bool imported = false;
 
+#if SUBSURFACE_DOWNLOADER
+// Firmware update CLI options
+std::string firmware_file;
+bool firmware_do_update = false;
+bool firmware_force_update = false;
+#endif
+
 void print_version()
 {
 	static bool version_printed = false;
@@ -83,6 +90,9 @@ static void print_help()
 	printf("\n --dc-vendor=vendor    Set the dive computer to download from");
 	printf("\n --dc-product=product  Set the dive computer to download from");
 	printf("\n --device=device       Set the device to download from");
+	printf("\n --firmware-file=<path>       Path to firmware file for --update-firmware");
+	printf("\n --update-firmware            Update firmware on the configured dive computer");
+	printf("\n --force-update-firmware      Force firmware update (if supported)");
 #endif
 	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)\n\n");
 }
@@ -153,6 +163,18 @@ void parse_argument(const char *arg)
 			}
 			if (strncmp(arg, "--device=", sizeof("--device=") - 1) == 0) {
 				prefs.dive_computer.device = arg + sizeof("--device=") - 1;
+				return;
+			}
+			if (strncmp(arg, "--firmware-file=", sizeof("--firmware-file=") - 1) == 0) {
+				firmware_file = arg + sizeof("--firmware-file=") - 1;
+				return;
+			}
+			if (strcmp(arg, "--update-firmware") == 0) {
+				firmware_do_update = true;
+				return;
+			}
+			if (strcmp(arg, "--force-update-firmware") == 0) {
+				firmware_force_update = true;
 				return;
 			}
 			if (strncmp(arg, "--list-dc", sizeof("--list-dc") - 1) == 0) {

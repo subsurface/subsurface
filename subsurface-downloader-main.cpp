@@ -19,9 +19,11 @@
 #include <QLoggingCategory>
 #include <QStringList>
 #include <git2.h>
+#include "core/subsurfacestartup.h"
 
 static void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 extern void cliDownloader(const std::string &vendor, const std::string &product, const std::string &device);
+extern int cliFirmwareUpdate(const std::string &vendor, const std::string &product, const std::string &device, const std::string &firmwareFile, bool forceUpdate);
 
 int main(int argc, char **argv)
 {
@@ -76,26 +78,41 @@ int main(int argc, char **argv)
 	parse_xml_init();
 	taglist_init_global();
 
-	if (no_filenames) {
-		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
-			if (!prefs.default_filename.empty())
-				files.emplace_back(prefs.default_filename.c_str());
-		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
-			auto cloudURL = getCloudURL();
-			if (cloudURL)
-				files.emplace_back(*cloudURL);
+	// Skip file loading when doing firmware update
+	if (!firmware_do_update) {
+		if (no_filenames) {
+			if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
+				if (!prefs.default_filename.empty())
+					files.emplace_back(prefs.default_filename.c_str());
+			} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
+				auto cloudURL = getCloudURL();
+				if (cloudURL)
+					files.emplace_back(*cloudURL);
+			}
 		}
-	}
-	if (!files.empty()) {
-		report_info("loading dive data from %s", join(files, ", ").c_str());
-		if (parse_file(files.front().c_str(), &divelog) < 0) {
-			printf("Failed to load dives from file '%s', aborting.\n", files.front().c_str());
-			exit(1);
+		if (!files.empty()) {
+			report_info("loading dive data from %s", join(files, ", ").c_str());
+			if (parse_file(files.front().c_str(), &divelog) < 0) {
+				printf("Failed to load dives from file '%s', aborting.\n", files.front().c_str());
+				exit(1);
+			}
 		}
+		print_files();
 	}
-	print_files();
+
 	if (!quit) {
-		if (!prefs.dive_computer.vendor.empty() && !prefs.dive_computer.product.empty() && !prefs.dive_computer.device.empty()) {
+		if (firmware_do_update) {
+			// perform firmware update
+			if (prefs.dive_computer.vendor.empty() || prefs.dive_computer.product.empty() || prefs.dive_computer.device.empty() || firmware_file.empty()) {
+				fprintf(stderr, "Firmware update needs --dc-vendor, --dc-product, --device and --firmware-file\n");
+				exit(1);
+			} else {
+				printf("Updating firmware on %s %s (via %s) with file %s\n", prefs.dive_computer.vendor.c_str(), prefs.dive_computer.product.c_str(), prefs.dive_computer.device.c_str(), firmware_file.c_str());
+				int rc = cliFirmwareUpdate(prefs.dive_computer.vendor, prefs.dive_computer.product, prefs.dive_computer.device, firmware_file, firmware_force_update);
+				// No need to call parse_xml_exit() as we haven't loaded any dive data
+				exit(rc);
+			}
+		} else if (!prefs.dive_computer.vendor.empty() && !prefs.dive_computer.product.empty() && !prefs.dive_computer.device.empty()) {
 			// download from that dive computer
 			printf("Downloading dives from %s %s (via %s)\n", prefs.dive_computer.vendor.c_str(),
 					prefs.dive_computer.product.c_str(), prefs.dive_computer.device.c_str());
