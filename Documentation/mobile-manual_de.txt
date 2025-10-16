@@ -1,0 +1,512 @@
+
+// Subsurface-mobile User Manual
+// =============================
+// :author: Manual authors: Willem Ferguson, Dirk Hohndel
+// :revnumber: {version}
+// :revdate: {version-date}
+:icons:
+:toc:
+:toc-placement: Handbuch
+:numbered:
+// :website: http://subsurface-divelog.org
+image::mobile-images/Banner.jpg["Banner",align="center"]
+
+[big]#_Subsurface-mobile_ Handbuch#
+
+*Autoren des Handbuches*: Willem Ferguson, Dirk Hohndel +
+*Deutsche Übersetzung*: Bernhard Walter
+
+// toc::[]
+
+[blue]#_Handbuch aktualisiert in: +
+Version {version}, {version-date}_#
+
+toc::[]
+
+Willkommen bei _Subsurface-mobile_, der mobilen Version von _Subsurface_, einer fortschrittlichen Logbuchsoftware mit umfassender Infrastruktur zum Anzeigen, Organisieren und Interpretieren von Geräte- und Freitauchgängen. _Subsurface_ läuft unter Windows, macOS und den gängigsten Linux-Distributionen. _Subsurface-mobile_ ist für Android und iOS verfügbar. Beide sind Open-Source-Software (vereinfacht ausgedrückt bedeutet das, dass kein kommerzielles Interesse dahintersteht, der gesamte Quellcode für die Entwicklung verfügbar ist, es keine Werbung gibt und niemand Ihre Daten monetarisiert usw.).
+
+Subsurface-mobile ist eine eingeschränkte mobile Version der Desktop-Software Subsurface, die für Android- und iOS-Smartphones und -Tablets entwickelt wurde. Während die Desktop-Version von Subsurface deutlich detailliertere Informationen zu jedem Tauchgang anzeigt, ermöglicht die mobile Version ein leichter zugängliches Logbuch für unterwegs. So können Sie beispielsweise Ihre Taucherfahrung auf einem Tauchausflug in Tauchshops nachweisen oder frühere Tauchgänge auf einem Tauchboot überprüfen. Sofern Sie einen Tauchcomputer besitzen, der vom mobilen Betriebssystem Ihrer Wahl unterstützt wird, unterstützt Subsurface-mobile das Herunterladen von Tauchgängen von Ihrem Tauchcomputer. Benutzer von Subsurface-mobile nutzen die mobile App häufig zusammen mit der Desktop-Version von Subsurface und tauschen Tauchinformationen über ein kostenloses Subsurface-Cloud-Konto zwischen der mobilen und der Desktop-Version aus. Subsurface-mobile ist jedoch eine eigenständige Anwendung, die auch unabhängig von der Desktop-Version mit oder ohne Cloud-Speicher genutzt werden kann.
+
+Subsurface-mobile ermöglicht:
+
+- Herunterladen und Speichern von Logbuchinformationen mithilfe der Subsurface-Cloud.
+- Anzeigen dieser Informationen auf einem Mobilgerät.
+- Manuelles Erstellen und Hinzufügen neuer Tauchdaten zu Ihrem Logbuch.
+- Direktes Herunterladen von Tauchdaten von einigen Tauchcomputern.
+- Bearbeiten der meisten Logbuchdaten, z. B. Tauchlehrer, Tauchpartner, Ausrüstung oder Notizen zu einem Tauchgang.
+- Anzeigen der Standorte aufgezeichneter GPS-Positionen und Tauchgänge auf einer Karte.
+
+Diese Punkte werden weiter unten ausführlicher besprochen.
+
+_Subsurface-mobile_ weist im Vergleich zu _Subsurface_ einige Einschränkungen auf:
+
+- Nur ein Teil der von der Desktop-Version zum Download unterstützten Tauchcomputer ist mit Subsurface-mobile kompatibel. Dies hängt von den Hardware- und Betriebssystembeschränkungen der beiden mobilen Plattformen ab. Unter Android ist nur ein Teil der Tauchcomputer verfügbar, die USB-Seriell-Kabel oder eine Bluetooth/Bluetooth LE-Schnittstelle verwenden. Unter iOS werden nur Bluetooth LE-basierte Tauchcomputer unterstützt.
+- Kein Tauchplaner verfügbar.
+- Kein Drucken möglich.
+- Keine Unterstützung für in Tauchprofilen eingebettete Medien (Subsurface ermöglicht den Zugriff auf Bilder und Videoclips direkt aus dem Tauchprofil).
+
+== Installieren von _Subsurface-mobile_ auf Ihrem Mobilgerät
+
+Suchen Sie im Google Play Store oder Apple App Store nach Subsurface-mobile und installieren Sie es. Für Android-Geräte ohne Zugriff auf den Google Play Store finden Sie APKs im Download-Ordner der Subsurface-Website.
+
+== Unterstützung erhalten
+
+Der beste Ort für Support ist das Subsurface-Benutzerforum unter https://subsurface-divelog.org/user-forum. Darüber hinaus können Sie mit Subsurface-mobile eine Supportanfrage senden, indem Sie im Hilfemenü auf „Support anfordern“ tippen. Dadurch wird eine E-Mail an unsere In-App-Supportadresse im nativen E-Mail-Client geöffnet, die die relevanten Protokolle enthält.
+
+== Benutzeroberfläche
+
+Subsurface-mobile verwendet für Android und iOS die gleiche Benutzeroberflächenphilosophie und basiert auf dem Open-Source-Projekt Kirigami, das von der KDE/Plasma-Entwickler-Community gepflegt wird. Es unterscheidet sich zwar etwas von vielen nativen Android- und iOS-Apps, ist aber für uns einfach und intuitiv zu bedienen.
+
+Sie erreichen das Hauptmenü über die Hamburger-Schaltfläche (drei kurze horizontale Linien) in der unteren linken Bildschirmecke. Das Hauptmenü lässt sich außerdem öffnen, indem Sie vom linken Bildschirmrand nach rechts wischen. Viele Bildschirme verfügen außerdem über ein Kontextmenü, das über eine Schaltfläche mit drei vertikalen Punkten in der unteren rechten Ecke erreichbar ist und durch Tippen und Halten einer Tauchgangs- oder Trip-Überschrift in der Tauchliste geöffnet werden kann.
+
+image::mobile-images/ActionButton2.jpg["Abbildung: Action Button",float="left"]
+
+Am unteren Rand vieler Subsurface-Mobile-Bildschirme befindet sich eine runde Aktionsschaltfläche, die schnellen Zugriff auf die am häufigsten benötigten Aktionen auf dem Bildschirm ermöglicht (siehe Abbildung links). Manche Bildschirme verfügen nur über die runde zentrale Schaltfläche, andere bieten ein oder zwei zusätzliche Aktionen auf beiden Seiten der zentralen Schaltfläche.
+
+Auf Android-Geräten verwenden Sie die Android-Zurück-Schaltfläche für die Aktionen „Abbrechen“, „Verwerfen“ oder „Zurück“. Beispielsweise speichert ein Antippen der Aktionsschaltfläche beim Bearbeiten von Tauchinformationen die Änderungen, während die Android-Zurück-Schaltfläche zum Abbrechen der Bearbeitung verwendet werden kann, ohne die Änderungen zu speichern.
+
+Das folgende Bild zeigt einige wichtige Funktionen des Menüsystems. Links befindet sich das Hauptmenü, das wie oben beschrieben aktiviert wird. Rechts im Bild befinden sich die Untermenüs.
+
+image::mobile-images/MainMenu3-DE.jpg["Abbildung: Subsurface-Hauptmenü",align="center"]
+
+
+Alle Bildausschnitte in dieser Bedienungsanleitung stammen aktuell von der IOS-Version. Die Android-Bildschirme sehen ähnlich aus.
+
+== Erste Verwendung von _Subsurface-mobile_
+
+Wenn Sie Subsurface-mobile zum ersten Mal starten, wird während des Ladevorgangs ein Subsurface-Startbildschirm angezeigt. Auf manchen Geräten kann dies einige Sekunden dauern. Anschließend erscheint der Bildschirm „Cloud-Anmeldeinformationen“ (siehe linkes Bild unten).
+
+image::mobile-images/Credentials.jpg["Abbildung: Mobile credentials screen",align="center"]
+
+=== _Subsurface-mobile_ ohne Cloud-Speicher verwenden
+Tippen Sie auf „Kein Cloud-Modus“. Die App speichert Logbuchdaten nur lokal auf Ihrem Gerät. Nach der Installation wird ein leeres Logbuch erstellt.
+
+=== Verwenden von Cloud-Speicher
+
+Der Subsurface-Betreuer stellt Nutzern von Subsurface und Subsurface-mobile einen dedizierten und kostenlosen Cloud-Speicher zur Verfügung. Sie können damit Ihr Logbuch speichern und Ihre Daten zwischen mehreren Computern und Geräten teilen. Das Subsurface-Team greift niemals ohne ausdrückliche Erlaubnis auf Ihre Tauchdaten zu. Die Daten werden ausschließlich für die Bereitstellung an den Nutzer verwendet, der sie erstellt hat. Im Subsurface Cloud-Speicher gibt es keine Werbung und keine Datenerfassung, -analyse oder -monetarisierung.
+
+Subsurface-mobile reicht aus, um ein Logbuch vollständig zu führen. Darüber hinaus können Sie die erweiterten Funktionen von Subsurface nutzen, wenn Sie Zugriff auf einen Computer haben, und gleichzeitig mit Ihren Tauchdaten arbeiten, wenn nur ein mobiles Gerät zur Verfügung steht.
+
+Die Tauchdaten in der Cloud werden lokal auf jedem Gerät oder Computer zwischengespeichert, der mit dem Subsurface Cloud-Konto verbunden ist. Es ist einfach, Backups der Daten (z. B. im XML-Format) auf dem Desktop zu erstellen: Sowohl das Mobilgerät als auch der Desktop speichern eine lokale Kopie der Daten, sodass das Logbuch auch ohne Internetverbindung immer zugänglich ist.
+
+Um ein _Subsurface Cloud_-Konto zu erstellen, gehen Sie folgendermaßen vor:
+
+1) Geben Sie eine E-Mail-Adresse und ein Passwort in die angezeigten  Felder ein (siehe Abbildung oben). Die E-Mail-Adresse sollte in Kleinbuchstaben geschrieben sein und das Passwort sollte eine Kombination aus Groß- und Kleinbuchstaben und/oder Zahlen enthalten.
+
+2) Tippen Sie auf die Schaltfläche „Anmelden oder Registrieren“. Wenn Sie bereits ein Konto auf einem anderen Computer oder Gerät eingerichtet haben, geben Sie hier einfach dieselben Anmeldedaten ein.  _Subsurface-mobile_ lädt nun Ihre vorhandenen Logbuchdaten herunter. Sobald die Tauchliste aus der Cloud heruntergeladen wurde, funktioniert _Subsurface-mobile_ in der Regel nur mit der lokalen Kopie auf dem Mobilgerät. Dies vermeidet lange Verzögerungen oder sogar Betriebsausfälle bei schlechter Internetverbindung. Denken Sie daran, nach lokalen Änderungen manuell mit dem Server zu synchronisieren (entweder durch Herunterziehen der Tauchliste oder über die manuelle Synchronisierung im Menü „Tauchgangsverwaltung“).
+
+3) Handelt es sich um ein neues Cloud-Konto, öffnet sich ein PIN-Fenster (siehe Abbildung oben rechts). Eine PIN wird per E-Mail an die im vorherigen Schritt eingegebene E-Mail-Adresse gesendet. Geben Sie diese PIN in das dafür vorgesehene Feld ein und tippen Sie auf „Registrieren“. Nach der Eingabe der PIN wird diese nicht mehr benötigt – sie dient lediglich als Nachweis dafür, dass es sich tatsächlich um Ihr E-Mail-Konto handelt.
+
+Es ist ein https://www.youtube.com/watch?v=Vp_bEm5ZDRA[*video-tutorial*]  verfügbar, das zeigt, wie eine Verbindung zur Cloud hergestellt wird.
+
+Damit ist ein neues Konto auf dem Cloud-Server für Sie erstellt und der Zugriff auf die Cloud aktiviert. Die Tauchliste ist zunächst leer. Beginnen Sie mit der Eingabe von Tauchgängen in das Logbuch oder laden Sie Tauchinformationen von einem unterstützten Tauchcomputer herunter.
+
+Nach der Registrierung merkt sich _Subsurface-mobile_ die Cloud-Anmeldeinformationen und es ist nicht erforderlich, diese beim Starten des Programms erneut einzugeben.
+
+****
+[icon="images/icons/important.png"]
+[IMPORTANT]
+*Cloud Probleme: FAQ*
+
+[blue]#Nachdem ich die korrekten Informationen eingegeben und übermittelt habe, habe ich keine PIN per E-Mail erhalten#
+
+1. Überprüfen Sie die von Ihnen angegebene E-Mail-Adresse sorgfältig auf Rechtschreibfehler. Dies ist ein häufiges Problem, da die Autokorrektur E-Mail-Adressen oft verfälscht.
+2. Stellen Sie sicher, dass die Antwort-E-Mail mit der PIN nicht im Spam-/Junk-Ordner Ihres E-Mail-Programms liegt.
+3. Warten Sie einige Stunden und prüfen Sie erneut, ob eine E-Mail mit einer PIN eintrifft.
+4. Sollte immer noch keine E-Mail mit einer PIN eintreffen, senden Sie eine E-Mail an in-app-support@subsurface-divelog.org
+
+[blue]#Ich möchte auf den Subsurface Cloud-Speicher zugreifen, habe aber mein Passwort vergessen. Wie kann ich mein Passwort zurücksetzen?#
+
+Im Hilfe-Menü gibt es die Option „Vergessenes Subsurface Cloud-Passwort zurücksetzen“. Nutzen Sie diese Option oder besuchen Sie die Website https://cloud.subsurface-divelog.org/passwordreset [Website zum Zurücksetzen des Passworts].
+
+Geben Sie einfach dieselbe E-Mail-Adresse ein, die Sie bei der Cloud-Registrierung verwendet haben, und folgen Sie den angegebenen Schritten. Um Missbrauch dieses Systems zu verhindern, wird eine Bestätigungs-E-Mail an Ihr Konto gesendet.
+
+****
+
+Das Logbuch kann automatisch aktualisiert werden. Bei bestehender Internetverbindung greift Subsurface-mobile auf das Cloud-basierte Logbuch zu, um zu überprüfen, ob die lokale Kopie des Logbuchs noch mit dem Protokoll auf dem Cloud-Server übereinstimmt. Ist dies nicht der Fall, werden die lokale Kopie und die Kopie auf dem Server synchronisiert.
+
+== Die Tauchliste
+
+Die Tauchliste ist das Herzstück von Subsurface-mobile, da sich die meisten Aktionen um die Tauchgänge in der Tauchliste drehen. Während die Tauchliste aus der Cloud geladen wird, erscheint am unteren Bildschirmrand eine Meldung, dass auf die Cloud zugegriffen wird. Anschließend wird die Tauchliste angezeigt. Sobald die Liste geladen ist, können Sie in Ihrem Tauchverlauf nach oben und unten scrollen.
+
+Die Tauchliste besteht aus zwei Arten von Einträgen:
+
+1. *Reiseüberschriften*. Eine Reiseüberschrift ist eine Zeile, die das Jahr und den Monat einer Tauchreise sowie das geografische Gebiet der Reise beschreibt. Die zweite Zeile im linken Bild unten zeigt an, dass im Dezember 2016 eine Reise mit 10 Tauchgängen nach Guinjata, Mosambik, stattfand.
+
+2. *Einzelne Tauchaufzeichnungen*. Durch Tippen auf eine Tour-Überschrift wird die Tauchliste erweitert, um die einzelnen Tauchgänge der Tour anzuzeigen (oder auszublenden). Jeder Tauchgang wird durch eine Tauchaufzeichnung dargestellt. Standardmäßig werden die Tauchgänge der letzten Tour aufgelistet, ältere Tauchgänge unten und aktuelle Tauchgänge oben. Im linken Bild unten fand der letzte Tauchgang der Guinjata-Tour in der Inhambane-Mündung statt.
+
+image::mobile-images/DiveListDetails-DE.jpg["Abbildung: Bildschirm Tauchliste mit Details",align="center"]
+
+
+[[S_View_Dive]]
+=== Einen Tauchgang ansehen: Detailansicht
+
+Wenn du in der Tauchliste auf einen Tauchgang tippst, öffnet sich die Seite „Tauchdetails“ mit dem Tauchprofil und vielen wichtigen Details zum Tauchgang (Bild oben rechts). Mit einer Zieh-Geste kannst du das Profil vergrößern. Durch Tippen und Halten mit einem Finger (bis das Profil transparent wird) kannst du das Profil verschieben und weitere Details in bestimmten Bereichen des Profils anzeigen.
+
+Sie können andere Tauchgänge anzeigen, indem Sie in der Detailansicht nach rechts (für den vorherigen Tauchgang) oder nach links (für den nächsten Tauchgang) wischen. Über die Aktionsleiste können Sie den Tauchgang auch löschen (tippen Sie auf das Papierkorbsymbol in der Aktionsleiste) oder den Tauchort in einer integrierten Kartenansicht anzeigen.
+
+Das Kontextmenü (erreichbar durch Tippen auf die drei vertikalen Punkte in der unteren rechten Ecke des Bildschirms) bietet zusätzliche Optionen zum Verschieben von Tauchgängen zwischen Trips, dieselben Lösch- und Kartenoptionen wie bereits erwähnt sowie Zugriff auf die Rückgängig- und Wiederherstellen-Funktion, mit der Sie die letzten Änderungen rückwärts und vorwärts durchgehen können.
+
+=== Anzeigen des Tauchplatzes auf einer Karte
+
+image::mobile-images/DiveSiteMap-DE.jpg["Abbildung: Map of dive site",align="center"]
+
+In der Detailansicht können Sie entweder auf den Namen eines Tauchplatzes oder auf die GPS-Markierung links neben der Aktionsschaltfläche am unteren Bildschirmrand tippen, um eine Karte mit dem Tauchplatz in einem integrierten Kartenviewer zu öffnen. Dies ist natürlich nur möglich, wenn der Tauchplatz mit GPS-Informationen verknüpft ist.
+
+[[S_Filter]]
+=== Filtern Sie die Tauchliste
+
+Standardmäßig werden alle Tauchgänge im Logbuch in der Tauchliste angezeigt. Nach einigen Jahren kann Ihr Logbuch jedoch recht umfangreich werden, sodass Sie manchmal nur die Tauchgänge eines bestimmten Typs auflisten möchten, z. B. die an einem bestimmten Tauchplatz oder mit einem bestimmten Tauchpartner oder Tauchlehrer. Nutzen Sie dazu den Filter. Der Filtermechanismus durchsucht alle Informationen zu jedem Tauchgang nach einem oder mehreren Schlüsselwörtern. Nur die Tauchgänge, die diese Schlüsselwörter enthalten, werden in der Tauchliste angezeigt. Um die Tauchliste zu filtern, tippen Sie auf die Schaltfläche „Filtern“:
+
+image::mobile-images/FilterButton.jpg["Abbildung: Filter button",align="center"]
+
+unten in der Tauchliste.
+Oben auf dem Bildschirm erscheint ein Textfeld (siehe Abbildung unten). Geben Sie das/die Wort(e) ein, das/die Sie als Filter verwenden möchten.
+
+image::mobile-images/Filter-DE.jpg["Abbildung: Filter tool",align="center"]
+
+Es gibt drei Filtermodi. „Volltext“ durchsucht alle Textzeichenfolgen. „Personen“ listet Tauchpartner(Buddys) und Tauchlehrer auf, während „Stichwörter“ nur nach Schlagworte filtert, die den angegebenen Text enthalten. Die Filter berücksichtigen keine Groß- und Kleinschreibung. Um den Filter zu löschen, entfernen Sie die Schlüsselwörter aus dem Textfeld und wählen Sie die Schaltfläche „Filtern“, um die Filterung zu deaktivieren. Das obige Bild zeigt eine Volltextsuche nach Tauchgängen mit dem Wort „Fernsteinsee“.
+
+
+[[S_Dive_Management]]
+== Tauchlistenverwaltung und Hinzufügen von Tauchinformationen
+
+[[S_Add_Dive]]
+=== Manuelles Hinzufügen eines neuen Tauchgangs zur Tauchliste
+
+Dieses https://www.youtube.com/watch?v=sF8KB_r0rFw[*Video-Tutorial*] erklärt, wie man einem manuell eingegebenen Tauchgang Informationen hinzufügt.
+
+Sie können einen Tauchgang manuell zur bestehenden Tauchliste hinzufügen. Tippen Sie in der Tauchliste auf das Pluszeichen in der Aktionsleiste oder verwenden Sie das Hauptmenü und tippen Sie auf Tauchgangsverwaltung -> Tauchgang manuell hinzufügen. Daraufhin öffnet sich ein Bildschirm, der mit dem oben beschriebenen Bearbeitungsbildschirm identisch ist. Wenn Sie einen Tauchgang manuell hinzufügen, können Sie kein Tauchprofil direkt von einem Tauchcomputer hinzufügen. Wenn Sie jedoch keinen Tauchcomputer verwenden, können Sie Dauer, Tiefe und weitere Informationen zum neuen Tauchgang eingeben. Die Aktionsschaltfläche am unteren Bildschirmrand enthält ein Diskettensymbol. Tippen Sie darauf, um den neuen Tauchgang zu speichern. Um Änderungen abzubrechen, tippen Sie auf die Schaltfläche Zurück. Das linke Bild unten zeigt einen Bildschirmausschnitt eines Tauchgangs, der gerade erstellt wird, und das rechte Bild zeigt denselben Tauchgang in der Detailansicht. Nachdem Sie die Tauchgangsinformationen bearbeitet haben, müssen die Tauchgangsinformationen wie im obigen Abschnitt xref:S_Divetrip[Tauchgangsbearbeitung] beschrieben bearbeitet werden.
+
+image::mobile-images/ManualDive-DE.jpg["Abbildung: Manueller Taucheingabebildschirm",align="center"]
+
+[[S_Download]]
+=== Tauchgänge von einem Tauchcomputer herunterladen
+
+Es gibt mehrere Möglichkeiten, zur Download-Seite zu gelangen. Tippen Sie entweder auf die Hauptschaltfläche „Aktion“ unten in der Tauchliste oder wählen Sie im Hauptmenü „Tauchgangsverwaltung -> Von DC herunterladen“. Wenn Sie auf Android-Geräten ein USB-Seriell-Kabel für einen Tauchcomputer anschließen, wird die Download-Seite automatisch geöffnet. Es wird ein Bildschirm angezeigt, in dem Sie den Hersteller und das Modell des Tauchcomputers angeben müssen. Beispielsweise lautet der Hersteller bei einem Shearwater Petrel-Tauchcomputer „Shearwater“ und der Name des Tauchcomputers „Petrel“ (siehe Abbildung links unten).
+Hinweise: Die Download-Funktion von Smartphones unterstützt nur eine begrenzte Anzahl von Tauchcomputern. Auf Android-Geräten sind dies typischerweise Tauchcomputer mit serieller USB-Schnittstelle, die über ein USB-OTG-Kabel oder bei neueren Geräten über einen einfachen USB-C-A-Adapter verbunden sind. Android-Geräte unterstützen auch Bluetooth-Tauchcomputer, die werden in Subsurface auf dem Desktop unterstützt. Sowohl Android- als auch iOS-Geräte ermöglichen den direkten Download von Tauchdaten von einer Handvoll Bluetooth LE-fähiger Tauchcomputer. Wählen Sie über die Dropdown-Menüs „Herstellername“ und „Tauchcomputer“ den richtigen Tauchcomputer aus. Beim Herunterladen von mehreren Tauchcomputern werden unter den Dropdown-Menüs Verknüpfungsschaltflächen angezeigt, mit denen Sie einfach zwischen ihnen wechseln können. Im Menü xref:S_Settings[Einstellungen] können Sie diese Schaltflächen entfernen. Dies ist eine nützliche Funktion zum Entfernen von Schaltflächen nicht mehr verwendeter Tauchcomputer. Wählen Sie dazu die Option „Gespeicherte Tauchcomputer vergessen“ im Menü xref:S_Settings[Einstellungen]. Nach all diesen Hinweisen können wir mit dem Download fortfahren.
+
+image::mobile-images/DC-Download.jpg["Abbildung: Bildschirm Tauchgänge herunterladen",align="center"]
+
+Beim Herunterladen von mehreren Tauchcomputern werden unter den Dropdown-Menüs Verknüpfungsschaltflächen angezeigt, mit denen Sie einfach zwischen ihnen wechseln können. Im Menü xref:S_Settings[Einstellungen] können Sie diese Schaltflächen entfernen. Dies ist eine nützliche Funktion zum Entfernen von Schaltflächen von Tauchcomputern, die Sie nicht mehr verwenden. Wählen Sie dazu die Option „Gespeicherte Tauchcomputer vergessen“ im Menü xref:S_Settings[Einstellungen].
+
+==== Download von seriellen USB-Tauchcomputern
+Diese Funktion wird unter iOS nicht unterstützt.
+
+[width="100%"]
+|=======
+a|image:mobile-images/USB-OTG.jpg["Abbildung: USB-OTG cable",align="center"] |
+Die meisten aktuellen Android-Geräte verfügen mittlerweile über einen USB-Typ-C-Anschluss und werden mit einem einfachen A-auf-C-Adapter geliefert, mit dem Sie das Kabel des Tauchcomputers an Ihr Smartphone oder Tablet anschließen können. Bei älteren Android-Geräten mit Micro-USB-Anschluss müssen Sie das USB-Kabel des Tauchcomputers an ein USB-OTG-Kabel anschließen, das wiederum an den Micro-USB-Anschluss angeschlossen wird. Das OTG-Kabel hat in der Regel an einem Ende eine vollwertige Buchse („Typ A“), in die der vollwertige Stecker des USB-Kabels des Tauchcomputers passt (siehe Abbildung links). Das bedeutet, dass zwei Kabel benötigt werden, um den Tauchcomputer mit dem Mobilgerät zu verbinden. *Nicht alle Android-Geräte unterstützen OTG-Kabel*, aber in der Regel können alle modernen Android-Geräte mit einem USB-C-Stecker mit einem USB-A-auf-C-Adapter verwendet werden.
+|=======
+
+Subsurface-mobile merkt sich die Einstellungen erfolgreich verwendeter Tauchcomputer (siehe Abbildung unten rechts). Diese erscheinen als Schaltflächen unter der Überschrift „Zuvor verwendete Tauchcomputer“. Wählen Sie die entsprechende Schaltfläche aus. Nachdem Sie den USB-Tauchcomputer mit dem Subsurface-Computer verbunden und den entsprechenden Hersteller und Tauchcomputer ausgewählt haben, stellen Sie sicher, dass im Textfeld „Verbindung“ die entsprechende Verbindung angezeigt wird. Bei einigen wenigen Tauchcomputern wird im Verbindungsnamen der Hersteller des Tauchcomputers angezeigt, bei den meisten nur der Kabel-Chipsatz-Hersteller (und die USB-Verbindungsnummer). Die meisten Benutzer verbinden nur einen USB-Tauchcomputer mit ihrem Android-Gerät, danach ist alles relativ einfach. Es erscheint ein Dialogfenster mit der Frage, ob Sie Subsurface-mobile für die Verbindung mit dem Gerät verwenden möchten. Bestätigen Sie dies, öffnet Subsurface-mobile den Download-Bildschirm für den Tauchcomputer mit der korrekten ausgewählten Verbindung (und wenn Subsurface-mobile anhand des verwendeten Kabels den richtigen Tauchcomputer ermitteln kann, ist auch diese Information bereits voreingestellt).
+
+==== Download von Bluetooth- und Bluetooth LE-Tauchcomputern
+
+Dieses https://www.youtube.com/watch?v=DCi70WZMTws[*Video-Tutorial*] zeigt das Herunterladen von Tauchgängen von einem mit Bluetooth ausgestatteten Tauchcomputer.
+
+Der Bluetooth-Download-Prozess unterscheidet sich zwischen Android und iOS. Unter iOS werden die besten Ergebnisse erzielt, wenn sich der Tauchcomputer vor dem Start von Subsurface-mobile im Bluetooth LE-Modus befand. Bei den meisten Tauchcomputern erfolgt dies über einen Menüeintrag, andere (z. B. Suunto) reagieren immer auf Bluetooth LE-Anfragen.
+
+Bei Tauchcomputern mit Bluetooth und Android-Geräten hingegen müssen Sie zunächst eine Bluetooth-Verbindung zwischen dem Tauchcomputer und dem Mobilgerät mithilfe der Android-Systemtools herstellen, um die Kopplung durchzuführen. Für viele Android-Geräte ist wahrscheinlich das Android-Tool „Einstellungen -> Bluetooth“ geeignet. _Subsurface-mobile_ kommuniziert sowohl über Bluetooth als auch über Bluetooth LE (BLE). Die beste Bluetooth-Kommunikationsmethode wird oft von der Software ausgewählt, sodass sich der Benutzer nicht darum kümmern muss. Bei Tauchcomputern mit Bluetooth und BLE wird auf dem Download-Bildschirm für jeden Kommunikationsmodus eine separate Schaltfläche angezeigt, die eine Auswahl ermöglicht. Verwenden Sie den Wert „Verbindung“, um zwischen den beiden Optionen zu unterscheiden. Im Bild rechts unten befinden sich drei Schaltflächen mit der Bezeichnung „Shearwater Petrel 2“. Diese stellen zwei Shearwater Petrel-Tauchcomputer dar, von denen einer sowohl über Bluetooth als auch über BLE kommunizieren kann. Die Information „Verbindung“ im Bild unten zeigt an, dass der Petrel ohne BLE ausgewählt ist. Bei Bluetooth LE-Tauchcomputern hat der Wert „Verbindung“ das Präfix „LE“.
+
+Dieses https://www.youtube.com/watch?v=4MtQqm4o7bw[*Video-Tutorial*] zeigt die Einrichtung einer Bluetooth-Verbindung mit einem Android-Gerät.
+
+==== Starten Sie den Download
+
+Nachdem die Kommunikation zwischen Tauchcomputer und Subsurface-mobile eingerichtet ist, tippen Sie auf die Schaltfläche „Herunterladen“. Bitte haben Sie Geduld, da der Download eine Weile dauern kann. Bei vielen langen Tauchgängen und einer langsamen Bluetooth LE-Verbindung haben wir Downloadzeiten von 45 Minuten oder länger festgestellt. Normalerweise geht der Download der Tauchdaten eines Tages jedoch relativ schnell. Die heruntergeladenen Tauchgänge werden im unteren Bildschirmbereich angezeigt, der letzte Tauchgang oben (siehe Abbildung rechts unten).
+
+Jeder Tauchgang verfügt links über ein Kontrollkästchen, mit dem Sie auswählen können, welche Tauchgänge Sie der Tauchliste „Subsurface-mobile“ hinzufügen möchten. Nicht markierte Tauchgänge werden ignoriert. Nachdem Sie die gewünschten Tauchgänge ausgewählt haben, tippen Sie unten links auf „Akzeptieren“. Die ausgewählten Tauchgänge werden nun in der Tauchliste „Subsurface-mobile“ angezeigt.
+
+image::mobile-images/DC-Download.jpg["Abbildung: Tauchgänge herunterladen",align="center"]
+
+[[S_Edit_Dive]]
+=== Bearbeiten Sie die Tauchinformationen
+
+In diesem https://www.youtube.com/watch?v=pE3ujzGw_7o[*Video-tutorial (englisch)*] wird erklärt, wie Sie Informationen zu einem Tauchgang hinzufügen.
+
+Nachdem ein Tauchgang ausgewählt wurde, befindet sich unten im Bildschirm „Tauchdetails“ ein Aktionsbutton mit einem Bleistift.
+
+image::mobile-images/Editdive1-DE.jpg["Abbildung: Tauchgang bearbeiten",align="center"]
+
+Durch Tippen auf den Bleistift-Button wechselt die Seite und öffnet Bearbeitungsfelder!
+
+image::mobile-images/Editdive2-DE.jpg["Abbildung: Tauchgang bearbeiten",align="center"]
+
+Hier können vorhandene Tauchinformationen geändert werden, z. B. Text zu den Tauchnotizen hinzufügen oder die Namen oder Werte einiger Informationen ändern können (siehe Abbildung oben). Möglicherweise müssen Sie im Fenster scrollen, um auf alle Informationen zuzugreifen. Unten im Bearbeitungsbildschirm befindet sich der Aktionsbutton „Speichern“. Tippen Sie darauf, um die neuen Informationen zu speichern. Anschließend wird die Tauchliste aktualisiert und angezeigt. Um Änderungen abzubrechen, tippen Sie auf die Android-Schaltfläche „Zurück“ bzw. die App-Schaltfläche „Zurück“ oben links auf dem Bildschirm (iOS).
+
+[[S_Divetrip]]
+== Bearbeiten Sie die Tauchreiseinformationen
+
+Wenn ein neuer Tauchgang manuell eingegeben oder vom Tauchcomputer heruntergeladen wird, wird oben in der Tauchliste eine Reiseüberschrift erstellt, die nur den Monat und das Jahr der Tauchreise sowie die Anzahl der Tauchgänge während der Reise anzeigt (Bild links unten, zeigt eine Reiseüberschrift mit „Mai 2018“, die Reise umfasst zwei Tauchgänge). Sie möchten wahrscheinlich Informationen über den Ort der Reise hinzufügen, z. B. „Kanalinseln“ oder das verwendete Tauchunternehmen. Drücken Sie in diesem Fall lange auf die Überschrift der Tauchreise, um das Kontextmenü zu aktivieren. Wählen Sie die Option „Reisedetails bearbeiten“, um ein Feld zur Eingabe von Informationen zur Reise zu öffnen (Bild rechts unten). Nachdem Sie die erforderlichen Informationen eingegeben haben, tippen Sie unten auf dem Bildschirm auf die Schaltfläche „Speichern“. Sie gelangen zurück zur Tauchliste und sehen einige der soeben eingegebenen Informationen zur Tauchreise.
+
+image::mobile-images/TripDetails-DE.jpg["Abbildung: Edit trip details",align="center"]
+
+=== Löschen eines Tauchgangs
+
+Lösche einen Tauchgang aus der Tauchliste, indem du lange auf einen Tauchgang drückst und im Kontextmenü „Löschen“ auswählst.
+
+Wenn versehentlich der falsche Tauchgang gelöscht wurde, kannst du den Vorgang einfach über das Kontextmenü rückgängig machen.
+
+image::mobile-images/UndoDelete-DE.jpg["Abbildung: Undo delete dive",align="center"]
+
+== Interaktion mit dem Cloud-Speicher
+
+=== Synchronisieren Sie das Logbuch manuell mit der _Subsurface Cloud_
+
+Wie der Name schon sagt, stellt dies sicher, dass lokale Änderungen auf dem Mobilgerät und Änderungen, die von anderen Geräten und Computern an den in der Subsurface Cloud gespeicherten Daten vorgenommen werden, synchronisiert werden. Es wird dringend empfohlen, nach dem Herunterladen neuer Tauchgänge von einem Tauchcomputer oder nach dem manuellen Hinzufügen oder Bearbeiten von Tauchinformationen auf dem Mobilgerät eine Synchronisierung mit dem Cloud-Speicher durchzuführen. Dies kann auch durch Herunterziehen (und kurzes Halten) des obersten Eintrags in der Tauchliste ausgelöst werden.
+
+=== Aktivieren Sie die automatische Cloud-Synchronisierung
+
+Standardmäßig läuft Subsurface-mobile offline und synchronisiert die Tauchliste nur dann mit dem Cloud-Speicher, wenn dies ausdrücklich angefordert wird (siehe vorherigen Eintrag oben). Sie können die Synchronisierung auch immer mit dem Cloud-Server durchführen. Dies wird jedoch nur empfohlen, wenn Sie sich in einem Gebiet mit einer schnellen und zuverlässigen Internetverbindung befinden, da Subsurface-mobile sonst zwischen den Vorgängen hängen bleiben kann, während es versucht, eine Verbindung zum Cloud-Server herzustellen. Wenn Sie „Automatische Cloud-Synchronisierung aktivieren“ auswählen, wird das lokale Logbuch nach den meisten Änderungen sowie (unter Android) bei jedem Schließen von Subsurface-mobile mit der Kopie in der Cloud synchronisiert. iOS unterstützt das Schließen von Apps nicht (Sie können sie einfach beenden, was jedoch keine endgültige Synchronisierung mit der Cloud ermöglicht). Generell ist es sicherer, nach Abschluss der Änderungen in Subsurface-mobile manuell mit der Cloud zu synchronisieren.
+
+== Zusammenfassung des Tauchgangs
+
+Die Seite „Tauchzusammenfassung“ bietet einen sehr einfachen Überblick über Ihre Tauchaktivitäten – was beispielsweise nützlich sein kann, um zu Beginn einer Tauchreise Ihre gesamte Taucherfahrung und Ihre letzten Tauchaktivitäten für ein Tauchcenter zu dokumentieren.
+
+Die Zusammenfassungsseite listet das Datum Ihres ersten Tauchgangs in der Tauchliste sowie Ihren letzten Tauchgang auf.
+
+Sie bietet außerdem zwei Datenspalten für wählbare Zeiträume (standardmäßig alle Tauchgänge in der Tauchliste und die Tauchgänge der letzten sechs Monate).
+
+[[S_Stats]]
+== Tauchstatistik
+
+[width="100%", cols="2,3"]
+|===
+a|image:mobile-images/StatsPanel.jpg["Image: Statistik Felder",float="left"] |
+
+Aussagekräftige Statistiken zu erstellen, die die gewünschten Informationen vermitteln, ist überraschend schwierig. Verschiedene Nutzer haben sehr unterschiedliche Bedürfnisse und Erwartungen. Subsurface-Mobile bietet eine recht detaillierte Statistikfunktion, um Informationen aus dem Logbuch grafisch zusammenzufassen. Um auf das Tauchstatistik-Tool zuzugreifen, wählen Sie Hauptmenü -> Statistik. Das Statistik-Tool ist so flexibel, dass es unmöglich ist, jeden möglichen Anwendungsfall abzudecken. Wir bieten daher eine konzeptionelle Einführung, gefolgt von konkreten Beispielen. Das Tool kann über die Schaltfläche Zurück (unten rechts in Android) geschlossen werden.
+
+Das Statistiktool verfügt über zwei Bereiche (Bild links):
+
+1. Ein Setup-Feld mit Auswahlfeldern zum Anfordern eines Diagramms (oben).
+
+2. Das angeforderte Diagramm (unten).
+|===
+
+[[S_Stats_Intro]]
+****
+[icon="images/icons/important.png"]
+[IMPORTANT]
+*Eine Einführung für Taucher in statistische Diagramme*
+
+Die extreme Flexibilität des Statistik-Tools erfordert detaillierte Angaben dazu, welche Informationen Subsurface liefern soll. Es ist hilfreich, ein klares Ziel zu haben, d. h. ein solides Verständnis davon, was Subsurface Ihnen zeigen soll. Mit anderen Worten: Sie müssen die richtige Frage formulieren. Es gibt so viele grafische Darstellungsmöglichkeiten, dass die Informationen bei falscher Fragestellung wahrscheinlich nicht valide oder angemessen dargestellt werden. Da alle statistischen Ergebnisse in Subsurface als Diagramme dargestellt werden, erfordert die Formulierung einer geeigneten Spezifikation vier Schritte:
+
+a) Welche Tauchgänge möchten Sie grafisch darstellen? Verwenden Sie bei Bedarf die xref:S_Filter[Filter-Schaltfläche], um bestimmte Tauchgänge für die Analyse auszuwählen.
+
+b) Welche Variable soll entlang der unteren horizontalen Achse des Diagramms angezeigt werden?
+   Angenommen, Sie möchten sehen, wie viele Tauchgänge Sie pro Jahr durchgeführt haben. In diesem Fall wäre die Variable entlang der unteren horizontalen Achse „Jahr“. Wenn Sie alternativ die durchschnittliche Tiefe Ihrer Tauchgänge mit unterschiedlichen Anzugtypen vergleichen möchten, wählen Sie „Anzugtyp“ als Variable für die untere horizontale Achse. Wenn Sie alternativ die Wassertemperatur für Tauchgänge mit unterschiedlichen Tauchtiefen visualisieren möchten, wählen Sie „Max. Tiefe“ als Variable auf der horizontalen Achse (siehe Abbildung unten). Die Variable entlang der horizontalen Achse wird auch als „Basisvariable“, „X-Achsenvariable“ oder „unabhängige Variable“ bezeichnet: Sie definiert die grundlegenden Einheiten oder Kategorien, die für die Analyse verwendet werden.
+
+image::mobile-images/StatsGraphAxes.jpg["Example: Statistics graph axes",align="left"]
+
+c) Welche Variable soll entlang der linken vertikalen Achse des Diagramms angezeigt werden? Dies ist die Variable, die Sie hauptsächlich interessiert. In manchen Fällen kann dies auch nur eine Zahl wie „Anzahl der Tauchgänge“ sein.
+
+Wenn Sie jedoch an der Wassertemperatur in verschiedenen Tauchtiefen interessiert sind, wählen Sie „Wassertemperatur“ als Variable entlang der vertikalen Achse (siehe Abbildung oben). In diesem Fall sind Sie hauptsächlich an der Wassertemperatur interessiert, nicht an der Tauchtiefe (diese wäre die Variable entlang der horizontalen Achse). Die Variable entlang der vertikalen Achse wird auch als „Datenvariable“ oder „abhängige Variable“ bezeichnet:
+Sie ist die Variable, die von den Werten der Variable entlang der horizontalen Achse beeinflusst (oder abhängig) wird, wie im obigen Diagramm.
+
+*Hinweis:* Da die Diagramme in Subsurface-Mobile horizontal oder vertikal ausgerichtet werden können, sind die Begriffe „Horizontalachsenvariable“ und „Vertikalachsenvariable“ nicht zutreffend. Wir verwenden den Begriff „Basisvariable“ für die herkömmliche Horizontalachsenvariable und „Datenvariable“ für die herkömmliche Vertikalachsenvariable.
+
+d) Welchen Diagrammtyp benötigen Sie?
+   Standardmäßig wählt Subsurface den am besten geeigneten Diagrammtyp aus, dies ist jedoch eine benutzerdefinierbare Option. Am Beispiel der Wassertemperatur in verschiedenen Tiefen zeigt das folgende Bild drei mögliche Diagrammtypen derselben Daten:
+   Bild A zeigt die Rohdaten mit der genauen Temperatur und Tiefe für jeden Tauchgang.
+   Bild B gruppiert die Tauchgänge jedoch in 5-m-Tiefenintervallen, innerhalb derer die Temperatur für jeden Tauchgang angegeben ist (die roten Markierungen werden unten erklärt).
+   Bild C gruppiert die Tauchgänge ebenfalls in 5-m-Tiefenintervallen. In diesem Fall werden jedoch für jede Tiefenklasse Minimum, Maximum, Mittelwert sowie oberes und unteres Quartil (Quartile sind statistische Lagemaße, die zur Beschreibung der Verteilung von Daten verwendet werden.) angezeigt.
+
+image::mobile-images/StatsGraphOptions.jpg["Statistics graph options",align="left"]
+
+Der Sinn der obigen Diskussion besteht darin, zu zeigen, dass Sie vor dem Erstellen eines Diagramms sorgfältig darüber nachdenken müssen, was Subsurface anzeigen soll, und dabei zumindest die oben genannten vier Aspekte berücksichtigen müssen.
+
+*Ein eher technischer Hinweis zur gültigen Verwendung statistischer Grafiken*
+
+Bei der grafischen Darstellung von Variablen aus einem Logbuch gibt es einen wichtigen Unterschied zwischen kontinuierlichen Variablen und kategorialen Variablen. Diese beiden Datentypen werden typischerweise auf unterschiedliche Weise grafisch dargestellt. Eine kontinuierliche Variable kann theoretisch jeden beliebigen Wert annehmen. Beispielsweise kann die Tauchtiefe jeden Wert größer als Null annehmen (theoretisch geben negative Tiefen die Höhe über dem Wasser an, dies ist jedoch in der Praxis nicht möglich). Daher sind Tiefen von 21,63857 Metern oder 44,7653 Fuß durchaus realistisch. Auch Datumsangaben sind kontinuierlich, da der Jahreswert eines beliebigen Zeitpunkts dargestellt werden kann. Beispielsweise kann ein Tauchgang um 12 Uhr mittags am 1. April 2020 mit dem Wert 2020,24726 (90,5/366 Tage in diesem Schaltjahr) dargestellt werden. Der Tauchmodus hingegen ist eine kategorische Variable: Es gibt keine Werte zwischen „Freitauchen“ und „Offener Kreislauf“ oder zwischen „Offener Kreislauf“ und „CCR“. Weitere kategoriale Variablen sind „Tauchpartner“, „Sichtbarkeit“, „Bewertung“ und „Anzugtyp“. Zur Darstellung dieser beiden Variablentypen werden unterschiedliche Methoden verwendet, was sich an der Anordnung der Achsen zeigt.
+
+Es ist durchaus zulässig, ein Diagramm mit einer kontinuierlichen Basisvariablen und einer kategorialen Datenvariablen und umgekehrt zu erstellen. Verwenden Sie jedoch bei einer kontinuierlichen Basisvariablen ein Histogramm und kein Balkendiagramm. Die folgenden Bilder zeigen die Anzahl der Tauchgänge in unterschiedlichen Tiefen. Bild A ist ein Histogramm, das zeigt, dass zwischen 55 und 60 m Tiefe keine Tauchgänge durchgeführt wurden. Es wurden jedoch zwei Tauchgänge zwischen 60 und 65 m durchgeführt: Diese beiden Balken (55–60 m und 60–65 m) enthalten gleichermaßen wichtige Informationen. Bild B zeigt das Balkendiagramm desselben Datensatzes, wobei die Tiefe in einen kategorischen Typ umgewandelt wurde. Beachten Sie, dass die beiden Balken ohne Tauchgänge (55–60 m und 75–80 m) weggelassen wurden. Durch die Verwendung eines Balkendiagramms zur Darstellung kontinuierlicher Daten gehen wichtige Informationen verloren. Ob es sich bei einem bestimmten Diagramm um ein Balkendiagramm oder ein Histogramm handelt, lässt sich leicht feststellen:
+Bei der Auswahl des Diagrammtyps sollte die Überschrift des Untermenüs entweder „Balkendiagramm“ oder „Kategorisch“ bei kategorialen Variablen und „Histogramm“ oder „Streudiagramm“ bei kontinuierlichen Variablen anzeigen.
+Subsurface-Mobile hilft dabei, indem es bei wahrscheinlich ungeeigneten Diagrammtypen ein gelbes Dreieck anzeigt (Bild C).
+
+image::mobile-images/StatsDataTypes.jpg["Statistics: bar-charts of continuous and categorical data types",align="left"]
+
+****
+
+=== Diagrammausrichtung
+
+In vielen Fällen werden die Werte der Basisvariablen entlang der horizontalen Achse durch Punkte und nicht durch Zahlen oder Namen dargestellt (Bild B oben). Das liegt daran, dass der Bildschirm eines Mobilgeräts oft nicht breit genug ist, um alle Werte anzuzeigen. Dies ist insbesondere bei Balkendiagrammen der Fall, bei denen die Beschriftungen entlang der unteren Achse lang sind. Dieses Problem lässt sich auf zwei Arten lösen:
+
+1. Drehen Sie das Mobilgerät um 90 Grad, sodass die Bildschirmanzeige im Querformat (breit) angezeigt wird.
+
+2. Drehen Sie das Balkendiagramm um 90 Grad, indem Sie ein horizontales Balkendiagramm auswählen (wählen Sie in der Auswahlfeld „Diagrammtyp“ einen horizontalen Diagrammtyp aus).
+   In diesem Fall werden die Balken sowohl im Hoch- als auch im Querformat horizontal angezeigt. Die folgende Abbildung zeigt beispielsweise das horizontale Balkendiagramm, das bei Auswahl von „Kategorisch/Horizontal“ in der Auswahlfeld „Diagrammtyp“ und Verwendung desselben Datensatzes wie in Diagramm B in der Abbildung oben entsteht. Durch die Drehung der Achsen steht deutlich mehr horizontaler Platz für die Anzeige der relativ langen Balkenbeschriftung zur Verfügung.
+
+image::mobile-images/StatsBarchartRotated.jpg["Stats rotated barchart",align="left"]
+
+=== Diagramme der Zähldaten
+
+Standardmäßig wird beim Öffnen des Statistikfensters ein Histogramm der Anzahl der jährlich durchgeführten Tauchgänge angezeigt. Dies ist ein Beispiel für *Zähldaten*. Um ein Diagramm mit den Zähldaten anzufordern, müssen drei Auswahlfelder festgelegt werden:
+
+a) Das Auswahlfeld oben links der Basisvariable muss angegeben werden. Welche Variable soll auf der horizontalen Achse liegen? Beispiele sind Jahr, Tauchpartner (Buddy), Bewertung, Max.Tiefe.
+
+b) Das Auswahlfeld Bündelung (oben rechts) für die Basisvariable muss angegeben werden. Diese stellt die Schrittweite für jeden Balken entlang der horizontalen Achse dar. Wenn beispielsweise die Anzahl der Tauchgänge für Jahre extrahiert wird, kann dies in Schritten von einem Jahr, einem Quartal (3 Monate) oder einem Monat erfolgen. Für einige Variablen, z. B. Tauchpartner (Buddy) oder Rating, ist ein Bündelungs-Wert nicht relevant und kann nicht ausgewählt werden. Für andere, z. B. Jahr oder Max. Tiefe, ist die Auswahl der richtigen Bündelung jedoch wichtig.
+
+c) Für einfache Zähldaten muss das linke Auswahlfeld der Datenvariable auf „keine“ gesetzt werden. Dies liegt daran, dass in diesem Diagrammtyp keine Datenvariable verwendet wird. Tabellenkalkulationsbenutzer bevorzugen möglicherweise ein Kreisdiagramm für diese Daten. Wählen Sie dazu „Kreisdiagramm“ in dem Auswahlfeld „Diagrammtyp“. Es ist möglich, gleichzeitig Zählwerte für zwei Variablen anzugeben. In diesem Fall kann eine Datenvariable angegeben werden, wodurch die Zählwerte entsprechend der Datenvariable unterteilt werden. Diese Option hat kein Kreisdiagramm-Äquivalent.
+
+Bei einfachen Histogrammen wird die Standardhöhe jedes Balkens durch den Mittelwert der in jedem Balken enthaltenen Beobachtungen bestimmt. Diese kann jedoch mithilfe des Auswahlfeldes „Operation“ verändert werden, um Mittelwert, Maximum, Minimum, Median und Summe für jeden Balken anzuzeigen. Abbildung A unten zeigt vierteljährliche Zähldaten der Tauchgänge, während Abbildung B vierteljährliche Zähldaten, unterteilt nach Tauchmodus (einige Tauchgänge mit offenem Kreislaufgerät, andere mit Rebreather), zeigt. Die Legende kann verschoben werden, sodass sie einen Teil des Diagramms nicht verdeckt.
+
+image::mobile-images/StatsCountsData.jpg["Counts data example",align="center"]
+
+=== Zählungen, die mehr als eine Kategorie in einem Balken umfassen
+
+Wie im obigen Abschnitt erwähnt, lassen sich Balkendiagramme, die eine Aufschlüsselung jeder Kategorie für eine Reihe von Unterkategorien zeigen, einfach erstellen.
+
+a) Wählen Sie eine Variable mit Kategorien (entlang der horizontalen Achse) als Basisvariable (z. B. Tauchmodus oder Suitentyp).
+
+b) Wählen Sie eine andere Datenkategorie als Datenvariable (z. B. Gasart oder Flaschentyp).
+
+Die folgenden Bilder zeigen zwei alternative Balkendiagramm-Darstellungen. Wählt man in der Auswahlfeld „Diagrammtyp“ die Option „Balkendiagramm/vertikal gestapelt“, wird ein Diagramm ähnlich wie in Abbildung A unten erstellt. Es fasst ein Protokoll technischer Tauchgänge zusammen, wobei der Balken für jede Flaschengasart in eine Anzahl von Tauchgängen mit offenem Kreislaufgerät und Tauchgänge mit Kreislaufgerät unterteilt ist. Wählt man hingegen „Balkendiagramm/horizontal gruppiert“ in dem Auswahlfeld „Diagrammtyp“, wird ein Diagramm ähnlich wie in Abbildung B unten erstellt. Hier wird die Unterteilung innerhalb der einzelnen Gasarten als nebeneinander liegende Balken dargestellt.
+
+image::mobile-images/StatsBarchartSubdivided.jpg["Stats subdivided barchart",align="center"]
+
+=== Streudiagramme
+
+[width="100%", cols="2,3"]
+|=======
+a|image:mobile-images/StatsRegression.jpg["Regression data example",align="center"] |
+Manchmal möchten Sie vielleicht die Beziehung zwischen zwei Tauchvariablen untersuchen. Hat sich meine SAC-Rate im Laufe der Jahre verringert? Ist die Wassertemperatur bei größerer Tauchtiefe kälter? Eine Möglichkeit, diese Fragen zu untersuchen, besteht darin, ein Streudiagramm zu zeichnen, in dem die Werte einer Variable gegen die andere Variable aufgetragen sind (siehe Abbildung links).
+|=======
+
+
+Für den Datensatz im obigen Bild scheint die SAC-Rate im Laufe der Zeit gesunken zu sein. Ist die Beziehung zwischen den beiden Variablen statistisch signifikant, wird eine rote Linie angezeigt, die die beste Schätzung der Beziehung zwischen SAC-Rate und Jahr zusammenfasst. In dieser Grafik ist die SAC-Rate zwischen 2013 und 2021 von etwa 21 l/min auf etwa 14 l/min gesunken. Der rosa Bereich um die rote Linie zeigt die Unsicherheit hinsichtlich der genauen Ausrichtung der Linie an. Es wird erwartet, dass die Linie mit einer Sicherheit von 95 % irgendwo innerhalb des rosa Bereichs liegt. Die Intensität der rosa Farbe zeigt auch die relative Zuverlässigkeit dieser Schätzungen an. So erhalten Sie ein Streudiagramm:
+
+a) Geben Sie die Basisvariable an: Welche Variable soll auf der horizontalen Achse liegen? Beispiele sind Datum, Temperatur, maximale Tiefe und SAC-Rate.
+
+b) Setzen Sie den Bündelungs-Wert für die Basisvariable (oben rechts) auf „keine“.
+
+c) Geben Sie die Datenvariable an: Welche Variable soll auf der vertikalen Achse liegen?
+
+
+=== Vergleiche zwischen Tauchkategorien
+
+Sie möchten vielleicht verschiedene Tauchgangskategorien vergleichen. Hängt die (5-Sterne-) Bewertung eines Tauchgangs von der Wassertemperatur ab? Hängt meine SAC-Bewertung vom Tauchen mit verschiedenen Tauchanzügen ab? Da Tauchanzug und Bewertung Kategorien sind, ist ein Streudiagramm nicht geeignet. Standardmäßig wird ein kategorisches Punktdiagramm verwendet, das im Fall von Bild A unten die genauen Wassertemperaturen für jede Bewertung anzeigt. Die roten Linien zeigen das obere Quartil, den Mittelwert und das untere Quartil der Temperatur für jede Bewertung an. Die Spalte ohne Stern zeigt Tauchgänge an, für die keine Bewertung ausgewählt wurde. Es scheint, dass Tauchgänge mit einer 5-Sterne-Bewertung höhere Temperaturen aufweisen als die anderen Bewertungen. So erhalten Sie ein kategorisches Diagramm:
+
+a) Wählen Sie eine Variable mit Kategorien (entlang der horizontalen Achse) als Basisvariable (oben links).
+
+b) Wählen Sie die Datenvariable aus und stellen Sie die Bündelungs-Option auf „Keine“ (Auswahlfeld Mitte rechts).
+
+c) Standardmäßig zeigt das Auswahlfeld „Diagrammtyp“ „Kategorisch/Datenpunkte“ an. Falls dies nicht der Fall ist, wählen Sie diesen Wert.
+
+image::mobile-images/StatsCategoricalData.jpg["Stats: Comparison of categories",align="center"]
+
+Alternativ können Sie für dieselben Daten ein Box-Whisker-Diagramm erstellen. Wählen Sie in der Auswahlfeld „Diagrammtyp“ die Option „Kategorisch/Box-Whisker“. Dadurch wird ein Diagramm erstellt, das das Maximum, das obere Quartil (Q3), den Median, das untere Quartil (Q1) und das Minimum für jede Kategorie oder Klasse anzeigt. Abbildung B oben zeigt ein Box-Whisker-Diagramm für dieselben Daten wie Abbildung A oben. Sie sehen, dass die Werte für eine Bewertung von 5 Sternen tendenziell höher sind als für andere Bewertungen.
+
+
+== Export
+
+Die Exportfunktion ist noch experimentell. Unter Android ermöglicht sie nur das Hochladen Ihrer Tauchliste auf zwei Websites (divelogs.de und diveshare). Unter iOS ermöglicht sie auch lokale dateibasierte Exporte als subsurface-spezifische XML-Dateien (sowohl für Tauchgänge als auch für Tauchplätze) sowie als UDDF.
+
+Durch Tippen auf „Weiter“ wird eine zusätzliche Seite mit Anmeldeinformationen für die Zielwebsite (oder ein Dateiauswahldialog) geöffnet.
+
+== Anzeigen der Standorte aller Tauchgänge in der Tauchliste
+
+image::mobile-images/DivesMap-DE.jpg["Abbildung: Map of all dive sites",align="center"]
+
+Die Standorte aller Tauchgänge in der Tauchliste können im Menü „Standort“ unter „Karte“ angezeigt werden. Es wird ein Satellitenbild der Welt angezeigt. In diesem Maßstab sind keine Tauchplätze sichtbar. Wenn Sie in eine bestimmte Region der Welt zoomen, werden die Tauchplätze angezeigt und durch rote Flaggen gekennzeichnet. Wenn Sie noch näher heranzoomen, werden die Namen der einzelnen Tauchplätze angezeigt.
+
+[[S_Settings]]
+== Festlegen der Einstellungen für _Subsurface-mobile_
+
+Auf der Seite „Einstellungen“ können Sie Subsurface-mobile individuell anpassen. Sie ist in vier Bereiche unterteilt. Viele Einstellungen lassen sich durch Ziehen eines Schiebereglers aktivieren oder deaktivieren.
+
+=== Abschnitt _Allgemeine Einstellungen_
+
+image::mobile-images/GeneralSettings-DE.jpg["Abbildung: General Settings",align="center"]
+
+[[S_ChangeCloudAccount]]
+==== Cloud-Status: Wechsel zu einem anderen _Subsurface_-Cloud-Konto
+
+Manche Nutzer haben mehrere Subsurface-Cloud-Konten und müssen zwischen diesen wechseln.
+
+Tippen Sie auf der Seite „Einstellungen“ in den Allgemeinen Einstellungen (siehe Abbildung oben) neben der E-Mail-Adresse auf die Schaltfläche „Ändern“.
+
+Die Seite „Cloud-Anmeldeinformationen“ wird geöffnet.
+
+Hier können Sie die verwendete E-Mail-Adresse und das Passwort ändern und anschließend auf die Schaltfläche „Anmelden oder Registrieren“ tippen.
+
+Die Tauchliste des neu eröffneten Kontos wird angezeigt.
+
+==== Abschnitt Standard Flasche
+
+Bei der manuellen Eingabe eines Tauchgangs oder beim Herunterladen von einem Tauchcomputer, der keine expliziten Angaben zur Flaschengröße enthält (nur sehr wenige Tauchcomputer unterstützen diese Funktion), verwendet _Subsurface-mobile_ die hier ausgewählte Flasche als Standard. Dies ist nützlich für Taucher, die hauptsächlich einen bestimmten Flaschentyp verwenden. Wenn Sie diesen Eintrag nicht festlegen, wird keine Standardflasche verwendet.
+
+==== Vergessen (Entfernen) Sie die gespeicherten Tauchcomputer, die während des Tauchgang-Downloads verwendet wurden
+
+Tippen Sie auf die Schaltfläche „Vergessen“, um die in den Verknüpfungsschaltflächen auf der Seite „Vom Tauchcomputer herunterladen“ gespeicherten Tauchcomputer zurückzusetzen.
+
+=== Abschnitt-_Design_
+
+==== Farbpalette und Schriftgröße
+
+[width="100%"]
+|=======
+a|image:mobile-images/Colourschemes-DE.jpg["Abbildung: Design der Farben",align="center"] |
+
+
+Neben dem standardmäßigen blauen Farbschema unterstützt Subsurface-mobile zwei weitere Farbschemata für unterschiedliche Nutzer (siehe Abbildung links). Alle Screenshots in diesem Benutzerhandbuch basieren auf dem blauen Standardfarbschema. Sie können das rosa oder dunkle Farbschema aus dem Dropdown-Menü auswählen. +
+Die Kästchen im Bild links zeigen die verschiedenen Farboptionen im Design Ihrer Wahl.
+
+|=======
+
+==== Abschnitt _Schriftgröße_
+image::mobile-images/Fontsize-DE.jpg["Abbildung: Schriftgröße",align="center"]
+Je nach Größe und Bildschirmauflösung Ihres Mobilgeräts bevorzugen Sie möglicherweise etwas kleinere oder etwas größere Schriftarten. Diese Auswahl können Sie mit den drei Schaltflächen hier treffen.
+
+=== Abschnitt _Einheiten_
+image::mobile-images/Units-DE.jpg["Abbildung: Einheiten",align="center"]
+Hier können Sie metrische, imperiale oder personalisierte Einheiten für die Benutzeroberfläche auswählen. In den meisten Fällen wählt Subsurface-mobile das regional typische Einheitensystem für Ihren Standort aus.
+
+=== Abschnitt _Erweiterung_
+Wie der Name schon sagt, müssen die meisten Benutzer hier keine Änderungen vornehmen. +
+
+image::mobile-images/Extension-DE.jpg["Abbildung: Erweiterung",align="center"]
+
+==== Abschnitt _Bluetooth_
+
+Da die meisten Mobilgeräte dazu neigen, viele BT/BLE-Geräte zu finden, die keine Tauchcomputer sind, zeigt _Subsurface-mobile_ standardmäßig nur bekannte Tauchcomputer an, um die Verwendung der Verbindungsliste zu vereinfachen.
+
+Diese Einstellung weist Subsurface-mobile an, vorübergehend ALLE Bluetooth- und BLE-Geräte als mögliche Verbindungen auf der Download-Seite anzuzeigen, nicht nur die als Tauchcomputer erkannten. Sollten Sie diese Option benötigen, um einen Tauchcomputer auszuwählen, der von Subsurface-mobile nicht erkannt wird, senden Sie bitte eine E-Mail an die Entwickler (über den Menüeintrag Hilfe -> Support anfordern), damit wir den fehlenden Code hinzufügen können, damit auch Ihr Tauchcomputer erkannt wird.
+
+==== Abschnitt _Anzeige_
+
+Subsurface-mobile nutzt die verfügbare Bildschirmfläche Ihres Mobilgeräts optimal. Dies führt in den meisten Fällen zu sinnvollen Einstellungen hinsichtlich der Anzahl der parallel angezeigten Spalten. Einige Nutzer wünschen sich, dass Subsurface-mobile im Hochformat nur eine Spalte anzeigt, selbst auf großen Geräten wie Tablets, da dies zu einem größeren Profil auf der Seite „Tauchdetails“ führt. Wählen Sie diese Option, wenn Sie diese Funktion aktivieren möchten.
+
+
+==== Abschnitt Profil Deko-Auftauchgrenze
+
+Hier sind derzeit keine Änderungen möglich!
+
+==== Aktivieren des Entwickler-Untermenüs
+Aktivieren bzw. deaktivieren ist derzeit nicht möglich.
+Dadurch wird ein zusätzlicher Menüpunkt im Hauptmenü aktiviert, der Optionen enthält, die für einen normalen Benutzer fast nie nützlich sind. Hier finden Sie die detaillierte App-Protokolldatei sowie mehrere Testbildschirme, die den Entwicklern helfen, eventuell auftretende Probleme aufzuspüren.
+
+== Hilfe
+
+image::mobile-images/Menu-Help-DE.jpg["Abbildung: Erweiterung",align="center"]
+
+=== Über Subsurface
+
+Auf dieser Seite wird die genaue Version von Subsurface-mobile angezeigt, die Sie verwenden. Außerdem können Sie die Anwendungsprotokolle bequem in die Zwischenablage kopieren.
+
+image::mobile-images/Version_605436.jpg["Abbildung: Version",align="center"]
+
+=== Benutzerhandbuch anzeigen
+
+Dieser Menüeintrag öffnet die Online-Version dieses Benutzerhandbuchs im nativen Browser Ihres Geräts. Ohne Internetzugang ist diese Option leider nicht verfügbar.
+
+=== Zu Subsurface beitragen
+
+Hier wirst Du auf die Subsurface zur Mitarbeit weitergeleitet.
+
+=== Support fragen
+
+Dieser Eintrag öffnet Ihren Standard-E-Mail-Client mit einer voreingestellten E-Mail an den Support-Alias von _Subsurface_ und kopiert die App-Protokolle in diese E-Mail. Fügen Sie einfach Ihre Frage oder den von Ihnen gemeldeten Fehler hinzu und senden Sie uns Ihre Nachricht.
+
+=== Vergessenes _Subsurface Cloud_-Passwort zurücksetzen
+
+Wie bereits zuvor in diesem Handbuch erwähnt, handelt es sich hierbei um einen praktischen Link zu einer Webseite, auf der Sie das Passwort für Ihr Subsurface Cloud-Konto zurücksetzen können.
