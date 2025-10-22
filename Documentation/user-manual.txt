@@ -159,7 +159,7 @@ _Subsurface_ allows several ways of adding dive data to a logbook.
  xref:S_EnterData[Entering dive information by hand]
 
  - Import dive log information that has been maintained either as a spreadsheet
- or as a CSV file. Refer to: xref:S_Appendix_D[APPENDIX D: Exporting a spreadsheet to CSV format] and
+ or as a CSV file. Refer to: xref:S_Appendix_D[Appendix D: Exporting a spreadsheet to CSV format] and
  to xref:S_ImportingCSVDives[Importing dives in CSV format].
 
 2) If a dive is recorded using a dive computer, the depth profile
@@ -297,11 +297,11 @@ with _Subsurface_ that communicates with the dive computer. To set up
 this communication, users need to find the appropriate information to
 instruct
 _Subsurface_ where and how to import the dive information.
-xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix A]
+xref:S_Appendix_A[Appendix A]
 provides the technical information to help the user achieve this for different
 operating
 systems and
-xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix B]
+xref:S_Appendix_B[Appendix B]
 has dive computer specific information.
 
 After this, the dive computer can be hooked up to the user's PC using these steps:
@@ -336,9 +336,9 @@ of the dive computer (at least for those not charging while connected via USB).
  - The *Device or Mount Point* drop-down list contains the USB or Bluetooth port
    name that _Subsurface_ needs in order to communicate with the dive computer.
    The appropriate port name must be selected. Consult
-   xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix A]
+   xref:S_Appendix_A[Appendix A]
    and
-   xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix B]
+   xref:S_Appendix_B[Appendix B]
    for technical details on how to find the appropriate port information for a
    specific dive
    computer and, in some cases, how to do the correct settings to the operating
@@ -423,13 +423,13 @@ Check the following:
    on the dive computer and the cable clean?
 
  - Consult
-   xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix A]
+   xref:S_Appendix_A[Appendix A]
    to be sure the correct Mount Point
    was specified (see above).
 
  - On Unix-like operating systems, does the user have write permission to the
    USB port? If not, consult
-   xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Appendix A]
+   xref:S_Appendix_A[Appendix A]
 
 If the _Subsurface_ computer does not recognize the USB adapter by
 showing an appropriate device name next to the Mount Point, then there is a
@@ -1447,7 +1447,7 @@ metadata (in case the user keeps dive data in a spreadsheet). The _CSV_ format i
 simplified format that allows easy information exchange between different computers or
 software packages. For an introduction to CSV-formatted files see xref:S_CSV_Intro[A Diver's
 Introduction To CSV Files]. _Subsurface_ dive logs can also be exported in _CSV_ format to
-other software that reads this format. See xref:S_Appendix_D[APPENDIX D: Exporting a spreadsheet
+other software that reads this format. See xref:S_Appendix_D[Appendix D: Exporting a spreadsheet
 to CSV format] for information that may be helpful for importing spreadsheet-based data
 into _Subsurface_.
 
@@ -1791,7 +1791,7 @@ which image should be used for the thumbnail. Two actions are required to create
 
 * The program _ffmpeg_ needs to be installed in the computer that runs Subsurface.
 
-Full details are provided in <<S_APPENDIX_F,APPENDIX F>>.
+Full details are provided in <<S_Appendix_F, Appendix F>>.
 ****
 
 After the media have been loaded, they appear in two places:
@@ -2115,7 +2115,7 @@ For Shearwater CCR controllers, or independent Shearwater CCR logs, just downloa
 be the case for non-CCR dives. _Subsurface_ interprets the CCR dive log correctly.
 Except for Shearwater CCR dive computers, CCR dive data are currently obtained from the proprietary software
 provided when purchasing CCR dive equipment. See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
-digital sources] and <<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Appendix B>>
+digital sources] and <<S_Appendix_B,Appendix B>>
 for more complete information. Use that software to download the dive data into
 a known directory. From the main menu of _Subsurface_, select _Import ->  Import
 log files_ to bring up the xref:Unified_import[universal import dialog]. As
@@ -2238,7 +2238,7 @@ _Subsurface_ is shown in the xref:S_ExtraDataTab[Extra data tab]. This may inclu
 or metadata about the dive.
 
 More equipment-specific procedures and information for downloading CCR dive logs for
-Poseidon and APD equipment can be found in xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix B].
+Poseidon and APD equipment can be found in xref:S_Appendix_B[Appendix B].
 
 == Obtaining more information about dives entered into the logbook
 
@@ -3386,7 +3386,7 @@ will be marked as verified and the _Subsurface cloud storage_ service is initial
 ****
 [icon="images/icons/important.png"]
 [IMPORTANT]
-If you encounter any problems during the cloud registration process, read the xref:S_APPENDIX_G[Cloud FAQ]
+If you encounter any problems during the cloud registration process, read the xref:S_Cloud_Faq[Cloud FAQ]
 ****
 
 === Using _Subsurface cloud storage_
@@ -3547,7 +3547,7 @@ image::images/Printpreview.jpg["FIGURE: Print preview page",align="center"]
 
 Writing a custom template is an effective way to produce highly customized printouts. Subsurface uses HTML templates
 to render printing. You can create a template, export a new template, import an existing template and delete an existing template by using
-the appropriate buttons under the _Template_ dropdown list in the print dialog. See <<S_APPENDIX_E,APPENDIX E>> for information on how
+the appropriate buttons under the _Template_ dropdown list in the print dialog. See <<S_Appendix_E, Appendix E>> for information on how
 to write or modify a template.
 
 [[S_Configure]]
@@ -3558,7 +3558,7 @@ Suunto Vyper (Stinger, Mosquito, D3, Vyper, Vytec,
 Cobra, Gekko and Zoop) family of dive computers are supported. A large number of settings of these dive computers
 can be read and changed to different values. To begin, be sure the appropriate hardware driver
 is installed for the dive computer (also required for downloading dives) and the device name of the dive computer is known.
-See <<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,APPENDIX A>> for information on how to do this.
+See <<S_Appendix_A, Appendix A>> for information on how to do this.
 
 Once the dive computer is connected to the _Subsurface_ computer, select _File ->  Change settings on dive
 computer_ from the _Main Menu_. Select the appropriate device name (or mount point) in the
@@ -3724,7 +3724,7 @@ image::images/Pref_media.jpg["FIGURE: Preferences: media",align="center"]
 
   ** *Video thumbnails*: In generating thumbnails for videos associated with dives, _Subsurface_
      needs to have the appropriate information (see section on <<S_ViewMedia,View Images>>). Three preferences need to be set
-     as explained in <<S_APPENDIX_F, APPENDIX F>>. These are: a) switch on thumbnails, b) specify
+     as explained in <<S_Appendix_F, Appendix F>>. These are: a) switch on thumbnails, b) specify
      the location of the _ffmpeg_ program and c) set the place within video where the thumbnail needs
      to be obtained from.
 
@@ -4580,6 +4580,8 @@ dealing with the appropriate operations.
   on the https://subsurface-divelog.org/[_Subsurface_ web site].
 - _User manual_ - Open a window showing this user manual.
 
+
+[[S_Appendix_A]]
 == APPENDIX A: Operating system specific information for importing dive information from a dive computer.
 
 === Make sure that the OS has the required drivers installed
@@ -4901,10 +4903,7 @@ let the Subsurface developers know on the user forum or the developer mailing li
 After establishing the RFCOMM connection and while the dive computer's upload mode countdown is still running, go to_Subsurface_, select _Import->Import from dive computer_ and enter appropriate Vendor (e.g. _Shearwater_), Dive Computer (_Petrel_), Device or Mount Point (_/dev/rfcomm0_) and click _Download_.
 
 
-
-
-[[_appendix_b_dive_computer_specific_information_for_importing_dive_information]]
-
+[[S_Appendix_B]]
 == APPENDIX B: Dive Computer specific information for importing dive data.
 
 [[S_ImportingIrDA]]
@@ -5133,9 +5132,8 @@ Making a backup copy of the Suunto DM4/DM5 database:
 4. Click 'Save'
 5. The dives are now exported to the file DM4.bak (or DM5.bak)
 
-
-=== Exporting from Atomic Logbook
 [[Atomic_Export]]
+=== Exporting from Atomic Logbook
 
 [icon="images/icons/atomiclogo.jpg"]
 [NOTE]
@@ -5145,9 +5143,8 @@ The divelog is kept in a SQLite database at
 C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db. This file can
 be directly imported to Subsurface.
 
-
-=== Exporting from Mares Dive Organizer V2.1
 [[Mares_Export]]
+=== Exporting from Mares Dive Organizer V2.1
 
 [icon="images/icons/mareslogo.jpg"]
 [NOTE]
@@ -5191,8 +5188,9 @@ Once this is done, open the saved database file with Subsurface and the
 dives are automatically converted to Subsurface’s own format. Last step to do is
 save the log file in Subsurface.
 
-== APPENDIX D: Exporting a spreadsheet to CSV format
+
 [[S_Appendix_D]]
+== APPENDIX D: Exporting a spreadsheet to CSV format
 
 Many divers keep a dive log in some form of digital file, commonly a spreadsheet
 with various fields of information. These logs can be easily imported into _Subsurface_ after the
@@ -5266,7 +5264,9 @@ Select the _Save_ button. The CSV-formatted file is saved into the
 folder that was selected. You can double check the .CSV file by
 opening it with a text editor, then import the dive data as
 explained on the section xref:S_ImportingCSVDives[Importing CSV dives].
-[[S_APPENDIX_E]]
+
+
+[[S_Appendix_E]]
 == APPENDIX E: Writing a custom print template
 
 _Subsurface_ has a way to create or modify templates for printing dive logs to
@@ -5472,8 +5472,8 @@ The *data-numberofdives* data attribute is added to the body tag to set the rend
 
 IMPORTANT: All CSS units should be in relative lengths only, to support printing on any page size.
 
-[[S_APPENDIX_F]]
 
+[[S_Appendix_F]]
 == APPENDIX F: Setting up video thumbnails.
 
 === Setting up the appropriate thumbnails for videos that are associated with dives.
@@ -5506,9 +5506,10 @@ of the video will be used.
 
 This should complete the setup of video thumbnails and they should now appear on the dive profile and in the _Media_ tab.
 
-== APPENDIX G: FAQs.
-[[S_APPENDIX_G]]
 
+== APPENDIX G: FAQs.
+
+[[S_Cloud_Faq]]
 === Cloud FAQ
 
 ==== After filling in the correct information and submitting it, I do not receive a PIN by email

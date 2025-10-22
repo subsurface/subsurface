@@ -163,7 +163,7 @@ Einige Tauchcomputer verbrauchen mehr Strom, wenn sie sich im PC-Kommunikationsm
 
 
 Um Tauchgangsinformationen von einem Tauchcomputer auf einen Computer mit _Subsurface_ zu importieren, müssen die beiden Geräte miteinander kommunizieren. Dazu muss der Kommunikationsport (oder Mount Point) des Computers mit _Subsurface_ eingerichtet werden, der mit dem Tauchcomputer kommuniziert. Um diese Kommunikation einzurichten, muss der Benutzer die entsprechenden Informationen finden, um _Subsurface_ mitzuteilen, wo und wie es die Tauchgangsinformationen importieren soll.
-xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Anhang A] enthält die technischen Informationen, die dem Benutzer helfen, dies für verschiedene Betriebssysteme zu erreichen, und xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Anhang B] enthält tauchcomputerspezifische Informationen.
+xref:S_Appendix_A[Anhang A] enthält die technischen Informationen, die dem Benutzer helfen, dies für verschiedene Betriebssysteme zu erreichen, und xref:S_Appendix_B[Anhang B] enthält tauchcomputerspezifische Informationen.
 
 Danach kann der Tauchcomputer mit Hilfe der folgenden Schritte an den PC des Benutzers angeschlossen werden:
 
@@ -183,7 +183,7 @@ Tauchcomputer neigen dazu, eine bestimmte Anzahl von Tauchgängen im Speicher zu
   *Hersteller* die Marke des *Computers* aus, z. B. Suunto, Oceanic, Uwatec, Mares. In der Dropdown-Liste
   *Tauchcomputer* muss der Modellname des Tauchcomputers ausgewählt werden, z. B. D4 (Suunto), Veo200, (Oceanic), G2 (Uwatec) oder Puck (Mares).
 
- - Die Dropdown-Liste Device or Mount Point enthält den Namen des USB- oder Bluetooth-Anschlusses, den _Subsurface_ benötigt, um mit dem Tauchcomputer zu kommunizieren. Der entsprechende Anschlussname muss ausgewählt werden. In  xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Anhang A] und xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Anhang B] finden Sie technische Details dazu, wie Sie die richtigen Portinformationen für einen bestimmten Tauchcomputer finden. In einigen Fällen, wie Sie die richtigen Einstellungen im Betriebssystem des Computers vornehmen, auf dem _Subsurface_ läuft. Einige Tauchcomputer deaktivieren dieses Drop-Down-Menü, da sie andere Wege nutzen, um das Gerät zu finden und zu verbinden. Bei manchen Tauchcomputern wird hier der Mount-Point des USB-Speichergeräts eingegeben, als das sich der Tauchcomputer identifiziert.
+ - Die Dropdown-Liste Device or Mount Point enthält den Namen des USB- oder Bluetooth-Anschlusses, den _Subsurface_ benötigt, um mit dem Tauchcomputer zu kommunizieren. Der entsprechende Anschlussname muss ausgewählt werden. In xref:S_Appendix_A[Anhang A] und xref:S_Appendix_B[Anhang B] finden Sie technische Details dazu, wie Sie die richtigen Portinformationen für einen bestimmten Tauchcomputer finden. In einigen Fällen, wie Sie die richtigen Einstellungen im Betriebssystem des Computers vornehmen, auf dem _Subsurface_ läuft. Einige Tauchcomputer deaktivieren dieses Drop-Down-Menü, da sie andere Wege nutzen, um das Gerät zu finden und zu verbinden. Bei manchen Tauchcomputern wird hier der Mount-Point des USB-Speichergeräts eingegeben, als das sich der Tauchcomputer identifiziert.
 
  - Unterhalb der drei Dropdown-Listen befinden sich bis zu vier Verknüpfungsschaltflächen, mit denen Sie leicht zwischen mehreren Tauchcomputern wechseln können, von denen Sie häufig Daten herunterladen. Diese Schaltflächen erscheinen nur, wenn Sie von verschiedenen Tauchcomputern heruntergeladen haben.
 
@@ -217,9 +217,9 @@ Aktivieren Sie *nicht* die Kontrollkästchen _libdivecomputer-Tauchgangsprotokol
  - Ist das Verbindungskabel defekt? Funktioniert das Kabel mit anderer Software? Hat es schon einmal funktioniert, oder wird das Kabel zum ersten Mal verwendet? Sind die Kontakte am
  Tauchcomputer und am Kabel sauber?
 
- - Schauen Sie in    xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Anhang A] nach, um sicher zu sein, dass der richtige Mount Point angegeben wurde (siehe oben).
+ - Schauen Sie in xref:S_Appendix_A[Anhang A] nach, um sicher zu sein, dass der richtige Mount Point angegeben wurde (siehe oben).
 
- - Hat der Benutzer auf Unix-ähnlichen Betriebssystemen Schreibrechte für den USB-Anschluss? Falls nicht,siehe   xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Anhang A]
+ - Hat der Benutzer auf Unix-ähnlichen Betriebssystemen Schreibrechte für den USB-Anschluss? Falls nicht,siehe xref:S_Appendix_A[Anhang A]
 
 Wenn der _Subsurface_-Computer den USB-Adapter nicht erkennt, indem er einen entsprechenden Gerätenamen neben dem Mount Point anzeigt, ist es möglich, dass das Kabel oder der USB-Adapter defekt ist. Ein defektes Kabel ist die häufigste Ursache für Kommunikationsfehler zwischen Tauchcomputer und _Subsurface_. Es ist auch möglich, dass _Subsurface_ die Daten nicht interpretieren kann. Führen Sie einen Download zu Diagnosezwecken durch, indem Sie die folgenden beiden Kästchen im oben beschriebenen Download-Dialog aktivieren:
 
@@ -669,7 +669,7 @@ Bitte denken Sie daran, dass OSTCTools *keine* echte Tauchprotokollsoftware ist,
 
 Da Mares eine proprietäre Windows-Software verwendet, die nicht mit Multiplattform-Anwendungen kompatibel ist, können diese Tauchprotokolle nicht direkt in _Subsurface_ importiert werden. Mares Tauchprotokolle müssen in einem dreistufigen Prozess importiert werden, wobei _www.divelogs.de_ als Gateway (Tor) zum Extrahieren der Tauchprotokollinformationen verwendet wird.
 
-1. Exportieren Sie die Tauchgangsprotokolldaten aus dem Mares Dive Organizer auf Ihren Desktop, indem Sie die Dateierweiterung _.sdf_ verwenden. Weitere Informationen finden Sie in Anhang C.
+1. Exportieren Sie die Tauchgangsprotokolldaten aus dem Mares Dive Organizer auf Ihren Desktop, indem Sie die Dateierweiterung _.sdf_ verwenden. Weitere Informationen finden Sie in xref:Mares_Export[Anhang C].
 
 2. Die Daten sollten dann in _www.divelogs.de_. importiert werden. Erstellen Sie zunächst ein Benutzerkonto auf _www.divelogs.de_ und loggen Sie sich auf dieser Website ein. Wählen Sie dann Import Logbook → Dive Organizer aus dem Menü auf der linken Seite. Die Anweisungen müssen sorgfältig befolgt werden, um die Tauchgangsinformationen (im _.sdf-Format) aus der Dive Organizer-Datenbank in _www.divelogs.de_.zu übertragen
 
@@ -959,7 +959,7 @@ Innerhalb eines Feldes stellt _Subsurface_ Medien durch Thumbnails dar (d.h. kle
 
 * Das Programm _ffmpeg_ muss auf dem Computer, auf dem _Subsurface_ läuft, installiert sein.
 
-Einzelheiten dazu finden Sie in <<S_APPENDIX_F,Anhang F>>.
+Einzelheiten dazu finden Sie in <<S_APPENDIX_F, Anhang F>>.
 ****
 
 Nachdem die Medien geladen wurden, erscheinen sie an zwei Stellen:
@@ -1144,7 +1144,7 @@ b) Sie regulieren die Sauerstoffkonzentration, um innerhalb sicherer Tauchgrenze
 
 ===== Importieren eines CCR-Tauchgangs
 
-Bei Shearwater CCR-Controllern oder unabhängigen Shearwater CCR-Logs laden Sie einfach das Tauchprotokoll herunter, so wie es bei nicht-CCR-Tauchgängen der Fall wäre. _Subsurface_ interpretiert das CCR-Tauchprotokoll korrekt. Mit Ausnahme von Shearwater CCR-Tauchcomputern werden CCR-Tauchdaten derzeit über die beim Kauf von CCR-Tauchgeräten mitgelieferte proprietäre Software bezogen. Weitere Informationen finden Sie im Abschnitt über das xref:S_ImportingAlienDiveLogs[Importieren von Tauchdaten aus anderen digitalen Quellen und in Anhang B]. Verwenden Sie diese Software, um die Tauchgangsdaten in ein bekanntes Verzeichnis herunterzuladen. Wählen Sie im Hauptmenü von _Subsurface_ die Option Importieren → Logbuchdatei importieren, um den universellen Importdialog aufzurufen. Wie in diesem Abschnitt erläutert, enthält die untere rechte Seite des Importdialogs eine Dropdown-Liste (mit der Bezeichnung Filter:) mit geeigneten Geräten, die derzeit (Poseidon) MkVI- oder APD-Log-Viewer-Dateien enthalten. Der Import für andere CCR-Geräte befindet sich in der Entwicklung. Nachdem Sie das entsprechende CCR-Format und das Verzeichnis, in dem die Original-Tauchprotokolle des CCR-Tauchcomputers gespeichert wurden, ausgewählt haben, wählen Sie eine bestimmte Tauchprotokolldatei aus (im Falle des MkVI ist es eine Datei mit der Erweiterung .txt). Nachdem Sie das entsprechende Tauchprotokoll ausgewählt haben, klicken Sie auf die Schaltfläche Öffnen unten rechts im Dialogfeld für den Universalimport. Der ausgewählte Tauchgang wird in die Liste der _Subsurface_-Tauchgänge importiert.
+Bei Shearwater CCR-Controllern oder unabhängigen Shearwater CCR-Logs laden Sie einfach das Tauchprotokoll herunter, so wie es bei nicht-CCR-Tauchgängen der Fall wäre. _Subsurface_ interpretiert das CCR-Tauchprotokoll korrekt. Mit Ausnahme von Shearwater CCR-Tauchcomputern werden CCR-Tauchdaten derzeit über die beim Kauf von CCR-Tauchgeräten mitgelieferte proprietäre Software bezogen. Weitere Informationen finden Sie im Abschnitt über das xref:S_ImportingAlienDiveLogs[Importieren von Tauchdaten aus anderen digitalen Quellen] und in <<S_Appendix_B, Anhang B>>. Verwenden Sie diese Software, um die Tauchgangsdaten in ein bekanntes Verzeichnis herunterzuladen. Wählen Sie im Hauptmenü von _Subsurface_ die Option Importieren → Logbuchdatei importieren, um den universellen Importdialog aufzurufen. Wie in diesem Abschnitt erläutert, enthält die untere rechte Seite des Importdialogs eine Dropdown-Liste (mit der Bezeichnung Filter:) mit geeigneten Geräten, die derzeit (Poseidon) MkVI- oder APD-Log-Viewer-Dateien enthalten. Der Import für andere CCR-Geräte befindet sich in der Entwicklung. Nachdem Sie das entsprechende CCR-Format und das Verzeichnis, in dem die Original-Tauchprotokolle des CCR-Tauchcomputers gespeichert wurden, ausgewählt haben, wählen Sie eine bestimmte Tauchprotokolldatei aus (im Falle des MkVI ist es eine Datei mit der Erweiterung .txt). Nachdem Sie das entsprechende Tauchprotokoll ausgewählt haben, klicken Sie auf die Schaltfläche Öffnen unten rechts im Dialogfeld für den Universalimport. Der ausgewählte Tauchgang wird in die Liste der _Subsurface_-Tauchgänge importiert.
 
 
 ===== Angezeigte Informationen für einen CCR-Tauchgang
@@ -1205,7 +1205,7 @@ image::images/CCR_dive_profile_f22.jpg["FIGURE: CCR dive profile / Bleibt besteh
 _Ausrüstungsspezifische Informationen_:
 Ausrüstungsspezifische Informationen, die von _Subsurface_ erfasst werden, werden auf der Registerkarte xref:S_ExtraDataTab[Zusatzdaten] angezeigt. Dies kann Setup-Informationen oder Metadaten über den Tauchgang beinhalten.
 
-Weitere ausrüstungsspezifische Verfahren und Informationen zum Herunterladen von CCR-Tauchprotokollen für Poseidon- und APD-Ausrüstung finden Sie in xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Anhang B].
+Weitere ausrüstungsspezifische Verfahren und Informationen zum Herunterladen von CCR-Tauchprotokollen für Poseidon- und APD-Ausrüstung finden Sie in xref:S_Appendix_B[Anhang B].
 
 
 == Abrufen weiterer Informationen über Tauchgänge, die in das Logbuch eingetragen wurden
@@ -1962,7 +1962,7 @@ Das Erstellen einer benutzerdefinierten Vorlage ist eine effektive Möglichkeit,
 [[S_Configure]]
 == Konfigurieren eines Tauchcomputers
 
-Mit Subsurface können Sie Tauchcomputer konfigurieren. Aktuell werden die Tauchcomputer der Heinrichs-Weikamp-Familie (OSTC 2/2N/2C, OSTC 3, Sport) und der Suunto Vyper-Familie (Stinger, Mosquito, D3, Vyper, Vytec, Cobra, Gekko und Zoop) unterstützt. Zahlreiche Einstellungen dieser Tauchcomputer können gelesen und geändert werden. Stellen Sie zunächst sicher, dass der entsprechende Hardwaretreiber für den Tauchcomputer installiert ist (auch zum Herunterladen von Tauchgängen erforderlich) und der Gerätename des Tauchcomputers bekannt ist. Weitere Informationen hierzu finden Sie unter <<_Anhang_A_Betriebssystemspezifische_Informationen_zum_Importieren_von_Tauchinformationen_von_einem_Tauchcomputer, ANHANG A>>.
+Mit Subsurface können Sie Tauchcomputer konfigurieren. Aktuell werden die Tauchcomputer der Heinrichs-Weikamp-Familie (OSTC 2/2N/2C, OSTC 3, Sport) und der Suunto Vyper-Familie (Stinger, Mosquito, D3, Vyper, Vytec, Cobra, Gekko und Zoop) unterstützt. Zahlreiche Einstellungen dieser Tauchcomputer können gelesen und geändert werden. Stellen Sie zunächst sicher, dass der entsprechende Hardwaretreiber für den Tauchcomputer installiert ist (auch zum Herunterladen von Tauchgängen erforderlich) und der Gerätename des Tauchcomputers bekannt ist. Weitere Informationen hierzu finden Sie unter <<S_Appendix_A, ANHANG A>>.
 
 Sobald der Tauchcomputer mit dem Subsurface-Computer verbunden ist, wählen Sie im Hauptmenü Datei -> Einstellungen am Tauchcomputer ändern. Wählen Sie den entsprechenden Gerätenamen (oder Einhängepunkt) in der Dropdown-Liste oben im Konfigurationsfenster und wählen Sie das entsprechende Tauchcomputermodell im linken Bereich (siehe Abbildung unten).
 
@@ -2165,7 +2165,7 @@ Wie das Tauchprotokoll „Subsurface“ ist auch der Planer-Bildschirm in mehrer
 – Oben rechts befindet sich ein grünes Designfeld, in dem das Tauchgangsprofil direkt durch Ziehen und Klicken bearbeitet werden kann, wie unten erläutert. Diese Funktion macht den Tauchplaner „Subsurface“ einzigartig benutzerfreundlich.
 – Unten rechts befindet sich ein Feld für die Tauchplandetails. Hier zeigt der Planer den Tauchplan in Textform an, der auch in den Tauchnotizen gespeichert wird, wenn der geplante Tauchgang gespeichert wird. Dieses Feld ist so konzipiert, dass es leicht in andere Software kopiert werden kann. Es zeigt auch alle Warnmeldungen zum Tauchplan an.
 
-image::images/PlannerWindow1.png["FIGURE: Dive planner startup window / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/PlannerWindow1.png["FIGURE: Dive planner startup window",align="center"]
 
 === Tauchgänge im offenen Kreislauf
 
@@ -2179,7 +2179,7 @@ image::images/PlannerWindow1.png["FIGURE: Dive planner startup window / Bleibt b
 - Stellen Sie im oberen linken Bereich des Planungsbildschirms sicher, dass die konstanten Tauchparameter korrekt sind. Diese sind:
   Startdatum und -uhrzeit des geplanten Tauchgangs, Luftdruck und Höhe über dem Meeresspiegel des Tauchplatzes. Der Luftdruck kann auch als Höhe in Metern eingegeben werden, ausgehend von einem Luftdruck auf Meereshöhe von 1,013 bar.
 
-- Geben Sie in der Tabelle „Verfügbare Gase“ die Informationen zu den zu verwendenden Flaschen sowie deren Gaszusammensetzung ein. Dies geschieht ähnlich wie bei <<Flaschendefinitionen, Bereitstellung von Flaschendaten für Tauchprotokolle>>. Wählen Sie den Flaschentyp durch Doppelklicken aus und geben Sie in der Dropdown-Liste den Startdruck dieser Flasche an. Wenn Sie das Feld für die Sauerstoffkonzentration (O~2~%) leer lassen, wird davon ausgegangen, dass die Flasche Luft enthält. Andernfalls geben Sie die Sauerstoff- und/oder Heliumkonzentration in die dafür vorgesehenen Felder ein. Fügen Sie weitere Flaschen hinzu, indem Sie das Pluszeichen oben rechts im Dialogfeld verwenden.
+- Geben Sie in der Tabelle „Verfügbare Gase“ die Informationen zu den zu verwendenden Flaschen sowie deren Gaszusammensetzung ein. Dies geschieht ähnlich wie bei <<cylinder_definitions, Bereitstellung von Flaschendaten für Tauchprotokolle>>. Wählen Sie den Flaschentyp durch Doppelklicken aus und geben Sie in der Dropdown-Liste den Startdruck dieser Flasche an. Wenn Sie das Feld für die Sauerstoffkonzentration (O~2~%) leer lassen, wird davon ausgegangen, dass die Flasche Luft enthält. Andernfalls geben Sie die Sauerstoff- und/oder Heliumkonzentration in die dafür vorgesehenen Felder ein. Fügen Sie weitere Flaschen hinzu, indem Sie das Pluszeichen oben rechts im Dialogfeld verwenden.
 
 - Die Tabelle „Verfügbare Gase“ enthält drei Gastiefenfelder mit den Bezeichnungen:
  ** Dekompressionswechsel bei: Die Umschalttiefe für Dekogase. Sofern nicht vom Benutzer überschrieben, wird dieser Wert automatisch basierend auf der Dekompressions-pO~2~-Einstellung (Standard: 1,6 bar) berechnet.
@@ -2515,6 +2515,8 @@ Dieser Abschnitt beschreibt die Funktionen und Bedienung der Menüpunkte im Haup
 - _Nach neuer Version suchen_ - Finden Sie auf der Subsurface Webseite heraus, ob eine neuere Version von Subsurface verfügbar ist. https://subsurface-divelog.org/[_Subsurface_ Website verfügbar ist].
 - _Benutzerhandbuch_ - Öffnet ein Fenster mit diesem Benutzerhandbuch.
 
+
+[[S_Appendix_A]]
 == Anhang A: Betriebssystemspezifische Informationen zum Importieren von Tauchgangsdaten von einem Tauchcomputer.
 
 === Stellen Sie sicher, dass das Betriebssystem die erforderlichen Treiber installiert hat
@@ -2798,8 +2800,10 @@ Für einen Bluetooth Tauchcomputer, der nicht in der obigen Liste aufgeführt is
 
 
 ===== Download der Tauchgänge mit _Subsurface_
-Nach dem Herstellen der RFCOMM-Verbindung und während der Countdown für den Upload-Modus des Tauchcomputers noch läuft, gehen Sie zu_Subsurface_, wählen Sie Importieren → Vom Tauchcomputer importieren und geben Sie den entsprechenden Hersteller (z. B. Shearwater), Tauchcomputer (Petrel), Gerät oder Einhängepunkt (/dev/rfcomm0) ein und klicken Sie auf Herunterladen [[_appendix_b_dive_computer_specific_information_for_importing_dive_information]].
+Nach dem Herstellen der RFCOMM-Verbindung und während der Countdown für den Upload-Modus des Tauchcomputers noch läuft, gehen Sie zu_Subsurface_, wählen Sie Importieren → Vom Tauchcomputer importieren und geben Sie den entsprechenden Hersteller (z. B. Shearwater), Tauchcomputer (Petrel), Gerät oder Einhängepunkt (/dev/rfcomm0) ein und klicken Sie auf Herunterladen.
 
+
+[[S_Appendix_B]]
 == Anhang B: Tauchcomputer-spezifische Informationen zum Importieren von Tauchdaten.
 
 [[S_ImportingIrDA]]
@@ -2997,8 +3001,8 @@ C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db.
 Diese Datei kann direkt in _Subsurface_ importiert werden.
 
 
-=== Exportieren aus Mares Dive Organizer V2.1
 [[Mares_Export]]
+=== Exportieren aus Mares Dive Organizer V2.1
 
 [icon="images/icons/mareslogo.jpg"]
 [NOTE]
@@ -3030,8 +3034,9 @@ Um alle Dateien von DivingLog nach _Subsurface_ zu übertragen:
 
 Sobald dies geschehen ist, öffnen Sie die gespeicherte Datenbankdatei mit _Subsurface_ und die Tauchgänge werden automatisch in das _Subsurface_ eigene Format konvertiert. Der letzte Schritt ist das Speichern der Protokolldatei in _Subsurface_.
 
-== Anhang D: Tabellenkalkulation ins CSV-Format exportieren
+
 [[S_Appendix_D]]
+== Anhang D: Tabellenkalkulation ins CSV-Format exportieren
 
 Viele Taucher führen ein Tauchprotokoll in Form einer digitalen Datei, üblicherweise eine Tabellenkalkulation mit verschiedenen Informationsfeldern. Diese Protokolle können leicht in _Subsurface_ importiert werden, nachdem die Tabelle in eine CSV-Datei konvertiert wurde. In diesem Abschnitt wird erklärt, wie man ein in einer Tabellenkalkulation gespeichertes Tauchlogbuch in eine CSV-Datei konvertiert, die später in _Subsurface_ importiert werden kann. Die Erstellung einer .CSV-Datei ist einfach, obwohl die Vorgehensweise je nach verwendetem Tabellenkalkulationsprogramm etwas unterschiedlich ist.
 
@@ -3283,8 +3288,8 @@ Das Datenattribut *data-numberofdives* wird dem body-Tag hinzugefügt, um den Re
 
 IMPORTANT: Alle CSS-Einheiten sollten nur in relativen Längen angegeben werden, um den Druck auf jeder Seitengröße zu unterstützen.
 
-[[S_APPENDIX_F]]
 
+[[S_APPENDIX_F]]
 == Anhang F: Einrichten von Video-Thumbnails.
 
 === Einrichten der entsprechenden Miniaturansichten für Videos, die mit Tauchgängen verbunden sind.
@@ -3305,8 +3310,9 @@ Bei der Bearbeitung von Videos im Zusammenhang mit Tauchgängen muss _Subsurface
 
 Damit sollte die Einrichtung der Video-Miniaturansichten abgeschlossen sein und sie sollten nun im Tauchprofil
 
-== Anhang G: FAQs.
+
 [[S_APPENDIX_G]]
+== Anhang G: FAQs.
 
 === Cloud FAQ
 
