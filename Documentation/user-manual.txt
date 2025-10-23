@@ -2665,7 +2665,7 @@ compartments following the Bühlmann model (*B* in figure below).
 
 [icon="images/icons/ceiling3.jpg"]
 [NOTE]
-===============================================================================================================
+=========================================
 If, in addition, the *3m increments* button on the Profile Panel is clicked, then the ceiling is indicated in 3 m increments
 (*C* in figure below).
 
@@ -2676,7 +2676,7 @@ Gradient Factor settings strongly affect the calculated ceilings and their depth
  *** https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
  *** link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
-===============================================================================================================
+=========================================
 
 
 
@@ -2693,7 +2693,7 @@ image::images/ShowCylinders_f20.jpg["FIGURE: Cylinder use graph",align="center"]
 
 [icon="images/icons/heatmap.png"]
 [NOTE]
-====================================================================================
+=========================================
 Display the tissue heat-map. The heat map summarizes, for the duration of the dive, the inert gas tissue pressures
 for each of the 16 tissue compartments of the Bühlmann model. Blue colors mean low gas pressures in a tissue compartment
 and thus on-gassing, green to red means excess gas in the tissue and thus off-gassing. Fast to slow tissues are indicated from
@@ -2778,7 +2778,7 @@ However, on-gassing of slower tissues continues during the deep stops, which lea
 in slower tissues at the end of the dive.
 
 image::images/tissueHeatmap.jpg["FIGURE: Inert gas tissue pressure heat-map",align="center"]
-====================================================================================
+=========================================
 
 ==== The Dive Profile context menu
 
