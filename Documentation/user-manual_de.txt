@@ -1423,7 +1423,7 @@ Wenn zusätzlich die Schaltfläche „Alle Gewebe anzeigen” im Profilfenster a
 
 [icon="images/icons/ceiling3.jpg"]
 [NOTE]
-===============================================================================================================
+=========================================
 Wenn zusätzlich die Schaltfläche 3m-Schritte auf der Profiltafel angeklickt wird, dann wird die Obergrenze in 3-m-Schritten angezeigt (Bild C in der Abbildung unten).
 
 image::images/Ceilings2.jpg["Abbildung: Profil: Optionen Dekogrenze",align="center"]
@@ -1434,7 +1434,7 @@ Die angezeigten Gradientenfaktoren sind NICHT die Gradientenfaktoren, die vom Ta
  *** https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
  *** link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
-===============================================================================================================
+=========================================
 
 
 
@@ -1446,7 +1446,7 @@ image::images/ShowCylinders_f20.jpg["Abbildung: Profil: Gasbalken",align="center
 
 [icon="images/icons/heatmap.png"]
 [NOTE]
-====================================================================================
+=========================================
 Anzeige der Gewebe-Wärmebildkarte. Die Wärmekarte fasst für die Dauer des Tauchgangs die Inertgas-Gewebedrücke für jedes der 16 Gewebekompartimente des Bühlmann-Modells zusammen. Blaue Farben bedeuten niedrige Gasdrücke in einem Gewebekompartiment und damit On-Gassing, grüne bis rote Farben bedeuten überschüssiges Gas im Gewebe und damit Off-Gassing. Schnelle bis langsame Gewebe werden von oben nach unten angezeigt. In der folgenden Abbildung wird genauer erläutert, wie die Wärmekarte interpretiert werden kann.
 
 image::images/Heatmap.jpg["Abbildung: Profil: Anzeige Gasdrücke",align="center"]
@@ -1481,7 +1481,7 @@ In beiden Profilen steigen die Inertgasdrücke in den schnelleren Geweben währe
 Der Vergleich der beiden Profile und Wärmebildkarten zeigt, dass der Übersättigungsgradient in den schnelleren Geweben zu Beginn der Aufstiegsphase durch die Einbeziehung tiefer Stopps verringert wird. Die Aufgasung der langsameren Gewebe geht jedoch während der Tiefenstopps weiter, was zu einem größeren Übersättigungsgradienten in den langsameren Geweben am Ende des Tauchgangs führt.
 
 image::images/tissueHeatmap.jpg["Abbildung: Vergleich Wärmebildkarten",align="center"]
-====================================================================================
+=========================================
 
 ==== Das Kontextmenü Tauchgangsprofil
 
