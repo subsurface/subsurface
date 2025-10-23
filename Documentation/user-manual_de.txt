@@ -1268,7 +1268,7 @@ image::images/Profile2.jpg["Typical dive profile",align="center"]
 
 Von allen Tafeln in _Subsurface_ enthält das *Tauchprofil* die detailliertesten Informationen über jeden Tauchgang. Das Tauchgangsprofil verfügt über eine *Schaltflächenleiste* auf der linken Seite, über die verschiedene Anzeigeoptionen gesteuert werden können. Die Funktionen dieser Schaltflächen werden im Folgenden beschrieben. Das wichtigste Element des Tauchprofils ist die Grafik der Tauchtiefe in Abhängigkeit von der Zeit. Neben der Tiefe werden auch die Aufstiegs- und Abstiegsgeschwindigkeiten im Vergleich zur empfohlenen Geschwindigkeit für das Auf- und Abtauchen in der Wassersäule angezeigt. Diese Informationen werden in verschiedenen Farben dargestellt:
 
-|====================
+|=====================
 |*Farbe*|*Abstiegsgeschwindigkeit (m/min)*|*Aufstiegsgeschwindigkeit (m/min)*
 |Rot|> 30|> 18
 |Orange|18 - 30|9 - 18
@@ -1481,7 +1481,7 @@ In beiden Profilen steigen die Inertgasdrücke in den schnelleren Geweben währe
 Der Vergleich der beiden Profile und Wärmebildkarten zeigt, dass der Übersättigungsgradient in den schnelleren Geweben zu Beginn der Aufstiegsphase durch die Einbeziehung tiefer Stopps verringert wird. Die Aufgasung der langsameren Gewebe geht jedoch während der Tiefenstopps weiter, was zu einem größeren Übersättigungsgradienten in den langsameren Geweben am Ende des Tauchgangs führt.
 
 image::images/tissueHeatmap.jpg["Abbildung: Vergleich Wärmebildkarten",align="center"]
-===================================================================================
+====================================================================================
 
 ==== Das Kontextmenü Tauchgangsprofil
 
@@ -2416,7 +2416,7 @@ _Subsurface_ kann über die Befehlszeile gestartet werden, um spezielle Einstell
 	subsurface [options] [logfile ...] [--import logfile ...]
 
 Zu den Optionen gehören:
-|====================
+|=====================
 |*Befehlszeilenoption*|*Beschreibung*
 |--help|Drucken Sie eine Zusammenfassung der Befehlszeilenoptionen
 | -h|Drucken Sie eine Zusammenfassung der Befehlszeilenoptionen
@@ -2427,7 +2427,7 @@ Zu den Optionen gehören:
 |--version|Druckt die aktuelle Version von _Subsurface_
 |--user=<username>|Wählen Sie xref:S_user_space[Konfigurationsbereich] von dem <Benutzernamen>
 |--cloud-timeout=<duration>|Legen Sie das Timeout für die Cloud-Verbindung fest (0 < Dauer < 60). Dies ermöglicht längere Timeouts für langsame Internetverbindungen
-|====================
+|=====================
 
 == Beschreibung der Subsurface-Hauptmenüelemente
 
@@ -3142,7 +3142,7 @@ _Subsurface_ exportiert eine Tauchgangsliste namens (*dives*) sowie eine Liste v
 
 === Exportierte Tauchvariablen
 Es wird nur ein Teil der Tauchdaten exportiert:
-|====================
+|=====================
 |*Name*|*Beschreibung*
 |number| (*int*) Tauchgangsnummer
 |id| (*int*) eindeutige Tauchgangs-ID, die zum Abrufen des Tauchprofils verwendet werden sollte
@@ -3186,7 +3186,7 @@ Es wird nur ein Teil der Tauchdaten exportiert:
 
 === Exportierte Flaschenobjektvariablen
 Es wird nur eine Teilmenge der Flaschendaten exportiert:
-|====================
+|=====================
 |*Name*|*Beschreibung*
 |description| (*string*) Flaschen Beschreibung
 |size| (*string*) Flaschen Größe
@@ -3208,7 +3208,7 @@ Andernfalls würden Stichworte wie „br“ nicht in Zeilenumbrüche umgewandelt
 
 _Subsurface_ exportiert auch *Vorlagenoptions*-Daten. Diese Daten müssen als _CSS_-Werte verwendet werden, um eine dynamisch bearbeitbare Vorlage bereitzustellen. Die exportierten Daten sind in der folgenden Tabelle dargestellt:
 
-|====================
+|=====================
 |*Name*|*Beschreibung*
 |font| (*string*) Schriftfamilie
 |borderwidth| (*int*) Der Rahmenbreitenwert wird dynamisch als 0,1 % der Seitenbreite mit einem Mindestwert von 1 Pixel berechnet.
@@ -3258,7 +3258,7 @@ Eine weitere Variable, die _Subsurface_ exportiert, ist *print_options*. Diese V
 Da das Tauchprofil nach dem Rendering platziert wird, verwendet _Subsurface_ spezielle CSS-Selektoren für die Suche in der HTML-Ausgabe. Die _CSS_-Selektoren in der folgenden Tabelle sollten hinzugefügt werden.
 
 
-|====================
+|=====================
 |*Selector*|*Type*|*Beschreibung* "Unklar ob es hier um eine Feldbezeichnung handelt"
 |dive_{{ dive.id }} | id | wird verwendet, um das entsprechende Tauchprofil
 |diveProfile | class | jeder Tauchgang, der ein Tauchgangsprofil enthält, sollte diesen Klassenselektor zusätzlich zum dive_{{ dive.id )) id-Selektor haben
