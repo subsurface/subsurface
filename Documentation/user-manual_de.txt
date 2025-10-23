@@ -38,16 +38,16 @@ Wenn dieses Handbuch aus _Subsurface_ heraus geöffnet wird, verfügt es nicht �
 
 - Die Funktion "_SUCHEN_" wird durch Drücken von Strg-F oder Befehl-F auf der Tastatur aktiviert. Unten rechts im Fenster erscheint ein Textfeld (siehe Abbildung unten). Wenn Sie zum Beispiel das Wort "_Gewichte_" in das Suchfeld eingeben, wird das gesamte Benutzerhandbuch durchsucht.
 
-image::images/UserManualSearch_DE.jpg["User manual functions",align="center"]
+image::images/UserManualSearch_DE.jpg["Abbildung: Benutzerhandbuch: Suchen",align="center"]
 
 Links in der Tauchgangsliste werden die Tauchgänge mit dem zugehörigen Suchbegriff angezeigt.
 
-image::images/UserManualSearch2_DE.jpg["User manual functions",align="center"]
+image::images/UserManualSearch2_DE.jpg["Abbildung: Benutzerhandbuch: Suchergebnisse",align="center"]
 
 
 - _VORHERIGER/NÄCHSTER LINK_. Sie können zwischen Links (unterstrichene Wörter, die zu bestimmten Abschnitten im Benutzerhandbuch führen) wechseln, indem Sie mit der rechten Maustaste auf den Text des Handbuchs klicken. Dadurch wird ein Kontextmenü mit den ausgewählten VORHERIGEN Links angezeigt. (siehe Abbildung unten). Wenn zum Beispiel ein Link ausgewählt wurde, zeigt die Option _Zurück_ den Text des zuvor ausgewählten Links an (ähnlich wie die Schaltfläche Vorherige Seite in einem Browser). Umgekehrt springt die Option "_Vorwärts_" zu dem Text, der vor der Auswahl der Option "_Zurück_" angezeigt wurde. Mit der Option "_Neu laden_" wird das gesamte Benutzerhandbuch in das Fenster neu geladen.
 
-image::images/Linking_address_DE.jpg["User manual functions",align="center"]
+image::images/Linking_address_DE.jpg["Abbildung: Benutzerhandbuch: Kontextmenü",align="center"]
 
 [[S_StartUsing]]
 Mit dem Programm beginnen
@@ -70,7 +70,7 @@ Wenn ein einzelner Tauchgang in der *Tauchgangsliste* ausgewählt wird, werden d
 
 [[S_ViewFelds]]
 
-image::images/MainWindow_DE.jpg["The Main Window",align="center"]
+image::images/MainWindow_DE.jpg["Abbildung: Subsurface - Hauptfenster",align="center"]
 
 Legen Sie fest, welche der vier Felder angezeigt werden sollen, indem Sie im Hauptmenü die Option *Ansicht* wählen. Für diese Funktion gibt es mehrere Auswahlmöglichkeiten für die Anzeige:
 
@@ -103,7 +103,7 @@ Nachdem nun ein neues Logbuch erstellt wurde, ist es einfach, Tauchgangsdaten hi
 
  - Geben Sie die Tauchgangsinformationen von Hand ein. Dies ist nützlich, wenn der Taucher keinen Tauchcomputer benutzt hat und die Tauchgänge in einem schriftlichen Logbuch aufgezeichnet wurden. Siehe: xref:S_EnterData[Eingeben von Tauchgangsinformationen von Hand]
 
- - Importieren Sie Tauchgangstagebuchinformationen, die entweder als Tabellenkalkulation oder als CSV-Datei geführt wurden. Siehe: xref:S_Appendix_D[Anhang D: Exportieren einer Tabellenkalkulation in das CSV-Format] und xref:S_ImportingCSVDives[Importieren von Tauchgängen im CSV-Format.].
+ - Importieren Sie Tauchgangstagebuchinformationen, die entweder als Tabellenkalkulation oder als CSV-Datei geführt wurden. Siehe: xref:S_Appendix_D[Anhang D: Exportieren einer Tabellenkalkulation in das TSV-Format] und xref:S_ImportingCSVDives[Importieren von Tauchgängen im CSV-Format.].
 
 2) Wenn ein Tauchgang mit einem Tauchcomputer aufgezeichnet wurde, kann auf das Tiefenprofil und eine Vielzahl von Zusatzinformationen zugegriffen werden. Diese Tauchgänge können importiert werden von:
 
@@ -117,7 +117,7 @@ Nachdem nun ein neues Logbuch erstellt wurde, ist es einfach, Tauchgangsdaten hi
 
 Dies ist normalerweise der Ansatz für Tauchgänge ohne Tauchcomputer. Die grundlegende Aufzeichnung von Informationen innerhalb von _Subsurface_ ist ein Tauchgang. Die wichtigsten Informationen in einem einfachen Tauchlogbuch sind in der Regel der Tauchtyp, das Datum, die Uhrzeit, die Dauer, die Tiefe, die Namen der Tauchpartner sowie gegebenenfalls Tauchlehrers als auch einige Bemerkungen zum Tauchgang. _Subsurface_ kann viel mehr Informationen zu jedem Tauchgang speichern. Um einen Tauchgang zum Logbuch hinzuzufügen, wählen bitte im Hauptmenü _Log → Tauchgang hinzufügen_. Das Programm zeigt dann drei Felder an, in die Sie Informationen zu einem Tauchgang eingeben können: drei Registerkarten im *Info*-Feld (*Notizen*, *Ausrüstung* und *Informationen*) sowie das *Tauchgangsprofil*-Feld, das ein grafisches Profil jedes Tauchgangs anzeigt. Diese Felder sind in der Abbildung unten mit [red]#A#, [red]#B#, [red]#C# und [red]#D# gekennzeichnet. Jede dieser Registerkarten wird nun für die Dateneingabe erklärt.
 
-image::images/AddDive1_DE.jpg["FIGURE: Add dive",align="center"]
+image::images/AddDive1_DE.jpg["Abbildung: Tauchgang hinzufügen",align="center"]
 
 Die meisten Aktionen bei der Bearbeitung eines neuen Tauchgangs können einzeln rückgängig gemacht werden, wie im Abschnitt über das <<S_undo, Rückgängigmachen>> von Bearbeitungen beschrieben.
 
@@ -967,19 +967,19 @@ Nachdem die Medien geladen wurden, erscheinen sie an zwei Stellen:
  - auf der Registerkarte "Medien" des *Notizfensters* (linker Teil des Bildes unten).
  - als kleine Symbole (Stubs) auf dem Tauchgangsprofil an den entsprechenden Positionen, die den Zeitpunkt der jeweiligen Foto- oder Videoaufnahme widerspiegeln. Um die Medien auf dem Tauchgangsprofil anzuzeigen, aktivieren Sie die Schaltfläche Medien umschalten in der Symbolleiste links neben dem Tauchgangsprofil:
 
-image::images/icons/ShowPhotos_f20.png["FIGURE:Show photos toolbar button / Bleibt bestehen, habe kein Äquivalent",align="left"]
+image::images/icons/ShowPhotos_f20.png["Abbilding: Schaltfläche 'Medien anzeigen'",align="left"]
 
 Dies führt zu einer Profilanzeige wie in der Abbildung unten:
 
-image::images/LoadImage4.jpg["FIGURE: Media on dive profile / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/LoadImage4.jpg["Abbildung: Profil mit Medien",align="center"]
 
 Bewegen Sie den Mauszeiger über einen der Medienabschnitte. Es wird ein Miniaturbild des entsprechenden Mediums angezeigt. Siehe das Bild unten:
 
-image::images/LoadImage5.jpg["FIGURE:Thumbnail photo on dive profile / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/LoadImage5.jpg["Abbildung: Medienvorschau im Profil",align="center"]
 
 Wenn Sie auf die Miniaturansicht klicken, wird ein Foto oder Video in voller Größe über das _Subsurface_-Fenster gelegt, so dass Sie die Medien gut sehen können (siehe Abbildung unten). Beachten Sie, dass die Miniaturansicht auf dem Tauchgangsprofil in der rechten unteren Ecke ein kleines Mülltonnensymbol hat (siehe Bild oben). Wenn Sie den Mülleimer anklicken, wird das Bild aus dem Tauchgang entfernt. Seien Sie vorsichtig, wenn Sie auf ein Thumbnail klicken. Bilder können auch über die Registerkarte _Medien_ gelöscht werden (siehe Text unten).
 
-image::images/LoadImage6_f20.jpg["FIGURE: Full-screen photo on dive profile / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/LoadImage6_f20.jpg["Abbildung: Medium Vollansicht",align="center"]
 
 ==== Die Registerkarte Medien
 
@@ -1044,7 +1044,7 @@ Wählen Sie dazu im Hauptmenü die Option: _Datei → Verschobene Mediendateien 
 
 Nachdem die Suche abgeschlossen ist, werden die ursprünglichen Dateinamen und die neuen Speicherorte der Fotos angezeigt. Die übereinstimmenden Teile der Pfade sind hervorgehoben. Medien, die an ihren bekannten Positionen gefunden werden, sind nicht aufgeführt. Die vorgeschlagenen Änderungen können durch Klicken auf _Anwenden_ übernommen oder durch Klicken auf _Abbrechen_ verworfen werden.
 
-image::images/FindMovedImages1_DE.jpg["FIGURE:Find moved images / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/FindMovedImages1_DE.jpg["Abbildung: Verschobene Medien Suchen",align="center"]
 
 === Aufzeichnung spezieller Arten von Tauchgängen
 
@@ -1120,7 +1120,7 @@ Um pSCR-Tauchgänge zu protokollieren, sind keine besonderen Verfahren erforderl
 
 Beim Tauchen mit pSCR hat das eingeatmete Gas oft einen pO2-Wert, der unter dem der Atemluft aus der Flasche liegt. Dies liegt daran, dass die Atemluft nur langsam zugeführt wird und der Taucher ständig Sauerstoff aus dem Kreislauf für den Stoffwechsel verwendet, was zu einem so genannten "pO2-Abfall über dem Mundstück" führt. Bei pSCR-Tauchprofilen wird die Obergrenze des Tauchgangs an diesen Sauerstoffabfall angepasst und erfordert oft längere Dekompressionszeiten. Unten sehen Sie ein Tauchprofil eines pSCR-Tauchgangs mit EAN36 als Grundgas und Sauerstoff für die Dekompression. Beachten Sie, dass dieser Tauchgang über zwei Stunden dauerte.
 
-image::images/pSCR_profile.jpg["FIGURE: pSCR profile / Bleibt bestehen",align="center"]
+image::images/pSCR_profile.jpg["Abbildung: pSCR Tauchprofil",align="center"]
 
 _Visualisierung des pO2-Abfalls_: Die Differenz zwischen dem pO2 des frischen Flaschengases und dem pO2 in der Schleife kann in _Subsurface_ visualisiert werden, indem man das Tec-Einstellung-Feld unter dem Menüpunkt Datei → Einstellungen öffnet und dann im Abschnitt pSCR options geeignete Informationen eingibt. Die pSCR-Stoffwechselrate ist Ihre Sauerstoff-Stoffwechselrate in Litern/Min. (üblicherweise zwischen 0,5 und 2,5). Das Verdünnungsverhältnis ist das Verhältnis, das angibt, wie viel Gas im Kreislauf durch Frischgas ersetzt wird, bezogen auf das Gas, das geatmet wird, ersetzt wird (übliche Werte liegen zwischen 1:3 und 1:10). Diese Werte werden auch bei der Planung von pSCR-Tauchgängen verwendet. Wenn der Sauerstoffgehalt des Kreislaufs nicht von einem Sauerstoffsensor erfasst wird, _Subsurface_ schätzt den pO2 in der Schleife anhand der oben angegebenen Informationen. Dieser pO2 wird angezeigt als die grüne Linie, die den Sauerstoffpartialdruck im Tauchprofil darstellt. Wenn der Sauerstoffdruck im Kreislauf mit einem Sauerstoffsensor gemessen wird, der an einen Tauchcomputer angeschlossen ist, wird diese Information Diese Informationen werden wahrscheinlich vom Tauchcomputer aufgezeichnet, und die gemessenen pO2-Werte werden im Tauchprofil angezeigt.
 Zusätzlich kann in den technischen Einstellungen ein Kontrollkästchen mit der Bezeichnung Show Äquivalent OC pO2 mit pSCR pO2. Dies aktiviert die Anzeige des pO2 im Frischgas aus der Flasche (eine orangefarbene Linie). Der vertikale Abstand zwischen der orangefarbenen und der grünen Kurve zeigt den "pO2-Abfall über dem Mundstück". Ein Großteil des pSCR-Tauchens besteht darin, diese pO2-Differenz zu managen.
@@ -1131,7 +1131,7 @@ Zusätzlich kann in den technischen Einstellungen ein Kontrollkästchen mit der 
 pSCR und Bailout:
 Gase, die in pSCR verwendet werden, ergeben in flachem Wasser oft sehr niedrige pO2-Werte. Aus diesem Grund werden die flachen Abschnitte eines Tauchgangs oft mit dem offenen Kreislaufgerät und nicht mit dem Rebreather durchgeführt. In diesem Fall werden Teile des Tauchgangs als OC-Tauchgang durchgeführt, während der Rest des Tauchgangs mit dem pSCR-Kreislauf durchgeführt wird. Um solche Änderungen im Tauchmodus anzuzeigen, klicken Sie zum entsprechenden Zeitpunkt mit der rechten Maustaste auf das Tauchprofil. Wählen Sie im Kontextmenü die Option Divemodus ändern und wählen Sie die entsprechende Option (siehe Abbildung links). Einige Tauchcomputer zeichnen solche Änderungen im Tauchmodus als Teil des Tauchprotokolls auf. Das entsprechende Symbol wird im Tiefenprofil angezeigt (siehe Abbildung unten). Unten sehen Sie einen pSCR-Tauchgang mit den flachen Abschnitten in OC. Gleich zu Beginn wurde ein OC-Tauchmodus eingegeben, gefolgt von einem Wechsel zu pSCR auf 18 m. Während des Aufstiegs wurde bei 14 m auf OC umgeschaltet. Beachten Sie, dass für die OC-Abschnitte der pO2mit dem OC-pO2identisch ist, während für den pSCR-Abschnitt der pO(2) (grüne Linie) von dem OC-pO(2) (orange Linie) abweicht.
 
-image::images/pSCR_profile_bailout.jpg["FIGURE: pSCR profile with bailout / Bleibt bestehen",align="center"]
+image::images/pSCR_profile_bailout.jpg["Abbildung: pSCR Tauchprofil mit Bailout",align="center"]
 
 [[S_CCR_dives]]
 ==== Tauchgänge mit geschlossenen Kreislaufgeräten (CCR)
@@ -1161,11 +1161,11 @@ Der mittlere pO2-Wert der Sensoren wird mit einer grünen Linie angezeigt,
 
 Die Sauerstoff-Sollwerte sowie die Messwerte der einzelnen Sauerstoffsensoren können angezeigt werden. Die Anzeige zusätzlicher CCR-Informationen wird durch Aktivieren der entsprechenden Kontrollkästchen im Bereich "Technische Einstellungen" aktiviert (zugänglich durch Auswahl von xref:S_CCR_options[_Datei → Einstellungen → Tec Einstellungen_]). Dieser Teil des Einstellungsfeldes ist in der Abbildung unten dargestellt und zeigt zwei Kontrollkästchen, die die Anzeige von pO2 ändern, wenn die entsprechende Schaltfläche in der Symbolleiste des Tauchprofils aktiviert wurde.
 
-image::images/CCR_preferences_f20.jpg["FIGURE: CCR preferences Feld / Bleibt bestehen",align="center"]
+image::images/CCR_preferences_f20.jpg["Abbildung: CCR Anzeigeeinstellungen",align="center"]
 
 Wenn Sie eines dieser Kontrollkästchen aktivieren, werden zusätzliche sauerstoffbezogene Informationen angezeigt, wenn die Schaltfläche pO2 in der Symbolleiste des Profils aktiviert ist. Das erste Kontrollkästchen ermöglicht die Anzeige von Sollwertinformationen. Dabei handelt es sich um eine orangefarbene Linie, die das grüne Sauerstoffpartialdruckdiagramm überlagert und einen Vergleich zwischen dem mittleren gemessenen Sauerstoffpartialdruck und den Sollwerten ermöglicht, wie unten dargestellt.
 
-image::images/CCR_setpoint_f20.jpg["FIGURE: CCR setpoint and pO~2~ graph / Bleibt bestehen",align="center"]
+image::images/CCR_setpoint_f20.jpg["Abbildung: CCR Sollwertanzeige",align="center"]
 
 Das zweite Kontrollkästchen ermöglicht die Anzeige der Daten von jedem einzelnen Sauerstoffsensor der CCR-Anlage. Die Daten für jeden Sensor sind wie folgt farblich gekennzeichnet:
 
@@ -1175,7 +1175,7 @@ Das zweite Kontrollkästchen ermöglicht die Anzeige der Daten von jedem einzeln
 
 Der mittlere Sauerstoff pO2 wird durch die grüne Linie angezeigt. Dies ermöglicht den direkten Vergleich der Daten von jedem der Sauerstoffsensoren, was nützlich ist, um ungewöhnlich niedrige oder fehlerhafte Messwerte von einem bestimmten Sensor zu erkennen.
 
-image::images/CCR_sensor_data_f20.jpg["FIGURE: CCR sensor data graph / Bleibt bestehen",align="center"]
+image::images/CCR_sensor_data_f20.jpg["Abbildung: CCR Anzeige Sensordaten",align="center"]
 
 Die Sollwertdaten können den Sauerstoffsensordaten überlagert werden, indem die beiden oben genannten Kontrollkästchen aktiviert werden. Partialdrücke für Stickstoff (und Helium, falls zutreffend) werden in der üblichen Weise wie bei Tauchgänge mit offenem Kreislauf.
 
@@ -1186,12 +1186,12 @@ Es werden mehrere Ereignisse protokolliert, z. B. das Umschalten des Mundstücks
 _Bailout_: +
 Bailout-Ereignisse während eines CCR-Tauchgangs können in einem _Subsurface_-Tauchprotokoll aufgezeichnet werden. Klicken Sie mit der rechten Maustaste auf das Tauchprofil, um das Kontextmenü des Tauchprofils zu öffnen. Wählen Sie _Tauchmodus ändern_ und wählen Sie die entsprechende Bailout-Option (wahrscheinlich OC). Ein entsprechendes Symbol wird auf dem Tiefenprofil angezeigt (siehe Abbildung unten). Bei den meisten CCR-Ausrüstungen ist es auch möglich, auf pSCR umzuschalten, insbesondere wenn die Elektronik ausgefallen und die Diluentversorgung begrenzt ist. Dies kann auch im Tauchprotokoll vermerkt werden und _Subsurface_ berechnet die entsprechenden pO2-Werte und stellt sie grafisch dar. Der Fall während der CCR-Ausbildung ist komplexer, wenn der Tauchlehrer einen niedrigen Sollwert wie 0,7 bevorzugt, der während des Bailouts beibehalten werden soll. In diesem Fall hält die CCR-Ausrüstung den niedrigen Sollwert aufrecht und setzt die OC- oder pSCR-Bedingungen außer Kraft. In solchen Fällen ist es wahrscheinlich genauer, ein Bailout-Ereignis nicht im Tauchprotokoll zu vermerken, da _Subsurface_ die pO2-Werte in der irrtümlichen Annahme berechnet, dass es keinen Sollwert gibt. Unten sehen Sie ein Tauchprofil für einen CCR-Tauchgang mit Bailout bei 57 Minuten. In diesem Profil weicht die grüne pO2-Kurve vom Sollwert ab und spiegelt den pO2 im OC-Diluentgas (in diesem Fall Luft) wider. Der pO2 in der Schleife (dargestellt als mäandernde Kurve für jeden Sauerstoffsensor) ist irrelevant, da das tatsächlich eingeatmete Gas direkt aus der Diluentflasche kommt. In Fällen, in denen ein Bailout mit einer Stageflasche erfolgt, geben Sie den Bailout sowie den Gaswechsel an und _Subsurface_ berechnet alle entsprechenden pO2-Werte. Einige Tauchcomputer zeichnen sowohl Bailout- als auch Gaswechsel- Ereignisse auf: In diesem Fall werden die Ereignisse automatisch im Tauchprotokoll angezeigt.
 
-image::images/CCR_bailout.jpg["FIGURE: CCR bailout profile / Bleibt bestehen",align="center"]
+image::images/CCR_bailout.jpg["CCR Anzeige Bailoutprofil",align="center"]
 
 _Deko-Obergrenze_: +
 Die von _Subsurface_ berechnete Dekostufe ist nicht sehr genau, da der genaue Druck des Stickstoffs im Kreislauf normalerweise nicht aus dem vom CCR-Gerät importierten Tauchprotokoll ermittelt werden kann. Viele CCR-Tauchcomputer melden jedoch eine intern berechnete Deko-Obergrenze, die im Tauchprotokoll angezeigt wird und eine genauere Einschätzung widerspiegelt. Die Anzeige dieser Obergrenze wird durch Klicken auf die entsprechende Schaltfläche links neben dem Tauchprofil aktiviert:
 
-image::images/icons/cceiling.jpg["DC ceiling icon / Bleibt bestehen",align="center"]
+image::images/icons/cceiling.jpg["Abbildung: Schaltfläche Dekostufe Tauchcomputer",align="center"]
 
 Die Standardfarbe der computergenerierten Dekostufe ist weiß. Sie kann auf rot eingestellt werden, indem Sie das entsprechende Kontrollkästchen nach Auswahl von Datei → Einstellungen → Tech Einstellungen aktivieren. Das obige Profil zeigt die vom Tauchcomputer erzeugte Dekostufe in Rot an.
 
@@ -1199,7 +1199,7 @@ Die Standardfarbe der computergenerierten Dekostufe ist weiß. Sie kann auf rot 
 _Flaschendruck_: +
 Einige CCR-Tauchcomputer wie der Poseidon zeichnen die Drücke der Sauerstoff- und der Diluentflasche auf. Die Drücke dieser beiden Flaschen werden als grüne Linien angezeigt, die sich mit dem Tiefenprofil überschneiden. Außerdem werden die Start- und Enddrücke für die Sauerstoff- und Diluentflaschen auf der Registerkarte Ausrüstung angezeigt. Unten sehen Sie ein Tauchgangsprofil für einen CCR-Tauchgang, einschließlich einer Überlagerung der Sollwert- und Sauerstoffsensordaten sowie der Flaschendruckdaten. In diesem Fall stimmen die Messwerte der beiden Sauerstoffsensoren überein.
 
-image::images/CCR_dive_profile_f22.jpg["FIGURE: CCR dive profile / Bleibt bestehen",align="center"]
+image::images/CCR_dive_profile_f22.jpg["Abbildung: CCR Profil mit Flaschendruck",align="center"]
 
 
 _Ausrüstungsspezifische Informationen_:
@@ -1259,7 +1259,7 @@ Auf der Registerkarte "Zusammenfassung" werden zusammenfassende Statistiken für
 
 Bei der Verwendung eines Tauchcomputers werden häufig mehrere Daten gemeldet, die nicht ohne Weiteres in einer standardisierten Form dargestellt werden können, da die Art der Informationen von Tauchcomputer zu Tauchcomputer unterschiedlich ist. Diese Daten umfassen häufig Informationen über die Einstellungen, Metadaten zu einem Tauchgang, Batteriestände, Flugverbotszeiten oder während des Tauchgangs verwendete Steigungsfaktoren. Wenn möglich, werden diese Informationen auf der *Registerkarte Zusatzdaten* angezeigt. Unten sehen Sie ein Bild mit zusätzlichen Daten für einen Tauchgang mit einem Poseidon Rebreather.
 
-image::images/ExtraDataTab_f20.jpg["FIGURE: Extra Data tab / Bleibt bestehen, da ich kein solchen TG habe",align="center"]
+image::images/ExtraDataTab_f20.jpg["Abbildung: Registerkarte Zusatzdaten",align="center"]
 
 [[S_DiveProfile]]
 === Das *Tauchgangsprofil*
@@ -1291,7 +1291,7 @@ Die *Wassertemperatur* wird als blaue Linie dargestellt, wobei die Temperaturwer
 
 Das Informationsfeld zeigt eine Vielzahl von Informationen über das Tauchprofil an. Normalerweise befindet sich das Informationsfeld oben links im Tauchprofilfenster. Das Informationsfeld kann durch Klicken und Ziehen mit der Maus im Tauchprofilfeld verschoben werden, so dass es wichtige Details nicht verdeckt. Die Position des Informationsfeldes wird gespeichert und bei späteren Tauchgangsanalysen wieder verwendet.
 
-image::images/InfoBox2.jpg["Figure: Information Box / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/InfoBox2.jpg["Abbildung: Verschieben des Informationsfeldes",align="center"]
 
 Wenn der Mauszeiger in das *Tauchprofilfeld* zeigt, erweitert sich das Informationsfeld und zeigt viele Datenelemente an. In diesem Fall spiegeln die Daten den Zeitpunkt entlang des Tauchprofils wider, der durch den Mauszeiger angezeigt wird (siehe rechter Teil der Abbildung (B) oben, wo das Informationsfeld die Situation an der Position des Mauszeigers [Pfeil] in diesem Bild wiedergibt). Wenn Sie den Mauszeiger horizontal bewegen, zeigt das Informationsfeld Informationen zu jedem beliebigen Punkt des Tauchprofils an. Es enthält umfangreiche Statistiken über die Tiefe, das Gas und die Deckeneigenschaften des jeweiligen Tauchgangs. Dazu gehören: Dauer des Tauchgangs (angezeigt durch ein @), Tiefe, Flaschendruck (P), Temperatur, Aufstiegs-/Abstiegsgeschwindigkeit, Oberflächenluftverbrauch (AMV), Sauerstoffpartialdruck, maximale Betriebstiefe, äquivalente Lufttiefe (EAD), äquivalente Narkosetiefe (END), äquivalente Luftdichtetiefe (EADD, auch als Gasdichte in g/l), Dekompressionsanforderungen zu diesem Zeitpunkt (Deco), die Oberflächen-GF (ein Maß für die Inertgasbelastung des Taucherkörpers, definiert als der Überdruck über dem Oberflächendruck, der so normiert ist, dass der maximal zulässige Überdruck an der Oberfläche, der M-Wert, 100 % entspricht), die Zeit bis zur Oberfläche (TTS), die berechnete Obergrenze sowie die Statistiken in der Informationsbox, die als vier Schaltflächen auf der linken Seite des Profils angezeigt werden. Diese sind:
 
@@ -1329,7 +1329,7 @@ Abbildung (*B*) oben zeigt ein Informationsfeld mit einem fast vollständigen Da
 
 Auf der linken Seite des *Informationsfeldes* befindet sich ein vertikales Balkendiagramm, das die Drücke des Stickstoffs (und ggf. anderer Inertgase, z. B. Helium) anzeigt, die der Taucher zu einem bestimmten Zeitpunkt während des Tauchgangs eingeatmet hat, was durch die Position des Cursors auf dem Tauchprofil angezeigt wird. Die Zeichnung auf der linken Seite unten zeigt die Bedeutung der verschiedenen Teile des Gasdruck-Balkendiagramms.
 
-image::images/GasPressureBarGraph.jpg["FIGURE:Gas Pressure bar Graph / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/GasPressureBarGraph.jpg["Abbildung: Balkendiagramm Stickstoffdruck",align="center"]
 
 - Der hellgrüne Bereich zeigt den Gasdruck an, wobei der obere Rand des hellgrünen Bereichs den Gesamtgasdruck ALLER vom Taucher eingeatmeten Gase anzeigt, gemessen vom unteren Rand der Grafik bis zum oberen Rand des hellgrünen Bereichs. Dieser Druck hat in der Grafik einen _relativen_ Wert und gibt keinen absoluten Druck an.
 
@@ -1362,7 +1362,7 @@ Viele Tauchcomputer zeichnen Ereignisse während eines Tauchgangs auf. Die meist
 
 Ereignisse werden durch Symbole auf dem Tauchgangsprofil angezeigt. Benachrichtigungen werden durch ein weißes, rundes Symbol mit dem Buchstaben i dargestellt; Warnungen werden durch ein gelbes Dreieck und Alarme durch ein rotes Dreieck angezeigt. Wenn Sie den Cursor über ein Symbol bewegen, wird die Erklärung in der untersten Zeile des _Informationsfeldes_ angezeigt (siehe Abbildung unten, wo sich der Cursor über dem gemeldeten Alarm befindet).
 
-image::images/profile_symbols.jpg["FIGURE: Profile notification symbols / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/profile_symbols.jpg["Abbildung: Symbole im Profil",align="center"]
 
 Einige Tauchcomputer melden _Lesezeichen_, die der Taucher während des Tauchgangs gesetzt hat. Diese werden als kleine rote Flagge auf dem Profil angezeigt und werden im Abschnitt über das <<S_Bookmarks,_Einfügen von Lesezeichen_>> näher erläutert.
 
@@ -1393,7 +1393,7 @@ ist.
 
 Es ist möglich, in das Profildiagramm zu *zoomen*. Dies geschieht entweder mit dem Scrollrad / der Scroll-Geste der Maus oder dem Trackpad. Standardmäßig zeigt _Subsurface_ immer einen Profilbereich an, der groß genug für mindestens 30 Minuten und 30m (100ft) ist - auf diese Weise sind kurze oder flache Tauchgänge leicht zu erkennen; etwas, das Freitauchern egal sein wird.
 
-image::images/MeasuringBar.png["FIGURE: Measuring Bar / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/MeasuringBar.png["Abbildung: Lineal im Tauchprofil",align="center"]
 
 [icon="images/icons/ruler.jpg"]
 [NOTE]
@@ -1426,7 +1426,7 @@ Wenn zusätzlich die Schaltfläche „Alle Gewebe anzeigen” im Profilfenster a
 ===============================================================================================================
 Wenn zusätzlich die Schaltfläche 3m-Schritte auf der Profiltafel angeklickt wird, dann wird die Obergrenze in 3-m-Schritten angezeigt (Bild C in der Abbildung unten).
 
-image::images/Ceilings2.jpg["Figure: Ceiling with 3m resolution / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Ceilings2.jpg["Abbildung: Profil: Optionen Dekogrenze",align="center"]
 
 Die Einstellungen des Gradientenfaktors wirken sich stark auf die berechneten Obergrenzen und ihre Tiefen aus. Für weitere Informationen über Gradientenfaktoren finden Sie im Abschnitt Einstellungen für Gradientenfaktoren. Die aktuell verwendeten Gradientenfaktoren (z.B. GF 35/75) werden oberhalb des Tiefenprofils angezeigt, wenn die entsprechenden Schaltflächen in der Werkzeugleiste aktiviert sind. N.B.:
 Die angezeigten Gradientenfaktoren sind NICHT die Gradientenfaktoren, die vom Tauchcomputer verwendet werden, sondern diejenigen, die von _Subsurface_ zur Berechnung der Deko-Verpflichtungen während des Tauchgangs verwendet werden. Für weitere Informationen außerhalb dieses Handbuchs siehe:
@@ -1442,14 +1442,14 @@ Die angezeigten Gradientenfaktoren sind NICHT die Gradientenfaktoren, die vom Ta
 [NOTE]
 Durch Auswahl dieses Symbols können die verschiedenen während eines Tauchgangs verwendeten Flaschen als farbige Balken am unteren Rand des *Tauchprofils* dargestellt werden. Im Allgemeinen wird Sauerstoff durch einen grünen Balken, Stickstoff durch einen gelben und Helium durch einen roten Balken dargestellt. Die folgende Abbildung zeigt einen Tauchgang, bei dem zunächst eine Trimix-Flasche (rot und grün) verwendet wird, gefolgt von einem Wechsel zu einer Nitrox-Flasche (gelb und grün) nach 23 Minuten. Flaschen mit Luft sind als hellblauer Balken dargestellt.
 
-image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/ShowCylinders_f20.jpg["Abbildung: Profil: Gasbalken",align="center"]
 
 [icon="images/icons/heatmap.png"]
 [NOTE]
 ====================================================================================
 Anzeige der Gewebe-Wärmebildkarte. Die Wärmekarte fasst für die Dauer des Tauchgangs die Inertgas-Gewebedrücke für jedes der 16 Gewebekompartimente des Bühlmann-Modells zusammen. Blaue Farben bedeuten niedrige Gasdrücke in einem Gewebekompartiment und damit On-Gassing, grüne bis rote Farben bedeuten überschüssiges Gas im Gewebe und damit Off-Gassing. Schnelle bis langsame Gewebe werden von oben nach unten angezeigt. In der folgenden Abbildung wird genauer erläutert, wie die Wärmekarte interpretiert werden kann.
 
-image::images/Heatmap.jpg["Figure: Inert gas tissue pressure heat-map / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Heatmap.jpg["Abbildung: Profil: Anzeige Gasdrücke",align="center"]
 
 Bild *A* auf der linken Seite zeigt das xref:S_gas_pressure_graph[Gasdruckdiagramm im Informationsfeld], das eine Momentaufnahme der Inertgasdrücke zu einem bestimmten Zeitpunkt während des Tauchgangs darstellt. Die Inertgasdrücke von 16 Gewebekompartimenten werden als dunkelgrüne vertikale Balken dargestellt, wobei die schnellen Gewebekompartimente auf der linken Seite und die langsamen Gewebekompartimente auf der rechten Seite zu sehen sind. Weitere Einzelheiten zu den verschiedenen Elementen dieses Diagramms finden Sie im Abschnitt xref:S_gas_pressure_graph[Gasdruckdiagramm im Informationsfeld] über das Gasdruckdiagramm.
 
@@ -1480,7 +1480,7 @@ In beiden Profilen steigen die Inertgasdrücke in den schnelleren Geweben währe
 
 Der Vergleich der beiden Profile und Wärmebildkarten zeigt, dass der Übersättigungsgradient in den schnelleren Geweben zu Beginn der Aufstiegsphase durch die Einbeziehung tiefer Stopps verringert wird. Die Aufgasung der langsameren Gewebe geht jedoch während der Tiefenstopps weiter, was zu einem größeren Übersättigungsgradienten in den langsameren Geweben am Ende des Tauchgangs führt.
 
-image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/tissueHeatmap.jpg["Abbildung: Vergleich Wärmebildkarten",align="center"]
 ===================================================================================
 
 ==== Das Kontextmenü Tauchgangsprofil
@@ -1494,7 +1494,7 @@ Die Tauchgänge in der *Tauchgangsliste* können gefiltert werden, wobei nur ein
 
 Um den Filter zu öffnen, wählen Sie Log → Filter → Liste der Tauchgänge filtern aus dem Hauptmenü. Dadurch wird das Tauchgangskartenfeld durch ein Filterfeld ersetzt. Die obere Fensterleiste enthält die Anzahl der Tauchgänge, die die aktuellen Kriterien des Filters erfüllen (siehe Abbildung unten).
 
-image::images/FilterWindowBar.jpg["Figure: Filter Window Bar / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/FilterWindowBar.jpg["Abbildung: Statusanzeige für Filter",align="center"]
 
 Standardmäßig wird eine Volltextspezifikation für die Filterung angezeigt. Wenn man zum Beispiel das Wort "Hai" in das Feld "_Volltext_" eingibt, werden alle Tauchgänge angezeigt, die das Wort "Hai" in einem der Textfelder im _Infobereich_ enthalten, einschließlich der _Notizen_, der Stichworte und des Ortes. Sie können auswählen, ob die Suchphrase (z. B. "Hai") ein vollständiges Wort, der Anfangsteil eines Wortes (z. B. "SharkLife") oder ein beliebiger Teil eines Wortes (z. B. "Walhaie") sein muss. Siehe das Bild unten.
 
@@ -1581,7 +1581,7 @@ c) Welche Variable soll auf der linken vertikalen Achse des Diagramms angezeigt 
 
 d) Welchen Diagrammtyp benötigen Sie? Standardmäßig wählt _Subsurface_ den am besten geeigneten Diagrammtyp aus, aber dies ist eine vom Benutzer auswählbare Option. Die folgende Abbildung zeigt am Beispiel der Wassertemperatur in verschiedenen Tiefen drei der möglichen Diagrammtypen für dieselben Daten: Bild A zeigt die Rohdaten, indem es die genaue Temperatur und Tiefe für jeden Tauchgang aufzeichnet. Bild B hingegen gruppiert die Tauchgänge in 5-m-Tiefenintervallen, in denen die Temperatur für jeden Tauchgang angegeben ist (die roten   Markierungen werden weiter unten erläutert). Abbildung C gruppiert die Tauchgänge ebenfalls in 5-m-Tiefenintervallen. In diesem Fall werden jedoch das Minimum, das Maximum, der Mittelwert, das obere Quartil und das untere Quartil für jede Tiefenklasse angezeigt.
 
-image::images/StatsGraphOptions.jpg["Statistics graph options / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/StatsGraphOptions.jpg["Abbildung: Diagrammoptionen",align="center"]
 
 Die obige Diskussion soll zeigen, dass man sich vor der _Erstellung eines Diagramms_ genau überlegen sollte, was _Subsurface_ anzeigen soll, und dabei zumindest die vier oben genannten Aspekte berücksichtigen sollte.
 
@@ -1613,7 +1613,7 @@ image::images/StatsCountsData_DE.jpg["Counts data example",align="center"]
 
 Manchmal möchten Sie vielleicht die Beziehung zwischen zwei Tauchvariablen untersuchen. Hat sich meine AMV-Rate im Laufe der Jahre verringert? Ist die Wassertemperatur bei größerer Tauchtiefe kälter? Eine Möglichkeit, diese Fragen zu untersuchen, besteht darin, ein Streudiagramm zu zeichnen, in dem die Werte einer Variable gegen die andere Variable aufgetragen werden (siehe Abbildung unten).
 
-image::images/StatsRegression.jpg["Regression data example / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/StatsRegression.jpg["Abbildung: Diagramm: Lineare Regression",align="center"]
 
 Für den Datensatz im obigen Bild scheint die AMV-Rate im Laufe der Zeit abgenommen zu haben. Wenn das Kontrollkästchen "lineare Regression" markiert ist, wird eine rote Linie angezeigt, die die beste Schätzung der Beziehung zwischen AMV-Rate und Jahr zusammenfasst. Aus dieser Grafik geht hervor, dass die AMV-Rate zwischen 2013 und 2021 von etwa 21 l/min auf etwa 14 l/min gesunken ist. Der rosa Bereich um die rote Linie zeigt die Unsicherheit der genauen Ausrichtung der Linie an. Es wird erwartet, dass die Linie mit einer Sicherheit von 95 % irgendwo innerhalb des rosa Bereichs liegt. Die Intensität der rosa Farbe zeigt auch die relative Zuverlässigkeit dieser Schätzungen an. Das Verfahren zur Erstellung eines Streudiagramms ist wie folgt:
 
@@ -1657,17 +1657,17 @@ image::images/StatsBarchartSubdivided.jpg["Stats subdivided barchart / Daten mü
 
 Balkendiagramme können um 90 Grad gedreht werden, indem Sie den entsprechenden Diagrammtyp in der Auswahlbox Diagramm auswählen. Hier sehen Sie zum Beispiel ein horizontales Balkendiagramm, das durch die Auswahl von "Balken/gestapelt horizontal" in der Auswahlbox Diagramm erzeugt wird, wobei derselbe Datensatz wie im obigen Diagramm verwendet wird. Dies ist nützlich, wenn die Beschriftungen für verschiedene Balken lang sind, so dass sie nicht mit vertikalen Balkendiagrammen angezeigt werden können.
 
-image::images/StatsBarchartHorizontal.jpg["Stats: Horizontal comparison of categories / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/StatsBarchartHorizontal.jpg["Abbildung: Balkendiagramm",align="center"]
 
 ==== Schnelle grafische Darstellung von Teilmengen von Daten in einem Diagramm (Einschränkung der angezeigten Daten)
 
 Angenommen, Sie betrachten ein Balkendiagramm, das die durchschnittliche maximale Tauchtiefe für verschiedene Jahre anzeigt. Zwei der Jahre weisen jedoch atypische Tauchtiefenwerte auf, und Sie möchten die Tauchgänge nur für diese beiden Jahre untersuchen. Die naheliegendste Methode ist die Verwendung des Filterwerkzeugs, um nur die Daten für die beiden interessierenden Jahre auszuwählen und diese Daten dann im Statistikfenster zu betrachten. _Subsurface_ bietet jedoch einen schnellen Mechanismus zur Auswahl der entsprechenden Teilmenge von Daten mit der Maus. Im obigen Beispiel eines Balkendiagramms wählen Sie die Balken für die beiden Jahre aus, die Sie interessieren, indem Sie sie anklicken und die Schaltfläche "Auf Auswahl beschränken" unten links im Statistikfenster aktivieren. Dadurch werden nur die Daten für die beiden ausgewählten Balken angezeigt. Diese eingeschränkte Teilmenge kann nun mit allen Optionen im Statistik-Feld analysiert werden. Nachfolgend sehen Sie ein Streudiagramm für eine Reihe von Tauchgängen, das die Wassertemperatur für verschiedene Tauchtiefen anzeigt.
 
-image::images/StatsRestricted.jpg["Stats: Selecting restricted data / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/StatsRestricted.jpg["Abbildung: Statistik: Eingeschränkte Datenauswahl",align="center"]
 
 Nehmen wir an, Sie möchten nur Tauchgänge an tropischen Tauchplätzen analysieren, definiert durch Temperaturen über 22°C und Tiefen unter 60m. Wählen Sie die entsprechenden Tauchgänge aus, indem Sie die Maus über das Streudiagramm ziehen (siehe Abbildung oben), und schränken Sie die Daten ein, indem Sie die Schaltfläche "*Auf Auswahl beschränken*" aktivieren. Jetzt wird nur die ausgewählte Untergruppe von Punkten im Diagramm angezeigt. Sie können nun die Variablen *Base* und *Data* auswählen, um die eingeschränkten Daten weiter zu analysieren. Das unten stehende Diagramm zeigt die AMV-Raten als Funktion der Tauchtiefe für den oben erstellten eingeschränkten Datensatz. Das Diagramm zeigt, dass die AMV-Rate mehr oder weniger konstant war (etwa 15 l/min) für alle Tauchtiefen an tropischen Tauchplätzen.
 
-image::images/StatsRestrictedGraph.jpg["Stats: Showing restricted data / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/StatsRestrictedGraph.jpg["Abbildung: Statistik: Anzeige eingeschränkter Datenauswahl",align="center"]
 
 Die Möglichkeit, schnell Teilmengen von Daten für die Anzeige zu erstellen (mit Hilfe des Einschränkungswerkzeugs), bietet einen leistungsstarken Mechanismus für die schnelle, aber detaillierte Analyse eines Tauchprotokolls.
 
@@ -1720,7 +1720,7 @@ Nummerieren Sie einige ausgewählte Tauchgänge in der Tauchgangsliste neu, inde
 
 Für regelmäßige Taucher kann die Tauchliste schnell sehr lang werden. _Subsurface_ kann Tauchgänge zu _Ausflügen_ zusammenfassen. Dazu werden Tauchgänge, deren Datum/Uhrzeit nicht mehr als zwei Tage auseinanderliegen, gruppiert und für jeden Tauchausflug im Tauchprotokoll eine eigene Überschrift erstellt. Unten sehen Sie eine ungruppierte Tauchliste (*A*, links) sowie die entsprechende gruppierte Tauchliste mit fünf Tauchausflügen (*B*, rechts):
 
-image::images/Group2.jpg["Figure: Grouping dives / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Group2.jpg["Abbildung: Vergleich Tauchliste ohne / mit Gruppierung nach Ausflügen",align="center"]
 
 Durch die Gruppierung nach Tauchgängen können Sie schnell auf einzelne Tauchgänge zugreifen, ohne eine lange Liste von Tauchgängen durchsuchen zu müssen. Um die Tauchgänge in einer Tauchgangsliste zu gruppieren, wählen Sie (im Hauptmenü) „Log“ -> „Auto group“ (Automatisch gruppieren). Im Bereich „Dive List“ (Tauchgangsliste) werden nun nur noch die Titel der Tauchgänge angezeigt.
 
@@ -1763,7 +1763,7 @@ Manchmal ist es notwendig, die Startzeit eines Tauchgangs anzupassen. Dies kann 
 
 Manchmal wird ein Tauchgang kurz unterbrochen, beispielsweise wenn ein Taucher für einige Minuten an die Oberfläche zurückkehrt. Dies führt dazu, dass der Tauchcomputer zwei oder mehr Tauchgänge aufzeichnet, die im Fenster „Tauchgangsliste“ als separate Tauchgänge angezeigt werden. Führen Sie diese Tauchgänge zu einem einzigen Tauchgang zusammen, indem Sie die entsprechenden Tauchgänge auswählen, mit der rechten Maustaste darauf klicken, um das Kontextmenü aufzurufen, und dann *Ausgewählte Tauchgänge zusammenführen* auswählen. Möglicherweise müssen Sie die Tauchgangsinformationen im Bereich *Notizen* bearbeiten, um Ereignisse oder Bedingungen widerzuspiegeln, die für den zusammengeführten Tauchgang gelten. Die Abbildung unten zeigt das Tiefenprofil von zwei Tauchgängen, die zusammengefügt wurden:
 
-image::images/MergedDive.png["Example: Merged dive / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/MergedDive.png["Abbildung: Zusammengeführte Tauchgänge",align="center"]
 
 ==== Ausgewählte Tauchgänge aufteilen
 
@@ -1808,11 +1808,11 @@ Ein Tauchprotokoll oder ein Teil davon kann in verschiedenen Formaten gespeicher
 
 * Weltkartenformat: Eine HTML-Datei mit einer Weltkarte, auf der jeder Tauchgang und einige Informationen dazu angezeigt werden. Diese Karte kann nicht bearbeitet werden. Wenn Sie einen der Tauchplätze auf der Karte auswählen, wird eine Zusammenfassung des Tauchgangs als Text angezeigt, wie im Bild unten gezeigt.
 
-image::images/mapview_f20.jpg["Figure: HTML Map export view / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/mapview_f20.jpg["Abbildung: Kartenanzeige ohne / mit Tauchgangdetails",align="center"]
 
 * _TeX_-Format, eine Datei zum Drucken mit der TeX-Satzsoftware. Wählen Sie einen Dateinamen mit der Erweiterung „.tex“. Sie benötigen außerdem eine Vorlagendatei, die Sie unter dem Link   https://www.atdotde.de/%7erobert/subsurfacetemplate/ im selben Verzeichnis wie die .tex-Datei herunterladen können. Die Datei kann dann mit einfachem TeX (nicht LaTeX) verarbeitet werden, z. B. durch Ausführen von „pdftex dateiname.tex“ in der Kommandozeile.
 
-image::images/texexample.png["Figure: Export to TeX / Bleibt bestehen, habe kein Äquivalent", align="center"]
+image::images/texexample.png["Abbildung: Exportierter Tauchgang in TeX", align="center"]
 
 * _LaTeX_. +
 Schreiben Sie die Einträge in ein LaTeX-Dokument, dessen Satz automatisch mit TeX erfolgt. LaTeX kümmert sich um Seiteninhalt und Layout, während TeX den Satz übernimmt.
@@ -1880,7 +1880,7 @@ Ein schöner Nebeneffekt des Subsurface Cloud-Speichers ist, dass Sie Ihre Tauch
 
 Wenn Sie den integrierten Cloud-Speicher für Tauchprotokolle nicht nutzen möchten (und auch keinen Webzugriff benötigen), können Sie Ihre Tauchprotokolle ganz einfach in der Cloud speichern, indem Sie verschiedene der vorhandenen Internetfunktionen nutzen. Beispielsweise bietet https://www.dropbox.com/[_Dropbox_] eine kostenlose Anwendung an, mit der Dateien auf den Dropbox-Servern als lokaler Ordner auf einem Desktop-Computer angezeigt werden können.
 
-image::images/Cloud.jpg["FIGURE: Dropbox folder / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Cloud.jpg["Abbildung: Dropbox als lokaler Ordner",align="center"]
 
 Das Programm Dropbox erstellt eine Kopie der Dropbox-Internet-Cloud-Inhalte auf Ihrem Desktop-Computer. Sobald der Computer mit dem Internet verbunden ist, werden die Internet-Inhalte automatisch aktualisiert. Sowohl das Öffnen als auch das Speichern von Tauchprotokollen erfolgt daher über die lokale Kopie des Tauchprotokolls im lokalen Dropbox-Ordner, sodass keine direkte Internetverbindung erforderlich ist. Wird die lokale Kopie geändert, z. B. durch Hinzufügen eines Tauchgangs, wird die Remote-Kopie auf dem Dropbox-Server in der Cloud automatisch aktualisiert, sobald ein Internetzugang verfügbar ist.
 
@@ -1932,15 +1932,15 @@ image::images/Print1_f22_DE.jpg["FIGURE: Print dialog",align="center"]
 
 - _Tabelle_: Druckt eine Übersichtstabelle aller ausgewählten Tauchgänge (siehe unten).
 
-image::images/Print_summarylist_f22.jpg["FIGURE: Print summary table/ Bleibt bestehen, Layout ist noch nicht in deutsch umgesetzt",align="center"]
+image::images/Print_summarylist_f22.jpg["Abbildung: Drucken: Übersichtstabelle",align="center"]
 
 - _Flow-Layout_: Drucken Sie den Text zu jedem Tauchgang, ohne die Tauchprofile jedes Tauchgangs zu drucken (siehe unten):
 
-image::images/Print_flow_layout_f22.jpg["FIGURE: Print flow layout / Bleibt bestehen, Layout ist noch nicht in deutsch umgesetzt",align="center"]
+image::images/Print_flow_layout_f22.jpg["Abbildung: Drucken: Logbuchseiten",align="center"]
 
 - _Ein Tauchgang_: Druckt einen Tauchgang pro Seite und zeigt auch das Tauchprofil an (siehe unten)
 
-image::images/print2_f22.jpg["FIGURE: Print one dive / page / Bleibt bestehen, Layout ist noch nicht in deutsch umgesetzt",align="center"]
+image::images/print2_f22.jpg["Abbildung: Drucken: Logbuchseite horizontal",align="center"]
 
 - _Zwei Tauchgänge_: Druckt zwei Tauchgänge pro Seite und zeigt auch die Tauchprofile an.
 - _Sechs Tauchgänge_: Druckt sechs Tauchgänge pro Seite und zeigt auch die Tauchprofile an.
@@ -1953,7 +1953,7 @@ image::images/Print_print_f22_DE.jpg["FIGURE: Print dialog",align="center"]
 
 Stellen Sie die Druckauflösung des Druckers in den Druckereigenschaften auf einen geeigneten Wert ein. Wählen Sie abschließend die Schaltfläche „Drucken“, um die Daten auszudrucken. Nachfolgend sehen Sie ein (eher kleines) Beispiel für die Ausgabe einer Seite.
 
-image::images/Printpreview.jpg["FIGURE: Print preview page / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Printpreview.jpg["Abbildung: Drucken: Vorschau Logbuchseiten",align="center"]
 
 === Schreiben einer benutzerdefinierten Druckvorlage (fortgeschritten)
 
@@ -1966,7 +1966,7 @@ Mit Subsurface können Sie Tauchcomputer konfigurieren. Aktuell werden die Tauch
 
 Sobald der Tauchcomputer mit dem Subsurface-Computer verbunden ist, wählen Sie im Hauptmenü Datei -> Einstellungen am Tauchcomputer ändern. Wählen Sie den entsprechenden Gerätenamen (oder Einhängepunkt) in der Dropdown-Liste oben im Konfigurationsfenster und wählen Sie das entsprechende Tauchcomputermodell im linken Bereich (siehe Abbildung unten).
 
-image::images/Configure_dc_f20.jpg["FIGURE: Configure dive computer / Bleibt bestehen, Keine Info von Scubapro",align="center"]
+image::images/Configure_dc_f20.jpg["Abbildung: Tauchcomputer - Einstellungen",align="center"]
 
 Mithilfe der entsprechenden Schaltflächen im Konfigurationsfenster können die folgenden Aktionen ausgeführt werden:
 
@@ -2267,7 +2267,7 @@ Zeigen Sie Änderungen an der verwendeten Gasflasche an, indem Sie die Gaswechse
 
 Die für den Plan verwendeten Flaschen müssen in der Tabelle „Verfügbare Gase“ eingetragen werden. Wählen Sie in der Spalte „Typ“ die passende Flaschengröße aus, indem Sie auf eine Zelle in dieser Spalte doppelklicken. Standardmäßig sind zahlreiche Größen verfügbar. Sie können eine neue Flaschengröße erstellen, indem Sie diese in das Textfeld eingeben. Flaschengröße, Startdruck und Standard-Umschalttiefen werden automatisch initialisiert. Geben Sie die Gaszusammensetzung (z. B. Helium- und Sauerstoffgehalt) und – bei der Planung eines CCR-Tauchgangs – die beabsichtigte Verwendung als Verdünnungsgas oder OC-Bailout-Gas an. Bei der Planung von CCR-Tauchgängen wird ein Segment als geschlossenes Kreislaufsegment berechnet, wenn das verwendete Gas ein Verdünnungsgas ist, und als offenes Kreislaufsegment, wenn es sich um ein OC-Gas handelt. Wenn der Benutzer in den Einstellungen des „Tech-Setups“ die Option „Verwendung von offenem Kreislaufgas als Bailout zulassen“ aktiviert, wird eine zusätzliche Spalte angezeigt, in der der Benutzer den „Tauchmodus“ für jedes mit einem „OC-Gas“ getauchte Segment auswählen kann.
 
-image::images/Planner_OC_gas_for_CCR.png["FIGURE: Planning a dive: OC as CCR / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Planner_OC_gas_for_CCR.png["Abbildung: Tauchplaner: OC Gas als Bailout",align="center"]
 
 Für CCR-Tauchgänge wird in der Tabelle „Punkte des Tauchplaners“ eine zusätzliche Spalte angezeigt, in der der Benutzer den Sollwert für jedes Segment mit geschlossenem Kreislauf festlegen kann.
 
@@ -2276,14 +2276,14 @@ Wenn das letzte manuell eingegebene Segment ein Segment mit geschlossenem Kreisl
 Geben Sie Tauchprofilsegmente in die Tabelle „Tauchplanerpunkte“ ein, indem Sie die Dauer und die Endtiefe für jedes Segment angeben. Wenn während des Tauchgangs mehr als eine Flasche verwendet wird, stellen Sie sicher, dass für jedes Segment des Tauchplans die richtige Flasche ausgewählt ist. Doppelklicken Sie dazu auf die Zelle und wählen Sie die entsprechende Flasche aus der Dropdown-Liste in der Spalte „Verwendetes Gas“. Fügen Sie bei Bedarf eine neue Zeile in die Tabelle „Tauchplanerpunkte“ ein und legen Sie anschließend den Wert für „Laufzeit“ entsprechend fest. In Abbildung A unten wurde ein Segment (mit einer EAN50-Flasche) hinzugefügt, das Sie gleich zu Beginn des Tauchgangs verwenden möchten (das andere Gas ist an der Oberfläche nicht atembar). Durch Drücken der Eingabetaste wird dieses Segment an den Anfang der Tabelle verschoben und der Plan automatisch angepasst, um dieses neue Segment des Tauchplans zu berücksichtigen (Abbildung B unten).
 
 *A:*
-image::images/planner1.jpg["Abbildung: Tauchgang planen: Segmente 1/2 / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/planner1.jpg["Abbildung: Tauchgang planen: Segmente 1/2",align="center"]
 
 *B:*
-image::images/planner2.jpg["Abbildung: Tauchgang planen: Segmente 2/2 / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/planner2.jpg["Abbildung: Tauchgang planen: Segmente 2/2",align="center"]
 
 Unten sehen Sie ein Beispiel für einen Tauchplan auf 55 m mit Tx20/30 und dem Bühlmann-Algorithmus, gefolgt von einem Aufstieg mit EAN50 und den oben beschriebenen Einstellungen.
 
-image::images/Planner_OC_deco.png["FIGURE: Planning a dive: setup / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Planner_OC_deco.png["Abbildung: Tauchgang planen: Dekotauchgang",align="center"]
 
 Sobald die oben genannten Schritte abgeschlossen sind, speichern Sie den Plan, indem Sie oben in der Mitte auf die Schaltfläche „Speichern“ klicken. Der gespeicherte Tauchplan wird in der Tauchliste von „Subsurface“ angezeigt.
 
@@ -2327,7 +2327,7 @@ Die *Planvariationen* und *Mindestgas*-Schätzungen sind lediglich Richtlinien f
 
 Um einen Tauchgang mit einem passiven halbgeschlossenen Rebreather (pSCR) zu planen, wählen Sie in der Dropdown-Liste pSCR statt Offener Kreislauf. Die Parameter des pSCR-Tauchgangs können im Hauptmenü unter Datei -> Einstellungen -> Technische Einstellungen eingestellt werden. Die Berechnung des Gasverbrauchs berücksichtigt das pSCR-Entleerungsverhältnis (Standard 1:8) sowie die Stoffwechselrate. Geben Sie die AMV-Raten für Grund- und Dekompression an. Der AMV im Planer ist das Gasvolumen pro Minute, das an der Oberfläche in den Kreislauf ausgeatmet wird, nicht die Gasmenge, die ins Wasser entweicht. Die Berechnung berücksichtigt den Sauerstoffabfall über dem Mundstück des Rebreathers. Wenn der pO~2~ unter den als sicher geltenden Wert fällt, wird in den Tauchplandetails eine Warnung angezeigt. Ein typischer pSCR-Flaschenaufbau ähnelt stark einem Tauchgang mit offenem Kreislauf. Eine oder mehrere Tauchflaschen, möglicherweise mit unterschiedlichen Boden- und Dekompressionsgasen, einschließlich Gaswechsel während des Tauchgangs wie beim Tauchen mit offenem Kreislauf. Daher ist die Einrichtung der Tabellen „Verfügbare Gase“ und „Tauchplanerpunkte“ sehr ähnlich wie bei einem Tauchplan für einen offenen Kreislauf, wie oben beschrieben. Für pSCR-Tauchgänge sind jedoch keine Sauerstoffsollwerte festgelegt. Nachfolgend finden Sie einen Tauchplan für einen pSCR-Tauchgang. Der Tauchgang ist vergleichbar mit dem unten beschriebenen CCR-Tauchgang, beachten Sie jedoch die längere Aufstiegsdauer aufgrund des geringeren Sauerstoffgehalts im Kreislauf aufgrund des Sauerstoffabfalls über das Mundstück der pSCR-Ausrüstung.
 
-image::images/Planner_pSCR.png["FIGURE: Planning a pSCR dive: setup / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Planner_pSCR.png["Abbildung: Tauchgang planen: pSCR Tauchgang",align="center"]
 
 ==== Planung für die pSCR-Rettung
 
@@ -2338,7 +2338,7 @@ Tauchen mit offenem Kreislauf ist oft Teil eines pSCR-Tauchgangs, da in geringen
 2) Wenn der Bailout an einem anderen Punkt des Tauchgangs stattfindet (siehe Beispiel eines Höhlentauchgangs unten), wird er durch Bearbeiten der Spalte „Tauchmodus“ der Tabelle „Tauchplaner-Punkte“ geplant. Das Bild links zeigt einen pSCR-Tauchplan (mit drei Flaschen). Die flachen Abschnitte des Tauchgangs werden mit EAN50 durchgeführt, um einen ausreichenden pO2-Wert zu gewährleisten. Der untere Teil des Tauchgangs wird mit EAN31 durchgeführt (Flasche 2 in der Tabelle „Verfügbare Gase“, auch in der Tabelle „Punkte im Tauchplan“ aufgeführt). Die dritte Flasche, ebenfalls EAN31, ist eine Notflasche, die zunächst nicht verwendet wird. In diesem Fall ist ein Höhlentauchgang mit einer Grundzeit von 20 Minuten geplant, und der Wendepunkt im unteren Teil des Tauchgangs liegt bei 16 Minuten (also zehn Minuten nach Beginn des Tauchgangs). Die orangefarbene pO~2~-Grafik zeigt den entsprechenden OC pO~2~ während des Tauchgangs und die grüne pO~2~ den geschätzten pO~2~ im Loop, wobei der gesamte Tauchgang im Rebreather-Modus durchgeführt wird. Wir möchten ein Worst-Case-Szenario mit Bailout am Wendepunkt (also am weitesten in der Höhle) planen. Ändern Sie in der Tabelle *Tauchplanerpunkte* den *Tauchmodus* der letzten beiden Segmente auf *OC* (siehe linkes Bild, unten mit *A* gekennzeichnet). In diesem Fall wird die vorhandene EAN31- Flasche (Zyl. 2) in der Tabelle *Tauchplanerpunkte* für den Bailout verwendet (d. h. die Bailout-Flasche [Zyl. 3] wurde noch nicht verwendet).
 Beachten Sie, dass das pO~2~-Diagramm nun die entsprechenden pO~2~-Werte anzeigt, da das eingeatmete Gas nun den pO~2~-Wert einer OC-Konfiguration hat. Um zur Bailout-Flasche (Zyl. 3) zu wechseln, wählen Sie die entsprechende Flasche in der Tabelle *Tauchplanerpunkte* aus, wie im Bild rechts unten (mit *B* gekennzeichnet) dargestellt. Das Symbol im Tiefenprofil zeigt nun ein überlappendes Bailout-Ereignis mit Flaschenwechsel an. Wie im Diagramm links werden die entsprechenden pO~2~-Werte in den pO~2~-Diagrammen angezeigt. Die benötigten Gasmengen finden Sie unten im Bereich *Tauchplandetails*.
 
-image::images/pscr_b2.jpg["FIGURE: Planning a pSCR dive: setup / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/pscr_b2.jpg["Abbildung: Tauchgang planen: pSCR Bailout Optionen",align="center"]
 
 Bei einem pSCR-Tauchplan für offene Gewässer ist im schlimmsten Fall wahrscheinlich ein Bailout am Ende des tiefsten Teils des Tauchgangs erforderlich. Dies kann mithilfe der Checkbox „Bailout“ im Planer erreicht werden. Alternativ kann ein 1-Minuten-Segment am Ende des tiefsten Teils des Tauchplans erstellt werden. Dieses letzte Segment (dargestellt durch die unterste Zeile der Tabelle „Punkte im Tauchplan“) wird dann mithilfe der Spalten „Tauchmodus“ und „Verwendetes Gas“ bearbeitet, wie im obigen Höhlenbeispiel. Siehe unten das Beispiel für einen Bailout für einen CCR-Tauchgang, der diesen Ansatz verwendet.
 
@@ -2356,21 +2356,21 @@ Wenn Sie möchten, dass sich der Sollwert während des geplanten Aufstiegs in ei
 
 Das Tauchprofil für einen CCR-Tauchgang kann in etwa wie im Bild unten aussehen.
 
-image::images/Planner_CCR.png["FIGURE: Planning a CCR dive: setup / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Planner_CCR.png["Abbildung: Tauchgang planen: CCR Tauchgang",align="center"]
 
 Beachten Sie, dass in den Tauchplandetails der Gasverbrauch für ein CCR-Segment nicht berechnet wird. Daher ist ein Gasverbrauch von 0 Litern die Norm.
 
 ==== Planung für die CCR-Rettung
 
-image::images/CCR_b1.png["FIGURE: Planning a CCR dive: closed circuit deco / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/CCR_b1.png["Abbildung: Tauchgang planen: CCR Diluent Verbrauch",align="center"]
 
 Oftmals ist es notwendig, für den schlimmsten Fall einen Bailout-Vorfall zu planen, um unter Berücksichtigung der Dekompression ausreichend Bailout-Gas für das Erreichen der Oberfläche bereitzustellen. Aktivieren Sie dazu im Tauchplaner das Kontrollkästchen „Rebreather: Bailout / Dekompression bei OC“ (der Bailout wird ab dem letzten in der Tabelle „Punkte des Tauchplaners“ angegebenen Tauchgangs berechnet).
 
-image::images/CCR_b2.png["FIGURE: Planning a CCR dive: open circuit bailout / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/CCR_b2.png["Abbildung: Tauchgang planen: CCR mit Deko auf Bailout",align="center"]
 
 Ändern Sie in der Tabelle „Verfügbare Gase“ die Verwendung des für das letzte Segment verwendeten Gases in „OC-Gas“. Dies bedeutet Bailout. Die entsprechenden pO~2~- und Flaschendruckdiagramme werden im Tauchprofil angezeigt:
 
-image::images/CCR_b3.png["FIGURE: Planning a CCR dive: open circuit bailout by cylinder selection / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/CCR_b3.png["Abbildung: Tauchgang planen: CCR mit Bailout",align="center"]
 
 Um die Notversorgung über eine externe Notgasflasche zu planen, wechseln Sie das verwendete Gas für das 1-Minuten-Segment wie im obigen Beispiel zur entsprechenden Flasche. Beachten Sie, dass sowohl der Flaschenwechsel als auch die Notversorgung durch überlappende Symbole angezeigt werden.
 
@@ -3036,9 +3036,9 @@ Sobald dies geschehen ist, öffnen Sie die gespeicherte Datenbankdatei mit _Subs
 
 
 [[S_Appendix_D]]
-== Anhang D: Tabellenkalkulation ins CSV-Format exportieren
+== Anhang D: Tabellenkalkulation ins TSV-Format exportieren
 
-Viele Taucher führen ein Tauchprotokoll in Form einer digitalen Datei, üblicherweise eine Tabellenkalkulation mit verschiedenen Informationsfeldern. Diese Protokolle können leicht in _Subsurface_ importiert werden, nachdem die Tabelle in eine CSV-Datei konvertiert wurde. In diesem Abschnitt wird erklärt, wie man ein in einer Tabellenkalkulation gespeichertes Tauchlogbuch in eine CSV-Datei konvertiert, die später in _Subsurface_ importiert werden kann. Die Erstellung einer .CSV-Datei ist einfach, obwohl die Vorgehensweise je nach verwendetem Tabellenkalkulationsprogramm etwas unterschiedlich ist.
+Viele Taucher führen ein Tauchprotokoll in Form einer digitalen Datei, üblicherweise eine Tabellenkalkulation mit verschiedenen Informationsfeldern. Diese Protokolle können leicht in _Subsurface_ importiert werden, nachdem die Tabelle in eine TSV-Datei konvertiert wurde. In diesem Abschnitt wird erklärt, wie man ein in einer Tabellenkalkulation gespeichertes Tauchlogbuch in eine TSV-Datei konvertiert, die später in _Subsurface_ importiert werden kann. Die Erstellung einer .CSV-Datei ist einfach, obwohl die Vorgehensweise je nach verwendetem Tabellenkalkulationsprogramm etwas unterschiedlich ist.
 
 Organisieren Sie die Tauchdaten in der Tabelle, so dass die erste Zeile die Namen (oder Titel) der einzelnen Spalten enthält und die Informationen für jeden Tauchgang in einer einzigen Zeile gespeichert werden. _Subsurface_ unterstützt viele Datenelemente (Tauchgangsnummer, Datum, Zeit, Dauer, Ort, GPS, Max. Tiefe, Mittlere Tiefe, Tauchpartner, Notizen, Gewicht und Stichworte). Organisieren Sie Ihre Tauchgangsdaten nach ein paar einfachen Regeln:
 
@@ -3053,17 +3053,17 @@ Organisieren Sie die Tauchdaten in der Tabelle, so dass die erste Zeile die Name
 Hierbei handelt es sich um Open-Source-Tabellenkalkulationsprogramme, die Teil einer größeren Open-Source-Office-Suite sind. Die Benutzerinteraktion mit LibreOfice und OpenOfice ist sehr ähnlich. In Libreoffice Calc sollte das Zeitformat auf Minuten:Sekunden - [mm]:ss und das Datum auf eines der folgenden Formate eingestellt werden: jjjj-mm-tt, tt.mm.jjjj, mm/dd/jjjj.
 Ein typisches Tauchgangsprotokoll kann wie folgt aussehen:
 
-image::images/LOffice_spreadsheetdata.jpg["FIGURE: Spreadsheet data / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/LOffice_spreadsheetdata.jpg["Abbildung: Tabellenkalkulation",align="center"]
 
-Um die Daten als CSV-Datei aus LibreOffice zu exportieren, klicken Sie auf Datei→ Speichern unter. Wählen Sie in dem daraufhin angezeigten Dialogfeld Text-CSV (.csv) als Dateityp aus und wählen Sie die Option Filtereinstellungen bearbeiten.
+Um die Daten als TSV-Datei aus LibreOffice zu exportieren, klicken Sie auf Datei→ Speichern unter. Wählen Sie in dem daraufhin angezeigten Dialogfeld Text-TSV (.csv) als Dateityp aus und wählen Sie die Option Filtereinstellungen bearbeiten.
 
-image::images/LOffice_save_as_options.jpg["FIGURE: Save as options / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/LOffice_save_as_options.jpg["Abbildung: Tabelle speichern als TSV",align="center"]
 
 Wählen Sie nach der Auswahl von Speichern das entsprechende Feldbegrenzungszeichen aus (wählen Sie Tabulator, um Konflikte mit dem Komma zu vermeiden, wenn dieses als Dezimalzeichen verwendet wird), und wählen Sie dann OK.
 
-image::images/LOffice_field_options.jpg["FIGURE: Field options / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/LOffice_field_options.jpg["Abbildung: Tabelle speichern als TSV",align="center"]
 
-Überprüfen Sie die CSV-Datei, indem Sie sie mit einem Texteditor öffnen, und importieren Sie dann die Tauchdaten wie im Abschnitt xref:S_ImportingCSVDives[Importieren von CSV-Tauchgängen beschrieben].
+Überprüfen Sie die TSV-Datei, indem Sie sie mit einem Texteditor öffnen, und importieren Sie dann die Tauchdaten wie im Abschnitt xref:S_ImportingCSVDives[Importieren von CSV-Tauchgängen beschrieben].
 
 === Microsoft _Excel_
 
@@ -3079,19 +3079,19 @@ Das Feldtrennzeichen (in den Handbüchern von Microsoft als "Listentrennzeichen"
 
 Unten sehen Sie ein Bild des Control Felds:
 
-image::images/Win_SaveCSV2.jpg["FIGURE: Win List separator / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Win_SaveCSV2.jpg["Abbildung: Einstellungen zum Speichern als TSV",align="center"]
 
-So exportieren Sie das Tauchprotokoll im CSV-Format:
+So exportieren Sie das Tauchprotokoll im TSV-Format:
 
 Wenn das Tauchprotokoll in Excel geöffnet ist, wählen Sie die runde Windows-Schaltfläche oben links und dann Speichern unter.
 
-image::images/Win_SaveCSV1.jpg["FIGURE: Option zum Speichern unter in Excel / Bleibt bestehen, habe kein Äquivalent",align="center"] Prüfen
+image::images/Win_SaveCSV1.jpg["Abbildung: Speichern in Excel",align="center"] Prüfen
 
-Klicken Sie auf den linken Teil der Option Speichern unter, NICHT auf den Pfeil auf der rechten Seite. Daraufhin wird ein Dialogfeld zum Speichern des Arbeitsblatts in einem anderen Format angezeigt. Wählen Sie aus der Dropdown-Liste unten im Dialogfeld mit der Bezeichnung Speichertyp: die Option CSV (Comma delimited) (*.CSV). Vergewissern Sie sich, dass der entsprechende Ordner ausgewählt wurde, in dem die CSV-Datei gespeichert werden soll.
+Klicken Sie auf den linken Teil der Option Speichern unter, NICHT auf den Pfeil auf der rechten Seite. Daraufhin wird ein Dialogfeld zum Speichern des Arbeitsblatts in einem anderen Format angezeigt. Wählen Sie aus der Dropdown-Liste unten im Dialogfeld mit der Bezeichnung Speichertyp: die Option CSV (Comma delimited) (*.CSV). Vergewissern Sie sich, dass der entsprechende Ordner ausgewählt wurde, in dem die TSV-Datei gespeichert werden soll.
 
-image::images/Win_SaveCSV3.jpg["FIGURE: Excel save CSV dialog / Bleibt bestehen, habe kein Äquivalent",align="center"]
+image::images/Win_SaveCSV3.jpg["Abbildung: Speichern als CSV",align="center"]
 
-Wählen Sie die Schaltfläche Speichern. Die CSV-formatierte Datei wird in dem ausgewählten Ordner gespeichert. Sie können die CSV-Datei überprüfen, indem Sie sie mit einem Texteditor öffnen und dann die Tauchgangsdaten wie im Abschnitt xref:S_ImportingCSVDives[Importieren von CSV-Tauchgängen] beschrieben importieren.
+Wählen Sie die Schaltfläche Speichern. Die TSV-formatierte Datei wird in dem ausgewählten Ordner gespeichert. Sie können die TSV-Datei überprüfen, indem Sie sie mit einem Texteditor öffnen und dann die Tauchgangsdaten wie im Abschnitt xref:S_ImportingCSVDives[Importieren von CSV-Tauchgängen] beschrieben importieren.
 
 
 [[S_APPENDIX_E]]
