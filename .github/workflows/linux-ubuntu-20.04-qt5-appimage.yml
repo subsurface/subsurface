@@ -130,7 +130,7 @@ jobs:
     - name: PR artifacts
       if: github.event_name == 'pull_request'
       # We cannot update this as glibc on 16.04 is too old for node 20.
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: Subsurface-Linux-AppImage-${{ steps.version_number.outputs.version }}
         path: Subsurface-*.AppImage
