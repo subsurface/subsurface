@@ -73,7 +73,7 @@ jobs:
 
     - name: Upload the snap
       if: github.event_name == 'push'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: ${{ steps.build-snap.outputs.snap-name }}
         path: ${{ steps.build-snap.outputs.snap-path }}
