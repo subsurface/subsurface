@@ -75,11 +75,13 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	ui.waterType->setItemData(2, EN13319_SALINITY);
 	waterTypeUpdateTexts();
 
+	disableDecoElements(static_cast<int>(prefs.planner_deco_mode), OC);
 	connect(ui.startTime, &QDateEdit::timeChanged, plannerModel, &DivePlannerPointsModel::setStartTime);
 	connect(ui.dateEdit, &QDateEdit::dateChanged, plannerModel, &DivePlannerPointsModel::setStartDate);
-	connect(ui.divemode, QOverload<int>::of(&QComboBox::currentIndexChanged), parent, &PlannerWidgets::setDiveMode);
+	connect(ui.divemode, QOverload<int>::of(&QComboBox::currentIndexChanged), parent, &PlannerWidgets::diveModeChanged);
 	connect(ui.ATMPressure, QOverload<int>::of(&QSpinBox::valueChanged), this, &DivePlannerWidget::atmPressureChanged);
 	connect(ui.atmHeight, QOverload<int>::of(&QSpinBox::valueChanged), this, &DivePlannerWidget::heightChanged);
+	connect(ui.bailout, &QAbstractButton::toggled, &PlannerShared::set_dobailout);
 	connect(ui.waterType, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &DivePlannerWidget::waterTypeChanged);
 	connect(ui.customSalinity, QOverload<double>::of(&QDoubleSpinBox::valueChanged), this, &DivePlannerWidget::customSalinityChanged);
 
@@ -119,6 +121,18 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 
 DivePlannerWidget::~DivePlannerWidget()
 {
+}
+
+void DivePlannerWidget::disableDecoElements(int mode, divemode_t divemode)
+{
+	if (mode == RECREATIONAL) {
+		ui.label_bailout->setVisible(false);
+		ui.bailout->setVisible(false);
+	} else if (mode == VPMB || mode == BUEHLMANN) {
+		bool isRebreatherDive = IS_REBREATHER_MODE(divemode);
+		ui.label_bailout->setVisible(isRebreatherDive);
+		ui.bailout->setVisible(isRebreatherDive);
+	}
 }
 
 void DivePlannerWidget::setReplanButton(bool replan)
@@ -234,8 +248,10 @@ void DivePlannerWidget::setDiveMode(int mode)
 	ui.divemode->setCurrentIndex(mode);
 }
 
-void DivePlannerWidget::setColumnVisibility(int mode)
+void DivePlannerWidget::diveModeChanged(int mode)
 {
+	disableDecoElements(static_cast<int>(prefs.planner_deco_mode), static_cast<divemode_t>(mode));
+
 	ui.tableWidget->view()->setColumnHidden(DivePlannerPointsModel::CCSETPOINT, mode != CCR);
 	ui.tableWidget->view()->setColumnHidden(DivePlannerPointsModel::DIVEMODE, mode == OC || (mode == CCR && !prefs.allowOcGasAsDiluent));
 
@@ -267,10 +283,6 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 		ui.backgasBreaks->blockSignals(true);
 		ui.backgasBreaks->setChecked(false);
 		ui.backgasBreaks->blockSignals(false);
-		ui.bailout->setDisabled(true);
-		ui.bailout->blockSignals(true);
-		ui.bailout->setChecked(false);
-		ui.bailout->blockSignals(false);
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(true);
 		ui.safetystop->setDisabled(false);
@@ -308,7 +320,6 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 			ui.backgasBreaks->setChecked(false);
 			ui.backgasBreaks->blockSignals(false);
 		}
-		ui.bailout->setDisabled(!IS_REBREATHER_MODE(divemode));
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
@@ -342,7 +353,6 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 			ui.backgasBreaks->setChecked(false);
 			ui.backgasBreaks->blockSignals(false);
 		}
-		ui.bailout->setDisabled(!IS_REBREATHER_MODE(divemode));
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
@@ -401,7 +411,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(PlannerWidgets *parent)
 	ui.bottompo2->setValue(PlannerShared::bottompo2());
 	ui.decopo2->setValue(PlannerShared::decopo2());
 	ui.backgasBreaks->setChecked(prefs.doo2breaks);
-	PlannerShared::set_dobailout(false);
 	ui.o2narcotic->setChecked(prefs.o2narcotic);
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
@@ -410,7 +419,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(PlannerWidgets *parent)
 	ui.recreational_deco->setChecked(prefs.planner_deco_mode == RECREATIONAL);
 	ui.buehlmann_deco->setChecked(prefs.planner_deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.planner_deco_mode == VPMB);
-	disableDecoElements((int) prefs.planner_deco_mode, OC);
+	disableDecoElements(static_cast<int>(prefs.planner_deco_mode), OC);
 
 	connect(ui.recreational_deco, &QAbstractButton::clicked, [] { PlannerShared::set_planner_deco_mode(RECREATIONAL); });
 	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [] { PlannerShared::set_planner_deco_mode(BUEHLMANN); });
@@ -435,15 +444,14 @@ PlannerSettingsWidget::PlannerSettingsWidget(PlannerWidgets *parent)
 	connect(ui.gflow, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setGFLow);
 	connect(ui.vpmb_conservatism, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setVpmbConservatism);
 	connect(ui.backgasBreaks, &QAbstractButton::toggled, this, &PlannerSettingsWidget::setBackgasBreaks);
-	connect(ui.bailout, &QAbstractButton::toggled, &PlannerShared::set_dobailout);
 	connect(ui.o2narcotic, &QAbstractButton::toggled, &PlannerShared::set_o2narcotic);
 	connect(ui.switch_at_req_stop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setSwitchAtReqStop);
 	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_min_switch_duration);
 	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_surface_segment);
 
-	connect(ui.recreational_deco, &QAbstractButton::clicked, [this, parent] { disableDecoElements(RECREATIONAL, parent->getDiveMode()); });
-	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [this, parent] { disableDecoElements(BUEHLMANN, parent->getDiveMode()); });
-	connect(ui.vpmb_deco, &QAbstractButton::clicked, [this, parent] { disableDecoElements(VPMB, parent->getDiveMode()); });
+	connect(ui.recreational_deco, &QAbstractButton::clicked, [this, parent] { parent->disableDecoElements(RECREATIONAL, parent->getDiveMode()); });
+	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [this, parent] { parent->disableDecoElements(BUEHLMANN, parent->getDiveMode()); });
+	connect(ui.vpmb_deco, &QAbstractButton::clicked, [this, parent] { parent->disableDecoElements(VPMB, parent->getDiveMode()); });
 
 	connect(ui.sacfactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_sacfactor);
 	connect(ui.problemsolvingtime, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setProblemSolvingTime);
@@ -551,11 +559,9 @@ void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 	PlannerShared::set_doo2breaks(dobreaks);
 }
 
-void PlannerSettingsWidget::setBailoutVisibility(int mode)
+void PlannerSettingsWidget::diveModeChanged(int mode)
 {
-	bool isRebreatherMode = IS_REBREATHER_MODE(mode);
-	ui.bailout->setDisabled(!isRebreatherMode);
-	ui.sacfactor->setDisabled(isRebreatherMode);
+	ui.sacfactor->setDisabled(IS_REBREATHER_MODE(mode));
 }
 
 PlannerDetails::PlannerDetails(QWidget *parent) : QWidget(parent)
@@ -698,17 +704,23 @@ void PlannerWidgets::printDecoPlan()
 #endif
 }
 
-void PlannerWidgets::setDiveMode(int mode)
+void PlannerWidgets::diveModeChanged(int mode)
 {
 	planned_dive->get_dc(dcNr)->divemode = (divemode_t)mode;
 	DivePlannerPointsModel::instance()->cylindersChanged();
 
-	plannerWidget.setColumnVisibility(mode);
-	plannerSettingsWidget.setBailoutVisibility(mode);
+	plannerWidget.diveModeChanged(mode);
+	plannerSettingsWidget.diveModeChanged(mode);
 }
 
 void PlannerWidgets::settingsChanged()
 {
 	plannerWidget.settingsChanged();
-	setDiveMode(getDiveMode());
+	diveModeChanged(getDiveMode());
+}
+
+void PlannerWidgets::disableDecoElements(int mode, divemode_t divemode)
+{
+	plannerWidget.disableDecoElements(mode, divemode);
+	plannerSettingsWidget.disableDecoElements(mode, divemode);
 }
