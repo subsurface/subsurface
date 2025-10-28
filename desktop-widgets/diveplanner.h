@@ -21,8 +21,9 @@ public:
 	explicit DivePlannerWidget(const dive &planned_dive, int &dcNr, PlannerWidgets *parent);
 	~DivePlannerWidget();
 	void setReplanButton(bool replan);
-	void setColumnVisibility(int mode);
+	void diveModeChanged(int mode);
 	void setDiveMode(int mode);
+	void disableDecoElements(int mode, divemode_t divemode);
 public
 slots:
 	void setupStartTime(QDateTime startTime);
@@ -51,13 +52,13 @@ class PlannerSettingsWidget : public QWidget {
 public:
 	explicit PlannerSettingsWidget(PlannerWidgets *parent);
 	~PlannerSettingsWidget();
+	void disableDecoElements(int mode, divemode_t divemode);
 public
 slots:
 	void settingsChanged();
 	void setBackgasBreaks(bool dobreaks);
-	void disableDecoElements(int mode, divemode_t divemode);
 	void disableBackgasBreaks(bool enabled);
-	void setBailoutVisibility(int mode);
+	void diveModeChanged(int mode);
 
 private:
 	Ui::plannerSettingsWidget ui;
@@ -98,7 +99,8 @@ public:
 public
 slots:
 	void printDecoPlan();
-	void setDiveMode(int mode);
+	void diveModeChanged(int mode);
+	void disableDecoElements(int mode, divemode_t divemode);
 private:
 	std::unique_ptr<dive> planned_dive;
 	int dcNr;
