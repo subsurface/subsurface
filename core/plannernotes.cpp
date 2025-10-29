@@ -128,6 +128,11 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 				"Please change them to appropriate tanks to enable the generation of a dive plan.");
 
 			break;
+		case PLAN_ERROR_NO_SUITABLE_BAILOUT_GAS:
+			message = translate("gettextFromC", "No suitable gas for OC bailout at the planned final depth found in the gaslist. "
+				"Please add an OC gas with an MOD suitable for the planned final depth to enable the generation of a dive plan.");
+
+			break;
 		default:
 			message = translate("gettextFromC", "An error occurred during dive plan generation!");
 
