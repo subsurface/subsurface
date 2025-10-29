@@ -309,17 +309,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 		ui.gflow->setDisabled(true);
 		ui.gfhigh->setDisabled(true);
 		ui.lastStop->setDisabled(false);
-		if (prefs.last_stop) {
-			ui.backgasBreaks->setDisabled(false);
-			ui.backgasBreaks->blockSignals(true);
-			ui.backgasBreaks->setChecked(prefs.doo2breaks);
-			ui.backgasBreaks->blockSignals(false);
-		} else {
-			ui.backgasBreaks->setDisabled(true);
-			ui.backgasBreaks->blockSignals(true);
-			ui.backgasBreaks->setChecked(false);
-			ui.backgasBreaks->blockSignals(false);
-		}
+		ui.backgasBreaks->setDisabled(false);
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
@@ -342,17 +332,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 		ui.gflow->setDisabled(false);
 		ui.gfhigh->setDisabled(false);
 		ui.lastStop->setDisabled(false);
-		if (prefs.last_stop) {
-			ui.backgasBreaks->setDisabled(false);
-			ui.backgasBreaks->blockSignals(true);
-			ui.backgasBreaks->setChecked(prefs.doo2breaks);
-			ui.backgasBreaks->blockSignals(false);
-		} else {
-			ui.backgasBreaks->setDisabled(true);
-			ui.backgasBreaks->blockSignals(true);
-			ui.backgasBreaks->setChecked(false);
-			ui.backgasBreaks->blockSignals(false);
-		}
+		ui.backgasBreaks->setDisabled(false);
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
@@ -369,24 +349,6 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 		ui.sacfactor->setValue(PlannerShared::sacfactor());
 		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 		ui.display_variations->setDisabled(false);
-	}
-}
-
-void PlannerSettingsWidget::disableBackgasBreaks(bool enabled)
-{
-	if (prefs.planner_deco_mode == RECREATIONAL)
-		return;
-
-	if (enabled) {
-		ui.backgasBreaks->setDisabled(false);
-		ui.backgasBreaks->blockSignals(true);
-		ui.backgasBreaks->setChecked(prefs.doo2breaks);
-		ui.backgasBreaks->blockSignals(false);
-	} else {
-		ui.backgasBreaks->setDisabled(true);
-		ui.backgasBreaks->blockSignals(true);
-		ui.backgasBreaks->setChecked(false);
-		ui.backgasBreaks->blockSignals(false);
 	}
 }
 
@@ -426,7 +388,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(PlannerWidgets *parent)
 	connect(ui.vpmb_deco, &QAbstractButton::clicked, [] { PlannerShared::set_planner_deco_mode(VPMB); });
 
 	connect(ui.lastStop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setLastStop6m);
-	connect(ui.lastStop, &QAbstractButton::toggled, this, &PlannerSettingsWidget::disableBackgasBreaks);
 	connect(ui.verbatim_plan, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setVerbatim);
 	connect(ui.display_duration, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayDuration);
 	connect(ui.display_runtime, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayRuntime);

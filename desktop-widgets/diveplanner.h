@@ -57,7 +57,6 @@ public
 slots:
 	void settingsChanged();
 	void setBackgasBreaks(bool dobreaks);
-	void disableBackgasBreaks(bool enabled);
 	void diveModeChanged(int mode);
 
 private:

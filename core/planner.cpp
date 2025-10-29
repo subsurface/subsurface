@@ -712,6 +712,12 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	if (inappropriate_cylinder_use) {
 		error = PLAN_ERROR_INAPPROPRIATE_GAS;
 	}
+	if (prefs.doo2breaks) {
+		if (best_first_ascend_cylinder != -1 && get_o2(dive->get_cylinder(best_first_ascend_cylinder)->gasmix) <= 320)
+			break_cylinder = best_first_ascend_cylinder;
+		else
+			break_cylinder = 0;
+	}
 
 	/* Find the first potential decostopdepth above current depth */
 	for (stopidx = 0; stopidx < decostoplevels.size(); stopidx++)
@@ -981,20 +987,15 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 
 				o2breaking = false;
 				stop_cylinder = current_cylinder;
-				if (prefs.doo2breaks && prefs.last_stop) {
-					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on
-					 * backgas.  This could be customized if there were demand.
+				if (prefs.doo2breaks) {
+					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on backgas.
+					 * Note: The backgas break interval will be reset in between deco stops, so after going from 6m to 3m a
+					 * full 12 minute / 6 minute interval on oxygen / backgas will be planned.
+					 * This behaviour could be optimised and customized if there was demand.
 					 */
-					if (break_cylinder == -1) {
-						if (best_first_ascend_cylinder != -1 && get_o2(dive->get_cylinder(best_first_ascend_cylinder)->gasmix) <= 320)
-							break_cylinder = best_first_ascend_cylinder;
-						else
-							break_cylinder = 0;
-					}
 					if (get_o2(dive->get_cylinder(current_cylinder)->gasmix) == 1000) {
 						if (laststoptime >= BACKGAS_BREAK_O2_DURATION_SECONDS) {
 							laststoptime = BACKGAS_BREAK_O2_DURATION_SECONDS;
-							new_clock = clock + laststoptime;
 							o2breaking = true;
 							o2break_next = true;
 							breakfrom_cylinder = current_cylinder;
@@ -1006,7 +1007,6 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 					} else if (o2break_next) {
 						if (laststoptime >= BACKGAS_BREAK_DURATION_SECONDS) {
 							laststoptime = BACKGAS_BREAK_DURATION_SECONDS;
-							new_clock = clock + laststoptime;
 							o2breaking  = true;
 							o2break_next = false;
 							if (is_final_plan)
