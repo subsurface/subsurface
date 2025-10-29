@@ -712,6 +712,9 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	if (inappropriate_cylinder_use) {
 		error = PLAN_ERROR_INAPPROPRIATE_GAS;
 	}
+	if (prefs.dobailout && best_first_ascend_cylinder == -1) {
+		error = PLAN_ERROR_NO_SUITABLE_BAILOUT_GAS;
+	}
 	if (prefs.doo2breaks) {
 		if (best_first_ascend_cylinder != -1 && get_o2(dive->get_cylinder(best_first_ascend_cylinder)->gasmix) <= 320)
 			break_cylinder = best_first_ascend_cylinder;
