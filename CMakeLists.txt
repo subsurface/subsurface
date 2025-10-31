@@ -582,10 +582,10 @@ set(DOCFILES
 	README.md
 	ReleaseNotes/ReleaseNotes.txt
 	SupportedDivecomputers.txt
-	${CMAKE_BINARY_DIR}/Documentation/user-manual.html
-	${CMAKE_BINARY_DIR}/Documentation/user-manual_es.html
-        ${CMAKE_BINARY_DIR}/Documentation/user-manual_fr.html
-        ${CMAKE_BINARY_DIR}/Documentation/user-manual_de.html
+	${CMAKE_BINARY_DIR}/Documentation/output/user-manual.html
+	${CMAKE_BINARY_DIR}/Documentation/output/user-manual_es.html
+        ${CMAKE_BINARY_DIR}/Documentation/output/user-manual_fr.html
+        ${CMAKE_BINARY_DIR}/Documentation/output/user-manual_de.html
 )
 
 # add all the translations that we may need
@@ -630,7 +630,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources)
 	set(PLUGINDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns)
 	if(BUILD_DOCS OR INSTALL_DOCS)
-		install(DIRECTORY Documentation/images DESTINATION ${RESOURCEDIR}/share/Documentation)
+		install(DIRECTORY Documentation/output/images DESTINATION ${RESOURCEDIR}/share/Documentation)
 		install(FILES ${DOCFILES} DESTINATION ${RESOURCEDIR}/share/Documentation)
 	endif()
 	install(DIRECTORY theme DESTINATION ${RESOURCEDIR})
