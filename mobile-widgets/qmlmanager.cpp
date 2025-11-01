@@ -333,6 +333,8 @@ QMLManager::QMLManager() :
 	// get updates to the undo/redo texts
 	connect(Command::getUndoStack(), &QUndoStack::undoTextChanged, this, &QMLManager::undoTextChanged);
 	connect(Command::getUndoStack(), &QUndoStack::redoTextChanged, this, &QMLManager::redoTextChanged);
+
+	prefs.allowOcGasAsDiluent = false;
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)

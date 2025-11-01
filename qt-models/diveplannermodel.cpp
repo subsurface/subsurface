@@ -261,7 +261,7 @@ int DivePlannerPointsModel::columnCount(const QModelIndex&) const
 	return COLUMNS; // to disable CCSETPOINT subtract one
 }
 
-static divemode_t get_local_divemode(struct dive *d, int dcNr, const divedatapoint &p)
+static divemode_t get_local_divemode(struct dive *d, int dcNr, int cylinderId, divemode_t selectedDivemode)
 {
 	divemode_t divemode;
 	switch (d->get_dc(dcNr)->divemode) {
@@ -271,13 +271,13 @@ static divemode_t get_local_divemode(struct dive *d, int dcNr, const divedatapoi
 
 		break;
 	case CCR:
-		divemode = d->get_cylinder(p.cylinderid)->cylinder_use == DILUENT ? CCR : OC;
-		if (prefs.allowOcGasAsDiluent && d->get_cylinder(p.cylinderid)->cylinder_use == OC_GAS && p.divemode == CCR)
+		divemode = d->get_cylinder(cylinderId)->cylinder_use == DILUENT ? CCR : OC;
+		if (divemode == OC && prefs.allowOcGasAsDiluent && selectedDivemode == CCR)
 			divemode = CCR;
 
 		break;
 	case PSCR:
-		divemode = p.divemode == PSCR ? PSCR : OC;
+		divemode = selectedDivemode == PSCR ? PSCR : OC;
 
 		break;
 	}
@@ -289,7 +289,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 {
 	const divedatapoint p = divepoints.at(index.row());
 	bool isInappropriateCylinder = !is_cylinder_use_appropriate(*d->get_dc(dcNr), *d->get_cylinder(p.cylinderid), false);
-	divemode_t divemode = get_local_divemode(d, dcNr, p);
+	divemode_t divemode = get_local_divemode(d, dcNr, p.cylinderid, p.divemode);
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 
 		switch (index.column()) {
@@ -475,7 +475,7 @@ Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 	case REMOVE:
 		return QAbstractItemModel::flags(index);
 	case CCSETPOINT:
-		if (get_local_divemode(d, dcNr, p) != CCR)
+		if (get_local_divemode(d, dcNr, p.cylinderid, p.divemode) != CCR)
 			return QAbstractItemModel::flags(index) & ~Qt::ItemIsEditable & ~Qt::ItemIsEnabled;
 
 		break;
@@ -1112,16 +1112,16 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	int lastIndex = -1;
 	for (int i = 0; i < rowCount(); i++) {
 		const divedatapoint p = at(i);
-		divemode_t divemode = get_local_divemode(d, dcNr, p);
+		divemode_t divemode = get_local_divemode(d, dcNr, p.cylinderid, p.divemode);
 		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
 		lastIndex = i;
 		if (i == 0 && mode == PLAN && prefs.drop_stone_mode) {
 			/* Okay, we add a first segment where we go down to depth */
-			plan_add_segment(diveplan, p.depth.mm / prefs.descrate, p.depth, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
+			plan_add_segment(diveplan, p.depth.mm / prefs.descrate, p.depth, p.cylinderid, p.setpoint, true, divemode);
 			deltaT -= p.depth.mm / prefs.descrate;
 		}
 		if (p.entered)
-			plan_add_segment(diveplan, deltaT, p.depth, p.cylinderid, divemode == CCR ? p.setpoint : 0, true, divemode);
+			plan_add_segment(diveplan, deltaT, p.depth, p.cylinderid, p.setpoint, true, divemode);
 	}
 
 #if DEBUG_PLAN
@@ -1412,7 +1412,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	d->cylinders.clear();
 	d->notes.clear();
 
-	make_planner_dc(&d->dcs[0]);
+	make_planner_dc(&d->dcs[dcNr]);
 
 	// Set Date, Time, and Dive Mode from parameters
 	QString dateTimeString = date + " " + time;
@@ -1421,7 +1421,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	d->when = static_cast<time_t>(plannedDateTime.toSecsSinceEpoch());
 	diveplan.when = d->when;
 
-	d->dcs[0].divemode = (enum divemode_t)diveMode;
+	d->dcs[dcNr].divemode = static_cast<enum divemode_t>(diveMode);
 
 	// Populate cylinders from QML data
 	for (const QVariant &cylData : cylindersData) {
@@ -1447,7 +1447,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	this->cylinders.updateDive(d, dcNr);
 	reset_cylinders(d, true);
 
-	// Add available OC gases as "time=0" waypoints for the planner engine
+	// Add available OC-gases as "time=0" waypoints for the planner engine
 	pressure_t deco_po2_limit = { .mbar = qPrefDivePlanner::decopo2() };
 	for (size_t i = 0; i < d->cylinders.size(); ++i) {
 		const cylinder_t &cyl = d->cylinders[i];
@@ -1460,17 +1460,12 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	diveplan.salinity = waterType;
 
 	// Populate the actual dive plan segments from QML data
-	int currentTimeInSeconds = 0;
 	for (const QVariant &segData : segmentsData) {
 		QVariantMap map = segData.toMap();
-		divedatapoint point;
-		int durationInSeconds = map["duration"].toInt() * 60;
-		currentTimeInSeconds += durationInSeconds;
-		point.time = currentTimeInSeconds;
-		point.depth = units_to_depth(map["depth"].toInt());
-		point.cylinderid = map["gas"].toInt();
-		point.entered = true;
-		diveplan.dp.push_back(point);
+		int cylinderId = map["gas"].toInt();
+		divemode_t divemode = get_local_divemode(d, dcNr, cylinderId, static_cast<divemode_t>(map["divemode"].toInt()));
+
+		plan_add_segment(diveplan, map["duration"].toInt() * 60, units_to_depth(map["depth"].toInt()), cylinderId, map["setpoint"].toInt(), true, divemode);
 	}
 
 	struct diveplan plan_copy = diveplan;

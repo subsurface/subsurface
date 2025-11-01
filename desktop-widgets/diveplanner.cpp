@@ -126,12 +126,9 @@ DivePlannerWidget::~DivePlannerWidget()
 void DivePlannerWidget::disableDecoElements(int mode, divemode_t divemode)
 {
 	if (mode == RECREATIONAL) {
-		ui.label_bailout->setVisible(false);
 		ui.bailout->setVisible(false);
 	} else if (mode == VPMB || mode == BUEHLMANN) {
-		bool isRebreatherDive = IS_REBREATHER_MODE(divemode);
-		ui.label_bailout->setVisible(isRebreatherDive);
-		ui.bailout->setVisible(isRebreatherDive);
+		ui.bailout->setVisible(IS_REBREATHER_MODE(divemode));
 	}
 }
 

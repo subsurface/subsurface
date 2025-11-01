@@ -2267,7 +2267,7 @@ Zeigen Sie Änderungen an der verwendeten Gasflasche an, indem Sie die Gaswechse
 
 Die für den Plan verwendeten Flaschen müssen in der Tabelle „Verfügbare Gase“ eingetragen werden. Wählen Sie in der Spalte „Typ“ die passende Flaschengröße aus, indem Sie auf eine Zelle in dieser Spalte doppelklicken. Standardmäßig sind zahlreiche Größen verfügbar. Sie können eine neue Flaschengröße erstellen, indem Sie diese in das Textfeld eingeben. Flaschengröße, Startdruck und Standard-Umschalttiefen werden automatisch initialisiert. Geben Sie die Gaszusammensetzung (z. B. Helium- und Sauerstoffgehalt) und – bei der Planung eines CCR-Tauchgangs – die beabsichtigte Verwendung als Verdünnungsgas oder OC-Bailout-Gas an. Bei der Planung von CCR-Tauchgängen wird ein Segment als geschlossenes Kreislaufsegment berechnet, wenn das verwendete Gas ein Verdünnungsgas ist, und als offenes Kreislaufsegment, wenn es sich um ein OC-Gas handelt. Wenn der Benutzer in den Einstellungen des „Tech-Setups“ die Option „Verwendung von offenem Kreislaufgas als Bailout zulassen“ aktiviert, wird eine zusätzliche Spalte angezeigt, in der der Benutzer den „Tauchmodus“ für jedes mit einem „OC-Gas“ getauchte Segment auswählen kann.
 
-image::images/Planner_OC_gas_for_CCR.png["Abbildung: Tauchplaner: OC Gas als Bailout",align="center"]
+image::images/Planner_OC_gas_for_CCR.png["Abbildung: Tauchplaner: OC-Gas als Bailout",align="center"]
 
 Für CCR-Tauchgänge wird in der Tabelle „Punkte des Tauchplaners“ eine zusätzliche Spalte angezeigt, in der der Benutzer den Sollwert für jedes Segment mit geschlossenem Kreislauf festlegen kann.
 
