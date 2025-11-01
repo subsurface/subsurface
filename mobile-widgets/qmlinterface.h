@@ -8,6 +8,7 @@
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefDiveComputer.h"
+#include "core/settings/qPrefGeneral.h"
 #include "qt-models/diveplannermodel.h"
 #include "backend-shared/plannershared.h"
 
@@ -79,6 +80,7 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY display_transitionsChanged);
 	Q_PROPERTY(bool verbatim_plan READ verbatim_plan WRITE set_verbatim_plan NOTIFY verbatim_planChanged);
 	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variationsChanged);
+	Q_PROPERTY(int default_setpoint READ default_setpoint WRITE set_default_setpoint NOTIFY default_setpointChanged);
 
 	Q_PROPERTY(bool sync_dc_time READ sync_dc_time WRITE set_sync_dc_time NOTIFY sync_dc_timeChanged);
 
@@ -218,6 +220,7 @@ public:
 	bool display_transitions() { return prefs.display_transitions; }
 	bool verbatim_plan() { return prefs.verbatim_plan; }
 	bool display_variations() { return prefs.display_variations; }
+	int default_setpoint() { return prefs.defaultsetpoint; }
 
 	bool sync_dc_time() { return prefs.sync_dc_time; }
 
@@ -273,6 +276,7 @@ public slots:
 	void set_display_transitions(bool value) { DivePlannerPointsModel::instance()->setDisplayTransitions(value); }
 	void set_verbatim_plan(bool value) { DivePlannerPointsModel::instance()->setVerbatim(value); }
 	void set_display_variations(bool value) { DivePlannerPointsModel::instance()->setDisplayVariations(value); }
+	void set_default_setpoint(int value) { qPrefGeneral::set_defaultsetpoint(value); }
 	void set_sync_dc_time(bool value) {
 		qPrefDiveComputer::set_sync_dc_time(value);
 		DCDeviceData::instance()->setSyncTime(value);
@@ -326,6 +330,7 @@ signals:
 	void display_transitionsChanged(bool value);
 	void verbatim_planChanged(bool value);
 	void display_variationsChanged(bool value);
+	void default_setpointChanged(int value);
 
 	void sync_dc_timeChanged(bool value);
 private:

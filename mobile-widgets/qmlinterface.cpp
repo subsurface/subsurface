@@ -75,6 +75,8 @@ QMLInterface::QMLInterface()
 			this, &QMLInterface::verbatim_planChanged);
 	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::display_variationsChanged,
 			this, &QMLInterface::display_variationsChanged);
+	connect(qPrefGeneral::instance(), &qPrefGeneral::defaultsetpointChanged,
+			this, &QMLInterface::default_setpointChanged);
 
 	connect(qPrefDiveComputer::instance(), &qPrefDiveComputer::sync_dc_timeChanged,
 			this, &QMLInterface::sync_dc_timeChanged);
@@ -87,7 +89,7 @@ void QMLInterface::setup(QQmlContext *ct)
 	ct->setContextProperty("Backend", &self);
 
 	// Make enums available as types
-	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile",1,0,"Enums","Enum is not a type");
+	qmlRegisterUncreatableType<QMLInterface>("org.subsurfacedivelog.mobile", 1, 0, "Enums", "Enum is not a type");
 
 	qmlRegisterUncreatableType<DivePlannerPointsModel>("org.subsurfacedivelog.mobile", 1, 0, "DivePlannerPointsModel", "Planner model cannot be created in QML.");
 	qmlRegisterUncreatableType<CylindersModel>("org.subsurfacedivelog.mobile", 1, 0, "CylindersModel", "Cylinder model cannot be created in QML.");
