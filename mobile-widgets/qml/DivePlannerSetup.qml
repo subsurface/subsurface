@@ -102,7 +102,7 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
-					text: qsTr("6m to surface [%1]").arg(speedUnit)
+					text: qsTr("6m / 20ft to surface [%1]").arg(speedUnit)
 				}
 				TemplateSpinBox {
 					id: spinAscratelast6m
@@ -162,12 +162,6 @@ TemplatePage {
 				TemplateLabel {
 					text: qsTr("Dive mode")
 				}
-				//Divemode moved to plan edit
-				TemplateCheckBox {
-					text: qsTr("Bailout: Deco on OC")
-					Layout.columnSpan: 2
-					checked: Backend.dobailout
-				}
 
 				TemplateRadioButton {
 					text: qsTr("Recreational mode")
@@ -224,7 +218,7 @@ TemplatePage {
 					from: 1
 					to: 150
 					stepSize: 1
-					value: Backend.planner_gflow || 30
+					value: Backend.planner_gflow || PrefTechnicalDetails.gflow
 					onValueModified: {
 						Backend.planner_gflow = value
 						rootItem.settingsChanged()
@@ -239,7 +233,7 @@ TemplatePage {
 					from: 1
 					to: 150
 					stepSize: 1
-					value: Backend.planner_gfhigh || 70
+					value: Backend.planner_gfhigh || PrefTechnicalDetails.gfhigh
 					onValueModified: {
 						Backend.planner_gfhigh = value
 						rootItem.settingsChanged()
@@ -275,8 +269,8 @@ TemplatePage {
 					text: qsTr("Last stop at 20'/6m")
 					Layout.columnSpan: 2
 					onClicked: {
-						Backend.last_stop6m = checked
-						rootItem.settingsChanged()
+						Backend.last_stop6m = checked;
+						rootItem.settingsChanged();
 					}
 				}
 
@@ -285,7 +279,7 @@ TemplatePage {
 					Layout.columnSpan: 2
 					checked: Backend.doo2breaks
 					onClicked: {
-						Backend.doo2breaks = checked
+						Backend.doo2breaks = checked;
 					}
 				}
 
@@ -294,8 +288,8 @@ TemplatePage {
 					Layout.columnSpan: 2
 					checked: Backend.switch_at_req_stop
 					onClicked: {
-						Backend.switch_at_req_stop = checked
-						rootItem.settingsChanged()
+						Backend.switch_at_req_stop = checked;
+						rootItem.settingsChanged();
 					}
 				}
 
@@ -453,6 +447,31 @@ TemplatePage {
 					}
 				}
 				TemplateLabel {
+					text: qsTr("CCR Default ppO₂ [bar]")
+				}
+				TemplateSpinBox {
+					from: 160
+					to: 2000
+					stepSize: 50
+					value: Backend.default_setpoint || 1300
+					validator: DoubleValidator {
+						bottom: 0.16;
+						top: 2000;
+						decimals: 2;
+						notation: DoubleValidator.StandardNotation;
+					}
+					textFromValue: function (value) {
+						return (value / 1000).toFixed(2)
+					}
+					valueFromText: function (text) {
+						return Math.round(parseFloat(text) * 1000)
+					}
+					onValueModified: {
+						Backend.default_setpoint = value
+						rootItem.settingsChanged()
+					}
+				}
+				TemplateLabel {
 					text: qsTr("Best mix END [%1]").arg(depthUnit)
 				}
 				TemplateSpinBox {
@@ -472,7 +491,7 @@ TemplatePage {
 					text: qsTr("O2 narcotic")
 					checked: Backend.o2narcotic
 					onClicked: {
-						Backend.o2narcotic = checked
+						Backend.o2narcotic = checked;
 						rootItem.settingsChanged()
 					}
 				}
@@ -489,7 +508,7 @@ TemplatePage {
 					text: qsTr("Display runtime")
 					checked: Backend.display_runtime
 					onClicked: {
-						Backend.display_runtime = checked
+						Backend.display_runtime = checked;
 						rootItem.settingsChanged()
 					}
 				}

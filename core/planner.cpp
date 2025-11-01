@@ -347,7 +347,7 @@ struct gaschanges {
 	int gasidx;
 };
 
-// Return new setpoint if cylinderi is a setpoint change an 0 if not
+// Return new setpoint if cylinderid is a setpoint change and 0 if not
 
 static int setpoint_change(struct dive *dive, int cylinderid)
 {
