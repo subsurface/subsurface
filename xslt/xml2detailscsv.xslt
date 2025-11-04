@@ -4,15 +4,16 @@
   <xsl:param name="units" select="units"/>
   <xsl:output method="text" encoding="UTF-8"/>
 
-  <xsl:variable name="fs">,</xsl:variable>
+  <xsl:variable name="fs" select="','"/>
+  <xsl:variable name="quote" select="'&quot;'"/>
 
   <xsl:template match="/divelog/dives">
     <xsl:choose>
       <xsl:when test="$units = 1">
-        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;sample time (min)&quot;', $fs, '&quot;sample depth (ft)&quot;', $fs, '&quot;sample temperature (F)&quot;', $fs, '&quot;sample pressure (psi)&quot;', $fs, '&quot;sample heartrate&quot;')"/>
+        <xsl:value-of select="concat($quote, 'dive number', $quote, $fs, $quote, 'date', $quote, $fs, $quote, 'time', $quote, $fs, $quote, 'sample time (min)', $quote, $fs, $quote, 'sample depth (ft)', $quote, $fs, $quote, 'sample temperature (F)', $quote, $fs, $quote, 'sample pressure (psi)', $quote, $fs, $quote, 'sample heartrate', $quote)"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;sample time (min)&quot;', $fs, '&quot;sample depth (m)&quot;', $fs, '&quot;sample temperature (C)&quot;', $fs, '&quot;sample pressure (bar)&quot;', $fs, '&quot;sample heartrate&quot;')"/>
+        <xsl:value-of select="concat($quote, 'dive number', $quote, $fs, $quote, 'date', $quote, $fs, $quote, 'time', $quote, $fs, $quote, 'sample time (min)', $quote, $fs, $quote, 'sample depth (m)', $quote, $fs, $quote, 'sample temperature (C)', $quote, $fs, $quote, 'sample pressure (bar)', $quote, $fs, $quote, 'sample heartrate', $quote)"/>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text>
@@ -33,20 +34,20 @@
       <xsl:value-of select="@time"/>
     </xsl:variable>
     <xsl:for-each select="divecomputer[1]/sample|sample">
-      <xsl:value-of select="concat('&quot;', $number, '&quot;')"/>
+      <xsl:value-of select="concat($quote, $number, $quote)"/>
       <xsl:value-of select="$fs"/>
-      <xsl:value-of select="concat('&quot;', $date, '&quot;')"/>
+      <xsl:value-of select="concat($quote, $date, $quote)"/>
       <xsl:value-of select="$fs"/>
-      <xsl:value-of select="concat('&quot;', $time, '&quot;')"/>
+      <xsl:value-of select="concat($quote, $time, $quote)"/>
       <xsl:value-of select="$fs"/>
-      <xsl:value-of select="concat('&quot;', substring-before(@time, ' '), '&quot;')"/>
+      <xsl:value-of select="concat($quote, substring-before(@time, ' '), $quote)"/>
       <xsl:value-of select="$fs"/>
       <xsl:choose>
         <xsl:when test="$units = 1">
-          <xsl:value-of select="concat('&quot;', format-number(substring-before(@depth, ' ') div 0.3048, '#.###'), '&quot;')"/>
+          <xsl:value-of select="concat($quote, format-number(substring-before(@depth, ' ') div 0.3048, '#.###'), $quote)"/>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="concat('&quot;', format-number(substring-before(@depth, ' '), '#.###'), '&quot;')"/>
+          <xsl:value-of select="concat($quote, format-number(substring-before(@depth, ' '), '#.###'), $quote)"/>
         </xsl:otherwise>
       </xsl:choose>
 
@@ -54,10 +55,10 @@
       <xsl:if test="@temp != ''">
         <xsl:choose>
           <xsl:when test="$units = 1">
-            <xsl:value-of select="concat('&quot;', format-number((substring-before(@temp, ' ') * 1.8) + 32, '#.#'), '&quot;')"/>
+            <xsl:value-of select="concat($quote, format-number((substring-before(@temp, ' ') * 1.8) + 32, '#.#'), $quote)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat('&quot;', substring-before(@temp, ' '), '&quot;')"/>
+            <xsl:value-of select="concat($quote, substring-before(@temp, ' '), $quote)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:if>
@@ -66,17 +67,17 @@
       <xsl:if test="@pressure != ''">
         <xsl:choose>
           <xsl:when test="$units = 1">
-            <xsl:value-of select="concat('&quot;', format-number((substring-before(@pressure, ' ') * 14.5037738007), '#'), '&quot;')"/>
+            <xsl:value-of select="concat($quote, format-number((substring-before(@pressure, ' ') * 14.5037738007), '#'), $quote)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat('&quot;', substring-before(@pressure, ' '), '&quot;')"/>
+            <xsl:value-of select="concat($quote, substring-before(@pressure, ' '), $quote)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:if>
 
       <xsl:value-of select="$fs"/>
       <xsl:if test="@heartbeat != ''">
-        <xsl:value-of select="concat('&quot;', @heartbeat, '&quot;')"/>
+        <xsl:value-of select="concat($quote, @heartbeat, $quote)"/>
       </xsl:if>
 
       <xsl:text>

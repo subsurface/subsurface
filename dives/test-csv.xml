@@ -1,0 +1,66 @@
+<divelog program='subsurface' version='3'>
+<settings>
+</settings>
+<divesites>
+</divesites>
+<dives>
+<dive number='1' otu='9' cns='5%' date='2013-10-01' time='10:34:00' duration='45:00 min'>
+  <buddy>Dirk, Linus</buddy>
+  <notes>nice dive</notes>
+  <suit>wet, 5mm</suit>
+  <divecomputer model='csv' last-manual-time='45:00 min'>
+  <depth max='18.0 m' mean='16.0 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='2:00 min' depth='18.0 m' />
+  <sample time='38:31 min' depth='18.0 m' />
+  <sample time='39:51 min' depth='5.94 m' />
+  <sample time='44:20 min' depth='5.94 m' />
+  <sample time='45:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='2' otu='5' cns='7%' date='2013-10-01' time='12:13:00' duration='41:00 min'>
+  <buddy>Linus</buddy>
+  <notes>- sharks
+- stone fish "fred"
+- turtle</notes>
+  <suit>wet, 3mm "shorty"</suit>
+  <divecomputer model='csv' last-manual-time='41:00 min'>
+  <depth max='16.2 m' mean='13.5 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='1:48 min' depth='16.2 m' />
+  <sample time='31:41 min' depth='16.2 m' />
+  <sample time='32:53 min' depth='5.346 m' />
+  <sample time='40:24 min' depth='5.346 m' />
+  <sample time='41:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='3' date='2014-10-01' time='10:02:00' duration='48:00 min'>
+  <buddy>Tomaz</buddy>
+  <notes>snorkeling</notes>
+  <suit>none</suit>
+  <divecomputer model='csv' last-manual-time='48:00 min'>
+  <depth max='13.3 m' mean='11.5 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='1:29 min' depth='13.3 m' />
+  <sample time='39:02 min' depth='13.3 m' />
+  <sample time='40:02 min' depth='4.389 m' />
+  <sample time='47:31 min' depth='4.389 m' />
+  <sample time='48:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+<dive number='4' otu='13' cns='5%' date='2014-10-01' time='14:19:00' duration='34:00 min'>
+  <buddy>Don</buddy>
+  <notes>cold water, visibility 3m</notes>
+  <suit>dry, Whites Fusion</suit>
+  <divecomputer model='csv' last-manual-time='34:00 min'>
+  <depth max='24.9 m' mean='20.1 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='2:46 min' depth='24.9 m' />
+  <sample time='25:35 min' depth='24.9 m' />
+  <sample time='27:26 min' depth='8.217 m' />
+  <sample time='33:05 min' depth='8.217 m' />
+  <sample time='34:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

@@ -37,8 +37,8 @@
         <file>xslt/SuuntoSDM.xslt</file>
         <file>xslt/udcf.xslt</file>
         <file>xslt/uddf-export.xslt</file>
-        <file>xslt/xml2csv.xslt</file>
-        <file>xslt/xml2manualcsv.xslt</file>
+        <file>xslt/xml2detailscsv.xslt</file>
+        <file>xslt/xml2summarycsv.xslt</file>
         <file>xslt/uddf.xslt</file>
         <file>xslt/sensuscsv.xslt</file>
         <file>xslt/subsurfacecsv.xslt</file>
