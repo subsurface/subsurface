@@ -5,13 +5,12 @@
   <xsl:param name="separatorIndex" select="separatorIndex"/>
   <xsl:output method="xml" indent="yes"/>
 
-  <xsl:variable name="lf"><xsl:text>
-</xsl:text></xsl:variable>
+  <xsl:variable name="lf" select="'&#xa;'"/>
   <xsl:variable name="fs">
     <xsl:choose>
-      <xsl:when test="$separatorIndex = 0"><xsl:text>	</xsl:text></xsl:when>
-      <xsl:when test="$separatorIndex = 2"><xsl:text>;</xsl:text></xsl:when>
-      <xsl:otherwise><xsl:text>,</xsl:text></xsl:otherwise>
+      <xsl:when test="$separatorIndex = 0"><xsl:value-of select="'&#x9;'"/></xsl:when>
+      <xsl:when test="$separatorIndex = 2"><xsl:value-of select="';'"/></xsl:when>
+      <xsl:otherwise><xsl:value-of select="','"/></xsl:otherwise>
     </xsl:choose>
   </xsl:variable>
   <xsl:variable name="timeField" select="9"/>
@@ -22,38 +21,36 @@
     <divelog program="subsurface-import" version="2">
       <dives>
         <dive>
-          <xsl:variable name="line">
-            <xsl:value-of select="substring-before(substring-after(//SensusCSV, $lf), $lf)"/>
-          </xsl:variable>
+          <xsl:variable name="remaining" select="//SensusCSV"/>
 
           <xsl:variable name="year">
-            <xsl:call-template name="getFieldByIndex">
+            <xsl:call-template name="csvGetFieldByIndex">
               <xsl:with-param name="index" select="3"/>
-              <xsl:with-param name="line" select="$line"/>
+              <xsl:with-param name="document" select="$remaining"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="month">
-            <xsl:call-template name="getFieldByIndex">
+            <xsl:call-template name="csvGetFieldByIndex">
               <xsl:with-param name="index" select="4"/>
-              <xsl:with-param name="line" select="$line"/>
+              <xsl:with-param name="document" select="$remaining"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="day">
-            <xsl:call-template name="getFieldByIndex">
+            <xsl:call-template name="csvGetFieldByIndex">
               <xsl:with-param name="index" select="5"/>
-              <xsl:with-param name="line" select="$line"/>
+              <xsl:with-param name="document" select="$remaining"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="hours">
-            <xsl:call-template name="getFieldByIndex">
+            <xsl:call-template name="csvGetFieldByIndex">
               <xsl:with-param name="index" select="6"/>
-              <xsl:with-param name="line" select="$line"/>
+              <xsl:with-param name="document" select="$remaining"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="seconds">
-            <xsl:call-template name="getFieldByIndex">
+            <xsl:call-template name="csvGetFieldByIndex">
               <xsl:with-param name="index" select="7"/>
-              <xsl:with-param name="line" select="$line"/>
+              <xsl:with-param name="document" select="$remaining"/>
             </xsl:call-template>
           </xsl:variable>
 
@@ -65,16 +62,16 @@
           </xsl:attribute>
 
           <xsl:attribute name="number">
-            <xsl:call-template name="getFieldByIndex">
+            <xsl:call-template name="csvGetFieldByIndex">
               <xsl:with-param name="index" select="0"/>
-              <xsl:with-param name="line" select="$line"/>
+              <xsl:with-param name="document" select="$remaining"/>
             </xsl:call-template>
           </xsl:attribute>
 
           <divecomputer deviceid="ffffffff" model="SensusCSV">
             <xsl:call-template name="printLine">
-              <xsl:with-param name="line" select="substring-before(//SensusCSV, $lf)"/>
-              <xsl:with-param name="remaining" select="substring-after(//SensusCSV, $lf)"/>
+              <xsl:with-param name="remaining" select="//SensusCSV"/>
+              <xsl:with-param name="lastLine" select="$lf"/>
             </xsl:call-template>
           </divecomputer>
         </dive>
@@ -83,46 +80,53 @@
   </xsl:template>
 
   <xsl:template name="printLine">
-    <xsl:param name="line"/>
     <xsl:param name="remaining"/>
+    <xsl:param name="lastLine"/>
+
+    <xsl:variable name="nextRemaining">
+      <xsl:call-template name="csvSkipRecord">
+        <xsl:with-param name="document" select="$remaining"/>
+      </xsl:call-template>
+    </xsl:variable>
 
     <!-- We only want to process lines with different time stamps, and
          timeField is not necessarily the first field -->
-    <xsl:if test="$line != substring-before($remaining, $lf)">
+    <xsl:if test="not(starts-with($remaining, $lastLine))">
       <xsl:variable name="curTime">
-        <xsl:call-template name="getFieldByIndex">
+        <xsl:call-template name="csvGetFieldByIndex">
           <xsl:with-param name="index" select="$timeField"/>
-          <xsl:with-param name="line" select="$line"/>
+          <xsl:with-param name="document" select="$remaining"/>
         </xsl:call-template>
       </xsl:variable>
       <xsl:variable name="prevTime">
-        <xsl:call-template name="getFieldByIndex">
+        <xsl:call-template name="csvGetFieldByIndex">
           <xsl:with-param name="index" select="$timeField"/>
-          <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
+          <xsl:with-param name="document" select="$lastLine"/>
         </xsl:call-template>
       </xsl:variable>
 
       <xsl:if test="$curTime &gt;= 0 and $curTime != $prevTime">
         <xsl:call-template name="printFields">
-          <xsl:with-param name="line" select="$line"/>
+          <xsl:with-param name="remaining" select="$remaining"/>
         </xsl:call-template>
       </xsl:if>
     </xsl:if>
+
     <xsl:if test="$remaining != ''">
       <xsl:call-template name="printLine">
-        <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
-        <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
+        <xsl:with-param name="remaining" select="$nextRemaining"/>
+        <xsl:with-param name="lastLine" select="substring-before($remaining, $nextRemaining)"/>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
 
   <xsl:template name="printFields">
-    <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
 
     <xsl:variable name="value">
-      <xsl:call-template name="getFieldByIndex">
+      <xsl:call-template name="csvGetFieldByIndex">
         <xsl:with-param name="index" select="$timeField"/>
-        <xsl:with-param name="line" select="$line"/>
+        <xsl:with-param name="document" select="$remaining"/>
       </xsl:call-template>
     </xsl:variable>
 
@@ -137,9 +141,9 @@
         </xsl:attribute>
 
         <xsl:variable name="depth">
-          <xsl:call-template name="getFieldByIndex">
+          <xsl:call-template name="csvGetFieldByIndex">
             <xsl:with-param name="index" select="$depthField"/>
-            <xsl:with-param name="line" select="$line"/>
+            <xsl:with-param name="document" select="$remaining"/>
           </xsl:call-template>
         </xsl:variable>
         <xsl:attribute name="depth">
@@ -147,15 +151,15 @@
         </xsl:attribute>
 
           <xsl:variable name="temp">
-            <xsl:call-template name="getFieldByIndex">
+            <xsl:call-template name="csvGetFieldByIndex">
               <xsl:with-param name="index" select="$tempField"/>
-              <xsl:with-param name="line" select="$line"/>
+              <xsl:with-param name="document" select="$remaining"/>
             </xsl:call-template>
           </xsl:variable>
           <xsl:variable name="tempDec">
-            <xsl:call-template name="getFieldByIndex">
+            <xsl:call-template name="csvGetFieldByIndex">
               <xsl:with-param name="index" select="$tempField + 1"/>
-              <xsl:with-param name="line" select="$line"/>
+              <xsl:with-param name="document" select="$remaining"/>
             </xsl:call-template>
           </xsl:variable>
 

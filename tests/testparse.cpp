@@ -18,19 +18,21 @@
  * can only be called from a test method
  * invoked by the QTest framework
  */
-#define FILE_COMPARE(actual, expected)                    \
-	QFile org(expected);                              \
-	org.open(QFile::ReadOnly);                        \
-	QFile out(actual);                                \
-	out.open(QFile::ReadOnly);                        \
-	QTextStream orgS(&org);                           \
-	QTextStream outS(&out);                           \
-	QStringList readin = orgS.readAll().split("\n");  \
-	QStringList written = outS.readAll().split("\n"); \
-	while (readin.size() && written.size()) {         \
-		QCOMPARE(written.takeFirst().trimmed(),   \
-			 readin.takeFirst().trimmed());   \
-	}
+#define FILE_COMPARE(actual, expected) \
+	do { \
+		QFile org(expected); \
+		org.open(QFile::ReadOnly); \
+		QFile out(actual); \
+		out.open(QFile::ReadOnly); \
+		QTextStream orgS(&org); \
+		QTextStream outS(&out); \
+		QStringList readin = orgS.readAll().split("\n"); \
+		QStringList written = outS.readAll().split("\n"); \
+		while (readin.size() && written.size()) { \
+			QCOMPARE(written.takeFirst().trimmed(), \
+				readin.takeFirst().trimmed()); \
+		} \
+	} while (false)
 
 void TestParse::initTestCase()
 {
@@ -52,7 +54,7 @@ void TestParse::cleanup()
 	sqlite3_close(_sqlite3_handle);
 }
 
-int TestParse::parseCSV(int units, std::string file)
+int TestParse::parseCSV(int units, std::string file, int separatorIndex)
 {
 	// some basic file parsing tests
 	//
@@ -71,10 +73,10 @@ int TestParse::parseCSV(int units, std::string file)
 	xml_params_add_int(&params, "divemasterField", -1);
 	xml_params_add_int(&params, "buddyField", 6);
 	xml_params_add_int(&params, "suitField", 7);
-	xml_params_add_int(&params, "notesField", -1);
+	xml_params_add_int(&params, "notesField", 8);
 	xml_params_add_int(&params, "weightField", -1);
 	xml_params_add_int(&params, "tagsField", -1);
-	xml_params_add_int(&params, "separatorIndex", 0);
+	xml_params_add_int(&params, "separatorIndex", separatorIndex);
 	xml_params_add_int(&params, "units", units);
 	xml_params_add_int(&params, "datefmt", 1);
 	xml_params_add_int(&params, "durationfmt", 2);
@@ -120,9 +122,6 @@ void TestParse::testParse()
 {
 	// On some platforms (Windows) size_t has a different format string.
 	// Let's just cast to int.
-	QCOMPARE(parseCSV(0, SUBSURFACE_TEST_DATA "/dives/test41.csv"), 0);
-	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
-
 	QCOMPARE(parseDivingLog(), 0);
 	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
 
@@ -135,6 +134,30 @@ void TestParse::testParse()
 	QCOMPARE(save_dives("./testout.ssrf"), 0);
 	FILE_COMPARE("./testout.ssrf",
 		     SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
+}
+
+void TestParse::testParseTsv()
+{
+	// On some platforms (Windows) size_t has a different format string.
+	// Let's just cast to int.
+	QCOMPARE(parseCSV(0, SUBSURFACE_TEST_DATA "/dives/test41.tsv", 0), 0);
+	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
+
+	QCOMPARE(save_dives("./testouttsv.ssrf"), 0);
+	FILE_COMPARE("./testouttsv.ssrf",
+		     SUBSURFACE_TEST_DATA "/dives/test-tsv.xml");
+}
+
+void TestParse::testParseCsv()
+{
+	// On some platforms (Windows) size_t has a different format string.
+	// Let's just cast to int.
+	QCOMPARE(parseCSV(0, SUBSURFACE_TEST_DATA "/dives/test41.csv", 1), 0);
+	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
+
+	QCOMPARE(save_dives("./testoutcsv.ssrf"), 0);
+	FILE_COMPARE("./testoutcsv.ssrf",
+		     SUBSURFACE_TEST_DATA "/dives/test-csv.xml");
 }
 
 void TestParse::testParseTankSensors()
@@ -261,7 +284,7 @@ void TestParse::testParseDLD()
 	// Compare output
 	QCOMPARE(save_dives("./testdldout.ssrf"), 0);
 	FILE_COMPARE("./testdldout.ssrf",
-		     SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml")
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml");
 }
 
 void TestParse::testParseMerge()
@@ -336,8 +359,8 @@ void TestParse::exportCSVDiveDetails()
 
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test25.xml", &divelog);
 
-	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2manualcsv.xslt", false);
-	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2manualcsv.xslt", false);
+	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2summarycsv.xslt", false);
+	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2summarycsv.xslt", false);
 
 	if (!divelog.dives.empty())
 		saved_sac = divelog.dives.back()->sac;
@@ -349,27 +372,26 @@ void TestParse::exportCSVDiveDetails()
 	if (!divelog.dives.empty())
 		divelog.dives.back()->sac = saved_sac;
 
-	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt", false);
+	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2summarycsv.xslt", false);
 	FILE_COMPARE("testcsvexportmanual2.csv",
 		     "testcsvexportmanual.csv");
 }
 
 void TestParse::exportSubsurfaceCSV()
 {
-	int saved_sac = 0;
-	xml_params params;
-
 	/* Test SubsurfaceCSV with multiple cylinders */
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog);
 
-	export_dives_xslt("testcsvexportmanual-cyl.csv", 0, 0, "xml2manualcsv.xslt", false);
-	export_dives_xslt("testcsvexportmanualimperial-cyl.csv", 0, 1, "xml2manualcsv.xslt", false);
+	export_dives_xslt("testcsvexportmanual-cyl.csv", 0, 0, "xml2summarycsv.xslt", false);
+	export_dives_xslt("testcsvexportmanualimperial-cyl.csv", 0, 1, "xml2summarycsv.xslt", false);
 
+	int saved_sac = 0;
 	if (!divelog.dives.empty())
 		saved_sac = divelog.dives.back()->sac;
 
 	clear_dive_file_data();
 
+	xml_params params;
 	xml_params_add_int(&params, "separatorIndex", 1);
 	xml_params_add_int(&params, "units", 1);
 	parse_csv_file("testcsvexportmanualimperial-cyl.csv", &params, "SubsurfaceCSV", &divelog);
@@ -378,7 +400,10 @@ void TestParse::exportSubsurfaceCSV()
 	if (!divelog.dives.empty())
 		divelog.dives.back()->sac = saved_sac;
 
-	export_dives_xslt("testcsvexportmanual2-cyl.csv", 0, 0, "xml2manualcsv.xslt", false);
+	QCOMPARE(save_dives("./testcsvexport.ssrf"), 0);
+	FILE_COMPARE("./testcsvexport.ssrf", SUBSURFACE_TEST_DATA "/dives/test42-csv.xml");
+
+	export_dives_xslt("testcsvexportmanual2-cyl.csv", 0, 0, "xml2summarycsv.xslt", false);
 	FILE_COMPARE("testcsvexportmanual2-cyl.csv",
 		     "testcsvexportmanual-cyl.csv");
 }
@@ -405,35 +430,35 @@ int TestParse::parseCSVprofile(int units, std::string file)
 
 void TestParse::exportCSVDiveProfile()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog);
 
-	export_dives_xslt("testcsvexportprofile.csv", 0, 0, "xml2csv.xslt", false);
-	export_dives_xslt("testcsvexportprofileimperial.csv", 0, 1, "xml2csv.xslt", false);
+	export_dives_xslt("testcsvexportprofile.csv", 0, 0, "xml2detailscsv.xslt", false);
+	export_dives_xslt("testcsvexportprofileimperial.csv", 0, 1, "xml2detailscsv.xslt", false);
 
 	clear_dive_file_data();
 
 	parseCSVprofile(1, "testcsvexportprofileimperial.csv");
 
-	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2csv.xslt", false);
+	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2detailscsv.xslt", false);
 	FILE_COMPARE("testcsvexportprofile2.csv",
 		     "testcsvexportprofile.csv");
 }
 
 void TestParse::exportUDDF()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog);
 
 	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt", false);
-	FILE_COMPARE("testuddfexport.uddf", SUBSURFACE_TEST_DATA "/dives/test40.uddf");
+	FILE_COMPARE("testuddfexport.uddf", SUBSURFACE_TEST_DATA "/dives/test42.uddf");
 }
 
 void TestParse::importUDDF()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.uddf", &divelog);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test42.uddf", &divelog);
 
 	QCOMPARE(save_dives("./testuddfimport.xml"), 0);
 	FILE_COMPARE("./testuddfimport.xml",
-		     SUBSURFACE_TEST_DATA "/dives/test-40-uddf-import-reference.xml");
+		     SUBSURFACE_TEST_DATA "/dives/test-42-uddf-import-reference.xml");
 }
 
 void TestParse::parseDL7()

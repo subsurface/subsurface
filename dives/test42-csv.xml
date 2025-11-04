@@ -1,0 +1,32 @@
+<divelog program='subsurface' version='3'>
+<settings>
+</settings>
+<divesites>
+<site uuid='eea339da' name='Lake Coleridge' gps='-43.342295 171.545936'>
+</site>
+</divesites>
+<dives>
+<dive number='1' rating='4' visibility='4' tags='ccr_dive' divesiteid='eea339da' date='2014-04-02' time='10:00:00' duration='77:54 min'>
+  <divemaster>Taylor</divemaster>
+  <buddy>Michael</buddy>
+  <notes>CCR dive
+Lake
+"small waves"</notes>
+  <suit>dry suit</suit>
+  <cylinder size='2.0 l' o2='16.0%' he='45.0%' start='185.0 bar' end='130.0 bar' />
+  <cylinder size='2.0 l' o2='100.0%' start='190.0 bar' end='130.0 bar' use='diluent' />
+  <cylinder size='11.1 l' start='207.0 bar' end='200.0 bar' />
+  <weightsystem weight='2.0 kg' description='unknown' />
+  <divetemperature air='12.2 C' water='4.3 C'/>
+  <divecomputer model='SubsurfaceCSV' last-manual-time='77:54 min' dctype='CCR'>
+  <depth max='38.99 m' mean='17.721 m' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='4:20 min' depth='38.99 m' />
+  <sample time='16:37 min' depth='38.99 m' />
+  <sample time='19:31 min' depth='12.867 m' />
+  <sample time='76:28 min' depth='12.867 m' />
+  <sample time='77:54 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

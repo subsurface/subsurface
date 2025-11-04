@@ -19,13 +19,31 @@
       </personal>
       <equipment/>
     </owner>
+    <buddy id="id2">
+      <personal>
+        <firstname>Michael</firstname>
+      </personal>
+    </buddy>
   </diver>
   <divesite>
     <divebase id="allbase">
       <name>Subsurface Divebase</name>
     </divebase>
+    <site id="ec2bbc32">
+      <name>Lake Coleridge</name>
+      <geography>
+        <location>Lake Coleridge</location>
+        <latitude>-43.342295</latitude>
+        <longitude>171.545936</longitude>
+      </geography>
+    </site>
   </divesite>
   <gasdefinitions>
+    <mix id="mix(16/45)">
+      <name>TMx 16/45</name>
+      <o2>0.16</o2>
+      <he>0.45</he>
+    </mix>
     <mix id="mix(100/0)">
       <name>oxygen</name>
       <o2>1.00</o2>
@@ -41,13 +59,21 @@
     <repetitiongroup id="testid2">
       <dive id="testid3">
         <informationbeforedive>
-          <link ref=""/>
+          <link ref="id2"/>
+          <link ref="ec2bbc32"/>
           <divenumber>1</divenumber>
-          <datetime>2014-04-01T10:00:00</datetime>
+          <datetime>2014-04-02T10:00:00</datetime>
+          <airtemperature>285.35</airtemperature>
           <equipmentused>
-            <leadquantity>0</leadquantity>
+            <leadquantity>2</leadquantity>
           </equipmentused>
         </informationbeforedive>
+        <tankdata>
+          <link ref="mix(16/45)"/>
+          <tankvolume>0.002</tankvolume>
+          <tankpressurebegin>18500000</tankpressurebegin>
+          <tankpressureend>13000000</tankpressureend>
+        </tankdata>
         <tankdata>
           <link ref="mix(100/0)"/>
           <tankvolume>0.002</tankvolume>
@@ -56,15 +82,15 @@
         </tankdata>
         <tankdata>
           <link ref="mix(21/0)"/>
-          <tankvolume>0.002</tankvolume>
-          <tankpressurebegin>18500000</tankpressurebegin>
-          <tankpressureend>13000000</tankpressureend>
+          <tankvolume>0.0111</tankvolume>
+          <tankpressurebegin>20700000</tankpressurebegin>
+          <tankpressureend>20000000</tankpressureend>
         </tankdata>
         <samples>
           <waypoint>
             <depth>2.34</depth>
             <divetime>2</divetime>
-            <switchmix ref="mix(21/0)"/>
+            <switchmix ref="mix(16/45)"/>
           </waypoint>
           <waypoint>
             <depth>2.92</depth>
@@ -10161,8 +10187,14 @@
           <averagedepth>17.72</averagedepth>
           <diveduration>4674</diveduration>
           <notes>
-            <para>CCR dive</para>
+            <para>CCR dive
+Lake
+"small waves"</para>
           </notes>
+          <rating>
+            <ratingvalue>8</ratingvalue>
+          </rating>
+          <visibility>10</visibility>
         </informationafterdive>
       </dive>
     </repetitiongroup>

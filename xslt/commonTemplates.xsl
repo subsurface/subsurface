@@ -286,98 +286,215 @@
     <xsl:value-of select="concat($year, '-', $month, '-', $day, ' ', $time)"/>
   </xsl:template>
 
-  <xsl:template name="unquote">
-    <xsl:param name="field" />
-    <xsl:param name="value" />
+  <!-- CSV Handling -->
 
-    <xsl:variable name="quote">
-      <xsl:choose>
-        <xsl:when test="$value != ''">
-          <xsl:value-of select="'&quot;'"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="''"/>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
+  <xsl:variable name="quote" select="'&quot;'"/>
 
-    <xsl:choose>
-      <xsl:when test="substring-before($field, '&quot;') = ''">
-        <xsl:value-of select="concat($value, $quote, $field)" />
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="unquote">
-          <xsl:with-param name="field" select="substring-after(substring-after($field, '&quot;'), '&quot;')" />
-          <xsl:with-param name="value" select="concat($value, $quote, substring-before($field, '&quot;'))" />
-        </xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
+  <!-- Get a field in the first record by index -->
 
-  <xsl:template name="getFieldByIndex">
+  <xsl:template name="csvGetFieldByIndex">
+    <xsl:param name="document"/>
     <xsl:param name="index"/>
-    <xsl:param name="line"/>
-    <xsl:param name="remaining"/>
+
     <xsl:choose>
       <xsl:when test="$index > 0">
-        <xsl:call-template name="getFieldByIndex">
-          <xsl:with-param name="index" select="$index -1"/>
-          <xsl:with-param name="line" select="substring-after($line, $fs)"/>
-          <xsl:with-param name="remaining" select="$remaining"/>
+        <xsl:call-template name="csvGetFieldByIndex">
+          <xsl:with-param name="document">
+            <xsl:call-template name="csvSkipField">
+              <xsl:with-param name="document" select="$document"/>
+            </xsl:call-template>
+          </xsl:with-param>
+          <xsl:with-param name="index" select="$index - 1"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
+        <xsl:variable name="field">
+          <xsl:variable name="fieldLength">
+            <xsl:call-template name="csvGetFirstRawFieldLength">
+              <xsl:with-param name="document" select="$document"/>
+            </xsl:call-template>
+          </xsl:variable>
+          <xsl:value-of select="substring($document, 1, $fieldLength)"/>
+        </xsl:variable>
+
         <xsl:choose>
-          <xsl:when test="substring($line, 1, 1) = '&quot;'">
-            <xsl:choose>
-              <!-- We either have a field that ends with quote and field separator, or the last character of line is quote -->
-              <xsl:when test="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs)) != '' or substring($line, string-length($line), 1)">
-                <xsl:choose>
-                  <xsl:when test="substring-before(substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs)), '&quot;') != ''">
-                    <xsl:call-template name="unquote">
-                      <xsl:with-param name="field" select="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs))" />
-                      <xsl:with-param name="value" select="''" />
-                    </xsl:call-template>
-                  </xsl:when>
-                  <xsl:when test="substring($line, string-length($line), 1) = '&quot;'">
-                    <xsl:value-of select="substring-before(substring-after($line, '&quot;'), '&quot;')"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-
-                    <xsl:value-of select="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs))"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:choose>
-                  <!-- quoted string has new line -->
-                  <xsl:when test="string-length(substring-after($line, '&quot;')) = string-length(translate(substring-after($line, '&quot;'), '&#34;', ''))">
-                    <xsl:value-of select="concat(substring-after($line, '&quot;'), substring-before($remaining, '&quot;'))"/>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="''"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:otherwise>
-            </xsl:choose>
+          <xsl:when test="starts-with($field, $quote)">
+            <xsl:call-template name="csvUnescape">
+              <xsl:with-param name="field" select="substring($field, 2, string-length($field) - 2)"/>
+            </xsl:call-template>
           </xsl:when>
-
           <xsl:otherwise>
-            <xsl:choose>
-              <xsl:when test="substring-before($line,$fs) != ''">
-                <xsl:value-of select="substring-before($line,$fs)"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:if test="substring-after($line, $fs) = '' and $line != $fs">
-                  <xsl:value-of select="$line"/>
-                </xsl:if>
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="$field"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
+
+  <!-- Skip to the next record of the document -->
+
+  <xsl:template name="csvSkipRecord">
+    <xsl:param name="document"/>
+
+    <xsl:variable name="remaining">
+      <xsl:call-template name="csvSkipField">
+        <xsl:with-param name="document" select="$document"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:if test="$remaining != ''">
+      <xsl:choose>
+        <xsl:when test="starts-with($remaining, $lf)">
+          <xsl:value-of select="substring($remaining, string-length($lf) + 1)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="csvSkipRecord">
+            <xsl:with-param name="document" select="$remaining"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
+
+
+  <!-- Skip to the next field in the current record -->
+
+  <xsl:template name="csvSkipField">
+    <xsl:param name="document"/>
+
+    <xsl:variable name="firstFieldLength">
+      <xsl:call-template name="csvGetFirstRawFieldLength">
+        <xsl:with-param name="document" select="$document"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="starts-with(substring($document, $firstFieldLength + 1), $fs)">
+        <xsl:value-of select="substring($document, $firstFieldLength + 2)"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="substring($document, $firstFieldLength + 1)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+
+  <!-- Get the length of the first field of the current record exactly as it is in the document -->
+
+  <xsl:template name="csvGetFirstRawFieldLength">
+    <xsl:param name="document"/>
+
+    <xsl:choose>
+      <xsl:when test="starts-with($document, $quote)">
+        <xsl:variable name="quotedFieldLength">
+          <xsl:call-template name="csvGetQuotedFieldLength">
+            <xsl:with-param name="document" select="substring($document, 2)"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:value-of select="$quotedFieldLength + 1"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="firstLine">
+          <xsl:choose>
+            <xsl:when test="contains($document, $lf)">
+              <xsl:value-of select="substring-before($document, $lf)"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="$document"/>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+
+        <xsl:choose>
+          <xsl:when test="contains($firstLine, $fs)">
+            <xsl:value-of select="string-length(substring-before($firstLine, $fs))"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="string-length($firstLine)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+
+  <!-- Get the remaining length of the partial quoted field at the beginning of the document -->
+
+  <xsl:template name="csvGetQuotedFieldLength">
+    <xsl:param name="document"/>
+    <xsl:param name="afterQuote" select="false()"/>
+
+    <xsl:choose>
+      <xsl:when test="not($afterQuote)">
+        <xsl:choose>
+          <xsl:when test="starts-with($document, $quote)">
+            <xsl:variable name="quotedFieldLength">
+              <xsl:call-template name="csvGetQuotedFieldLength">
+                <xsl:with-param name="document" select="substring($document, 2)"/>
+                <xsl:with-param name="afterQuote" select="true()"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:value-of select="$quotedFieldLength + 1"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:variable name="quotedFieldLength">
+              <xsl:call-template name="csvGetQuotedFieldLength">
+                <xsl:with-param name="document" select="substring($document, 2)"/>
+                <xsl:with-param name="afterQuote" select="false()"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:value-of select="$quotedFieldLength + 1"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:choose>
+          <xsl:when test="starts-with($document, $fs) or starts-with($document, $lf) or (string-length($document) = 0)">
+            <xsl:value-of select="0"/>
+          </xsl:when>
+          <xsl:when test="starts-with($document, $quote)">
+            <xsl:variable name="quotedFieldLength">
+              <xsl:call-template name="csvGetQuotedFieldLength">
+                <xsl:with-param name="document" select="substring($document, 2)"/>
+                <xsl:with-param name="afterQuote" select="false()"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:value-of select="$quotedFieldLength + 1"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <!-- This should not be happening as unescaped double quotes are not allowed inside
+                 of quoted fields in RFC 4180.
+                 But we'll continue on here treating this as a single quote. -->
+            <xsl:variable name="quotedFieldLength">
+              <xsl:call-template name="csvGetQuotedFieldLength">
+                <xsl:with-param name="document" select="substring($document, 2)"/>
+                <xsl:with-param name="afterQuote" select="false()"/>
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:value-of select="$quotedFieldLength + 1"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+
+  <!-- Convert escaped quotes into single quotes -->
+
+  <xsl:template name="csvUnescape">
+    <xsl:param name="field"/>
+
+    <xsl:choose>
+      <xsl:when test="contains($field, concat($quote, $quote))">
+        <xsl:value-of select="concat(substring-before($field, concat($quote, $quote)), $quote)"/>
+        <xsl:call-template name="csvUnescape">
+          <xsl:with-param name="field" select="substring-after($field, concat($quote, $quote))"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$field"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 </xsl:stylesheet>
