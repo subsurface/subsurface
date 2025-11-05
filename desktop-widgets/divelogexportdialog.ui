@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>507</width>
-    <height>556</height>
+    <height>572</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -191,6 +191,22 @@
               <string>Dive info in profile</string>
              </property>
             </widget>
+            <widget class="QCheckBox" name="kml">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>110</y>
+               <width>92</width>
+               <height>24</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>as KML</string>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -224,7 +240,7 @@
           <item>
            <widget class="QRadioButton" name="exportSubsurfaceSitesXML">
             <property name="text">
-             <string>Subsurface dive sites XML</string>
+             <string>Dive sites</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
@@ -776,9 +792,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>exportSubsurfaceSitesXML</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>kml</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>145</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>342</x>
+     <y>267</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <buttongroups>
-  <buttongroup name="exportGroup"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="exportGroup"/>
  </buttongroups>
 </ui>

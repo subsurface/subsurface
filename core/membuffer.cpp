@@ -207,6 +207,14 @@ void put_location(struct membuffer *b, const location_t *loc, const char *pre, c
 	}
 }
 
+void put_location_kml(struct membuffer *b, const location_t *loc, const char *pre, const char *post)
+{
+	if (has_location(loc)) {
+		put_degrees(b, loc->lon, pre, ",");
+		put_degrees(b, loc->lat, "", post);
+	}
+}
+
 void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_html)
 {
 	const char *p = text;
