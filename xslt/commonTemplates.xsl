@@ -314,6 +314,7 @@
               <xsl:with-param name="document" select="$document"/>
             </xsl:call-template>
           </xsl:variable>
+
           <xsl:value-of select="substring($document, 1, $fieldLength)"/>
         </xsl:variable>
 
@@ -392,6 +393,7 @@
             <xsl:with-param name="document" select="substring($document, 2)"/>
           </xsl:call-template>
         </xsl:variable>
+
         <xsl:value-of select="$quotedFieldLength + 1"/>
       </xsl:when>
       <xsl:otherwise>
@@ -427,26 +429,15 @@
 
     <xsl:choose>
       <xsl:when test="not($afterQuote)">
-        <xsl:choose>
-          <xsl:when test="starts-with($document, $quote)">
-            <xsl:variable name="quotedFieldLength">
-              <xsl:call-template name="csvGetQuotedFieldLength">
-                <xsl:with-param name="document" select="substring($document, 2)"/>
-                <xsl:with-param name="afterQuote" select="true()"/>
-              </xsl:call-template>
-            </xsl:variable>
-            <xsl:value-of select="$quotedFieldLength + 1"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:variable name="quotedFieldLength">
-              <xsl:call-template name="csvGetQuotedFieldLength">
-                <xsl:with-param name="document" select="substring($document, 2)"/>
-                <xsl:with-param name="afterQuote" select="false()"/>
-              </xsl:call-template>
-            </xsl:variable>
-            <xsl:value-of select="$quotedFieldLength + 1"/>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:variable name="lengthBeforeQuote" select="string-length(substring-before($document, $quote))"/>
+        <xsl:variable name="quotedFieldLength">
+          <xsl:call-template name="csvGetQuotedFieldLength">
+            <xsl:with-param name="document" select="substring($document, $lengthBeforeQuote + 2)"/>
+            <xsl:with-param name="afterQuote" select="true()"/>
+          </xsl:call-template>
+        </xsl:variable>
+
+        <xsl:value-of select="$quotedFieldLength + $lengthBeforeQuote + 1"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
@@ -460,11 +451,12 @@
                 <xsl:with-param name="afterQuote" select="false()"/>
               </xsl:call-template>
             </xsl:variable>
+
             <xsl:value-of select="$quotedFieldLength + 1"/>
           </xsl:when>
           <xsl:otherwise>
-            <!-- This should not be happening as unescaped double quotes are not allowed inside
-                 of quoted fields in RFC 4180.
+            <!-- This should not be happening as unescaped double quotes are
+                 not allowed inside of quoted fields in RFC 4180.
                  But we'll continue on here treating this as a single quote. -->
             <xsl:variable name="quotedFieldLength">
               <xsl:call-template name="csvGetQuotedFieldLength">
@@ -472,6 +464,7 @@
                 <xsl:with-param name="afterQuote" select="false()"/>
               </xsl:call-template>
             </xsl:variable>
+
             <xsl:value-of select="$quotedFieldLength + 1"/>
           </xsl:otherwise>
         </xsl:choose>
