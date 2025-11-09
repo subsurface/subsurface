@@ -69,10 +69,7 @@
         <xsl:value-of select="@Site"/>
       </location>
 
-      <xsl:variable name="lf">
-        <xsl:text>
-</xsl:text>
-      </xsl:variable>
+      <xsl:variable name="lf" select="'&#xa;'"/>
       <notes>
         <xsl:value-of select="notes"/>
         <xsl:value-of select="concat($lf, 'Weather: ', @Weather, $lf, 'Visibility: ', @Visibility)"/>
