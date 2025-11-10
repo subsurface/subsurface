@@ -329,8 +329,8 @@ if [ "$PLATFORM" = Linux ] && [[ $QT_VERSION == 5* ]] ; then
 		rm -rf "$INSTALL_ROOT"/include/QtLocation > /dev/null 2>&1
 		rm -rf "$INSTALL_ROOT"/include/QtPositioning > /dev/null 2>&1
 
-		git clone --branch "v$QT_VERSION" https://code.qt.io/qt/qtlocation.git --depth=1 $QTLOC_GIT ||
-			git clone --branch "v$QT_VERSION-lts-lgpl" https://code.qt.io/qt/qtlocation.git --depth=1 $QTLOC_GIT
+		git clone --branch "v$QT_VERSION" https://github.com/qt/qtlocation.git --depth=1 $QTLOC_GIT ||
+			git clone --branch "v$QT_VERSION-lts-lgpl" https://github.com/qt/qtlocation.git --depth=1 $QTLOC_GIT
 
 		mkdir -p "$QTLOC_PRIVATE"
 		cd $QTLOC_GIT/src/location
