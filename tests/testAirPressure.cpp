@@ -42,9 +42,9 @@ void TestAirPressure::testWriteReadBackAirPressure()
 	int32_t ap = 1111;
 	QVERIFY(divelog.dives.size() >= 1);
 	divelog.dives[0]->surface_pressure.mbar = ap;
-	QCOMPARE(save_dives("./testout.ssrf"), 0);
+	QCOMPARE(save_dives("./testoutairpressure.ssrf"), 0);
 	clear_dive_file_data();
-	QCOMPARE(parse_file("./testout.ssrf", &divelog), 0);
+	QCOMPARE(parse_file("./testoutairpressure.ssrf", &divelog), 0);
 	QVERIFY(divelog.dives.size() >= 1);
 	QCOMPARE(ap, divelog.dives[0]->surface_pressure.mbar);
 }

@@ -13,11 +13,13 @@ private slots:
 	void init();
 	void cleanup();
 
-	int parseCSV(int, std::string);
+	int parseCSV(int, std::string, int);
 	int parseDivingLog();
 	int parseV2NoQuestion();
 	int parseV3();
 	void testParse();
+	void testParseTsv();
+	void testParseCsv();
 	void testParseTankSensors();
 
 	void testParseDM4();

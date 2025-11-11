@@ -25,7 +25,7 @@ void report_datafile_version(int version)
 		min_datafile_version = version;
 }
 
-int clear_min_datafile_version()
+void clear_min_datafile_version()
 {
-	return min_datafile_version;
+	min_datafile_version = 0;
 }

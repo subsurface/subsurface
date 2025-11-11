@@ -3,7 +3,7 @@
 </settings>
 <dives>
 <dive number='1' date='2014-4-1' time='10:00:00' duration='77:54 min'>
-	<notes>CCR dive</notes>
+  <notes>CCR dive</notes>
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Oxy2' o2='100.0%' start='190.0 bar' end='130.0 bar' use='oxygen'/>
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Dil2' start='185.0 bar' end='130.0 bar' use='diluent'/>
   <divecomputer model='Heinrichs Weikamp OSTC 3' deviceid='01234567' diveid='76543210' dctype='CCR'>

@@ -4,7 +4,7 @@
   <xsl:include href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
   <xsl:param name="allcylinders" select="allcylinders"/>
-  <xsl:output method="xml" encoding="UTF-8" indent="yes"
+  <xsl:output method="xml" encoding="utf-8" indent="yes"
     cdata-section-elements="LOCATION SITE WEATHER WATERVIZIBILITY PARTNER BOATNAME CYLINDERDESCRIPTION LOGNOTES"
     />
 

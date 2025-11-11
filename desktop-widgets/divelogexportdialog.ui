@@ -139,7 +139,7 @@
             <property name="title">
              <string>Options</string>
             </property>
-            <widget class="QComboBox" name="CSVUnits_2">
+            <widget class="QComboBox" name="CsvUnits_2">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -271,9 +271,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="exportCSVDetails">
+           <widget class="QRadioButton" name="exportCsvSummary">
             <property name="text">
-             <string>CSV summary dive details</string>
+             <string>CSV dive list</string>
             </property>
             <attribute name="buttonGroup">
              <string notr="true">exportGroup</string>
@@ -281,7 +281,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="exportCSV">
+           <widget class="QRadioButton" name="exportCsvDetails">
             <property name="text">
              <string>CSV dive computer dive profile</string>
             </property>
@@ -649,9 +649,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>exportCSV</sender>
+   <sender>exportCsvDetails</sender>
    <signal>toggled(bool)</signal>
-   <receiver>CSVUnits_2</receiver>
+   <receiver>CsvUnits_2</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -665,9 +665,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>exportCSVDetails</sender>
+   <sender>exportCsvSummary</sender>
    <signal>toggled(bool)</signal>
-   <receiver>CSVUnits_2</receiver>
+   <receiver>CsvUnits_2</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -729,7 +729,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>exportCSV</sender>
+   <sender>exportCsvDetails</sender>
    <signal>toggled(bool)</signal>
    <receiver>anonymize</receiver>
    <slot>setEnabled(bool)</slot>
@@ -745,7 +745,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>exportCSVDetails</sender>
+   <sender>exportCsvSummary</sender>
    <signal>toggled(bool)</signal>
    <receiver>anonymize</receiver>
    <slot>setEnabled(bool)</slot>

@@ -1732,47 +1732,18 @@ static void reset_all(struct parser_state *state)
 	state->import_source = parser_state::UNKNOWN;
 }
 
-/* divelog.de sends us xml files that claim to be iso-8859-1
- * but once we decode the HTML encoded characters they turn
- * into UTF-8 instead. So skip the incorrect encoding
- * declaration and decode the HTML encoded characters */
-static const char *preprocess_divelog_de(const char *buffer)
-{
-	const char *ret = strstr(buffer, "<DIVELOGSDATA>");
-
-	if (ret) {
-		xmlParserCtxtPtr ctx;
-		char buf[] = "";
-		size_t i;
-
-		for (i = 0; i < strlen(ret); ++i)
-			if (!isascii(ret[i]))
-				return buffer;
-
-		ctx = xmlCreateMemoryParserCtxt(buf, sizeof(buf));
-		ret = (char *)xmlStringLenDecodeEntities(ctx, (xmlChar *)ret, strlen(ret), XML_SUBSTITUTE_REF, 0, 0, 0);
-
-		return ret;
-	}
-	return buffer;
-}
-
 int parse_xml_buffer(const char *url, const char *buffer, int, struct divelog *log,
 				const struct xml_params *params)
 {
 	xmlDoc *doc;
-	const char *res = preprocess_divelog_de(buffer);
 	int ret = 0;
 	struct parser_state state;
 
 	state.log = log;
 	state.fingerprints = &fingerprints; // simply use the global table for now
-	doc = xmlReadMemory(res, strlen(res), url, NULL, XML_PARSE_HUGE);
+	doc = xmlReadMemory(buffer, strlen(buffer), url, NULL, XML_PARSE_HUGE);
 	if (!doc)
-		doc = xmlReadMemory(res, strlen(res), url, "latin1", XML_PARSE_HUGE);
-
-	if (res != buffer)
-		free((char *)res);
+		doc = xmlReadMemory(buffer, strlen(buffer), url, "latin1", XML_PARSE_HUGE);
 
 	if (!doc)
 		return report_error(translate("gettextFromC", "Failed to parse '%s'"), url);

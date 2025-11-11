@@ -4,7 +4,7 @@
   extension-element-prefixes="xt" version="1.0">
   <xsl:strip-space elements="*"/>
   <xsl:param name="units" select="units"/>
-  <xsl:output method="text" encoding="UTF-8"/>
+  <xsl:output method="text" encoding="utf-8"/>
 
   <xsl:variable name="fs" select="','"/>
   <xsl:variable name="quote" select="'&quot;'"/>

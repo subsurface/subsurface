@@ -4,34 +4,10 @@
 <divesites>
 <site uuid='deadbeef' name='Suomi -  - Hälvälä'>
 </site>
+<site uuid='ec2bbc32' name='Lake Coleridge' gps='-43.342295 171.545936'>
+</site>
 </divesites>
 <dives>
-<dive number='1' otu='9' cns='5%' date='2013-10-01' time='10:34:00' duration='45:00 min'>
-  <buddy>Dirk</buddy>
-  <suit>wet, 5mm</suit>
-  <divecomputer model='csv' last-manual-time='45:00 min'>
-  <depth max='18.0 m' mean='16.0 m' />
-  <sample time='0:00 min' depth='0.0 m' />
-  <sample time='2:00 min' depth='18.0 m' />
-  <sample time='38:31 min' depth='18.0 m' />
-  <sample time='39:51 min' depth='5.94 m' />
-  <sample time='44:20 min' depth='5.94 m' />
-  <sample time='45:00 min' depth='0.0 m' />
-  </divecomputer>
-</dive>
-<dive number='2' otu='5' cns='7%' date='2013-10-01' time='12:13:00' duration='41:00 min'>
-  <buddy>Linus</buddy>
-  <suit>wet, shorty, 3mm</suit>
-  <divecomputer model='csv' last-manual-time='41:00 min'>
-  <depth max='16.2 m' mean='13.5 m' />
-  <sample time='0:00 min' depth='0.0 m' />
-  <sample time='1:48 min' depth='16.2 m' />
-  <sample time='31:41 min' depth='16.2 m' />
-  <sample time='32:53 min' depth='5.346 m' />
-  <sample time='40:24 min' depth='5.346 m' />
-  <sample time='41:00 min' depth='0.0 m' />
-  </divecomputer>
-</dive>
 <dive number='1' otu='95' cns='34%' date='2014-04-01' time='10:00:00' duration='77:54 min'>
   <notes>CCR dive</notes>
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Oxy2' o2='100.0%' start='190.0 bar' end='130.0 bar' use='oxygen' />
@@ -2529,16 +2505,24 @@
   <sample time='82:50 min' depth='0.235 m' ndl='0:00 min' stoptime='0:00 min' cns='0%' po2='0.0 bar' />
   </divecomputer>
 </dive>
-<dive number='1' otu='95' cns='34%' date='2014-04-02' time='10:00:00' duration='77:54 min'>
-  <notes>CCR dive</notes>
+<dive number='1' rating='4' visibility='4' otu='95' cns='34%' tags='ccr_dive' divesiteid='ec2bbc32' date='2014-04-02' time='10:00:00' duration='77:54 min'>
+  <divemaster>Taylor</divemaster>
+  <buddy>Michael</buddy>
+  <notes>CCR dive
+Lake
+"small waves"</notes>
+  <suit>dry suit</suit>
+  <cylinder size='2.0 l' workpressure='232.0 bar' description='Dil2' o2='16.0%' he='45.0%' start='185.0 bar' end='130.0 bar' use='diluent' />
   <cylinder size='2.0 l' workpressure='232.0 bar' description='Oxy2' o2='100.0%' start='190.0 bar' end='130.0 bar' use='oxygen' />
-  <cylinder size='2.0 l' workpressure='232.0 bar' description='Dil2' start='185.0 bar' end='130.0 bar' use='diluent' />
+  <cylinder size='11.1 l' workpressure='207.0 bar' description='AL80' start='207.0 bar' end='200.0 bar' depth='67.635 m' />
+  <weightsystem weight='2.0 kg' description='integrated' />
+  <divetemperature air='12.2 C'/>
   <divecomputer model='Heinrichs Weikamp OSTC 3' diveid='76543210' dctype='CCR'>
   <depth max='38.99 m' mean='17.72 m' />
   <temperature water='4.3 C' />
   <surface pressure='1.02 bar' />
   <water salinity='1000 g/l' />
-  <event time='0:02 min' type='25' value='21' name='gaschange' cylinder='1' />
+  <event time='0:02 min' type='25' value='21' name='gaschange' cylinder='0' o2='16.0%' he='45.0%' />
   <sample time='0:02 min' depth='2.335 m' />
   <sample time='0:04 min' depth='2.916 m' />
   <sample time='0:06 min' depth='3.273 m' />
@@ -5024,32 +5008,6 @@
   <sample time='82:46 min' depth='0.224 m' />
   <sample time='82:48 min' depth='0.245 m' temp='9.7 C' />
   <sample time='82:50 min' depth='0.235 m' ndl='0:00 min' stoptime='0:00 min' cns='0%' po2='0.0 bar' />
-  </divecomputer>
-</dive>
-<dive number='3' date='2014-10-01' time='10:02:00' duration='48:00 min'>
-  <buddy>Tomaz</buddy>
-  <suit>none</suit>
-  <divecomputer model='csv' last-manual-time='48:00 min'>
-  <depth max='13.3 m' mean='11.5 m' />
-  <sample time='0:00 min' depth='0.0 m' />
-  <sample time='1:29 min' depth='13.3 m' />
-  <sample time='39:02 min' depth='13.3 m' />
-  <sample time='40:02 min' depth='4.389 m' />
-  <sample time='47:31 min' depth='4.389 m' />
-  <sample time='48:00 min' depth='0.0 m' />
-  </divecomputer>
-</dive>
-<dive number='4' otu='13' cns='5%' date='2014-10-01' time='14:19:00' duration='34:00 min'>
-  <buddy>Don</buddy>
-  <suit>dry, Whites Fusion</suit>
-  <divecomputer model='csv' last-manual-time='34:00 min'>
-  <depth max='24.9 m' mean='20.1 m' />
-  <sample time='0:00 min' depth='0.0 m' />
-  <sample time='2:46 min' depth='24.9 m' />
-  <sample time='25:35 min' depth='24.9 m' />
-  <sample time='27:26 min' depth='8.217 m' />
-  <sample time='33:05 min' depth='8.217 m' />
-  <sample time='34:00 min' depth='0.0 m' />
   </divecomputer>
 </dive>
 <dive number='417' otu='138' cns='54%' divesiteid='deadbeef' date='2015-05-23' time='13:23:00' duration='100:00 min'>

@@ -2,16 +2,22 @@
 <settings>
 </settings>
 <divesites>
+<site uuid='eea339da' name='Lake Coleridge' gps='-43.342295 171.545936'>
+</site>
 </divesites>
 <dives>
-<dive number='1' sac='1.032 l/min' otu='24' cns='9%' date='2014-04-01' time='10:00:00' duration='77:54 min'>
-  <notes>CCR dive</notes>
+<dive number='1' rating='4' visibility='4' sac='1.325 l/min' otu='24' cns='9%' divesiteid='eea339da' date='2014-04-02' time='10:00:00' duration='77:54 min'>
+  <buddy>Michael</buddy>
+  <notes>CCR dive
+Lake
+"small waves"</notes>
+  <cylinder size='2.0 l' o2='16.0%' he='45.0%' start='185.0 bar' end='130.0 bar' />
   <cylinder size='2.0 l' o2='100.0%' start='190.0 bar' end='130.0 bar' />
-  <cylinder size='2.0 l' start='185.0 bar' end='130.0 bar' />
+  <cylinder size='11.1 l' start='207.0 bar' end='200.0 bar' />
   <divecomputer model='Subsurface Divelog'>
   <depth max='38.99 m' mean='17.72 m' />
-  <temperature water='4.3 C' />
-  <event time='0:02 min' type='11' value='21' name='gaschange' cylinder='1' />
+  <temperature air='12.2 C' water='4.3 C' />
+  <event time='0:02 min' type='11' value='21' name='gaschange' cylinder='2' />
   <sample time='0:02 min' depth='2.34 m' />
   <sample time='0:04 min' depth='2.92 m' />
   <sample time='0:06 min' depth='3.27 m' />
