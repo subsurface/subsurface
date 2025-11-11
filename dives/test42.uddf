@@ -19,7 +19,7 @@
       </personal>
       <equipment/>
     </owner>
-    <buddy id="id2">
+    <buddy id="testbuddyid1">
       <personal>
         <firstname>Michael</firstname>
       </personal>
@@ -59,7 +59,7 @@
     <repetitiongroup id="testid2">
       <dive id="testid3">
         <informationbeforedive>
-          <link ref="id2"/>
+          <link ref="testbuddyid1"/>
           <link ref="ec2bbc32"/>
           <divenumber>1</divenumber>
           <datetime>2014-04-02T10:00:00</datetime>
