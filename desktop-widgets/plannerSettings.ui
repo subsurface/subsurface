@@ -213,6 +213,13 @@
                </property>
               </widget>
              </item>
+             <item row="1" column="0" colspan="2">
+              <widget class="QCheckBox" name="drop_stone_mode">
+               <property name="text">
+                <string>Drop to first depth</string>
+               </property>
+              </widget>
+             </item>
             </layout>
             <zorder>descRate</zorder>
             <zorder>descent</zorder>
@@ -287,7 +294,7 @@
             </property>
            </spacer>
           </item>
-          <item row="20" column="1" colspan="2">
+          <item row="19" column="1" colspan="2">
            <widget class="QCheckBox" name="switch_at_req_stop">
             <property name="toolTip">
              <string>Postpone gas change if a stop is not required</string>
@@ -297,7 +304,7 @@
             </property>
            </widget>
           </item>
-          <item row="16" column="1" colspan="2">
+          <item row="15" column="1" colspan="2">
            <widget class="QCheckBox" name="lastStop">
             <property name="text">
              <string>Last stop at 6m</string>
@@ -327,7 +334,7 @@
             </property>
            </widget>
           </item>
-          <item row="21" column="2">
+          <item row="20" column="2">
            <widget class="QSpinBox" name="min_switch_duration">
             <property name="suffix">
              <string>min</string>
@@ -346,14 +353,14 @@
             </property>
            </widget>
           </item>
-          <item row="18" column="1" colspan="2">
+          <item row="17" column="1" colspan="2">
            <widget class="QCheckBox" name="backgasBreaks">
             <property name="text">
              <string>Plan backgas breaks</string>
             </property>
            </widget>
           </item>
-          <item row="23" column="1">
+          <item row="22" column="1">
            <spacer name="verticalSpacer_2">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -366,17 +373,10 @@
             </property>
            </spacer>
           </item>
-          <item row="21" column="1">
+          <item row="20" column="1">
            <widget class="QLabel" name="label_min_switch_duration">
             <property name="text">
              <string>Min. switch duration O₂% below 100%</string>
-            </property>
-           </widget>
-          </item>
-          <item row="15" column="1" colspan="2">
-           <widget class="QCheckBox" name="drop_stone_mode">
-            <property name="text">
-             <string>Drop to first depth</string>
             </property>
            </widget>
           </item>
@@ -499,14 +499,14 @@
             </property>
            </widget>
           </item>
-          <item row="22" column="1">
+          <item row="21" column="1">
            <widget class="QLabel" name="label_surface_segment">
             <property name="text">
              <string>Surface segment</string>
             </property>
            </widget>
           </item>
-          <item row="22" column="2">
+          <item row="21" column="2">
            <widget class="QSpinBox" name="surface_segment">
             <property name="suffix">
              <string>min</string>
