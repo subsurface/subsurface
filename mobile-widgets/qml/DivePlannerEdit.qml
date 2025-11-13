@@ -40,7 +40,7 @@ TemplatePage {
 					"type": item.type,
 					"mix": item.mix,
 					"pressure": item.pressure,
-					"use": diveMode.currentIndex == 1 ? item.use : 0,
+					"use": overallDivemode.currentIndex == 1 ? item.use : 0,
 				})
 			}
 
@@ -59,7 +59,7 @@ TemplatePage {
 					"duration": descentDuration,
 					"gas": firstSegment.gas,
 					"setpoint": firstSegment.setpoint,
-					"divemode": firstSegment.localDiveMode,
+					"divemode": firstSegment.divemode,
 				})
 				if (descentDuration < firstSegment.duration) {
 					segmentData.push({
@@ -67,7 +67,7 @@ TemplatePage {
 						"duration": firstSegment.duration - descentDuration,
 						"gas": firstSegment.gas,
 						"setpoint": firstSegment.setpoint,
-						"divemode": firstSegment.localDiveMode,
+						"divemode": firstSegment.divemode,
 					});
 				}
 			}
@@ -78,7 +78,7 @@ TemplatePage {
 					"duration": item.duration,
 					"gas": item.gas,
 					"setpoint": item.setpoint,
-					"divemode": item.localDiveMode,
+					"divemode": item.divemode,
 				})
 			}
 			var salinity = 0
@@ -94,7 +94,7 @@ TemplatePage {
 
 			var planResult = Backend.divePlannerPointsModel.calculatePlan(
 				cylinderData, segmentData, planDate.text, planTime.text,
-				diveMode.currentIndex, salinity, savePlan
+				overallDivemode.currentIndex, salinity, savePlan
 			)
 			if (savePlan) {
 				var newDiveId = planResult.newDiveId
@@ -199,9 +199,9 @@ TemplatePage {
 				verticalAlignment: Text.AlignVCenter
 			}
 			TemplateComboBox {
-				id: diveMode
+				id: overallDivemode
 				Layout.fillWidth: true
-				model: [qsTr("Open circuit"), qsTr("CCR"), qsTr("pSCR")]
+				model: [ qsTr("Open circuit"), qsTr("CCR"), qsTr("pSCR") ]
 				currentIndex: 0 // Default to OC
 				onCurrentIndexChanged: {
 					generatePlan();
@@ -211,7 +211,7 @@ TemplatePage {
 				text: qsTr("Deco on OC bailout")
 				Layout.columnSpan: 2
 				checked: Backend.dobailout
-				visible: diveMode.currentIndex !== 0
+				visible: overallDivemode.currentIndex !== 0
 				onClicked: {
 					Backend.dobailout = checked;
 					generatePlan();
@@ -224,7 +224,7 @@ TemplatePage {
 			TemplateComboBox {
 				id: waterTypeBox
 				Layout.fillWidth: true
-				model: [qsTr("Sea Water"), qsTr("Fresh Water"), qsTr("EN13319")]
+				model: [ qsTr("Sea Water"), qsTr("Fresh Water"), qsTr("EN13319") ]
 				currentIndex: 0 // Default to Sea water
 				onCurrentIndexChanged: {
 					generatePlan();
@@ -269,14 +269,14 @@ TemplatePage {
 			TemplateLabel {
 				text: qsTr("Use");
 				Layout.preferredWidth: Kirigami.Units.gridUnit * 5;
-				visible: diveMode.currentIndex == 1
+				visible: overallDivemode.currentIndex == 1
 				font.bold: true
 			}
 			TemplateLabel { text: qsTr("[%1]").arg(pressureUnit); Layout.fillWidth: true; font.bold: true }
 			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium }
 		}
 
-				ListView {
+		ListView {
 			id: cylinderListView
 			Layout.fillWidth: true
 			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
@@ -341,7 +341,7 @@ TemplatePage {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
 					model: [ qsTr("OC-gas"), qsTr("diluent") ]
 					currentIndex: use
-					visible: diveMode.currentIndex == 1
+					visible: overallDivemode.currentIndex == 1
 					onCurrentIndexChanged: {
 						cylinderListModel.setProperty(index, "use", currentIndex);
 						generatePlan();
@@ -394,7 +394,7 @@ TemplatePage {
 							"duration": 10,
 							"gas": lastSegment.gas,
 							"setpoint": lastSegment.setpoint,
-							"divemode": lastSegment.localDiveMode,
+							"divemode": lastSegment.divemode,
 						});
 						generatePlan();
 					}
@@ -406,20 +406,32 @@ TemplatePage {
 			Layout.fillWidth: true
 			spacing: Kirigami.Units.gridUnit
 
-			TemplateLabel { text: qsTr("Depth [%1]").arg(depthUnit); Layout.fillWidth: true; font.bold: true }
-			TemplateLabel { text: qsTr("Duration [min]"); Layout.fillWidth: true; font.bold: true }
-			TemplateLabel { text: qsTr("Gas"); Layout.fillWidth: true; font.bold: true }
+			TemplateLabel {
+				text: qsTr("Depth [%1]").arg(depthUnit);
+				Layout.fillWidth: true;
+				font.bold: true
+			}
+			TemplateLabel {
+				text: qsTr("Duration [min]");
+				Layout.fillWidth: true;
+				font.bold: true
+			}
+			TemplateLabel {
+				text: qsTr("Gas");
+				Layout.fillWidth: true;
+				font.bold: true;
+			}
 			TemplateLabel {
 				text: qsTr("Setpoint [bar]");
 				Layout.fillWidth: true;
 				font.bold: true;
-				visible: diveMode.currentIndex == 1
+				visible: overallDivemode.currentIndex == 1;
 			}
 			TemplateLabel {
 				text: qsTr("Dive Mode");
 				Layout.fillWidth: true;
 				font.bold: true;
-				visible: diveMode.currentIndex == 2
+				visible: overallDivemode.currentIndex == 2;
 			}
 			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium } // Spacer
 		}
@@ -461,7 +473,6 @@ TemplatePage {
 					Layout.fillWidth: true
 					Layout.minimumWidth: Kirigami.Units.gridUnit * 6
 					model: gasNumberModel
-
 					currentIndex: gas
 					onCurrentIndexChanged: {
 						segmentListModel.setProperty(index, "gas", currentIndex)
@@ -492,14 +503,13 @@ TemplatePage {
 
 				TemplateComboBox {
 					Layout.fillWidth: true
-					model: [
-						{ value: 0, text: sTr("OC") },
-						{ value: 2, text: qsTr("pSCR") },
-					]
-					currentIndex: localDiveMode
-					visible: diveMode.currentIndex == 2
+					Layout.minimumWidth: Kirigami.Units.gridUnit * 6
+					model: [ qsTr("OC"), qsTr("pSCR") ]
+					// Skip CCR (value === 1) as it's not applicable for pSCR mode
+					currentIndex: divemode === 2 ? 1 : divemode
+					visible: overallDivemode.currentIndex == 2
 					onCurrentIndexChanged: {
-						segmentListModel.setProperty(index, "divemode", currentIndex);
+						segmentListModel.setProperty(index, "divemode", currentIndex === 1 ? 2 : currentIndex);
 						generatePlan();
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
