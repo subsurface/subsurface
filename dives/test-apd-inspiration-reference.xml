@@ -30,6 +30,7 @@
   <extradata key='Battery 2 at End [V]' value='5.5' />
   <extradata key='Tempstik at Begin' value='[#_____]' />
   <extradata key='Tempstik at End' value='[_#####]' />
+  <extradata key='Elapsed on time at End [hh:mm:ss]' value='2:05:00' />
   <extradata key='Deco model' value='GF 50/70' />
   <event time='0:00 min' type='11' value='21' name='gaschange' cylinder='0' />
   <event time='0:10 min' type='25' value='3145744' name='gaschange' cylinder='3' o2='16.0%' he='48.0%' />
