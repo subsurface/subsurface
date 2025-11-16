@@ -39,6 +39,7 @@
         <file>xslt/uddf-export.xslt</file>
         <file>xslt/xml2detailscsv.xslt</file>
         <file>xslt/xml2summarycsv.xslt</file>
+        <file>xslt/xml2json.xslt</file>
         <file>xslt/uddf.xslt</file>
         <file>xslt/sensuscsv.xslt</file>
         <file>xslt/subsurfacecsv.xslt</file>
