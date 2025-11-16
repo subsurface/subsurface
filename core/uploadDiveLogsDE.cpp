@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "uploadDiveLogsDE.h"
-#include <QDir>
-#include <QTemporaryFile>
-#include <zip.h>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <errno.h>
 #include "core/errorhelper.h"
 #include "core/qthelper.h"
@@ -36,73 +35,59 @@ uploadDiveLogsDE::uploadDiveLogsDE():
 }
 
 
-static QString makeTempFileName()
-{
-	QTemporaryFile tmpfile;
-	tmpfile.setFileTemplate(QDir::tempPath() + "/divelogsde-upload.XXXXXXXX.dld");
-	tmpfile.open();
-	return tmpfile.fileName();
-}
-
-
 void uploadDiveLogsDE::doUpload(bool selected, const QString &userid, const QString &password)
 {
 	QString err;
 
-	QString filename = makeTempFileName();
+	// Clean up previous buffer if any
+	if (mb_json.buffer)
+		free(mb_json.buffer);
+	mb_json.len = 0;
+	mb_json.alloc = 0;
+	mb_json.buffer = NULL;
 
-	// Make zip file, with all dives, in divelogs.de format
-	if (!prepareDives(filename, selected)) {
+	// Make json with all dives, in divelogs.de format
+	if (!prepareDives(selected)) {
 		emit uploadFinish(false, tr("Cannot prepare dives, none selected?"));
 		timeout.stop();
 		return;
 	}
 
 	// And upload it
-	uploadDives(filename, userid, password);
+	uploadDives(userid, password);
 }
 
 
-bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
+bool uploadDiveLogsDE::prepareDives(bool selected)
 {
 	static const char errPrefix[] = "divelog.de-upload:";
 
-	xsltStylesheetPtr xslt = NULL;
-	struct zip *zip;
+	xsltStylesheetPtr xslt_divelogs = NULL;
+	xsltStylesheetPtr xslt_json = NULL;
 
-	emit uploadStatus(tr("building zip file to upload"));
+	emit uploadStatus(tr("building json to upload"));
 
-	xslt = get_stylesheet("divelogs-export.xslt");
-	if (!xslt) {
+	xslt_divelogs = get_stylesheet("divelogs-export.xslt");
+	if (!xslt_divelogs) {
 		report_info("%s missing stylesheet", errPrefix);
 		report_error("%s", qPrintable(tr("Stylesheet to export to divelogs.de is not found")));
 		return false;
 	}
 
-	// Prepare zip file
-	int error_code;
-	zip = zip_open(QFile::encodeName(QDir::toNativeSeparators(tempfile)), ZIP_CREATE, &error_code);
-	if (!zip) {
-		char buffer[1024];
-#if LIBZIP_VERSION_MAJOR >= 1
-		zip_error_t error;
-		zip_error_init_with_code(&error, error_code);   // from zip_* function return
-		snprintf(buffer, sizeof buffer, "%s", zip_error_strerror(&error));
-		zip_error_fini(&error);
-#else
-		zip_error_to_str(buffer, sizeof buffer, error_code, errno);
-#endif
-		report_error(qPrintable(tr("Failed to create zip file for upload: %s")), buffer);
+	xslt_json = get_stylesheet("xml2json.xslt");
+	if (!xslt_json) {
+		report_info("%s missing stylesheet", errPrefix);
+		report_error("%s", qPrintable(tr("Stylesheet to export to json is not found")));
 		return false;
 	}
 
+	put_string(&mb_json, "[");
+
 	/* walk the dive list in chronological order */
 	for (auto [i, dive]: enumerated_range(divelog.dives)) {
-		char filename[PATH_MAX];
 		int streamsize;
 		char *membuf;
 		xmlDoc *transformed;
-		struct zip_source *s;
 		membuffer mb;
 		struct xml_params *params = alloc_xml_params();
 
@@ -146,22 +131,21 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		}
 		/*
 		 * Parse the memory buffer into XML document and
-		 * transform it to divelogs.de format, finally dumping
-		 * the XML into a character buffer.
+		 * transform it to divelogs.de format, then transforming the XML
+		 * into JSON, finally dumping the JSON into a character buffer.
 		 */
 		xmlDoc *doc = xmlReadMemory(mb.buffer, mb.len, "divelog", NULL, XML_PARSE_HUGE);
 		if (!doc) {
 			report_info("%s could not parse back into memory the XML file we've just created!", errPrefix);
 			report_error("%s", qPrintable(tr("internal error")));
-			zip_close(zip);
-			QFile::remove(tempfile);
-			xsltFreeStylesheet(xslt);
+			xsltFreeStylesheet(xslt_divelogs);
+			xsltFreeStylesheet(xslt_json);
 			free_xml_params(params);
 			return false;
 		}
 
 		xml_params_add_int(params, "allcylinders", prefs.include_unused_tanks);
-		transformed = xsltApplyStylesheet(xslt, doc, xml_params_get(params));
+		transformed = xsltApplyStylesheet(xslt_divelogs, doc, xml_params_get(params));
 		free_xml_params(params);
 		if (!transformed) {
 			report_info("%s XSLT transform failed for dive: %d", errPrefix, i);
@@ -172,45 +156,46 @@ bool uploadDiveLogsDE::prepareDives(const QString &tempfile, bool selected)
 		xmlFreeDoc(doc);
 		xmlFreeDoc(transformed);
 
-		/*
-		 * Save the XML document into a zip file.
-		 */
-		snprintf(filename, PATH_MAX, "%d.xml", i + 1);
-		s = zip_source_buffer(zip, membuf, streamsize, 1); // frees membuffer!
-		if (s) {
-			int64_t ret = zip_file_add(zip, filename, s, ZIP_FL_OVERWRITE);
-			if (ret == -1)
-				report_info("%s failed to include dive: %d", errPrefix, i);
+		doc = xmlReadMemory(membuf, streamsize, "divelogsdata", NULL, XML_PARSE_HUGE);
+		free(membuf);
+		if (!doc) {
+			report_info("%s could not parse back into memory the XML file we've just created!", errPrefix);
+			report_error("%s", qPrintable(tr("internal error")));
+			xsltFreeStylesheet(xslt_divelogs);
+			xsltFreeStylesheet(xslt_json);
+			return false;
 		}
+		transformed = xsltApplyStylesheet(xslt_json, doc, NULL);
+		if (!transformed) {
+			report_info("%s XSLT transform failed for dive: %d", errPrefix, i);
+			report_error("%s", qPrintable(tr("Conversion of dive %1 to divelogs.de format failed").arg(i)));
+			continue;
+		}
+		xsltSaveResultToString((xmlChar **)&membuf, &streamsize, transformed, xslt_json);
+		xmlFreeDoc(doc);
+		xmlFreeDoc(transformed);
+
+		/*
+		 * Save the JSON into the JSON list object.
+		 */
+		put_bytes(&mb_json, membuf, streamsize);
+		put_string(&mb_json, ",");
+		free(membuf);
 	}
-	xsltFreeStylesheet(xslt);
-	if (zip_close(zip)) {
-		int ze, se;
-#if LIBZIP_VERSION_MAJOR >= 1
-		zip_error_t *error = zip_get_error(zip);
-		ze = zip_error_code_zip(error);
-		se = zip_error_code_system(error);
-#else
-		zip_error_get(zip, &ze, &se);
-#endif
-		report_error(qPrintable(tr("error writing zip file: %s zip error %d system error %d - %s")),
-			     qPrintable(QDir::toNativeSeparators(tempfile)), ze, se, zip_strerror(zip));
-		return false;
-	}
+	mb_json.len--; // remove last comma
+	
+	// Wrap the JSON array
+	put_string(&mb_json, "]");
+
+	xsltFreeStylesheet(xslt_divelogs);
+	xsltFreeStylesheet(xslt_json);
 	return true;
 }
 
 
-void uploadDiveLogsDE::cleanupTempFile()
+void uploadDiveLogsDE::uploadDives(const QString &userid, const QString &password)
 {
-	if (tempFile.isOpen())
-		tempFile.remove();
-}
-
-
-void uploadDiveLogsDE::uploadDives(const QString &filename, const QString &userid, const QString &password)
-{
-	QHttpPart part1, part2, part3;
+	QHttpPart part1, part2;
 	static QNetworkRequest request;
 	QString args;
 
@@ -226,41 +211,93 @@ void uploadDiveLogsDE::uploadDives(const QString &filename, const QString &useri
 	}
 	multipart = new QHttpMultiPart(QHttpMultiPart::FormDataType);
 
-	emit uploadStatus(tr("Uploading dives"));
+	emit uploadStatus(tr("Logging in to divelogs.de"));
 
-	// prepare header with filename (of all dives) and pointer to file
-	args = "form-data; name=\"userfile\"; filename=\"" + filename + "\"";
-	part1.setRawHeader("Content-Disposition", args.toLatin1());
-
-	// open new file for reading
-	cleanupTempFile();
-	tempFile.setFileName(filename);
-	if (!tempFile.open(QIODevice::ReadOnly)) {
-		report_info("ERROR opening zip file: %s", qPrintable(filename));
-		return;
-	}
-	part1.setBodyDevice(&tempFile);
-	multipart->append(part1);
-
+	// First get the token
 	// Add userid
 	args = "form-data; name=\"user\"";
-	part2.setRawHeader("Content-Disposition", args.toLatin1());
-	part2.setBody(qPrefCloudStorage::divelogde_user().toUtf8());
-	multipart->append(part2);
-
+	part1.setRawHeader("Content-Disposition", args.toLatin1());
+	part1.setBody(userid.toUtf8());
+	multipart->append(part1);
 	// Add password
 	args = "form-data; name=\"pass\"";
-	part3.setRawHeader("Content-Disposition", args.toLatin1());
-	part3.setBody(qPrefCloudStorage::divelogde_pass().toUtf8());
-	multipart->append(part3);
+	part2.setRawHeader("Content-Disposition", args.toLatin1());
+	part2.setBody(password.toUtf8());
+	multipart->append(part2);
 
-	// Prepare network request
-	request.setUrl(QUrl("https://divelogs.de/DivelogsDirectImport.php"));
-	request.setRawHeader("Accept", "text/xml, application/xml");
+	request.setUrl(QUrl("https://divelogs.de/api/login"));
+	request.setRawHeader("Accept", "*/*");
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 
 	// Execute async.
 	reply = manager()->post(request, multipart);
+	
+	// connect signals from login process
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(reply, &QNetworkReply::finished, this, &uploadDiveLogsDE::loginFinishedSlot);
+	connect(reply, &QNetworkReply::errorOccurred, this, &uploadDiveLogsDE::loginErrorSlot);
+	connect(&timeout, &QTimer::timeout, this, &uploadDiveLogsDE::loginTimeoutSlot);
+#else
+
+	connect(reply, SIGNAL(finished()), this, SLOT(loginFinishedSlot()));
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this,
+		SLOT(loginErrorSlot(QNetworkReply::NetworkError)));
+	connect(&timeout, SIGNAL(timeout()), this, SLOT(loginTimeoutSlot()));
+#endif
+	timeout.start(30000); // 30s
+}
+
+	
+
+void uploadDiveLogsDE::loginFinishedSlot()
+{
+	QString err;
+	QByteArray json_data(mb_json.buffer, mb_json.len);
+	QString token;
+	QString args;
+	static QNetworkRequest request;
+
+	if (!reply)
+		return;
+
+	timeout.stop();
+	err = tr("Login successful");
+	emit uploadStatus(err);
+
+	// read the token from the reply
+	QByteArray response_data = reply->readAll();
+	// parse json to get token
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(response_data);
+	if (jsonDoc.isNull() || !jsonDoc.isObject()) {
+		err = tr("Invalid login response from divelogs.de");
+		report_error("%s", qPrintable(err));
+		emit uploadFinish(false, err);
+		return;
+	}
+	QJsonObject jsonObj = jsonDoc.object();
+	if (!jsonObj.contains("bearer_token") || !jsonObj["bearer_token"].isString()) {
+		err = tr("Login failed: no token received");
+		report_error("%s", qPrintable(err));
+		emit uploadFinish(false, err);
+		return;
+	}
+	token = jsonObj["bearer_token"].toString();
+
+	// Now upload the dives
+	emit uploadStatus(tr("Uploading dives"));
+
+	// Prepare header bearer token
+	args = "Bearer " + token;
+	request.setRawHeader("Authorization", args.toUtf8());
+	
+	// Prepare network request
+	request.setUrl(QUrl("https://divelogs.de/api/dives"));
+	request.setRawHeader("Accept", "*/*");
+	request.setRawHeader("Content-Type", "application/json");
+	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
+
+	// Execute async.
+	reply = manager()->post(request, json_data);
 
 	// connect signals from upload process
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
@@ -278,6 +315,38 @@ void uploadDiveLogsDE::uploadDives(const QString &filename, const QString &useri
 	connect(&timeout, SIGNAL(timeout()), this, SLOT(uploadTimeoutSlot()));
 #endif
 	timeout.start(30000); // 30s
+	return;
+}
+
+void uploadDiveLogsDE::loginTimeoutSlot()
+{
+	timeout.stop();
+	if (reply) {
+		reply->deleteLater();
+		reply = NULL;
+	}
+	QString err(tr("divelogs.de not responding"));
+	report_error("%s", qPrintable(err));
+	emit uploadFinish(false, err);
+}
+
+
+void uploadDiveLogsDE::loginErrorSlot(QNetworkReply::NetworkError error)
+{
+	timeout.stop();
+	if (reply) {
+		reply->deleteLater();
+		reply = NULL;
+	}
+	if (error == QNetworkReply::AuthenticationRequiredError) {
+		QString err(tr("Login failed: invalid username or password"));
+		report_error("%s", qPrintable(err));
+		emit uploadFinish(false, err);
+		return;
+	}
+	QString err(tr("network error %1").arg(error));
+	report_error("%s", qPrintable(err));
+	emit uploadFinish(false, err);
 }
 
 
@@ -306,37 +375,10 @@ void uploadDiveLogsDE::uploadFinishedSlot()
 	if (!reply)
 		return;
 
-	// check what the server sent us: it might contain
-	// an error condition, such as a failed login
-	QByteArray xmlData = reply->readAll();
-	reply->deleteLater();
-	reply = NULL;
-	cleanupTempFile();
-	char *resp = xmlData.data();
-	if (resp) {
-		char *parsed = strstr(resp, "<Login>");
-		if (parsed) {
-			if (strstr(resp, "<Login>succeeded</Login>")) {
-				if (strstr(resp, "<FileCopy>failed</FileCopy>")) {
-					report_error("%s", qPrintable(tr("Upload failed")));
-					return;
-				}
-				timeout.stop();
-				err = tr("Upload successful");
-				emit uploadFinish(true, err);
-				return;
-			}
-			timeout.stop();
-			err = tr("Login failed");
-			report_error("%s", qPrintable(err));
-			emit uploadFinish(false, err);
-			return;
-		}
-		timeout.stop();
-		err = tr("Cannot parse response");
-		report_error("%s", qPrintable(tr("Cannot parse response")));
-		emit uploadFinish(false, err);
-	}
+	timeout.stop();
+	err = tr("Upload successful");
+	emit uploadFinish(true, err);
+	return;
 }
 
 
@@ -347,7 +389,6 @@ void uploadDiveLogsDE::uploadTimeoutSlot()
 		reply->deleteLater();
 		reply = NULL;
 	}
-	cleanupTempFile();
 	QString err(tr("divelogs.de not responding"));
 	report_error("%s", qPrintable(err));
 	emit uploadFinish(false, err);
@@ -361,7 +402,6 @@ void uploadDiveLogsDE::uploadErrorSlot(QNetworkReply::NetworkError error)
 		reply->deleteLater();
 		reply = NULL;
 	}
-	cleanupTempFile();
 	QString err(tr("network error %1").arg(error));
 	report_error("%s", qPrintable(err));
 	emit uploadFinish(false, err);

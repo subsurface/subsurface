@@ -461,6 +461,13 @@ void TestParse::importUDDF()
 		     SUBSURFACE_TEST_DATA "/dives/test-42-uddf-import-reference.xml");
 }
 
+void TestParse::exportDiveLogsDE()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
+	export_dives_xslt("testdivelogsexport.divelogs", 0, 0, "divelogs-export.xslt", false);
+	FILE_COMPARE("testdivelogsexport.divelogs", SUBSURFACE_TEST_DATA "/dives/test40.divelogs");
+}
+
 void TestParse::parseDL7()
 {
 	xml_params params;

@@ -37,6 +37,7 @@ private slots:
 	void exportCSVDiveProfile();
 	void exportUDDF();
 	void importUDDF();
+	void exportDiveLogsDE();
 
 	void parseDL7();
 

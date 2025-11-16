@@ -103,5 +103,6 @@
 		<file alias="commonTemplates.xsl">../../xslt/commonTemplates.xsl</file>
 		<file alias="uddf-export.xslt">../../xslt/uddf-export.xslt</file>
 		<file alias="divelogs-export.xslt">../../xslt/divelogs-export.xslt</file>
+		<file alias="xml2json.xslt">../../xslt/xml2json.xslt</file>
 	</qresource>
 </RCC>
