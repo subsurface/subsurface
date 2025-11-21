@@ -130,7 +130,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 			break;
 		case PLAN_ERROR_NO_SUITABLE_BAILOUT_GAS:
 			message = translate("gettextFromC", "No suitable gas for OC bailout at the planned final depth found in the gaslist. "
-				"Please add an OC gas with an MOD suitable for the planned final depth to enable the generation of a dive plan.");
+				"Please add an OC-gas with an MOD suitable for the planned final depth to enable the generation of a dive plan.");
 
 			break;
 		default:
@@ -346,7 +346,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 							newgasmix.name().c_str(), temp.c_str());
 					} else {
 						buf += format_string_std("<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
-							newgasmix.name().c_str(), dp->divemode == UNDEF_COMP_TYPE || dp->divemode == nextdp->divemode ? "" : translate("gettextFromC", divemode_text_ui[nextdp->divemode]));
+							newgasmix.name().c_str(), dive.dcs[0].divemode == OC || dp->divemode == UNDEF_COMP_TYPE || dp->divemode == nextdp->divemode ? "" : translate("gettextFromC", divemode_text_ui[nextdp->divemode]));
 						if (isascent && (get_he(lastprintgasmix) > 0)) { // For a trimix gas change on ascent, save ICD info if previous cylinder had helium
 							if (isobaric_counterdiffusion(lastprintgasmix, newgasmix, &icdvalues)) // Do icd calulations
 								icdwarning = true;
@@ -367,7 +367,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 						buf += format_string_std("<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasmix.name().c_str(), temp.c_str());
 					} else {
 						buf += format_string_std("<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasmix.name().c_str(),
-							   lastdivemode == UNDEF_COMP_TYPE || lastdivemode == dp->divemode ? "" : translate("gettextFromC", divemode_text_ui[dp->divemode]));
+							   dive.dcs[0].divemode == OC || dp->divemode == UNDEF_COMP_TYPE || lastdivemode == dp->divemode ? "" : translate("gettextFromC", divemode_text_ui[dp->divemode]));
 						if (get_he(lastprintgasmix) > 0) {  // For a trimix gas change, save ICD info if previous cylinder had helium
 							if (isobaric_counterdiffusion(lastprintgasmix, gasmix, &icdvalues))  // Do icd calculations
 								icdwarning = true;
