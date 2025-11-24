@@ -707,12 +707,12 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	/* Find the gases available for deco */
 
 	bool inappropriate_cylinder_use = false;
-	bool deco_on_loop = divemode == CCR && (decoMode(true) == RECREATIONAL || !prefs.dobailout);
+	bool deco_on_loop = divemode == CCR && !(prefs.dobailout && decoMode(true) != RECREATIONAL);
 	std::vector<gaschanges> gaschanges = analyze_gaslist(diveplan, dive, dcNr, depth.mm, &best_first_ascend_cylinder, deco_on_loop, inappropriate_cylinder_use);
 	if (inappropriate_cylinder_use) {
 		error = PLAN_ERROR_INAPPROPRIATE_GAS;
 	}
-	if (prefs.dobailout && best_first_ascend_cylinder == -1) {
+	if (divemode == CCR && prefs.dobailout && decoMode(true) != RECREATIONAL && best_first_ascend_cylinder == -1) {
 		error = PLAN_ERROR_NO_SUITABLE_BAILOUT_GAS;
 	}
 	if (prefs.doo2breaks) {
