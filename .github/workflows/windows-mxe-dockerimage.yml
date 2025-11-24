@@ -17,7 +17,7 @@ jobs:
       mxe_sha: 'd6377b2f2334694dbb040294fd0d848327e63328'
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Build the name for the docker image
       id: build_name

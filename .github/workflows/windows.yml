@@ -30,7 +30,7 @@ jobs:
         apt-get -y update
 
     - name: checkout sources
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
         submodules: recursive
