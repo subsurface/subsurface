@@ -259,20 +259,19 @@ TemplatePage {
 			}
 		}
 		RowLayout {
-			Layout.fillWidth: true
 			spacing: Kirigami.Units.smallSpacing // Reduced spacing
 
 			// Header labels updated for new layout
 			TemplateLabel { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 2; font.bold: true }
-			TemplateLabel { text: qsTr("Type"); Layout.preferredWidth: Kirigami.Units.gridUnit * 6; font.bold: true }
-			TemplateLabel { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 4; font.bold: true }
+			TemplateLabel { text: qsTr("Type"); Layout.minimumWidth: Kirigami.Units.gridUnit * 8; Layout.maximumWidth: Kirigami.Units.gridUnit * 8; font.bold: true }
+			TemplateLabel { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 3; font.bold: true }
 			TemplateLabel {
-				text: qsTr("Use");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 5;
+				text: qsTr("Dil");
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 3;
 				visible: overallDivemode.currentIndex == 1
 				font.bold: true
 			}
-			TemplateLabel { text: qsTr("[%1]").arg(pressureUnit); Layout.fillWidth: true; font.bold: true }
+			TemplateLabel { text: qsTr("[%1]").arg(pressureUnit); Layout.preferredWidth: Kirigami.Units.gridUnit * 4; font.bold: true }
 			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium }
 		}
 
@@ -284,7 +283,6 @@ TemplatePage {
 			model: cylinderListModel
 
 			delegate: RowLayout {
-				width: cylinderListView.width
 				spacing: Kirigami.Units.smallSpacing // Reduced spacing
 
 				TemplateLabel {
@@ -295,7 +293,8 @@ TemplatePage {
 				}
 				TemplateComboBox {
 					id: typeBox
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 10
+					Layout.minimumWidth: Kirigami.Units.gridUnit * 8
+					Layout.maximumWidth: Kirigami.Units.gridUnit * 8
 					model: cylinderTypesModel
 					currentIndex: model.indexOf(type)
 					onActivated: {
@@ -310,7 +309,7 @@ TemplatePage {
 				}
 				TemplateTextField {
 					id: mixField
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					text: mix
 					onTextChanged: {
 						cylinderListModel.setProperty(index, "mix", text);
@@ -337,19 +336,20 @@ TemplatePage {
 					validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
-				TemplateComboBox {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
-					model: [ qsTr("OC-gas"), qsTr("diluent") ]
-					currentIndex: use
+				TemplateCheckBox {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					// Map the model's 'use' property (0 or 1) to the checkbox state (false or true)
+					checked: use === 1
 					visible: overallDivemode.currentIndex == 1
-					onCurrentIndexChanged: {
-						cylinderListModel.setProperty(index, "use", currentIndex);
+					onClicked: {
+						// Update 'use': if checked is true, set 'use' to 1 (Diluent); otherwise, set to 0 (OC-gas)
+						cylinderListModel.setProperty(index, "use", checked ? 1 : 0);
 						generatePlan();
 					}
 				}
 				TemplateTextField {
 					id: pressureField
-					Layout.fillWidth: true
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 					text: pressure.toString()
 					validator: IntValidator { bottom: 0; top: 10000 }
 					onTextChanged: {
@@ -403,33 +403,32 @@ TemplatePage {
 		}
 
 		RowLayout {
-			Layout.fillWidth: true
 			spacing: Kirigami.Units.gridUnit
 
 			TemplateLabel {
 				text: qsTr("Depth [%1]").arg(depthUnit);
-				Layout.fillWidth: true;
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 				font.bold: true
 			}
 			TemplateLabel {
-				text: qsTr("Duration [min]");
-				Layout.fillWidth: true;
+				text: qsTr("Time [min]");
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 				font.bold: true
 			}
 			TemplateLabel {
 				text: qsTr("Gas");
-				Layout.fillWidth: true;
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 5
 				font.bold: true;
 			}
 			TemplateLabel {
 				text: qsTr("Setpoint [bar]");
-				Layout.fillWidth: true;
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 5
 				font.bold: true;
 				visible: overallDivemode.currentIndex == 1;
 			}
 			TemplateLabel {
 				text: qsTr("Dive Mode");
-				Layout.fillWidth: true;
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 				font.bold: true;
 				visible: overallDivemode.currentIndex == 2;
 			}
@@ -444,11 +443,10 @@ TemplatePage {
 
 			model: segmentListModel
 			delegate: RowLayout {
-				width: segmentListView.width
 				spacing: Kirigami.Units.gridUnit
 
 				TemplateTextField {
-					Layout.fillWidth: true
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 					text: depth.toString()
 					validator: IntValidator { bottom: 0; top: 900 }
 					onTextChanged: {
@@ -459,7 +457,7 @@ TemplatePage {
 				}
 
 				TemplateTextField {
-					Layout.fillWidth: true
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
 					text: duration.toString()
 					validator: IntValidator { bottom: 1; top: 999 }
 					onTextChanged: {
@@ -470,8 +468,7 @@ TemplatePage {
 				}
 
 				TemplateComboBox {
-					Layout.fillWidth: true
-					Layout.minimumWidth: Kirigami.Units.gridUnit * 6
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
 					model: gasNumberModel
 					currentIndex: gas
 					onCurrentIndexChanged: {
@@ -482,7 +479,7 @@ TemplatePage {
 				}
 
 				TemplateTextField {
-					Layout.fillWidth: true
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
 					text: cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1 ? (setpoint / 1000.0).toFixed(2) : ""
 					validator: DoubleValidator {
 						bottom: 0.16;
@@ -502,8 +499,7 @@ TemplatePage {
 				}
 
 				TemplateComboBox {
-					Layout.fillWidth: true
-					Layout.minimumWidth: Kirigami.Units.gridUnit * 6
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
 					model: [ qsTr("OC"), qsTr("pSCR") ]
 					// Skip CCR (value === 1) as it's not applicable for pSCR mode
 					currentIndex: divemode === 2 ? 1 : divemode
