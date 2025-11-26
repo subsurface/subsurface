@@ -2,7 +2,7 @@
 #
 
 # set version of 3rd party libraries
-CURRENT_LIBZ="v1.2.11"
+CURRENT_LIBZ="v1.3.1"
 CURRENT_LIBZIP="rel-1-5-1"
 CURRENT_LIBGIT2="v1.8.1"
 CURRENT_LIBCURL="curl-8_17_0"
