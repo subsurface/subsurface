@@ -69,7 +69,7 @@ static QString fmt_int(T i, vasprintf_flags flags, int field_width, int precisio
 		if (i < 0)
 			++precision;
 		QChar fillChar = '0';
-		QString res = QStringLiteral("%L1").arg(i, precision, base, fillChar);
+		QString res = QStringLiteral("%L1").arg(static_cast<long long>(i), precision, base, fillChar);
 		if (i >= 0 && flags.space)
 			res = ' ' + res;
 		else if (i >= 0 && flags.sign)
@@ -86,7 +86,7 @@ static QString fmt_int(T i, vasprintf_flags flags, int field_width, int precisio
 	if (flags.left)
 		field_width = -field_width;
 	QChar fillChar = flags.zero && !flags.left ? '0' : ' ';
-	QString res = QStringLiteral("%L1").arg(i, field_width, base, fillChar);
+	QString res = QStringLiteral("%L1").arg(static_cast<long long>(i), field_width, base, fillChar);
 	return sign ? insert_sign(res, sign) : res;
 }
 
