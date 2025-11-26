@@ -417,7 +417,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 		make depend
 		# all the tests fail because the assume that openssl is already installed. Odd? Still things work
 		make -k
-		make -k install
+		make -k install_sw install_ssldirs
 		cd ..
 	done
 	if [[ $ARCHS == *" "* ]] ; then
