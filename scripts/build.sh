@@ -608,33 +608,15 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VE
 	cd "$SRC"
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . googlemaps
 	pushd googlemaps
+	if [[ $QT_VERSION == 6* ]]; then
+		git checkout qt6-upstream
+	fi
 	mkdir -p build
-	mkdir -p J10build
 	cd build
-	if [ "$PLATFORM" = Darwin ]  && [[ $QT_VERSION == 6* ]]; then
-		# since we are currently building QtLocation from source, we don't have a way to easily install
-		# the private headers... so this is a bit of a hack to get those for googlemaps...
-		# regardless of whether we do a fat build or not, let's do the 'native' build here
-		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/../qtlocation/build/include/QtLocation/6.3.0" "CONFIG+=release" QMAKE_APPLE_DEVICE_ARCHS="$(uname -m)" ../googlemaps.pro
-	else
-		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" ../googlemaps.pro
-	fi
+	# the latest version of googlemaps as of Nov 2025 builds out of the box with Qt 6.10
+	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" ../googlemaps.pro
 	make
-	if [ "$PLATFORM" = Darwin ]  && [[ $QT_VERSION == 6* ]] && [[ $ARCHS == *" "* ]] ; then
-		# we can't build fat binaries directly here, so let's do it in two steps
-		# above we build the 'native' binary, now build the other one
-		OTHERARCH=${ARCHS//$(uname -m)/}
-		OTHERARCH=${OTHERARCH// /}
-		mkdir -p ../build-$OTHERARCH
-		cd ../build-$OTHERARCH
-		$QMAKE "INCLUDEPATH=$INSTALL_ROOT/../qtlocation/build/include/QtLocation/6.3.0" QMAKE_APPLE_DEVICE_ARCHS=$OTHERARCH ../googlemaps.pro
-		make
-		# now combine them into one .dylib
-		mkdir -p "$INSTALL_ROOT"/plugins/geoservices
-		lipo -create ./libqtgeoservices_googlemaps.dylib ../build/libqtgeoservices_googlemaps.dylib -output "$INSTALL_ROOT"/plugins/geoservices/libqtgeoservices_googlemaps.dylib
-	else
-		make install
-	fi
+	make install
 	popd
 fi
 
