@@ -531,6 +531,22 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make
 	make install
 	popd
+
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . libmtp
+	pushd libmtp
+	if [ "$RUNNER_OS" = "macOS" ]; then
+		# GitHub macOS Action
+		GETTEXT_M4=$(brew --prefix gettext)/share/aclocal
+		cp ${GETTEXT_M4}/iconv.m4 m4/
+		cp ${GETTEXT_M4}/lib-ld.m4 m4/
+		cp ${GETTEXT_M4}/lib-link.m4 m4/
+		cp ${GETTEXT_M4}/lib-prefix.m4 m4/
+	fi
+	CFLAGS="$MAC_OPTS" ./autogen.sh --prefix="$INSTALL_ROOT"
+	make -j4
+	make install
+	popd
+
 fi
 
 
