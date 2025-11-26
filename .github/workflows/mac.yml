@@ -29,7 +29,8 @@ jobs:
 
     - name: install additional packages with Homebrew
       run: |
-        brew install hidapi libxslt libjpg libraw create-dmg confuse automake
+        brew install hidapi libxslt libjpg libraw create-dmg confuse autoconf automake libtool gettext
+        brew link --force gettext
 
     - name: checkout Qt resources
       uses: actions/checkout@v6
@@ -69,6 +70,7 @@ jobs:
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         export PATH=$QT_ROOT/bin:$PATH
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
+        export ACLOCAL_FLAGS="-I $(brew --prefix gettext)/share/aclocal"
 
         # now setup Subsurface with WebKit and build the dependencies, using the generic build script
         bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -build-deps -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
