@@ -277,6 +277,8 @@ if [ "$PLATFORM" = Darwin ] ; then
 		echo "to install them (you'll have to agree to Apple's licensing terms etc), then run build.sh again"
 		exit 1;
 	fi
+	# Ensure tests can find the right dynamic libraries
+	export DYLD_LIBRARY_PATH=$INSTALL_ROOT/lib:$DYLD_LIBRARY_PATH
 fi
 
 echo Building from "$SRC", installing in "$INSTALL_ROOT"
@@ -432,11 +434,14 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . libcurl
 	pushd libcurl
-	bash ./buildconf
+	autoreconf -fi
 	mkdir -p build
 	cd build
-	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --with-openssl \
-		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
+
+	CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" \
+		LDFLAGS="-L$INSTALL_ROOT/lib -Wl,-rpath,$INSTALL_ROOT/lib" CPPFLAGS="-I$INSTALL_ROOT/include" \
+		--with-openssl --disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap \
+		--disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp --without-libpsl
 	make
 	make install
 	popd
