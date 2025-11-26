@@ -527,7 +527,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libftdi1
 	mkdir -p build
 	cd build
-	cmake $MAC_CMAKE ..
+	cmake $MAC_CMAKE -DFTDI_EEPROM=OFF -DCMAKE_INSTALL_LIBDIR="$INSTALL_ROOT/lib" ..
 	make
 	make install
 	popd
