@@ -81,23 +81,6 @@ fi
 popd
 
 #
-# libcurl
-#
-get_dep libcurl
-pushd libcurl
-autoreconf -fi
-mkdir -p build
-cd build
-
-CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" \
-    LDFLAGS="-L$INSTALL_ROOT/lib -Wl,-rpath,$INSTALL_ROOT/lib" CPPFLAGS="-I$INSTALL_ROOT/include" \
-    --with-openssl --disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap \
-    --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp --without-libpsl
-make
-make install
-popd
-
-#
 # libssh2
 #
 get_dep libssh2
@@ -114,6 +97,23 @@ NAME=$(otool -L libssh2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
 echo "$NAME" | if grep -v / > /dev/null 2>&1 ; then
     install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
 fi
+popd
+
+#
+# libcurl
+#
+get_dep libcurl
+pushd libcurl
+autoreconf -fi
+mkdir -p build
+cd build
+
+CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" \
+    LDFLAGS="-L$INSTALL_ROOT/lib -Wl,-rpath,$INSTALL_ROOT/lib" CPPFLAGS="-I$INSTALL_ROOT/include" \
+    --with-openssl --disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap \
+    --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp --without-libpsl
+make
+make install
 popd
 
 #
