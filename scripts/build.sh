@@ -264,7 +264,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 	echo "Using ${BASESDK} as the BASESDK under ${SDKROOT}"
 
 	# Ensure tests can find the right dynamic libraries
-	export DYLD_LIBRARY_PATH=$INSTALL_ROOT/lib:$DYLD_LIBRARY_PATH
+	#export DYLD_LIBRARY_PATH=$INSTALL_ROOT/lib:$DYLD_LIBRARY_PATH
 fi
 
 echo Building from "$SRC", installing in "$INSTALL_ROOT"
