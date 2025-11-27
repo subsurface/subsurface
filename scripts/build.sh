@@ -72,10 +72,10 @@ while [[ $# -gt 0 ]] ; do
 			shift
 			SRC_DIR="$1"
 			;;
-		-build-deps)
+		-build-deps-only)
 			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those)
 			# call this script with -build-deps
-			BUILD_DEPS="1"
+			BUILD_DEPS_ONLY="1"
 			;;
 		-prep-only)
 			# use this script to build dependencies and set things up with default values, but don't actually run
@@ -168,7 +168,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-all] [-both] [-build-deps] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-prep-only] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
+			echo "Usage: build.sh [-all] [-both] [-build-deps-only] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-prep-only] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
 			exit 1
 			;;
 	esac
@@ -195,8 +195,8 @@ if [ "$BUILD_MOBILE$BUILD_DOWNLOADER" = "" ] ; then
 	BUILD_DESKTOP="1"
 fi
 
-if [ "$BUILD_DEPS" = "1" ] && [ "$QUICK" = "1" ] ; then
-	echo "Conflicting options; cannot request combine -build-deps and -quick"
+if [ "$BUILD_DEPS_ONLY" = "1" ] && [ "$QUICK" = "1" ] ; then
+	echo "Conflicting options; cannot request combine -build-deps-only and -quick"
 	exit 1;
 fi
 
@@ -338,7 +338,7 @@ fi
 # set up the right file name extensions
 if [ "$PLATFORM" = Darwin ] ; then
 	SH_LIB_EXT=dylib
-	if [ ! "$BUILD_DEPS" == "1" ] ; then
+	if [ ! "$BUILD_DEPS_ONLY" == "1" ] ; then
 		pkg-config --exists libgit2 && LIBGIT=$(pkg-config --modversion libgit2) && LIBGITMAJ=$(echo $LIBGIT | cut -d. -f1) && LIBGIT=$(echo $LIBGIT | cut -d. -f2)
 		if [[ "$LIBGITMAJ" -gt "0" || "$LIBGIT" -gt "25" ]] ; then
 			LIBGIT2_FROM_PKGCONFIG="-DLIBGIT2_FROM_PKGCONFIG=ON"
@@ -374,9 +374,10 @@ fi
 
 cd "$SRC"
 
-if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
+if [[ $PLATFORM = Darwin && "$BUILD_DEPS_ONLY" == "1" ]] ; then
 	export ARCHS SRC SRC_DIR MAC_CMAKE MAC_OPTS MAC_OPTS_OPENSSL INSTALL_ROOT
 	bash "./${SRC_DIR}/scripts/build-deps.sh"
+	exit
 fi
 
 if [[ $PLATFORM != Darwin && "$LIBGITMAJ" -lt "1" && "$LIBGIT" -lt "26" ]] ; then
