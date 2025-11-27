@@ -1,0 +1,207 @@
+#!/bin/bash
+# when building distributable binaries on a Mac, we cannot rely on anything from Homebrew,
+# because that always requires the latest OS (how stupid is that - and they consider it a
+# feature). So we painfully need to build the dependencies ourselves.
+#
+# this script expects a bunch of environment variables to be set:
+# - ARCHS              architectures to build
+# - SRC                the 'parent src dir' - this is the directory under which everything is anchored
+# - SRC_DIR            usually 'subsurface'
+# - MAC_CMAKE          which cmake to use
+# - MAC_OPTS           macOS specific options
+# - MAC_OPTS_OPENSSL   ditto for openssl
+# - INSTALL_ROOT
+#
+# it then builds
+# - libz
+# - openssl
+# - libcurl
+# - libssh2
+# - libgit2
+# - libzip
+# - hidapi
+# - libusb
+# - libftdi1
+# - libmtp
+
+
+cd "$SRC"
+#
+# libz
+#
+./${SRC_DIR}/scripts/get-dep-lib.sh single . libz
+pushd libz
+# no, don't install pkgconfig files in .../libs/share/pkgconf - that's just weird
+sed -i .bak 's/share\/pkgconfig/pkgconfig/' CMakeLists.txt
+mkdir -p build
+cd build
+cmake $MAC_CMAKE ..
+make
+make install
+popd
+
+#
+# openssl
+#
+# openssl doesn't support fat binaries out of the box
+# this tries to hack around this by first doing an install for x86_64, then a build for arm64
+# and then manually creating fat libraries from that
+# I worry if there are issues with using the arm or x86 include files...???
+./${SRC_DIR}/scripts/get-dep-lib.sh single . openssl
+pushd openssl
+for ARCH in $ARCHS; do
+    mkdir -p build-$ARCH
+    cd build-$ARCH
+    OS_ARCH=darwin64-$ARCH-cc
+    ../Configure --prefix="$INSTALL_ROOT" --openssldir="$INSTALL_ROOT" "$MAC_OPTS_OPENSSL" $OS_ARCH
+    make depend
+    # all the tests fail because the assume that openssl is already installed. Odd? Still things work
+    make -k
+    make -k install_sw install_ssldirs
+    cd ..
+done
+if [[ $ARCHS == *" "* ]] ; then
+    # now manually add the binaries together and overwrite them in the INSTALL_ROOT
+    cd build-arm64
+    lipo -create ./libcrypto.a ../build-x86_64/libcrypto.a -output "$INSTALL_ROOT"/lib/libcrypto.a
+    lipo -create ./libssl.a ../build-x86_64/libssl.a -output "$INSTALL_ROOT"/lib/libssl.a
+    LIBSSLNAME=$(readlink libssl.dylib)
+    lipo -create ./$LIBSSLNAME ../build-x86_64/$LIBSSLNAME -output "$INSTALL_ROOT"/lib/$LIBSSLNAME
+    LIBCRYPTONAME=$(readlink libcrypto.dylib)
+    lipo -create ./$LIBCRYPTONAME ../build-x86_64/$LIBCRYPTONAME -output "$INSTALL_ROOT"/lib/$LIBCRYPTONAME
+fi
+popd
+
+#
+# libcurl
+#
+./${SRC_DIR}/scripts/get-dep-lib.sh single . libcurl
+pushd libcurl
+autoreconf -fi
+mkdir -p build
+cd build
+
+CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" \
+    LDFLAGS="-L$INSTALL_ROOT/lib -Wl,-rpath,$INSTALL_ROOT/lib" CPPFLAGS="-I$INSTALL_ROOT/include" \
+    --with-openssl --disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap \
+    --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp --without-libpsl
+make
+make install
+popd
+
+#
+# libssh2
+#
+./${SRC_DIR}/scripts/get-dep-lib.sh single . libssh2
+pushd libssh2
+mkdir -p build
+cd build
+cmake $MAC_CMAKE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+make
+make install
+popd
+# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
+pushd "$INSTALL_ROOT"/lib
+NAME=$(otool -L libssh2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
+echo "$NAME" | if grep -v / > /dev/null 2>&1 ; then
+    install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
+fi
+popd
+
+#
+# libgit2
+#
+./${SRC_DIR}/scripts/get-dep-lib.sh single . libgit2
+pushd libgit2
+mkdir -p build
+cd build
+LIBGIT_ARGS="-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.dylib"
+cmake $MAC_CMAKE -DBUILD_CLAR=OFF ..
+make
+make install
+popd
+
+# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
+pushd "$INSTALL_ROOT/lib"
+NAME=$(otool -L libgit2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
+echo "$NAME" | if grep -v / > /dev/null 2>&1 ; then
+    install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
+fi
+popd
+
+#
+# libzip
+#
+./${SRC_DIR}/scripts/get-dep-lib.sh single . libzip
+pushd libzip
+mkdir -p build
+cd build
+cmake $MAC_CMAKE ..
+make
+make install
+popd
+
+#
+# hidapi
+#
+./${SRC_DIR}/scripts/get-dep-lib.sh single . hidapi
+pushd hidapi
+# there is no good tag, so just build master
+bash ./bootstrap
+mkdir -p build
+cd build
+CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT"
+make
+make install
+popd
+
+#
+# libusb
+#
+./${SRC_DIR}/scripts/get-dep-lib.sh single . libusb
+pushd libusb
+bash ./bootstrap.sh
+mkdir -p build
+cd build
+CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" --disable-examples
+make
+make install
+popd
+
+#
+# libftdi1
+#
+./${SRC_DIR}/scripts/get-dep-lib.sh single . libftdi1
+pushd libftdi1
+mkdir -p build
+cd build
+cmake $MAC_CMAKE -DFTDI_EEPROM=OFF -DCMAKE_INSTALL_LIBDIR="$INSTALL_ROOT/lib" ..
+make
+make install
+popd
+
+#
+# libmtp
+#
+./${SRC_DIR}/scripts/get-dep-lib.sh single . libmtp
+pushd libmtp
+if [ "$RUNNER_OS" = "macOS" ]; then
+    # GitHub macOS Action
+    # there's something broken in the libmtp autoconf setup when using
+    # the homebrew versions of these tools...
+    # let's do this the hard way
+    curl -O https://ftp.gnu.org/gnu/gettext/gettext-0.22.5.tar.xz
+    tar xf gettext-0.22.5.tar.xz
+    # Copy the m4 macros to project
+    cp gettext-0.22.5/gettext-runtime/m4/iconv.m4 m4/
+    cp gettext-0.22.5/gettext-runtime/gnulib-m4/lib-ld.m4 m4/
+    cp gettext-0.22.5/gettext-runtime/gnulib-m4/lib-link.m4 m4/
+    cp gettext-0.22.5/gettext-runtime/gnulib-m4/lib-prefix.m4 m4/
+    # Clean up
+    rm -rf gettext-0.22.5*
+fi
+CFLAGS="$MAC_OPTS" ./autogen.sh --prefix="$INSTALL_ROOT"
+make -j4
+make install
+popd
+
