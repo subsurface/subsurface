@@ -28,10 +28,15 @@ jobs:
         fetch-depth: 0
         submodules: recursive
 
+    - name: Cache Homebrew packages
+      uses: actions/cache@v4
+      with:
+        path: ~/Library/Caches/Homebrew
+        key: brew-${{ runner.os }}-${{ hashFiles('.github/workflows/build.yml') }}
+
     - name: install additional packages with Homebrew
       run: |
-        brew install hidapi libxslt libjpg libraw create-dmg confuse autoconf automake libtool gettext
-        brew link --force gettext
+        brew install hidapi libxslt libjpg libraw create-dmg confuse automake
 
     - name: checkout Qt resources
       uses: jurplel/install-qt-action@v4
