@@ -536,11 +536,18 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libmtp
 	if [ "$RUNNER_OS" = "macOS" ]; then
 		# GitHub macOS Action
-		GETTEXT_M4=$(brew --prefix gettext)/share/aclocal
-		cp ${GETTEXT_M4}/iconv.m4 m4/
-		cp ${GETTEXT_M4}/lib-ld.m4 m4/
-		cp ${GETTEXT_M4}/lib-link.m4 m4/
-		cp ${GETTEXT_M4}/lib-prefix.m4 m4/
+		# there's something broken in the libmtp autoconf setup when using
+		# the homebrew versions of these tools...
+		# let's do this the hard way
+		curl -O https://ftp.gnu.org/gnu/gettext/gettext-0.22.5.tar.xz
+		tar xf gettext-0.22.5.tar.xz
+		# Copy the m4 macros to project
+		cp gettext-0.22.5/gettext-runtime/m4/iconv.m4 m4/
+		cp gettext-0.22.5/gettext-runtime/gnulib-m4/lib-ld.m4 m4/
+		cp gettext-0.22.5/gettext-runtime/gnulib-m4/lib-link.m4 m4/
+		cp gettext-0.22.5/gettext-runtime/gnulib-m4/lib-prefix.m4 m4/
+		# Clean up
+		rm -rf gettext-0.22.5*
 	fi
 	CFLAGS="$MAC_OPTS" ./autogen.sh --prefix="$INSTALL_ROOT"
 	make -j4
