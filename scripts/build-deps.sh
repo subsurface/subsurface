@@ -158,7 +158,7 @@ pushd hidapi
 bash ./bootstrap
 mkdir -p build
 cd build
-CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT"
+cmake $MAC_CMAKE -DCMAKE_INSTALL_LIBDIR="$INSTALL_ROOT/lib" ..
 make
 make install
 popd
