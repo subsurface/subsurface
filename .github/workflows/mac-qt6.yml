@@ -38,7 +38,7 @@ jobs:
 
     - name: install additional packages with Homebrew
       run: |
-        brew install libxslt libjpg libraw create-dmg confuse automake
+        brew install libxslt libjpg libraw create-dmg confuse automake libtool
 
     - name: checkout Qt resources
       uses: jurplel/install-qt-action@v4
