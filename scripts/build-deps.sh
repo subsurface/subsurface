@@ -104,14 +104,19 @@ popd
 #
 get_dep libcurl
 pushd libcurl
-autoreconf -fi
 mkdir -p build
 cd build
-
-CFLAGS="$MAC_OPTS" ../configure --prefix="$INSTALL_ROOT" \
-    LDFLAGS="-L$INSTALL_ROOT/lib -Wl,-rpath,$INSTALL_ROOT/lib" CPPFLAGS="-I$INSTALL_ROOT/include" \
-    --with-openssl --disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap \
-    --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp --without-libpsl
+cmake  $MAC_CMAKE -DBUILD_CURL_EXE=OFF -DCURL_DISABLE_ALTSVC=ON -DCURL_DISABLE_COOKIES=ON \
+            -DCURL_DISABLE_CRYPTO_AUTH=ON -DCURL_DISABLE_DICT=ON -DCURL_DISABLE_DOH=ON \
+            -DCURL_DISABLE_FILE=ON -DCURL_DISABLE_FTP=ON -DCURL_DISABLE_GETOPTIONS=ON \
+            -DCURL_DISABLE_GOPHER=ON -DCURL_DISABLE_HSTS=ON -DCURL_DISABLE_IMAP=ON \
+            -DCURL_DISABLE_LDAP=ON -DCURL_DISABLE_LDAPS=ON -DCURL_DISABLE_MIME=ON \
+            -DCURL_DISABLE_MQTT=ON -DCURL_DISABLE_NETRC=ON -DCURL_DISABLE_NTLM=ON \
+            -DCURL_DISABLE_POP3=ON -DCURL_DISABLE_PROGRESS_METER=ON -DCURL_DISABLE_PROXY=ON \
+            -DCURL_DISABLE_RTSP=ON -DCURL_DISABLE_SMB=ON -DCURL_DISABLE_SMTP=ON \
+            -DCURL_DISABLE_TELNET=ON -DCURL_DISABLE_TFTP=ON -DCURL_DISABLE_VERBOSE_STRINGS=ON \
+            -DHTTP_ONLY=ON -DENABLE_ARES=OFF -DCURL_BROTLI=OFF -DCURL_USE_LIBPSL=OFF \
+            ..
 make
 make install
 popd
