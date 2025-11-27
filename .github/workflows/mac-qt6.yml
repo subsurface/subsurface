@@ -1,0 +1,107 @@
+name: Mac / Qt 6
+
+on:
+  push:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+    - dirkhh-macos
+  pull_request:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+
+
+jobs:
+  build-documentation:
+    uses: ./.github/workflows/documentation-build.yml
+
+  build:
+    needs: build-documentation
+    runs-on: macOS-13
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: install additional packages with Homebrew
+      run: |
+        brew install hidapi libxslt libjpg libraw create-dmg confuse autoconf automake libtool gettext
+        brew link --force gettext
+
+    - name: checkout Qt resources
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: '6.10.1'
+        host: 'mac'
+        target: 'desktop'
+        modules: 'qtlocation qtpositioning qtconnectivity qt5compat'
+        cache: true
+
+    - name: load the documentation from cache
+      id: load-cache
+      uses: actions/cache@v4
+      with:
+        path: Documentation/output
+        key: documentation-${{ hashFiles('Documentation') }}
+        enableCrossOsArchive: true
+        fail-on-cache-miss: true
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
+
+    - name: build Subsurface
+      id: build
+      env:
+        CANONICALVERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
+        cd ${GITHUB_WORKSPACE}/..
+        export QT_ROOT=$(pwd)/Qt/6.10.1/macos
+        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+        export PATH=$QT_ROOT/bin:$PATH
+        export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
+        export ACLOCAL_FLAGS="-I $(brew --prefix gettext)/share/aclocal"
+
+        # now setup Subsurface with WebKit and build the dependencies, using the generic build script
+        bash -e -x ./subsurface/scripts/build.sh -desktop -build-deps -build-with-qt6 -fat-build -desktop -build-with-map -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
+
+        echo "finished initial cmake setup of Subsurface - next build the package"
+        cd subsurface/build
+        echo "run the packaging script"
+        bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
+        IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
+        echo "Created $IMG"
+        echo "dmg=$IMG" >> $GITHUB_OUTPUT
+
+    - name: publish pull request artifacts
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@v5
+      with:
+        name: Subsurface-MacOS-${{ steps.version_number.outputs.version }}
+        path: ${{ steps.build.outputs.dmg }}
+        compression-level: 0
+
+    # only publish a 'release' on push events (those include merging a PR)
+    - name: upload binaries
+      if: github.event_name == 'push'
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ steps.version_number.outputs.version }}
+        repository: ${{ github.repository_owner }}/nightly-builds
+        token: ${{ secrets.NIGHTLY_BUILDS }}
+        prerelease: false
+        fail_on_unmatched_files: true
+        files: ${{ steps.build.outputs.dmg }}
