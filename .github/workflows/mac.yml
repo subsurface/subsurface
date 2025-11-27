@@ -60,8 +60,8 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ${{ github.workspace }}/../install-root
-        key: macos-deps-${{ hashFiles('scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
-        restore-keys: macos-deps-
+        key: macos-deps-x86-${{ hashFiles('scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
+        restore-keys: macos-deps-x86-
 
     - name: build deps
       id: build-deps
