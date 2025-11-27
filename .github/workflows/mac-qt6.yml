@@ -64,8 +64,17 @@ jobs:
       with:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
+    - name: cache deps
+      id: cache-deps
+      uses: actions/cache@v4
+      with:
+        path: ${{ github.workspace }}/../install-root
+        key: macos-deps-${{ hashFiles('scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
+        restore-keys: macos-deps-
+
     - name: build deps
       id: build-deps
+      if: steps.cache-deps.outputs.cache-hit != 'true'
       run: |
         BUILD_EXTRA_ARGS=""
         if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
