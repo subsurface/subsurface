@@ -30,7 +30,7 @@ jobs:
 
     - name: install additional packages with Homebrew
       run: |
-        brew install hidapi libxslt libjpg libraw create-dmg confuse autoconf automake libtool gettext
+        brew install hidapi libxslt libjpg libraw create-dmg confuse automake
         brew link --force gettext
 
     - name: checkout Qt resources

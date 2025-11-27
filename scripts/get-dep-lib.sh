@@ -19,6 +19,11 @@ CURRENT_MDBTOOLS="v1.0.0"
 CURRENT_QT_ANDROID_CMAKE="master"
 CURRENT_LIBMTP="v1.1.22"
 
+croak() {
+	echo $@
+	exit 1
+}
+
 # Checkout library from git
 # Ensure specified version is checked out,
 # while avoiding cloning/fetching if unnecessary.
@@ -37,9 +42,9 @@ git_checkout_library() {
 	local url=$3
 
 	if [ ! -d "$name" ]; then
-		git clone "$url" "$name"
+		git clone "$url" "$name" || croak "git clone $url failed"
 	fi
-	pushd "$name"
+	pushd "$name" || croak "can't cd into $name"
 
 	local current_sha=$(git rev-parse HEAD)
 	local target_sha=$(git rev-parse "$version")
@@ -47,8 +52,7 @@ git_checkout_library() {
 	if [ ! "$current_sha" = "$target_sha" ] ; then
 		git fetch origin
 		if ! git checkout -f "$version" ; then
-			echo "Can't find the right tag in $name - giving up"
-			exit 1
+			croak "Can't find the right tag in $name - giving up"
 		fi
 	fi
 	popd
@@ -91,7 +95,7 @@ if [ $# -ne 2 ] && [ $# -ne 3 ] ; then
 	echo "(the name of the directory where build.sh resides)"
 	echo "<install dir> is the directory to clone in"
 	echo "<lib> is the name to be cloned"
-	exit -1
+	exit 1
 fi
 
 PLATFORM=$1

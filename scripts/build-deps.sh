@@ -24,12 +24,20 @@
 # - libftdi1
 # - libmtp
 
+function croak () {
+    echo $@
+    exit 1
+}
+
+function get_dep() {
+    ./${SRC_DIR}/scripts/get-dep-lib.sh single . $1 || croak "failed to download $1"
+}
 
 cd "$SRC"
 #
 # libz
 #
-./${SRC_DIR}/scripts/get-dep-lib.sh single . libz
+get_dep libz
 pushd libz
 # no, don't install pkgconfig files in .../libs/share/pkgconf - that's just weird
 sed -i .bak 's/share\/pkgconfig/pkgconfig/' CMakeLists.txt
@@ -47,7 +55,7 @@ popd
 # this tries to hack around this by first doing an install for x86_64, then a build for arm64
 # and then manually creating fat libraries from that
 # I worry if there are issues with using the arm or x86 include files...???
-./${SRC_DIR}/scripts/get-dep-lib.sh single . openssl
+get_dep openssl
 pushd openssl
 for ARCH in $ARCHS; do
     mkdir -p build-$ARCH
@@ -75,7 +83,7 @@ popd
 #
 # libcurl
 #
-./${SRC_DIR}/scripts/get-dep-lib.sh single . libcurl
+get_dep libcurl
 pushd libcurl
 autoreconf -fi
 mkdir -p build
@@ -92,7 +100,7 @@ popd
 #
 # libssh2
 #
-./${SRC_DIR}/scripts/get-dep-lib.sh single . libssh2
+get_dep libssh2
 pushd libssh2
 mkdir -p build
 cd build
@@ -111,7 +119,7 @@ popd
 #
 # libgit2
 #
-./${SRC_DIR}/scripts/get-dep-lib.sh single . libgit2
+get_dep libgit2
 pushd libgit2
 mkdir -p build
 cd build
@@ -132,7 +140,7 @@ popd
 #
 # libzip
 #
-./${SRC_DIR}/scripts/get-dep-lib.sh single . libzip
+get_dep libzip
 pushd libzip
 mkdir -p build
 cd build
@@ -144,7 +152,7 @@ popd
 #
 # hidapi
 #
-./${SRC_DIR}/scripts/get-dep-lib.sh single . hidapi
+get_dep hidapi
 pushd hidapi
 # there is no good tag, so just build master
 bash ./bootstrap
@@ -158,7 +166,7 @@ popd
 #
 # libusb
 #
-./${SRC_DIR}/scripts/get-dep-lib.sh single . libusb
+get_dep libusb
 pushd libusb
 bash ./bootstrap.sh
 mkdir -p build
@@ -171,7 +179,7 @@ popd
 #
 # libftdi1
 #
-./${SRC_DIR}/scripts/get-dep-lib.sh single . libftdi1
+get_dep libftdi1
 pushd libftdi1
 mkdir -p build
 cd build
@@ -183,7 +191,7 @@ popd
 #
 # libmtp
 #
-./${SRC_DIR}/scripts/get-dep-lib.sh single . libmtp
+get_dep libmtp
 pushd libmtp
 if [ "$RUNNER_OS" = "macOS" ]; then
     # GitHub macOS Action
