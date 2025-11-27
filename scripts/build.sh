@@ -215,7 +215,7 @@ if [ "$BUILD_DOWNLOADER" = "1" ] ; then
 	BUILDDIRS+=( "${BUILD_PREFIX}build-downloader" )
 fi
 if [ "$BUILD_DESKTOP" = "1" ] || [ "$BUILDS" = "" ] ; then
-	# if no option is given, we build the desktopb version
+	# if no option is given, we build the desktop version
 	echo "building Subsurface in ${SRC_DIR}/build"
 	BUILDS+=( "DesktopExecutable" )
 	BUILDDIRS+=( "${BUILD_PREFIX}build" )
@@ -239,44 +239,30 @@ export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 
 # Verify that the Xcode Command Line Tools are installed
 if [ "$PLATFORM" = Darwin ] ; then
-	if [ -d /Developer/SDKs ] ; then
-		SDKROOT=/Developer/SDKs
-	elif [ -d  /Library/Developer/CommandLineTools/SDKs ] ; then
-		SDKROOT=/Library/Developer/CommandLineTools/SDKs
-	elif [ -d /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ] ; then
-		SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
-	else
-		echo "Cannot find SDK sysroot (usually /Developer/SDKs or"
+	SDKROOT=$(xcrun --show-sdk-path)
+	if [[ ! -d "${SDKROOT}" && ! -d "${SDKROOT}/usr/include" ]] ; then
+		echo "Cannot find SDK (usually /Developer/SDKs or"
 		echo "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs)"
 		exit 1;
 	fi
-	# find a 10.x base SDK to use, or if none can be found, find a numbered 11.x base SDK to use
-	BASESDK=$(ls $SDKROOT | grep -E "MacOSX1[0-6]\.[0-9]+\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
-	if [ -z "$BASESDK" ] ; then
-		echo "Cannot find a base SDK of type 1[0-6].x under the SDK root of ${SDKROOT}"
-		exit 1;
-	fi
+	# Apple tells us NOT to try to specify a specific SDK anymore and instead let its tools
+	# do "the right thing" - especially don't set a sysroot (which way back when was required for this to work)
+	# unforunately that means we need to somehow hard-code a deployment target, hoping the local tools
+	# know how to build for that. Which seems... odd
+	BASESDK="12.3"
 	if [ "$ARCHS" != "" ] ; then
 		# we do assume that the two architectures mentioned are x86_64 and arm64 .. that's kinda wrong
-		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=macosx${BASESDK} -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64' -DCMAKE_BUILD_TYPE=${DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
-		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk -arch arm64 -arch x86_64"
+		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64' -DCMAKE_BUILD_TYPE=${DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
+		MAC_OPTS="-mmacosx-version-min=${BASESDK} -arch arm64 -arch x86_64"
 	else
 		ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
-		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=macosx${BASESDK} -DCMAKE_OSX_ARCHITECTURES=$ARCHS -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
-		MAC_OPTS="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
+		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
+		MAC_OPTS="-mmacosx-version-min=${BASESDK}"
 	fi
 	# OpenSSL can't deal with multi arch build
-	MAC_OPTS_OPENSSL="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
+	MAC_OPTS_OPENSSL="-mmacosx-version-min=${BASESDK}"
 	echo "Using ${BASESDK} as the BASESDK under ${SDKROOT}"
 
-	if [[ ! -d /usr/include && ! -d "${SDKROOT}/MacOSX${BASESDK}.sdk/usr/include" ]] ; then
-		echo "Error: Xcode Command Line Tools are not installed"
-		echo ""
-		echo "Please run:"
-		echo " xcode-select --install"
-		echo "to install them (you'll have to agree to Apple's licensing terms etc), then run build.sh again"
-		exit 1;
-	fi
 	# Ensure tests can find the right dynamic libraries
 	export DYLD_LIBRARY_PATH=$INSTALL_ROOT/lib:$DYLD_LIBRARY_PATH
 fi
