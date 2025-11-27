@@ -93,7 +93,7 @@ jobs:
         export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
 
         # now setup Subsurface and build the dependencies, using the generic build script
-        bash -e -x ./subsurface/scripts/build.sh -build-deps-only -build-with-qt6 -fat-build -build-with-map -ftdi ${BUILD_EXTRA_ARGS}
+        bash -e -x ./subsurface/scripts/build.sh -build-deps-only -build-with-qt6 -build-with-map -ftdi ${BUILD_EXTRA_ARGS}
 
     - name: build Subsurface
       id: build
@@ -117,7 +117,7 @@ jobs:
         export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
 
         # now setup the Subsurface build using the generic build script
-        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -fat-build -build-with-map -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
+        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -build-with-map -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
 
         echo "finished initial cmake setup of Subsurface - next build the package"
         cd subsurface/build
