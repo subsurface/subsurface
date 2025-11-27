@@ -55,6 +55,25 @@ jobs:
       with:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
+    - name: build deps
+      id: build-deps
+      run: |
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
+        cd ${GITHUB_WORKSPACE}/..
+        export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.16
+        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+        export PATH=$QT_ROOT/bin:$PATH
+        export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
+        export ACLOCAL_FLAGS="-I $(brew --prefix gettext)/share/aclocal"
+
+        # now setup Subsurface and build the dependencies, using the generic build script
+        bash -e -x ./subsurface/scripts/build.sh -build-deps-only -build-with-webkit -build-with-map -ftdi ${BUILD_EXTRA_ARGS}
+
     - name: build Subsurface
       id: build
       env:
@@ -74,7 +93,7 @@ jobs:
         export ACLOCAL_FLAGS="-I $(brew --prefix gettext)/share/aclocal"
 
         # now setup Subsurface with WebKit and build the dependencies, using the generic build script
-        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -build-deps -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
+        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
 
         echo "finished initial cmake setup of Subsurface - next build the package"
         cd subsurface/build
