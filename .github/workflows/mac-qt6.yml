@@ -13,6 +13,8 @@ on:
     branches:
     - master
 
+env:
+  QTVERSION: '6.10.1'
 
 jobs:
   build-documentation:
@@ -41,7 +43,7 @@ jobs:
     - name: checkout Qt resources
       uses: jurplel/install-qt-action@v4
       with:
-        version: '6.10.1'
+        version: ${{ env.QTVERSION }}
         host: 'mac'
         target: 'desktop'
         modules: 'qtlocation qtpositioning qtconnectivity qt5compat'
@@ -74,18 +76,20 @@ jobs:
         fi
 
         cd ${GITHUB_WORKSPACE}/..
-        export QT_ROOT=$(pwd)/Qt/6.10.1/macos
+        # set up the paths for Qt
+        export QT_ROOT=$(pwd)/Qt/${{ env.QTVERSION }}/macos
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         export PATH=$QT_ROOT/bin:$PATH
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
         export ACLOCAL_FLAGS="-I $(brew --prefix gettext)/share/aclocal"
+        # ensure that only our packages are used, not anything from Homebrew
+        export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
 
-        # now setup Subsurface with WebKit and build the dependencies, using the generic build script
+        # now setup Subsurface and build the dependencies, using the generic build script
         bash -e -x ./subsurface/scripts/build.sh -desktop -build-deps -build-with-qt6 -fat-build -desktop -build-with-map -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
 
         echo "finished initial cmake setup of Subsurface - next build the package"
         cd subsurface/build
-        echo "run the packaging script"
         bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
         IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
         echo "Created $IMG"
