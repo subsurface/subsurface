@@ -34,6 +34,19 @@ function get_dep() {
 }
 
 cd "$SRC"
+
+# make sure we don't pick Homebrew packages when building on GitHub
+if [ "$RUNNER_OS" = "macOS" ]; then
+    set -x
+    export PKG_CONFIG_LIBDIR="${INSTALL_ROOT}/lib/pkgconfig"
+    unset PKG_CONFIG_PATH
+    export CMAKE_IGNORE_PATH="/opt/homebrew:/usr/local"
+    MAC_CMAKE="-DCMAKE_PREFIX_PATH=${INSTALL_ROOT} -DCMAKE_IGNORE_PATH=/opt/homebrew;/usr/local \
+        -DCMAKE_IGNORE_PREFIX_PATH=/opt/homebrew;/usr/local -DPKG_CONFIG_USE_CMAKE_PREFIX_PATH=ON ${MAC_CMAKE}"
+
+    pkg-config --variable pc_path pkg-config
+fi
+
 #
 # libz
 #
