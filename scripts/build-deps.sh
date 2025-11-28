@@ -23,6 +23,7 @@
 # - libusb
 # - libftdi1
 # - libmtp
+# - libraw
 
 function croak () {
     echo $@
@@ -242,6 +243,17 @@ if [ "$RUNNER_OS" = "macOS" ]; then
 fi
 sed -i.bak 's/OSFLAGS="-framework IOKit"/LIBS="$LIBS -framework IOKit"/' configure.ac
 CFLAGS="$MAC_OPTS" ./autogen.sh --prefix="$INSTALL_ROOT"
+make -j4
+make install
+popd
+
+#
+# libraw
+#
+get_dep libraw
+pushd libraw
+autoreconf -fi
+CFLAGS="$MAC_OPTS" CXXFLAGS="$MAC_OPTS" ./configure --prefix="$INSTALL_ROOT" --disable-examples --disable-static --enable-shared
 make -j4
 make install
 popd

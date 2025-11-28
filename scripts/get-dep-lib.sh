@@ -18,6 +18,7 @@ CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
 CURRENT_MDBTOOLS="v1.0.0"
 CURRENT_QT_ANDROID_CMAKE="master"
 CURRENT_LIBMTP="v1.1.22"
+CURRENT_LIBRAW="0.21.4"
 
 croak() {
 	echo $@
@@ -204,6 +205,9 @@ for package in "${PACKAGES[@]}" ; do
 			;;
 		qt-android-cmake)
 			git_checkout_library qt-android-cmake $CURRENT_QT_ANDROID_CMAKE https://github.com/LaurentGomila/qt-android-cmake.git
+			;;
+		libraw)
+			git_checkout_library libraw $CURRENT_LIBRAW https://github.com/libraw/libraw
 			;;
 		*)
 			echo "unknown package \"$package\""
