@@ -18,19 +18,14 @@ fi
 # first build and install Subsurface and then clean up the staging area
 # make sure we didn't lose the minimum OS version
 rm -rf ./Subsurface.app
-if [ -d /Library/Developer/CommandLineTools/SDKs ] ; then
-	SDKROOT=/Library/Developer/CommandLineTools/SDKs
-elif [ -d /Developer/SDKs ] ; then
-	SDKROOT=/Developer/SDKs
-elif [ -d /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ] ; then
-	SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
-else
-	echo "Cannot find SDK sysroot (usually /Developer/SDKs or"
-	echo "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs)"
-	exit 1;
-fi
-BASESDK=$(ls $SDKROOT | grep "MacOSX1.*\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
-OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
+
+# Apple tells us NOT to try to specify a specific SDK anymore and instead let its tools
+# do "the right thing" - especially don't set a sysroot (which way back when was required for this to work)
+# unforunately that means we need to somehow hard-code a deployment target, hoping the local tools
+# know how to build for that. Which seems... odd
+BASESDK="12.3"
+ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
+OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES="$ARCHS" -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
 export PKG_CONFIG_PATH=${DIR}/install-root/lib/pkgconfig:$PKG_CONFIG_PATH
 
 cmake $OLDER_MAC_CMAKE \
@@ -39,7 +34,11 @@ cmake $OLDER_MAC_CMAKE \
 	-DFTDISUPPORT=ON \
 	.
 
-LIBRARY_PATH=${DIR}/install-root/lib make -j
+if [ "$RUNNER_OS" = "macOS" ]; then
+	LIBRARY_PATH=${DIR}/install-root/lib make -j 1
+else
+	LIBRARY_PATH=${DIR}/install-root/lib make -j
+fi
 LIBRARY_PATH=${DIR}/install-root/lib make install
 
 # now adjust a few references that macdeployqt appears to miss
