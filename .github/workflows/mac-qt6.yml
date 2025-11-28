@@ -128,7 +128,9 @@ jobs:
         echo "finished initial cmake setup of Subsurface - next build the package"
         cd subsurface/build
         bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
-        IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
+        REG_IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
+        IMG="${REG_IMG/Subsurface-/Subsurface-arm-qt6-}"
+        mv "$REG_IMG" "$IMG"
         echo "Created $IMG"
         echo "dmg=$IMG" >> $GITHUB_OUTPUT
 
