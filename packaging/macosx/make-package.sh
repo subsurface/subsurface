@@ -104,13 +104,22 @@ if [ "$SIGN" = "1" ] ; then
 	sh ${DIR}/subsurface/packaging/macosx/sign
 fi
 
+echo "Cleaning up any mounted volumes..."
+hdiutil info | grep "/Volumes/Subsurface" | awk '{print $1}' | while read disk; do
+    hdiutil detach "$disk" -force || true
+done
+
 if [ -f ./Subsurface-$CANONICALVERSION.dmg ]; then
 	rm ./Subsurface-$CANONICALVERSION.dmg.bak
 	mv ./Subsurface-$CANONICALVERSION.dmg ./Subsurface-$CANONICALVERSION.dmg.bak
 fi
+
+sleep 1
 
 $DMGCREATE --background ${DIR}/subsurface/packaging/macosx/DMG-Background.png \
 	--window-size 500 300 --icon-size 96 --volname Subsurface-$CANONICALVERSION \
 	--app-drop-link 380 205 \
 	--volicon ${DIR}/subsurface/packaging/macosx/Subsurface.icns \
 	--icon "Subsurface" 110 205 ./Subsurface-$CANONICALVERSION.dmg ./staging
+
+hdiutil detach /Volumes/Subsurface* -force 2>/dev/null || true
