@@ -23,7 +23,8 @@ runs:
   using: composite
   steps:
     - name: atomically create or retrieve the build number and assemble release notes for a push (i.e. merging of a pull request)
-      if: github.event_name == 'push' && inputs.no-increment == 'false'
+      id: get_new_build_number
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master' && inputs.no-increment == 'false'
       env:
         NIGHTLY_BUILDS_SECRET: ${{ inputs.nightly-builds-secret }}
       shell: bash
@@ -35,7 +36,7 @@ runs:
         scripts/get-atomic-buildnr.sh $GITHUB_SHA $NIGHTLY_BUILDS_SECRET "CICD-release"
 
     - name: retrieve the current version number in all other cases
-      if: github.event_name != 'push' || inputs.no-increment != 'false'
+      if: steps.get_new_build_number.outcome == 'skipped'
       env:
         PULL_REQUEST_BRANCH: ${{ github.event.pull_request.head.ref }}
       shell: bash
