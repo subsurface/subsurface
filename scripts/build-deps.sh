@@ -96,11 +96,25 @@ popd
 #
 # libssh2
 #
+
+# for inexplicable reasons, on an x86 build libssh appears to be using the openssl from homebrew
+# for include files and as a result fails to link... on arm builds this works just fine
+# this is of course a ridiculous approach to fixing the problem, but all other attempts to tell
+# cmake to really, really, pretty please use the openssl headers that we built essentially failed
+rm -rf /usr/local/include/openssl /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3
+ls -ld /usr/local/include/openssl /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3
+ls -l /usr/local/include/openssl /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3
+
 get_dep libssh2
 pushd libssh2
 mkdir -p build
 cd build
-cmake $MAC_CMAKE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+cmake $MAC_CMAKE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF \
+        -DOPENSSL_ROOT_DIR="${INSTALL_ROOT}" \
+        -DOPENSSL_INCLUDE_DIR="${INSTALL_ROOT}/include" \
+        -DOPENSSL_CRYPTO_LIBRARY="${INSTALL_ROOT}/lib/libcrypto.dylib" \
+        -DOPENSSL_SSL_LIBRARY="${INSTALL_ROOT}/lib/libssl.dylib" \
+        ..
 make
 make install
 popd

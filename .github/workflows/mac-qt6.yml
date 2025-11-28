@@ -22,7 +22,14 @@ jobs:
 
   build:
     needs: build-documentation
-    runs-on: macOS-15
+    strategy:
+      matrix:
+        include:
+          - arch: arm64
+            runner: macos-15
+          - arch: x86_64
+            runner: macos-15-intel
+    runs-on: ${{ matrix.runner }}
     steps:
     - name: checkout sources
       uses: actions/checkout@v6
@@ -70,7 +77,7 @@ jobs:
       with:
         path: ${{ github.workspace }}/../install-root
         key: macos-deps-${{ runner.arch }}-${{ hashFiles('scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
-        restore-keys: macos-deps-arm-
+        restore-keys: macos-deps-${{ runner.arch }}-
 
     - name: build deps
       id: build-deps
@@ -101,7 +108,7 @@ jobs:
       with:
         path: ${{ github.workspace }}/../install-root
         key: macos-deps-${{ runner.arch }}-${{ hashFiles('scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
-        
+
     - name: build Subsurface
       id: build
       env:
@@ -130,7 +137,8 @@ jobs:
         cd subsurface/build
         bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
         REG_IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
-        IMG="${REG_IMG/Subsurface-/Subsurface-arm-qt6-}"
+        CUR_ARCH="${{ runner.arch }}"
+        IMG="${REG_IMG/Subsurface-/Subsurface-${CUR_ARCH}-qt6-}"
         mv "$REG_IMG" "$IMG"
         echo "Created $IMG"
         echo "dmg=$IMG" >> $GITHUB_OUTPUT
@@ -139,7 +147,7 @@ jobs:
       if: github.event_name == 'pull_request'
       uses: actions/upload-artifact@v5
       with:
-        name: Subsurface-MacOS-${{ steps.version_number.outputs.version }}
+        name: Subsurface-MacOS-${{ matrix.arch }}-qt6-${{ steps.version_number.outputs.version }}
         path: ${{ steps.build.outputs.dmg }}
         compression-level: 0
 
