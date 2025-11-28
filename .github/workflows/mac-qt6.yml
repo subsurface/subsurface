@@ -53,7 +53,7 @@ jobs:
         version: ${{ env.QTVERSION }}
         host: 'mac'
         target: 'desktop'
-        modules: 'qtlocation qtpositioning qtconnectivity qt5compat'
+        modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtwebengine'
         cache: true
 
     - name: load the documentation from cache
