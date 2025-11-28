@@ -6,7 +6,6 @@ on:
     - scripts/docker/**
     branches:
     - master
-    - dirkhh-macos-qt6
   pull_request:
     paths-ignore:
     - scripts/docker/**
