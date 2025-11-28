@@ -35,7 +35,7 @@ cmake $OLDER_MAC_CMAKE \
 	.
 
 if [ "$RUNNER_OS" = "macOS" ]; then
-	LIBRARY_PATH=${DIR}/install-root/lib make -j 1
+	LIBRARY_PATH=${DIR}/install-root/lib make -j 2
 else
 	LIBRARY_PATH=${DIR}/install-root/lib make -j
 fi
