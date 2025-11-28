@@ -213,6 +213,7 @@ if [ "$RUNNER_OS" = "macOS" ]; then
     # Clean up
     rm -rf gettext-0.22.5*
 fi
+sed -i.bak 's/OSFLAGS="-framework IOKit"/LIBS="$LIBS -framework IOKit"/' configure.ac
 CFLAGS="$MAC_OPTS" ./autogen.sh --prefix="$INSTALL_ROOT"
 make -j4
 make install
