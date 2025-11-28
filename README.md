@@ -13,7 +13,7 @@
 
 [![Coverity Scan Results](https://scan.coverity.com/projects/14405/badge.svg)](https://scan.coverity.com/projects/subsurface-divelog-subsurface)
 
-Subsurface can be found at http://subsurface-divelog.org
+Subsurface can be found at http://subsurface-divelog.org/
 
 Our user forum is at http://subsurface-divelog.org/user-forum/
 
