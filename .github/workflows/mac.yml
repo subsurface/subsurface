@@ -30,7 +30,7 @@ jobs:
 
     - name: install additional packages with Homebrew
       run: |
-        brew install libxslt libjpg libraw create-dmg confuse automake
+        brew install create-dmg confuse automake
         brew link --force gettext
 
     - name: checkout Qt resources
