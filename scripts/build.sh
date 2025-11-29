@@ -77,10 +77,10 @@ while [[ $# -gt 0 ]] ; do
 			# call this script with -build-deps
 			BUILD_DEPS_ONLY="1"
 			;;
-		-prep-only)
-			# use this script to build dependencies and set things up with default values, but don't actually run
-			# the build
-			PREP_ONLY="1"
+		-make-package)
+			# use this script to build dependencies and set things up with default values and then run make-mpackage.sh
+			# to finish the build
+			MAKE_PACKAGE="1"
 			;;
 		-fat-build)
 			# build a fat binary for macOS
@@ -168,7 +168,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-all] [-both] [-build-deps-only] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-prep-only] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
+			echo "Usage: build.sh [-all] [-both] [-build-deps-only] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-make-package] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
 			exit 1
 			;;
 	esac
@@ -232,7 +232,7 @@ else
 	INSTALL_ROOT="$BUILD_PREFIX"install-root
 fi
 mkdir -p "$INSTALL_ROOT"
-export INSTALL_ROOT
+export INSTALL_ROOT DEBUGRELEASE
 
 # make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
 export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
@@ -262,9 +262,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 	# OpenSSL can't deal with multi arch build
 	MAC_OPTS_OPENSSL="-mmacosx-version-min=${BASESDK}"
 	echo "Using ${BASESDK} as the BASESDK under ${SDKROOT}"
-
-	# Ensure tests can find the right dynamic libraries
-	#export DYLD_LIBRARY_PATH=$INSTALL_ROOT/lib:$DYLD_LIBRARY_PATH
+	export BASESDK
 fi
 
 echo Building from "$SRC", installing in "$INSTALL_ROOT"
@@ -471,9 +469,9 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	echo "build $SUBSURFACE_EXECUTABLE in $BUILDDIR"
 
 	if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] && [ "$BUILD_WITH_WEBKIT" = "1" ]; then
-		EXTRA_OPTS="-DNO_USERMANUAL=OFF -DNO_PRINTING=OFF"
+		EXTRA_OPTS="-DNO_PRINTING=OFF"
 	else
-		EXTRA_OPTS="-DNO_USERMANUAL=ON -DNO_PRINTING=ON"
+		EXTRA_OPTS="-DNO_PRINTING=ON"
 	fi
 	if [ "$FTDI" = "1" ] ; then
 		EXTRA_OPTS="$EXTRA_OPTS -DFTDISUPPORT=ON"
@@ -524,7 +522,13 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		fi
 	fi
 
-	if [ ! "$PREP_ONLY" = "1" ] ; then
+	if [[ "$MAKE_PACKAGE" = "1" && "$BUILDDIR" = "build" && "$PLATFORM" = "Darwin" ]] ; then
+		# special case of building a distributable macOS package
+		echo "finished initial cmake setup of Subsurface - next run the packaging script to build the DMG"
+		bash -e -x ../packaging/macosx/make-package.sh | tee "$SRC"/mp.log 2>&1
+		IMG=$(grep ^created: "$SRC"/mp.log | tail -1 | cut -b10-)
+		echo "Created $IMG"
+	else
 		LIBRARY_PATH=$INSTALL_ROOT/lib make
 		LIBRARY_PATH=$INSTALL_ROOT/lib make install
 

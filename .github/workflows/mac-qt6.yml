@@ -131,13 +131,11 @@ jobs:
         export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
 
         # now setup the Subsurface build using the generic build script
-        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -build-with-map -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
+        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -build-with-map -ftdi -make-package -install-docs ${BUILD_EXTRA_ARGS}
 
-        echo "finished initial cmake setup of Subsurface - next build the package"
-        cd subsurface/build
-        bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
         REG_IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
-        CUR_ARCH="${{ runner.arch }}"
+        [ "${{ runner.arch }}" = "X64" ] && CUR_ARCH="x86_64"
+        [ "${{ runner.arch }}" = "ARM64" ] && CUR_ARCH="arm64"
         IMG="${REG_IMG/Subsurface-/Subsurface-${CUR_ARCH}-qt6-}"
         mv "$REG_IMG" "$IMG"
         echo "Created $IMG"
