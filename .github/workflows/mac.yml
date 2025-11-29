@@ -62,7 +62,7 @@ jobs:
         version: ${{ env.QTVERSION }}
         host: 'mac'
         target: 'desktop'
-        modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtwebchannel qtwebengine'
+        modules: 'qtlocation qtpositioning qtconnectivity qt5compat'
         cache: true
 
     - name: checkout our packaged Qt resources
@@ -163,7 +163,7 @@ jobs:
         if [ ${{ matrix.qtversion }} = '5' ]; then
           bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -ftdi -make-package -install-docs ${BUILD_EXTRA_ARGS}
         else
-          bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -build-with-map -ftdi -make-package -install-docs ${BUILD_EXTRA_ARGS}
+          bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -build-with-map -ftdi -make-package ${BUILD_EXTRA_ARGS}
         fi
         REG_IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
         [ "${{ runner.arch }}" = "X64" ] && CUR_ARCH="x86_64"
