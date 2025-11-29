@@ -13,9 +13,6 @@ on:
     - master
   workflow_dispatch:
 
-env:
-  QTVERSION: '6.10.1'
-
 jobs:
   build-documentation:
     uses: ./.github/workflows/documentation-build.yml
@@ -27,15 +24,19 @@ jobs:
         include:
           - arch: arm64
             runner: macos-15
-            qtversion: '6.10.1'
+            qtversion: 6.10.1
             brewpackages: 'libtool'
           - arch: x86_64
             runner: macos-15-intel
-            qtversion: '6.10.1'
+            qtversion: 6.10.1
             brewpackages:
           - arch: x86_64
             runner: macos-13
-            qtversion: '5'
+            qtversion: 6.8.3
+            brewpackages:
+          - arch: x86_64
+            runner: macos-13
+            qtversion: 5
             brewpackages: 'libjpg'
     runs-on: ${{ matrix.runner }}
     steps:
@@ -56,17 +57,17 @@ jobs:
         brew install create-dmg confuse automake ${{ matrix.brewpackages }}
 
     - name: checkout Qt resources
-      if: ${{ matrix.qtversion }} != "5"
+      if: ${{ matrix.qtversion != 5 }}
       uses: jurplel/install-qt-action@v4
       with:
-        version: ${{ env.QTVERSION }}
+        version: ${{ matrix.qtversion }}
         host: 'mac'
         target: 'desktop'
         modules: 'qtlocation qtpositioning qtconnectivity qt5compat'
         cache: true
 
     - name: checkout our packaged Qt resources
-      if: ${{ matrix.qtversion }} == "5"
+      if: ${{ matrix.qtversion == 5 }}
       uses: actions/checkout@v6
       with:
         repository: subsurface/qt-mac
@@ -111,7 +112,7 @@ jobs:
         if [ ${{ matrix.qtversion }} = '5' ]; then
           export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.16
         else
-          export QT_ROOT=$(pwd)/Qt/${{ env.QTVERSION }}/macos
+          export QT_ROOT=$(pwd)/Qt/${{ matrix.qtversion }}/macos
         fi
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         export PATH=$QT_ROOT/bin:$PATH
@@ -132,8 +133,6 @@ jobs:
 
     - name: build Subsurface
       id: build
-      env:
-        CANONICALVERSION: ${{ steps.version_number.outputs.version }}
       run: |
         BUILD_EXTRA_ARGS=""
         if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
@@ -146,7 +145,7 @@ jobs:
         if [ ${{ matrix.qtversion }} = '5' ]; then
           export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.16
         else
-          export QT_ROOT=$(pwd)/Qt/${{ env.QTVERSION }}/macos
+          export QT_ROOT=$(pwd)/Qt/${{ matrix.qtversion }}/macos
         fi
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         export PATH=$QT_ROOT/bin:$PATH
