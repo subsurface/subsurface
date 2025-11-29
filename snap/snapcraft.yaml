@@ -71,7 +71,7 @@ parts:
           places/unsupportedreplies
       do
         wget --no-verbose --content-disposition \
-          http://github.com/qt/qtlocation.git/plain/src/location/${HEADER}_p.h?h=v${QT_VERSION}-lts-lgpl
+          https://raw.githubusercontent.com/qt/qtlocation/refs/tags/v5.15.3-lts-lgpl/src/location/${HEADER}_p.h
       done
       cd -
       cd QtHeaders/QtPositioning/private
@@ -82,7 +82,7 @@ parts:
           qpositioningglobal
       do
         wget --no-verbose --content-disposition \
-          http://github.com/qt/qtlocation.git/plain/src/positioning/${HEADER}_p.h?h=v${QT_VERSION}-lts-lgpl
+          https://raw.githubusercontent.com/qt/qtlocation/refs/tags/v5.15.3-lts-lgpl/src/positioning/${HEADER}_p.h
       done
     override-build: |
       qmake \
