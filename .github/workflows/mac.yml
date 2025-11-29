@@ -32,7 +32,7 @@ jobs:
           - arch: x86_64
             runner: macos-15-intel
             qtversion: '6.10.1'
-            brewpackages: 'libtool'
+            brewpackages:
           - arch: x86_64
             runner: macos-13
             qtversion: '5'
@@ -62,7 +62,7 @@ jobs:
         version: ${{ env.QTVERSION }}
         host: 'mac'
         target: 'desktop'
-        modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtwebengine'
+        modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtwebchannel qtwebengine'
         cache: true
 
     - name: checkout our packaged Qt resources
