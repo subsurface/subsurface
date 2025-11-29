@@ -111,11 +111,6 @@ while [[ $# -gt 0 ]] ; do
 			# So by default we only try to build against Qt5. This overwrites that
 			BUILD_WITH_QT6="1"
 			;;
-		-build-with-map)
-			# Qt6 doesn't include QtLocation (as of Qt 6.3) - but you can build / install it from source.
-			# use this flag to force building googlemaps with Qt6
-			BUILD_WITH_MAP="1"
-			;;
 		-mobile)
 			# we are building Subsurface-mobile
 			# Note that this will run natively on the host OS.
@@ -168,7 +163,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-all] [-both] [-build-deps-only] [-build-prefix <PREFIX>] [-build-with-map] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-make-package] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
+			echo "Usage: build.sh [-all] [-both] [-build-deps-only] [-build-prefix <PREFIX>] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-make-package] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
 			exit 1
 			;;
 	esac
@@ -441,18 +436,19 @@ STATIC_LIBDC="$INSTALL_ROOT/$(grep ^libdir Makefile | cut -d/ -f2)/libdivecomput
 
 cd "$SRC"
 
-if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] && ( [[ $QT_VERSION == 5* ]] || [ "$BUILD_WITH_MAP" = "1" ] ); then
+if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 	# build the googlemaps map plugin
 
 	cd "$SRC"
 	./${SRC_DIR}/scripts/get-dep-lib.sh single . googlemaps
 	pushd googlemaps
 	if [[ $QT_VERSION == 6* ]]; then
+		# the latest version of googlemaps as of Nov 2025 builds out of the box with Qt 6.10
+		# but no longer builds against Qt 5... so we have two branches now
 		git checkout qt6-upstream
 	fi
 	mkdir -p build
 	cd build
-	# the latest version of googlemaps as of Nov 2025 builds out of the box with Qt 6.10
 	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" ../googlemaps.pro
 	make
 	make install
