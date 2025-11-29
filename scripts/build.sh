@@ -257,7 +257,13 @@ if [ "$PLATFORM" = Darwin ] ; then
 	# OpenSSL can't deal with multi arch build
 	MAC_OPTS_OPENSSL="-mmacosx-version-min=${BASESDK}"
 	echo "Using ${BASESDK} as the BASESDK under ${SDKROOT}"
-	export BASESDK
+
+	# if all we want is to build the dependencies, we are done with prep here
+	if [[ "$BUILD_DEPS_ONLY" == "1" ]] ; then
+		export ARCHS SRC SRC_DIR MAC_CMAKE MAC_OPTS MAC_OPTS_OPENSSL BASESDK
+		bash "./${SRC_DIR}/scripts/build-deps.sh"
+		exit
+	fi
 fi
 
 echo Building from "$SRC", installing in "$INSTALL_ROOT"
@@ -366,12 +372,6 @@ else
 fi
 
 cd "$SRC"
-
-if [[ $PLATFORM = Darwin && "$BUILD_DEPS_ONLY" == "1" ]] ; then
-	export ARCHS SRC SRC_DIR MAC_CMAKE MAC_OPTS MAC_OPTS_OPENSSL INSTALL_ROOT
-	bash "./${SRC_DIR}/scripts/build-deps.sh"
-	exit
-fi
 
 if [[ $PLATFORM != Darwin && "$LIBGITMAJ" -lt "1" && "$LIBGIT" -lt "26" ]] ; then
 	LIBGIT_ARGS="-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT"
