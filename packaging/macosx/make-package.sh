@@ -23,7 +23,6 @@ rm -rf ./Subsurface.app
 # do "the right thing" - especially don't set a sysroot (which way back when was required for this to work)
 # unforunately that means we need to somehow hard-code a deployment target, hoping the local tools
 # know how to build for that. Which seems... odd
-BASESDK="12.3"
 ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
 OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES="$ARCHS" -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
 export PKG_CONFIG_PATH=${DIR}/install-root/lib/pkgconfig:$PKG_CONFIG_PATH
@@ -77,9 +76,6 @@ if [ -f $QTWEBKIT ] ; then
         fi
     done
 fi
-
-# next, copy libssh2.1
-# cp ${DIR}/install-root/lib/libssh2.1.dylib Subsurface.app/Contents/Frameworks
 
 # next, replace @rpath references with @executable_path references in Subsurface
 RPATH=$(otool -L ${EXECUTABLE} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )

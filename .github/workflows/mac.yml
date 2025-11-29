@@ -30,8 +30,7 @@ jobs:
 
     - name: install additional packages with Homebrew
       run: |
-        brew install create-dmg confuse automake
-        brew link --force gettext
+        brew install libjpg create-dmg confuse automake
 
     - name: checkout Qt resources
       uses: actions/checkout@v6
@@ -102,14 +101,9 @@ jobs:
         export ACLOCAL_FLAGS="-I $(brew --prefix gettext)/share/aclocal"
 
         # now setup Subsurface with WebKit and build the dependencies, using the generic build script
-        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
+        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -ftdi -make-package -install-docs ${BUILD_EXTRA_ARGS}
 
-        echo "finished initial cmake setup of Subsurface - next build the package"
-        cd subsurface/build
-        echo "run the packaging script"
-        bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
         IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
-        echo "Created $IMG"
         echo "dmg=$IMG" >> $GITHUB_OUTPUT
 
     - name: publish pull request artifacts
