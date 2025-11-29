@@ -253,7 +253,14 @@ popd
 get_dep libraw
 pushd libraw
 autoreconf -fi
-CFLAGS="$MAC_OPTS" CXXFLAGS="$MAC_OPTS" ./configure --prefix="$INSTALL_ROOT" --disable-examples --disable-static --enable-shared
+EXTRA_OPTS=""
+if [ "$RUNNER_OS" = "macOS" ]; then
+    # GitHub macOS Action
+    # libjpeg is only needed for a few very old formats - but it causes us to link against a system library
+    # that forces macOS 13 as minimum version
+    EXTRA_OPTS="--disable-jpeg"
+fi
+CFLAGS="$MAC_OPTS" CXXFLAGS="$MAC_OPTS" ./configure --prefix="$INSTALL_ROOT" --disable-examples --disable-static --enable-shared "$EXTRA_OPTS"
 make -j4
 make install
 popd
