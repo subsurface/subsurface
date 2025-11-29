@@ -121,11 +121,7 @@ jobs:
         export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
 
         # now setup Subsurface and build the dependencies, using the generic build script
-        if [ ${{ matrix.qtversion }} = '5' ]; then
-          bash -e -x ./subsurface/scripts/build.sh -build-deps-only -build-with-webkit -build-with-map -ftdi ${BUILD_EXTRA_ARGS}
-        else
-          bash -e -x ./subsurface/scripts/build.sh -build-deps-only -build-with-qt6 -build-with-map -ftdi ${BUILD_EXTRA_ARGS}
-        fi
+        bash -e -x ./subsurface/scripts/build.sh -build-deps-only -ftdi ${BUILD_EXTRA_ARGS}
 
     - name: force cache save
       if: always()
@@ -163,7 +159,7 @@ jobs:
         if [ ${{ matrix.qtversion }} = '5' ]; then
           bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -ftdi -make-package -install-docs ${BUILD_EXTRA_ARGS}
         else
-          bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -build-with-map -ftdi -make-package ${BUILD_EXTRA_ARGS}
+          bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -ftdi -make-package ${BUILD_EXTRA_ARGS}
         fi
         REG_IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
         [ "${{ runner.arch }}" = "X64" ] && CUR_ARCH="x86_64"
