@@ -1,4 +1,4 @@
-name: Fedora 35 / Qt 6
+name: Fedora / Qt 6
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: fedora:35
+      image: fedora:42
 
     steps:
     - name: get container ready for build
