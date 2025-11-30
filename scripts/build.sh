@@ -245,6 +245,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 	# unforunately that means we need to somehow hard-code a deployment target, hoping the local tools
 	# know how to build for that. Which seems... odd
 	BASESDK="12.3"
+	export BASESDK
 	if [ "$ARCHS" != "" ] ; then
 		# we do assume that the two architectures mentioned are x86_64 and arm64 .. that's kinda wrong
 		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64' -DCMAKE_BUILD_TYPE=${DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
@@ -260,7 +261,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 
 	# if all we want is to build the dependencies, we are done with prep here
 	if [[ "$BUILD_DEPS_ONLY" == "1" ]] ; then
-		export ARCHS SRC SRC_DIR MAC_CMAKE MAC_OPTS MAC_OPTS_OPENSSL BASESDK
+		export ARCHS SRC SRC_DIR MAC_CMAKE MAC_OPTS MAC_OPTS_OPENSSL
 		bash "./${SRC_DIR}/scripts/build-deps.sh"
 		exit
 	fi
