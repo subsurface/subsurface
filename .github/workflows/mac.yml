@@ -24,14 +24,10 @@ jobs:
         include:
           - arch: arm64
             runner: macos-15
-            qtversion: 6.10.1
+            qtversion: 6.8.3
             brewpackages: 'libtool'
           - arch: x86_64
             runner: macos-15-intel
-            qtversion: 6.10.1
-            brewpackages:
-          - arch: x86_64
-            runner: macos-13
             qtversion: 6.8.3
             brewpackages:
           - arch: x86_64
