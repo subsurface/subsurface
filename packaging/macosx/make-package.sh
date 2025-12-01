@@ -33,11 +33,8 @@ cmake $OLDER_MAC_CMAKE \
 	-DFTDISUPPORT=ON \
 	.
 
-if [ "$RUNNER_OS" = "macOS" ]; then
-	LIBRARY_PATH=${DIR}/install-root/lib make -j 2
-else
-	LIBRARY_PATH=${DIR}/install-root/lib make -j
-fi
+LIBRARY_PATH=${DIR}/install-root/lib make
+
 LIBRARY_PATH=${DIR}/install-root/lib make install
 
 # now adjust a few references that macdeployqt appears to miss
