@@ -27,6 +27,10 @@
 #include <QQuickWindow>
 #include <QStringList>
 #include <git2.h>
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+#include <QPermissions>
+#endif
+
 
 static void validateGL();
 static void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
@@ -68,6 +72,37 @@ int main(int argc, char **argv)
 		exit(0);
 	}
 	validateGL();
+
+#if defined(Q_OS_MACOS) && QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+	if (verbose)
+		report_info("requesting Bluetooth permissions for Qt6");
+	// Request Bluetooth permission for Qt6
+	QBluetoothPermission bluetoothPermission;
+	bluetoothPermission.setCommunicationModes(QBluetoothPermission::Access);
+	Qt::PermissionStatus permissionStatus = app->checkPermission(bluetoothPermission);
+
+	if (permissionStatus == Qt::PermissionStatus::Undetermined) {
+		if (verbose)
+			report_info("Bluetooth permission status: Undetermined, requesting permission");
+		app->requestPermission(bluetoothPermission, [](const QPermission &permission) {
+			if (permission.status() == Qt::PermissionStatus::Granted) {
+				if (verbose)
+					report_info("Bluetooth permission granted");
+			} else {
+				report_error("Bluetooth permission denied - Bluetooth functionality may not work");
+			}
+		});
+	} else if (permissionStatus == Qt::PermissionStatus::Granted) {
+		if (verbose)
+			report_info("Bluetooth permission status: Granted");
+	} else if (permissionStatus == Qt::PermissionStatus::Denied) {
+		if (verbose)
+			report_info("Bluetooth permission status: Denied - Bluetooth functionality may not work");
+	} else {
+		report_info("unknown permissionStatus %x", static_cast<unsigned int>(permissionStatus));
+	}
+#endif
+
 #if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR < 22
 	git_threads_init();
 #else

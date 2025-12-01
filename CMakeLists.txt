@@ -375,6 +375,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
 	set(MACOSX_BUNDLE_LONG_VERSION_STRING "${SSRF_VERSION_STRING}")
 	set(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger and others")
+	# Use custom Info.plist template with Bluetooth permissions
+	set(MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/cmake/Modules/MacOSXBundleInfo.plist.in")
 	set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 	set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -526,6 +528,13 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
 	else()
 		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	endif()
+
+	# Import Qt6 Bluetooth permission plugin on macOS
+	if(USINGQT6 AND CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		qt_import_plugins(${SUBSURFACE_TARGET}
+			INCLUDE Qt::QDarwinBluetoothPermissionPlugin
+		)
 	endif()
 
 	target_link_libraries(
