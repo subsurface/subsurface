@@ -93,8 +93,10 @@ rm -rf ./staging
 mkdir ./staging
 cp -a ./Subsurface.app ./staging
 
-if [ "$SIGN" = "1" ] ; then
+if [ "$SIGN" = "1" ] ; then # that's for local builds for Dirk... oops
 	sh ${DIR}/subsurface/packaging/macosx/sign
+else
+	codesign --force --deep --sign - staging/Subsurface.app
 fi
 
 echo "Cleaning up any mounted volumes..."
