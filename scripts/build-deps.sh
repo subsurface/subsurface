@@ -102,9 +102,7 @@ popd
 # for include files and as a result fails to link... on arm builds this works just fine
 # this is of course a ridiculous approach to fixing the problem, but all other attempts to tell
 # cmake to really, really, pretty please use the openssl headers that we built essentially failed
-rm -rf /usr/local/include/openssl /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3
-ls -ld /usr/local/include/openssl /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3
-ls -l /usr/local/include/openssl /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3
+chmod 000 /usr/local/include/openssl /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3
 
 get_dep libssh2
 pushd libssh2
@@ -118,6 +116,9 @@ cmake $MAC_CMAKE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF
         ..
 make
 make install
+# restore openssl so that curl keeps working
+chmod 755 /usr/local/include/openssl /usr/local/Cellar/openssl@1.1 /usr/local/Cellar/openssl@3
+
 popd
 # in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
 pushd "$INSTALL_ROOT"/lib
