@@ -120,13 +120,6 @@ jobs:
         # now setup Subsurface and build the dependencies, using the generic build script
         bash -e -x ./subsurface/scripts/build.sh -build-deps-only -ftdi ${BUILD_EXTRA_ARGS}
 
-    - name: force cache save
-      if: always()
-      uses: actions/cache@v4
-      with:
-        path: ${{ github.workspace }}/../install-root
-        key: macos-deps-${{ runner.arch }}-${{ hashFiles('scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
-
     - name: build Subsurface
       id: build
       run: |
