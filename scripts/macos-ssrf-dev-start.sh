@@ -11,8 +11,8 @@ qtver=$(qmake -query QT_VERSION 2>/dev/null) || { echo "Qt not found in PATH"; e
 # check if this looks like Qt binaries (vs Homebrew or something else)
 grep -q "$qtver" <(qmake -query QT_INSTALL_LIBS) || { echo "this doesn't look like it's finding a Qt binary distribution";  exit 1;}
 
-# check for asciidoc
-hash asciidoc >&/dev/null || { echo "missing asciido - install from Homebrew"; exit 1; }
+# check for asciidoctor
+hash asciidoctor >&/dev/null || { echo "missing asciidoctor - install from Homebrew"; exit 1; }
 
 # clone the repo
 # WARNING -- this is cloning the macos-qt6 branch... will need to be updated once merged

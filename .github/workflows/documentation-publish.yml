@@ -26,7 +26,7 @@ jobs:
     - name: install packages
       run: |
         sudo apt-get -y update
-        DEBIAN_FRONTEND=noninteractive sudo apt-get -y -q install asciidoc docbook-xml w3m
+        DEBIAN_FRONTEND=noninteractive sudo apt-get -y -q install asciidoctor docbook-xml w3m
 
     - name: checkout sources
       uses: actions/checkout@v6

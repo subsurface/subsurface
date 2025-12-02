@@ -2,7 +2,7 @@ Source: subsurface
 Section: utils
 Priority: optional
 Maintainer: Subsurface CI Bot <dirk@subsurface-divelog.org>
-Build-Depends: asciidoc,
+Build-Depends: asciidoctor,
                debhelper (>= 9),
                libtool,
                libxml2-dev,

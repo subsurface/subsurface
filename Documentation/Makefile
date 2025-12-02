@@ -6,7 +6,7 @@ HTMLDOCS = $(patsubst %,$(OUT)/%.html,$(DOCNAMES))
 TEXTDOCS = $(patsubst %,$(OUT)/%.text,$(DOCNAMES))
 PDFDOCS = $(patsubst %,$(OUT)/%.pdf,$(DOCNAMES))
 
-ASCIIDOC = asciidoc
+ASCIIDOC = asciidoctor
 A2X = a2x
 BROWSER = firefox
 THEME = compact_subsurface
@@ -52,7 +52,7 @@ $(OUT)/%.html: %.txt | $(OUT)/images
 		VERSION="pre-6.0.0"; \
 	fi; \
 	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
-	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -a version=$$VERSION -a version-date=$$VERSION_DATE -o $@ $<
+	$(ASCIIDOC) -a toc=left -a toc-position=left -a themedir=$(PWD) -a theme=$(THEME) -a version=$$VERSION -a version-date=$$VERSION_DATE -o $@ $<
 
 # for the web facing version of the desktop manual, just use the post-processing script
 user-manual.html.wp: $(OUT)/user-manual.html
@@ -68,7 +68,7 @@ mobile-manual-v3.html.wp: mobile-manual-v3.txt
 		VERSION="pre-6.0.0"; \
 	fi; \
 	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
-	$(ASCIIDOC) -a toc -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -a version="$$VERSION" -a version-date="$$VERSION_DATE" -o $(<:%.txt=%.html.tmp) $< && \
+	$(ASCIIDOC) -a toc=left -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -a version="$$VERSION" -a version-date="$$VERSION_DATE" -o $(<:%.txt=%.html.tmp) $< && \
 		bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp) && \
 		rm $(<:%.txt=%.html.tmp) && \
 		mv $(<:%.txt=%.html.tmp.wp) $(OUT)/$@

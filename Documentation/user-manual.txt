@@ -5,8 +5,7 @@
 // :revnumber: {version}
 // :revdate: {version-date}
 :icons:
-:toc2:
-:toc-placement: manual
+:toc: left
 :numbered:
 // :website: https://subsurface-divelog.org
 
