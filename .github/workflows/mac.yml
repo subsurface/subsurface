@@ -150,10 +150,11 @@ jobs:
 
         # now setup the Subsurface build using the generic build script
         if [ ${{ matrix.qtversion }} = '5' ]; then
-          bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -ftdi -make-package -install-docs ${BUILD_EXTRA_ARGS}
+          UI_TOOLKIT_ARG="-build-with-webkit"
         else
-          bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -ftdi -make-package ${BUILD_EXTRA_ARGS}
+          UI_TOOLKIT_ARG="-build-with-qt6"
         fi
+        bash -e -x ./subsurface/scripts/build.sh -desktop ${UI_TOOLKIT_ARG} -ftdi -make-package -install-docs ${BUILD_EXTRA_ARGS}
         REG_IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
         [ "${{ runner.arch }}" = "X64" ] && CUR_ARCH="x86_64"
         [ "${{ runner.arch }}" = "ARM64" ] && CUR_ARCH="arm64"

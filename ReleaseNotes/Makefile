@@ -1,5 +1,5 @@
 #
-# in order for "normal" developers not to have to install asciidoc (which
+# in order for "normal" developers not to have to install asciidoctor (which
 # brings in a couple hundred MB of dependencies) we now include both the
 # user-manual.txt and a copy of the generated .html file in git
 #
@@ -13,7 +13,7 @@ HTMLDOCS = $(patsubst %,$(OUT)%.html,$(DOCNAMES))
 TEXTDOCS = $(patsubst %,$(OUT)%.text,$(DOCNAMES))
 PDFDOCS = $(patsubst %,$(OUT)%.pdf,$(DOCNAMES))
 
-ASCIIDOC = asciidoc
+ASCIIDOC = asciidoctor
 A2X = a2x
 BROWSER = firefox
 THEME = ../Documentation/compact_subsurface
@@ -30,7 +30,7 @@ $(OUT)%.pdf: %.txt
 	-$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf $<
 
 $(OUT)%.html: %.txt
-	@echo "if asciidoc isn't found the html file included in the sources is copied"
+	@echo "if asciidoctor isn't found the html file included in the sources is copied"
 	$(ASCIIDOC) -a themedir=$(PWD) -a theme=$(THEME) -a stylesdir=$(PWD) \
 		-o $@ $< || cp $(<:%.txt=%.html.git) $@
 
