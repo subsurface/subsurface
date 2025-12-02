@@ -23,7 +23,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  fdupes
 BuildRequires:  gcc-c++
 BuildRequires:  make
-BuildRequires:  asciidoc
+BuildRequires:  asciidoctor
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool
