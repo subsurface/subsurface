@@ -2,7 +2,9 @@
 #ifndef USERMANUAL_H
 #define USERMANUAL_H
 
-#ifdef USE_WEBENGINE
+#if defined(USE_QLITEHTML)
+# include <qlitehtmlwidget.h>
+#elif defined(USE_WEBENGINE)
 # include <QWebEngineView>
 #else
 # include <QWebView>
@@ -32,7 +34,7 @@ class UserManual : public QDialog {
 public:
 	explicit UserManual(QWidget *parent = 0);
 
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC)
 protected:
 	void showEvent(QShowEvent *e);
 	void hideEvent(QHideEvent *e);
@@ -49,7 +51,9 @@ slots:
 private:
 	SearchBar *searchBar;
 	QString mLastText;
-#ifdef USE_WEBENGINE
+#if defined(USE_QLITEHTML)
+	QLiteHtmlWidget *userManual;
+#elif defined(USE_WEBENGINE)
 	QWebEngineView *userManual;
 #else
 	QWebView *userManual;
@@ -57,7 +61,7 @@ private:
 	void search(QString, bool backward = false);
 };
 
-#ifdef USE_WEBENGINE
+#if defined(USE_WEBENGINE)
 class UserManualPage : public QWebEnginePage {
 	Q_OBJECT
 
