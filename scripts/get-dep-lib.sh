@@ -19,6 +19,7 @@ CURRENT_MDBTOOLS="v1.0.0"
 CURRENT_QT_ANDROID_CMAKE="master"
 CURRENT_LIBMTP="v1.1.22"
 CURRENT_LIBRAW="0.21.4"
+CURRENT_QLITEHTML="5c23bb12812557000601d0167db30113979b9e8e"
 
 croak() {
 	echo $@
@@ -208,6 +209,9 @@ for package in "${PACKAGES[@]}" ; do
 			;;
 		libraw)
 			git_checkout_library libraw $CURRENT_LIBRAW https://github.com/libraw/libraw
+			;;
+		qlitehtml)
+			git_checkout_library qlitehtml $CURRENT_QLITEHTML https://github.com/dirkhh/qlitehtml
 			;;
 		*)
 			echo "unknown package \"$package\""
