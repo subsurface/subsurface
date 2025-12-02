@@ -456,6 +456,25 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 	popd
 fi
 
+if [[ "$QUICK" != "1" && "$BUILD_DESKTOP" == "1" && "$BUILD_WITH_QT6" == "1" ]] ; then
+	# build the qlitehtml library
+	cd "$SRC"
+	./${SRC_DIR}/scripts/get-dep-lib.sh single . qlitehtml
+	pushd qlitehtml
+	git submodule init
+	git submodule update
+
+	# qlitehtml currently (2025-12-01) only allows in source tree builds
+	cmake $MAC_CMAKE .
+	make
+	make install
+	if [ "$PLATFORM" = Darwin ] ; then
+		# now fix the @rpath entries in the .dylib
+		install_name_tool -add_rpath "$(qmake -query QT_INSTALL_LIBS)" "$INSTALL_ROOT"/lib/libqlitehtml.1.dylib
+	fi
+	popd
+fi
+
 # finally, build Subsurface
 
 set -x

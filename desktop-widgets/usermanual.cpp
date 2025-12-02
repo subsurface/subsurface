@@ -2,13 +2,17 @@
 #include <QDesktopServices>
 #include <QShortcut>
 #include <QFile>
-#ifdef USE_WEBENGINE
+#if defined(USE_QLITEHTML)
+# include <QUrl>
+# include <QFile>
+#elif defined(USE_WEBENGINE)
 # include <QWebEngineFindTextResult>
 #endif
 
 #include "desktop-widgets/usermanual.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
+#include "core/errorhelper.h"
 
 SearchBar::SearchBar(QWidget *parent): QWidget(parent)
 {
@@ -58,7 +62,21 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	setWindowTitle(tr("User manual"));
 	setWindowIcon(QIcon(":subsurface-icon"));
 
-#ifdef USE_WEBENGINE
+#if defined(USE_QLITEHTML)
+	userManual = new QLiteHtmlWidget(this);
+	// Set up resource handler for loading images, CSS, etc.
+	userManual->setResourceHandler([](const QUrl &url) -> QByteArray {
+		if (url.isLocalFile()) {
+			QFile file(url.toLocalFile());
+			if (file.open(QIODevice::ReadOnly)) {
+				QByteArray data = file.readAll();
+				file.close();
+				return data;
+			}
+		}
+		return QByteArray();
+	});
+#elif defined(USE_WEBENGINE)
 	userManual = new QWebEngineView(this);
 #else
 	userManual = new QWebView(this);
@@ -66,14 +84,16 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	QString colorBack = palette().highlight().color().name(QColor::HexRgb);
 	QString colorText = palette().highlightedText().color().name(QColor::HexRgb);
 	userManual->setStyleSheet(QString(
-#ifdef USE_WEBENGINE
+#if defined(USE_QLITEHTML)
+				"QLiteHtmlWidget"
+#elif defined(USE_WEBENGINE)
 				"QWebEngineView"
 #else
 				"QWebView"
 #endif
 				" { selection-background-color: %1; selection-color: %2; }")
 		.arg(colorBack).arg(colorText));
-#ifndef USE_WEBENGINE
+#if !defined(USE_WEBENGINE) && !defined(USE_QLITEHTML)
 	userManual->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 #endif
 	QString searchPath = getSubsurfaceDataPath("Documentation");
@@ -87,10 +107,23 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 		if (!manual.exists())
 			manual.setFileName(prefix + ".html");
 		if (!manual.exists()) {
+			report_info("unable to find user manual in %s", searchPath.toUtf8().constData());
 			userManual->setHtml(tr("Cannot find the Subsurface manual"));
 		} else {
 			QString urlString = QString("file:///") + manual.fileName();
-#ifdef USE_WEBENGINE
+#if defined(USE_QLITEHTML)
+			// QLiteHtml requires reading the file and calling setHtml()
+			// setUrl() only sets the base URL for resolving relative paths
+			QFile htmlFile(manual.fileName());
+			if (htmlFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+				QString htmlContent = QString::fromUtf8(htmlFile.readAll());
+				htmlFile.close();
+				userManual->setUrl(QUrl(urlString, QUrl::TolerantMode));
+				userManual->setHtml(htmlContent);
+			} else {
+				report_info("failed to open HTML file: %s", manual.fileName().toUtf8().constData());
+			}
+#elif defined(USE_WEBENGINE)
 			UserManualPage* page = new UserManualPage(userManual);
 			page->setUrl(urlString);
 			userManual->setPage(page);
@@ -106,10 +139,13 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	searchBar->hide();
 	connect(actionShowSearch, SIGNAL(triggered(bool)), searchBar, SLOT(show()));
 	connect(actionHideSearch, SIGNAL(triggered(bool)), searchBar, SLOT(hide()));
-	connect(userManual, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
 	connect(searchBar, SIGNAL(searchTextChanged(QString)), this, SLOT(searchTextChanged(QString)));
 	connect(searchBar, SIGNAL(searchNext()), this, SLOT(searchNext()));
 	connect(searchBar, SIGNAL(searchPrev()), this, SLOT(searchPrev()));
+#if !defined(USE_WEBENGINE)
+	// WebEngine uses UserManualPage::acceptNavigationRequest instead
+	connect(userManual, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
+#endif
 
 	QVBoxLayout *vboxLayout = new QVBoxLayout();
 	userManual->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -117,12 +153,34 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	vboxLayout->addWidget(searchBar);
 	setLayout(vboxLayout);
 
-#ifdef USE_WEBENGINE
-	resize(700, 500);
-#endif
+	// Size the window to 80% of the main window's size
+	if (parent) {
+		QSize parentSize = parent->size();
+		resize(parentSize.width() * 0.8, parentSize.height() * 0.8);
+	} else {
+		// Fallback size if no parent
+		resize(700, 500);
+	}
 }
 
-#ifdef USE_WEBENGINE
+#if defined(USE_QLITEHTML)
+void UserManual::search(QString text, bool backward)
+{
+	QTextDocument::FindFlags flags = QTextDocument::FindFlag(0);
+	if (backward)
+		flags |= QTextDocument::FindBackward;
+	if (text.length() == 0)
+		searchBar->setStyleSheet("");
+	else {
+		bool wrapped = false;
+		bool found = userManual->findText(text, flags, false, &wrapped);
+		if (!found)
+			searchBar->setStyleSheet("QLineEdit{background: red;}");
+		else
+			searchBar->setStyleSheet("");
+	}
+}
+#elif defined(USE_WEBENGINE)
 void UserManual::search(QString text, bool backward)
 {
 	QWebEnginePage::FindFlags flags = QFlag(0);
@@ -176,10 +234,35 @@ void UserManual::searchPrev()
 
 void UserManual::linkClickedSlot(const QUrl& url)
 {
+#if defined(USE_QLITEHTML)
+	// For QLiteHtml: handle internal anchors within the widget,
+	// open external links in system browser
+	if (url.scheme() == "http" || url.scheme() == "https") {
+		QDesktopServices::openUrl(url);
+	} else if (url.hasFragment() && url.path().isEmpty()) {
+		// Fragment-only URL (#anchor) - scroll to anchor within current document
+		userManual->scrollToAnchor(url.fragment(QUrl::FullyDecoded));
+	} else {
+		// Internal link (file:///) - load new document
+		QFile htmlFile(url.toLocalFile());
+		if (htmlFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
+			QString htmlContent = QString::fromUtf8(htmlFile.readAll());
+			htmlFile.close();
+			userManual->setUrl(url);
+			userManual->setHtml(htmlContent);
+			// If URL has a fragment, scroll to it after loading
+			if (url.hasFragment()) {
+				userManual->scrollToAnchor(url.fragment(QUrl::FullyDecoded));
+			}
+		}
+	}
+#else
+	// For WebKit: delegate policy handles this, just open external links
 	QDesktopServices::openUrl(url);
+#endif
 }
 
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC)
 void UserManual::showEvent(QShowEvent *e)
 {
 	MainWindow *m = MainWindow::instance();
@@ -201,7 +284,7 @@ void UserManual::hideEvent(QHideEvent *e)
 }
 #endif
 
-#ifdef USE_WEBENGINE
+#if defined(USE_WEBENGINE)
 bool UserManualPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
 {
 	if (type == QWebEnginePage::NavigationTypeLinkClicked
