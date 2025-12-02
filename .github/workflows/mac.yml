@@ -46,7 +46,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/Library/Caches/Homebrew
-        key: brew-${{ runner.os }}-${{ hashFiles('.github/workflows/build.yml') }}
+        key: brew-${{ runner.os }}-${{ hashFiles('.github/workflows/mac.yml') }}
 
     - name: install additional packages with Homebrew
       run: |
