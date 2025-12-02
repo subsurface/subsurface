@@ -201,14 +201,20 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 				save_dives_logic(bt.data(), ui->exportSelected->isChecked(), ui->anonymize->isChecked());
 			}
 		} else if (ui->exportSubsurfaceSitesXML->isChecked()) {
-			filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface dive sites XML"), lastDir,
-								tr("Subsurface files") + " (*.xml)");
+			bool kml = ui->kml->isChecked();
+			if (kml)
+				filename = QFileDialog::getSaveFileName(this, tr("Export dive sites as KML"), lastDir,
+									tr("Subsurface files") + " (*.kml)");
+			else
+				filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface dive sites XML"), lastDir,
+									tr("Subsurface files") + " (*.xml)");
+
 			if (!filename.isEmpty()) {
 				if (!filename.contains('.'))
-					filename.append(".xml");
+					filename.append(kml ? ".kml" : ".xml");
 				QByteArray bt = QFile::encodeName(filename);
 				auto sites = getDiveSitesToExport(ui->exportSelected->isChecked());
-				save_dive_sites_logic(bt.data(), sites.data(), (int)sites.size(), ui->anonymize->isChecked());
+				save_dive_sites_logic(bt.data(), sites.data(), (int)sites.size(), ui->anonymize->isChecked(), kml);
 			}
 		} else if (ui->exportImageDepths->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
