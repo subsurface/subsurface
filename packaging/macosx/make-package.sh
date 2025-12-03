@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # this simply automates the steps to create a DMG we can ship
 #
@@ -23,8 +23,8 @@ rm -rf ./Subsurface.app
 # do "the right thing" - especially don't set a sysroot (which way back when was required for this to work)
 # unforunately that means we need to somehow hard-code a deployment target, hoping the local tools
 # know how to build for that. Which seems... odd
-ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
-OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES="$ARCHS" -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
+ARCH=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
+OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
 export PKG_CONFIG_PATH=${DIR}/install-root/lib/pkgconfig:$PKG_CONFIG_PATH
 
 cmake $OLDER_MAC_CMAKE \
@@ -36,6 +36,13 @@ cmake $OLDER_MAC_CMAKE \
 LIBRARY_PATH=${DIR}/install-root/lib make
 
 LIBRARY_PATH=${DIR}/install-root/lib make install
+
+# next, let's make sure we have single architecture libraries and frameworks, not fat binaries
+find Subsurface.app/Contents/Frameworks -type f \( -name "Qt*" -o -name "*.dylib" \) | while read -r lib; do
+    if [[ $(lipo "$lib" -archs)  != "$ARCH" ]] 2>/dev/null; then
+        lipo "$lib" -thin "$ARCH" -output "$lib.tmp" && mv "$lib.tmp" "$lib"
+    fi
+done
 
 # now adjust a few references that macdeployqt appears to miss
 EXECUTABLE=Subsurface.app/Contents/MacOS/Subsurface
