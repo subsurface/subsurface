@@ -164,7 +164,7 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 }
 
 #if defined(USE_QLITEHTML)
-void UserManual::search(QString text, bool backward)
+void UserManual::search(QString text, bool backward, bool incremental)
 {
 	QTextDocument::FindFlags flags = QTextDocument::FindFlag(0);
 	if (backward)
@@ -173,7 +173,7 @@ void UserManual::search(QString text, bool backward)
 		searchBar->setStyleSheet("");
 	else {
 		bool wrapped = false;
-		bool found = userManual->findText(text, flags, false, &wrapped);
+		bool found = userManual->findText(text, flags, incremental, &wrapped);
 		if (!found)
 			searchBar->setStyleSheet("QLineEdit{background: red;}");
 		else
@@ -181,7 +181,7 @@ void UserManual::search(QString text, bool backward)
 	}
 }
 #elif defined(USE_WEBENGINE)
-void UserManual::search(QString text, bool backward)
+void UserManual::search(QString text, bool backward, bool incremental)
 {
 	QWebEnginePage::FindFlags flags = QFlag(0);
 	if (backward)
@@ -203,7 +203,7 @@ void UserManual::search(QString text, bool backward)
 			});
 }
 #else
-void UserManual::search(QString text, bool backward)
+void UserManual::search(QString text, bool backward, bool incremental)
 {
 	QWebPage::FindFlags flags = QWebPage::FindWrapsAroundDocument;
 	if (backward)
@@ -219,7 +219,7 @@ void UserManual::search(QString text, bool backward)
 void UserManual::searchTextChanged(const QString& text)
 {
 	mLastText = text;
-	search(text);
+	search(text, false, true);
 }
 
 void UserManual::searchNext()

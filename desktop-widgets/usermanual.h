@@ -58,7 +58,7 @@ private:
 #else
 	QWebView *userManual;
 #endif
-	void search(QString, bool backward = false);
+	void search(QString, bool backward = false, bool incremental = false);
 };
 
 #if defined(USE_WEBENGINE)
