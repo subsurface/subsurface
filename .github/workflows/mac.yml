@@ -43,14 +43,16 @@ jobs:
         submodules: recursive
 
     - name: Cache Homebrew packages
+      id: cache-homebrew
       uses: actions/cache@v4
       with:
         path: ~/Library/Caches/Homebrew
         key: brew-${{ runner.os }}-${{ hashFiles('.github/workflows/mac.yml') }}
 
     - name: install additional packages with Homebrew
+      if: steps.cache-homebrew.outputs.cache-hit != 'true'
       run: |
-        brew install create-dmg confuse automake ${{ matrix.brewpackages }}
+        brew install create-dmg confuse automake coreutils ${{ matrix.brewpackages }}
 
     - name: checkout Qt resources
       if: ${{ matrix.qtversion != 5 }}
@@ -85,11 +87,16 @@ jobs:
       with:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
+    - name: get install-root absolute path
+      id: get-install-root
+      run: |
+        echo "path=$(grealpath ${GITHUB_WORKSPACE}/../install-root)" >> $GITHUB_OUTPUT
+
     - name: cache deps
       id: cache-deps
       uses: actions/cache@v4
       with:
-        path: ${{ github.workspace }}/../install-root
+        path: ${{ steps.get-install-root.outputs.path }}
         key: macos-deps-${{ runner.arch }}-${{ hashFiles('scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
         restore-keys: macos-deps-${{ runner.arch }}-
 
