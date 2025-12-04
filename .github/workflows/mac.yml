@@ -52,7 +52,7 @@ jobs:
     - name: install additional packages with Homebrew
       if: steps.cache-homebrew.outputs.cache-hit != 'true'
       run: |
-        brew install create-dmg confuse automake coreutils ${{ matrix.brewpackages }}
+        brew install create-dmg confuse automake ${{ matrix.brewpackages }}
 
     - name: checkout Qt resources
       if: ${{ matrix.qtversion != 5 }}
@@ -90,7 +90,7 @@ jobs:
     - name: get install-root absolute path
       id: get-install-root
       run: |
-        echo "path=$(grealpath ${GITHUB_WORKSPACE}/../install-root)" >> $GITHUB_OUTPUT
+        echo "path=$(cd ${GITHUB_WORKSPACE}/..; pwd)/install-root" >> $GITHUB_OUTPUT
 
     - name: cache deps
       id: cache-deps
