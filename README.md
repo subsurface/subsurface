@@ -147,7 +147,7 @@ opportunity to start on a new endeavor, Linus Torvalds decided to tackle
 his frustration with the lack of decent divelog software on Linux.
 
 Subsurface is the result of the work of him and a team of developers since
-then. It now supports Linux, Windows and MacOS and allows data import from
+then. It now supports Linux, Windows and macOS and allows data import from
 a large number of dive computers and several existing divelog programs. It
 provides advanced visualization of the key information provided by a
 modern dive computer and allows the user to track a wide variety of data
