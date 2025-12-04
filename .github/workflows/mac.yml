@@ -47,7 +47,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/Library/Caches/Homebrew
-        key: brew-${{ runner.os }}-${{ hashFiles('.github/workflows/mac.yml') }}
+        key: macos-brew-${{ runner.os }}-${{ hashFiles('.github/workflows/mac.yml') }}
 
     - name: install additional packages with Homebrew
       run: |
@@ -76,7 +76,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: Documentation/output
-        key: documentation-${{ hashFiles('Documentation') }}
+        key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
         enableCrossOsArchive: true
         fail-on-cache-miss: true
 
@@ -96,8 +96,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ${{ steps.get-install-root.outputs.path }}
-        key: macos-deps-${{ runner.arch }}-${{ hashFiles('scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
-        restore-keys: macos-deps-${{ runner.arch }}-
+        key: macos-deps-${{ runner.arch }}-${{ hashFiles('.github/workflows/mac.yml', 'scripts/build.sh', 'scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
 
     - name: build deps
       id: build-deps
