@@ -17,7 +17,7 @@ namespace {
 }
 BTDiscovery *BTDiscovery::m_instance = NULL;
 
-static dc_descriptor_t *getDeviceType(QString btName)
+static dc_descriptor_t *getDeviceType(QString btName, int transports)
 // central function to convert a BT name to a Subsurface known vendor/model pair
 {
 	dc_status_t status = DC_STATUS_SUCCESS;
@@ -34,10 +34,17 @@ static dc_descriptor_t *getDeviceType(QString btName)
 
 	dc_descriptor_t *descriptor = NULL;
 	while ((status = dc_iterator_next (iterator, &descriptor)) == DC_STATUS_SUCCESS) {
-		if (dc_descriptor_filter(descriptor, DC_TRANSPORT_BLE, namestr) ||
-			dc_descriptor_filter(descriptor, DC_TRANSPORT_BLUETOOTH, namestr)) {
-			result = descriptor;
-			break;
+		if (transports & DC_TRANSPORT_BLE) {
+			if (dc_descriptor_filter(descriptor, DC_TRANSPORT_BLE, namestr)) {
+				result = descriptor;
+				break;
+			}
+		}
+		if (transports & DC_TRANSPORT_BLUETOOTH) {
+			if (dc_descriptor_filter(descriptor, DC_TRANSPORT_BLUETOOTH, namestr)) {
+				result = descriptor;
+				break;
+			}
 		}
 
 		dc_descriptor_free (descriptor);
@@ -55,7 +62,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 
 bool matchesKnownDiveComputerNames(QString btName)
 {
-	return getDeviceType(btName) != nullptr;
+	return getDeviceType(btName, DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE) != nullptr;
 }
 
 BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
@@ -212,8 +219,11 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device, bool from
 {
 	btVendorProduct btVP;
 
+	dc_transport_t transport = device.address.startsWith("LE:") ?
+		DC_TRANSPORT_BLE : DC_TRANSPORT_BLUETOOTH;
+
 	QString newDevice;
-	dc_descriptor_t *newDC = getDeviceType(device.name);
+	dc_descriptor_t *newDC = getDeviceType(device.name, transport);
 	if (newDC)
 		newDevice = dc_descriptor_get_product(newDC);
 	else
