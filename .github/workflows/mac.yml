@@ -50,7 +50,6 @@ jobs:
         key: brew-${{ runner.os }}-${{ hashFiles('.github/workflows/mac.yml') }}
 
     - name: install additional packages with Homebrew
-      if: steps.cache-homebrew.outputs.cache-hit != 'true'
       run: |
         brew install create-dmg confuse automake ${{ matrix.brewpackages }}
 
