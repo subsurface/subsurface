@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testgasblending.h"
-#include <iostream>
 #include "core/gasblending.h"
 
 using Point = std::pair<double, double>;
@@ -96,22 +95,28 @@ void TestGasBlender::testCalculateCylinderVolumes()
 	cylinder.currentHe_permille = 100;
 	cylinder.currentO2_permille = 200;
 	cylinder.currentN2_permille = 700;
-	cylinder.currentPressure.mbar = 1000;
-	cylinder.workingPressure.mbar = 10000;
+	cylinder.targetHe_permille = 100;
+	cylinder.targetO2_permille = 200;
+	cylinder.targetN2_permille = 700;
+	cylinder.currentPressure.mbar = 2013;
+	cylinder.workingPressure.mbar = 11013;
+	cylinder.targetPressure.mbar = 10000;
 	cylinder.wetVolume.mliter = 0;
 	cylinder.fillVolume.mliter = 10000;
 	calculate_cylinder_volumes(cylinder);
 
 	QCOMPARE(cylinder.wetVolume.mliter, 1013);
-	QCOMPARE(cylinder.currentVolume.mliter, 999); //Technically 999.98, but we truncate because it is an int
+	QCOMPARE(cylinder.currentVolume.mliter, 3026); 
 
 	//Reverse it
 	cylinder.fillVolume.mliter = 0;
 	cylinder.currentVolume.mliter = 0;
 	calculate_cylinder_volumes(cylinder);
 
-	QCOMPARE(cylinder.fillVolume.mliter, 9997); //Some adjustments due to truncation
-	QCOMPARE(cylinder.currentVolume.mliter, 999); 
+	QCOMPARE(cylinder.wetVolume.mliter, 1013);
+
+	QCOMPARE(cylinder.fillVolume.mliter, 11031);
+	QCOMPARE(cylinder.currentVolume.mliter, 3026); 
 
 }
 
@@ -242,8 +247,8 @@ void TestGasBlender::testBlendStruct()
 	QCOMPARE(blend.neededHe(), 100.0);
 	QCOMPARE(blend.neededO2(), 200.0);
 
-	QCOMPARE(blend.currentVolume() > 998, true); //Within 1 mliter
-	QCOMPARE(blend.currentVolume() < 1002, true);
+	QCOMPARE(blend.currentVolume() > 2011, true);
+	QCOMPARE(blend.currentVolume() < 2013, true);
 
 	GasSource source1;
 	source1.o2_permille = 210;
@@ -268,42 +273,44 @@ void TestGasBlender::testBlendStruct()
 	step1.volume.mliter = 1000;
 	blend.steps.push_back(step1);
 
-	QCOMPARE(blend.currentVolume() > 1998, true);
-	QCOMPARE(blend.currentVolume() < 2002, true);
+	QCOMPARE(blend.currentVolume() > 3011, true);
+	QCOMPARE(blend.currentVolume() < 3014, true);
 
-	QCOMPARE(blend.currentHe() > 49.9, true); 
-	QCOMPARE(blend.currentHe() < 50.1, true);
 
-	QCOMPARE(blend.currentO2() > 204.9, true); 
-	QCOMPARE(blend.currentO2() < 205.1, true);
+	QCOMPARE(blend.currentHe() > 66.7, true); 
+	QCOMPARE(blend.currentHe() < 66.9, true);
+
+	QCOMPARE(blend.currentO2() > 202.9, true); 
+	QCOMPARE(blend.currentO2() < 204.1, true);
 
 	
-	QCOMPARE(blend.neededHe() < 112.6, true);
-	QCOMPARE(blend.neededHe() > 112.4, true);
+	QCOMPARE(blend.neededHe() > 114, true);
+	QCOMPARE(blend.neededHe() < 115, true);
 
-	QCOMPARE(blend.neededO2() > 198.7, true);
-	QCOMPARE(blend.neededO2() <  198.9, true);
+	QCOMPARE(blend.neededO2() > 198.4, true);
+	QCOMPARE(blend.neededO2() <  198.6, true);
 
 	BlendStep step2;
 	step2.source = source3;
 	step2.volume.mliter = 900;
 	blend.steps.push_back(step2);
 
-	QCOMPARE(blend.currentVolume() > 2898, true);
-	QCOMPARE(blend.currentVolume() < 2902, true);
 
-	QCOMPARE(blend.currentHe() > 344.8, true); 
-	QCOMPARE(blend.currentHe() < 345.0, true);
+	QCOMPARE(blend.currentVolume() > 3911, true);
+	QCOMPARE(blend.currentVolume() < 3913, true);
 
-	QCOMPARE(blend.currentO2() > 141.3, true); 
-	QCOMPARE(blend.currentO2() < 141.4, true);
+	QCOMPARE(blend.currentHe() > 281.0, true); 
+	QCOMPARE(blend.currentHe() < 282.0, true);
+
+	QCOMPARE(blend.currentO2() > 156.0, true); 
+	QCOMPARE(blend.currentO2() < 157.0, true);
 
 	
-	QCOMPARE(blend.neededHe() < 0.1, true);
-	QCOMPARE(blend.neededHe() > -0.1, true);
+	QCOMPARE(blend.neededHe() < -16.0, true);
+	QCOMPARE(blend.neededHe() > -17.0, true);
 
-	QCOMPARE(blend.neededO2() > 223.9, true);
-	QCOMPARE(blend.neededO2() < 224.0, true);
+	QCOMPARE(blend.neededO2() > 227.0, true);
+	QCOMPARE(blend.neededO2() < 228.0, true);
 
 	blend.steps.clear();
 
@@ -313,26 +320,27 @@ void TestGasBlender::testBlendStruct()
 	QCOMPARE(blend.neededHe(), 100.0);
 	QCOMPARE(blend.neededO2(), 200.0);
 
-	QCOMPARE(blend.currentVolume() > 498, true); //Within 1 mliter
-	QCOMPARE(blend.currentVolume() < 502, true);
+	QCOMPARE(blend.currentVolume() > 1511, true); //Within 1 mliter
+	QCOMPARE(blend.currentVolume() < 1513, true);
 
 
 	blend.steps.push_back(step1);
-	QCOMPARE(blend.currentVolume() > 1498, true);
-	QCOMPARE(blend.currentVolume() < 1502, true);
 
-	QCOMPARE(blend.currentHe() > 33.2, true); 
-	QCOMPARE(blend.currentHe() < 33.4, true);
+	QCOMPARE(blend.currentVolume() > 2511, true);
+	QCOMPARE(blend.currentVolume() < 2513, true);
 
-	QCOMPARE(blend.currentO2() > 206.5, true); 
-	QCOMPARE(blend.currentO2() < 206.7, true);
+	QCOMPARE(blend.currentHe() > 60, true); 
+	QCOMPARE(blend.currentHe() < 61, true);
+
+	QCOMPARE(blend.currentO2() > 203, true); 
+	QCOMPARE(blend.currentO2() < 204, true);
 
 	
-	QCOMPARE(blend.neededHe() < 111.8, true);
-	QCOMPARE(blend.neededHe() > 111.6, true);
+	QCOMPARE(blend.neededHe() > 113, true);
+	QCOMPARE(blend.neededHe() < 114, true);
 
-	QCOMPARE(blend.neededO2() > 198.7, true);
-	QCOMPARE(blend.neededO2() <  198.9, true);
+	QCOMPARE(blend.neededO2() > 198, true);
+	QCOMPARE(blend.neededO2() <  199, true);
 
 	blend.steps.clear();
 
@@ -360,12 +368,14 @@ void TestGasBlender::testBlendStruct()
 	source4.workingPressure.mbar = 10130;
 	source4.currentVolume.mliter = 10130;
 	source4.unlimited = false;
+	source4.boosted = false;
 
 	blend.steps.clear();
 	BlendStep step3;
 	step3.source = source4;
 	step3.volume.mliter = 700;
 	blend.steps.push_back(step3);
+
 
 	QCOMPARE(blend.validate(true), true);
 
@@ -375,8 +385,8 @@ void TestGasBlender::testBlendStruct()
 		blend.steps.push_back(step);
 	}
 	QCOMPARE(blend.validate(false), true);
-	QCOMPARE(blend.cost() > 20.75, true);
-	QCOMPARE(blend.cost() < 20.76, true);
+	QCOMPARE(blend.cost() > 17.84, true);
+	QCOMPARE(blend.cost() < 17.85, true);
 	
 }
 
@@ -422,6 +432,10 @@ void TestGasBlender::testCorrectPressures()
 	source3.currentVolume.mliter = 15000;
 	source3.wetVolume.mliter = 10000;
 	
+	source1.boosted = false;
+	source2.boosted = false;
+	source3.boosted = false;
+
 	BlendStep step1;
 	step1.source = source1;
 	step1.volume.mliter = 50000;
@@ -439,9 +453,9 @@ void TestGasBlender::testCorrectPressures()
 
 	QCOMPARE(blend.correctPressures(), false);
 
-	source1.currentVolume.mliter = 20000;
-	source2.currentVolume.mliter = 25000;
-	source3.currentVolume.mliter = 35000;
+	source1.currentVolume.mliter = 40000;
+	source2.currentVolume.mliter = 70000;
+	source3.currentVolume.mliter = 90000;
 
 	step1.source = source1;
 	step2.source = source2;
@@ -451,9 +465,34 @@ void TestGasBlender::testCorrectPressures()
 	blend.steps.push_back(step1);
 	blend.steps.push_back(step2);
 	blend.steps.push_back(step3);
-	blend.removedGasVolume = 30000;
+	blend.removedGasVolume = 25000;
 
 	QCOMPARE(blend.correctPressures(), true);
+
+	QCOMPARE(blend.validate(true), true);	
+
+
+	source1.currentVolume.mliter = 500000;
+	source2.currentVolume.mliter = 500000;
+	source3.currentVolume.mliter = 250000;
+
+	step1.source = source1;
+	step2.source = source2;
+	step3.source = source3;
+	blend.steps.clear();
+	blend.steps.push_back(step1);
+	blend.steps.push_back(step2);
+	blend.steps.push_back(step3);
+	QCOMPARE(blend.correctPressures(), false);
+
+	blend.steps.clear();
+	source3.boosted = true;
+	step3.source = source3;
+	blend.steps.push_back(step1);
+	blend.steps.push_back(step2);
+	blend.steps.push_back(step3);
+	QCOMPARE(blend.correctPressures(), true);
+
 
 	QCOMPARE(blend.validate(true), true);	
 	
@@ -506,7 +545,7 @@ void TestGasBlender::testInterpolateBlends()
 	//This will need expanding once complex blending is implemented
 }
 
-void TestGasBlender::testDrawTheOwl()
+void TestGasBlender::testCalculateBlends()
 {
 	//Blend* calculate_blend(const Blend* blend1, const Blend* blend2, const Blend* blend3, const GasSource* source1, const GasSource* source2, const GasSource* source3)
 	//Up to 2 Blends, up to 3 GasSources
@@ -559,10 +598,11 @@ void TestGasBlender::testDrawTheOwl()
 
 	Blend blend2;
 	blend2.target = cylinder;
-	blend2.removedGasVolume = 25000;
+	blend2.removedGasVolume = 35000;
 
 	blend1.target.targetO2_permille = 600;
 	blend2.target.targetO2_permille = 600;
+	blend1.target.targetHe_permille = 0;
 	blend2.target.targetHe_permille = 0;
 
 	Blend* result4 = calculate_blend(&blend1, &blend2, nullptr, &source2, nullptr, nullptr);
@@ -709,6 +749,12 @@ void TestGasBlender::testGasSourceTriangle(){
 	source4.cost_per_unit_volume = .33;
 	source4.cylinder_number = 3;
 
+	source1.unlimited = true;
+	source2.unlimited = true;
+	source3.unlimited = true;
+	source4.unlimited = true;
+
+
 	std::vector<GasSource> sources;
 	sources.push_back(source1);
 
@@ -773,6 +819,9 @@ void TestGasBlender::testGenerateExhaustiveBlends(){
 	source1.unlimited = false;
 	source2.unlimited = false;
 	source3.unlimited = false;
+	source1.boosted = false;
+	source2.boosted = false;
+	source3.boosted = false;
 
 	source1.wetVolume.mliter = 10000;
 	source2.wetVolume.mliter = 10000;
@@ -811,7 +860,7 @@ void TestGasBlender::testGenerateExhaustiveBlends(){
 	sources.push_back(source2);
 	sources.push_back(source3);
 	auto result = generateExhaustiveBlends(cylinder,sources);
-	QCOMPARE(result.size(), 38);
+	QCOMPARE(result.size(), 3360);
 
 	//These blend triangles are difficult to test specifically.. I manually checked the outputs, which tend to
 	//be halfing the volume of the previous step in the blend. These blend objects are NOT necessarily "valid"

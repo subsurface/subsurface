@@ -3,23 +3,68 @@
     #include <cmath>      
     #include <algorithm>
     #include <vector>
-    #include <iostream>
+    #include "errorhelper.h"
+
 
     using namespace std;
 namespace Blender {
 
-
-    // ============================================================================
-    // GasSource Member Implementations
-    // ============================================================================
-
-    bool GasSource::operator!=(const GasSource& other) const {
-        return o2_permille != other.o2_permille || he_permille != other.he_permille; 
-    }
-
     // ============================================================================
     // Blend Member Implementations
     // ============================================================================
+
+    /**
+     * @brief: Get the series of OutputSteps representing this blend object
+     */
+    std::vector<OutputStep> Blend::getOutputSteps() const {
+        std::vector<OutputStep> outputSteps;
+        double currentVolume = target.currentVolume.mliter - removedGasVolume;
+        double stepEndPressure = target.currentPressure.mbar;
+        double currentO2Vol = (target.currentVolume.mliter - removedGasVolume) / 1000.0 * target.currentO2_permille;
+        double currentHeVol = (target.currentVolume.mliter - removedGasVolume) / 1000.0 * target.currentHe_permille;
+        if (removedGasVolume > 0) {
+            OutputStep os;
+            os.add = false;
+            os.volume.mliter = removedGasVolume;
+            os.weight =  removedGasVolume * target.currentO2_permille / 1000.0 * O2_g + removedGasVolume * target.currentHe_permille / 1000.0 * He_g + removedGasVolume * target.currentN2_permille / 1000.0 * N2_g;
+            //Get the pressure of the cylinder AFTER this step
+            stepEndPressure = calculatePressure(target.currentO2_permille, target.currentHe_permille, target.wetVolume.mliter, currentVolume);
+            os.gaugePressure.mbar = stepEndPressure - ATM;
+            os.cost_per_unit_volume = 0.0;
+            os.mix = "N/A";
+            os.limited_pressure = -1;
+            os.cylinder_number = -1;
+            outputSteps.push_back(os);
+        }
+        for (const BlendStep& step : steps) {
+            if (step.volume.mliter < 1000) { //Some margin of error. This is ~.035 cuft. This will not have a huge effect. It is < 1.5 grams of gas 
+                continue;
+            }
+            currentVolume += step.volume.mliter;
+            currentO2Vol += step.volume.mliter * (step.source.o2_permille / 1000.0);
+            currentHeVol += step.volume.mliter * (step.source.he_permille / 1000.0);
+            OutputStep os;
+            os.add = true;
+            os.volume.mliter = step.volume.mliter;
+            int stepO2Permille = currentO2Vol * 1000.0 / currentVolume;
+            int stepHePermille = currentHeVol * 1000.0 / currentVolume;
+            int stepN2Permille = 1000 - stepO2Permille - stepHePermille;
+            os.weight = step.volume.mliter * (step.source.o2_permille / 1000.0) * O2_g + step.volume.mliter * (step.source.he_permille / 1000.0) * He_g + step.volume.mliter * (stepN2Permille / 1000.0) * N2_g;
+            //Get the pressure of the cylinder AFTER this step. To do this, we need the permille of the gas after the step
+
+            stepEndPressure = calculatePressure(stepO2Permille, stepHePermille, target.wetVolume.mliter, currentVolume);
+            os.gaugePressure.mbar = stepEndPressure - ATM;
+            os.limited_pressure = -1;
+            if (!step.source.unlimited){
+                os.limited_pressure = calculatePressure(step.source.o2_permille, step.source.he_permille, step.source.wetVolume.mliter, step.source.currentVolume.mliter - step.volume.mliter) - ATM;
+            }
+            os.cost_per_unit_volume = step.source.cost_per_unit_volume;
+            os.mix = std::to_string(step.source.o2_permille / 10) + "/" + std::to_string(step.source.he_permille / 10);
+            os.cylinder_number = step.source.cylinder_number;
+            outputSteps.push_back(os);
+        }
+        return outputSteps;
+    }
 
     /**
      * @brief Returns the current percentage of O2 in the blend, in permille
@@ -32,7 +77,7 @@ namespace Blender {
         double volumeO2 = target.currentO2_permille / 1000.0 * currentVol;
         for (const BlendStep& step : steps) {
             currentVol += step.volume.mliter;
-            volumeO2 += step.volume.mliter * step.source.o2_permille / 1000.0;
+            volumeO2 += step.volume.mliter / 1000.0 * step.source.o2_permille;
         }
         return (volumeO2 * 1000.0/ currentVol);
     }
@@ -48,7 +93,7 @@ namespace Blender {
         double volumeHe = target.currentHe_permille / 1000.0 * currentVol;
         for (const BlendStep& step : steps) {
             currentVol += step.volume.mliter;
-            volumeHe += step.volume.mliter * step.source.he_permille / 1000.0;
+            volumeHe += step.volume.mliter / 1000.0 * step.source.he_permille;
 
         }
         return (volumeHe * 1000.0/ currentVol);
@@ -57,8 +102,8 @@ namespace Blender {
     double Blend::neededO2() const {
         double neededVol = target.fillVolume.mliter - currentVolume();
 
-        double totalO2Vol = target.fillVolume.mliter * target.targetO2_permille / 1000.0;
-        double currentO2Vol = (currentVolume()) * currentO2() / 1000.0;
+        double totalO2Vol = target.fillVolume.mliter / 1000.0 * target.targetO2_permille;
+        double currentO2Vol = (currentVolume()) * (currentO2() / 1000.0);
         double volumeO2Needed = totalO2Vol - currentO2Vol;
 
         return (volumeO2Needed * 1000.0 / neededVol);
@@ -71,7 +116,7 @@ namespace Blender {
     double Blend::neededO2BlendInterpolation(int o2_permille_blend, int target_volume) const {
         double neededVol = target.fillVolume.mliter - target_volume;
 
-        double totalO2Vol = target.fillVolume.mliter * target.targetO2_permille / 1000.0;
+        double totalO2Vol = target.fillVolume.mliter * (target.targetO2_permille / 1000.0);
         double currentO2Vol = (currentVolume()) * currentO2() / 1000.0 + (target_volume - currentVolume()) * o2_permille_blend / 1000.0;
         double volumeO2Needed = totalO2Vol - currentO2Vol;
 
@@ -81,8 +126,8 @@ namespace Blender {
     double Blend::neededHe() const {
         double neededVol = target.fillVolume.mliter - currentVolume();
 
-        double totalHeVol = target.fillVolume.mliter * target.targetHe_permille / 1000.0;
-        double currentHeVol = (currentVolume()) * currentHe() / 1000.0;
+        double totalHeVol = target.fillVolume.mliter * (target.targetHe_permille / 1000.0);
+        double currentHeVol = (currentVolume()) * (currentHe() / 1000.0);
         double volumeHeNeeded = totalHeVol - currentHeVol;
         
         return (volumeHeNeeded * 1000.0 / neededVol);
@@ -91,7 +136,7 @@ namespace Blender {
     double Blend::neededHeBlendInterpolation(int he_permille_blend, int target_volume) const {
         double neededVol = target.fillVolume.mliter - target_volume;
 
-        double totalHeVol = target.fillVolume.mliter * target.targetHe_permille / 1000.0;
+        double totalHeVol = target.fillVolume.mliter * (target.targetHe_permille / 1000.0);
         double currentHeVol = (currentVolume()) * currentHe() / 1000.0 + (target_volume - currentVolume()) * he_permille_blend / 1000.0;
         double volumeHeNeeded = totalHeVol - currentHeVol;
         
@@ -113,37 +158,42 @@ namespace Blender {
      * */
     bool Blend::validate(bool partial) const {
         double round_factor = 1.0; //Allow for slightly more or less than the targets, this is 1 permille
-        double neededO2Vol_max = target.fillVolume.mliter * (target.targetO2_permille + round_factor) / 1000.0;
-        double neededHeVol_max = target.fillVolume.mliter * (target.targetHe_permille + round_factor) / 1000.0;
-        double neededO2Vol_min = target.fillVolume.mliter * (target.targetO2_permille - round_factor) / 1000.0;
-        double neededHeVol_min = target.fillVolume.mliter * (target.targetHe_permille - round_factor) / 1000.0;
+        double neededO2Vol_max = target.fillVolume.mliter / 1000.0 * (target.targetO2_permille + round_factor);
+        double neededHeVol_max = target.fillVolume.mliter / 1000.0 * (target.targetHe_permille + round_factor);
+        double neededO2Vol_min = target.fillVolume.mliter / 1000.0 * (target.targetO2_permille - round_factor);
+        double neededHeVol_min = target.fillVolume.mliter / 1000.0 * (target.targetHe_permille - round_factor);
         if(target.currentVolume.mliter - removedGasVolume < target.wetVolume.mliter){
             return false; //Cannot remove gas such that the pressure is less than the atmospheric pressure
         }
-        double currentO2Vol = (target.currentVolume.mliter - removedGasVolume) * target.currentO2_permille / 1000.0;
-        double currentHeVol = (target.currentVolume.mliter - removedGasVolume) * target.currentHe_permille / 1000.0;
+        double currentO2Vol = (target.currentVolume.mliter - removedGasVolume) / 1000.0 * target.currentO2_permille;
+        double currentHeVol = (target.currentVolume.mliter - removedGasVolume) / 1000.0 * target.currentHe_permille;
         double currentVol = target.currentVolume.mliter - removedGasVolume;
 
-        double currentPressure = calculatePressure(target.currentO2_permille, target.currentHe_permille, target.wetVolume.mliter, currentVol);
+        double currentPressure = calculatePressure(target.currentO2_permille, target.currentHe_permille, target.wetVolume.mliter, currentVol) - ATM;
         
         //We now know that we are in a valid state. We need to iterate over the blend steps and check if they are valid
         for(const BlendStep& step : steps) {
-            double stepO2Vol = step.volume.mliter * step.source.o2_permille / 1000.0;
-            double stepHeVol = step.volume.mliter * step.source.he_permille / 1000.0;
+            double stepO2Vol = step.volume.mliter / 1000.0 * step.source.o2_permille;
+            double stepHeVol = step.volume.mliter / 1000.0 * step.source.he_permille;
             currentO2Vol += stepO2Vol;
             currentHeVol += stepHeVol;
             currentVol += step.volume.mliter;
-            currentPressure = calculatePressure(currentO2Vol * 1000 / currentVol, currentHeVol * 1000 / currentVol, target.wetVolume.mliter, currentVol);
+            currentPressure = calculatePressure(currentO2Vol * 1000 / currentVol, currentHeVol * 1000 / currentVol, target.wetVolume.mliter, currentVol) - ATM;
 
             if (!step.source.unlimited)
             {
-                double stepEndPressure = calculatePressure(step.source.o2_permille, step.source.he_permille, step.source.wetVolume.mliter ,step.source.currentVolume.mliter - step.volume.mliter);
-                if(currentPressure > stepEndPressure){
+                double stepEndPressure = calculatePressure(step.source.o2_permille, step.source.he_permille, step.source.wetVolume.mliter ,step.source.currentVolume.mliter - step.volume.mliter) - ATM;
+                if(currentPressure > stepEndPressure && !step.source.boosted){
                     return false; //Cannot add gas such that the pressure is greater than the end pressure of the step
                 }
+                if(step.source.boosted){
+                    if(stepEndPressure < BOOSTED_LIMIT){
+                        return false;
+                    }
+                }
             }
-            if (currentO2Vol > neededO2Vol_max || currentHeVol > neededHeVol_max){
-                return false; //We have added too much 
+            if ((currentO2Vol > neededO2Vol_max || currentHeVol > neededHeVol_max) && !partial){
+                return false; //We have added too much. This only matters if this is a final validation check
             }
         }
 
@@ -152,7 +202,6 @@ namespace Blender {
                 return false; //We have not added enough
             }
         }
-        
         return true; //Validation Complete
     }
 
@@ -161,25 +210,38 @@ namespace Blender {
      *          that we can. Return false IF ANY PRESSURES ARE REDUCED TO 0
      */
     bool Blend::correctPressures() {
-        int currentStepO2 = target.currentO2_permille;
-        int currentStepHe = target.currentHe_permille;
+
         int currentVolume = target.currentVolume.mliter - removedGasVolume;
-        int currentPressure = calculatePressure(target.currentO2_permille, target.currentHe_permille, target.wetVolume.mliter, currentVolume);
+        int currentStepO2 = target.currentO2_permille / 1000.0 * currentVolume;
+        int currentStepHe = target.currentHe_permille / 1000.0 * currentVolume;
+        int currentPressure = calculatePressure(target.currentO2_permille, target.currentHe_permille, target.wetVolume.mliter, currentVolume) - ATM; // get gauge pressure
         vector<BlendStep> newSteps;
         for (const BlendStep& step : steps) {
-            int sourcePressure = calculatePressure(step.source.o2_permille, step.source.he_permille, step.source.wetVolume.mliter, step.source.currentVolume.mliter);
+            int sourcePressure = calculatePressure(step.source.o2_permille, step.source.he_permille, step.source.wetVolume.mliter, step.source.currentVolume.mliter) - ATM; //Get gauge pressure
             //Do a simple estimate on how much volume we can use as a proportion of the source pressure
             // Remove 10 millibar to adjust for inaccuracies in the calculation
-            double midPressure = (sourcePressure + currentPressure) / 2;
-            double midVolume = step.source.currentVolume.mliter * midPressure / sourcePressure + 10;
-            double newVolume = step.source.currentVolume.mliter - midVolume;
-            if (sourcePressure <= currentPressure || newVolume <= 0){
+
+            //Middle pressure is = (P1V1 + P2V2) / (V1 + V2). This is doable with a single calculatePressure call if I can get the permilles
+
+            int totalVolume = step.source.currentVolume.mliter + currentVolume;
+            int totalO2permille = (step.source.currentVolume.mliter / 1000.0 * step.source.o2_permille + currentStepO2) / totalVolume * 1000;
+            int totalHepermille = (step.source.currentVolume.mliter / 1000.0 * step.source.he_permille + currentStepHe) / totalVolume * 1000;
+
+            double midPressure = calculatePressure(totalO2permille, totalHepermille, target.wetVolume.mliter + step.source.wetVolume.mliter, totalVolume) - ATM;
+            if(step.source.boosted && midPressure > (BOOSTED_LIMIT + 250)){
+                midPressure = BOOSTED_LIMIT + 250; //Add a little bit of leaway to help ensure validation
+            }
+            double midVolume = (step.source.currentVolume.mliter) * (midPressure + ATM) / (sourcePressure + ATM);
+            double newVolume = step.source.currentVolume.mliter - midVolume - 250; //250 to ensure we do not equilize the tanks
+            double new_source_pressure = calculatePressure(step.source.o2_permille, step.source.he_permille, step.source.wetVolume.mliter, step.source.currentVolume.mliter - newVolume) - ATM;
+            if ((sourcePressure <= currentPressure && !step.source.boosted) || newVolume <= 0){
                 return false; //Ignore this gas source in this order
             }
             currentVolume += newVolume;
-            currentStepO2 += newVolume * step.source.o2_permille;
-            currentStepHe += newVolume * step.source.he_permille;
-            currentPressure = calculatePressure(currentStepO2 / currentVolume, currentStepHe / currentVolume, target.wetVolume.mliter, currentVolume);
+            currentStepO2 += newVolume / 1000.0 * step.source.o2_permille;
+            currentStepHe += newVolume / 1000.0 * step.source.he_permille;
+            currentPressure = calculatePressure(currentStepO2 / currentVolume, currentStepHe / currentVolume, target.wetVolume.mliter, currentVolume) - ATM;
+
             BlendStep newStep;
             newStep.source = step.source;
             newStep.volume.mliter = newVolume;
@@ -328,26 +390,47 @@ namespace Blender {
         // assume ideal gas behavior (Z=1.0) as these are often rated under ideal conditions.
         const double z_ideal = 1.0;
 
-        // If wetVolume is unknown, calculate it from fillVolume.
+        // If wetVolume is unknown, calculate it from fillVolume and target pressure.
         // The relationship is: fillVolume = (workingPressure / P_atm) * wetVolume
         if (cylinder.wetVolume.mliter <= 0 && cylinder.fillVolume.mliter > 0) {
-            cylinder.wetVolume.mliter = (cylinder.fillVolume.mliter * z_ideal * ATM) / cylinder.workingPressure.mbar;
+            cylinder.wetVolume.mliter = (cylinder.fillVolume.mliter / cylinder.targetPressure.mbar * z_ideal * ATM) ;
         }
         // If fillVolume is unknown, calculate it from wetVolume.
         else if (cylinder.fillVolume.mliter <= 0 && cylinder.wetVolume.mliter > 0) {
-            cylinder.fillVolume.mliter = (cylinder.workingPressure.mbar * cylinder.wetVolume.mliter) / (z_ideal * ATM);
+            double real_z = get_compressibility_factor(
+                cylinder.targetO2_permille,
+                cylinder.targetHe_permille,
+                1000 - cylinder.targetO2_permille - cylinder.targetHe_permille,
+                cylinder.targetPressure
+            );
+            //Add one ATM to account for the atmospheric pressure, to convert to gauge pressure
+            cylinder.fillVolume.mliter = ((cylinder.targetPressure.mbar + ATM) / ATM) * (cylinder.wetVolume.mliter / real_z);       
         }
 
         // Now, calculate the actual current volume of gas using the REAL compressibility at the current pressure.
+        cylinder.currentN2_permille = 1000 - cylinder.currentHe_permille - cylinder.currentO2_permille;
+        pressure_t current_pres_abs;
+        current_pres_abs.mbar = cylinder.currentPressure.mbar + ATM;
+        pressure_t atm_pressure;
+        atm_pressure.mbar = ATM;
+        double z_atm = get_compressibility_factor(
+            cylinder.currentO2_permille,
+            cylinder.currentHe_permille,
+            cylinder.currentN2_permille,
+            atm_pressure
+        );
         double z_current = get_compressibility_factor(
             cylinder.currentO2_permille,
             cylinder.currentHe_permille,
             cylinder.currentN2_permille,
-            cylinder.currentPressure);
+            current_pres_abs);
 
         // The relationship is: currentVolume = (currentPressure / P_atm) * wetVolume / z_current
         if (cylinder.wetVolume.mliter > 0) {
-            cylinder.currentVolume.mliter = (cylinder.currentPressure.mbar * cylinder.wetVolume.mliter) / (z_current * ATM);
+            cylinder.currentVolume.mliter = z_atm * (current_pres_abs.mbar / ATM) * (cylinder.wetVolume.mliter / z_current);
+            if (cylinder.currentVolume.mliter < cylinder.wetVolume.mliter) {
+                cylinder.currentVolume.mliter = cylinder.wetVolume.mliter;
+            }
         }
     }
 
@@ -676,6 +759,38 @@ namespace Blender {
         return true;
     }
 
+    std::vector<Blend> handleDegenerateTriangle(const Blend& blend1, const Blend& blend2, const Blend& blend3, const GasSource& source) {
+        std::vector<Blend> blends;
+        double x1 = blend1.neededO2() / 1000.0;
+        double y1 = blend1.neededHe() / 1000.0;
+        double x2 = blend2.neededO2() / 1000.0;
+        double y2 = blend2.neededHe() / 1000.0;
+        double x3 = blend3.neededO2() / 1000.0;
+        double y3 = blend3.neededHe() / 1000.0;
+
+        double area2 = std::abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
+
+        // If area is effectively zero, the "triangle" is a line segment.
+        // The previous check only confirmed the point is on the INFINITE line.
+        // We must now verify it is within the bounds of the segments.
+        if (!(area2 < 1e-9)) {
+            return blends; // Not a degenerate triangle
+        }
+        Blend *b1 = calculate_blend(&blend1, &blend2, nullptr, &source, nullptr, nullptr);
+        Blend *b2 = calculate_blend(&blend1, &blend3, nullptr, &source, nullptr, nullptr);
+        Blend *b3 = calculate_blend(&blend3, &blend2, nullptr, &source, nullptr, nullptr);
+        if(b1 != nullptr) {
+            blends.push_back(*b1);
+        }
+        if(b2 != nullptr) {
+            blends.push_back(*b2);
+        }
+        if(b3 != nullptr) {
+            blends.push_back(*b3);
+        }
+        return blends;
+    }
+
     /**
      * @brief Calculate the blend. This is the primary operating function, taking in multiple Gas Sources and Blend objects
      * * This function takes in up to 3 Blend objects and 3 Gas Sources. It then changes what it does based on how many items are passed into it
@@ -719,6 +834,7 @@ namespace Blender {
         if (source3 != nullptr) {
             numSources++;
         }
+
         //We need to account for 1 source 1 blend, 1 source 2 blends, 2 sources 1 blend, 2 sources 2 blends, and 3 sources 2 blends
         if (numSources == 1 && numBlends == 1) {
             //We only have a single option, so see if this works and return it if it does
@@ -813,6 +929,7 @@ namespace Blender {
 
             double intersection_x;
             double intersection_y;
+                      
             if(calculateIntersection(blend1_x, blend1_y, blend2_x, blend2_y, source_x, source_y, source_x, source_y, intersection_x, intersection_y)) {
                 //The source is on the line formed by the two blends
                 //Need to figure out which item in the blend is different between the two
@@ -850,10 +967,49 @@ namespace Blender {
             double intersection_x;
             double intersection_y;
 
+            Blend *finalBlend;
+            if(calculateIntersection(blend1_x, blend1_y, blend2_x, blend2_y, source1_x, source1_y, source1_x, source1_y, intersection_x, intersection_y)) {
+                finalBlend = interpolateBlends(blend1, blend2, nullptr, intersection_x * 1000.0, intersection_y * 1000.0);
+                vector<BlendStep> stepsToAdd;
+                stepsToAdd = calculateSourceMix(*source1, *source2, nullptr, intersection_x, intersection_y, finalBlend->target.fillVolume.mliter - finalBlend->currentVolume());
+                for (auto step : stepsToAdd) {
+
+                    finalBlend->steps.push_back(step);
+                }
+                if(!finalBlend->validate(false)) {
+                    delete finalBlend;
+                }
+            }
+            if(calculateIntersection(blend1_x, blend1_y, blend2_x, blend2_y, source2_x, source2_y, source2_x, source2_y, intersection_x, intersection_y)) {
+                Blend* finalBlend2 = interpolateBlends(blend1, blend2, nullptr, intersection_x * 1000.0, intersection_y * 1000.0);
+                vector<BlendStep> stepsToAdd;
+                stepsToAdd = calculateSourceMix(*source1, *source2, nullptr, intersection_x, intersection_y, finalBlend2->target.fillVolume.mliter - finalBlend2->currentVolume());
+                for (auto step : stepsToAdd) {
+
+                    finalBlend2->steps.push_back(step);
+                }
+                if(!finalBlend2->validate(false)) {
+                    delete finalBlend2;
+                }
+                if (finalBlend && finalBlend2) {
+                    if (finalBlend2->cost() < finalBlend->cost()) {
+                        delete finalBlend2;
+                        return finalBlend;
+                    }
+                    else {
+                        delete finalBlend;
+                        return finalBlend2;
+                    }
+                }
+                if (finalBlend) {
+                    return finalBlend;
+                }
+                return finalBlend2;
+            }
             if(calculateIntersection(blend1_x, blend1_y, blend2_x, blend2_y, source1_x, source1_y, source2_x, source2_y, intersection_x, intersection_y)) {
                 //The line between the two sources intersect the line formed by the two blends
                 //Need to figure out which item in the blend is different between the two
-                Blend* finalBlend = interpolateBlends(blend1, blend2, nullptr, intersection_x * 1000.0, intersection_y * 1000.0);
+                finalBlend = interpolateBlends(blend1, blend2, nullptr, intersection_x * 1000.0, intersection_y * 1000.0);
                 if (!finalBlend) return nullptr;
                 // Now determine how much of each source is needed, and add that vector<BlendSteps> to the final blend
                 vector<BlendStep> stepsToAdd;
@@ -963,6 +1119,31 @@ namespace Blender {
             double source1_x = source1->o2_permille / 1000.0;
             double source1_y = source1->he_permille / 1000.0;
 
+            std::vector<Blend> degPoints = handleDegenerateTriangle(*blend1, *blend2, *blend3, *source1);
+            if(!degPoints.empty()) {
+                vector<Blend> results;
+                for (Blend point : degPoints) {
+
+                    BlendStep step;
+                    step.source = *source1;
+                    step.volume.mliter = point.target.fillVolume.mliter - point.currentVolume();
+                    point.steps.push_back(step);
+                    if(point.validate(false)) {
+                        //save blend;
+                        results.push_back(point);
+                    }
+                }
+                if (results.size() > 0) {
+                    Blend *cheapest = &results[0];
+                    for (int i = 1; i < results.size(); i++) {
+                        if (results[i].cost() < cheapest->cost()) {
+                            cheapest = &results[i];
+                        }
+                    }
+                    return new Blend(*cheapest);
+                }
+            } 
+
             if(pointInTriangle(blend1_x, blend1_y, blend2_x, blend2_y, blend3_x, blend3_y, source1_x, source1_y)) {
                 Blend* temp = interpolateBlends(blend1, blend2, blend3, source1_x * 1000.0, source1_y * 1000.0);
                 if (temp) {
@@ -1010,10 +1191,14 @@ namespace Blender {
             if(pointInTriangle(blend1_x, blend1_y, blend2_x, blend2_y, blend3_x, blend3_y, source2_x, source2_y)) {
                 Blend* temp = interpolateBlends(blend1, blend2, blend3, source2_x * 1000.0, source2_y * 1000.0);
                 if (temp) {
+
                     pointsOfInterest.push_back(*temp);
                     delete temp;
                 }
             }
+
+            //Handle the case where the triangle is degenerate
+
             double intersection_x = 0.0;
             double intersection_y = 0.0;
             if(calculateIntersection(blend1_x, blend1_y, blend2_x, blend2_y, source1_x, source1_y, source2_x, source2_y, intersection_x, intersection_y)) {
@@ -1038,6 +1223,17 @@ namespace Blender {
                 }
             }
             vector<Blend> results;
+            std::vector<Blend> degPoints = handleDegenerateTriangle(*blend1, *blend2, *blend3, *source1);
+
+            for (Blend point : degPoints) {
+                results.push_back(point);
+            }
+            degPoints = handleDegenerateTriangle(*blend1, *blend2, *blend3, *source2);
+
+            for (Blend point : degPoints) {
+                results.push_back(point);
+            }
+
             for (Blend point : pointsOfInterest) {
                 Blend *finalBlend = new Blend(point);
                 vector<BlendStep> stepsToAdd = calculateSourceMix(*source1, *source2, source3, point.neededO2()/1000.0, point.neededHe()/1000.0, point.target.fillVolume.mliter - point.currentVolume());
@@ -1049,9 +1245,11 @@ namespace Blender {
                     results.push_back(*finalBlend);
                 }
             }
+
             if (results.size() > 0) {
                 Blend *cheapest = &results[0];
                 for (int i = 1; i < results.size(); i++) {
+
                     if (results[i].cost() < cheapest->cost()) {
                         cheapest = &results[i];
                     }
@@ -1082,6 +1280,7 @@ namespace Blender {
             double blend3_y = blend3->neededHe() / 1000.0;
 
             std::vector<Blend> pointsOfInterest;
+
             if (pointInTriangle(source1_x, source1_y, source2_x, source2_y, source3_x, source3_y, blend1_x, blend1_y)) {
                 pointsOfInterest.push_back(*blend1);
             }
@@ -1192,6 +1391,23 @@ namespace Blender {
             }
 
             vector<Blend> results;
+            std::vector<Blend> degBlends = handleDegenerateTriangle(*blend1, *blend2, *blend3, *source1);
+
+            for (Blend blend : degBlends) {
+                results.push_back(blend);
+            }
+
+            degBlends = handleDegenerateTriangle(*blend1, *blend2, *blend3, *source2);
+
+            for (Blend blend : degBlends) {
+                results.push_back(blend);
+            }
+
+            degBlends = handleDegenerateTriangle(*blend1, *blend2, *blend3, *source3);
+
+            for (Blend blend : degBlends) {
+                results.push_back(blend);
+            }
             for (Blend point : pointsOfInterest) {
                 Blend *finalBlend = new Blend(point);
                 vector<BlendStep> stepsToAdd = calculateSourceMix(*source1, *source2, source3, point.neededO2()/1000.0, point.neededHe()/1000.0, point.target.fillVolume.mliter - point.currentVolume());
@@ -1302,6 +1518,23 @@ namespace Blender {
             allBlends.insert(allBlends.end(), newPermutations.begin(), newPermutations.end());
         }
 
+        if (allBlends.size() < 4) {
+            BlendTriangle baseTriangle;
+            if(allBlends.size() > 0) {
+                baseTriangle.blend1 = allBlends[0];
+                baseTriangle.itemCount = 1;
+            }
+            if(allBlends.size() > 1) {
+                baseTriangle.blend2 = allBlends[1];
+                baseTriangle.itemCount = 2;
+            }
+            if(allBlends.size() > 2) {
+                baseTriangle.blend3 = allBlends[2];
+                baseTriangle.itemCount = 3;
+            }
+            allTriangles.push_back(baseTriangle);
+            return allTriangles;
+        }
         std::vector<Blend> uniqueOrdering;
         for (const auto& blend : allBlends) {
             if (blend.steps.size() == numLimitedSources && (blend.removedGasVolume > 0 || noRemovedGas)) {
@@ -1312,7 +1545,6 @@ namespace Blender {
         std::vector<Blend> currentGroup;
         for (const auto& blend : uniqueOrdering) {
             currentGroup.clear();
-            currentGroup.push_back(blend);
             for (const auto& otherBlend : allBlends) {
                 //If the gasSource ordering is the same as in blend, add this to current group
                 int index = 0;
@@ -1335,6 +1567,10 @@ namespace Blender {
                 }
             }
             //For the current group, generate the pairs of coordinates from NeededO2 and He
+            //This has been removed because this can result in missing lower cost solutions. This adds
+            //a lot of computation time.
+
+            /*
             std::vector<Point> points;
             for (const auto& blend : currentGroup) {
                 Point point;
@@ -1374,9 +1610,45 @@ namespace Blender {
                 triangle.itemCount = 3;
                 allTriangles.push_back(triangle);
             }
+            */
+
+            if(currentGroup.size() < 4) {
+                BlendTriangle baseTriangle;
+                if(currentGroup.size() > 0) {
+                    baseTriangle.blend1 = currentGroup[0];
+                    baseTriangle.itemCount = 1;
+                    allTriangles.push_back(baseTriangle);
+
+                }
+                if(currentGroup.size() > 1) {
+                    baseTriangle.blend2 = currentGroup[1];
+                    baseTriangle.itemCount = 2;
+                    allTriangles.push_back(baseTriangle);
+
+                }
+                if(currentGroup.size() > 2) {
+                    baseTriangle.blend3 = currentGroup[2];
+                    baseTriangle.itemCount = 3;
+                    allTriangles.push_back(baseTriangle);
+
+                }
+                continue;
+            }
+            //For each set of three in currentGroup, make a triangle
+            for(int i = 0; i < currentGroup.size() - 2; i++) {
+                for(int j = i+1; j < currentGroup.size() - 1; j++) {
+                    for(int k = j+1; k < currentGroup.size(); k++) {
+                        BlendTriangle triangle;
+                        triangle.blend1 = currentGroup[i];
+                        triangle.blend2 = currentGroup[j];
+                        triangle.blend3 = currentGroup[k];
+                        triangle.itemCount = 3;
+                        allTriangles.push_back(triangle);
+                    }
+                }
+            }
             
         }
-    
         return allTriangles;
     }
 
@@ -1440,8 +1712,14 @@ namespace Blender {
         return hull;
     }
 
-    std::vector<SourceTriangle> getSourceTriangles(std::vector<GasSource> sources) 
+    std::vector<SourceTriangle> getSourceTriangles(std::vector<GasSource> sources_in) 
     {
+        std::vector<GasSource> sources;
+        for(auto source : sources_in) {
+            if (source.unlimited){
+                sources.push_back(source);
+            }
+        }
         std::vector<SourceTriangle> triangles;
         int n = sources.size();
 
@@ -1493,4 +1771,35 @@ namespace Blender {
 
         return triangles;
     }
+
+    /**
+     * @brief Calculate the top off blend needed to fill the target cylinder
+     * 
+     * This function takes in a target cylinder and a gas source, and returns a blend object
+     * that represents the blend needed to fill the target cylinder from its current state to its
+     * target state. The returned blend has only one step, which is the gas source passed in, with
+     * a volume equal to the difference between the target volume and the current volume.
+     * 
+     * @param target The target cylinder to fill
+     * @param source The gas source to use for filling the target cylinder
+     * @return A blend object representing the top off blend needed to fill the target cylinder
+     */
+    Blend* calculateTopOffBlend(const TargetCylinder& target, const GasSource source) {
+
+        Blender::Blend* topOff = new Blend();
+        topOff->removedGasVolume = 0;
+        topOff->target = target;
+
+        double volumeToAdd = target.fillVolume.mliter - topOff->currentVolume();
+        if ( volumeToAdd <= 0) {
+            return nullptr;
+        }
+        BlendStep step;
+        step.source = source;
+        step.volume.mliter = volumeToAdd;
+        topOff->steps.push_back(step);
+        return topOff;
+
+    }
+
 }

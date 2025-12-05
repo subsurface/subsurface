@@ -4,11 +4,15 @@
 #include "units.h"
 #include <vector>
 #include <cmath>
+#include <string>
 
 namespace Blender {
 
-        // 1. Move global constants inside
-        constexpr double ATM = 1013.250;
+    constexpr double ATM = 1013.250; //This is redefined here so we can change it to use a variable if we want to later
+    constexpr double N2_g = 0.0011572; // g/ml @ 1ATM, 22C, using our Z value
+    constexpr double O2_g = 0.001322; // g/ml @ 1ATM, 22C
+    constexpr double He_g = 0.0001645; // g/ml @ 1ATM, 22C
+    constexpr int BOOSTED_LIMIT = 7000; //mbar limit for boosted gas to get down to. ~100PSI
     using Point = std::pair<double, double>;
 
     /**
@@ -62,9 +66,6 @@ namespace Blender {
         /** @brief Percentage of Helium in the source gas (permille). */
         int he_permille;
 
-        /** @brief Percentage of Nitrogen in the source gas (permille). */
-        int n2_permille;
-
         /** @brief The rated working pressure of the source cylinder. */
         pressure_t workingPressure;
 
@@ -83,14 +84,29 @@ namespace Blender {
         /** @brief The cost per unit of volume for this gas (e.g., cost per liter or cuft). */
         double cost_per_unit_volume;
 
-        /** @brief Bool indicating if this cylinder is boosted/unlimited */
+        /** @brief Bool indicating if this cylinder is unlimited */
         bool unlimited;
 
         /** @brief int indicating a unique number for this cylinder */
         int cylinder_number;
+
+        /** @brief bool indicating if this gas is boosted */
+        bool boosted;
         
-        // Operator needed for comparison
-        bool operator!=(const GasSource& other) const;
+    };
+
+    /**
+     * @brief Output Step represents four values, [add/remove], volume (ml), TO gauge pressure (mbar), TO weight (grams)  
+     */
+    struct OutputStep {
+        bool add;
+        volume_t volume;
+        pressure_t gaugePressure;
+        double weight;
+        double cost_per_unit_volume;
+        int cylinder_number;
+        std::string mix;
+        int limited_pressure;
     };
 
     /**
@@ -112,14 +128,8 @@ namespace Blender {
         TargetCylinder target;
         double removedGasVolume;
 
-        /**
-         * @brief Returns the current percentage of O2 in the blend, in permille
-         */
         double currentO2() const;
 
-        /**
-         * @brief Returns the current percentage of He in the blend, in permille
-         */
         double currentHe() const;
 
         double neededO2() const;
@@ -132,10 +142,12 @@ namespace Blender {
 
         double currentVolume() const;
 
+        std::vector<OutputStep> getOutputSteps() const;
+
         bool correctPressures();
 
         /**
-         * @brief Checks if the blend is valid and fills the target cylinder correctly depending on partial
+         * @brief Checks if the blend is valid. If partial is false, checks if the blend satisfies the target cylinder's targets
          */
         bool validate(bool partial) const;
 
@@ -158,7 +170,6 @@ namespace Blender {
 
     // ============================================================================
     // Logic Functions
-    // Note: Ensure 'static' is removed from the .cpp definitions to expose these.
     // ============================================================================
 
     /**
@@ -229,6 +240,8 @@ namespace Blender {
     std::vector<Point> get_convex_hull(std::vector<Point> points);
 
     std::vector<SourceTriangle> getSourceTriangles(std::vector<GasSource> sources);
+
+    Blend* calculateTopOffBlend(const TargetCylinder& target, const GasSource source); 
 }
 
 #endif // GASBLENDING_H

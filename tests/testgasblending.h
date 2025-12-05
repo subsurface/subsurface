@@ -20,7 +20,7 @@ private slots:
 	void testCorrectPressures();
 	void testCalculatePressure();
 	void testInterpolateBlends();
-	void testDrawTheOwl();
+	void testCalculateBlends();
 	void testConvexHull();
 	void testGasSourceTriangle();
 	void testGenerateExhaustiveBlends();

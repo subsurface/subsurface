@@ -10,15 +10,16 @@ TemplatePage {
     id: gasCalculatorPage
     title: qsTr("Gas Utilities")
 
-    property string pressureUnit: Backend.pressureUnitString
+	property string pressureUnit: (Backend.pressure === Enums.BAR) ? qsTr("bar") : qsTr("psi")
     property string gasResults: ""
 
     ListModel { id: gasListModel }
 
     Component.onCompleted: {
-        gasListModel.append({ "mix": "21/0", "pressure": "3000", "amount": "∞", "cost": "0.10" });
-        gasListModel.append({ "mix": "100/0", "pressure": "3000", "amount": "∞", "cost": "0.50" });
-        gasListModel.append({ "mix": "0/100", "pressure": "3000", "amount": "∞", "cost": "1.00" });
+        // Default examples
+        gasListModel.append({ "mix": "0/100", "pressure": (Backend.pressure === Enums.BAR) ? "200" : "3000", "amount": "UNLIMITED", "cost": "1.00" });
+        gasListModel.append({ "mix": "100/0", "pressure": (Backend.pressure === Enums.BAR) ? "200" : "3000", "amount": "UNLIMITED", "cost": "0.50" });
+        gasListModel.append({ "mix": "21/0", "pressure": (Backend.pressure === Enums.BAR) ? "200" : "3000", "amount": "UNLIMITED", "cost": "0.10" });
     }
 
     Flickable {
@@ -76,20 +77,26 @@ TemplatePage {
                 Layout.fillWidth: true
                 visible: modeSelector.currentIndex > 0 // Visible for Simple and Full blending
 
-                TemplateLabel { text: qsTr("Target Cylinder Size"); visible: modeSelector.currentIndex === 2 }
-                TemplateComboBox { id: targetCylinderSize; Layout.fillWidth: true; model: manager.cylinderListInit; currentIndex: model.indexOf("AL80"); visible: modeSelector.currentIndex === 2 }
+                TemplateLabel { text: qsTr("Target Cylinder Size"); visible: modeSelector.currentIndex > 0 }
+                TemplateComboBox { 
+                    id: targetCylinderSize; 
+                    Layout.fillWidth: true; 
+                    model: manager.cylinderListInit; 
+                    currentIndex: model.indexOf("AL80"); 
+                    visible: modeSelector.currentIndex > 0 
+                }
 
                 TemplateLabel { text: qsTr("Start Mix (O₂/He)") }
                 TemplateTextField { id: targetStartMix; text: "21/0"; Layout.fillWidth: true }
 
                 TemplateLabel { text: qsTr("Start Pressure") }
-                TemplateSpinBox { id: targetStartPressure; Layout.fillWidth: true; from: 0; to: 4000; value: 0 }
+                TemplateSpinBox { id: targetStartPressure; Layout.fillWidth: true; from: 0; to: 6000; value: 0 }
 
                 TemplateLabel { text: qsTr("Target Mix (O₂/He)") }
                 TemplateTextField { id: targetEndMix; text: "32/0"; Layout.fillWidth: true }
 
                 TemplateLabel { text: qsTr("Target Pressure") }
-                TemplateSpinBox { id: targetEndPressure; Layout.fillWidth: true; from: 0; to: 4000; value: 3000 }
+                TemplateSpinBox { id: targetEndPressure; Layout.fillWidth: true; from: 0; to: 6000; value: (Backend.pressure === Enums.BAR) ? 200 : 3000 }
             }
 
             // --- SECTION 3: AVAILABLE GASES ---
@@ -105,7 +112,8 @@ TemplatePage {
                         contentItem: Text { text: "+"; horizontalAlignment: Text.AlignHCenter; color: subsurfaceTheme.primaryTextColor }
                         font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 2
                         onClicked: {
-                            gasListModel.append({ "mix": "21/0", "pressure": "3000", "amount": "∞", "cost": "0.10" });
+                            // Default new gas to UNLIMITED amount
+                            gasListModel.append({ "mix": "21/0", "pressure": (Backend.pressure === Enums.BAR) ? "200" : "3000", "amount": "UNLIMITED", "cost": "0.10" });
                         }
                     }
                 }
@@ -113,11 +121,13 @@ TemplatePage {
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: Kirigami.Units.smallSpacing
+                    Controls.Label { text: qsTr(" "); font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 2 }
                     Controls.Label { text: qsTr("#"); font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 2 }
-                    Controls.Label { text: qsTr("Amount"); font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 6; visible: modeSelector.currentIndex === 2 }
+                    Controls.Label { text: qsTr("Cylinder"); font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 7 ; visible: modeSelector.currentIndex === 2 }
                     Controls.Label { text: qsTr("Mix"); font.bold: true; Layout.fillWidth: true }
-                    Controls.Label { text: qsTr("[%1]").arg(pressureUnit); font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 6; visible: modeSelector.currentIndex === 2 }
-                    Controls.Label { text: qsTr("Cost/vol"); font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 6; visible: modeSelector.currentIndex === 2 }
+                    Controls.Label { text: qsTr("Boost"); font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 2; visible: modeSelector.currentIndex === 2 }
+                    Controls.Label { text: qsTr("[%1]").arg(pressureUnit); font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 3; visible: modeSelector.currentIndex === 2 }
+                    Controls.Label { text: qsTr("Cost/vol"); font.bold: true; Layout.preferredWidth: Kirigami.Units.gridUnit * 4; visible: modeSelector.currentIndex > 0 }
                     Item { Layout.preferredWidth: Kirigami.Units.iconSizes.small }
                 }
 
@@ -128,22 +138,124 @@ TemplatePage {
                     clip: true
                     model: gasListModel
 
-                    delegate: RowLayout {
+                    move: Transition {
+                        NumberAnimation { properties: "x,y"; duration: 200 }
+                    }
+
+                    delegate: DropArea {
+                        id: dragDelegate
                         width: parent.width
-                        spacing: Kirigami.Units.smallSpacing
-                        Controls.Label { text: index + 1; Layout.preferredWidth: Kirigami.Units.gridUnit * 2; horizontalAlignment: Text.AlignHCenter; verticalAlignment: Text.AlignVCenter }
-                        TemplateTextField { text: amount; onTextChanged: gasListModel.setProperty(index, "amount", text); Layout.preferredWidth: Kirigami.Units.gridUnit * 6; visible: modeSelector.currentIndex === 2 }
-                        TemplateTextField { text: mix; onTextChanged: gasListModel.setProperty(index, "mix", text); Layout.fillWidth: true }
-                        TemplateTextField { text: pressure; onTextChanged: gasListModel.setProperty(index, "pressure", text); Layout.preferredWidth: Kirigami.Units.gridUnit * 6; visible: modeSelector.currentIndex === 2 }
-                        TemplateTextField { text: cost; onTextChanged: gasListModel.setProperty(index, "cost", text); Layout.preferredWidth: Kirigami.Units.gridUnit * 6; visible: modeSelector.currentIndex === 2 }
-                        TemplateButton {
-                            text: "X"; font.bold: true; Layout.preferredWidth: Kirigami.Units.iconSizes.small
-                            onClicked: gasListModel.remove(index)
+                        height: content.height
+
+                        property int modelIndex: index
+                        
+                        onEntered: {
+                            var from = drag.source.modelIndex
+                            var to = dragDelegate.modelIndex
+                            if (from !== to) {
+                                gasListModel.move(from, to, 1)
+                            }
+                        }
+
+                        Item {
+                            id: content
+                            width: parent.width
+                            height: rowLayout.implicitHeight
+
+                            anchors.horizontalCenter: undefined
+                            anchors.verticalCenter: undefined
+                            
+                            Drag.active: dragMouseArea.drag.active
+                            Drag.source: dragDelegate
+                            Drag.hotSpot.x: width / 2
+                            Drag.hotSpot.y: height / 2
+
+                            z: dragMouseArea.drag.active ? 100 : 1
+                            
+                            states: State {
+                                when: dragMouseArea.drag.active
+                                ParentChange { target: content; parent: cylinderListView } 
+                                AnchorChanges { target: content; anchors.horizontalCenter: undefined; anchors.verticalCenter: undefined }
+                            }
+
+                            Rectangle {
+                                anchors.fill: parent
+                                color: subsurfaceTheme.backgroundColor || "white"
+                                opacity: dragMouseArea.drag.active ? 0.9 : 0.0
+                            }
+
+                            RowLayout {
+                                id: rowLayout
+                                width: parent.width
+                                spacing: Kirigami.Units.smallSpacing
+
+                                Item {
+                                    Layout.preferredWidth: Kirigami.Units.gridUnit * 1.1
+                                    Layout.fillHeight: true
+                                    Layout.leftMargin: Kirigami.Units.gridUnit * 0.5
+                                    
+                                    Text {
+                                        text: "≡"
+                                        font.bold: true
+                                        font.pixelSize: Kirigami.Units.gridUnit * 1.2
+                                        color: subsurfaceTheme.primaryTextColor
+                                        anchors.centerIn: parent
+                                    }
+
+                                    MouseArea {
+                                        id: dragMouseArea
+                                        anchors.fill: parent
+                                        cursorShape: Qt.OpenHandCursor
+                                        
+                                        drag.target: content
+                                        drag.axis: Drag.YAxis
+                                        
+                                        onPressed: cursorShape = Qt.ClosedHandCursor
+                                        onReleased: {
+                                            cursorShape = Qt.OpenHandCursor
+                                            content.x = 0 
+                                            content.y = 0
+                                        }
+                                    }
+                                }
+
+                                property int listRowIndex: index
+                                
+                                Controls.Label { 
+                                    text: index + 1; 
+                                    Layout.preferredWidth: Kirigami.Units.gridUnit * 2; 
+                                    horizontalAlignment: Text.AlignHCenter; 
+                                    verticalAlignment: Text.AlignVCenter 
+                                }
+
+                                TemplateComboBox { 
+                                    id: cylinderSize
+                                    Layout.preferredWidth: Kirigami.Units.gridUnit * 7
+                                    visible: modeSelector.currentIndex === 2
+                                    
+                                    model: [qsTr("UNLIMITED")].concat(manager.cylinderListInit)
+                                    currentIndex: model.indexOf(amount)
+
+                                    onActivated: {
+                                        var amt = textAt(index)
+                                        gasListModel.setProperty(modelIndex, "amount", amt)
+                                    }
+                                }
+
+                                TemplateTextField { text: mix; onTextChanged: gasListModel.setProperty(index, "mix", text); Layout.fillWidth: true }
+                                TemplateCheckBox { checked: boost; onCheckedChanged: gasListModel.setProperty(index, "boost", checked); Layout.preferredWidth: Kirigami.Units.gridUnit * 2; visible: modeSelector.currentIndex === 2 }
+                                TemplateTextField { text: pressure; onTextChanged: gasListModel.setProperty(index, "pressure", text); Layout.preferredWidth: Kirigami.Units.gridUnit * 3; visible: modeSelector.currentIndex === 2 }
+                                TemplateTextField { text: cost; onTextChanged: gasListModel.setProperty(index, "cost", text); Layout.preferredWidth: Kirigami.Units.gridUnit * 4; visible: modeSelector.currentIndex > 0 }
+                                
+                                TemplateButton {
+                                    text: "X"; font.bold: true; Layout.preferredWidth: Kirigami.Units.iconSizes.small
+                                    onClicked: gasListModel.remove(index)
+                                }
+                            }
                         }
                     }
                 }
             }
-
             // --- CALCULATE BUTTON ---
             TemplateButton {
                 Layout.alignment: Qt.AlignHCenter
@@ -166,12 +278,19 @@ TemplatePage {
                         case 2: // Full Blending
                             var availableGases = [];
                             for (var i = 0; i < gasListModel.count; i++) {
-                                availableGases.push(gasListModel.get(i));
+                                var item = gasListModel.get(i);
+                                availableGases.push({
+                                    "mix": item.mix,
+                                    "boost": item.boost,
+                                    "pressure": item.pressure,
+                                    "amount": item.amount.toString(),
+                                    "cost": item.cost
+                                });
                             }
                             if (modeSelector.currentIndex === 1) {
-                                results = Backend.divePlannerPointsModel.calculateSimpleBlend(targetStartMix.text, targetStartPressure.value, targetEndMix.text, targetEndPressure.value, availableGases);
+                                results = Backend.divePlannerPointsModel.calculateCheapestBlend(targetCylinderSize.currentText,targetStartMix.text, targetStartPressure.value, targetEndMix.text, targetEndPressure.value, availableGases, true);
                             } else {
-                                results = Backend.divePlannerPointsModel.calculateCheapestBlend(targetCylinderSize.currentText, targetStartMix.text, targetStartPressure.value, targetEndMix.text, targetEndPressure.value, availableGases);
+                                results = Backend.divePlannerPointsModel.calculateCheapestBlend(targetCylinderSize.currentText, targetStartMix.text, targetStartPressure.value, targetEndMix.text, targetEndPressure.value, availableGases, false);
                             }
                             break;
                     }
@@ -182,7 +301,7 @@ TemplatePage {
                 }
             }
 
-            // --- UNIFIED RESULTS DISPLAY ---
+            // --- RESULTS DISPLAY ---
             Item {
                 Layout.fillWidth: true
                 // Height is bound to the measurement text, with a slightly larger buffer to prevent clipping.
@@ -217,4 +336,3 @@ TemplatePage {
         onTriggered: pageStack.pop()
     }
 }
-
