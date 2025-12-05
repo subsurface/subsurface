@@ -89,6 +89,10 @@ while [[ $# -gt 0 ]] ; do
 			ARCHS="arm64 x86_64"
 			BUILD_WITH_QT6="1"
 			;;
+		-build-with-homebrew)
+			# use libraries from Homebrew, don't try to create self-contained app
+			BUILD_WITH_HOMEBREW="1"
+			;;
 		-build-prefix)
 			# instead of building in build & build-mobile in the current directory, build in <buildprefix>build
 			# and <buildprefix>build-mobile; notice that there's no slash between the prefix and the two directory
@@ -163,7 +167,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-all] [-both] [-build-deps-only] [-build-prefix <PREFIX>] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-make-package] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
+			echo "Usage: build.sh [-all] [-both] [-build-deps-only] [-build-with-homebrew] [-build-prefix <PREFIX>] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-make-package] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
 			exit 1
 			;;
 	esac
@@ -527,7 +531,9 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		echo "Created $IMG"
 	else
 		LIBRARY_PATH=$INSTALL_ROOT/lib make
-		LIBRARY_PATH=$INSTALL_ROOT/lib make install
+		if [ "$BUILD_WITH_HOMEBREW" != "1" ]; then
+			LIBRARY_PATH=$INSTALL_ROOT/lib make install
+		fi
 
 		if [ "$CREATE_APPDIR" = "1" ] ; then
 			# if we create an AppImage this makes gives us a sane starting point
