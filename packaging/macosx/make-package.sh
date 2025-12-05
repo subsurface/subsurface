@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # this simply automates the steps to create a DMG we can ship
 #
@@ -18,19 +18,13 @@ fi
 # first build and install Subsurface and then clean up the staging area
 # make sure we didn't lose the minimum OS version
 rm -rf ./Subsurface.app
-if [ -d /Library/Developer/CommandLineTools/SDKs ] ; then
-	SDKROOT=/Library/Developer/CommandLineTools/SDKs
-elif [ -d /Developer/SDKs ] ; then
-	SDKROOT=/Developer/SDKs
-elif [ -d /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ] ; then
-	SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
-else
-	echo "Cannot find SDK sysroot (usually /Developer/SDKs or"
-	echo "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs)"
-	exit 1;
-fi
-BASESDK=$(ls $SDKROOT | grep "MacOSX1.*\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
-OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
+
+# Apple tells us NOT to try to specify a specific SDK anymore and instead let its tools
+# do "the right thing" - especially don't set a sysroot (which way back when was required for this to work)
+# unforunately that means we need to somehow hard-code a deployment target, hoping the local tools
+# know how to build for that. Which seems... odd
+ARCH=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
+OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES="$ARCH" -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
 export PKG_CONFIG_PATH=${DIR}/install-root/lib/pkgconfig:$PKG_CONFIG_PATH
 
 cmake $OLDER_MAC_CMAKE \
@@ -39,8 +33,16 @@ cmake $OLDER_MAC_CMAKE \
 	-DFTDISUPPORT=ON \
 	.
 
-LIBRARY_PATH=${DIR}/install-root/lib make -j
+LIBRARY_PATH=${DIR}/install-root/lib make
+
 LIBRARY_PATH=${DIR}/install-root/lib make install
+
+# next, let's make sure we have single architecture libraries and frameworks, not fat binaries
+find Subsurface.app/Contents/Frameworks --type f \( -name "Qt*" -o -name "*.dylib" \) | while read -r lib; do
+    if lipo "$lib" -verify_arch "$ARCH" 2>/dev/null; then
+        lipo "$lib" -thin "$ARCH" -output "$lib.tmp" && mv "$lib.tmp" "$lib"
+    fi
+done
 
 # now adjust a few references that macdeployqt appears to miss
 EXECUTABLE=Subsurface.app/Contents/MacOS/Subsurface
@@ -79,9 +81,6 @@ if [ -f $QTWEBKIT ] ; then
     done
 fi
 
-# next, copy libssh2.1
-# cp ${DIR}/install-root/lib/libssh2.1.dylib Subsurface.app/Contents/Frameworks
-
 # next, replace @rpath references with @executable_path references in Subsurface
 RPATH=$(otool -L ${EXECUTABLE} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
 for i in ${RPATH}; do
@@ -101,17 +100,28 @@ rm -rf ./staging
 mkdir ./staging
 cp -a ./Subsurface.app ./staging
 
-if [ "$SIGN" = "1" ] ; then
+if [ "$SIGN" = "1" ] ; then # that's for local builds for Dirk... oops
 	sh ${DIR}/subsurface/packaging/macosx/sign
+else
+	codesign --force --deep --sign - staging/Subsurface.app
 fi
+
+echo "Cleaning up any mounted volumes..."
+hdiutil info | grep "/Volumes/Subsurface" | awk '{print $1}' | while read disk; do
+    hdiutil detach "$disk" -force || true
+done
 
 if [ -f ./Subsurface-$CANONICALVERSION.dmg ]; then
 	rm ./Subsurface-$CANONICALVERSION.dmg.bak
 	mv ./Subsurface-$CANONICALVERSION.dmg ./Subsurface-$CANONICALVERSION.dmg.bak
 fi
 
+sleep 1
+
 $DMGCREATE --background ${DIR}/subsurface/packaging/macosx/DMG-Background.png \
 	--window-size 500 300 --icon-size 96 --volname Subsurface-$CANONICALVERSION \
 	--app-drop-link 380 205 \
 	--volicon ${DIR}/subsurface/packaging/macosx/Subsurface.icns \
 	--icon "Subsurface" 110 205 ./Subsurface-$CANONICALVERSION.dmg ./staging
+
+hdiutil detach /Volumes/Subsurface* -force 2>/dev/null || true

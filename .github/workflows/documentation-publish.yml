@@ -23,11 +23,6 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: install packages
-      run: |
-        sudo apt-get -y update
-        DEBIAN_FRONTEND=noninteractive sudo apt-get -y -q install asciidoc docbook-xml w3m
-
     - name: checkout sources
       uses: actions/checkout@v6
       with:
@@ -39,7 +34,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: Documentation/output
-        key: documentation-${{ hashFiles('Documentation') }}
+        key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
         enableCrossOsArchive: true
         fail-on-cache-miss: true
 

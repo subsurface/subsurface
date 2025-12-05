@@ -11,7 +11,7 @@ on:
     - scripts/docker/**
     branches:
     - master
-
+  workflow_dispatch:
 
 jobs:
   build-documentation:
@@ -19,7 +19,22 @@ jobs:
 
   build:
     needs: build-documentation
-    runs-on: macOS-13
+    strategy:
+      matrix:
+        include:
+          - arch: arm64
+            runner: macos-15
+            qtversion: 6.8.3
+            brewpackages: 'libtool'
+          - arch: x86_64
+            runner: macos-15-intel
+            qtversion: 6.8.3
+            brewpackages:
+          - arch: x86_64
+            runner: macos-13
+            qtversion: 5
+            brewpackages: 'libjpg'
+    runs-on: ${{ matrix.runner }}
     steps:
     - name: checkout sources
       uses: actions/checkout@v6
@@ -27,11 +42,29 @@ jobs:
         fetch-depth: 0
         submodules: recursive
 
+    - name: Cache Homebrew packages
+      id: cache-homebrew
+      uses: actions/cache@v4
+      with:
+        path: ~/Library/Caches/Homebrew
+        key: macos-brew-${{ runner.os }}-${{ hashFiles('.github/workflows/mac.yml') }}
+
     - name: install additional packages with Homebrew
       run: |
-        brew install hidapi libxslt libjpg libraw create-dmg confuse automake
+        brew install create-dmg confuse automake ${{ matrix.brewpackages }}
 
     - name: checkout Qt resources
+      if: ${{ matrix.qtversion != 5 }}
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ matrix.qtversion }}
+        host: 'mac'
+        target: 'desktop'
+        modules: 'qtlocation qtpositioning qtconnectivity qt5compat'
+        cache: true
+
+    - name: checkout our packaged Qt resources
+      if: ${{ matrix.qtversion == 5 }}
       uses: actions/checkout@v6
       with:
         repository: subsurface/qt-mac
@@ -43,7 +76,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: Documentation/output
-        key: documentation-${{ hashFiles('Documentation') }}
+        key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
         enableCrossOsArchive: true
         fail-on-cache-miss: true
 
@@ -53,10 +86,21 @@ jobs:
       with:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
-    - name: build Subsurface
-      id: build
-      env:
-        CANONICALVERSION: ${{ steps.version_number.outputs.version }}
+    - name: get install-root absolute path
+      id: get-install-root
+      run: |
+        echo "path=$(cd ${GITHUB_WORKSPACE}/..; pwd)/install-root" >> $GITHUB_OUTPUT
+
+    - name: cache deps
+      id: cache-deps
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.get-install-root.outputs.path }}
+        key: macos-deps-${{ runner.arch }}-${{ hashFiles('.github/workflows/mac.yml', 'scripts/build.sh', 'scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
+
+    - name: build deps
+      id: build-deps
+      if: steps.cache-deps.outputs.cache-hit != 'true'
       run: |
         BUILD_EXTRA_ARGS=""
         if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
@@ -65,19 +109,61 @@ jobs:
         fi
 
         cd ${GITHUB_WORKSPACE}/..
-        export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.16
+        # set up the paths for Qt
+        if [ ${{ matrix.qtversion }} = '5' ]; then
+          export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.16
+        else
+          export QT_ROOT=$(pwd)/Qt/${{ matrix.qtversion }}/macos
+        fi
         export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
         export PATH=$QT_ROOT/bin:$PATH
         export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
+        export ACLOCAL_FLAGS="-I $(brew --prefix gettext)/share/aclocal"
+        # ensure that only our packages are used, not anything from Homebrew
+        export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
 
-        # now setup Subsurface with WebKit and build the dependencies, using the generic build script
-        bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -build-deps -ftdi -prep-only -install-docs ${BUILD_EXTRA_ARGS}
+        # now setup Subsurface and build the dependencies, using the generic build script
+        bash -e -x ./subsurface/scripts/build.sh -build-deps-only -ftdi ${BUILD_EXTRA_ARGS}
 
-        echo "finished initial cmake setup of Subsurface - next build the package"
-        cd subsurface/build
-        echo "run the packaging script"
-        bash -e -x ../packaging/macosx/make-package.sh | tee mp.log 2>&1
-        IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
+    - name: build Subsurface
+      id: build
+      run: |
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
+        cd ${GITHUB_WORKSPACE}/..
+        # set up the paths for Qt
+        if [ ${{ matrix.qtversion }} = '5' ]; then
+          export QT_ROOT=${GITHUB_WORKSPACE}/qt-mac/Qt5.15.16
+        else
+          export QT_ROOT=$(pwd)/Qt/${{ matrix.qtversion }}/macos
+        fi
+        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+        export PATH=$QT_ROOT/bin:$PATH
+        export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
+        export ACLOCAL_FLAGS="-I $(brew --prefix gettext)/share/aclocal"
+        # ensure that only our packages are used, not anything from Homebrew
+        export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
+
+        # now setup the Subsurface build using the generic build script
+        if [ ${{ matrix.qtversion }} = '5' ]; then
+          UI_TOOLKIT_ARG="-build-with-webkit"
+        else
+          UI_TOOLKIT_ARG="-build-with-qt6"
+        fi
+        bash -e -x ./subsurface/scripts/build.sh -desktop ${UI_TOOLKIT_ARG} -ftdi -make-package -install-docs ${BUILD_EXTRA_ARGS}
+        REG_IMG=$(grep ^created: mp.log | tail -1 | cut -b10-)
+        [ "${{ runner.arch }}" = "X64" ] && CUR_ARCH="x86_64"
+        [ "${{ runner.arch }}" = "ARM64" ] && CUR_ARCH="arm64"
+        if [ ${{ matrix.qtversion }} = '5' ]; then
+          IMG="$REG_IMG"
+        else
+          IMG="${REG_IMG/Subsurface-/Subsurface-${CUR_ARCH}-qt6-}"
+          mv "$REG_IMG" "$IMG"
+        fi
         echo "Created $IMG"
         echo "dmg=$IMG" >> $GITHUB_OUTPUT
 
@@ -85,7 +171,7 @@ jobs:
       if: github.event_name == 'pull_request'
       uses: actions/upload-artifact@v5
       with:
-        name: Subsurface-MacOS-${{ steps.version_number.outputs.version }}
+        name: Subsurface-MacOS-${{ matrix.arch }}-qt-${{ matrix.qtversion }}-${{ steps.version_number.outputs.version }}
         path: ${{ steps.build.outputs.dmg }}
         compression-level: 0
 

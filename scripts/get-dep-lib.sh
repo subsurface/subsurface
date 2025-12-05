@@ -2,13 +2,13 @@
 #
 
 # set version of 3rd party libraries
-CURRENT_LIBZ="v1.2.11"
+CURRENT_LIBZ="v1.3.1"
 CURRENT_LIBZIP="rel-1-5-1"
 CURRENT_LIBGIT2="v1.8.1"
-CURRENT_LIBCURL="curl-7_88_1"
+CURRENT_LIBCURL="curl-8_4_0"
 CURRENT_LIBUSB="v1.0.25"
-CURRENT_OPENSSL="OpenSSL_1_1_1m"
-CURRENT_LIBSSH2="libssh2-1.8.0"
+CURRENT_OPENSSL="OpenSSL_1_1_1w"
+CURRENT_LIBSSH2="libssh2-1.11.1"
 CURRENT_XSLT="v1.1.34"
 CURRENT_SQLITE="3190200"
 CURRENT_LIBXML2="v2.9.4"
@@ -18,6 +18,13 @@ CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
 CURRENT_MDBTOOLS="v1.0.0"
 CURRENT_QT_ANDROID_CMAKE="master"
 CURRENT_LIBMTP="v1.1.22"
+CURRENT_LIBRAW="0.21.4"
+CURRENT_QLITEHTML="b8f9096eae730ec9464b24874e4e6312144aa9ce"
+
+croak() {
+	echo $@
+	exit 1
+}
 
 # Checkout library from git
 # Ensure specified version is checked out,
@@ -37,9 +44,9 @@ git_checkout_library() {
 	local url=$3
 
 	if [ ! -d "$name" ]; then
-		git clone "$url" "$name"
+		git clone "$url" "$name" || croak "git clone $url failed"
 	fi
-	pushd "$name"
+	pushd "$name" || croak "can't cd into $name"
 
 	local current_sha=$(git rev-parse HEAD)
 	local target_sha=$(git rev-parse "$version")
@@ -47,8 +54,7 @@ git_checkout_library() {
 	if [ ! "$current_sha" = "$target_sha" ] ; then
 		git fetch origin
 		if ! git checkout -f "$version" ; then
-			echo "Can't find the right tag in $name - giving up"
-			exit 1
+			croak "Can't find the right tag in $name - giving up"
 		fi
 	fi
 	popd
@@ -91,7 +97,7 @@ if [ $# -ne 2 ] && [ $# -ne 3 ] ; then
 	echo "(the name of the directory where build.sh resides)"
 	echo "<install dir> is the directory to clone in"
 	echo "<lib> is the name to be cloned"
-	exit -1
+	exit 1
 fi
 
 PLATFORM=$1
@@ -200,6 +206,12 @@ for package in "${PACKAGES[@]}" ; do
 			;;
 		qt-android-cmake)
 			git_checkout_library qt-android-cmake $CURRENT_QT_ANDROID_CMAKE https://github.com/LaurentGomila/qt-android-cmake.git
+			;;
+		libraw)
+			git_checkout_library libraw $CURRENT_LIBRAW https://github.com/libraw/libraw
+			;;
+		qlitehtml)
+			git_checkout_library qlitehtml $CURRENT_QLITEHTML https://github.com/dirkhh/qlitehtml
 			;;
 		*)
 			echo "unknown package \"$package\""
