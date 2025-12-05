@@ -1,6 +1,5 @@
 :icons:
-:toc2:
-:toc-placement: manual
+:toc: left
 :numbered:
 
 image::images/Subsurface4Banner.jpg["Banner", align="center"]
