@@ -1,8 +1,23 @@
 #!/bin/bash
 
+function croak () {
+    echo $@
+    exit 1
+}
+
+[ "$1" = "-clean" ] && CLEAN="1"
+
 # verify CLI tools are installed and working
-xcode-select -p > /dev/null 2>&1 || { echo "Xcode CLI tools required"; exit 1; }
-clang --version > /dev/null 2>&1 || { echo "Clang not working"; exit 1; }
+xcode-select -p > /dev/null 2>&1 || croak "Xcode CLI tools required"
+clang --version > /dev/null 2>&1 || croak "Clang not working"
+
+# verify Homebrew is installed
+brew info > /dev/null 2>&1 || croak "Homebrew required"
+brew install autoconf automake libtool pkg-config gettext confuse \
+     cmake libgit2 libraw libftdi libmtp hidapi libusb libssh2 libzip \
+     qtbase qtconnectivity qt5compat qtlocation qtpositioning qttools qtdeclarative \
+        || croak "brew install failed"
+
 
 # verify Qt 6 is installed and in the path
 qtver=$(qmake -query QT_VERSION 2>/dev/null) || { echo "Qt not found in PATH"; exit 1; }
@@ -10,17 +25,28 @@ qtver=$(qmake -query QT_VERSION 2>/dev/null) || { echo "Qt not found in PATH"; e
 
 # clone the repo
 # WARNING -- this is cloning the macos-qt6 branch... will need to be updated once merged
-git clone -b dirkhh-macos-qt6 https://github.com/subsurface/subsurface
+[ ! -d subsurface ] && git clone -b dirkhh-macos-qt6 https://github.com/subsurface/subsurface
 
-# build the dependencies
-export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
-bash -e -x ./subsurface/scripts/build.sh -build-deps-only -ftdi 
+# if requested, clean the old build remnants
+[ "$CLEAN" = "1" ] && rm -rf googlemaps install-root subsurface/build subsurface/libdivecomputer/build
 
-mv build.log build-deps.log
+# # build the dependencies
+# export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
+# bash -e -x ./subsurface/scripts/build.sh -build-deps-only -ftdi 
+# 
+# mv build.log build-deps.log
 
 # build Subsurface with Qt6
-bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -ftdi
+bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -build-with-homebrew -ftdi
+
+# not sure why I need to do this again here, but without this second install of googlemaps
+# I get no map in Subsurface
+pushd googlemaps/build
+make install
+popd
 
 cd subsurface/build
 codesign --force --deep --sign - Subsurface.app
 
+echo "Run Subsurface with 'open subsurface/build/Subsurface.app'"
+echo "rebuild by simply calling 'make' in the subsurface/build directory. Do not run 'make install' in that directory"
