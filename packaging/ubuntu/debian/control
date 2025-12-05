@@ -3,6 +3,7 @@ Section: utils
 Priority: optional
 Maintainer: Subsurface CI Bot <dirk@subsurface-divelog.org>
 Build-Depends: asciidoctor,
+               ruby-asciidoctor-pdf,
                debhelper (>= 9),
                libtool,
                libxml2-dev,
