@@ -23,11 +23,6 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: install packages
-      run: |
-        sudo apt-get -y update
-        DEBIAN_FRONTEND=noninteractive sudo apt-get -y -q install asciidoctor docbook-xml w3m
-
     - name: checkout sources
       uses: actions/checkout@v6
       with:

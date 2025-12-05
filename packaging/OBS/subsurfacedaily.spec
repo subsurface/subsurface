@@ -23,6 +23,7 @@ BuildRequires:	fdupes
 BuildRequires:	gcc-c++
 BuildRequires:	make
 BuildRequires:	asciidoctor
+BuildRequires:  rubygem-asciidoctor-pdf.noarch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool

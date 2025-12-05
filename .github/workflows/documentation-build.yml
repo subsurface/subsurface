@@ -42,10 +42,10 @@ jobs:
         if type sudo; then
           SUDO=sudo
         fi
-        DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get -y -q install make asciidoctor docbook-xml w3m
+        DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get -y -q install make asciidoctor docbook-xml ruby-asciidoctor-pdf w3m
 
     - name: build the documentation
       if: steps.cache-documentation.outputs.cache-hit != 'true'
       run: |
         git config --global --add safe.directory $GITHUB_WORKSPACE
-        make -C Documentation doc
+        make -C Documentation
