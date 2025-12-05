@@ -6,8 +6,7 @@
 // :revnumber: 4.7
 // :revdate: October 2017
 :icons:
-:toc2:
-:toc-placement: manual
+:toc: left
 :numbered:
 // :website: https://subsurface-divelog.org
 

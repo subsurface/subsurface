@@ -6,8 +6,7 @@
 // :revnumber: 4.8.2
 // :revdate: September 2018
 :icons:
-:toc2:
-:toc-placement: manual
+:toc: left
 :numbered:
 :ascii-ids:
 // :website: https://subsurface-divelog.org
