@@ -7,10 +7,10 @@ If you would like to get automatic updates, you can use [Obtainium](https://obta
 *Note*: If you previously had installed Subsurface-mobile from the Google Play store, the first time you switch to a CICD-release, you'll have to uninstall the Play store version first. Make sure your data is synced to the Subsurface Cloud. After you install the CICD-release and log in to the Subsurface Cloud again, the data will be restored. This is *only* required the first time you switch from a Play store release to a CICD-release.
 
 # Windows
-The Windows installer (named **subsurface-\<version\>-CICD-release-installer.exe **) will ask you to confirm installation of an app from an unknown developer. The other **Windows .exe** files are only useful for a few users who are specifically directed to try them. Unless that is you, you typically will want to try the **...-installer.exe** file.
+The Windows installer (named **subsurface-\<version\>-CICD-release-installer.exe**) will ask you to confirm installation of an app from an unknown developer. The other **Windows .exe** files are only useful for a few users who are specifically directed to try them. Unless that is you, you typically will want to try the **...-installer.exe** file.
 
 # macOS
-The macOS DMG (named ** Subsurface-\<version\>-CICD-release.dmg) makes it even harder with a multi-step dance that requires opening the Privacy & Security settings in the System Preferences and explicitly confirming that you are willing to install this app.
+The macOS DMG (named **Subsurface-\<version\>-CICD-release.dmg**) makes it even harder with a multi-step dance that requires opening the Privacy & Security settings in the System Preferences and explicitly confirming that you are willing to install this app. Currently there are three different macOS DMGs. The default one is an x86 binary that runs on all current Macs and supports printing, but appears to have occasional issues with some Bluetooth dive computers. Alternatively there are two Qt 6 based versions (one for Apple Silicon, one for older x86_64 Macs) that overall seems to work better, but doesn't have printing support.
 
 # Linux
 You can find similar Subsurface-Daily builds for [Ubuntu](https://ppa.launchpadcontent.net/subsurface) and Subsurface-test for [Fedora](https://copr.fedorainfracloud.org/coprs/dirkhh/Subsurface-test).
