@@ -1402,7 +1402,9 @@ void parse_seabear_header(const char *filename, struct xml_params *params)
 {
 	QFile f(filename);
 
-	f.open(QFile::ReadOnly);
+	if (!f.open(QFile::ReadOnly))
+		return;
+
 	QString parseLine = f.readLine();
 
 	/*
