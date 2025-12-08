@@ -27,6 +27,13 @@ TabDiveNotes::TabDiveNotes(MainTab *parent) : TabBase(parent),
 	currentTrip(0)
 {
 	ui.setupUi(this);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	ui.dateEdit->setTimeZone(QTimeZone::utc());
+	ui.timeEdit->setTimeZone(QTimeZone::utc());
+#else
+	ui.dateEdit->setTimeSpec(Qt::UTC);
+	ui.timeEdit->setTimeSpec(Qt::UTC);
+#endif
 
 	updateDateTimeFields();
 

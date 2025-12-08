@@ -105,6 +105,11 @@ ShiftTimesDialog::ShiftTimesDialog(std::vector<dive *> dives_in, QWidget *parent
 	when(0), dives(std::move(dives_in))
 {
 	ui.setupUi(this);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	ui.timeEdit->setTimeZone(QTimeZone::systemTimeZone());
+#else
+	ui.timeEdit->setTimeSpec(Qt::LocalTime);
+#endif
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime)), this, SLOT(changeTime()));
 	connect(ui.backwards, SIGNAL(toggled(bool)), this, SLOT(changeTime()));
