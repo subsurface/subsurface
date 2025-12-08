@@ -177,7 +177,11 @@ void ColumnNameView::dragEnterEvent(QDragEnterEvent *event)
 
 void ColumnNameView::dragMoveEvent(QDragMoveEvent *event)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QModelIndex curr = indexAt(event->position().toPoint());
+#else
 	QModelIndex curr = indexAt(event->pos());
+#endif
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 	event->acceptProposedAction();
@@ -212,7 +216,11 @@ void ColumnDropCSVView::dragEnterEvent(QDragEnterEvent *event)
 
 void ColumnDropCSVView::dragMoveEvent(QDragMoveEvent *event)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QModelIndex curr = indexAt(event->position().toPoint());
+#else
 	QModelIndex curr = indexAt(event->pos());
+#endif
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 	event->acceptProposedAction();
@@ -220,7 +228,11 @@ void ColumnDropCSVView::dragMoveEvent(QDragMoveEvent *event)
 
 void ColumnDropCSVView::dropEvent(QDropEvent *event)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QModelIndex curr = indexAt(event->position().toPoint());
+#else
 	QModelIndex curr = indexAt(event->pos());
+#endif
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 

@@ -14,7 +14,11 @@ DivePictureWidget::DivePictureWidget(QWidget *parent) : QListView(parent)
 void DivePictureWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		QString filePath = model()->data(indexAt(event->position().toPoint()), Qt::DisplayPropertyRole).toString();
+#else
 		QString filePath = model()->data(indexAt(event->pos()), Qt::DisplayPropertyRole).toString();
+#endif
 		emit photoDoubleClicked(localFilePath(filePath));
 	}
 }
@@ -22,13 +26,21 @@ void DivePictureWidget::mouseDoubleClickEvent(QMouseEvent *event)
 void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		QModelIndex index = indexAt(event->position().toPoint());
+#else
 		QModelIndex index = indexAt(event->pos());
+#endif
 		QString filename = model()->data(index, Qt::DisplayPropertyRole).toString();
 
 		if (!filename.isEmpty()) {
 			int dim = lrint(defaultIconMetrics().sz_pic * 0.2);
-			
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+			QPixmap pixmap = model()->data(indexAt(event->position().toPoint()), Qt::DecorationRole).value<QPixmap>();
+#else
 			QPixmap pixmap = model()->data(indexAt(event->pos()), Qt::DecorationRole).value<QPixmap>();
+#endif
 			pixmap = pixmap.scaled(dim, dim, Qt::KeepAspectRatio);
 			
 			QByteArray itemData;
