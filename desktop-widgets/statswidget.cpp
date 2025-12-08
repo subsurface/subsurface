@@ -153,7 +153,11 @@ void StatsWidget::updateUi()
 		QCheckBox *check = features.back().get();
 		check->setChecked(f.selected);
 		int id = f.id;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+		connect(check, &QCheckBox::checkStateChanged, [this,id] (Qt::CheckState state) { featureChanged(id, state); });
+#else
 		connect(check, &QCheckBox::stateChanged, [this,id] (int state) { featureChanged(id, state); });
+#endif
 		ui.features->addWidget(check);
 	}
 	StatsView *view = getView();
