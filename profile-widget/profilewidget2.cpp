@@ -294,7 +294,11 @@ void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 
 	if (!event->isAccepted()) {
 		panning = true;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		panningOriginalMousePosition = mapToScene(event->position().toPoint()).x();
+#else
 		panningOriginalMousePosition = mapToScene(event->pos()).x();
+#endif
 		panningOriginalProfilePosition = zoomedPosition;
 		viewport()->setCursor(Qt::ClosedHandCursor);
 	}
@@ -359,7 +363,11 @@ void ProfileWidget2::wheelEvent(QWheelEvent *event)
 void ProfileWidget2::mouseDoubleClickEvent(QMouseEvent *event)
 {
 	if ((currentState == PLAN || currentState == EDIT) && plannerModel) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		QPointF mappedPos = mapToScene(event->position().toPoint());
+#else
 		QPointF mappedPos = mapToScene(event->pos());
+#endif
 		if (!profileScene->pointOnProfile(mappedPos))
 			return;
 
@@ -375,7 +383,11 @@ void ProfileWidget2::mouseMoveEvent(QMouseEvent *event)
 {
 	QGraphicsView::mouseMoveEvent(event);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QPointF pos = mapToScene(event->position().toPoint());
+#else
 	QPointF pos = mapToScene(event->pos());
+#endif
 	if (panning) {
 		double oldPos = zoomedPosition;
 		zoomedPosition = profileScene->calcZoomPosition(calcZoom(zoomLevel),
@@ -1319,7 +1331,11 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 
 		QString filename;
 		dataStream >> filename;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+		QPointF mappedPos = mapToScene(event->position().toPoint());
+#else
 		QPointF mappedPos = mapToScene(event->pos());
+#endif
 		offset_t offset { .seconds = (int32_t)lrint(profileScene->timeAxis->valueAt(mappedPos)) };
 		Command::setPictureOffset(mutable_dive(), filename, offset);
 
