@@ -190,7 +190,7 @@ void ColumnNameView::dragMoveEvent(QDragMoveEvent *event)
 void ColumnNameView::dropEvent(QDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->data(subsurface_mimedata).count()) {
+	if (mimeData->data(subsurface_mimedata).size()) {
 		if (event->source() != this) {
 			event->acceptProposedAction();
 			QVariant value = QString(mimeData->data(subsurface_mimedata));
@@ -237,7 +237,7 @@ void ColumnDropCSVView::dropEvent(QDropEvent *event)
 		return;
 
 	const QMimeData *mimeData = event->mimeData();
-	if (!mimeData->data(subsurface_mimedata).count())
+	if (!mimeData->data(subsurface_mimedata).size())
 		return;
 
 	if (event->source() == this ) {
