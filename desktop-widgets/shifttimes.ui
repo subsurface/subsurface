@@ -125,9 +125,6 @@
         <property name="displayFormat">
          <string>h:mm</string>
         </property>
-        <property name="timeSpec">
-         <enum>Qt::LocalTime</enum>
-        </property>
        </widget>
       </item>
       <item>

@@ -145,9 +145,6 @@
            <property name="calendarPopup">
             <bool>true</bool>
            </property>
-           <property name="timeSpec">
-            <enum>Qt::UTC</enum>
-           </property>
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
              <horstretch>1</horstretch>
@@ -163,9 +160,6 @@
              <horstretch>1</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
-           </property>
-           <property name="timeSpec">
-            <enum>Qt::UTC</enum>
            </property>
            </widget>
          </item>
