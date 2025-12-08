@@ -14,7 +14,6 @@ po/*.mo
 /*.tar.gz
 share/
 packaging/windows/subsurface.nsi
-packaging/macos/Info.plist
 *.kdev4
 callgrind.out.*
 .gitignore
