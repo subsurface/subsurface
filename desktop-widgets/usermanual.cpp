@@ -44,13 +44,13 @@ void SearchBar::enableButtons(const QString &s)
 
 UserManual::UserManual(QWidget *parent) : QDialog(parent)
 {
-	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quitKey = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quitKey, SIGNAL(activated()), qApp, SLOT(quit()));
 
 	QAction *actionShowSearch = new QAction(this);
-	actionShowSearch->setShortcut(Qt::CTRL + Qt::Key_F);
+	actionShowSearch->setShortcut(Qt::CTRL | Qt::Key_F);
 	actionShowSearch->setShortcutContext(Qt::WindowShortcut);
 	addAction(actionShowSearch);
 
@@ -277,9 +277,9 @@ void UserManual::showEvent(QShowEvent *e)
 void UserManual::hideEvent(QHideEvent *e)
 {
 	if (closeAction != NULL)
-		closeAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_W));
+		closeAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_W));
 	if (filterAction != NULL)
-		filterAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F));
+		filterAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
 	closeAction = filterAction = NULL;
 }
 #endif
