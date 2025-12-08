@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# This script will help to setup a local build environment on macOS using Homebrew
+# dependencies, including Qt 6 from Homebrew
+# It requires the Xcode command line tools and Homebrew itself to be installed
+#
+# Please note that as long as you have an Apple Developer account at all, you can
+# install Xcode command line tools without being able to log into the AppStore, which
+# can be extremely hard or even impossible from a macOS virtual machine.
+#
+# Currently this uses whatever Qt version Homebrew includes - I am guessing that
+# when Homebrew switches to a newer version of Qt there's a fair chance that this will
+# break and we may have to pin the version used for a while.
+
 function croak () {
     echo $@
     exit 1
