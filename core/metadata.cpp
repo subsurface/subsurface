@@ -284,8 +284,12 @@ static bool parseDate(const QString &s_in, timestamp_t &timestamp)
 	s.replace('-', ':');
 	QDateTime datetime = QDateTime::fromString(s, "yyyy:M:d h:m:s");
 	if (datetime.isValid()) {
-		// Not knowing any better, we suppose that time is give in UTC
-		datetime.setTimeSpec(Qt::UTC);
+		// Not knowing any better, we suppose that time is given in UTC
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+		datetime = QDateTime(datetime.date(), datetime.time(), QTimeZone(QTimeZone::UTC));
+#else
+		datetime = QDateTime(datetime.date(), datetime.time(), Qt::UTC);
+#endif
 		timestamp = dateTimeToTimestamp(datetime);
 		return true;
 	}
@@ -325,7 +329,11 @@ static bool parseDate(const QString &s_in, timestamp_t &timestamp)
 		return false;
 
 	// Not knowing any better, we suppose that time is give in UTC
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	datetime = QDateTime(date, time, QTimeZone(QTimeZone::UTC));
+#else
 	datetime = QDateTime(date, time, Qt::UTC);
+#endif
 	if (datetime.isValid()) {
 		timestamp = dateTimeToTimestamp(datetime);
 		return true;

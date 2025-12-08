@@ -950,7 +950,11 @@ bool QMLManager::checkDate(struct dive *d, QString date)
 		}
 		// set date from string and make sure it's treated as UTC (like all our time stamps)
 		newDate = QDateTime::fromString(date, format);
-		newDate.setTimeSpec(Qt::UTC);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+		newDate = QDateTime(newDate.date(), newDate.time(), QTimeZone(QTimeZone::UTC));
+#else
+		newDate = QDateTime(newDate.date(), newDate.time(), Qt::UTC);
+#endif
 		if (!newDate.isValid()) {
 			appendTextToLog("unable to parse date " + date + " with the given format " + format);
 			QRegularExpression isoDate("\\d+-\\d+-\\d+[^\\d]+\\d+:\\d+");
