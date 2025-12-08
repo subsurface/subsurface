@@ -266,7 +266,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 	# if all we want is to build the dependencies, we are done with prep here
 	if [[ "$BUILD_DEPS_ONLY" == "1" ]] ; then
 		export ARCHS SRC SRC_DIR MAC_CMAKE MAC_OPTS MAC_OPTS_OPENSSL
-		bash "./${SRC_DIR}/scripts/build-deps.sh"
+		bash "./${SRC_DIR}/packaging/macosx/build-deps.sh"
 		exit
 	fi
 fi

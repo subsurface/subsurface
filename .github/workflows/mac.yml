@@ -96,7 +96,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ${{ steps.get-install-root.outputs.path }}
-        key: macos-deps-${{ runner.arch }}-${{ hashFiles('.github/workflows/mac.yml', 'scripts/build.sh', 'scripts/build-deps.sh', 'scripts/get-dep-lib.sh') }}
+        key: macos-deps-${{ runner.arch }}-${{ hashFiles('.github/workflows/mac.yml', 'scripts/build.sh', 'packaging/macosx/build-deps.sh', 'scripts/get-dep-lib.sh') }}
 
     - name: build deps
       id: build-deps
