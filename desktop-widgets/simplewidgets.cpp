@@ -144,7 +144,11 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	ui.DCImage->setScene(scene);
 
 	dcImageEpoch = picture_get_timestamp(qPrintable(fileNames.at(0)));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	QDateTime dcDateTime = QDateTime::fromSecsSinceEpoch(dcImageEpoch, QTimeZone::utc());
+#else
 	QDateTime dcDateTime = QDateTime::fromSecsSinceEpoch(dcImageEpoch, Qt::UTC);
+#endif
 	ui.dcTime->setDateTime(dcDateTime);
 	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
 }
@@ -217,8 +221,13 @@ void ShiftImageTimesDialog::updateInvalid()
 	bool allValid = true;
 	ui.warningLabel->hide();
 	ui.invalidFilesText->hide();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	QDateTime time_first = QDateTime::fromSecsSinceEpoch(first_selected_dive()->when, QTimeZone::utc());
+	QDateTime time_last = QDateTime::fromSecsSinceEpoch(last_selected_dive()->when, QTimeZone::utc());
+#else
 	QDateTime time_first = QDateTime::fromSecsSinceEpoch(first_selected_dive()->when, Qt::UTC);
 	QDateTime time_last = QDateTime::fromSecsSinceEpoch(last_selected_dive()->when, Qt::UTC);
+#endif
 	if (first_selected_dive() == last_selected_dive()) {
 		ui.invalidFilesText->setPlainText(tr("Selected dive date/time") + ": " + time_first.toString());
 	} else {
