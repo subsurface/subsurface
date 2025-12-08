@@ -149,7 +149,11 @@ void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)
 	QDateTime newtime(newDateTime);
 	if (!dcImageEpoch)
 		return;
-	newtime.setTimeSpec(Qt::UTC);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	newtime = QDateTime(newtime.date(), newtime.time(), QTimeZone(QTimeZone::UTC));
+#else
+	newtime = QDateTime(newtime.date(), newtime.time(), Qt::UTC);
+#endif
 
 	m_amount = dateTimeToTimestamp(newtime) - dcImageEpoch;
 	if (m_amount)

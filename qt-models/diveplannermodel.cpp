@@ -499,7 +499,11 @@ DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTable
 	cylinders(true),
 	mode(NOTHING)
 {
-	startTime.setTimeSpec(Qt::UTC);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	startTime = QDateTime(startTime.date(), startTime.time(), QTimeZone(QTimeZone::UTC));
+#else
+	startTime = QDateTime(startTime.date(), startTime.time(), Qt::UTC);
+#endif
 	// use a Qt-connection to send the variations text across thread boundary (in case we
 	// are calculating the variations in a background thread).
 	connect(this, &DivePlannerPointsModel::variationsComputed, this, &DivePlannerPointsModel::computeVariationsDone);
@@ -1417,7 +1421,11 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	// Set Date, Time, and Dive Mode from parameters
 	QString dateTimeString = date + " " + time;
 	QDateTime plannedDateTime = QDateTime::fromString(dateTimeString, "yyyy-MM-dd hh:mm:ss");
-	plannedDateTime.setTimeSpec(Qt::UTC);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	plannedDateTime = QDateTime(plannedDateTime.date(), plannedDateTime.time(), QTimeZone(QTimeZone::UTC));
+#else
+	plannedDateTime = QDateTime(plannedDateTime.date(), plannedDateTime.time(), Qt::UTC);
+#endif
 	d->when = static_cast<time_t>(plannedDateTime.toSecsSinceEpoch());
 	diveplan.when = d->when;
 

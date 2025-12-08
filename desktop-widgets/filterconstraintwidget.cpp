@@ -68,7 +68,11 @@ static QDateEdit *makeDateEdit()
 {
 	QDateEdit *res = new QDateEdit;
 	res->setCalendarPopup(true);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	res->setTimeZone(QTimeZone::utc());
+#else
 	res->setTimeSpec(Qt::UTC);
+#endif
 	return res;
 }
 
@@ -76,7 +80,11 @@ static QDateEdit *makeDateEdit()
 static QTimeEdit *makeTimeEdit()
 {
 	QTimeEdit *res = new QTimeEdit;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	res->setTimeZone(QTimeZone::utc());
+#else
 	res->setTimeSpec(Qt::UTC);
+#endif
 	return res;
 }
 
