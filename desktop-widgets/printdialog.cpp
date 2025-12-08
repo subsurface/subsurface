@@ -130,9 +130,9 @@ PrintDialog::PrintDialog(dive *singleDive, const QString &filename, QWidget *par
 	setWindowTitle(tr("Print"));
 	setWindowIcon(QIcon(":subsurface-icon"));
 
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 
 	// seems to be the most reliable way to track for all sorts of dialog disposal.
