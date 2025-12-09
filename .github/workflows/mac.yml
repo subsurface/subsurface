@@ -31,7 +31,7 @@ jobs:
             qtversion: 6.8.3
             brewpackages:
           - arch: x86_64
-            runner: macos-13
+            runner: macos-15-intel
             qtversion: 5
             brewpackages: 'libjpg'
     runs-on: ${{ matrix.runner }}
