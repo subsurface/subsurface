@@ -716,9 +716,12 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 				}
 			}
 
-			report_info("now writing \"0x0100\" to the descriptor %s", to_str(d.uuid()).c_str());
+			const char *value = c.properties() & QLowEnergyCharacteristic::Notify ?
+				"0100" : "0200";
 
-			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
+			report_info("now writing \"0x%s\" to the descriptor %s", value, to_str(d.uuid()).c_str());
+
+			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex(value));
 			WAITFOR(ble->descriptorWritten(), 1000);
 			if (!ble->descriptorWritten()) {
 				report_info("Bluetooth: Failed to enable notifications for characteristic %s", to_str(c.uuid()).c_str());
