@@ -12,15 +12,20 @@
 #include <memory>
 #include <QPainter>
 #include <QPrinter>
-#include <QtWebKitWidgets>
+#if defined(USE_QLITEHTML)
+# include <QUrl>
+# include <QFile>
+#elif defined(USE_WEBKIT)
+# include <QtWebKitWidgetst>
 #include <QWebElementCollection>
 #include <QWebElement>
+#endif
 
 Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, dive *singleDive) :
 	paintDevice(paintDevice),
+#if defined(USE_WEBKIT)
 	webView(new QWebView),
-	printOptions(printOptions),
-	templateOptions(templateOptions),
+#endif
 	printMode(printMode),
 	singleDive(singleDive),
 	done(0)
@@ -29,7 +34,9 @@ Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, c
 
 Printer::~Printer()
 {
+#if defined(USE_WEBKIT)
 	delete webView;
+#endif
 }
 
 void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &viewPort, QPainter *painter,
