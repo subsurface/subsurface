@@ -517,6 +517,14 @@ DivePlannerPointsModel *DivePlannerPointsModel::instance()
 
 void DivePlannerPointsModel::emitDataChanged()
 {
+	// add a reasonable setpoint for CCR segments that don't have one yet
+	if (d)
+		for (int j = 0; j < rowCount(); j++) {
+			divedatapoint &p = divepoints[j];
+			if (d->get_cylinder(p.cylinderid)->cylinder_use == DILUENT && p.setpoint == 0)
+				p.setpoint = prefs.defaultsetpoint;
+		}
+
 	updateDiveProfile();
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
 }
@@ -1083,7 +1091,7 @@ DivePlannerPointsModel::Mode DivePlannerPointsModel::currentMode() const
 bool DivePlannerPointsModel::tankInUse(int cylinderid) const
 {
 	for (int j = 0; j < rowCount(); j++) {
-		const divedatapoint &p = divepoints[j];
+		const divedatapoint p = at(j);
 		if (p.time == 0) // special entries that hold the available gases
 			continue;
 		if (!p.entered) // removing deco gases is ok
