@@ -431,7 +431,7 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 		break;
 #ifdef DC_SAMPLE_TTS
 	case DC_SAMPLE_TTS:
-		sample.tts.seconds = value.time;
+		sample.tts.seconds = value.deco.tts;
 		break;
 #endif
 	case DC_SAMPLE_HEARTBEAT:
@@ -489,7 +489,7 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 			sample.stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample.stoptime.seconds = stoptime = value.deco.time;
 		}
-		sample.tts.seconds = value.deco.tts;
+		break;
 	default:
 		break;
 	}
