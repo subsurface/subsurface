@@ -489,7 +489,10 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 			sample.stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample.stoptime.seconds = stoptime = value.deco.time;
 		}
-		sample.tts.seconds = value.deco.tts;
+		if (value.deco.tts)
+			sample.tts.seconds = value.deco.tts;
+
+		break;
 	default:
 		break;
 	}
