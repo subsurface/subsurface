@@ -1150,7 +1150,7 @@ bool QMLManager::checkDuration(struct dive *d, QString duration)
 
 bool QMLManager::checkDepth(dive *d, QString depth)
 {
-	if (get_depth_string(d->dcs[0].maxdepth.mm, true, true) != depth) {
+	if (get_depth_string(d->dcs[0].maxdepth.mm, true, prefs.units.show_mdecimal) != depth) {
 		int depthValue = parseLengthToMm(depth);
 		// the QML code should stop negative depth, but massively huge depth can make
 		// the profile extremely slow or even run out of memory and crash, so keep
