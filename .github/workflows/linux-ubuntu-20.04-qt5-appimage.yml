@@ -58,7 +58,7 @@ jobs:
 
     - name: load the documentation from cache
       id: load-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: Documentation/output
         key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
