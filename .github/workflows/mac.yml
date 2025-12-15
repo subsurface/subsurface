@@ -44,7 +44,7 @@ jobs:
 
     - name: Cache Homebrew packages
       id: cache-homebrew
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/Library/Caches/Homebrew
         key: macos-brew-${{ runner.os }}-${{ hashFiles('.github/workflows/mac.yml') }}
@@ -73,7 +73,7 @@ jobs:
 
     - name: load the documentation from cache
       id: load-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: Documentation/output
         key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
@@ -93,7 +93,7 @@ jobs:
 
     - name: cache deps
       id: cache-deps
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ${{ steps.get-install-root.outputs.path }}
         key: macos-deps-${{ runner.arch }}-${{ hashFiles('.github/workflows/mac.yml', 'scripts/build.sh', 'packaging/macosx/build-deps.sh', 'scripts/get-dep-lib.sh') }}
