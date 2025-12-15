@@ -81,7 +81,7 @@ jobs:
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: Subsurface-Android-${{ steps.version_number.outputs.version }}
         path: Subsurface-mobile-*.apk
