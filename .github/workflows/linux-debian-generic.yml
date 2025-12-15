@@ -71,7 +71,7 @@ jobs:
 
     - name: upload test artifacts
       if: failure()
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: test-output-mobile-${{ steps.version_number.outputs.version }}
         path: |
@@ -109,7 +109,7 @@ jobs:
 
     - name: upload test artifacts
       if: failure()
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: test-output-${{ steps.version_number.outputs.version }}
         path: |

@@ -45,7 +45,7 @@ jobs:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
     - name: publish artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: Subsurface-Documentation-${{ steps.version_number.outputs.version }}
         path: Documentation/output
