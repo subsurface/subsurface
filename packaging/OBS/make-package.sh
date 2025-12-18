@@ -20,9 +20,18 @@ git submodule init
 git submodule update
 cd -
 
-GITVERSION=$(cd subsurface ; git describe --match "v[0-9]*" --abbrev=12 | sed -e 's/-g.*$// ; s/^v//')
-GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
+# the script always creates -local names as it isn't supposed to be used during CICD, so work around that
+NEWVERSION=$(bash subsurface/scripts/get-version.sh)
+if [[ $NEWVERSION == *"-patch."* ]]; then
+    GITREVISION="${NEWVERSION#*-patch.}"
+    GITREVISION="${GITREVISION%.local}"
+    GITVERSION="${NEWVERSION%%-patch.*}-${GITREVISION}"
+else
+    GITVERSION="${NEWVERSION%-local}"
+    GITREVISION=0
+fi
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
+
 GITDATE=$(cd subsurface ; git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
 LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
 
