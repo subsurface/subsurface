@@ -294,10 +294,6 @@ static constexpr inline fraction_t operator""_percent(unsigned long long percent
 {
 	return fraction_t { .permille = static_cast<int>(percent * 10) };
 }
-static constexpr inline fraction_t invalid_permille()
-{
-	return fraction_t { .permille = -1 };
-}
 
 struct weight_t : public unit_base<weight_t>
 {

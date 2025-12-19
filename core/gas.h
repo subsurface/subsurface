@@ -16,6 +16,7 @@ struct gasmix {
 	fraction_t he;
 	std::string name() const;
 };
+static const struct fraction_t invalid_permille = { .permille = -1 };
 static const struct gasmix gasmix_invalid = { invalid_permille, invalid_permille };
 static const struct gasmix gasmix_air = { 0_percent, 0_percent };
 
