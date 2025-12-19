@@ -16,10 +16,7 @@ struct gasmix {
 	fraction_t he;
 	std::string name() const;
 };
-// this is ridiculously stupid, but seems to be the only thing both ancient and current
-// C++ compilers will accept
-static struct fraction_t invalid_permille() { struct fraction_t invalid; invalid.permille = -1; return invalid; }
-static const struct gasmix gasmix_invalid = { invalid_permille(), invalid_permille() };
+static const struct gasmix gasmix_invalid = { { .permille = -1 }, { .permille = -1 } };
 static const struct gasmix gasmix_air = { 0_percent, 0_percent };
 
 enum gastype {
