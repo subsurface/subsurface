@@ -129,7 +129,6 @@ mkdir -p %{buildroot}/%{_libdir}
 (cd googlemaps/build ; make install_target INSTALL_ROOT=$RPM_BUILD_ROOT )
 (cd subsurface-build ; make VERBOSE=1 install )
 install subsurface.debug %{buildroot}%{_bindir}
-install metainfo/subsurface.metainfo.xml %{buildroot}%{_datadir}/metainfo
 %if 0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desktop
 cat %{buildroot}%{_datadir}/metainfo/subsurface.metainfo.xml
