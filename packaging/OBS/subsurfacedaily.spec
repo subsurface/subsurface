@@ -135,6 +135,7 @@ cat %{buildroot}%{_datadir}/metainfo/subsurface.metainfo.xml
 appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/subsurface.metainfo.xml
 %else
 %suse_update_desktop_file -r subsurface Utility DesktopUtility
+rm %{buildroot}%{_datadir}/metainfo/subsurface.metainfo.xml
 %endif
 %fdupes %{buildroot}
 
@@ -152,8 +153,6 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/subsurfac
 %{_bindir}/subsurface*
 %{_libdir}/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so
 %{_datadir}/applications/subsurface.desktop
-%dir %{_datadir}/metainfo
-%{_datadir}/metainfo/*
 %{_datadir}/icons/hicolor/*/apps/subsurface-icon.*
 %{_datadir}/subsurface/
 
