@@ -153,7 +153,7 @@ appstream-util validate-relax --nonet %{buildroot}%{_datadir}/metainfo/subsurfac
 %{_libdir}/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so
 %{_datadir}/applications/subsurface.desktop
 %dir %{_datadir}/metainfo
-%{_datadir}/metainfo/subsurface.metainfo.xml
+%{_datadir}/metainfo/*
 %{_datadir}/icons/hicolor/*/apps/subsurface-icon.*
 %{_datadir}/subsurface/
 
