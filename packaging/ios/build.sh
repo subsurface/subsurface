@@ -185,29 +185,44 @@ if [ "$QUICK" != "1" ] ; then
 
 	# build libxml2 and libxslt
 	if [ ! -e "$PKG_CONFIG_LIBDIR"/libxml-2.0.pc ] ; then
-		if [ ! -e "$PARENT_DIR"/libxml2/configure ] ; then
-			pushd "$PARENT_DIR"/libxml2
-			autoreconf --install
-			popd
-		fi
 		mkdir -p "$PARENT_DIR"/libxml2-build-"$ARCH"
 		pushd "$PARENT_DIR"/libxml2-build-"$ARCH"
-		"$PARENT_DIR"/libxml2/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-lzma --without-python --without-iconv --enable-static --disable-shared
-		perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
-		perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
+		cmake -DBUILD_SHARED_LIBS="OFF" \
+			-DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
+			-DCMAKE_SYSTEM_NAME=iOS \
+			-DCMAKE_OSX_ARCHITECTURES=${ARCH} \
+			-DCMAKE_OSX_DEPLOYMENT_TARGET=12.0 \
+			-DCMAKE_OSX_SYSROOT="$IPHONEOS_SDK" \
+			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+			-DCMAKE_PREFIX_PATH="$PREFIX" \
+			-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
+			-DENABLE_OPENSSL=FALSE \
+			-DENABLE_GNUTLS=FALSE \
+			"${PARENT_DIR}/libxml2"
 		make
 		make install
 		popd
 	fi
 
-	# the config.sub in libxslt is too old
-	pushd "$PARENT_DIR"/libxslt
-	autoreconf --install
-	popd
 	if [ ! -e "$PKG_CONFIG_LIBDIR"/libxslt.pc ] ; then
 		mkdir -p "${PARENT_DIR}/libxslt-build-${ARCH}"
 		pushd "${PARENT_DIR}/libxslt-build-${ARCH}"
-		"$PARENT_DIR"/libxslt/configure --host=$BUILDCHAIN --prefix="$PREFIX" --with-libxml-include-prefix="$INSTALL_ROOT"/include/libxml2 --without-python --without-crypto --enable-static --disable-shared
+		# "$PARENT_DIR"/libxslt/configure CFLAGS="-Wno-incompatible-function-pointer-types" --host=$BUILDCHAIN --prefix="$PREFIX" --with-libxml-include-prefix="$INSTALL_ROOT"/include/libxml2 --without-python --without-crypto --enable-static --disable-shared
+		cmake -DBUILD_SHARED_LIBS="OFF" \
+			-DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
+			-DCMAKE_SYSTEM_NAME=iOS \
+			-DCMAKE_OSX_ARCHITECTURES=${ARCH} \
+			-DCMAKE_OSX_DEPLOYMENT_TARGET=12.0 \
+			-DCMAKE_OSX_SYSROOT="$IPHONEOS_SDK" \
+			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+			-DCMAKE_PREFIX_PATH="$PREFIX" \
+			-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
+			-DCMAKE_C_FLAGS="-Wno-nullability-completeness" \
+			-DLIBXSLT_WITH_PROFILER="OFF" \
+			-DLIBXSLT_WITH_PROGRAMS="OFF" \
+			-DLIBXSLT_WITH_PYTHON="OFF" \
+			-DLIBXSLT_WITH_TESTS="OFF" \
+			"${PARENT_DIR}/libxslt"
 		make
 		make install
 		popd
