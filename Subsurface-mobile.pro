@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth 
+QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth
 
 DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT MAP_SUPPORT
 
@@ -415,6 +415,7 @@ ios {
 		$${ARCH_PATH}/lib/libgit2.a \
 		$${ARCH_PATH}/lib/libzip.a \
 		$${ARCH_PATH}/lib/libxslt.a \
+		$${ARCH_PATH}/lib/libxml2.a \
 		$${ARCH_PATH}/lib/qml/org/kde/kirigami.2/libkirigamiplugin.a \
 		../googlemaps-build/libqtgeoservices_googlemaps.a \
 		-liconv \
