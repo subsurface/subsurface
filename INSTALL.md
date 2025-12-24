@@ -156,7 +156,7 @@ sudo dnf install autoconf automake bluez-libs-devel cmake gcc-c++ git \
     qt5-qtbase-devel qt5-qtconnectivity-devel qt5-qtdeclarative-devel \
     qt5-qtlocation-devel qt5-qtscript-devel qt5-qtsvg-devel \
     qt5-qttools-devel qt5-qtwebkit-devel redhat-rpm-config \
-    bluez-libs-devel libgit2-devel libzip-devel libmtp-devel libraw-devel
+    bluez-libs-devel libgit2-devel libzip-devel libmtp-devel LibRaw-devel
 ```
 
 
