@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
+#include <cmath>
 #include <QDesktopServices>
 #include <QShortcut>
 #include <QFile>
@@ -156,7 +157,7 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	// Size the window to 80% of the main window's size
 	if (parent) {
 		QSize parentSize = parent->size();
-		resize(static_cast<int>(parentSize.width() * 0.8), static_cast<int>(parentSize.height() * 0.8));
+		resize(lrint(parentSize.width() * 0.8), lrint(parentSize.height() * 0.8));
 	} else {
 		// Fallback size if no parent
 		resize(700, 500);
