@@ -51,3 +51,5 @@ ReleaseNotes/MobileReleaseNotes.pdf
 ReleaseNotes/MobileReleaseNotes.text
 ReleaseNotes/ReleaseNotes.pdf
 ReleaseNotes/ReleaseNotes.text
+# MapWidget.qml is generated from MapWidgetQt5.qml or MapWidgetQt6.qml
+map-widget/qml/MapWidget.qml

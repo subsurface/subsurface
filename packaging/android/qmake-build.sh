@@ -418,6 +418,16 @@ pushd "$SUBSURFACE_SOURCE"/android-mobile
 tar c . | (cd "$BUILDROOT"/subsurface-mobile-build/android-build ; tar x)
 popd
 
+# Copy the appropriate MapWidget.qml based on Qt version
+QT_MAJOR=$(echo "$QT_VERSION" | cut -d. -f1)
+if [ "$QT_MAJOR" -ge 6 ]; then
+	echo "Using MapWidgetQt6.qml for Qt $QT_VERSION"
+	cp -f "$SUBSURFACE_SOURCE"/map-widget/qml/MapWidgetQt6.qml "$SUBSURFACE_SOURCE"/map-widget/qml/MapWidget.qml
+else
+	echo "Using MapWidgetQt5.qml for Qt $QT_VERSION"
+	cp -f "$SUBSURFACE_SOURCE"/map-widget/qml/MapWidgetQt5.qml "$SUBSURFACE_SOURCE"/map-widget/qml/MapWidget.qml
+fi
+
 # call qmake to set up the build
 echo "Run qmake to setup the Subsurface-mobile build for all architectures"
 $QMAKE BUILD_NR="$BUILDNR" BUILD_VERSION_NAME="$CANONICALVERSION" ANDROID_ABIS="$BUILD_ABIS" "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro

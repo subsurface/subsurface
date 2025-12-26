@@ -379,6 +379,17 @@ for BUILD_NOW in $BUILD_LOOP; do
 	pushd "$BUILDX"
 	rm -f ssrf-version.h
 	ln -s "$SUBSURFACE_SOURCE"/ssrf-version.h .
+
+	# Copy the appropriate MapWidget.qml based on Qt version
+	QT_MAJOR=$(echo "$QT_VERSION" | cut -d. -f1)
+	if [ "$QT_MAJOR" -ge 6 ]; then
+		echo "Using MapWidgetQt6.qml for Qt $QT_VERSION"
+		cp -f "$SUBSURFACE_SOURCE"/map-widget/qml/MapWidgetQt6.qml "$SUBSURFACE_SOURCE"/map-widget/qml/MapWidget.qml
+	else
+		echo "Using MapWidgetQt5.qml for Qt $QT_VERSION"
+		cp -f "$SUBSURFACE_SOURCE"/map-widget/qml/MapWidgetQt5.qml "$SUBSURFACE_SOURCE"/map-widget/qml/MapWidget.qml
+	fi
+
 	# shellcheck disable=SC2086
 	"$QMAKE" $QMAKEARG ARCH=$ARCH "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro \
 		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
