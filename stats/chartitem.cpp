@@ -68,21 +68,31 @@ void ChartPixmapItem::render(const StatsTheme &)
 {
 	if (!node) {
 		createNode(view.w()->createImageNode());
+
+		// Qt 6 requires texture and rect to be initialized before adding to scene graph
+		if (!img) {
+			resize(QSizeF(1,1));
+			img->fill(Qt::transparent);
+		}
+		texture.reset(view.w()->createTextureFromImage(*img, QQuickWindow::TextureHasAlphaChannel));
+		node->node->setOwnsTexture(false);  // We manage texture lifetime ourselves
+		node->node->setTexture(texture.get());
+		node->node->setRect(rect);
+		textureDirty = positionDirty = false;
+
 		view.addQSGNode(node.get(), zValue);
 	}
 	updateVisible();
 
-	if (!img) {
-		resize(QSizeF(1,1));
-		img->fill(Qt::transparent);
-	}
-	if (textureDirty) {
+	if (textureDirty && img) {
 		texture.reset(view.w()->createTextureFromImage(*img, QQuickWindow::TextureHasAlphaChannel));
 		node->node->setTexture(texture.get());
+		node->node->markDirty(QSGNode::DirtyMaterial);
 		textureDirty = false;
 	}
 	if (positionDirty) {
 		node->node->setRect(rect);
+		node->node->markDirty(QSGNode::DirtyGeometry);
 		positionDirty = false;
 	}
 }
@@ -160,16 +170,23 @@ void ChartScatterItem::render(const StatsTheme &theme)
 	}
 	if (!node) {
 		createNode(view.w()->createImageNode());
+
+		// Qt 6 requires texture and rect to be initialized before adding to scene graph
+		node->node->setTexture(getTexture(theme));
+		node->node->setRect(rect);
+		textureDirty = positionDirty = false;
+
 		view.addQSGNode(node.get(), zValue);
-		textureDirty = positionDirty = true;
 	}
 	updateVisible();
 	if (textureDirty) {
 		node->node->setTexture(getTexture(theme));
+		node->node->markDirty(QSGNode::DirtyMaterial);
 		textureDirty = false;
 	}
 	if (positionDirty) {
 		node->node->setRect(rect);
+		node->node->markDirty(QSGNode::DirtyGeometry);
 		positionDirty = false;
 	}
 }
