@@ -30,6 +30,8 @@ Item {
 		anchors.fill: parent
 		zoomLevel: defaultZoomIn
 
+		property var startCentroid
+
 		property var mapType
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property real defaultZoomIn: 12.0
@@ -120,11 +122,41 @@ Item {
 			NumberAnimation { target: map; property: "zoomLevel"; to: map.newZoom; duration: 500 }
 		}
 
-		MouseArea {
-			anchors.fill: parent
-			onPressed: { map.stopZoomAnimations(); mouse.accepted = false }
-			onWheel: { map.stopZoomAnimations(); wheel.accepted = false }
-			onDoubleClicked: map.doubleClickHandler(map.toCoordinate(Qt.point(mouseX, mouseY)))
+		// Qt 6 uses Input Handlers for map interaction (required for mouse/touch to work)
+		// these also work with Qt 5.15
+		WheelHandler {
+			id: wheel
+			onActiveChanged: if (active) map.stopZoomAnimations()
+			acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
+				? PointerDevice.Mouse | PointerDevice.TouchPad
+				: PointerDevice.Mouse
+			rotationScale: 1/120 // this gets us reasonably smooth zooming in my testing
+			property: "zoomLevel"
+		}
+		DragHandler {
+			id: drag
+			target: null
+			onActiveChanged: if (active) map.stopZoomAnimations()
+			onTranslationChanged: function(delta) { map.pan(-delta.x, -delta.y) }
+		}
+		PinchHandler {
+			id: pinch
+			target: null
+			onActiveChanged: if (active) {
+				map.stopZoomAnimations()
+				map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
+			}
+			onScaleChanged: function(delta) {
+				map.zoomLevel += Math.log2(delta)
+				map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+			}
+			grabPermissions: PointerHandler.TakeOverForbidden
+		}
+		TapHandler {
+			acceptedButtons: Qt.LeftButton
+			onDoubleTapped: function(eventPoint, button) {
+				map.doubleClickHandler(map.toCoordinate(eventPoint.position))
+			}
 		}
 
 		function doubleClickHandler(coord) {
