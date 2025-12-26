@@ -1,8 +1,9 @@
-name: Coverity Scan Linux Qt 5.9
+name: Coverity Scan Linux Qt 5
 
 on:
   schedule:
     - cron: '0 18 * * *' # Daily at 18:00 UTC
+  workflow_dispatch: # Allow manual trigger from GitHub UI
 
 jobs:
   CoverityScanBuildOnUbuntu:
@@ -49,7 +50,9 @@ jobs:
         project: Subsurface-divelog/subsurface
         token: ${{ secrets.COVERITY_SCAN_TOKEN }}
         email: glance@acc.umu.se
-        command: subsurface/scripts/build.sh -desktop -build-with-webkit
+        command: |
+          subsurface/scripts/build.sh -desktop -build-with-webkit
+          subsurface/scripts/build.sh -mobile
         working-directory: ${{ github.workspace }}/..
         version: ${{ steps.version_number.outputs.version }}
         description: Automatic scan on github actions
