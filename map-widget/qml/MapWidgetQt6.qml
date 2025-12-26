@@ -1,5 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.5
+//
+// MapWidget implementation for Qt 6 (also works with Qt 5.15+)
+// This file is copied to MapWidget.qml during CMake configuration when building with Qt 6
+// Qt 6 requires explicit Input Handlers (WheelHandler, DragHandler, PinchHandler, TapHandler)
+// for mouse/touch interaction as MapGestureArea was removed
+//
+import QtQuick 2.15
 import QtLocation 5.3
 import QtPositioning 5.3
 import org.subsurfacedivelog.mobile 1.0
