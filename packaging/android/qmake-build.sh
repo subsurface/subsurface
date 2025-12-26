@@ -117,7 +117,7 @@ if [ -n "${QT5_ANDROID+X}" ] ; then
 elif [ -d "$SUBSURFACE_SOURCE/../${LATEST_QT}" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../${LATEST_QT}
 else
-	echo "Cannot find Qt 5.12 or newer under $SUBSURFACE_SOURCE/.."
+	echo "Cannot find Qt ${LATEST_QT} or newer under $SUBSURFACE_SOURCE/.."
 	exit 1
 fi
 
@@ -364,10 +364,10 @@ for ARCH in $ARCHITECTURES ; do
 				-D_OPENSSL_VERSION="${OPENSSL_VERSION}" \
 				-DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
 				../libgit2/
-			
+
 			# This is a dirty fix for https://github.com/libgit2/libgit2/issues/6574
 			find ../libgit2 -name 'CMakeLists.txt' -exec sed -i 's|C_STANDARD 90|C_STANDARD 99|' {} \;
-			
+
 			make
 			make install
 			# Patch away pkg-config dependency to zlib, its there, i promise
