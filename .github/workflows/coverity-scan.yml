@@ -37,6 +37,8 @@ jobs:
       run: |
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
+        git config --global user.email "cicd@subsurface-divelog.org"
+        git config --global user.name "Subsurface CICD"
 
     - name: get the version information
       id: version_number
@@ -50,9 +52,7 @@ jobs:
         project: Subsurface-divelog/subsurface
         token: ${{ secrets.COVERITY_SCAN_TOKEN }}
         email: glance@acc.umu.se
-        command: |
-          subsurface/scripts/build.sh -desktop -build-with-webkit
-          subsurface/scripts/build.sh -mobile
+        command: subsurface/scripts/build.sh -both -build-with-webkit
         working-directory: ${{ github.workspace }}/..
         version: ${{ steps.version_number.outputs.version }}
         description: Automatic scan on github actions
