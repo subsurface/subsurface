@@ -263,14 +263,27 @@ if [ "$QUICK" != "1" ] ; then
 		    -G "Unix Makefiles" \
 		    -DBUILD_SHARED_LIBS="OFF" \
 		    -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
+			-DCMAKE_OSX_DEPLOYMENT_TARGET=12.0 \
 			-DSHA1_TYPE=builtin \
 			-DBUILD_CLAR=OFF \
+			-DBUILD_CLI=OFF \
+			-DBUILD_TESTS=OFF \
 			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
 			-DCMAKE_PREFIX_PATH="$PREFIX" \
 			-DCURL=OFF \
 			-DUSE_SSH=OFF \
+			-DUSE_HTTPS=SecureTransport \
+			-DSECURITY_FOUND=TRUE \
+			-DSECURITY_HAS_SSLCREATECONTEXT=TRUE \
+			-DSECURITY_INCLUDE_DIR="$SDK_DIR/usr/include" \
+			-DSECURITY_LIBRARIES="$SDK_DIR/System/Library/Frameworks/Security.framework" \
+			-DSECURITY_LDFLAGS="-framework Security" \
+			-DCOREFOUNDATION_FOUND=TRUE \
+			-DCOREFOUNDATION_LIBRARIES="$SDK_DIR/System/Library/Frameworks/CoreFoundation.framework" \
+			-DCOREFOUNDATION_LDFLAGS="-framework CoreFoundation" \
+			-DCMAKE_C_FLAGS="-Wno-error" \
 			"${PARENT_DIR}/libgit2/"
-		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' src/CMakeFiles/git2.dir/flags.make
+		find . -name flags.make -exec sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined -Wno-comment -Wno-variadic-macros /' {} \;
 		make
 		make install
 		# Patch away pkg-config dependency to zlib, its there, i promise
