@@ -326,15 +326,19 @@ if [ "$QUICK" != "1" ] ; then
 	# yes, shellcheck will complain that we don't enclose QMAKEARG in quotes when we use it
 	# that's intentional so that the command line argument actually works
 	# shellcheck disable=SC2086
+	rm -f Makefile
 	"$QMAKE" $QMAKEARG "$PARENT_DIR"/googlemaps/googlemaps.pro \
+		QMAKE_APPLE_DEVICE_ARCHS="$ARCH" \
 		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=release
-	make
+	make ARCHS="$ARCH"
 	if [ "$DEBUGRELEASE" != "Release" ] ; then
 		# shellcheck disable=SC2086
+		rm -f Makefile
 		"$QMAKE" $QMAKEARG "$PARENT_DIR"/googlemaps/googlemaps.pro \
+			QMAKE_APPLE_DEVICE_ARCHS="$ARCH" \
 			-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=debug
 		make clean
-		make
+		make ARCHS="$ARCH"
 	fi
 	popd
 
@@ -342,9 +346,11 @@ if [ "$QUICK" != "1" ] ; then
 	mkdir -p "$PARENT_DIR"/kirigami-release-build
 	pushd "$PARENT_DIR"/kirigami-release-build
 	# shellcheck disable=SC2086
+	rm -f Makefile
 	"$QMAKE" $QMAKEARG "$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami/kirigami.pro \
+		QMAKE_APPLE_DEVICE_ARCHS="$ARCH" \
 		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=release
-	make
+	make ARCHS="$ARCH"
 	# since the install prefix for qmake is rather weirdly implemented, let's copy things by hand into the multiarch destination
 	mkdir -p "$INSTALL_ROOT"/lib/qml/
 	cp -a org "$INSTALL_ROOT"/lib/qml/
@@ -353,9 +359,11 @@ if [ "$QUICK" != "1" ] ; then
 		mkdir -p "$PARENT_DIR"/kirigami-debug-build
 		pushd "$PARENT_DIR"/kirigami-debug-build
 		# shellcheck disable=SC2086
+		rm -f Makefile
 		"$QMAKE" $QMAKEARG "$SUBSURFACE_SOURCE"/mobile-widgets/3rdparty/kirigami/kirigami.pro \
+			QMAKE_APPLE_DEVICE_ARCHS="$ARCH" \
 			-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=debug
-		make
+		make ARCHS="$ARCH"
 		# since the install prefix for qmake is rather weirdly implemented, let's copy things by hand into the multiarch destination
 		mkdir -p "$INSTALL_ROOT"/lib/qml/
 		cp -a org "$INSTALL_ROOT"/lib/qml/
@@ -404,15 +412,19 @@ for BUILD_NOW in $BUILD_LOOP; do
 	fi
 
 	# shellcheck disable=SC2086
+	rm -f Makefile
 	"$QMAKE" $QMAKEARG ARCH=$ARCH "$SUBSURFACE_SOURCE"/Subsurface-mobile.pro \
+		QMAKE_APPLE_DEVICE_ARCHS="$ARCH" \
+		QML_IMPORT_PATH= \
+		QML2_IMPORT_PATH= \
 		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
 
 	# it appears that a first make fails with a missing generated file, which a second
 	# invocation of make will happily build
-	make || make
+	make ARCHS="$ARCH" || make ARCHS="$ARCH"
 
 	# Clean up the generated ssrf-version.h file
-	rm -f "$SUBSURFACE_SOURCE"/ssrf-version.h .
+	rm -f "$SUBSURFACE_SOURCE"/ssrf-version.h
 
 	popd
 done
