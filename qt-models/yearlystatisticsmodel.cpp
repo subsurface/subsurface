@@ -67,15 +67,15 @@ QVariant YearStatisticsItem::data(int column, int role) const
 	case LONGEST_TIME:
 		return formatMinutes(stats_interval.longest_time.seconds);
 	case AVG_DEPTH:
-		return get_depth_string(stats_interval.avg_depth);
+		return get_depth_string(stats_interval.avg_depth,false,true); // stats/average: decimals should be present
 	case AVG_MAX_DEPTH:
 		if (stats_interval.selection_size)
-			return get_depth_string(stats_interval.combined_max_depth.mm / stats_interval.selection_size);
+			return get_depth_string((stats_interval.combined_max_depth.mm / stats_interval.selection_size) ,false,true);
 		break;
 	case MIN_DEPTH:
-		return get_depth_string(stats_interval.min_depth);
+		return get_depth_string(stats_interval.min_depth,false,true); // stats/average: decimals should be present
 	case MAX_DEPTH:
-		return get_depth_string(stats_interval.max_depth);
+		return get_depth_string(stats_interval.max_depth,false,true); // stats/average: decimals should be present
 	case AVG_SAC:
 		return get_volume_string(stats_interval.avg_sac);
 	case MIN_SAC:
@@ -220,8 +220,8 @@ void YearlyStatisticsModel::update_yearly_stats()
 		int i = 0;
 		for (auto it = std::next(stats.stats_by_depth.begin()); it != stats.stats_by_depth.end(); ++it) {
 			if (it->selection_size) {
-				QString label = QString(tr("%1 - %2")).arg(get_depth_string(i * (STATS_DEPTH_BUCKET * 1000), true, false),
-						get_depth_string((i + 1) * (STATS_DEPTH_BUCKET * 1000), true, false));
+				QString label = QString(tr("%1 - %2")).arg(get_depth_string(i * (STATS_DEPTH_BUCKET * 1000), true, true),
+						get_depth_string((i + 1) * (STATS_DEPTH_BUCKET * 1000), true, true));  // stats/average: decimals should be present
 				it->location = label.toStdString();
 				YearStatisticsItem *iChild = new YearStatisticsItem(*it);
 				item->children.append(iChild);
