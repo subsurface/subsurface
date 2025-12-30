@@ -11,8 +11,6 @@
 [![Fedora 35 / Qt 6--](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-35-qt6.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-35-qt6.yml)
 [![Debian Bookworm / Qt 5.15--](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-bookworm-5.15.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-bookworm-5.15.yml)
 
-[![Coverity Scan Results](https://scan.coverity.com/projects/14405/badge.svg)](https://scan.coverity.com/projects/subsurface-divelog-subsurface)
-
 Subsurface can be found at http://subsurface-divelog.org/
 
 Our user forum is at http://subsurface-divelog.org/user-forum/
