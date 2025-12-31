@@ -186,7 +186,7 @@ extern int save_dives_logic(const char *filename, bool select_only, bool anonymi
 extern int save_dive(FILE *f, const struct dive &dive, bool anonymize);
 extern std::pair<int, std::string> export_dives_xslt(const char *filename, bool selected, const int units, const char *export_xslt, bool anonymize);
 
-extern int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize);
+extern int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize, bool kml);
 
 struct membuffer;
 extern void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anonymize);
