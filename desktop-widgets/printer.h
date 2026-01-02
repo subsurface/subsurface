@@ -20,10 +20,14 @@ public:
 		PRINT,
 		PREVIEW
 	};
+	void Preview(QString content = "Here be the content");
+
 
 private:
 	QPaintDevice *paintDevice;
+#ifdef USE_WEBKIT
 	QWebView *webView;
+#endif
 	const print_options &printOptions;
 	const template_options &templateOptions;
 	QSize pageSize;
