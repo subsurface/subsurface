@@ -1453,6 +1453,9 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	if (idx1 < 0 || idx2 < 0)
 		return res;
 
+	if ((unsigned)idx1 >= pi.entry.size() || (unsigned)idx2 >= pi.entry.size())
+		return res;
+
 	if (pi.entry[idx1].sec > pi.entry[idx2].sec) {
 		int tmp = idx2;
 		idx2 = idx1;
