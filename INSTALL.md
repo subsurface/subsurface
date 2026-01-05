@@ -6,7 +6,7 @@ libsqlite3, libzip, and libgit2.
 
 Below are instructions for building Subsurface
 - on some popular Linux distributions,
-- MacOSX,
+- macOS,
 - Windows (cross-building)
 - Android (cross-building)
 - iOS (cross-building)
@@ -67,42 +67,6 @@ Most Linux distributions include a new enough version of Qt (and if you are on
 a distro that still ships with an older Qt, likely your C compiler is also not
 new enough to build Subsurface).
 
-If you need Qt (likely on macOS) or want a newer version than provided by your
-Linux distro, you can install a separate version that Subsurface will use.
-As of Qt5.15 it has become a lot harder to download and install Qt - you
-now need a Qt account and the installer tool has a new space age look and
-significantly reduced flexibility.
-
-As of this writing, there is thankfully a thirdparty offline installer still
-available:
-
-```
-pip3 install aqtinstall
-aqt install -O <Qt Location> 5.15.2 mac desktop
-```
-
-(or whatever version / OS you need). This installer is surprisingly fast
-and seems well maintained - note that we don't use this for Windows as
-that is completely built from source using MXE.
-
-In order to use this Qt installation, simply add it to your PATH:
-
-```
-PATH=<Qt Location>/<version>/<type>/bin:$PATH
-```
-
-QtWebKit is needed, if you want to print, but no longer part of Qt5,
-so you need to download it and compile. In case you just want to test
-without print possibility omit this step.
-
-```
-git clone -b 5.212 https://github.com/qt/qtwebkit
-mkdir -p qtwebkit/WebKitBuild/Release
-cd qtwebkit/WebKitBuild/Release
-cmake -DPORT=Qt -DCMAKE_BUILD_TYPE=Release -DQt5_DIR=/<Qt Location>/<version>/<type>/lib/cmake/Qt5 ../..
-make install
-```
-
 
 ### Other third party library dependencies
 
@@ -118,7 +82,6 @@ for the googlemaps plugin and the iOS build.
 Download from https://cmake.org/download and follow the instructions
 to install it or alternatively follow the instruction specific to a
 distribution (see build instructions).
-
 
 
 ## Build options for Subsurface
@@ -156,7 +119,8 @@ sudo dnf install autoconf automake bluez-libs-devel cmake gcc-c++ git \
     qt5-qtbase-devel qt5-qtconnectivity-devel qt5-qtdeclarative-devel \
     qt5-qtlocation-devel qt5-qtscript-devel qt5-qtsvg-devel \
     qt5-qttools-devel qt5-qtwebkit-devel redhat-rpm-config \
-    bluez-libs-devel libgit2-devel libzip-devel libmtp-devel LibRaw-devel
+    asciidoctor bluez-libs-devel libgit2-devel libzip-devel libmtp-devel \
+    LibRaw-devel
 ```
 
 
@@ -169,7 +133,7 @@ sudo zypper install git gcc-c++ make autoconf automake libtool cmake libzip-deve
     libqt5-qtbase-devel libQt5WebKit5-devel libqt5-qtsvg-devel \
     libqt5-qtscript-devel libqt5-qtdeclarative-devel \
     libqt5-qtconnectivity-devel libqt5-qtlocation-devel libcurl-devel \
-    bluez-devel libgit2-devel libmtp-devel libraw-devel
+    asciidoctor bluez-devel libgit2-devel libmtp-devel libraw-devel
 ```
 
 On Debian this seems to work for Trixie. For Bookworm, install the same, plus
@@ -184,7 +148,8 @@ sudo apt install \
     qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
     qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
     qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
+    qtscript5-dev qttools5-dev qttools5-dev-tools asciidoctor libmtp-dev \
+    libraw-dev
 ```
 
 In order to build and run mobile-on-desktop, you also need
@@ -208,7 +173,8 @@ sudo apt install \
     qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
     qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
     qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
+    qtscript5-dev qttools5-dev qttools5-dev-tools asciidoctor libmtp-dev \
+    libraw-dev
 ```
 
 In order to build and run mobile-on-desktop, you also need
@@ -232,7 +198,8 @@ sudo apt install \
     qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
     qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
     qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
+    qtscript5-dev qttools5-dev qttools5-dev-tools asciidoctor libmtp-dev \
+    libraw-dev
 ```
 
 In order to build and run mobile-on-desktop, you also need
@@ -261,7 +228,8 @@ sudo apt install \
     qml-module-qtlocation qml-module-qtpositioning qml-module-qtquick2 \
     qt5-qmake qtchooser qtconnectivity5-dev qtdeclarative5-dev \
     qtdeclarative5-private-dev qtlocation5-dev qtpositioning5-dev \
-    qtscript5-dev qttools5-dev qttools5-dev-tools libmtp-dev libraw-dev
+    qtscript5-dev qttools5-dev qttools5-dev-tools asciidoctor libmtp-dev \
+    libraw-dev
 ```
 
 Note that you'll need to increase the swap space as the default of 100MB
@@ -341,7 +309,18 @@ sudo ldconfig ~/src/install-root/lib
 ```
 
 
-### Building Subsurface under MacOSX
+### Building Subsurface under macOS
+
+#### Automated build with Homebrew
+
+This is the easy way to build Subsurface on macOS. It will work in most cases by installing dependencies, including Qt, from Homebrew. But since Homebrew is focused on providing the latest versions of all packages, and does not offer a straightforward way to specify which exact version of a package to install, this approach may break at any time in the future. This is also not how the release builds are done.
+
+```
+cd ~/src; bash subsurface/packaging/macosx/homebrew-local-build.sh
+```
+
+
+#### Manual build
 
 While it is possible to build all required components completely from source,
 at this point the preferred way to build Subsurface is to set up the build
@@ -402,9 +381,48 @@ Debugging can be done with either Xcode or QtCreator.
 To install the app for all users, move subsurface/build/Subsurface.app to /Applications.
 
 
-### Cross-building Subsurface on MacOSX for iOS
+### Getting Qt the hard way
 
-0. build SubSurface under MacOSX and iOS
+If you need Qt (likely on macOS) or want a newer version than provided by your
+Linux distro, you can install a separate version that Subsurface will use.
+As of Qt5.15 it has become a lot harder to download and install Qt - you
+now need a Qt account and the installer tool has a new space age look and
+significantly reduced flexibility.
+
+As of this writing, there is thankfully a thirdparty offline installer still
+available:
+
+```
+pip3 install aqtinstall
+aqt install-qt -O <Qt Location> mac desktop 5.15.2
+```
+
+(or whatever version / OS you need). This installer is surprisingly fast
+and seems well maintained - note that we don't use this for Windows as
+that is completely built from source using MXE.
+
+In order to use this Qt installation, simply add it to your PATH:
+
+```
+PATH=<Qt Location>/<version>/<type>/bin:$PATH
+```
+
+QtWebKit is needed, if you want to print, but no longer part of Qt5,
+so you need to download it and compile. In case you just want to test
+without print possibility omit this step.
+
+```
+git clone -b 5.212 https://github.com/qt/qtwebkit
+mkdir -p qtwebkit/WebKitBuild/Release
+cd qtwebkit/WebKitBuild/Release
+cmake -DPORT=Qt -DCMAKE_BUILD_TYPE=Release -DQt5_DIR=/<Qt Location>/<version>/<type>/lib/cmake/Qt5 ../..
+make install
+```
+
+
+### Cross-building Subsurface on macOS for iOS
+
+0. build SubSurface under macOS and iOS
 
 1. `cd <repo>/..; bash <repo>/scripts/build.sh -build-deps -both`
 note: this is mainly done to ensure all external dependencies are downloaded and set
