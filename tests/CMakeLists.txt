@@ -151,6 +151,7 @@ TEST(TestQPrefTechnicalDetails testqPrefTechnicalDetails.cpp)
 TEST(TestQPrefUnits testqPrefUnits.cpp)
 TEST(TestQPrefUpdateManager testqPrefUpdateManager.cpp)
 TEST(TestformatDiveGasString testformatDiveGasString.cpp)
+TEST(TestRuler testruler.cpp)
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> -input ${SUBSURFACE_SOURCE}/tests)
 
 # this is currently broken
@@ -188,6 +189,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefUnits
 	TestQPrefUpdateManager
 	TestQML
+	TestRuler
 )
 
 # useful for debugging CMake issues
