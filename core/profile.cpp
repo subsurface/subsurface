@@ -1489,7 +1489,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 			avg_speed += abs(data.speed) * (data.sec - last_data.sec);
 		else
 			avg_speed += data.speed * (data.sec - last_data.sec);
-		avg_depth += data.depth * (data.sec - last_data.sec);
+		avg_depth += ((data.depth + last_data.depth) / 2) * (data.sec - last_data.sec);
 
 		if (data.speed > max_desc_speed)
 			max_desc_speed = data.speed;
