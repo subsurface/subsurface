@@ -1474,8 +1474,6 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	depth_t max_depth;
 	depth_t min_depth { .mm = INT_MAX };
 
-	int last_sec = start.sec;
-
 	volume_t cylinder_volume;
 	std::vector<int> start_pressures(pi.nr_cylinders, 0);
 	std::vector<int> last_pressures(pi.nr_cylinders, 0);
@@ -1483,13 +1481,15 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	std::vector<int> volumes_used(pi.nr_cylinders, 0);
 	std::vector<char> cylinder_is_used(pi.nr_cylinders, false);
 
-	for (int i = idx1; i < idx2; ++i) {
+	for (int i = idx1, last_idx = idx1; i <= idx2; ++i) {
+		const struct plot_data &last_data = pi.entry[last_idx];
 		const struct plot_data &data = pi.entry[i];
+
 		if (sum)
-			avg_speed += abs(data.speed) * (data.sec - last_sec);
+			avg_speed += abs(data.speed) * (data.sec - last_data.sec);
 		else
-			avg_speed += data.speed * (data.sec - last_sec);
-		avg_depth += data.depth * (data.sec - last_sec);
+			avg_speed += data.speed * (data.sec - last_data.sec);
+		avg_depth += data.depth * (data.sec - last_data.sec);
 
 		if (data.speed > max_desc_speed)
 			max_desc_speed = data.speed;
@@ -1526,7 +1526,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 			last_pressures[cylinder_index] = next_pressure;
 		}
 
-		last_sec = data.sec;
+		last_idx = i;
 	}
 
 	avg_depth /= stop.sec - start.sec;
