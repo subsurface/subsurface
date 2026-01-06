@@ -92,6 +92,15 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
+			// show average depth if available
+			TemplateLabel {
+				visible: typeof averageDepth !== "undefined" && averageDepth !== ""
+				text: visible ? qsTr("Avg: %1").arg(averageDepth) : ""
+				width: visible ? Math.max(Kirigami.Units.gridUnit * 4, paintedWidth) : 0
+				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
+				opacity: 0.8
+			}
 		}
 		TemplateLabel {
 			id: numberText
