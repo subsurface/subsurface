@@ -1305,6 +1305,9 @@ void EditSensors::undo()
 {
 	dc->tank_sensor_mappings = oldTankSensorMappings;
 
+	d->cylinders[cylinderIndex].sample_start = 0_bar;
+	d->cylinders[cylinderIndex].sample_end = 0_bar;
+
 	emit diveListNotifier.diveComputerEdited(*d, *dc);
 	d->invalidate_cache(); // Ensure that dive is written in git_save()
 }
@@ -1345,6 +1348,9 @@ void EditSensors::redo()
 	if (!found) {
 		dc->tank_sensor_mappings.push_back(tank_sensor_mapping { sensorId, cylinderIndex });
 	}
+
+	d->cylinders[cylinderIndex].sample_start = 0_bar;
+	d->cylinders[cylinderIndex].sample_end = 0_bar;
 
 	emit diveListNotifier.diveComputerEdited(*d, *dc);
 	d->invalidate_cache(); // Ensure that dive is written in git_save()

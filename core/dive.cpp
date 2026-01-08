@@ -839,19 +839,19 @@ static void simplify_dc_pressures(struct divecomputer &dc)
 }
 
 /* Do we need a sensor -> cylinder mapping? */
-static void fixup_start_pressure(struct dive &dive, int idx, pressure_t p)
+static void fixup_start_pressure(struct dive &dive, int cylinder_idx, pressure_t p)
 {
-	if (idx >= 0 && static_cast<size_t>(idx) < dive.cylinders.size()) {
-		cylinder_t &cyl = dive.cylinders[idx];
+	if (cylinder_idx >= 0 && static_cast<size_t>(cylinder_idx) < dive.cylinders.size()) {
+		cylinder_t &cyl = dive.cylinders[cylinder_idx];
 		if (p.mbar && !cyl.sample_start.mbar)
 			cyl.sample_start = p;
 	}
 }
 
-static void fixup_end_pressure(struct dive &dive, int idx, pressure_t p)
+static void fixup_end_pressure(struct dive &dive, int cylinder_idx, pressure_t p)
 {
-	if (idx >= 0 && static_cast<size_t>(idx) < dive.cylinders.size()) {
-		cylinder_t &cyl = dive.cylinders[idx];
+	if (cylinder_idx >= 0 && static_cast<size_t>(cylinder_idx) < dive.cylinders.size()) {
+		cylinder_t &cyl = dive.cylinders[cylinder_idx];
 		if (p.mbar && !cyl.sample_end.mbar)
 			cyl.sample_end = p;
 	}
@@ -877,8 +877,13 @@ static void fixup_dive_pressures(struct dive &dive, struct divecomputer &dc)
 		if (sample.depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		for (int idx = 0; idx < MAX_SENSORS; idx++)
-			fixup_start_pressure(dive, sample.sensor[idx], sample.pressure[idx]);
+		for (int sensor_idx = 0; sensor_idx < MAX_SENSORS; sensor_idx++) {
+			auto mapping = std::find_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(), [&sample, sensor_idx](const struct tank_sensor_mapping &a) {
+				return sample.sensor[sensor_idx] == a.sensor_id;
+			});
+			if (mapping != dc.tank_sensor_mappings.end() && mapping->cylinder_index != NO_SENSOR)
+				fixup_start_pressure(dive, mapping->cylinder_index, sample.pressure[sensor_idx]);
+		}
 	}
 
 	/* ..and from the end for ending pressures */
@@ -886,8 +891,13 @@ static void fixup_dive_pressures(struct dive &dive, struct divecomputer &dc)
 		if (it->depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		for (int idx = 0; idx < MAX_SENSORS; idx++)
-			fixup_end_pressure(dive, it->sensor[idx], it->pressure[idx]);
+		for (int sensor_idx = 0; sensor_idx < MAX_SENSORS; sensor_idx++) {
+			auto mapping = std::find_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(), [it, sensor_idx](const struct tank_sensor_mapping &a) {
+				return it->sensor[sensor_idx] == a.sensor_id;
+			});
+			if (mapping != dc.tank_sensor_mappings.end() && mapping->cylinder_index != NO_SENSOR)
+				fixup_end_pressure(dive, mapping->cylinder_index, it->pressure[sensor_idx]);
+		}
 	}
 
 	simplify_dc_pressures(dc);
