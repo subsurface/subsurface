@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printer.h"
+#include "core/dive.h"
+#include "backend-shared/exportfuncs.h"
 #include "templatelayout.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
@@ -203,6 +205,11 @@ void Printer::print()
 		return;
 	}
 
+	auto profile = getPrintProfile();
+	for(struct dive *dive: getDives())
+		exportProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false);
+
+
 	QPrinter *printerPtr;
 	printerPtr = static_cast<QPrinter*>(paintDevice);
 
@@ -333,6 +340,10 @@ void Printer::Preview(QString content, QPrinter *printer)
 	// QTextStream in(&file);
 	// previewWidget.setHtml(in.readAll());
 
+	QString repl = QString("<img height=\"30%\" width=\"30%\" src=\"file:///%1/dive_\\1.png\">").arg(printDir.path());
+	content.replace(QRegularExpression("<div\\s+class=\"diveProfile\"\\s+id=\"dive_([^\"]*)\"\\s*>\\s*</div>"), repl);
+
+	previewWidget.setUrl(QUrl("file:///", QUrl::TolerantMode));
 	previewWidget.setHtml(content);
 	previewWidget.print(printer);
 	//previewer.resize(700, 500);
