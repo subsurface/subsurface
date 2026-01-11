@@ -4,6 +4,7 @@
 
 #include <QString>
 #include <QFuture>
+#include "profile-widget/profilescene.h"
 
 struct dive_site;
 
@@ -14,6 +15,8 @@ struct ExportCallback {
 };
 
 void exportProfile(QString filename, bool selected_only, ExportCallback &cb, bool diveinfo);
+void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename, bool diveinfo);
+std::unique_ptr<ProfileScene> getPrintProfile();
 void export_TeX(const char *filename, bool selected_only, bool plain, ExportCallback &cb);
 void export_depths(const char *filename, bool selected_only);
 std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly);

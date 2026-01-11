@@ -4,6 +4,7 @@
 
 #include "printoptions.h"
 #include <QPrinter>
+#include <QTemporaryDir>
 #include "templateedit.h"
 
 struct dive;
@@ -40,6 +41,7 @@ private:
 	std::vector<dive *> getDives() const;
 	void putProfileImage(const QRect &box, const QRect &viewPort, QPainter *painter,
 			     struct dive *dive, ProfileScene *profile);
+	QTemporaryDir printDir;
 
 private slots:
 	void templateProgessUpdated(int value);
