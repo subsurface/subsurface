@@ -212,7 +212,7 @@ void Printer::print()
 	//rendering resolution = selected paper size in inchs * printer dpi
 	pageSize.setHeight(qCeil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
 	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
-	Preview(t.generate(getDives()));
+	Preview(t.generate(getDives()), printerPtr);
 #ifdef	USE_WEBKIT
 	webView->page()->setViewportSize(pageSize);
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
@@ -285,11 +285,10 @@ void Printer::previewOnePage()
 		} else {
 			render(1);
 		}
-		Preview();
 	}
 }
 
-void Printer::Preview(QString content)
+void Printer::Preview(QString content, QPrinter *printer)
 {
 	QDialog previewer;
 
@@ -312,7 +311,7 @@ void Printer::Preview(QString content)
 		}
 		return QByteArray();
 	});
-	previewWidget.setGeometry(QRect(0,0,1600,1000));
+	previewWidget.setGeometry(QRect(0,0,1200,1000));
 #endif
 	QString colorBack = previewer.palette().highlight().color().name(QColor::HexRgb);
 	QString colorText = previewer.palette().highlightedText().color().name(QColor::HexRgb);
@@ -327,8 +326,15 @@ void Printer::Preview(QString content)
 					  " { selection-background-color: %1; selection-color: %2; }")
 					  .arg(colorBack).arg(colorText));
 
-	previewWidget.setHtml(content);
+	// QFile file("/Users/Helling_1/logbuch.html");
+	// if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	// 	return;
 
+	// QTextStream in(&file);
+	// previewWidget.setHtml(in.readAll());
+
+	previewWidget.setHtml(content);
+	previewWidget.print(printer);
 	//previewer.resize(700, 500);
 	previewer.exec();
 	//previewWidget.exec();

@@ -3,6 +3,7 @@
 #define PRINTER_H
 
 #include "printoptions.h"
+#include <QPrinter>
 #include "templateedit.h"
 
 struct dive;
@@ -20,7 +21,7 @@ public:
 		PRINT,
 		PREVIEW
 	};
-	void Preview(QString content = "Here be the content");
+	void Preview(QString content, QPrinter *printer);
 
 
 private:
