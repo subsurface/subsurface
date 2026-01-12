@@ -881,7 +881,7 @@ static void fixup_dive_pressures(struct dive &dive, struct divecomputer &dc)
 			auto mapping = std::find_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(), [&sample, sensor_idx](const struct tank_sensor_mapping &a) {
 				return sample.sensor[sensor_idx] == a.sensor_id;
 			});
-			if (mapping != dc.tank_sensor_mappings.end() && mapping->cylinder_index != NO_SENSOR)
+			if (mapping != dc.tank_sensor_mappings.end())
 				fixup_start_pressure(dive, mapping->cylinder_index, sample.pressure[sensor_idx]);
 		}
 	}
@@ -895,7 +895,7 @@ static void fixup_dive_pressures(struct dive &dive, struct divecomputer &dc)
 			auto mapping = std::find_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(), [it, sensor_idx](const struct tank_sensor_mapping &a) {
 				return it->sensor[sensor_idx] == a.sensor_id;
 			});
-			if (mapping != dc.tank_sensor_mappings.end() && mapping->cylinder_index != NO_SENSOR)
+			if (mapping != dc.tank_sensor_mappings.end())
 				fixup_end_pressure(dive, mapping->cylinder_index, it->pressure[sensor_idx]);
 		}
 	}
@@ -1001,6 +1001,10 @@ static void fixup_sensor_mappings(struct dive &dive, struct divecomputer &dc)
 		for (auto sensor_id: get_tank_sensor_ids(dc))
 			if (sensor_id >= 0 && (unsigned int)sensor_id < dive.cylinders.size())
 				dc.tank_sensor_mappings.push_back(tank_sensor_mapping { sensor_id, (unsigned int)sensor_id });
+	} else if (dc.tank_sensor_mappings.size() == 1 && dc.tank_sensor_mappings[0].sensor_id == NO_SENSOR) {
+		// This is the sentinel value indicating no sensors are mapped.
+		// Clear the mappings to get an empty in-memory representation.
+		dc.tank_sensor_mappings.clear();
 	} else {
 		// Remove mappings where the sensor id does not exist
 		// or the cylinder index is out of range
@@ -1645,17 +1649,17 @@ static void merge_one_cylinder(cylinder_t *a, const cylinder_t *b)
 
 static bool cylinder_has_data(const cylinder_t &cyl)
 {
-	return !cyl.type.size.mliter &&
-	       !cyl.type.workingpressure.mbar &&
-	       cyl.type.description.empty() &&
-	       !cyl.gasmix.o2.permille &&
-	       !cyl.gasmix.he.permille &&
-	       !cyl.start.mbar &&
-	       !cyl.end.mbar &&
-	       !cyl.sample_start.mbar &&
-	       !cyl.sample_end.mbar &&
-	       !cyl.gas_used.mliter &&
-	       !cyl.deco_gas_used.mliter;
+	return cyl.type.size.mliter ||
+	       cyl.type.workingpressure.mbar ||
+	       !cyl.type.description.empty() ||
+	       cyl.gasmix.o2.permille ||
+	       cyl.gasmix.he.permille ||
+	       cyl.start.mbar ||
+	       cyl.end.mbar ||
+	       cyl.sample_start.mbar ||
+	       cyl.sample_end.mbar ||
+	       cyl.gas_used.mliter ||
+	       cyl.deco_gas_used.mliter;
 }
 
 static bool cylinder_in_use(const struct dive *dive, int idx)
