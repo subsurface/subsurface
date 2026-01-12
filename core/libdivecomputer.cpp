@@ -38,6 +38,7 @@
 #include "core/version.h"
 #include "core/qthelper.h"
 #include "core/file.h"
+#include <algorithm>
 #include <array>
 #include <charconv>
 
@@ -867,6 +868,32 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	    dive->dcs[0].samples[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
 	    dive->dcs[0].samples[1].temperature.mkelvin > dive->dcs[0].samples[0].temperature.mkelvin)
 		dive->dcs[0].samples[0].temperature.mkelvin = dive->dcs[0].samples[1].temperature.mkelvin;
+
+	/* If a cylinder has both start/end pressure from the backend AND pressure sensor
+	 * data in samples, clear the start/end pressure. libdivecomputer calculates these
+	 * from the first/last sample with pressure, but Subsurface uses first/last sample
+	 * below the surface threshold, which gives more accurate SAC calculations by
+	 * excluding breathing at the surface before/after the dive. */
+	for (size_t i = 0; i < dive->cylinders.size(); i++) {
+		cylinder_t &cyl = dive->cylinders[i];
+		if (cyl.start.mbar == 0 && cyl.end.mbar == 0)
+			continue;
+
+		/* Check if any sample has pressure data for this cylinder (sensor index == cylinder index) */
+		bool has_pressure_samples = std::any_of(dive->dcs[0].samples.begin(), dive->dcs[0].samples.end(),
+			[i](const struct sample &s) {
+				for (int j = 0; j < MAX_SENSORS; j++) {
+					if (s.sensor[j] == (int)i && s.pressure[j].mbar > 0)
+						return true;
+				}
+				return false;
+			});
+
+		if (has_pressure_samples) {
+			cyl.start.mbar = 0;
+			cyl.end.mbar = 0;
+		}
+	}
 
 	devdata->log->dives.record_dive(std::move(dive));
 	return true;
