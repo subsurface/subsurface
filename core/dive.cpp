@@ -1310,13 +1310,13 @@ static void merge_tank_sensor_mappings(struct divecomputer &res,
 
 	for (auto &mapping: src2->tank_sensor_mappings)
 		res.tank_sensor_mappings.push_back(tank_sensor_mapping {
-			(int16_t)(mapping.sensor_id == NO_SENSOR ? NO_SENSOR : cylinders_map2[mapping.sensor_id]),
+			mapping.sensor_id,
 			(unsigned int)cylinders_map2[mapping.cylinder_index]
 		});
 
 	for (auto &mapping: src1->tank_sensor_mappings)
 		res.tank_sensor_mappings.push_back(tank_sensor_mapping {
-			(int16_t)(mapping.sensor_id == NO_SENSOR ? NO_SENSOR : cylinders_map1[mapping.sensor_id]),
+			mapping.sensor_id,
 			(unsigned int)cylinders_map1[mapping.cylinder_index]
 		});
 }
@@ -1496,10 +1496,10 @@ static void dc_tank_sensor_mappings_renumber(struct divecomputer &dc, const int 
 {
 	for (auto it = dc.tank_sensor_mappings.begin(); it != dc.tank_sensor_mappings.end();) {
 		int cylinder_index = mapping[(*it).cylinder_index];
-		if (cylinder_index == NO_SENSOR) {
+		if (cylinder_index < 0) {
+			// Cylinder was removed, remove the mapping
 			it = dc.tank_sensor_mappings.erase(it);
-
-			break;
+			continue;
 		}
 
 		(*it).cylinder_index = cylinder_index;
