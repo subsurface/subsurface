@@ -591,7 +591,7 @@ uint32_t calculate_string_hash(const char *str)
 	return calculate_diveid((const unsigned char *)str, strlen(str));
 }
 
-static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str)
+static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str, bool got_location)
 {
 	// Our dive ID is the string hash of the "Dive ID" string
 	if (!strcmp(str->desc, "Dive ID")) {
@@ -604,8 +604,8 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 	add_extra_data(&dive->dcs[0], str->desc, str->value);
 
 	/* GPS data? */
-	if (!strncmp(str->desc, "GPS", 3)) {
-		char *line = (char *) str->value;
+	if (!got_location && !strncmp(str->desc, "GPS", 3)) {
+		char *line = (char *)str->value;
 		location_t location;
 
 		/* Do we already have a divesite? */
@@ -740,6 +740,29 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	if (rc == DC_STATUS_SUCCESS)
 		dive->dcs[0].surface_pressure.mbar = lrint(surface_pressure * 1000.0);
 
+	dc_location_t dc_location;
+	// Currently libdivecomputer only supports one location per dive
+	rc = dc_parser_get_field(parser, DC_FIELD_LOCATION, 0, &dc_location);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		download_error(translate("gettextFromC", "Error obtaining location"));
+		return rc;
+	}
+	bool got_location = false;
+	if (rc == DC_STATUS_SUCCESS) {
+		location_t location;
+		location.lat.udeg = lrint(dc_location.latitude * 1000000);
+		location.lon.udeg = lrint(dc_location.longitude * 1000000);
+
+		char location_string[64];
+		snprintf(location_string, sizeof(location_string), "%.6f, %.6f", location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
+
+		unregister_dive_from_dive_site(dive);
+		devdata->log->sites.create(location_string, location)->add_dive(dive);
+
+		add_extra_data(&dive->dcs[0], "Start location", location_string);
+		got_location = true;
+	}
+
 	// The dive parsing may give us more device information
 	int idx;
 	for (idx = 0; idx < 100; idx++) {
@@ -749,7 +772,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 			break;
 		if (!str.desc || !str.value)
 			break;
-		parse_string_field(devdata, dive, &str);
+		parse_string_field(devdata, dive, &str, got_location);
 		free((void *)str.value); // libdc gives us copies of the value-string.
 	}
 
