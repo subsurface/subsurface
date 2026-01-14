@@ -2,9 +2,11 @@
 <settings>
 </settings>
 <divesites>
+<site uuid='da2f213e' name='49.792736, 15.577312' gps='49.792736 15.577312'>
+</site>
 </divesites>
 <dives>
-<dive otu='34' cns='13%' date='2021-06-12' time='09:47:24' duration='76:32 min'>
+<dive otu='34' cns='13%' divesiteid='da2f213e' date='2021-06-12' time='09:47:24' duration='76:32 min'>
   <cylinder description='unknown' />
   <cylinder description='unknown' o2='50.0%' />
   <cylinder description='unknown' o2='100.0%' />
@@ -16,6 +18,7 @@
   <temperature water='5.6 C' />
   <surface pressure='0.967 bar' />
   <water salinity='1000 g/l' />
+  <extradata key='Start location' value='49.792736, 15.577312' />
   <event time='0:00 min' type='25' flags='6' name='gaschange' cylinder='5' />
   <event time='37:38 min' type='25' flags='1' name='gaschange' cylinder='0' />
   <event time='43:13 min' type='25' flags='2' name='gaschange' cylinder='1' o2='50.0%' />
