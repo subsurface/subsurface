@@ -14,32 +14,33 @@
 #include <memory>
 #include <QPainter>
 #include <QPrinter>
+#include "qmath.h"
 #if defined(USE_QLITEHTML)
 # include <QUrl>
 # include <QFile>
 # include <qlitehtmlwidget.h>
-#elif defined(USE_WEBKIT)
-#include <QtWebKitWidgetst>
+#else
+#include <QtWebKitWidgets>
 #include <QWebElementCollection>
 #include <QWebElement>
 #endif
 
 Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, dive *singleDive) :
 	paintDevice(paintDevice),
+#ifndef USE_QLITEHTML
+	webView(new QWebView),
+#endif
+	printOptions(printOptions),
 	templateOptions(templateOptions),
 	printMode(printMode),
 	singleDive(singleDive),
-	printOptions(printOptions),
 	done(0)
 {
-#ifdef USE_WEBENGINE
-	webview = new(QWebView);
-#endif
 }
 
 Printer::~Printer()
 {
-#if defined(USE_WEBKIT)
+#ifndef USE_QLITEHTML
 	delete webView;
 #endif
 }
@@ -57,7 +58,7 @@ void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &view
 
 void Printer::flowRender()
 {
-#ifdef USE_WEBKIT
+#ifndef USE_QLITEHTML
 	// add extra padding at the bottom to pages with height not divisible by view port
 	int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
 	QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
@@ -118,7 +119,7 @@ void Printer::flowRender()
 
 void Printer::render(int pages)
 {
-#ifdef USE_WEBKIT
+#ifndef USE_QLITEHTML
 	// get all refereces to diveprofile class in the Html template
 	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
 
@@ -219,8 +220,9 @@ void Printer::print()
 	//rendering resolution = selected paper size in inchs * printer dpi
 	pageSize.setHeight(qCeil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
 	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
+#ifdef USE_QLITEHTML
 	Preview(t.generate(getDives()), printerPtr);
-#ifdef	USE_WEBKIT
+#else
 	webView->page()->setViewportSize(pageSize);
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 
@@ -258,29 +260,23 @@ void Printer::previewOnePage()
 
 		pageSize.setHeight(paintDevice->height());
 		pageSize.setWidth(paintDevice->width());
-#ifdef USE_WEBKIT
+#ifndef USE_QLITEHTML
 		webView->page()->setViewportSize(pageSize);
 #endif
 		// initialize the border settings
 		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
+#ifndef USE_QLITEHTML
 		if (printOptions.type == print_options::DIVELIST)
-#ifdef USE_WEBKIT
 			webView->setHtml(t.generate(getDives()));
-#else
-		;
-#endif
 		else if (printOptions.type == print_options::STATISTICS )
-#ifdef USE_WEBKIT
 			webView->setHtml(t.generateStatistics());
-#else
-			;
 #endif
 		bool ok;
 		int divesPerPage;
-#ifdef USE_WEBKIT
+#ifndef USE_QLITEHTML
 		divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
 #else
-		divesPerPage = 1;
+		divesPerPage = 1;   // FIXME
 		ok = true;
 #endif
 		if (!ok) {
@@ -295,6 +291,7 @@ void Printer::previewOnePage()
 	}
 }
 
+#ifdef USE_QLITEHTML
 void Printer::Preview(QString content, QPrinter *printer)
 {
 	QDialog previewer;
@@ -302,7 +299,6 @@ void Printer::Preview(QString content, QPrinter *printer)
 	previewer.setWindowTitle(tr("Print Preview"));
 	previewer.setWindowIcon(QIcon(":subsurface-icon"));
 
-#if defined(USE_QLITEHTML)
 	QLiteHtmlWidget previewWidget(&previewer);
 	//QLiteHtmlWidget previewWidget;
 	//= new QLiteHtmlWidget(this);
@@ -319,17 +315,10 @@ void Printer::Preview(QString content, QPrinter *printer)
 		return QByteArray();
 	});
 	previewWidget.setGeometry(QRect(0,0,1200,1000));
-#endif
 	QString colorBack = previewer.palette().highlight().color().name(QColor::HexRgb);
 	QString colorText = previewer.palette().highlightedText().color().name(QColor::HexRgb);
 	previewWidget.setStyleSheet(QString(
-#if defined(USE_QLITEHTML)
 					  "QLiteHtmlWidget"
-#elif defined(USE_WEBENGINE)
-					  "QWebEngineView"
-#else
-					  "QWebView"
-#endif
 					  " { selection-background-color: %1; selection-color: %2; }")
 					  .arg(colorBack).arg(colorText));
 
@@ -350,3 +339,4 @@ void Printer::Preview(QString content, QPrinter *printer)
 	previewer.exec();
 	//previewWidget.exec();
 }
+#endif
