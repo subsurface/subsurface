@@ -19,6 +19,7 @@
   <temperature water='26.667 C' />
   <surface pressure='1.013 bar' />
   <water salinity='1020 g/l' />
+  <tanksensormapping sensorid='-1' cylinderindex='0' />
   <event time='20:01 min' type='25' value='2949135' name='gaschange' cylinder='2' o2='15.0%' he='45.0%' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='0:10 min' depth='1.067 m' temp='26.667 C' pressure0='109.213 bar' pressure1='159.407 bar' tts='1:00 min' cns='4%' sensor1='0.777 bar' sensor2='0.777 bar' sensor3='0.756 bar' dc_supplied_ppo2='0.66 bar' po2='0.7 bar' />
@@ -38,6 +39,7 @@
   <temperature water='26.667 C' />
   <surface pressure='1.013 bar' />
   <water salinity='1020 g/l' />
+  <tanksensormapping sensorid='-1' cylinderindex='0' />
   <event time='0:00 min' type='11' value='40' name='gaschange' cylinder='4' o2='40.0%' />
   <event time='20:01 min' type='25' value='2949135' name='gaschange' cylinder='6' o2='16.0%' he='45.0%' />
   <sample time='0:00 min' depth='0.0 m' />
