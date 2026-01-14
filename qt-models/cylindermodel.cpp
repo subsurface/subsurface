@@ -257,7 +257,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			return static_cast<int>(cyl->type.size.mliter);
 		case SENSORS: {
 			for (const auto &mapping: d->get_dc(dcNr)->tank_sensor_mappings)
-				if ((int)mapping.cylinder_index == index.row())
+				if (mapping.sensor_id != NO_SENSOR && (int)mapping.cylinder_index == index.row())
 					return QString::number(mapping.sensor_id + 1);
 
 			return QString();
@@ -381,7 +381,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	// Yes, this is not ideal, but the pragmatic thing to do for now.
 	cylinder_t cyl = *d->get_cylinder(row);
 
-	if (index.column() != TYPE && !changed)
+	if (index.column() != TYPE && index.column() != SENSORS && !changed)
 		return false;
 
 	Command::EditCylinderType type = Command::EditCylinderType::TYPE;
@@ -475,7 +475,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		bool ok = false;
 		int s = vString.toInt(&ok);
 		const struct divecomputer &dc = *d->get_dc(dcNr);
-		if (ok && std::find_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(), [row, s](const auto &mapping) { return (const int)mapping.cylinder_index == row && mapping.sensor_id == s - 1; }) == dc.tank_sensor_mappings.end()) {
+		if (ok && std::find_if(dc.tank_sensor_mappings.begin(), dc.tank_sensor_mappings.end(), [row, s](const auto &mapping) { return (const int)mapping.cylinder_index == row && mapping.sensor_id == s; }) == dc.tank_sensor_mappings.end()) {
 			Command::editSensors(row, s, dcNr);
 			// We don't use the edit cylinder command and editing sensors is not relevant for planner
 			return true;
