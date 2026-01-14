@@ -1003,8 +1003,8 @@ static void fixup_sensor_mappings(struct dive &dive, struct divecomputer &dc)
 				dc.tank_sensor_mappings.push_back(tank_sensor_mapping { sensor_id, (unsigned int)sensor_id });
 	} else if (dc.tank_sensor_mappings.size() == 1 && dc.tank_sensor_mappings[0].sensor_id == NO_SENSOR) {
 		// This is the sentinel value indicating no sensors are mapped.
-		// Clear the mappings to get an empty in-memory representation.
-		dc.tank_sensor_mappings.clear();
+		// Keep it as-is so that it persists through merges and subsequent fixups.
+		return;
 	} else {
 		// Remove mappings where the sensor id does not exist
 		// or the cylinder index is out of range
@@ -1308,17 +1308,36 @@ static void merge_tank_sensor_mappings(struct divecomputer &res,
 
 	res.tank_sensor_mappings.clear();
 
-	for (auto &mapping: src2->tank_sensor_mappings)
+	bool has_sentinel = false;
+	for (auto &mapping: src2->tank_sensor_mappings) {
+		// Preserve the "no sensors mapped" sentinel as-is (only add once)
+		if (mapping.sensor_id == NO_SENSOR) {
+			if (!has_sentinel) {
+				res.tank_sensor_mappings.push_back(mapping);
+				has_sentinel = true;
+			}
+			continue;
+		}
 		res.tank_sensor_mappings.push_back(tank_sensor_mapping {
 			mapping.sensor_id,
 			(unsigned int)cylinders_map2[mapping.cylinder_index]
 		});
+	}
 
-	for (auto &mapping: src1->tank_sensor_mappings)
+	for (auto &mapping: src1->tank_sensor_mappings) {
+		// Preserve the "no sensors mapped" sentinel as-is (only add once)
+		if (mapping.sensor_id == NO_SENSOR) {
+			if (!has_sentinel) {
+				res.tank_sensor_mappings.push_back(mapping);
+				has_sentinel = true;
+			}
+			continue;
+		}
 		res.tank_sensor_mappings.push_back(tank_sensor_mapping {
 			mapping.sensor_id,
 			(unsigned int)cylinders_map1[mapping.cylinder_index]
 		});
+	}
 }
 
 static std::string merge_text(const std::string &a, const std::string &b, const char *sep)
@@ -1495,6 +1514,13 @@ static void event_renumber(struct event &ev, const int mapping[])
 static void dc_tank_sensor_mappings_renumber(struct divecomputer &dc, const int mapping[])
 {
 	for (auto it = dc.tank_sensor_mappings.begin(); it != dc.tank_sensor_mappings.end();) {
+		// Preserve the "no sensors mapped" sentinel (sensor_id == NO_SENSOR)
+		// regardless of cylinder renumbering
+		if (it->sensor_id == NO_SENSOR) {
+			++it;
+			continue;
+		}
+
 		int cylinder_index = mapping[(*it).cylinder_index];
 		if (cylinder_index < 0) {
 			// Cylinder was removed, remove the mapping

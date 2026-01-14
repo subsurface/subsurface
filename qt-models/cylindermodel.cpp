@@ -257,7 +257,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			return static_cast<int>(cyl->type.size.mliter);
 		case SENSORS: {
 			for (const auto &mapping: d->get_dc(dcNr)->tank_sensor_mappings)
-				if ((int)mapping.cylinder_index == index.row())
+				if (mapping.sensor_id != NO_SENSOR && (int)mapping.cylinder_index == index.row())
 					return QString::number(mapping.sensor_id + 1);
 
 			return QString();

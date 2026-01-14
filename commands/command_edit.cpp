@@ -1314,6 +1314,12 @@ void EditSensors::undo()
 
 void EditSensors::redo()
 {
+	// If we're adding a real sensor mapping, first remove the "no sensors mapped" sentinel if present
+	if (sensorId != NO_SENSOR && dc->tank_sensor_mappings.size() == 1
+	    && dc->tank_sensor_mappings[0].sensor_id == NO_SENSOR) {
+		dc->tank_sensor_mappings.clear();
+	}
+
 	bool found = false;
 	for (auto it = dc->tank_sensor_mappings.begin(); it != dc->tank_sensor_mappings.end();) {
 		if (sensorId == NO_SENSOR) {
