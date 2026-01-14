@@ -22,12 +22,13 @@ public:
 		PRINT,
 		PREVIEW
 	};
+#ifdef USE_QLITEHTML
 	void Preview(QString content, QPrinter *printer);
-
+#endif
 
 private:
 	QPaintDevice *paintDevice;
-#ifdef USE_WEBKIT
+#ifndef USE_QLITEHTML
 	QWebView *webView;
 #endif
 	const print_options &printOptions;
