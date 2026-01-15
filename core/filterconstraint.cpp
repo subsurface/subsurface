@@ -75,6 +75,7 @@ static struct type_description {
 	{ FILTER_CONSTRAINT_CYLINDER_HE, "cylinder_he", QT_TRANSLATE_NOOP("gettextFromC", "gas He content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_SUIT, "suit", QT_TRANSLATE_NOOP("gettextFromC", "suit"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_NOTES, "notes", QT_TRANSLATE_NOOP("gettextFromC", "notes"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_DIVE_COMPUTER, "dive computer", QT_TRANSLATE_NOOP("gettextFromC", "any dive computer"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 };
 
 static struct string_mode_description {
@@ -881,6 +882,14 @@ static bool has_notes(const filter_constraint &c, const struct dive *d)
 	return check(c, diveNotes);
 }
 
+static bool has_dc(const filter_constraint &c, const struct dive *d)
+{
+	QStringList dive_dcs;
+	for (const divecomputer &dc: d->dcs)
+		dive_dcs.push_back(QString::fromStdString(dc.model).trimmed());
+	return check(c, dive_dcs);
+}
+
 static bool check_numerical_range(const filter_constraint &c, int v)
 {
 	switch (c.range_mode) {
@@ -1095,6 +1104,8 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 		return has_suits(c, d);
 	case FILTER_CONSTRAINT_NOTES:
 		return has_notes(c, d);
+	case FILTER_CONSTRAINT_DIVE_COMPUTER:
+		return has_dc(c, d);
 	}
 	return false;
 }
