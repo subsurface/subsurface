@@ -1974,6 +1974,42 @@ struct VisibilityVariable : public StatsVariableTemplate<StatsVariable::Type::Di
 	}
 };
 
+struct DiveComputerBinner : public StringBinner<DiveComputerBinner, StringBin> {
+	std::vector<QString> to_bin_values(const dive *d) const {
+		std::vector<QString> dcs;
+		for (const divecomputer &dc: d->dcs)
+			dcs.push_back(QString::fromStdString(dc.model).trimmed());
+		return dcs;
+	}
+};
+
+static DiveComputerBinner dive_computer_binner;
+struct DiveComputerVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Dive computer");
+	}
+	QString diveCategories(const dive *d) const override {
+		QString res;
+		std::vector<QString> dcs;	// List multiple dive computers only once
+		dcs.reserve(d->dcs.size());
+		for (auto &dc: d->dcs) {
+			QString model = QString::fromStdString(dc.model).trimmed();
+			if (std::find_if(dcs.begin(), dcs.end(),
+					 [model] (QString dc_model)
+					 { return model == dc_model; }) != dcs.end())
+				continue;
+			dcs.push_back(model);
+			if (!res.isEmpty())
+				res += ", ";
+			res += model;
+		}
+		return res;
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &dive_computer_binner };
+	}
+};
+
 static DateVariable date_variable;
 static MaxDepthVariable max_depth_variable;
 static MeanDepthVariable mean_depth_variable;
@@ -2001,6 +2037,7 @@ static DayOfWeekVariable day_of_week_variable;
 static MonthOfYearVariable month_of_year_variable;
 static RatingVariable rating_variable;
 static VisibilityVariable visibility_variable;
+static DiveComputerVariable dive_computer_variable;
 
 const std::vector<const StatsVariable *> stats_variables = {
 	&date_variable, &max_depth_variable, &mean_depth_variable, &duration_variable, &sac_variable,
@@ -2009,5 +2046,5 @@ const std::vector<const StatsVariable *> stats_variables = {
 	&dive_mode_variable, &people_variable, &buddy_variable, &dive_guide_variable, &tag_variable,
 	&gas_type_variable, &suit_variable,
 	&weightsystem_variable, &cylinder_type_variable, &location_variable, &trip_variable, &day_of_week_variable,
-	&month_of_year_variable, &rating_variable, &visibility_variable
+	&month_of_year_variable, &rating_variable, &visibility_variable, &dive_computer_variable,
 };
