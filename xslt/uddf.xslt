@@ -8,6 +8,10 @@
   <xsl:strip-space elements="*"/>
   <xsl:output method="xml" indent="yes"/>
 
+  <xsl:variable name="is_apd_inspiration">
+    <xsl:value-of select="boolean(/uddf/diver/owner/equipment/divecomputer/@id = 'INSPIRATION')"/>
+  </xsl:variable>
+
   <xsl:template match="/">
     <divelog program="subsurface-import" version="2">
       <settings>
@@ -90,7 +94,7 @@
     <xsl:variable name="max_num_o2sensors">
       <xsl:choose>
         <!-- On the APD Inspiration, sensor slots 4 to 6 contain the second controller's readings for the first 3 cells.-->
-        <xsl:when test="/uddf/diver/owner/equipment/divecomputer/@id = 'INSPIRATION'">
+        <xsl:when test="$is_apd_inspiration">
           <xsl:text>3</xsl:text>
         </xsl:when>
         <xsl:otherwise>
@@ -124,9 +128,9 @@
           </xsl:call-template>
         </xsl:when>
       </xsl:choose>
-      <xsl:if test="dive_number|u:informationbeforedive/u:divenumber != ''">
+      <xsl:if test="dive_number|informationbeforedive/divenumber|u:informationbeforedive/u:divenumber != ''">
         <xsl:attribute name="number">
-          <xsl:value-of select="dive_number|u:informationbeforedive/u:divenumber"/>
+          <xsl:value-of select="dive_number|informationbeforedive/divenumber|u:informationbeforedive/u:divenumber"/>
         </xsl:attribute>
       </xsl:if>
       <xsl:if test="(dive_duration != '' and dive_duration != 0) or (u:informationafterdive/u:diveduration != '' and u:informationafterdive/u:diveduration != 0)">
@@ -486,7 +490,7 @@
           <xsl:variable name="reference" select="@id"/>
 
           <!-- On the APD Inspiration, battery slots 3 and 4 contain the second controller's readings for the batteries.-->
-          <xsl:if test="not(/uddf/diver/owner/equipment/divecomputer/@id = 'INSPIRATION' and position() &gt; 2)">
+          <xsl:if test="not($is_apd_inspiration and position() &gt; 2)">
             <extradata>
               <xsl:attribute name="key">
                 <xsl:value-of select="concat('Battery ', position(), ' at Begin [V]')"/>
@@ -605,6 +609,15 @@
             <xsl:attribute name="value">
               <xsl:value-of select="concat('GF ', round(samples/waypoint[setgflow and divetime > 0][1]/setgflow * 100), '/', round(samples/waypoint[setgfhigh and divetime > 0][1]/setgfhigh * 100))"/>
                 <!-- The gradient factor readings at the beginning of the dive seem to be bogus -->
+            </xsl:attribute>
+          </extradata>
+        </xsl:if>
+
+        <xsl:if test="$is_apd_inspiration and informationbeforedive/divenumber">
+          <!-- APD Inspiration unit dive number - this is a non-user-modifiable counter -->
+          <extradata key="Unit dive number">
+            <xsl:attribute name="value">
+              <xsl:value-of select="informationbeforedive/divenumber"/>
             </xsl:attribute>
           </extradata>
         </xsl:if>
