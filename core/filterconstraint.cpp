@@ -75,7 +75,7 @@ static struct type_description {
 	{ FILTER_CONSTRAINT_CYLINDER_HE, "cylinder_he", QT_TRANSLATE_NOOP("gettextFromC", "gas He content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_SUIT, "suit", QT_TRANSLATE_NOOP("gettextFromC", "suit"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_NOTES, "notes", QT_TRANSLATE_NOOP("gettextFromC", "notes"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_DIVE_COMPUTER, "dive computer", QT_TRANSLATE_NOOP("gettextFromC", "any dive computer"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_DIVE_COMPUTER, "dive_computer", QT_TRANSLATE_NOOP("gettextFromC", "any dive computer"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 };
 
 static struct string_mode_description {
