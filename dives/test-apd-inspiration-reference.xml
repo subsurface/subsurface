@@ -6,7 +6,7 @@
 </site>
 </divesites>
 <dives>
-<dive otu='156' cns='69%' divesiteid='eea339da' date='2022-04-24' time='10:30:58' duration='104:00 min'>
+<dive number='942' otu='156' cns='69%' divesiteid='eea339da' date='2022-04-24' time='10:30:58' duration='104:00 min'>
   <buddy>Buddy Diver</buddy>
   <notes>Nice dive. Saw fish.</notes>
   <cylinder description='air' use='diluent' />
@@ -32,6 +32,7 @@
   <extradata key='Tempstik at End' value='[_#####]' />
   <extradata key='Elapsed on time at End [hh:mm:ss]' value='2:05:00' />
   <extradata key='Deco model' value='GF 50/70' />
+  <extradata key='Unit dive number' value='942' />
   <event time='0:00 min' type='11' value='21' name='gaschange' cylinder='0' />
   <event time='0:10 min' type='25' value='3145744' name='gaschange' cylinder='3' o2='16.0%' he='48.0%' />
   <event time='19:00 min' type='25' value='3145744' name='gaschange' cylinder='6' o2='16.0%' he='48.0%' />
