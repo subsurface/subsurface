@@ -5,6 +5,7 @@
 // :revnumber: {version}
 // :revdate: {version-date}
 :icons:
+:iconsdir: mobile-images/icons/
 :toc:
 :toc-placement: Handbuch
 :numbered:
@@ -67,7 +68,7 @@ Auf Android-Geräten verwenden Sie die Android-Zurück-Schaltfläche für die Ak
 
 Das folgende Bild zeigt einige wichtige Funktionen des Menüsystems. Links befindet sich das Hauptmenü, das wie oben beschrieben aktiviert wird. Rechts im Bild befinden sich die Untermenüs.
 
-image::mobile-images/MainMenu3-DE.jpg["Abbildung: Subsurface-Hauptmenü",align="center"]
+image::mobile-images/Subsurface-mobile-menu-system.jpg["Abbildung: Subsurface-Hauptmenü",align="center"]
 
 
 Alle Bildausschnitte in dieser Bedienungsanleitung stammen aktuell von der IOS-Version. Die Android-Bildschirme sehen ähnlich aus.
@@ -104,7 +105,6 @@ Damit ist ein neues Konto auf dem Cloud-Server für Sie erstellt und der Zugriff
 Nach der Registrierung merkt sich _Subsurface-mobile_ die Cloud-Anmeldeinformationen und es ist nicht erforderlich, diese beim Starten des Programms erneut einzugeben.
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 *Cloud Probleme: FAQ*
 
@@ -135,7 +135,7 @@ Die Tauchliste besteht aus zwei Arten von Einträgen:
 
 2. *Einzelne Tauchaufzeichnungen*. Durch Tippen auf eine Tour-Überschrift wird die Tauchliste erweitert, um die einzelnen Tauchgänge der Tour anzuzeigen (oder auszublenden). Jeder Tauchgang wird durch eine Tauchaufzeichnung dargestellt. Standardmäßig werden die Tauchgänge der letzten Tour aufgelistet, ältere Tauchgänge unten und aktuelle Tauchgänge oben. Im linken Bild unten fand der letzte Tauchgang der Guinjata-Tour in der Inhambane-Mündung statt.
 
-image::mobile-images/DiveListDetails-DE.jpg["Abbildung: Bildschirm Tauchliste mit Details",align="center"]
+image::mobile-images/Divelist2.jpg["Abbildung: Bildschirm Tauchliste mit Details",align="center"]
 
 
 [[S_View_Dive]]
@@ -178,7 +178,7 @@ Dieses https://www.youtube.com/watch?v=sF8KB_r0rFw[*Video-Tutorial*] erklärt, w
 
 Sie können einen Tauchgang manuell zur bestehenden Tauchliste hinzufügen. Tippen Sie in der Tauchliste auf das Pluszeichen in der Aktionsleiste oder verwenden Sie das Hauptmenü und tippen Sie auf Tauchgangsverwaltung -> Tauchgang manuell hinzufügen. Daraufhin öffnet sich ein Bildschirm, der mit dem oben beschriebenen Bearbeitungsbildschirm identisch ist. Wenn Sie einen Tauchgang manuell hinzufügen, können Sie kein Tauchprofil direkt von einem Tauchcomputer hinzufügen. Wenn Sie jedoch keinen Tauchcomputer verwenden, können Sie Dauer, Tiefe und weitere Informationen zum neuen Tauchgang eingeben. Die Aktionsschaltfläche am unteren Bildschirmrand enthält ein Diskettensymbol. Tippen Sie darauf, um den neuen Tauchgang zu speichern. Um Änderungen abzubrechen, tippen Sie auf die Schaltfläche Zurück. Das linke Bild unten zeigt einen Bildschirmausschnitt eines Tauchgangs, der gerade erstellt wird, und das rechte Bild zeigt denselben Tauchgang in der Detailansicht. Nachdem Sie die Tauchgangsinformationen bearbeitet haben, müssen die Tauchgangsinformationen wie im obigen Abschnitt xref:S_Divetrip[Tauchgangsbearbeitung] beschrieben bearbeitet werden.
 
-image::mobile-images/ManualDive-DE.jpg["Abbildung: Manueller Taucheingabebildschirm",align="center"]
+image::mobile-images/Manualdive.jpg["Abbildung: Manueller Taucheingabebildschirm",align="center"]
 
 [[S_Download]]
 === Tauchgänge von einem Tauchcomputer herunterladen
@@ -194,10 +194,10 @@ Beim Herunterladen von mehreren Tauchcomputern werden unter den Dropdown-Menüs 
 Diese Funktion wird unter iOS nicht unterstützt.
 
 [width="100%"]
-|=======
+|====================
 a|image:mobile-images/USB-OTG.jpg["Abbildung: USB-OTG cable",align="center"] |
 Die meisten aktuellen Android-Geräte verfügen mittlerweile über einen USB-Typ-C-Anschluss und werden mit einem einfachen A-auf-C-Adapter geliefert, mit dem Sie das Kabel des Tauchcomputers an Ihr Smartphone oder Tablet anschließen können. Bei älteren Android-Geräten mit Micro-USB-Anschluss müssen Sie das USB-Kabel des Tauchcomputers an ein USB-OTG-Kabel anschließen, das wiederum an den Micro-USB-Anschluss angeschlossen wird. Das OTG-Kabel hat in der Regel an einem Ende eine vollwertige Buchse („Typ A“), in die der vollwertige Stecker des USB-Kabels des Tauchcomputers passt (siehe Abbildung links). Das bedeutet, dass zwei Kabel benötigt werden, um den Tauchcomputer mit dem Mobilgerät zu verbinden. *Nicht alle Android-Geräte unterstützen OTG-Kabel*, aber in der Regel können alle modernen Android-Geräte mit einem USB-C-Stecker mit einem USB-A-auf-C-Adapter verwendet werden.
-|=======
+|====================
 
 Subsurface-mobile merkt sich die Einstellungen erfolgreich verwendeter Tauchcomputer (siehe Abbildung unten rechts). Diese erscheinen als Schaltflächen unter der Überschrift „Zuvor verwendete Tauchcomputer“. Wählen Sie die entsprechende Schaltfläche aus. Nachdem Sie den USB-Tauchcomputer mit dem Subsurface-Computer verbunden und den entsprechenden Hersteller und Tauchcomputer ausgewählt haben, stellen Sie sicher, dass im Textfeld „Verbindung“ die entsprechende Verbindung angezeigt wird. Bei einigen wenigen Tauchcomputern wird im Verbindungsnamen der Hersteller des Tauchcomputers angezeigt, bei den meisten nur der Kabel-Chipsatz-Hersteller (und die USB-Verbindungsnummer). Die meisten Benutzer verbinden nur einen USB-Tauchcomputer mit ihrem Android-Gerät, danach ist alles relativ einfach. Es erscheint ein Dialogfenster mit der Frage, ob Sie Subsurface-mobile für die Verbindung mit dem Gerät verwenden möchten. Bestätigen Sie dies, öffnet Subsurface-mobile den Download-Bildschirm für den Tauchcomputer mit der korrekten ausgewählten Verbindung (und wenn Subsurface-mobile anhand des verwendeten Kabels den richtigen Tauchcomputer ermitteln kann, ist auch diese Information bereits voreingestellt).
 
@@ -239,7 +239,7 @@ Hier können vorhandene Tauchinformationen geändert werden, z. B. Text zu den T
 
 Wenn ein neuer Tauchgang manuell eingegeben oder vom Tauchcomputer heruntergeladen wird, wird oben in der Tauchliste eine Reiseüberschrift erstellt, die nur den Monat und das Jahr der Tauchreise sowie die Anzahl der Tauchgänge während der Reise anzeigt (Bild links unten, zeigt eine Reiseüberschrift mit „Mai 2018“, die Reise umfasst zwei Tauchgänge). Sie möchten wahrscheinlich Informationen über den Ort der Reise hinzufügen, z. B. „Kanalinseln“ oder das verwendete Tauchunternehmen. Drücken Sie in diesem Fall lange auf die Überschrift der Tauchreise, um das Kontextmenü zu aktivieren. Wählen Sie die Option „Reisedetails bearbeiten“, um ein Feld zur Eingabe von Informationen zur Reise zu öffnen (Bild rechts unten). Nachdem Sie die erforderlichen Informationen eingegeben haben, tippen Sie unten auf dem Bildschirm auf die Schaltfläche „Speichern“. Sie gelangen zurück zur Tauchliste und sehen einige der soeben eingegebenen Informationen zur Tauchreise.
 
-image::mobile-images/TripDetails-DE.jpg["Abbildung: Edit trip details",align="center"]
+image::mobile-images/TripDetails.jpg["Abbildung: Edit trip details",align="center"]
 
 === Löschen eines Tauchgangs
 
@@ -247,7 +247,7 @@ Lösche einen Tauchgang aus der Tauchliste, indem du lange auf einen Tauchgang d
 
 Wenn versehentlich der falsche Tauchgang gelöscht wurde, kannst du den Vorgang einfach über das Kontextmenü rückgängig machen.
 
-image::mobile-images/UndoDelete-DE.jpg["Abbildung: Undo delete dive",align="center"]
+image::mobile-images/Delete_undo.jpg["Abbildung: Undo delete dive",align="center"]
 
 == Interaktion mit dem Cloud-Speicher
 
@@ -271,7 +271,7 @@ Sie bietet außerdem zwei Datenspalten für wählbare Zeiträume (standardmäßi
 == Tauchstatistik
 
 [width="100%", cols="2,3"]
-|===
+|====================
 a|image:mobile-images/StatsPanel.jpg["Image: Statistik Felder",float="left"] |
 
 Aussagekräftige Statistiken zu erstellen, die die gewünschten Informationen vermitteln, ist überraschend schwierig. Verschiedene Nutzer haben sehr unterschiedliche Bedürfnisse und Erwartungen. Subsurface-Mobile bietet eine recht detaillierte Statistikfunktion, um Informationen aus dem Logbuch grafisch zusammenzufassen. Um auf das Tauchstatistik-Tool zuzugreifen, wählen Sie Hauptmenü -> Statistik. Das Statistik-Tool ist so flexibel, dass es unmöglich ist, jeden möglichen Anwendungsfall abzudecken. Wir bieten daher eine konzeptionelle Einführung, gefolgt von konkreten Beispielen. Das Tool kann über die Schaltfläche Zurück (unten rechts in Android) geschlossen werden.
@@ -281,11 +281,10 @@ Das Statistiktool verfügt über zwei Bereiche (Bild links):
 1. Ein Setup-Feld mit Auswahlfeldern zum Anfordern eines Diagramms (oben).
 
 2. Das angeforderte Diagramm (unten).
-|===
+|====================
 
 [[S_Stats_Intro]]
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 *Eine Einführung für Taucher in statistische Diagramme*
 
@@ -367,10 +366,10 @@ image::mobile-images/StatsBarchartSubdivided.jpg["Stats subdivided barchart",ali
 === Streudiagramme
 
 [width="100%", cols="2,3"]
-|=======
+|====================
 a|image:mobile-images/StatsRegression.jpg["Regression data example",align="center"] |
 Manchmal möchten Sie vielleicht die Beziehung zwischen zwei Tauchvariablen untersuchen. Hat sich meine SAC-Rate im Laufe der Jahre verringert? Ist die Wassertemperatur bei größerer Tauchtiefe kälter? Eine Möglichkeit, diese Fragen zu untersuchen, besteht darin, ein Streudiagramm zu zeichnen, in dem die Werte einer Variable gegen die andere Variable aufgetragen sind (siehe Abbildung links).
-|=======
+|====================
 
 
 Für den Datensatz im obigen Bild scheint die SAC-Rate im Laufe der Zeit gesunken zu sein. Ist die Beziehung zwischen den beiden Variablen statistisch signifikant, wird eine rote Linie angezeigt, die die beste Schätzung der Beziehung zwischen SAC-Rate und Jahr zusammenfasst. In dieser Grafik ist die SAC-Rate zwischen 2013 und 2021 von etwa 21 l/min auf etwa 14 l/min gesunken. Der rosa Bereich um die rote Linie zeigt die Unsicherheit hinsichtlich der genauen Ausrichtung der Linie an. Es wird erwartet, dass die Linie mit einer Sicherheit von 95 % irgendwo innerhalb des rosa Bereichs liegt. Die Intensität der rosa Farbe zeigt auch die relative Zuverlässigkeit dieser Schätzungen an. So erhalten Sie ein Streudiagramm:
@@ -444,14 +443,14 @@ Tippen Sie auf die Schaltfläche „Vergessen“, um die in den Verknüpfungssch
 ==== Farbpalette und Schriftgröße
 
 [width="100%"]
-|=======
+|====================
 a|image:mobile-images/Colourschemes-DE.jpg["Abbildung: Design der Farben",align="center"] |
 
 
 Neben dem standardmäßigen blauen Farbschema unterstützt Subsurface-mobile zwei weitere Farbschemata für unterschiedliche Nutzer (siehe Abbildung links). Alle Screenshots in diesem Benutzerhandbuch basieren auf dem blauen Standardfarbschema. Sie können das rosa oder dunkle Farbschema aus dem Dropdown-Menü auswählen. +
 Die Kästchen im Bild links zeigen die verschiedenen Farboptionen im Design Ihrer Wahl.
 
-|=======
+|====================
 
 ==== Abschnitt _Schriftgröße_
 image::mobile-images/Fontsize-DE.jpg["Abbildung: Schriftgröße",align="center"]
@@ -492,8 +491,6 @@ image::mobile-images/Menu-Help-DE.jpg["Abbildung: Erweiterung",align="center"]
 === Über Subsurface
 
 Auf dieser Seite wird die genaue Version von Subsurface-mobile angezeigt, die Sie verwenden. Außerdem können Sie die Anwendungsprotokolle bequem in die Zwischenablage kopieren.
-
-image::mobile-images/Version_605436.jpg["Abbildung: Version",align="center"]
 
 === Benutzerhandbuch anzeigen
 
