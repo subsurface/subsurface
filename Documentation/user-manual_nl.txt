@@ -140,7 +140,7 @@ wordt de informatie van de laatst (enkel) geselecteerde duik getoond. Echter, he
 
 [[S_ViewPanels]]
 
-image::images/main_window_f22.jpg["Het hoofdscherm",align="center"]
+image::images/MainWindow.jpg["Het hoofdscherm",align="center"]
 
 De gebruiker beslist welke panelen zichtbaar zijn met de opties in het *Toon*
 menu. De volgende keuzes zijn mogelijk:
@@ -216,7 +216,7 @@ Deze panelen zijn respectievelijk gemarkeerd met [red]#A#, [red]#B# en
 [red]#C# in het figuur hieronder. De drie panelen zullen nu verder worden beschreven
 voor wat betreft data invoer.
 
-image::images/AddDive1_f22.jpg["Figuur: Duik toevoegen",align="center"]
+image::images/AddDive1.jpg["Figuur: Duik toevoegen",align="center"]
 Op moment dat je een veld van een duik bewerkt gaat _Subsurface_ in
 *Bewerken Mode*, hetgeen wordt aangegeven met de blauwe rechthoek in de
 bovenzijde van het *Notities* paneel (zie de figuur hieronder).
@@ -287,7 +287,6 @@ duikcomputers staat op:
 link:https://subsurface-divelog.org/nl/documentation/supported-dive-computers/[
 Ondersteunde duikcomputers].
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Verschillende duikcomputers verbruiken meer stroom als ze in PC communicatie
 mode staan. **Dit kan de batterij van de duikcomputer uitputten**. Aangeraden wordt
@@ -382,7 +381,6 @@ download sneller en kost dus minder batterijcapaciteit van de duikcomputer
 
 ****
 *PROBLEMEN MET DE DATA DOWNLOAD VANAF EEN DUIKCOMPUTER?*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Controleer het volgende:
 
@@ -435,7 +433,8 @@ alsmede informatie over de duiken die niet gedownload konden worden.
 
 [[S_Bluetooth]]
 ==== _Subsurface_ verbinden met een duikcomputer met Bluetooth
-[icon="images/icons/bluetooth.jpg"]
+[icon="bluetooth.jpg"]
+[NOTE]
 
 Bluetooth wordt een steeds normalere manier om met een duikcomputer te communiceren.
 _Subsurface_ biedt een grotendeels besturingssysteem onafhankelijke wijze van
@@ -496,7 +495,6 @@ een PIN code of Pass Code. Meestal is deze 0000, maar raadpleeg de handleiding v
 duikcomputer om dit zeker te weten.
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Op dit moment ondersteund _Subsurface_ geen koppeling van Bluetooth met niet-standaard
 PIN code. Hieronder staan een aantal suggesties om met behulp van hulpmiddelen uit
@@ -521,7 +519,7 @@ van de Bluetooth verbinding, en je keert terug naar het _Downloaden uit duikcomp
 scherm. De gedownloade duiken verschijnen aan de rechter zijde van het scherm.
 
 ===== Op Windows:
-image::images/DC_import_Bluetooth_Windows.png["Figuur: Download Bluetooth op Windows",align="center"]
+image::images/DC_import_Bluetooth_Windows.jpg["Figuur: Download Bluetooth op Windows",align="center"]
 
 Op _Windows_ platforms worden de lokale Bluetooth controller
 details aan de rechterzijde van het scherm niet getoond zoals op de Linux/Mac
@@ -539,7 +537,6 @@ Nadat de gevonden duikcomputer is geselecteerd, klik _Bewaren_. Je keert nu teru
 in het _Download uit duikcomputer scherm_, waar je _Download_ kiest om de werkelijke
 download te starten.
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Op dit moment ondersteund _Subsurface_ alleen lokale Bluetooth
 adapters die gebruik maken van de Microsoft Bluetooth Stack.
@@ -553,7 +550,6 @@ scherm toont detail van de huidige status van de Bluetooth agent. Om een andere
 computer te downloaden, met dit scherm, selecteer de 3-punten knop van de
 _"Kies Bluetooth download mode"_ optie.
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 *IN GEVAL VAN PROBLEMEN*:  Als de Bluetooth adapter van de _Subsurface_ computer
@@ -619,7 +615,7 @@ die aangeeft dat de duik wordt bewerkt.
 
 Het *Notities* paneel bevat de volgende velden (linker figuur hieronder):
 
-image::images/AddDive3_f22.jpg["Figuur: Het Notities paneel",align="center"]
+image::images/AddDive3.jpg["Figuur: Het Notities paneel",align="center"]
 
 Het rechter figuur hierboven toont een *Notities* paneel ingevuld met duik data.
 De *Datum* en *Tijd* geven het moment van de duik weer. Door op de datum te
@@ -637,7 +633,6 @@ _Voorkeuren_ (metrisch of imperiaal).
 
 [[S_locations]]
 *Locatie*:
-[icon="images/icons/warning2.png"]
 [WARNING]
 Duik locaties worden bewerkt in een *apart* deel van het programma.
 De *Notities* en *Uitrusting* panelen kunnen daarom niet tegelijkertijd
@@ -710,7 +705,6 @@ Op moment dat de duikplek is opgeslagen verschijnt het globe symbool in de duikl
 Android of iPhone op de duiklocatie om met de GPS van de telefoon de locatie op
 te slaan.
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 GPS coördinaten van duik locaties zijn gekoppeld
 aan de locatie naam. Daarom levert het problemen op als er een
@@ -1042,7 +1036,6 @@ bestand en het gewenste uitvoerbestand kan worden ingegeven. (zie figuur hierond
 
 image::images/smtk2ssrf.jpg["Figuur:Download uit SmartTrak",align="center"]
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Het uitvoer bestand wordt overschreven, dus specificeer een nieuwe bestandsnaam.
 
@@ -1173,7 +1166,6 @@ op OK geklikt worden voor de werkelijke importeer actie. De duiken verschijnen i
 [[S_CSV_Intro]]
 ****
 *Een introductie voor duikers over _CSV_ bestanden*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 _CSV_ is een afkorting van _Comma-Separated Values_. Het is een bestandformaat
@@ -1241,7 +1233,6 @@ efficiënt te kunnen importeren.
 
 ****
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 _CSV_ importeren kent een aantal bijzonderheden. Gebruik geen speciale karakters
@@ -1413,7 +1404,6 @@ het *Notities* paneel.
 
 ****
 *Zorg ervoor dat thumbnails voor video kunnen worden gemaakt*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 In het media paneel worden thumbnails van media getoond. Voor foto's
@@ -1603,7 +1593,7 @@ image::images/sidemount1.jpg["Figuur: Sidemount profiel",align="center"]
 [[S_sSCR_dives]]
 ==== Passieve semi-closed circuit rebreather (pSCR) duiken
 
-[icon="images/halcyon_RB80.jpg"]
+[icon="halcyon_RB80.jpg"]
 [NOTE]
 
 Passieve semi-closed circuit rebreathers (pSCR) is geavanceerde technische
@@ -1649,7 +1639,7 @@ pSCR pO~2~_. Deze activeert het tonen van de pO~2~ zoals het in de cilinder zit 
 een oranje lijn. De verticale afstand tussen de oranje en groene lijn geeft de
 pO~2~ drop weer.
 
-[icon="images/DiveModeChange.jpg"]
+[icon="DiveModeChange.jpg"]
 [NOTE]
 _pSCR en bailout_: gassen zoals gebruikt in het duiken met pSCR kunnen resulteren
 in een erg lage pO~2~ in ondiep water. Een mogelijkheid is om de ondiepe fase van
@@ -1664,7 +1654,7 @@ image::images/pSCR_profile_bailout.jpg["FIGUUR: pSCR profile with bailout",align
 [[S_CCR_dives]]
 ==== Gesloten circuit rebreather (CCR) duiken
 
-[icon="images/APD.jpg"]
+[icon="APD.jpg"]
 [NOTE]
 
 Gesloten circuit rebreathers (CCR) zijn geavanceerde technische
@@ -1836,15 +1826,15 @@ xref:_appendix_b_dive_computer_specific_information_for_importing_dive_informati
 
 De duikkaart heeft een aantal knoppen nuttig om diverse aspecten van een duik te bewerken. Deze zijn
 
-[icon="images/icons/MapViewMode.jpg"]
+[icon="MapViewMode.jpg"]
 [NOTE]
 Met deze knop kan gekozen worden voor een kaart of een satelliet beeld.
 
-[icon="images/icons/MapViewPlus.jpg"]
+[icon="MapViewPlus.jpg"]
 [NOTE]
 Zoom in. Selecteer een kleiner gebied.
 
-[icon="images/icons/MapViewMinus.jpg"]
+[icon="MapViewMinus.jpg"]
 [NOTE]
 Zoom out. Selecteer een groter gebied.
 
@@ -1872,7 +1862,7 @@ de geselecteerde duik in de *Duiklijst*. Nuttige informatie zoals
 oppervlakte interval, maximum en gemiddelde diepte, gebruikte hoeveelheden
 gas, gasverbruik, opgelopen CNS en OTU waarden.
 
-[icon="images/icons/info.jpg"]
+[icon="info.jpg"]
 [NOTE]
 
 Gasgebruik en SAC berekeningen:
@@ -1921,13 +1911,13 @@ kleuren worden gebruikt:
 |Geel|9 - 18|4 - 9
 |Lichtgroen|1.5 - 9|1.5 - 4
 |Donkergroen|< 1.5|< 1.5
-|=====================
+|====================
 
 Het profiel toont ook gemeten diepte op markante punten, zoals bodemfase. Een
 grijze lijn geeft de gemiddelde diepte tot dat punt in de duik weer.
 
 
-[icon="images/icons/scale.jpg"]
+[icon="scale.jpg"]
 [NOTE]
 In enkele gevallen is het duikprofiel kleiner dan het gehele paneel. Door het
 gebruik van de *Grafiek Schalen* knop kan dit worden opgelost.
@@ -1957,7 +1947,7 @@ tijd naar oppervlakte (TTS),
 berekend plafond. Een aantal van deze items kunnen worden aan- en uitgezet via knoppen
 aan de linker zijde:
 
-[icon="images/icons/MOD.jpg"]
+[icon="MOD.jpg"]
 [NOTE]
 *MOD in-/uitschakelen*. Deze wordt bepaald op basis van het gekozen
 gas, en de instelling van de maximum pO~2~. Voor lucht (21%) is deze ongeveer 57m
@@ -1965,7 +1955,7 @@ bij een pO~2~ van 1.4 bar welke is gedefinieerd in *Voorkeuren* (kies _Bestand -
 Voorkeuren -> Profiel_ en zet de _pO~2~ in berekenen MOD_). Dieper dan de MOD van
 een gas duiken verhoogt de kans op zuurstofvergiftiging.
 
-[icon="images/icons/NDL.jpg"]
+[icon="NDL.jpg"]
 [NOTE]
 *NDL/TTS in-/uitschakelen*. NDL (Niet decompressie limiet) is de tijd die duiker
 nog kan doorbrengen op de huidige diepte zonder een verplichte decompressie op te lopen.
@@ -1976,7 +1966,7 @@ huidige gas, zonder rekening te houden met mogelijke gaswissels in het verdere
 verloop van de duik. Omdat TTS langer dan 2 uur te onbetrouwbaar wordt, wordt die
 aangegeven als >2h.
 
-[icon="images/icons/SAC.jpg"]
+[icon="SAC.jpg"]
 [NOTE]
 *SAC in-/uitschakelen*. De SAC is het naar de oppervlakte genormaliseerde gasgebruik
 van de duiker in liters per minuut. Het werkelijk gasgebruik is natuurlijk gekoppeld
@@ -1985,7 +1975,7 @@ een nuttig vergelijkingsmiddel tussen duiken. Eenheid is liters/min of (imperiaa
 kubieke ft/min.
 
 
-[icon="images/icons/EAD.jpg"]
+[icon="EAD.jpg"]
 [NOTE]
 *EAD, END, EADD in-/uitschakelen*. Toont de equivalente lucht diepte (EAD)
 voor duiken met Nitrox en equivalente narcotische diepte (END) voor duiken met Trimix.
@@ -2103,15 +2093,15 @@ decompressie verplichting is. pO~2~ heeft een groene lijn, pN~2~ een zwarte,
 en pHe een donkerrode. Deze grafieken staan onder het duikprofiel en de temperatuur
 grafiek.
 
-[icon="images/icons/O2.jpg"]
+[icon="O2.jpg"]
 [NOTE]
 Toon de pO~2~.
 
-[icon="images/icons/N2.jpg"]
+[icon="N2.jpg"]
 [NOTE]
 Toon de pN~2~.
 
-[icon="images/icons/He.jpg"]
+[icon="He.jpg"]
 [NOTE]
 Toon de pHe. Alleen zinvol voor ademgassen met helium natuurlijk.
 
@@ -2127,7 +2117,7 @@ In planner mode is de SAC, zoals ingesteld, constant gedurende de bodemfase en
 de decompressiefase. De kleur van de lijn geeft hier dan ook de gasdichtheid weer,
 en niet de SAC.
 
-[icon="images/icons/Heartbutton.png"]
+[icon="Heartbutton.png"]
 [NOTE]
 Door op de hartslag knop te klikken, wordt, voor duikcomputers die met
 een hartslagmeter zijn uitgerust, de hartslag getoond.
@@ -2139,13 +2129,13 @@ Op deze manier zijn korte or ondiepe duiken eenvoudig te zien.
 
 image::images/MeasuringBar.png["Figuur: Measuring Bar",align="center"]
 
-[icon="images/icons/ruler.jpg"]
+[icon="ruler.jpg"]
 [NOTE]
 Met de *meetlat in-/uitschakelen* knop kunnen details voor een deel van het duikprofiel worden
 bepaald. Versleep de rode begin- en eindpunten naar de gewenste locatie
 op het profiel, en een aantal (nuttige) waarden worden onder de lijn getoond.
 
-[icon="images/icons/ShowPhotos.png"]
+[icon="ShowPhotos.png"]
 [NOTE]
 Met de *toon/verberg media* knop kan media die aan een duik zijn gekoppeld
 als thumbnails op het duikprofiel worden getoond. De positie van het media item
@@ -2168,7 +2158,7 @@ van een deco plafond, zal deze vanzelf verdwijnen tijdens de opstijging zelf.
 Dit levert een iets langere NDL tijd op.
 
 
-[icon="images/icons/cceiling.jpg"]
+[icon="cceiling.jpg"]
 [NOTE]
 Als de duikcomputer een plafond berekend, en deze beschikbaar maakt voor _Subsurface_
 kan deze worden getoond als rood (of wit) gebied door de knop "Door DC aangegeven
@@ -2176,20 +2166,20 @@ plafond in-/uitschakelen" te kiezen. De instelling rood of wit wordt gedaan
 in de Voorkeuren.
 
 
-[icon="images/icons/ceiling1.jpg"]
+[icon="ceiling1.jpg"]
 [NOTE]
 Met de knop "Berekend plafond in-/uitschakelen" kan het door _Subsurface_ berekende
 plafond worden getoond als groene laag. Zie *A* in het figuur hieronder. De
 instelling kan op twee manieren nog verder worden gedetailleerd:
 
-[icon="images/icons/ceiling2.jpg"]
+[icon="ceiling2.jpg"]
 [NOTE]
 Met de knop "Berekening van alle compartimenten in-/uitschakelen" kunnen alle
 weefselcompartimenten conform Bühlmann worden getoond. Zie *B* in het figuur hieronder.
 
-[icon="images/icons/ceiling3.jpg"]
+[icon="ceiling3.jpg"]
 [NOTE]
-===============================================================================================================
+====================
 Met de knop "Berekend plafond in 3m stappen in-/uitschakelen" wordt
 het berekend plafond met nog meer detail weergegeven.  Zie *C* in het figuur hieronder.
 
@@ -2204,14 +2194,14 @@ de gebruikte duikcomputer, maar zijn de parameters die door _Subsurface_ worden 
 om de decompressieverplichting te berekenen. Meer externe informatie over Bühlmann
 is te vinden op:
 
- *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
-===============================================================================================================
+ *** link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, by Kevin Watts]
+====================
 
 
 
-[icon="images/icons/ShowCylindersButton.jpg"]
+[icon="ShowCylindersButton.jpg"]
 [NOTE]
 Door het kiezen van dit icoon, wordt onderaan het *Duikprofiel* een balk getoond met
 gebruikte gassen gedurende de duik. Zuurstof wordt met groen getoond, stikstof
@@ -2223,9 +2213,9 @@ image::images/ShowCylinders_f20.jpg["Figuur: Cylinder use graph",align="center"]
 
 
 
-[icon="images/icons/heatmap.png"]
+[icon="heatmap.png"]
 [NOTE]
-====================================================================================
+====================
 Door het kiezen van dit icoon, wordt de zogenaamde heatmap getoond. De heatmap toont,
 over het verloop van de duik, de inerte gasdrukken in de 16 weefselcompartimenten zoals
 gedefinieerd in het Bühlmann model. Blauw betekent lage gasdruk (onderdruk) in een compartiment
@@ -2294,7 +2284,7 @@ factoren. Dit komt omdat de heatmap relatief ten opzichte van de Bühlmann M-waa
 gradiënt is, en niet ten opzichte van een gekozen gradiënt factor. Meer (externe)
 informatie zie:
 
-http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
 Omdat de kleuren in de heatmap niet bepaald worden door de gradiënt factoren, kan de heatmap
 ook gebruikt worden met het VPM-B decompressie model.
@@ -2317,7 +2307,7 @@ langzame weefsels langer door, hetgeen ervoor zorgt dat de oververzadiging (grad
 hoger is in de ondiepe fase van de deco.
 
 image::images/tissueHeatmap.jpg["Figuur: Inerte gasdruk heatmap",align="center"]
-===================================================================================
+====================
 
 ==== Het duikprofiel context menu
 
@@ -2366,16 +2356,16 @@ sessies van _Subsurface_.
 De _Media_ kolom toont een icoon dat aangeeft dat er media gekoppeld zijn
 aan de duik. Er zijn drie mogelijke iconen:
 
-[icon="images/icons/duringPhoto.png"]
+[icon="duringPhoto.png"]
 [NOTE]
 Deze duik heeft media gedurende de duik, dus onder water.
 
-[icon="images/icons/outsidePhoto.png"]
+[icon="outsidePhoto.png"]
 [NOTE]
 Deze duik heeft media voor of na de duik. Nuttig voor bijvoorbeeld oppervlakte
 media vanaf de boot.
 
-[icon="images/icons/inAndOutPhoto.png"]
+[icon="inAndOutPhoto.png"]
 [NOTE]
 Deze duiken heeft zowel onder water media als media voor of na de duik.
 
@@ -2564,10 +2554,6 @@ duikcomputers en programmatuur mogelijk te maken.
 _Divelogs.de_ te kunnen exporteren, is een account nodig. Log in op _http://en.divelogs.de_
 en maak daar een account aan.
 
-* _DiveShare_ is eveneens een Internet-gebaseerd (online) duiklog website, welke
-met name gericht is op recreatieve duikers. Ook hier is een account nodig en
-registreren kan op _http://scubadiveshare.com_.
-
 * _CSV duik details_, welke de meest relevante informatie over een duik bevat.
 De volgende velden zijn aanwezig: duiknummer, datum, tijd, buddy, duikduur,
 diepte, temperatuur, luchtdruk. Kortweg, vrijwel alle data die recreatieve duikers
@@ -2685,7 +2671,7 @@ cloud gesynchroniseerd.
 
 Op moment dat je logboek in de cloud staat, is het ook mogelijk met een
 browser je logboek te bekijken. Ga naar
-https://cloud.subsurface-divelog.org[_https://cloud.subsurface-divelog.org_],
+https://cloud.subsurface-divelog.org/[_https://cloud.subsurface-divelog.org/_],
 en log in met je email adres en wachtwoord zoals gebruikt in de desktop PC
 voor de cloud. Je krijgt dat toegang tot een HTML export van de laatste versie
 van je duiklog. Dit logboek bevat alleen opgeslagen data, en toont geen
@@ -2914,7 +2900,7 @@ image::images/Pref1.jpg["Figuur: Voorkeuren algemeen pagina",align="center"]
 
 
 === Eenheden
-image::images/Pref2_f23.jpg["Figuur: Voorkeuren eenheden pagina",align="center"]
+image::images/Pref_units.jpg["Figuur: Voorkeuren eenheden pagina",align="center"]
 
 Kies tussen metrisch en imperiale eenheden voor diepte, druk, volume, temperatuur
 en gewicht. Met de knoppen aan de bovenkant kan in één maal voor alles in metrisch
@@ -2930,7 +2916,7 @@ minuten, seconden, of voor decimale graden.
 Dit paneel heeft drie onderdelen:
 
 [[S_CCR_options]]
-image::images/Pref4_f23.jpg["Figuur: Profiel voorkeuren pagina",align="center"]
+image::images/Pref_tech.png["Figuur: Profiel voorkeuren pagina",align="center"]
 
 [[S_GradientFactors]]
 * *Gasdruk display instelling*. Hoewel de pO~2~ waarden het meest relevant zijn,
@@ -3000,9 +2986,9 @@ het plafond komt te liggen. Een gradiënt factor waarde 20/60 kan als conservati
 worden beschouwd, en een 70/90 als agressiever.
 Zie de volgende websites voor meer informatie:
 
- *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values door Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values door Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, door Kevin Watts]
+ *** link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, door Kevin Watts]
 
 
 * *Allerlei*
@@ -3019,7 +3005,7 @@ grijze lijn de gemiddelde diepte in het profiel weergegeven.
 === Taal
 Kies de taal die _Subsurface_ gebruikt.
 
-image::images/Pref3_f23.jpg["Figuur: Voorkeuren taal pagina",align="center"]
+image::images/Pref_lang.jpg["Figuur: Voorkeuren taal pagina",align="center"]
 
 De standaard instelling van _Subsurface_ is de taal van het besturingssysteem
 te gebruiken, maar een andere instelling is mogelijk door het kiezen van een
@@ -3036,7 +3022,7 @@ met de buitenwereld ingesteld. Bijvoorbeeld voor communicatie met de _Subsurface
 cloud, of als het nodig of gewenst is via een proxy te
 communiceren.
 
-image::images/Pref5_f23.jpg["Figuur: Voorkeuren Netwerk pagina",align="center"]
+image::images/Pref_cloud.jpg["Figuur: Voorkeuren Netwerk pagina",align="center"]
 
 Deze dialoog bestaat uit drie onderdelen:
 
@@ -3067,7 +3053,7 @@ bepaald is. Voor deze functionaliteit is een actieve internet verbinding nodig.
 De wijze van naamgeving kan via de voorkeuren worden ingesteld. Bijvoorbeeld
 _Country/State/City_ of _City/State/Country_. Zie figuur hieronder:
 
-image::images/Pref7_f23.jpg["Figuur: Georeferentie paneel",align="center"]
+image::images/Pref_georef.jpg["Figuur: Georeferentie paneel",align="center"]
 
 [[S_DivePlanner]]
 == De _Subsurface_ duikplanner
@@ -3077,7 +3063,6 @@ berekeningen mogelijk met het Bühlmann ZH-L16 algoritme inclusief de door
 Erik Baker toegevoegde gradiënt factoren. Daarnaast is ook VPM-B aanwezig.
 
 ****
-[icon="images/icons/warning2.png"]
 [WARNING]
 
 De _Subsurface_ duikplanner is EXPERIMENTEEL en veronderstelt dat
@@ -3114,7 +3099,7 @@ tekst, is weergegeven. Door deze weergave kan het plan eenvoudig naar andere
 programmatuur worden overgedragen. Dit is ook het gebied waar waarschuwingen
 over het duikplan worden weergegeven.
 
-image::images/PlannerWindow1.jpg["Figuur: Duikplanner begin scherm",align="center"]
+image::images/PlannerWindow1.png["Figuur: Duikplanner begin scherm",align="center"]
 
 
 === Open circuit duiken
@@ -3249,7 +3234,7 @@ Hieronder staat een figuur van een duikplan voor een recreatieve duik naar 30m m
 gradiënt factoren van 100%. Omdat de NDL hier 22 minuten is blijft er voldoende
 lucht over aan het eind van de duik.
 
-image::images/Planner_OC_rec1.jpg["FIGUUR: Een recreatief duikplan",align="center"]
+image::images/Planner_OC_rec1.png["FIGUUR: Een recreatief duikplan",align="center"]
 
 Het duikprofiel in de planner toont de maximale duiktijd binnen de
 niet-decompressie limiet (NDL) met gebruikmaking van het Bühlmann ZH-L16
@@ -3264,7 +3249,7 @@ te worden.
 Hieronder hetzelfde plan als hierboven, maar nu met veiligheidsstop en verlaagde
 gradiënt factore voor extra veiligheid.
 
-image::images/Planner_OC_rec2.jpg["FIGUUR: Een recreatief duikplan met gradiënt factoren",align="center"]
+image::images/Planner_OC_rec2.png["FIGUUR: Een recreatief duikplan met gradiënt factoren",align="center"]
 
 
 ==== Niet-recreatieve open circuit duiken inclusief decompressie
@@ -3306,8 +3291,8 @@ opstijging in de tabel aan de linker zijde.
 
 Meer (algemene) informatie over decompressie is bijvoorbeeld te vinden op:
 
- * link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values door Erik Baker, _Immersed_ Vol. 3, No. 3.]
- * link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, door Kevin Watts]
+ * link:https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values door Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ * link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, door Kevin Watts]
  * link:https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, door Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
 Een uitstekend niet-technische overzicht waarbij zowel Bühlmann als VPM-B worden besproken.
 
@@ -3397,13 +3382,13 @@ aan het begin van de duik (omdat het andere gas niet adembaar is aan de oppervla
 moment dat het nieuwe segment met de "enter" toets wordt bevestigd, wordt het plan
 automatisch aangepast (figuur B hieronder).
 
-image::images/planner1.jpg["FIGUUR: Duikplanning: segmenten",align="center"]
+image::images/planner1.png["FIGUUR: Duikplanning: segmenten",align="center"]
 
 Hieronder een voorbeeld van een duik naar 55m met Tx20/30 met gebruikmaking van
 het Bühlmann algorithme, gevolgs door een opstijging met EAN50, en de instellingen
 zoals hierboven.
 
-image::images/Planner_OC_deco.jpg["FIGUUR: Planning van een duik",align="center"]
+image::images/Planner_OC_deco.png["FIGUUR: Planning van een duik",align="center"]
 
 Als bovenstaande stappen zijn doorlopen, kan de duik opgeslagen worden met de
 _Bewaren_ knop bovenin het scherm. De duik verschijnt dan in de *Duiklijst*.
@@ -3505,7 +3490,6 @@ helium percentage met 13% daalt en het helium met 5% stijgt, en dat voor deze
 gaswissel 2.6% het maximum is dat wordt voorgesteld voor de 1/5 regel.
 
 ****
-[icon="images/icons/warning2.png"]
 [WARNING]
 Zowel de plan variaties als het minimum gas zijn gebaseerd op aannamen, en derhalve
 richtlijnen bij het plannen van een duik. Het zijn uitdrukkelijk niet de enige
@@ -3536,11 +3520,11 @@ hieronder staat een plan van een pSCR duik die vergelijkbaar is met de CCR duik
 hieronder. Merk op dat de decompressie van de pSCR duik langer duurt, dan die van
 de vergelijkbare CCR duik. Dit komt met name door de pO~2~ drop.
 
-image::images/Planner_pSCR.jpg["Figuur: Planning a pSCR dive: setup",align="center"]
+image::images/Planner_pSCR.png["Figuur: Planning a pSCR dive: setup",align="center"]
 
 ==== pSCR bailout plannen
 
-[icon="images/pscr_b1.jpg"]
+[icon="pscr_b1.jpg"]
 [NOTE]
 OC duiken is vaak een onderdeel van pSCR duiken omdat in de ondiepe fase van de
 duik er meestal sprake is van een te lage pO~2~ in de loop. Door middel van
@@ -3593,7 +3577,7 @@ gassen berekend (dus een bailout decompressie berekening).
 
 Zie de figuur hieronder voor een voorbeeld van een geplande CCR duik.
 
-image::images/Planner_CCR.jpg["Figuur: Een CCR duik plannen: setup",align="center"]
+image::images/Planner_CCR.png["Figuur: Een CCR duik plannen: setup",align="center"]
 
 Merk op dat in de details van het duikplan (rechtsonder) geen gasberekening voor CCR duiken
 worden gedaan.
@@ -3601,24 +3585,21 @@ worden gedaan.
 
 ==== CCR bailout plannen
 
-[icon="images/CCR_b1.jpg"]
-[NOTE]
+image::images/CCR_b1.png[]
 Het is in het algemeen noodzakelijk om voor het meest ongunstige geval een bailout
 berekening te maken om veilig aan de oppervlakte te komen met inachtneming van de
 decompressieverplichting. Maak hiertoe een segment van 1 minuut aan aan het eind
 van de bodemfase, zoals getoond in het figuur links waar een CCR duik naar 40m voor
 21 minuten wordt gepland.
 
-[icon="images/CCR_b2.jpg"]
-[NOTE]
+image::images/CCR_b2.png[]
 Verander in de duikplanner punten tabel de duikmode van dit 1 minuut segment naar
 OC. Dit betekent bailout naar OC. In dit geval is het OC gas de diluent (aannemende dat
 dit voldoende is). De van toepassing zijnde pO~2~ en flesdruk grafieken worden
 getoond, zoals in de figuur links. Merk op dat het setpoint naar 0 gaat; het is
 immers niet van toepassing tijdens de OC fase.
 
-[icon="images/CCR_b3.jpg"]
-[NOTE]
+image::images/CCR_b3.png[]
 Om bailout naar een extere cilinder te plannen dient het _Gebruikt gas_ van het
 1 minuut segment te worden ingesteld, zoals te zien is in het figuur links. Merk
 op dat er 2 overlappende iconen zijn te zien. Het bailout icoon en het gaswissel
@@ -3692,7 +3673,7 @@ de duiklog te bewerken. Het formaat is als volgt:
 	subsurface [opties] [logfile ...] [--import logfile ...]
 
 De volgende opties zijn mogelijk:
-|================================
+|====================
 |*Commando regel optie*|*Beschrijving*
 |--help/-h|Toon een samenvatting van de opties op de commando regel
 |--import logfile ...|Een duiklog bestand vóór deze optie is een bestaande logboek, alles erna wordt geïmporteerd in het logboek
@@ -3702,7 +3683,7 @@ De volgende opties zijn mogelijk:
 |--survey|Opent de xref:S_UserSurvey[gebruikers enquête] bij opstarten van _Subsurface_
 |--user=<username>|Kies de xref:S_user_space[instellingen] van gebruiker <username>
 |--cloud-timeout=<duration>|Stel de timeout in voor de verbinding ,met de cloud (0 < duration < 60). Soms handig op trage Internet verbindingen
-|================================
+|====================
 
 
 == Index van alle items in het _Subsurface_ hoofdmenu
@@ -3785,7 +3766,7 @@ ook mogelijk, bijvoorbeeld als je wijze van duiken veranderd.
 [[S_Appendix_A]]
 
 === Controleer dat de juiste drivers zijn geïnstalleerd op het besturingssysteem
-[icon="images/icons/drivers.jpg"]
+[icon="drivers.jpg"]
 [NOTE]
 Het besturingssysteem heeft de juiste drivers nodig die aansluiten bij
 de techniek die de duikcomputer gebruikt om te communiceren. Bijvoorbeeld,
@@ -3808,7 +3789,7 @@ https://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20B
 
 [[S_HowFindDeviceName]]
 === Het vinden van de naam van USB apparaten en het instellen van juiste rechten
-[icon="images/icons/usb.jpg"]
+[icon="usb.jpg"]
 [NOTE]
 Als er een USB gebaseerde duikcomputer aangesloten wordt, stelt _Subsurface_ meestal
 een keuzelijst op met daarin de juiste apparaat naam of mount point (voor de
@@ -3879,7 +3860,7 @@ duiken geïmporteerd worden door _Subsurface_.
 
 [[S_HowFindBluetoothDeviceName]]
 === Handmatig opzetten van Bluetooth gekoppelde duikcomputers
-[icon="images/icons/bluetooth.jpg"]
+[icon="bluetooth.jpg"]
 [NOTE]
 
 Voor duikcomputers die gebruik maken van een Bluetooth verbinding, zoals
@@ -4098,7 +4079,7 @@ en type duikcomputer, het juiste device of mountpoint en klik downloaden.
 [[S_ImportUemis]]
 === Importeren uit Uemis Zurich
 
-[icon="images/icons/iumis.jpg"]
+[icon="iumis.jpg"]
 [NOTE]
 _Subsurface_ laadt de informatie van de SDA; het ingebouwde file systeem van de
 Uemis, inclusief informatie over duiklocatie en apparatuur. Buddy informatie is
@@ -4126,7 +4107,7 @@ worden.
 [[S_ImportingGalileo]]
 === Importeren uit Uwatec Galileo
 
-[icon="images/icons/Galileo.jpg"]
+[icon="Galileo.jpg"]
 [NOTE]
 
 Uwatec Galileo duikcomputers gebruiken infrarood (IrDA) communicatie tussen duikcomputer
@@ -4156,7 +4137,7 @@ OS/X 10.6.
 [[S_ImportingDR5]]
 === Importeren uit Heinrichs Weikamp DR5
 
-[icon="images/icons/HW_DR5.jpg"]
+[icon="HW_DR5.jpg"]
 [NOTE]
 Als de Heinrichs Weikamp DR5 als USB schijf is geladen, kan voor iedere duik
 een UDDF bestand worden gevonden. Selecteer alle duiken en importeer of open deze.
@@ -4172,7 +4153,7 @@ door de DR5.
 [[S_ImportingXDeep]]
 === Importeren uit xDEEP BLACK
 
-[icon="images/icons/HW_xdeepblack.jpg"]
+[icon="HW_xdeepblack.jpg"]
 [NOTE]
 Iedere duik moet op de duikcomputer individueel naar UDDF formaat geëxporteerd
 worden. Achtereenvolgens, kunnen deze vanuit _Subsurface_  worden geopend of
@@ -4189,7 +4170,7 @@ door de xDEEP BLACK.
 
 === Importeren uit Shearwater Predator/Petrel/Nerd using Bluetooth
 
-[icon="images/icons/predator.jpg"]
+[icon="predator.jpg"]
 [NOTE]
 Specifieke instructies over het downloaden van Bluetooth gekoppelde
 duikcomputers worden <<S_Bluetooth,_hier_>> gegeven.
@@ -4198,7 +4179,7 @@ duikcomputers worden <<S_Bluetooth,_hier_>> gegeven.
 [[S_PoseidonMkVI]]
 === Importeren uit Poseidon MkVI Discovery
 
-[icon="images/MkVI.jpeg"]
+[icon="MkVI.jpg"]
 [NOTE]
 Downloaden van data uit de MkVI duikcomputer maakt gebruik van de eigen communicatie
 adapter en de _Poseidon PC Configuration Software_, welke geleverd zijn bij de
@@ -4216,7 +4197,7 @@ _Subsurface_ gebruikt de .txt en de .csv bestanden om de duik te kunnen importer
 
 === Importeren uit APD Inspiration/Evolution CCR
 
-[icon="images/APDComputer.jpg"]
+[icon="APDComputer.jpg"]
 [NOTE]
 De duiklogs van een APD Inspiration of gelijkwaardige CCR kunnen gedownload worden met
 de, tijdens de aanschaf van de unit verkregen, communicatie adapter en de
@@ -4270,7 +4251,7 @@ betreft voornamelijk Windows en Linux processen.
 
 [[S_ImportingDivesSuunto]]
 === Exporteren uit *Suunto Divemanager (DM3, DM4 of DM5)*
-[icon="images/icons/suuntologo.jpg"]
+[icon="suuntologo.jpg"]
 [NOTE]
 DiveManager is een Windows applicatie voor Suunto duikcomputers. Divemanager
 3 (DM3) is de oudere versie, meer recente versies zijn Divemanager versie 4
@@ -4326,7 +4307,7 @@ de standaard extensie .bak volstaat
 === Exporteren uit Atomic Logbook
 [[Atomic_Export]]
 
-[icon="images/icons/atomiclogo.jpg"]
+[icon="atomiclogo.jpg"]
 [NOTE]
 Atomic Logbook is Windows programmatuur gemaakt door Atomic Aquatics. Het wordt
 gebruikt om data uit te lezen van de Cobalt en Cobalt 2 duikomputers. De data is
@@ -4338,7 +4319,7 @@ _Subsurface_ worden ingelezen.
 === Exporteren uit Mares Dive Organiser V2.1
 [[Mares_Export]]
 
-[icon="images/icons/mareslogo.jpg"]
+[icon="mareslogo.jpg"]
 [NOTE]
 
 Mares Dive Organizer is een Windows applicatie. De duiklog is een Microsoft SQL
@@ -4358,7 +4339,7 @@ een bestand _DiveOrganizer.sdf_.
 [[S_ImportingDivingLog]]
 === Exporteren uit *DivingLog 5.0 and 6.0*
 
-[icon="images/icons/divingloglogo.jpg"]
+[icon="divingloglogo.jpg"]
 [NOTE]
 De beste manier om duiken uit DivingLog naar _Subsurface_ te verplaatsen
 is het converteren van de gehele database. De reden is dat de andere formaten
@@ -4566,7 +4547,7 @@ Slechts een deel van de duik data wordt door _Grantlee_ geëxporteerd:
 |startPressure| (*string*) begindruk
 |endPressure| (*string*) einddruk
 |firstGas| (*string*) eerst gebruikte gas
-|=====================
+|====================
 
 Merk op dat sommige variabelen zoals 'notes' moeten worden uitgebreid met '|safe'
 om HTML tags te ondersteunen.
@@ -4592,7 +4573,7 @@ staat in de volgende tabel:
 |color4| (*string*) primary text color
 |color5| (*string*) secondary text color
 |color6| (*string*) border colors
-|=====================
+|====================
 
 .template.html
 ....
@@ -4607,11 +4588,11 @@ staat in de volgende tabel:
 Een andere variabele die _Subsurface_ exporteert is *print_options*. Deze variabele
 heeft één enkel lid:
 
-|=====================
+|====================
 |*Naam*|*Beschrijving*
 |grayscale | Gebruik _CSS_ filters om de pagina naar zwart-wit te converteren
 (dient te worden toegevoegd aan de body style om zwart-wit te kunnen afdrukken).
-|=====================
+|====================
 
 
 .template.html
@@ -4639,7 +4620,7 @@ De volgende selectors moeten worden gebruikt:
 hebben (naast de dive_{{ dive.id }} selector)
 |dontbreak | class | voorkomt dat een duik over twee pagina's wordt gesplitst. Dit kan
 alleen in flow layout sjablonen (met data-numberofdives = 0) worden gebruikt.
-|=====================
+|====================
 
 Belangrijk: Afdrukken van profielen met flow layout sjablonen (met data-numberofdives = 0) wordt
 niet ondersteund.

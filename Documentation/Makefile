@@ -12,12 +12,15 @@ BROWSER = firefox
 THEME = compact_subsurface
 PWD = $(realpath .)
 
+ASCIIDOC_OPTIONS = -a toc=left -a themedir=$(PWD) -a theme=$(THEME) -a version=$(VERSION) --failure-level=WARN $(VERSION_OPTIONS)
+
 # Compute version information once for all targets
 VERSION := $(shell git log -1 --pretty=format:%H . | xargs ../scripts/get-version-for-changeset.sh)
 ifeq ($(VERSION),)
 VERSION := pre-6.0.0
 endif
 VERSION_DATE := $(shell git log -1 --pretty=format:%ad --date=short .)
+VERSION_OPTIONS := -a version=$(VERSION) -a version-date=$(VERSION_DATE)
 
 .PHONY: all doc show clean
 
@@ -40,11 +43,11 @@ $(OUT)/%.text: $(OUT)/%.html
 
 $(OUT)/%.pdf: %.txt
 	$(mkdir)
-	$(A2X) -a version=$(VERSION) -a version-date=$(VERSION_DATE) -o $(OUT)/$(basename $(notdir $<)).pdf $<
+	$(A2X) $(VERSION_OPTIONS) --failure-level=WARN -o $(OUT)/$(basename $(notdir $<)).pdf $<
 
 $(OUT)/%.html: %.txt | $(OUT)/images
 	$(mkdir)
-	$(ASCIIDOC) -a toc=left -a toc-position=left -a themedir=$(PWD) -a theme=$(THEME) -a version=$(VERSION) -a version-date=$(VERSION_DATE) -o $@ $<
+	$(ASCIIDOC) $(ASCIIDOC_OPTIONS) -a toc-position=left -o $@ $<
 
 # for the web facing version of the desktop manual, just use the post-processing script
 user-manual.html.wp: $(OUT)/user-manual.html
@@ -55,14 +58,14 @@ user-manual.html.wp: $(OUT)/user-manual.html
 # the table of context and then post process
 mobile-manual-v3.html.wp: mobile-manual-v3.txt
 	$(mkdir)
-	$(ASCIIDOC) -a toc=left -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -a version="$(VERSION)" -a version-date="$(VERSION_DATE)" -o $(<:%.txt=%.html.tmp) $< && \
-		bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp) && \
-		rm $(<:%.txt=%.html.tmp) && \
-		mv $(<:%.txt=%.html.tmp.wp) $(OUT)/$@
+	$(ASCIIDOC) $(ASCIIDOC_OPTIONS) -a toclevels=1 -o $(<:%.txt=%.html.tmp) $<
+	bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp)
+	$(RM) $(<:%.txt=%.html.tmp)
+	mv $(<:%.txt=%.html.tmp.wp) $(OUT)/$@
 
 show: $(HTMLDOC)
 	$(BROWSER) $<
 
 clean:
-	rm -f *~ *.xml docbook-xsl.css
-	rm -rf $(OUT)/
+	$(RM) *~ *.xml docbook-xsl.css
+	$(RM) -r $(OUT)/
