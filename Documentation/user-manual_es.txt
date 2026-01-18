@@ -244,7 +244,7 @@ perfil gráfico de cada buceo. Estos paneles están marcados respectivamente com
 [red]#A#, [red]#B# y [red]#C# en la figura de abajo. Ahora veremos cada una de
 las pestañas usadas para introducir la información.
 
-image::images/AddDive1_f22.jpg["FIGURA: Añadir inmersión",align="center"]
+image::images/AddDive1.jpg["FIGURA: Añadir inmersión",align="center"]
 
 Al editar un campo de los paneles _Notas_ o _Equipo_, _Subsurface_
 entra en el modo de edición. Esto se indica con el mensaje en un recuadro azul
@@ -325,7 +325,6 @@ abanico de ordenadores de buceo, la última lista de los cuales puede encontrars
 en:
 link:http://subsurface-divelog.org/documentation/supported-dive-computers/[Ordenadores de buceo soportados.]
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Algunos ordenadores de buceo consumen más energía cuando están en modo
 comunicación-PC. **Esto puede descargar la batería del ordenador de buceo**. Así
@@ -441,7 +440,6 @@ están conectados vía USB).
 
 ****
 *PROBLEMAS EN LA DESCARGA DE DATOS DESDE UN ORDENADOR DE BUCEO*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Comprueba lo siguiente:
 
@@ -494,7 +492,8 @@ información sobre las inmersiones grabadas en el ordenador de buceo.
 
 [[S_Bluetooth]]
 ==== Conectar _Subsurface_ con ordenadores de buceo con Bluetooth
-[icon="images/icons/bluetooth.jpg"]
+[icon="bluetooth.jpg"]
+[NOTE]
 
 Bluetooth se está convirtiendo en una forma cada vez más común de comunicación
 entre los ordenadores de buceo y _Subsurface_. _Subsurface_ proporciona un
@@ -568,7 +567,6 @@ ser 0000, y funciona para el Shearwater Petrel. En caso necesario, consulta el
 manual de usuario del ordenador de buceo.
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Actualmente _Subsurface_ no soporta emparejamiento con ordenadores de buceo que
 requieran un PIN definido. Para poder emparejar los dispositivos en este caso,
@@ -594,7 +592,7 @@ _Descargar del ordenador de buceo_ que debería permanecer abierto. Los buceos
 descargado se mostrarán en el lado derecho de la ventana de descarga.
 
 ==== En Windows
-image::images/DC_import_Bluetooth_Windows.png["FIGURE: Descarga Bluetooth en Windows",align="center"]
+image::images/DC_import_Bluetooth_Windows.jpg["FIGURE: Descarga Bluetooth en Windows",align="center"]
 En plataformas Windows no está disponible la _sección de detalles de los
 dispositivos Bluetooth_. Para iniciar correctamente un escaneo pulsando el
 botón _Buscar_ , comprueba que el dispositivo _Bluetooth_ del ordenador con
@@ -613,7 +611,6 @@ uno de los dispositivos encontrados, pulsa _Guardar_. Finalmente, selecciona
 el botón _Descargar_ del diálogo de descargas y espera a que se complete el
 proceso.
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Hay que tener en cuenta que, actualmente, _Subsurface_ solo funciona con
 adaptadores Bluetooth locales que usen Microsoft Bluetooth Stack. Si el
@@ -628,7 +625,6 @@ Si se desea seleccionar otro ordenador de buceo utilizando la _Selección de
 dispositivo Bluetooth remoto_ pulsa el botón con tres puntos de _Elegir modo
 de descarga _Bluetooth_.
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 El soporte de Subsurface en Windows para ordenadores de buceo BTLE es
 *EXPERIMENTAL* y solo está soportado en Windows10.
@@ -637,7 +633,6 @@ link:https://en.wikipedia.org/wiki/Windows_10_version_history#Version_1803_(Apri
 versión 1803] is el requerimiento mínimo. Asegúrate también de tener
 instalados los últimos drivers para tu placa base o receptor BTLE.
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 *EN CASO DE PROBLEMAS*: Si el adaptador Bluetooth del ordenador con _Subsurface_
 se cuelga y el proceso de descarga falla repetidamente, _desempareja_ los
@@ -707,7 +702,7 @@ pestaña, el mensaje de la barra azul arriba del panel indicará que se está
 editando el buceo. Si se pulsa en la pestaña *Notas*, se
 visualizan los siguientes campos (imagen a la izquierda, a continuación:
 
-image::images/AddDive3_f22.jpg["FIGURA: La pestaña Notas",align="center"]
+image::images/AddDive3.jpg["FIGURA: La pestaña Notas",align="center"]
 
 La imagen derecha anterior muestra una pestaña *Notas* llena de información.
 El campo *Hora* refleja la fecha y la hora de la inmersión. Clicando la fecha se
@@ -728,7 +723,6 @@ acuerdo con las _Preferencias_ (métricas o imperiales).
 
 [[S_locations]]
 *Ubicación*:
-[icon="images/icons/warning2.png"]
 [WARNING]
 Las localizaciones de buceo se gestionan como una parte *separada* del divelog
 (Visita la sección llamada xref:S_DiveSiteManagement[Manipular información de puntos de buceo]).
@@ -809,7 +803,6 @@ image::images/Globe_image3.jpg["FIGURA:Panel de creación de posición",align="c
 dispositivo Android o iPhone con GPS, si las coordenadas del punto de buceo
 se guardaron utilizando esta app.
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Las coordenadas GPS de un punto están unidas a un nombre, por
 tanto, guardar inmersiones  con coordenadas sin una descripción del lugar
@@ -1212,7 +1205,6 @@ guardar los datos en formato de Subsurface (ver imagen a continuación).
 
 image::images/smtk2ssrf.jpg["FIGURE:Importar desde SmartTrak",align="center"]
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Los datos anteriores del archivo se borrarán, o sea que *NO UTILICES* el
 divelog habitual de _Subsurface_ como salida. Se recomienda utilizar un
@@ -1366,7 +1358,6 @@ en el panel *Lista de inmersiones*.
 [[S_CSV_Intro]]
 ****
 *Introducción de un buceador a los archivos _CSV_*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 _CSV_ es una abreviatura para un formato de archivo de datos: _Comma-Separated
@@ -1437,7 +1428,6 @@ importación mejor de las inmersiones a _Subsurface_.
 
 ****
 
-[icon="images/icons/important.png"]
 +[IMPORTANT]
 La importación _CSV_ tiene un par de advertencias. Se deberían evitar algunos
 caracteres especiales como el signo &, menor que (<), mayor que (>) y comillas
@@ -1736,7 +1726,6 @@ incluidos los que se hayan tomado antes o despues de la inmersión.
 
 ****
 *Asegurarse de que se crean las miniaturas para los archivos de vídeo*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 _Subsurface_ presenta los medios en un panel a través de miniaturas. En el
 caso de una foto crear la miniatura es sencillo ya que la imagen está bien
@@ -1976,7 +1965,7 @@ image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 [[S_sSCR_dives]]
 ==== Inmersiones con rebreather pasivo de circuito semi cerrado (pSCR)
 
-[icon="images/halcyon_RB80.jpg"]
+[icon="halcyon_RB80.jpg"]
 [NOTE]
 Los rebreathers semi cerrados pasivos (pSCR) suponen un avance técnico en el
 equipo de buceo que recircula el gas que el buzo respira, y elimina el dióxido
@@ -2032,7 +2021,7 @@ vertical entre las líneas verde y naranja señala la caida de presión en la
 boquilla. Mucha parte del buceo en pSCR requiere la gestión de esta caída de
 presión.
 
-[icon="images/DiveModeChange.jpg"]
+[icon="DiveModeChange.jpg"]
 [NOTE]
 _pSCR y bailout_: Los gases que se utilizan en pSCR tienen, a menudo,
 presiones parciales de oxígeno muy bajas cuando se usan a poca profundidad.
@@ -2056,7 +2045,7 @@ image::images/pSCR_profile_bailout.jpg["FIGURA: perfil pSCR con bailout",align="
 [[S_CCR_dives]]
 ==== Inmersiones con rebreather de circuito cerrado (CCR)
 
-[icon="images/APD.jpg"]
+[icon="APD.jpg"]
 [NOTE]
 Los rebreathers de circuito cerrado utilizan tecnología avanzada para
 reciclar el gas que se ha respirado, mientras mantienen una concentración de
@@ -2227,17 +2216,17 @@ como descargar divelogs de CCR en el xref:_appendix_b_dive_computer_specific_inf
 El Mapa de Inmersiones tiene algunos botones útiles para manipular algunos
 aspectos de una inmersión, los comentamos a continuación;
 
-[icon="images/icons/MapViewMode.jpg"]
+[icon="MapViewMode.jpg"]
 [NOTE]
 Selecciona este botón para visualizar el mapa como una imagen por satélite o
 como una representación de un mapa de Google.
 
-[icon="images/icons/MapViewPlus.jpg"]
+[icon="MapViewPlus.jpg"]
 [NOTE]
 Incrementa el zoom, se visualiza una menor área del mapa
 
-[icon="images/icons/MapViewMinus.jpg"]
-+[NOTE]
+[icon="MapViewMinus.jpg"]
+[NOTE]
 Reduce el zoom, se visualiza una mayor área del mapa
 
 image::images/MapMenu.jpg["FIGURA: Menú del mapa",align="left"]
@@ -2271,7 +2260,7 @@ inmersión, las profundidades máxima y media, el volumen de gas consumido, el
 C.A.S. (consumo de aire en superficie) y el número de unidades de toxicidad de
 oxígeno (OTU) en las que se ha incurrido.
 
-[icon="images/icons/info.jpg"]
+[icon="info.jpg"]
 [NOTE]
 Consumo de gas y cálculos de CAS: _Subsurface_ calcula el CAS y el consumo de gas
 teniendo en cuenta la incompresibilidad de los gases, particularmente a
@@ -2331,7 +2320,7 @@ gráfico. De esta forma, se debe poder visualizar la profundidad del punto más
 hondo y otros picos. La profundidad media se muestra como una línea gris que
 indica la profundidad media en cada momento de la inmersión.
 
-[icon="images/icons/scale.jpg"]
+[icon="scale.jpg"]
 [NOTE]
 En algunos casos el perfil de inmersión no llena el área completa del panel.
 Hacer clic en el botón Escala de la barra de herramientas de la izquierda,
@@ -2378,7 +2367,7 @@ El usuario tiene control sobre varios de los datos que se muestran en la Caja
 de Información, mostrados como cuatro de los botones en la columna a la
 izquierda del panel del perfil. Estos son:
 
-[icon="images/icons/MOD.jpg"]
+[icon="MOD.jpg"]
 [NOTE]
 Pulsar este botón hace que se muestre la *Profundidad Máxima Operativa (POM)*
 de la inmersión, en función del gas utilizado. La POM depende de la
@@ -2389,7 +2378,7 @@ _Preferencias_ -> _Perfil_ y editar la casilla de texto _pO~2~ al calcular la
 PMO_). Por debajo de la POM se incrementa mucho el riesgo por
 exposición a los peligros de la toxicidad del oxígeno.
 
-[icon="images/icons/NDL.jpg"]
+[icon="NDL.jpg"]
 [NOTE]
 Pulsar este botón hace que se muestre en la Caja de Información el *Límite de
 no Descompresión (NDL o LND)* o el *Tiempo total de Ascenso (TTS)*. El LND es
@@ -2404,7 +2393,7 @@ gas previstos.
 Los TTS mayores a 2 horas resultan muy imprecisos y Subsurface solo indicará
 _TTS > 2h_.
 
-[icon="images/icons/GFLow.jpg"]
+[icon="GFLow.jpg"]
 [NOTE]
 Muestra información de deco. Si está activado, la caja de información muestra
 el GF en superficie y los techos para los compartimentos de tejidos
@@ -2413,7 +2402,7 @@ presión parcial de nitrógeno en la sangre excede la presión parcial que se
 necesita para llegar a superficie con seguridad. Un GF en superficie superior
 al 100% significa que emerger no es seguro.
 
-[icon="images/icons/SAC.jpg"]
+[icon="SAC.jpg"]
 [NOTE]
 Pulsar en este botón hace que se muestre en la Caja de Información el
 *Consumo de Aire en Superfice (CAS o SAC). El CAS es una indicación del ritmo
@@ -2425,7 +2414,7 @@ profundidad de la inmersión, de forma que los ritmos respiratorios de
 diferentes inmersiones puedan compararse. Las unidades para el SAC son los
 litros/minuto o pies cúbicos/minuto.
 
-[icon="images/icons/EAD.jpg"]
+[icon="EAD.jpg"]
 [NOTE]
 Pulsar este botón hace que se muestre la *Profundidad equivalente de Aire
 (PEA o EAD)* para las inmersiones con nitrox y la *Profundidad narcótica
@@ -2566,17 +2555,17 @@ oxígeno se indica en verde, la del nitrógeno en negro y la del helio en rojo
 oscuro. Estos gráficos de presiones parciales se muestran bajo los datos de
 perfil.
 
-[icon="images/icons/O2.jpg"]
+[icon="O2.jpg"]
 [NOTE]
 Clicar este botón permite visualizar la presión parcial de oxígeno durante la
 inmersión. Se dibuja bajo los gráficos de profundidad y temperatura.
 
-[icon="images/icons/N2.jpg"]
+[icon="N2.jpg"]
 [NOTE]
 Clicar este botón permite visualizar la presión parcial de nitrógeno durante la
 inmersión.
 
-[icon="images/icons/He.jpg"]
+[icon="He.jpg"]
 [NOTE]
 Clicar este botón permite visualizar la presión parcial de helio durante la
 inmersión. Esto solo es interesante para buceadores que usen trimix, helitrox o
@@ -2597,7 +2586,7 @@ En modo planificador, el CAS se fija constante durante el tiempo de fondo así
 como durante la descompresión. Así pues, durante la planificación, el color es
 una indicación de la densidad del gas respirado.
 
-[icon="images/icons/Heartbutton.png"]
+[icon="Heartbutton.png"]
 [NOTE]
 Hacer clic en el botón de ritmo cardiaco permitirá mostrar información de este
 parámetro durante la inmersión si el ordenador de buceo tiene conectado un
@@ -2611,14 +2600,14 @@ a simple vista; algo que a los apneístas les trae claramente sin cuidado.
 
 image::images/MeasuringBar.png["FIGURE: Barra de medidas",align="center"]
 
-[icon="images/icons/ruler.jpg"]
+[icon="ruler.jpg"]
 [NOTE]
 Pueden hacerse *medidas de profundidad o tiempo* utilizando el botón *regla* de
 la izquierda del perfil La medición se hace arrastrando los puntos rojos a los
 dos puntos del perfil entre los que deseas medir. La información se facilita en
 el área blanca horizontal bajo los dos puntos.
 
-[icon="images/icons/ShowPhotos.png"]
+[icon="ShowPhotos.png"]
 [NOTE]
 Las fotografías o vídeos que se han añadido a una inmersión pueden mostrarse en el perfil
 seleccionando el botón *Mostrar medios* en la barra de herramientas a la izquierda
@@ -2660,29 +2649,29 @@ gas determinadas y no es una afirmación acerca de una posible tabla de ascenso
 para el resto de la inmersión. Para obtener esta última utiliza la opción
 "Editar inmersión en el Planificador_" en el menú Registro.
 
-[icon="images/icons/cceiling.jpg"]
+[icon="cceiling.jpg"]
 [NOTE]
 Si el propio ordenador de buceo calcula un techo y lo pone a disposición de
 _Subsurface_ durante la descarga de inmersiones, puede ser mostrado como un
 árearoja seleccionando el botón *Mostrar techo informado por el ordenador* del
 panel de perfil.
 
-[icon="images/icons/ceiling1.jpg"]
+[icon="ceiling1.jpg"]
 [NOTE]
 Si hacemos clic en el botón *Mostrar techo calculado* por _Subsurface_ del panel
 del perfil, se muestra en verde este techo, si existe, para una inmersión en
 particular (*A* en la figura a continuación). Este ajuste puede modificarse de
 dos maneras:
 
-[icon="images/icons/ceiling2.jpg"]
+[icon="ceiling2.jpg"]
 [NOTE]
 Si, además, se selecciona el botón *Calcular todos los tejidos* del panel de
 perfil, se muestra el techo para los distintos tejidos del modelo Bühlman (*B*
 en la figura de debajo).
 
-[icon="images/icons/ceiling3.jpg"]
+[icon="ceiling3.jpg"]
 [NOTE]
-==========================================================================================================
+====================
 Si, además, se selecciona el botón *Mostrar el techo calculado con incrementos
 de 3m* entonces el techo se muestra con saltos de 3 en 3 metros.
 
@@ -2697,15 +2686,15 @@ N.B. Los facatores indicados *NO* son los utilizados por el ordenador de buceo
 para calcular las obligaciones descompresivas durante el buceo. Para más
 información externa a este manual ver:
 
-*** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values
+*** https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values
 de Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
 ***
-link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/503 7-gradient-factors-for-dummies.html[Gradient factors for dummies, de Kevin Watts]
-==========================================================================================================
+link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, de Kevin Watts]
+====================
 
 
-[icon="images/icons/ShowCylindersButton.jpg"]
+[icon="ShowCylindersButton.jpg"]
 [NOTE]
 Al seleccionar este icono, los diferentes gases utilizados durante una inmersión
 se presentarán en forma de barras de colores en la parte de abajo del perfil. En
@@ -2717,9 +2706,9 @@ se muestran con una barra azul claro.
 
 image::images/ShowCylinders_f20.jpg["Figura: Gráfico de uso de botellas",align="center"]
 
-[icon="images/icons/heatmap.png"]
+[icon="heatmap.png"]
 [NOTE]
-================================================================================
+====================
 Muestra un mapa de calor de los tejidos. El mapa de calor resume, para la
 duración de la inmersión, las presiones de gases inertes para los 16
 compartimentos de tejidos del modelo de Bühlmann. Los colores azules indican
@@ -2801,7 +2790,7 @@ Factores de Gradiente. Esto se debe a que el mapa indica presiones de tejidos
 relativas al gradiente del Valor-M de Bühlmann, y no relativas a ningún Factor
 de Gradiente especifico. Para más información externa a este manual ver:
 
-http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
 Al no verse afectados los colores del mapa de calor por los factores de
 gradiente, el mapa también es aplicable cuando se utilice el modelo de
@@ -2830,7 +2819,7 @@ paradas profundas, lo que lleva a un mayor gradiente de sobresturación de los
 tejidos lentos al final de la inmersión.
 
 image::images/tissueHeatmap.jpg["Figure: Inert gas tissue pressure heat-map",align="center"]
-================================================================================
+====================
 
 ==== El menú contextual del Perfil de Inmersión
 
@@ -2882,7 +2871,7 @@ solo determinados tipos de buceo (p.e. CCR) en el filtro. Esto resulta útil
 para buceadores con reciclador o apneistas que también buceen en circuito
 abierto.
 
-image::images/FilterPanel.jpg["Figura: Panel de filtrado",align="center"]
+image::images/Filterpanel.jpg["Figura: Panel de filtrado",align="center"]
 
 El criterio de filtrado puede ser cualquiera de los siguientes:
 
@@ -2961,18 +2950,18 @@ Al seleccionar la casilla _Medios_ de la lista desplegable, se mostrará un
 icono indicando si existe algun archivo asociado a cada inmersión concreta. Hay
 tres iconos:
 
-[icon="images/icons/duringPhoto.png"]
+[icon="duringPhoto.png"]
 [NOTE]
 Esta inmersión tiene fotos o vídeos tomados durante el buceo, habitualmente con
 una cámara sumergible.
 
-[icon="images/icons/outsidePhoto.png"]
+[icon="outsidePhoto.png"]
 [NOTE]
 Esta inmersión tiene fotos o vídeos tomados inmediatamente antes o después del buceo.
 Es útil para encontrar imágenes de los compañeros o de barcos, ballenas u otros
 animales vistos en superficie antes o después del buceo, o paisajes.
 
-[icon="images/icons/inAndOutPhoto.png"]
+[icon="inAndOutPhoto.png"]
 [NOTE]
 Esta inmersión tiene fotos o vídeos tomados durante el buceo y antes o después del
 mismo.
@@ -3158,9 +3147,6 @@ Un registro de buceo puede guardarse en tres formatos:
   buceos a _Divelogs.de_, se necesita un usuario y una password de _Divelogs.de_.
   Hay que registrarse en _http://es.divelogs.de_ y suscribir el servicio para
   poder enviar datos de inmersiones desde _Subsurface_.
-* _DiveShare_ es también un repositorio de inmersiones basado en internet que se
-  dirige a inmersiones recreativas. Para subir inmersiones se necesita una
-  identificación de usuario, por lo que es necesario registrase en _http://scubadiveshare.com_.
 * _Detalles de inmersión CSV_, que incluye la información más crítica del perfil de la
   inmersión. La información que se incluye es número, fecha, hora, duración,
   profundidad, temperatura y presión. En resumen, la mayoría de la información
@@ -3300,7 +3286,7 @@ pasos:
 
 Uno de los efectos interesantes de utilizar el _Almacenamiento de Subsurface
 en la nube_ es que también se puede acceder a los datos con cualquier navegador.
-Simplemente se abre https://cloud.subsurface-divelog.org[https://cloud.subsurface-divelog.org],
+Simplemente se abre https://cloud.subsurface-divelog.org/[https://cloud.subsurface-divelog.org/],
 se accede con los mismos e-mail y password, y se pueden visualizar los datos
 del registro hasta la última sincronización efectuada con el _Almacenamiento
 en la nube de Subsurface_. La información que se muestra son solo los contenidos
@@ -3560,7 +3546,7 @@ image::images/Pref1.jpg["FIGURA: Pantalla de General en Preferencias",align="cen
 
 === Unidades
 
-image::images/Pref2_f23.jpg["FIGURA: Página de preferencias de unidades",align="center"]
+image::images/Pref_units.jpg["FIGURA: Página de preferencias de unidades",align="center"]
 
 Aquí el usuario puede elegir entre medidas métricas o imperiales para
 profundidad, presión, volumen, temperatura y masa. Al seleccionar el botón de
@@ -3582,7 +3568,7 @@ a tus necesidades.
 === Perfil
 [[S_CCR_options]]
 
-image::images/Pref4_f23.jpg["FIGURA: Página de Preferencias del gráfico",align="center"]
+image::images/Pref_tech.png["FIGURA: Página de Preferencias del gráfico",align="center"]
 
 [[S_GradientFactors]]
 Este panel permite dos tipos de selecciones:
@@ -3665,9 +3651,9 @@ los techos. Factores de gradiente de 20/60 se consideran conservativos y de
 70/90 se consideran arriesgados.
 Para más información visita
 
-*** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+*** https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
-*** http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+*** https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, by Kevin Watts]
 
 * *Miscelanea*
 
@@ -3686,7 +3672,7 @@ ascenso.
 
 Se elige el lenguaje que debe utilizar _Subsurface_.
 
-image::images/Pref3_f23.jpg["FIGURA: página de preferencias de lenguaje",align="center"]
+image::images/Pref_lang.jpg["FIGURA: página de preferencias de lenguaje",align="center"]
 
 Una casilla de selección permite usar el lenguaje _Predeterminado del sistema_
 que, en la mayoría de los casos será el ajuste correcto; con esto _Subsurface_
@@ -3707,7 +3693,7 @@ internet.
 Esto es importante cuando _Subsurface_ tiene que comunicarse con servicios web
 como el Almacenamiento en la Nube o a través de un proxy.
 
-image::images/Pref5_f23.jpg["FIGURA: página de preferencias de red",align="center"]
+image::images/Pref_cloud.jpg["FIGURA: página de preferencias de red",align="center"]
 
 Este diálogo tiene tres secciones:
 
@@ -3740,7 +3726,7 @@ nombre conocido más cercano a nuestra posición. Obviamente la función solo
 actúa con conexión a internet. La configuración se puede efectuar como en
 la imagen a continuación
 
-image::images/Pref7_f23.jpg["FIGURE: Facebook login panel",align="center"]
+image::images/Pref_georef.jpg["FIGURE: Facebook login panel",align="center"]
 
 [[S_DivePlanner]]
 == El Planificador de _Subsurface_
@@ -3751,7 +3737,6 @@ Bühlmann ZHL16 con factores de gradiente tal y como lo implementó Erik Baker,
 o utilizando el modelo VPM-B.
 
 ****
-[icon="images/icons/warning2.png"]
 [WARNING]
 
 Esta prestación *ES EXPERIMENTAL* y supone que el usuario ya está familiarizado
@@ -3791,7 +3776,7 @@ Aquí es donde se proporcionan los detalles del plan de inmersión de forma que
 pueda copiarse con facilidad a otro software. También es donde se imprimirá
 cualquier mensaje de aviso sobre el plan de buceo.
 
-image::images/PlannerWindow1.jpg["FIGURA: Ventana de inicio del planificador",align="center"]
+image::images/PlannerWindow1.png["FIGURA: Ventana de inicio del planificador",align="center"]
 
 === Inmersiones con circuito abierto
 
@@ -3939,7 +3924,7 @@ recreativa a 30m con factores de gradiente del 100%. Al ser el límite de no
 descompresión de 22 minutos, queda una cantidad significativa de aire en la
 botella al final de la inmersión.
 
-image::images/Planner_OC_rec1.jpg["FIGURA: Plan de inmersión recreativa: Ajuste",align="center"]
+image::images/Planner_OC_rec1.png["FIGURA: Plan de inmersión recreativa: Ajuste",align="center"]
 
 El perfil del planificador indica el tiempo máximo de inmersión dentro de
 los límites de no descompresión, utilizando el algoritmo Bülmann ZH-L16 y el
@@ -3959,7 +3944,7 @@ A continuación se muestra el mismo plan de antes, pero con una parada de
 seguridad y factores de gradiente reducidos para incrementar el margen de
 seguridad.
 
-image::images/Planner_OC_rec2.jpg["FIGURE: A recreational dive plan: gradient factors setup",align="center"]
+image::images/Planner_OC_rec2.png["FIGURE: A recreational dive plan: gradient factors setup",align="center"]
 
 ==== Inmersiones en circuito abierto no recreativas, incluyendo descompresión
 
@@ -4004,8 +3989,8 @@ primer punto de la fase de ascenso, en la tabla del lado izquierdo.
 
 Para más información externa a este manual ver:
 
- * link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
- * link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, por Kevin Watts]
+ * link:https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ * link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, por Kevin Watts]
  * link:http://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10:1-905492-07-3. Un excelente estudio no técnico en el que se discuten ambos modelos, el de Bühlmann y el VPM-B.
 
 La velocidad de ascenso es crítica para la desgasificación al final de la
@@ -4116,13 +4101,13 @@ Al presionar la tecla INTRO del teclado, este segmento se moverá al principio
 de la tabla y el plan se ajustará automáticamente para tener en cuenta este
 nuevo segmento (imagen B a continuación).
 
-image::images/planner1.jpg["FIGURA: Planificar una inmersión: Segmentos",align="center"]
+image::images/planner1.png["FIGURA: Planificar una inmersión: Segmentos",align="center"]
 
 A continuación hay un ejemplo de un plan de buceo que usa Tx20/30 y algoritmo
 Bühlmann, seguido de un ascenso  usando EAN50 y los ajustes descritos
 anteriormente.
 
-image::images/Planner_OC_deco.jpg["FIGURA: Planificar una inmersión: Ajustes",align="center"]
+image::images/Planner_OC_deco.png["FIGURA: Planificar una inmersión: Ajustes",align="center"]
 
 Una vez que lo anterior se ha completado, se puede guardar clicando el botón
 _Guardar_ arriba en el centro del panel del planificador. El plan de buceo
@@ -4243,7 +4228,6 @@ de gas, el helio se ha reducido un 13% mientras que el nitrógeno se ha
 incrementado un 3% que es más del 2.6% sugerido por la regla de los quintos.
 
 ****
-[icon="images/icons/warning2.png"]
 [WARNING]
 Las *Variaciones del plan* y el *gas mínimo* estimados son solo guías para un
 buceador haciendo tareas de planificación de inmersiones y se  supone que
@@ -4279,11 +4263,11 @@ buceo con pSCR. El buceo es comparable al anterior con CCR, pero hay que hacer
 notar la mayor duración del ascenso debido al menor contenido de oxígeno en el
 circuito por la caída de oxígeno en la boquilla del equipo pSCR.
 
-image::images/Planner_pSCR.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+image::images/Planner_pSCR.png["FIGURE: Planning a pSCR dive: setup",align="center"]
 
 ==== Planificar ascensos de emergencia con pSCR
 
-[icon="images/pscr_b1.jpg"]
+[icon="pscr_b1.jpg"]
 [NOTE]
 Bucear en circuito abierto forma parte amenudo de las inmersiones con pSCR,
 porque a pequeñas profundidades la pO~2~ en el circuito es demasiado baja. El
@@ -4359,15 +4343,14 @@ pero, desde luego, lo hace para ascensos de emergencia en circuito abierto.
 
 El perfil para una inmersión con CCR puede parecerse a la imagen a continuación
 
-image::images/Planner_CCR.jpg["FIGURE: Planning a CCR dive: setup",align="center"]
+image::images/Planner_CCR.png["FIGURE: Planning a CCR dive: setup",align="center"]
 
 Fíjate que, en los _Detalles del plan de buceo_, no se calcula el consumo de
 gas para un segmento en CCR, por tanto, lo normal es obtener valores de 0 l.
 
 ==== Planificar emergencias con CCR
 
-[icon="images/CCR_b1.jpg"]
-[NOTE]
+image::images/CCR_b1.png[]
 A menudo es necesario planificar casos de "peor escenario" para asegurarnos de
 que dispondremos de gas suficiente, en caso de emergencia, para alcanzar la
 superficie, teniendo en cuenta la descompresión. Esto se hace: 1)
@@ -4378,8 +4361,7 @@ como se muestra en la imagen de la izquierda donde se planifica una inmersión a
 40m durante 21 minutos; 3) Cambiando a un gas en circuito abierto en cualquier
 segmento de la tabla de _Puntos del Planificador_.
 
-[icon="images/CCR_b2.jpg"]
-[NOTE]
+image::images/CCR_b2.png[]
 En los puntos de la tabla del plan, cambia el _Modo de buceo_ de este segmento
 de 1 minuto a _OC_. Esto significa emergencia. En este caso hay un bailout a
 la botella del diluyente (asumiendo que esta botella tenga gas suficiente). La
@@ -4388,8 +4370,7 @@ inmersión, como en la imagen de la izquierda. Fíjate que el setpoint cae a
 cero tras el cambio, ya que este valor no se aplica al gas de emergencia
 respirado.
 
-[icon="images/CCR_b3.jpg"]
-[NOTE]
+image::images/CCR_b3.png[]
 De cara a planificar para un cambio a una botella de emergencia externa,
 cambia el _Gas Usado_ en el segmento de 1 minuto a la botella apropiada, como
 en el ejemplo de la izquierda. Fijate que el cambio de botella y el evento de
@@ -4473,7 +4454,7 @@ comandos es:
 	subsurface [opciones] [divelog ...] [--import divelog ...]
 
 Las opciones incluyen:
-|======================
+|====================
 |*Opción*|*Descripción*
 |--help|Muestra un sumario de opciones de la línea de comandos
 | -h|Muestra un sumario de opciones de la línea de comandos
@@ -4485,7 +4466,7 @@ Las opciones incluyen:
 |--survey|Abre la xref:S_UserSurvey[encuesta de usuarios] inmediatamente después de lanzar _Subsurface_
 |--user<nombre de usuario>|Selecciona la xref:S_user_space[configuración de trabajo] del usuario <nombre de usuario>
 |--cloud-timeout=<duración>|Ajusta el tiempo de espera para la conexión con la nube (0 < duración < 60). Esto permite mayores tiempos de espera si tenemos una conexión a internet lenta
-|======================
+|====================
 
 == Descripción de las opciones del menú principal de _Subsurface_
 
@@ -4579,7 +4560,7 @@ una inmersión.
 == APÉNDICE A: Información específica del sistema operativo para importar inmersiones desde un ordenador de buceo.
 
 === Asegúrate de que el SO tiene instalados los drivers necesarios
-[icon="images/icons/drivers.jpg"]
+[icon="drivers.jpg"]
 [NOTE]
 El sistema operativo del ordenador de sobremesa necesita los drivers correctos
 para comunicarse con el ordenador de buceo de la forma en que este lo prefiera
@@ -4602,7 +4583,7 @@ de documentos y software de Silicon Labs].
 
 [[S_HowFindDeviceName]]
 === Como encontrar el nombre de dispositivo para conexiones USB y ajustar sus permisos de escritura
-[icon="images/icons/usb.jpg"]
+[icon="usb.jpg"]
 [NOTE]
 Cuando un usuario conecta el ordenador de buceo utilizando un conector USB,
 normalmente _Subsurface_ propondrá una lista desplegable que contendrá el nombre
@@ -4676,7 +4657,7 @@ conectarse y se debería poder importar las inmersiones.
 
 [[S_HowFindBluetoothDeviceName]]
 === Ajustar manualmente dispositivos con bluetooth
-[icon="images/icons/bluetooth.jpg"]
+[icon="bluetooth.jpg"]
 [NOTE]
 Para ordenadores de buceo que se comunican por bluetooth como el Heinrichs
 Weikamp Frog o el Shearwater Predator, Petrel y Nerd hay un procedimiento distinto
@@ -4911,7 +4892,7 @@ de montaje o dispositivo (p.e. _/dev/rfcomm0_) y pulsa _Descargar_.
 [[S_ImportUemis]]
 === Importar desde un Uemis Zurich
 
-[icon="images/icons/iumis.jpg"]
+[icon="iumis.jpg"]
 [NOTE]
 _Subsurface_ descarga la información guardada en el SDA (el sistema de archivos
 interno del Uemis) incluyendo información sobre puntos de buceo y equipo. La
@@ -4943,7 +4924,7 @@ haya guardados en el ordenador.
 [[S_ImportingGalileo]]
 === Importar buceos desde el Galileo de Uwatec
 
-[icon="images/icons/Galileo.jpg"]
+[icon="Galileo.jpg"]
 [NOTE]
 Los ordenadores de buceo Galileo de Uwatec usan comunicaciones por infrarrojos
 (IrDA) entre el dispositivo y _Subsurface_. El hardware de Uwatec utiliza un USB
@@ -4974,7 +4955,7 @@ OSX 10.6 o superior.
 [[S_ImportingDR5]]
 === Importar buceos desde Heinrichs Weikamp DR5
 
-[icon="images/icons/HW_DR5.jpg"]
+[icon="HW_DR5.jpg"]
 [NOTE]
 El H&amp;W DR5 se monta como un disco USB y guarda un fichero UDDF para cada
 buceo. Marca todas las inmersiones que quieras abrir o importar. Nota: El DR5 no
@@ -4987,7 +4968,7 @@ seguridad, de la calculada por el DR5.
 [[S_ImportingXDeep]]
 === Importar desde xDEEP BLACK
 
-[icon="images/icons/HW_xdeepblack.jpg"]
+[icon="HW_xdeepblack.jpg"]
 [NOTE]
 Cada inmersión se ha de guardar individualmente como archivo UDDF utilizando la
 opción "Exportar a UDDF" en el menú del logbook del BLACK. Al montar el BLACK
@@ -5001,7 +4982,7 @@ mostraría el xDEEP BLACK.
 
 === Importar del Shearwater Predator/Petrel/Nerd usando Bluetooth
 
-[icon="images/icons/predator.jpg"]
+[icon="predator.jpg"]
 [NOTE]
 En la sección anterior, <<S_Bluetooth,_Conectar Subsurface a ordenadores de buceo con Bluetooth_>>
 se facilitan instrucciones específicas para descargar inmersiones usando Bluetooth.
@@ -5009,7 +4990,7 @@ se facilitan instrucciones específicas para descargar inmersiones usando Blueto
 [[S_PoseidonMkVI]]
 === Importar desde el Poseidon MKVI Discovery
 
-[icon="images/MkVI.jpeg"]
+[icon="MkVI.jpg"]
 [NOTE]
 La descarga de diarios desde el MKVI se realiza utilizando un adaptador de
 comunicaciones personalizado y el _Poseidon PC Configuration Software_, que
@@ -5029,7 +5010,7 @@ _Subsurface_ accede a los archivos .txt y .csv para obtener información.
 
 === Importar desde el CCR APD Inspiration
 
-[icon="images/APDComputer.jpg"]
+[icon="APDComputer.jpg"]
 [NOTE]
 Los diarios del ordenador de buceo de un APD Inspiration o similar, se
 descargan utilizando un adaptador y el _AP Communicator_, obtenidos al comprar
@@ -5091,7 +5072,7 @@ mayormente en Linux y/o Windows.
 
 [[S_ImportingDivesSuunto]]
 === Exportar desde *Suunto Divemanager (DM3, DM4 o DM5)*
-[icon="images/icons/suuntologo.jpg"]
+[icon="suuntologo.jpg"]
 [NOTE]
 Divemanager es una aplicación en MS Windows para ordenadores de buceo Suunto.
 Divemanager 3 (DM3) es una versión más antigua del software de Suunto. Los
@@ -5155,6 +5136,7 @@ aquí usaremos DM4 (o DM5) con la extensión por defecto .bak
 [[Atomic_Export]]
 === Exportar desde Atomic Logbook
 
+[icon="atomiclogo.jpg"]
 [NOTE]
 Atomic Logbook es un software en Windows de Atomics Aquatics. Permite descargar
 información de buceo de los ordenadores Cobalt y Cobalt 2. El archivo se guarda
@@ -5164,7 +5146,7 @@ Este archivo se puede importar directamente a _Subsurface_.
 [[Mares_Export]]
 === Exportar desde Mares Dive Organiser V2.1
 
-[icon="images/icons/mareslogo.jpg"]
+[icon="mareslogo.jpg"]
 [NOTE]
 Mares Dive Organiser es una aplicación de Windows. El diario de inmersiones se
 guarda en una base de datos Microsoft SQL Compact Edition con una extensión de
@@ -5185,7 +5167,7 @@ _Subsurface_.
 [[S_ImportingDivingLog]]
 === Exportar desde *DivingLog 5.0 y 6.0*
 
-[icon="images/icons/divingloglogo.jpg"]
+[icon="divingloglogo.jpg"]
 [NOTE]
 La mejor manera de traer tus diarios desde DivingLog a _Subsurface_ es
 convertir la base de datos completa. Esto se debe a que otros formatos de
@@ -5409,7 +5391,7 @@ Solo se pasa un subconjunto de los datos de una inmersión:
 |startPressure| (*string*) la presión inicial
 |endPressure| (*string*) la presión final
 |firstGas| (*string*) primer gas utilizado
-|=====================
+|====================
 
 Fíjate que algunas de las variables como "notes" necesitan extenderse con
 "|safe" para soportar etiquetas HTML:
@@ -5424,8 +5406,7 @@ forma dinámica. Los datos exportados se muestran en la tabla a continuación:
 |====================
 |*Nombre*|*Descripción*
 |font| (*string*) familia de la fuente
-|borderwidth| (*int*) valor de la anchura del borde, calculado dinámicamente
-como 0.1% de la anchura de la página con un valor mínimo de 1px
+|borderwidth| (*int*) valor de la anchura del borde, calculado dinámicamente como 0.1% de la anchura de la página con un valor mínimo de 1px
 |font_size| (*double*) tamaño de la fuente en vw, varía entre 1.0 y 2.0
 |line_spacing| (*double*) distancia entre líneas de texto, varía entre 1.0 y 3.0
 |color1| (*string*) color del fondo
@@ -5434,7 +5415,7 @@ como 0.1% de la anchura de la página con un valor mínimo de 1px
 |color4| (*string*) color primario del texto
 |color5| (*string*) color secundario del texto
 |color6| (*string*) colores de los bordes
-|=====================
+|====================
 
 .template.html
 ....
@@ -5448,11 +5429,11 @@ como 0.1% de la anchura de la página con un valor mínimo de 1px
 
 Otra variable que pasa _Subsurface_ es *print_options*. Esta variable solo
 contiene un único valor:
-|=====================
+|====================
 |*Nombre*|*Descripción*
 |grayscale | Utiliza filtros _CSS_ para convertir la página a escala de grises
 (debe añadirse al estilo del cuerpo para activar la impresión en blanco y negro)
-|=====================
+|====================
 
 
 .template.html
@@ -5477,13 +5458,10 @@ los selectores de la siguiente tabla:
 
 |====================
 |*Selector*|*Tipo*|*Descripción*
-|dive_{{ dive.id }} | id | se utiliza para descargar el perfil de inmersión
-correspondiente
-|diveProfile | class | cada div que contendrá un perfil de inmersión debe tener
-este selector de clase añadido al selector divee_{{ dive.id }}
-|dontbreak | class | evita que el div que tenga esta clase se divida en dos
-páginas
-|=====================
+|dive_{{ dive.id }} | id | se utiliza para descargar el perfil de inmersión correspondiente
+|diveProfile | class | cada div que contendrá un perfil de inmersión debe tener este selector de clase añadido al selector divee_{{ dive.id }}
+|dontbreak | class | evita que el div que tenga esta clase se divida en dos páginas
+|====================
 
 IMPORTANTE: Renderizar perfiles de inmersión no está soportado en plantillas
 de distribución de flujo (cuando datos-número de buceos = 0).

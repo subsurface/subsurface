@@ -4,6 +4,7 @@
 // :revnumber: 2.0
 // :revdate: October 2017
 :icons:
+:iconsdir: mobile-images/icons/
 :toc:
 :toc-placement: manual
 :numbered:
