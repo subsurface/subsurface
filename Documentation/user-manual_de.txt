@@ -156,7 +156,6 @@ Nachdem das Profil nun definiert ist, müssen weitere Details hinzugefügt werde
 Die Verwendung von Tauchcomputern ermöglicht die Erfassung einer großen Anzahl von Informationen über jeden Tauchgang, z.B. eine detaillierte Aufzeichnung der Tiefe, der Dauer, der Aufstiegs-/Abstiegsgeschwindigkeiten und der Gaspartialdrücke. _Subsurface_ kann diese Informationen mit Hilfe von Tauchgangsdaten aus einer Vielzahl von Tauchcomputern erfassen. Die aktuelle Liste der unterstützten Tauchcomputer finden Sie unter:
 link:https://subsurface-divelog.org/documentation/supported-dive-computers/[Unterstützte Tauchcomputer].
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Einige Tauchcomputer verbrauchen mehr Strom, wenn sie sich im PC-Kommunikationsmodus befinden. **Dadurch kann sich die Batterie des Tauchcomputers entladen**. Wir empfehlen dem Benutzer, sich zu vergewissern, dass der Tauchcomputer aufgeladen ist, wenn er an den USB-Anschluss eines PCs angeschlossen ist. Einige Suunto- und Mares-Tauchcomputer lassen sich zum Beispiel nicht über den USB-Anschluss aufladen. Wenn Sie sich nicht sicher sind, ob der Tauchcomputer seine Batterien auflädt, während er an den USB-Anschluss angeschlossen ist, sollten Sie im Handbuch des Tauchcomputers nachsehen.
 
@@ -205,7 +204,6 @@ Aktivieren Sie *nicht* die Kontrollkästchen _libdivecomputer-Tauchgangsprotokol
 
 ****
 *PROBLEME BEIM HERUNTERLADEN VON DATEN VON EINEM TAUCHCOMPUTER?*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Überprüfen Sie Folgendes:
 
@@ -238,7 +236,8 @@ Diese Dateien sollten an die _Subsurface_ Mail-Liste geschickt werden:_subsurfac
 
 [[S_Bluetooth]]
 ==== Verbinden von _Subsurface_ mit einem Bluetooth-fähigen Tauchcomputer
-[icon="images/icons/bluetooth.jpg"]
+[icon="bluetooth.jpg"]
+[NOTE]
 
 Bluetooth wird immer häufiger für die Kommunikation zwischen Tauchcomputern und _Subsurface_ eingesetzt. _Subsurface_ bietet eine weitgehend betriebssystemunabhängige Bluetooth-Schnittstelle. Immer mehr Tauchcomputer verwenden Bluetooth Low Energy (BTLE) als Kommunikationsmittel. BTLE ist jedoch kein standardisiertes Protokoll, so dass für die Kommunikation mit den verschiedenen Tauchcomputermodellen Anpassungen vorgenommen werden müssen. Siehe die link:https://subsurface-divelog.org/documentation/supported-dive-computers/[Liste der unterstützten Tauchcomputer]. +
 Die Bluetooth-Kommunikation ist oft zuverlässiger, wenn alle Bluetooth-Geräte, die vom _Subsurface_-Computer erkannt werden, entfernt werden und das Pairing mit dem Bluetooth-Tauchcomputer von neuem durchgeführt wird. Die Bluetooth- und BTLE-Schnittstellen befinden sich in aktiver Entwicklung im Hinblick auf neue Tauchcomputer, die diese Kommunikationsmechanismen verwenden.
@@ -261,7 +260,6 @@ Obwohl die Bluetooth-Schnittstelle des _Subsurface_ ohne Bluetooth-Kopplung auf 
 Auf den Plattformen _Linux_ oder _MacOS_ werden der Name des _Subsurface_-Computers und seine Bluetooth-Adresse auf der rechten Seite angezeigt. Der Betriebszustand (ein/aus) des Bluetooth-Adapters wird unterhalb der Adresse angezeigt und kann durch Aktivieren des Kontrollkästchens Turn on/off geändert werden. Wenn die Bluetooth-Adresse nicht angezeigt wird, kann _Subsurface_ das lokale Bluetooth-Gerät nicht erkennen. Stellen Sie sicher, dass der Bluetooth-Treiber korrekt auf dem _Subsurface_-Computer installiert ist und prüfen Sie, ob er von anderen Bluetooth-Dienstprogrammen wie bluetoothctl oder bluemoon verwendet werden kann. Dies vervollständigt die ersten beiden Schritte oben. Stellen Sie sicher, dass der Bluetooth-fähige Tauchcomputer im PC-Upload-Modus ist und von anderen Bluetooth-Geräten erkannt werden kann. Weitere Informationen finden Sie im Handbuch des Tauchcomputers. Der dritte Punkt in der obigen Liste ist nun abgeschlossen. Wählen Sie die Schaltfläche Scannen unten links im obigen Dialogfeld. Nach der Suche sollte der Tauchcomputer (vielleicht als eines von mehreren Bluetooth-Geräten) im Hauptlistenfeld auf der linken Seite des Dialogs aufgeführt sein (siehe Abbildung oben). Sollte dies nicht der Fall sein, wählen Sie die Schaltfläche Löschen und suchen Sie dann erneut mit der Schaltfläche Scannen nach Bluetooth-Geräten. Nach Durchführung dieser Aktionen sollte _Subsurface_ den Tauchcomputer sehen. Auf der linken Seite, wenn der Computer mehr als ein lokales Bluetooth-Gerät angeschlossen hat, verwenden Sie das Listenfeld, um anzugeben, welches Gerät mit _Subsurface_ verbunden werden soll. Die Bezeichnung des gefundenen Tauchcomputers enthält den Namen des Geräts, seine Adresse und seinen Kopplungsstatus. Bei BTLE-Geräten beginnt die Adresse oft mit "LE". Wenn das Gerät nicht gekoppelt ist und eine rote Hintergrundfarbe hat, kann ein Kontextmenü geöffnet werden, indem das Element mit einem Rechtsklick ausgewählt wird. Wählen Sie die Option Pairing und warten Sie, bis der Vorgang abgeschlossen ist. Ziehen Sie bei Bedarf das Benutzerhandbuch des verwendeten Tauchcomputers zu Rate. Damit sind die oben genannten Schritte 4 und 5 abgeschlossen.
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Derzeit unterstützt _Subsurface_ keine Bluetooth-Kopplung mit Tauchcomputern, die einen eigenen PIN-Code erfordern. Um die Geräte zu koppeln, verwenden Sie andere Betriebssystem-Dienstprogramme, wie unten vorgeschlagen.
 
@@ -285,16 +283,13 @@ image::images/DC_import_Bluetooth_Windows.jpg["FIGURE: Download Bluetooth on Win
 
 Der Bluetooth-Download unter Windows läuft ähnlich ab wie unter Linux und MacOS. Eine Log-Meldung unten links in der Remote Bluetooth Geräteauswahl zeigt Details zum aktuellen Status des Bluetooth Agenten an (siehe Bild oben).
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Derzeit funktioniert _Subsurface_ nur mit lokalen Bluetooth-Adaptern, die den Microsoft Bluetooth Stack verwenden. Wenn das lokale Gerät Widcomm, Stonestreet One Bluetopia Bluetooth oder BlueSoleil Treiber verwendet, wird es nicht funktionieren. Bluetooth Hardware/Dongles dieser Hersteller (z.B. isonic), die den Microsoft Bluetooth Stack unterstützen, funktionieren jedoch.
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Die _Subsurface_-Unterstützung für BLTE-Tauchcomputer unter Windows ist *EXPERIMENTAL* und wird nur unter Windows 10 unterstützt. Bitte stellen Sie sicher, dass Sie die neueste Version von Windows 10 haben.
 Die link:https://en.wikipedia.org/wiki/Windows_10_version_history#Version_1803_(April_2018_Update)[Version 1803] ist eine Mindestanforderung. Stellen Sie außerdem sicher, dass Sie die neuesten Treiber für Ihr Motherboard und/oder Ihren BTLE-Dongle installiert haben.
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 *FALLS PROBLEME AUFTRETEN*:
 Wenn der Bluetooth-Adapter des _Subsurface_-Computers hängen bleibt und der _Download_-Prozess wiederholt fehlschlägt, trennen Sie die Geräte und wiederholen Sie dann die obigen Schritten. Sollte dies nicht erfolgreich sein, finden Sie in xref:S_HowFindBluetoothDeviceName[_Anhang A_] Informationen zum manuellen Einrichten und Überprüfen der Bluetooth-Verbindung mit _Subsurface_.
@@ -352,7 +347,6 @@ image::images/undo1_DE.jpg["FIGURE:Performing an undo",align="center"]
 
 [[S_locations]]
 *Tauchplätze*:
-[icon="images/icons/warning2.png"]
 [WARNING]
 Tauchplätze werden als *separater* Teil des Tauchprotokolls verwaltet (siehe Abschnitt xref:S_DiveSiteManagement["Bearbeiten von Tauchplatzinformationen"]). Die Tauchgangsinformationen auf den Registerkarten Notizen und Ausrüstung können daher NICHT gleichzeitig mit den Tauchplatzinformationen bearbeitet werden. Speichern Sie alle anderen Tauchgangsinformationen (z. B. Tauchlehrer, Tauchpartner, Schutzausrüstung, Notizen zum Tauchgang), indem Sie Änderungen auf der Registerkarte *Notizen* übernehmen wählen, BEVOR Sie die Tauchplatzinformationen bearbeiten. Geben Sie dann den Namen des *Tauchplatzes* in das Textfeld mit der Bezeichnung Ort auf der Registerkarte *Notizen* ein.
 
@@ -391,7 +385,6 @@ Dezimalgrad,             z. B. 30,22496 , 30,821798
 Die Breitengrade der südlichen Hemisphäre werden mit einem S angegeben, z. B. S30°, oder mit einem negativen Wert, z.B. -30,22496. Ähnlich werden westliche Längengrade mit einem W, z. B. W07°, oder mit einem negativen Wert, z. B. - 7,34323, angegeben. Einige Tastaturen verfügen nicht über das Gradzeichen (°). Es kann wie folgt durch ein d ersetzt werden: N30d W20d (siehe Beispiel oben). Geben Sie weitere Kontextinformationen zum Tauchplatz ein (Beschreibung und Hinweise) und wählen Sie dann Änderungen übernehmen, um die Geolocation für diesen Tauchplatz zu speichern. Wenn die eingegebenen Koordinateninformationen nicht mit einem der oben genannten Formate übereinstimmen, wird der Hintergrund des Textfeldes [white red-background]#ROT#.
 Korrigieren Sie den/die Tippfehler und der Hintergrund des Textfeldes wird wieder weiß, wie er sein sollte. Tauchplatzinformationen können später hinzugefügt oder bearbeitet werden, indem Sie auf das Globus-Symbol rechts neben dem Tauchplatznamen auf der Registerkarte *Notizen* klicken.
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Die GPS-Koordinaten eines Tauchplatzes sind mit dem Ortsnamen verknüpft, so dass das *Speichern* eines Tauchplatzes nur mit den Koordinaten und ohne Namen zu Problemen führt. (_Subsurface_ geht davon aus, dass alle diese Tauchgänge denselben Standort haben und versucht, die GPS-Koordinaten gleich zu halten).
 
@@ -466,7 +459,7 @@ image::images/DC_gas-dialogue1_f20_DE.jpg["FIGURE: Initial cylinder dialog",alig
 
 Bei manuell eingegebenen Tauchgängen müssen diese Informationen eingetippt werden. Bei Tauchcomputern erhält _Subsurface_ oft das verwendete Gas vom Tauchcomputer und fügt automatisch die Gaszusammensetzung (% Sauerstoff oder % Helium) in der Tabelle. Über die Schaltfläche + oben rechts können Sie weitere Flaschen für diesen Tauchgang hinzufügen. Das dunkle Mülltonnen-Symbol auf der linken Seite ermöglicht es Ihnen, die Informationen zu einer Flasche zu löschen. Beachten Sie, dass es nicht möglich ist, eine Flasche zu löschen, wenn sie während des Tauchgangs verwendet wird. Eine Flasche kann implizit während des Tauchgangs verwendet werden, auch ohne dass ein Gaswechselereignis vorliegt. Beginnen Sie mit der Auswahl eines Flaschentyps auf der linken Seite der Tabelle. Um eine Flasche auszuwählen, muss das Feld _Typ_ angeklickt werden. Daraufhin wird eine Listenschaltfläche eingeblendet, mit der Sie eine Dropdown-Liste mit Flaschen anzeigen können:
 
-image::images/DC_gas-dialogue2_f20_DE.jpg["FIGURE: The cylinder drop-down list button",align="center"]
+image::images/DC_gas-dialogue2_f20.jpg["FIGURE: The cylinder drop-down list button",align="center"]
 
 In der Dropdown-Liste können Sie dann den Flaschentyp auswählen, der für diesen Tauchgang verwendet wurde, oder Sie geben einfach die verfügbaren Optionen für die eingegebenen Zeichen in das Feld ein. Die Größe der Flasche sowie ihr Arbeitsdruck (Druckzulassuung) werden automatisch im Dialogfeld angezeigt.
 
@@ -476,7 +469,6 @@ Als nächstes geben Sie den Startdruck und den Enddruck des angegebenen Gases w�
 
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 *MEINE FLASCHE IST NICHT IN DER AUSWAHLLISTE AUFGEFÜHRT*
 
@@ -554,7 +546,7 @@ Der Salzgehalt des Wassers ist ein komplexes Thema, da er sich von Ozean zu Ozea
 
 
 [[S_altitude]]
-[icon="images/atmpress.jpg"]
+[icon="atmpress.jpg"]
 [NOTE]
 *Höhe* Wenn dieser Tauchgang außerhalb des Meeres stattfand und Ihr Tauchcomputer weder den atmosphärischen Druck noch die Höhe aufzeichnet, möchten Sie vielleicht die Höhe bearbeiten, da Tauchgänge in der Höhe spezielle Berechnungen erfordern. Das Textfeld *Atmosphärischer Druck/Höhe* ermöglicht dies. Wenn dieses Textfeld einen Wert enthält, wird bei der Berechnung des Tauchgangs die Höhe berücksichtigt. Die Dropbox auf der rechten Seite bietet zwei Möglichkeiten, den atmosphärischen Druck auszudrücken: mbar oder m/ft über dem Meeresspiegel. Die Höheneinheit (metrisch/imperial) wird aus den Einstellungen des Bildschirms Einheitenvorgaben übernommen. Eine dritte Möglichkeit ist die Verwendung des vom Tauchcomputer gelieferten atmosphärischen Drucks. Um den Druck/die Höhe anzugeben, wählen Sie zunächst die entsprechende Einheit in der Dropbox aus (im Fall des Bildes links sind dies "mbar/m/Use DC") und geben dann einen entsprechenden Wert in das Textfeld ein. Im Falle von m/ft wird die in das Textfeld eingegebene Höhe automatisch in den mittleren erwarteten atmosphärischen Druck (mbar) in der angegebenen Höhe umgerechnet. Im Falle von "Use DC" ist kein Wert im Textfeld erforderlich. Der von einem Tauchcomputer gelieferte Atmosphärendruck muss nicht bearbeitet werden.
 
@@ -712,7 +704,6 @@ _smtk2ssrf_ akzeptiert 0, 2 oder mehr Parameter. Wenn das Programm ohne Paramete
 
 image::images/smtk2ssrf.jpg["FIGURE:Download from SmartTrak",align="center"]
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Vorhandene Daten in der Zieldatei werden gelöscht, verwenden Sie also *NICHT* eine normale _Subsurface_-Divelog-Datei als Ziel, sondern geben Sie einen *neuen* Dateinamen als Ziel an.
 Hier müßte die Übersetzung geprüft werden
@@ -806,7 +797,6 @@ Fahren Sie auf diese Weise fort, um sicherzustellen, dass alle Spaltenüberschri
 [[S_CSV_Intro]]
 ****
 *Einführung in _CSV-Dateien_*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 _CSV_ ist eine Abkürzung für ein Datendateiformat: Komma-getrennte Werte. Es ist ein Dateiformat, mit dem Sie Informationen mit einem Texteditor wie Notepad (Windows), gedit (Linux) oder TextWrangler (OS/X) anzeigen oder bearbeiten können. Das CSV-Format hat zwei wesentliche Vorteile. Erstens sind die Daten als Text leicht zu bearbeiten, ohne dass eine eigene Software benötigt wird. Zweitens sind alle Informationen für den Menschen lesbar und werden nicht durch benutzerdefinierte oder proprietäre Attribute verdeckt, die proprietäre Software in Dateien einfügt. Aufgrund seiner Einfachheit wird das CSV-Format als Austauschformat zwischen vielen Softwarepaketen verwendet, z. B. zwischen Tabellenkalkulations-, Statistik-, Grafik-, Datenbank- und Tauchsoftware. Innerhalb von _Subsurface_ können CSV-Dateien auch verwendet werden, um Informationen aus anderen Quellen zu importieren, z.B. aus Tabellenkalkulationsprogrammen und einigen Tauchcomputern.
@@ -848,7 +838,6 @@ Wenn eine _CSV-Datei_ zum Import ausgewählt wird, zeigt _Subsurface_ die Spalte
 
 ****
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Der CSV-Import hat jedoch einige Einschränkungen. Vermeiden Sie bestimmte Sonderzeichen wie das kaufmännische Und-Zeichen (&), kleiner als (<), größer als (>) und doppelte Anführungszeichen (") als Teil der Zahlen oder des Textes innerhalb einer Zelle. Die Datei sollte den Zeichensatz UTF-8 verwenden, wenn Nicht-ASCII-Zeichen verwendet werden. Auch die Größe der CSV-Datei kann Probleme verursachen. Der Import von 100 Tauchgängen auf einmal (_CSV-Tauchgangdetails_) funktioniert, aber größere Dateien können die Grenzen des verwendeten Parsers überschreiten. Wenn Probleme mit dem _CSV_-Import auftreten, versuchen Sie es zunächst mit einer kleineren Datei, um sicherzustellen, dass alles funktioniert.
 
@@ -948,7 +937,6 @@ Wenn der Zeitstempel eines Fotos oder Videos mehr als 30 Minuten vor oder nach d
 
 ****
 *Sicherstellen, dass Miniaturansichten für Videodateien erstellt werden*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 Innerhalb eines Feldes stellt _Subsurface_ Medien durch Thumbnails dar (d.h. kleine Versionen von Bildern, die eine Auflistung vieler Bilder ermöglichen). Für ein Foto kann ein Thumbnail leicht erstellt werden, da das Bild gut definiert ist. Da ein Video jedoch aus vielen Bildern besteht, stellt sich die Frage, welches Bild für die Miniaturansicht verwendet werden soll. Zur Erstellung von Miniaturansichten von Videos sind zwei Aktionen erforderlich:
@@ -1107,7 +1095,7 @@ Das Profil-Diagramm wird ebenfalls aktualisiert, um diese Änderung widerzuspieg
 [[S_sSCR_dives]]
 ==== Passive Rebreather-Tauchgänge mit halbgeschlossenem Kreislauf (pSCR)
 
-[icon="images/halcyon_RB80.jpg"]
+[icon="halcyon_RB80.jpg"]
 [NOTE]
 Passive halbgeschlossene Kreislaufgeräte (pSCR) sind ein technischer Fortschritt in der Tauchausrüstung, bei dem das Atemgas, das ein Taucher verwendet, im Kreislauf geführt wird, während das Kohlendioxid aus dem ausgeatmeten Gas entfernt wird. Während eine kleine Menge (in der Regel ein Zehntel) des ausgeatmeten Atemgases ins Wasser abgegeben wird, wird eine kleine Menge Frischgas aus der Treibgasflasche freigesetzt. Ein Taucher, der mit einer einzigen Atemgasflasche taucht, kann daher wesentlich länger tauchen als mit einem offenen Kreislaufsystem für Freizeittaucher. Bei der pSCR-Ausrüstung wird bei jedem Einatmen des Tauchers eine sehr geringe Menge an Atemgas freigesetzt. Bei der aktiven SCR-Ausrüstung (aSCR) wird dagegen kontinuierlich eine kleine Menge Atemgas aus der Antriebsflasche freigesetzt.
 
@@ -1125,7 +1113,7 @@ _Visualisierung des pO2-Abfalls_: Die Differenz zwischen dem pO2 des frischen Fl
 Zusätzlich kann in den technischen Einstellungen ein Kontrollkästchen mit der Bezeichnung Show Äquivalent OC pO2 mit pSCR pO2. Dies aktiviert die Anzeige des pO2 im Frischgas aus der Flasche (eine orangefarbene Linie). Der vertikale Abstand zwischen der orangefarbenen und der grünen Kurve zeigt den "pO2-Abfall über dem Mundstück". Ein Großteil des pSCR-Tauchens besteht darin, diese pO2-Differenz zu managen.
 
 
-[icon="images/DiveModeChange.jpg"]
+[icon="DiveModeChange.jpg"]
 [NOTE]
 pSCR und Bailout:
 Gase, die in pSCR verwendet werden, ergeben in flachem Wasser oft sehr niedrige pO2-Werte. Aus diesem Grund werden die flachen Abschnitte eines Tauchgangs oft mit dem offenen Kreislaufgerät und nicht mit dem Rebreather durchgeführt. In diesem Fall werden Teile des Tauchgangs als OC-Tauchgang durchgeführt, während der Rest des Tauchgangs mit dem pSCR-Kreislauf durchgeführt wird. Um solche Änderungen im Tauchmodus anzuzeigen, klicken Sie zum entsprechenden Zeitpunkt mit der rechten Maustaste auf das Tauchprofil. Wählen Sie im Kontextmenü die Option Divemodus ändern und wählen Sie die entsprechende Option (siehe Abbildung links). Einige Tauchcomputer zeichnen solche Änderungen im Tauchmodus als Teil des Tauchprotokolls auf. Das entsprechende Symbol wird im Tiefenprofil angezeigt (siehe Abbildung unten). Unten sehen Sie einen pSCR-Tauchgang mit den flachen Abschnitten in OC. Gleich zu Beginn wurde ein OC-Tauchmodus eingegeben, gefolgt von einem Wechsel zu pSCR auf 18 m. Während des Aufstiegs wurde bei 14 m auf OC umgeschaltet. Beachten Sie, dass für die OC-Abschnitte der pO2mit dem OC-pO2identisch ist, während für den pSCR-Abschnitt der pO(2) (grüne Linie) von dem OC-pO(2) (orange Linie) abweicht.
@@ -1135,7 +1123,7 @@ image::images/pSCR_profile_bailout.jpg["Abbildung: pSCR Tauchprofil mit Bailout"
 [[S_CCR_dives]]
 ==== Tauchgänge mit geschlossenen Kreislaufgeräten (CCR)
 
-[icon="images/APD.jpg"]
+[icon="APD.jpg"]
 [NOTE]
 Geschlossene Kreislauftauchgeräte führen ebenfalls das ausgeatmete Gas zurück. Sie verwenden jedoch eine fortschrittliche Technologie, um eine atembare Sauerstoffkonzentration aufrechtzuerhalten:
 a) Sie entfernen Kohlendioxid aus dem ausgeatmeten Gas.
@@ -1213,15 +1201,15 @@ Weitere ausrüstungsspezifische Verfahren und Informationen zum Herunterladen vo
 
 Die Tauchgangskarte verfügt über Schaltflächen, die nützlich sind, um räumliche Informationen über einen Tauchgang zu erhalten. Diese sind:
 
-[icon="images/icons/MapViewMode.jpg"]
+[icon="MapViewMode.jpg"]
 [NOTE]
 Wählen Sie diese Schaltfläche, um die Tauchgangskarte als Satellitenbild oder als Google Maps-Darstellung anzuzeigen.
 
-[icon="images/icons/MapViewPlus.jpg"]
+[icon="MapViewPlus.jpg"]
 [NOTE]
 Vergrößern. Wählen Sie einen kleineren Bereich der Karte aus.
 
-[icon="images/icons/MapViewMinus.jpg"]
+[icon="MapViewMinus.jpg"]
 [NOTE]
 Herauszoomen. Wählen Sie einen größeren Bereich der Karte aus.
 
@@ -1242,7 +1230,7 @@ Mit der Schaltfläche "Hamburger" oben rechts auf der Tauchkarte wird das Karten
 
 Die Registerkarte "Informationen" enthält einige zusammenfassende Informationen zu einem bestimmten Tauchgang, der in der *Tauchgangsliste* ausgewählt wurde. Zu den nützlichen Informationen gehören die Oberflächenpause vor dem Tauchgang, die maximale und mittlere Tiefe des Tauchgangs, das verbrauchte Gasvolumen, der Oberflächenluftverbrauch (AMV) und die Anzahl der entstandenen Sauerstofftoxizitätseinheiten (OTU).
 
-[icon="images/icons/info.jpg"]
+[icon="info.jpg"]
 [NOTE]
 Gasverbrauch und AMV-Berechnungen:
 _Subsurface_ berechnet den AMV und den Gasverbrauch unter Berücksichtigung der Druckunabhängigkeit von Gas, insbesondere bei Tankdrücken über 200 bar, wodurch diese Werte genauer werden. Weitere Informationen finden Sie im xref:SAC_CALCULATION[Anhang F].
@@ -1267,18 +1255,18 @@ image::images/Profile2.jpg["Typical dive profile",align="center"]
 
 Von allen Tafeln in _Subsurface_ enthält das *Tauchprofil* die detailliertesten Informationen über jeden Tauchgang. Das Tauchgangsprofil verfügt über eine *Schaltflächenleiste* auf der linken Seite, über die verschiedene Anzeigeoptionen gesteuert werden können. Die Funktionen dieser Schaltflächen werden im Folgenden beschrieben. Das wichtigste Element des Tauchprofils ist die Grafik der Tauchtiefe in Abhängigkeit von der Zeit. Neben der Tiefe werden auch die Aufstiegs- und Abstiegsgeschwindigkeiten im Vergleich zur empfohlenen Geschwindigkeit für das Auf- und Abtauchen in der Wassersäule angezeigt. Diese Informationen werden in verschiedenen Farben dargestellt:
 
-|=====================
+|====================
 |*Farbe*|*Abstiegsgeschwindigkeit (m/min)*|*Aufstiegsgeschwindigkeit (m/min)*
 |Rot|> 30|> 18
 |Orange|18 - 30|9 - 18
 |Gelb|9 - 18|4 - 9
 |Hellgrün|1.5 - 9|1.5 - 4
 |Dunkelgrün|< 1.5|< 1.5
-|=====================
+|====================
 
 Das Profil enthält auch Tiefenangaben für die Spitzen und Täler im Diagramm. Der Benutzer sollte also die Tiefe des tiefsten Punkts und anderer Spitzenwerte sehen. Die mittlere Tiefe wird als graue Linie dargestellt, die die mittlere Tauchtiefe bis zu einem bestimmten Zeitpunkt während des Tauchgangs angibt.
 
-[icon="images/icons/graph.png"]
+[icon="graph.png"]
 [NOTE]
 Standardmäßig reicht die Tiefenachse bis zu 30 m/90 ft und die Zeitachse bis zu 30 Minuten. Wenn das dargestellte *Tauchprofil* über diese Bereiche hinausgeht, werden die Achsen des Diagramms auf die tatsächlichen Grenzen des Tauchgangs eingestellt. Dieses Verhalten (gezoomtes Diagramm) kann für alle Tauchgänge über die Schaltfläche *Skalieren* erzwungen werden.
 Eine zweite Funktion wird ebenfalls aktiviert: Wenn Partialgasdruckdiagramme angezeigt werden (pO~2~, pN~2~, pHe) angezeigt werden, wird der von ihnen belegte Bereich vergrößert. Dies ist besonders nützlich, um die Sensorleistung bei CCR-Tauchgängen zu überprüfen. Wie stark die Partialdruck-Diagramme vergrößert werden, kann in xref:S_CCR_options[_Datei->Einstellungen->Tec Einstellungen_] durch entsprechende Änderung des _Gasplot-Anteils_ eingestellt werden.
@@ -1294,27 +1282,27 @@ image::images/InfoBox2.jpg["Abbildung: Verschieben des Informationsfeldes",align
 
 Wenn der Mauszeiger in das *Tauchprofilfeld* zeigt, erweitert sich das Informationsfeld und zeigt viele Datenelemente an. In diesem Fall spiegeln die Daten den Zeitpunkt entlang des Tauchprofils wider, der durch den Mauszeiger angezeigt wird (siehe rechter Teil der Abbildung (B) oben, wo das Informationsfeld die Situation an der Position des Mauszeigers [Pfeil] in diesem Bild wiedergibt). Wenn Sie den Mauszeiger horizontal bewegen, zeigt das Informationsfeld Informationen zu jedem beliebigen Punkt des Tauchprofils an. Es enthält umfangreiche Statistiken über die Tiefe, das Gas und die Deckeneigenschaften des jeweiligen Tauchgangs. Dazu gehören: Dauer des Tauchgangs (angezeigt durch ein @), Tiefe, Flaschendruck (P), Temperatur, Aufstiegs-/Abstiegsgeschwindigkeit, Oberflächenluftverbrauch (AMV), Sauerstoffpartialdruck, maximale Betriebstiefe, äquivalente Lufttiefe (EAD), äquivalente Narkosetiefe (END), äquivalente Luftdichtetiefe (EADD, auch als Gasdichte in g/l), Dekompressionsanforderungen zu diesem Zeitpunkt (Deco), die Oberflächen-GF (ein Maß für die Inertgasbelastung des Taucherkörpers, definiert als der Überdruck über dem Oberflächendruck, der so normiert ist, dass der maximal zulässige Überdruck an der Oberfläche, der M-Wert, 100 % entspricht), die Zeit bis zur Oberfläche (TTS), die berechnete Obergrenze sowie die Statistiken in der Informationsbox, die als vier Schaltflächen auf der linken Seite des Profils angezeigt werden. Diese sind:
 
-[icon="images/icons/InfoBox.png"]
+[icon="InfoBox.png"]
 [NOTE]
 Zeigen oder verbergen Sie die *Informationsbox*. Dadurch kann die Informationsbox ausgeblendet werden, um das gesamte Tauchprofil ohne Beeinträchtigungen anzuzeigen.
 
-[icon="images/icons/MOD.jpg"]
+[icon="MOD.jpg"]
 [NOTE]
 Anzeige der Maximalen Betriebstiefe (MOD) des Tauchgangs unter Berücksichtigung des verwendeten Gasgemischs. Die MOD ist abhängig von der Sauerstoffkonzentration im Atemgas. Für Luft (21% Sauerstoff) beträgt sie ca. 57 m, wenn ein maximaler pO2von 1,4 in den Einstellungen festgelegt wird (wählen Sie Datei→ Einstellungen→ Tech setup) und bearbeiten Sie das Textfeld pO2bei der Berechnung der MOD. Beim Tauchen unterhalb der MOD besteht ein deutlich erhöhtes Risiko, sich den Gefahren der Sauerstofftoxizität auszusetzen.
 
-[icon="images/icons/NDL.jpg"]
+[icon="NDL.jpg"]
 [NOTE]
 Zeigen Sie entweder die *Nullzeitgrenze (NDL)* oder die *Gesamtzeit bis zur Oberfläche (TTS)* an. Die NDL ist die Zeitspanne, in der ein Taucher bei der aktuellen Tiefe einen Tauchgang fortsetzen kann, der keine Dekompression erfordert (d. h. bevor eine Aufstiegsgrenze erscheint). Sobald ein Taucher die NDL überschritten hat und eine Dekompression erforderlich ist (d. h. eine Aufstiegsgrenze über dem Taucher liegt), gibt TTS die Anzahl der Minuten an, die der Taucher benötigt, um aufzutauchen. TTS umfasst sowohl die Aufstiegszeit als auch die Dekompressionszeit. Auch wenn das Profil mehrere Gaswechsel enthält, wird die TTS zu einem bestimmten Zeitpunkt während des Tauchgangs unter Verwendung des aktuellen Gases berechnet. TTS, die länger als 2 Stunden dauert, wird nicht genau berechnet und _Subsurface_ zeigt nur TTS> 2h an.
 
-[icon="images/icons/GFLow.jpg"]
+[icon="GFLow.jpg"]
 [NOTE]
 *Deko-Informationen* anzeigen. Wenn diese Option aktiviert ist, zeigt das Informationsfeld den aktuellen Gradientenfaktor (GF), den Oberflächen-GF und die momentanen Obergrenzen für die einzelnen Gewebekompartimente an. Der Gradientenfaktor gibt an, wie viel des zulässigen Druckgradienten zwischen den Geweben (normalisiert mit einem 100/100 Bühlmann-Modell) der Taucher derzeit nutzt. Der Oberflächen-GF gibt an, um wie viel der Stickstoffpartialdruck im Blut den für das sichere Erreichen der Oberfläche erforderlichen Partialdruck übersteigt. Oberflächen-GF > 100 % bedeutet, dass das Auftauchen unsicher ist.
 
-[icon="images/icons/SAC.jpg"]
+[icon="SAC.jpg"]
 [NOTE]
 Zeigen Sie den *Oberflächenluftverbrauch (AMV)* an, ein Indikator für die oberflächennormierte Atmungsrate eines Tauchers. Der Wert des AMV ist geringer als die tatsächliche Atmungsrate, da ein Taucher auf 10 m Tiefe etwa doppelt so viel Atemgas verbraucht wie an der Oberfläche. Die AMV gibt einen Hinweis auf die Atemgasverbrauchsrate unabhängig von der Tauchtiefe, so dass die Atemraten verschiedener Tauchgänge verglichen werden können. Die Einheit für die AMV ist Liter/min oder Kubikfuß/min.
 
-[icon="images/icons/EAD.jpg"]
+[icon="EAD.jpg"]
 [NOTE]
 Zeigen Sie die *Äquivalente Lufttiefe (EAD)* für Nitrox-Tauchgänge sowie die äquivalente Narkosetiefe (END) für Trimix-Tauchgänge an. Diese Werte sind wichtig für Taucher, die andere Gase als Luft atmen. Ihre Werte sind abhängig von der Zusammensetzung des Atemgases. Die EAD (Equivalent Narcotic Depth) ist die Tiefe eines hypothetischen Lufttauchgangs, der den gleichen Stickstoffpartialdruck hat wie die aktuelle Tiefe des Nitroxtauchgangs. Ein Nitrox-Tauchgang führt zur gleichen Dekompressionspflicht wie ein Lufttauchgang bis zu einer Tiefe, die der EAD entspricht. Die END ist die Tiefe eines hypothetischen Lufttauchgangs, der die gleiche Summe der Partialdrücke der Narkosegase Stickstoff und Sauerstoff aufweist wie der aktuelle Trimix-Tauchgang. Ein Trimix-Taucher kann die gleiche narkotische Wirkung erwarten wie ein Taucher, der Luft in einer Tiefe taucht, die der END entspricht.
 
@@ -1369,15 +1357,15 @@ Einige Tauchcomputer melden _Lesezeichen_, die der Taucher während des Tauchgan
 
 Das Tauchprofil kann Diagramme der Partialdrücke von O2, N2 und He während des Tauchgangs (siehe Abbildung oben) sowie eine berechnete und vom Tauchcomputer gemeldete Dekostufe (nur bei tiefen, langen oder wiederholten Tauchgängen sichtbar) enthalten. Die Partialdrücke von Sauerstoff sind in Grün, Stickstoff in Schwarz und Helium in Dunkelrot dargestellt. Diese Partialdruckdiagramme werden unter den Profildaten angezeigt.
 
-[icon="images/icons/O2.jpg"]
+[icon="O2.jpg"]
 [NOTE]
 Zeigt den Partialdruck von Sauerstoff während des Tauchgangs an. Dieser wird unter den Graphen für Tauchtiefe und Wassertemperatur angezeigt.
 
-[icon="images/icons/N2.jpg"]
+[icon="N2.jpg"]
 [NOTE]
 Zeigt den Partialdruck von *Stickstoff* während des Tauchgangs.
 
-[icon="images/icons/He.jpg"]
+[icon="He.jpg"]
 [NOTE]
 Anzeige des Partialdrucks von *Helium* während des Tauchgangs. Dies ist nur für Taucher wichtig, die Trimix, Helitrox oder ähnliche Atemgase verwenden.
 
@@ -1385,7 +1373,7 @@ Das *Luftverbrauchsdiagramm* zeigt den Flaschendruck und dessen Veränderung wä
 
 Im Planungsmodus ist die AMV so eingestellt, dass sie sowohl während des unteren Teils des Tauchgangs als auch während der Dekompression konstant ist. Wenn Sie einen Tauchgang planen, ist die Farbe daher eine Darstellung der Atemgasdichte.
 
-[icon="images/icons/Heartbutton.png"]
+[icon="Heartbutton.png"]
 [NOTE]
 Wenn Sie auf die Schaltfläche Herzfrequenz klicken, werden während des Tauchgangs Informationen zur Herzfrequenz angezeigt, wenn der Tauchcomputer mit einem Herzfrequenzsensor verbunden
 ist.
@@ -1394,11 +1382,11 @@ Es ist möglich, in das Profildiagramm zu *zoomen*. Dies geschieht entweder mit 
 
 image::images/MeasuringBar.png["Abbildung: Lineal im Tauchprofil",align="center"]
 
-[icon="images/icons/ruler.jpg"]
+[icon="ruler.jpg"]
 [NOTE]
 Messungen von *Tiefen- oder Zeitdifferenzen* können mit der *Linealtaste* auf der linken Seite des Tauchprofils vorgenommen werden. Die Messung erfolgt durch Ziehen der roten Punkte auf die beiden Punkte des Tauchprofils, die Sie messen möchten. Die Informationen werden dann in dem horizontalen weißen Bereich unterhalb der beiden roten Punkte angezeigt.
 
-[icon="images/icons/ShowPhotos.png"]
+[icon="ShowPhotos.png"]
 [NOTE]
 Fotos und Videos, die zu einem Tauchgang hinzugefügt wurden, können im Profil angezeigt werden, indem Sie die Schaltfläche *Medien* anzeigen auswählen. Die Position eines Fotos oder Videos auf dem Profil zeigt die genaue Zeit an, zu der es aufgenommen wurde. Die Laufzeit von Videos wird durch einen Balken dargestellt, wenn _Subsurface_ diese Information aus der Videodatei extrahieren konnte. Ist dieser Button nicht aktiv, werden die Medien ausgeblendet.
 
@@ -1408,21 +1396,21 @@ Es kommt auch häufig vor, dass _Subsurface_ ein Ceiling für Nicht-Dekompressio
 Streng genommen ist die grün berechnete Obergrenze eine direkte Darstellung der Inertgasbeladung der simulierten Gewebe und ist unabhängig von den angenommenen Aufstiegsgeschwindigkeiten. Sie zeigt die minimal zulässige Tiefe des Dekomodells zu diesem Zeitpunkt unter Berücksichtigung der Inertgasbeladung an und ist keine Aussage über einen möglichen Aufstiegsplan während des restlichen Tauchgangs. Um letzteren zu erhalten, verwenden Sie die Option "Tauchgang im Planer bearbeiten" aus dem Menü Protokoll.
 
 
-[icon="images/icons/cceiling.jpg"]
+[icon="cceiling.jpg"]
 [NOTE]
 Wenn der Tauchcomputer selbst eine Obergrenze berechnet und sie _Subsurface_ während des Hochladens von Tauchgängen zur Verfügung stellt, kann dies als roter Bereich angezeigt werden, indem die Schaltfläche "Vom Tauchcomputer gemeldete Obergrenze" in der Profiltafel aktiviert wird.
 
-[icon="images/icons/ceiling1.jpg"]
+[icon="ceiling1.jpg"]
 [NOTE]
 Wenn die Schaltfläche *Berechnete Obergrenze* im Profilfenster angeklickt wird, wird eine von _Subsurface_ berechnete Obergrenze grün angezeigt, wenn sie für einen bestimmten Tauchgang existiert (Bild *A* in der Abbildung unten). Diese Einstellung kann auf zwei Arten geändert werden:
 
-[icon="images/icons/ceiling2.jpg"]
+[icon="ceiling2.jpg"]
 [NOTE]
 Wenn zusätzlich die Schaltfläche „Alle Gewebe anzeigen” im Profilfenster angeklickt wird, wird die Obergrenze für die Gewebekompartimente nach dem Bühlmann-Modell angezeigt (Bild *B* in der Abbildung unten).
 
-[icon="images/icons/ceiling3.jpg"]
+[icon="ceiling3.jpg"]
 [NOTE]
-=========================================
+====================
 Wenn zusätzlich die Schaltfläche 3m-Schritte auf der Profiltafel angeklickt wird, dann wird die Obergrenze in 3-m-Schritten angezeigt (Bild C in der Abbildung unten).
 
 image::images/Ceilings2.jpg["Abbildung: Profil: Optionen Dekogrenze",align="center"]
@@ -1430,22 +1418,22 @@ image::images/Ceilings2.jpg["Abbildung: Profil: Optionen Dekogrenze",align="cent
 Die Einstellungen des Gradientenfaktors wirken sich stark auf die berechneten Obergrenzen und ihre Tiefen aus. Für weitere Informationen über Gradientenfaktoren finden Sie im Abschnitt Einstellungen für Gradientenfaktoren. Die aktuell verwendeten Gradientenfaktoren (z.B. GF 35/75) werden oberhalb des Tiefenprofils angezeigt, wenn die entsprechenden Schaltflächen in der Werkzeugleiste aktiviert sind. N.B.:
 Die angezeigten Gradientenfaktoren sind NICHT die Gradientenfaktoren, die vom Tauchcomputer verwendet werden, sondern diejenigen, die von _Subsurface_ zur Berechnung der Deko-Verpflichtungen während des Tauchgangs verwendet werden. Für weitere Informationen außerhalb dieses Handbuchs siehe:
 
- *** https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- *** link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
-=========================================
+ *** link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, by Kevin Watts]
+====================
 
 
 
-[icon="images/icons/ShowCylindersButton.jpg"]
+[icon="ShowCylindersButton.jpg"]
 [NOTE]
 Durch Auswahl dieses Symbols können die verschiedenen während eines Tauchgangs verwendeten Flaschen als farbige Balken am unteren Rand des *Tauchprofils* dargestellt werden. Im Allgemeinen wird Sauerstoff durch einen grünen Balken, Stickstoff durch einen gelben und Helium durch einen roten Balken dargestellt. Die folgende Abbildung zeigt einen Tauchgang, bei dem zunächst eine Trimix-Flasche (rot und grün) verwendet wird, gefolgt von einem Wechsel zu einer Nitrox-Flasche (gelb und grün) nach 23 Minuten. Flaschen mit Luft sind als hellblauer Balken dargestellt.
 
 image::images/ShowCylinders_f20.jpg["Abbildung: Profil: Gasbalken",align="center"]
 
-[icon="images/icons/heatmap.png"]
+[icon="heatmap.png"]
 [NOTE]
-=========================================
+====================
 Anzeige der Gewebe-Wärmebildkarte. Die Wärmekarte fasst für die Dauer des Tauchgangs die Inertgas-Gewebedrücke für jedes der 16 Gewebekompartimente des Bühlmann-Modells zusammen. Blaue Farben bedeuten niedrige Gasdrücke in einem Gewebekompartiment und damit On-Gassing, grüne bis rote Farben bedeuten überschüssiges Gas im Gewebe und damit Off-Gassing. Schnelle bis langsame Gewebe werden von oben nach unten angezeigt. In der folgenden Abbildung wird genauer erläutert, wie die Wärmekarte interpretiert werden kann.
 
 image::images/Heatmap.jpg["Abbildung: Profil: Anzeige Gasdrücke",align="center"]
@@ -1468,7 +1456,7 @@ Bild *D* ist eine Zusammenstellung ähnlicher Farbzuordnungen von 16 Gewebekompa
 
 Die Farben der Wärmebildkarte werden durch die Einstellungen des Gradientenfaktors nicht beeinflusst. Dies liegt daran, dass die Wärmebildkarte die Gewebedrücke relativ zum Bühlmann M-Wert-Gradienten anzeigt und nicht relativ zu einem bestimmten Gradientenfaktor. Für weitere Informationen außerhalb dieses Handbuchs siehe:
 
-https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
 
 Da die Farben der Wärmebildkarte nicht durch den/die Gradientenfaktor(en) beeinflusst werden, ist die Wärmebildkarte auch bei Verwendung des VPM-B Dekompressionsmodells anwendbar.
@@ -1480,7 +1468,7 @@ In beiden Profilen steigen die Inertgasdrücke in den schnelleren Geweben währe
 Der Vergleich der beiden Profile und Wärmebildkarten zeigt, dass der Übersättigungsgradient in den schnelleren Geweben zu Beginn der Aufstiegsphase durch die Einbeziehung tiefer Stopps verringert wird. Die Aufgasung der langsameren Gewebe geht jedoch während der Tiefenstopps weiter, was zu einem größeren Übersättigungsgradienten in den langsameren Geweben am Ende des Tauchgangs führt.
 
 image::images/tissueHeatmap.jpg["Abbildung: Vergleich Wärmebildkarten",align="center"]
-=========================================
+====================
 
 ==== Das Kontextmenü Tauchgangsprofil
 
@@ -1508,7 +1496,7 @@ image::images/FilterConstraints_DE.jpg["Figure: Filter:Constraints list",align="
 
 Wenn Sie z. B. die Einschränkung "Ort" aus dieser Liste auswählen, wird dem Filterfeld eine Zeile hinzugefügt, in der zur Angabe der Ortsbeschränkung. Wenn Sie z. B. "Sodwana" in das Textfeld "Ort" eingeben, werden alle Tauchgänge angezeigt, bei denen der Tauchplatz als Sodwana angegeben wurde. Es gibt zwei Kombinationsfelder, die mit der Ortsbeschränkung verbunden sind. Wenn Sie in der ersten Auswahlbox "is not" auswählen, werden alle Tauchgänge angezeigt, die NICHT in Sodwana durchgeführt wurden. Die zweite Auswahlbox funktioniert ähnlich wie der oben beschriebene Volltextfilter (erster Teil des Wortes, komplettes Wort, enthält das Wort). Einschränkungen können auf eine von zwei Arten verfeinert werden:
 
-image::images/FilterOR_DE.png["Figure: Filter: OR operation",align="center"]
+image::images/FilterOR_DE.jpg["Figure: Filter: OR operation",align="center"]
 
 
  1. Filtern von Tauchgängen an mehr als einem Ort: Vielleicht möchte ich sowohl Tauchgänge in Sodwana als auch in Aliwal auflisten (eine logische ODER-Verknüpfung). In diesem Fall geben Sie beide Tauchplätze in das Textfeld ein, getrennt durch ein Komma (siehe Abbildung unten).
@@ -1563,7 +1551,6 @@ image::images/StatsPanel_DE.jpg["Statistics Feld",align="center"]
 [[S_Stats_Intro]]
 ****
 *Einführung in statistische Graphen*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 Die extreme Flexibilität des Statistik-Tools bedeutet, dass Sie detaillierte Informationen darüber bereitstellen müssen, welche Informationen _Subsurface_ liefern soll. Es ist hilfreich, ein klares Ziel zu haben, eine solide Vorstellung davon, was _Subsurface_ Ihnen zeigen soll. Mit anderen Worten: Sie müssen die richtige Frage formulieren. Es gibt so viele grafische Darstellungsmöglichkeiten, dass es unwahrscheinlich ist, dass die Informationen in einer gültigen oder angemessenen Weise dargestellt werden, wenn Sie die Frage nicht richtig formulieren. Da alle statistischen Ergebnisse in _Subsurface_ als Diagramme dargestellt werden, erfordert die Formulierung einer geeigneten Spezifikation vier Schritte:
@@ -1695,15 +1682,15 @@ Die Standardinformationen in der *Tauchgangsliste* umfassen für jeden Tauchgang
 Wenn Sie das Kontrollkästchen Medien in der Dropdown-Liste aktivieren, wird ein Symbol angezeigt, das angibt, ob Medien mit einem bestimmten Tauchgang verbunden sind. Es gibt drei Symbole:
 
 
-[icon="images/icons/duringPhoto.png"]
+[icon="duringPhoto.png"]
 [NOTE]
 Dieser Tauchgang enthält Fotos oder Videos, die während des Tauchgangs aufgenommen wurden, in der Regel mit einer Unterwasserkamera.
 
-[icon="images/icons/outsidePhoto.png"]
+[icon="outsidePhoto.png"]
 [NOTE]
 Dieser Tauchgang enthält Fotos oder Videos, die unmittelbar vor oder unmittelbar nach dem Tauchgang aufgenommen wurden. Dies ist nützlich, um Fotos/Medien von Tauchteams oder Booten unmittelbar vor/nach dem Tauchgang, von Walen oder anderen Tieren, die unmittelbar vor oder nach dem Tauchgang an der Oberfläche gesichtet wurden, oder von Landschaften, wie sie vom Boot aus zu sehen sind, zu finden.
 
-[icon="images/icons/inAndOutPhoto.png"]
+[icon="inAndOutPhoto.png"]
 [NOTE]
 Dieser Tauchgang enthält Fotos oder Videos, die sowohl während des Tauchgangs als auch unmittelbar vor oder nach dem Tauchgang aufgenommen wurden.
 
@@ -1795,8 +1782,6 @@ Ein Tauchprotokoll oder ein Teil davon kann in verschiedenen Formaten gespeicher
 
 * Divelogs.de, ein internetbasiertes Tauchprotokollarchiv. Zum Hochladen auf Divelogs.de benötigen Sie eine Benutzerkennung und ein Passwort. Melden Sie sich unter https://en.divelogs.de/ an und abonnieren Sie diesen Dienst, um Tauchprotokolldaten von Subsurface hochzuladen.
 
-* DiveShare ist auch ein Tauchprotokoll-Archiv im Internet mit Schwerpunkt auf Freizeittauchgängen. Zum Hochladen von Tauchgängen benötigen Sie eine Benutzerkennung. Daher ist eine Registrierung unter https://scubadiveshare.com/ erforderlich.
-
 * CSV-Zusammenfassung der Tauchdetails, die die wichtigsten Informationen des Tauchprofils enthält. Zu den Tauchgangsdaten gehören: Tauchgangsnummer, Datum, Uhrzeit, Tauchpartner, Dauer, Tiefe, Temperatur und Luftdruck – kurz gesagt, die meisten Informationen, die Sporttaucher in handschriftliche Logbücher eintragen. Das Tauchprofil ist nicht enthalten.
 
 * CSV-Tauchcomputer-Tauchprofil, das viele Details zu jedem Tauchgang enthält, darunter Tiefenprofil, Temperatur- und Druckinformationen. Die gespeicherten Daten stammen aus den von Ihrem Tauchcomputer heruntergeladenen Daten.
@@ -1857,7 +1842,6 @@ Subsurface bietet Zugriff auf ein transparent integriertes Cloud-Speicher-Backen
 ** Klicken Sie erneut auf „Übernehmen“. Das Subsurface Cloud Storage-Konto wird als verifiziert markiert und der Subsurface Cloud Storage-Dienst wird zur Verwendung initialisiert.
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Wenn während des Cloud-Registrierungsprozesses Probleme auftreten, lesen Sie die xref:S_APPENDIX_G[Cloud FAQ]
 ****
@@ -1873,7 +1857,7 @@ Wenn während des Cloud-Registrierungsprozesses Probleme auftreten, lesen Sie di
 [[S_Cloud_storage]]
 === Webzugriff auf _Subsurface Cloud-Speicher_
 
-Ein schöner Nebeneffekt des Subsurface Cloud-Speichers ist, dass Sie Ihre Tauchdaten auch von jedem Webbrowser aus abrufen können. Öffnen Sie einfach https://cloud.subsurface-divelog.org, melden Sie sich mit derselben E-Mail-Adresse und demselben Passwort an und Sie sehen einen HTML-Export der letzten Tauchdaten, die mit dem Subsurface Cloud-Speicher synchronisiert wurden. Die angezeigten Tauchinformationen entsprechen ausschließlich den aufgezeichneten Tauchprotokollen, nicht den berechneten Werten, die im Profilbereich angezeigt werden, darunter einige Flaschendrücke, Dekostufen und O~2~/He/N~2~-Partialdrücke.
+Ein schöner Nebeneffekt des Subsurface Cloud-Speichers ist, dass Sie Ihre Tauchdaten auch von jedem Webbrowser aus abrufen können. Öffnen Sie einfach https://cloud.subsurface-divelog.org/, melden Sie sich mit derselben E-Mail-Adresse und demselben Passwort an und Sie sehen einen HTML-Export der letzten Tauchdaten, die mit dem Subsurface Cloud-Speicher synchronisiert wurden. Die angezeigten Tauchinformationen entsprechen ausschließlich den aufgezeichneten Tauchprotokollen, nicht den berechneten Werten, die im Profilbereich angezeigt werden, darunter einige Flaschendrücke, Dekostufen und O~2~/He/N~2~-Partialdrücke.
 
 === Andere Cloud-Dienste
 
@@ -2099,9 +2083,9 @@ image::images/Pref_tech_DE.jpg["FIGURE: Preferences: Tech setup",align="center"]
 
 *** *Bühlmann*: Legen Sie die Gradientenfaktoren (GF_Low und GF_High) für die Berechnung der Dekostufe gemäß dem ZH-L16-Algorithmus fest. GF_Low ist der Gradientenfaktor in der Tiefe und GF_High wird an der Oberfläche verwendet. In mittleren Tiefen werden Gradientenfaktoren zwischen GF_Low und GF_High verwendet. Gradientenfaktoren berücksichtigen die Stickstoff- und Heliumbelastung während eines Tauchgangs, ähnlich wie viele Tauchcomputer eine konservative Einstellung haben. Je niedriger der Gradientenfaktor, desto konservativer sind die Berechnungen hinsichtlich der Inertgasbelastung und desto tiefer sind die Dekostufen. Gradientenfaktoren von 20/60 gelten als konservativ und Werte von 70/90 als streng. Weitere Informationen finden Sie unter:
 
- *** https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- *** link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ *** link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, by Kevin Watts]
 
 === Georeferenz
 
@@ -2142,7 +2126,6 @@ Alle Einstellungen zurücksetzen: Durch Auswahl dieser Schaltfläche in diesem B
 Die Tauchgangsplanung ist eine erweiterte Funktion von Subsurface und kann über das Hauptmenü unter Log -> Tauchgang planen aufgerufen werden. Sie ermöglicht die Berechnung der Inertgasbelastung während eines Tauchgangs mithilfe des Bühlmann ZH-L16-Algorithmus unter Hinzufügung von Gradientenfaktoren, wie sie von Erik Baker implementiert wurden, oder mithilfe des VPM-B-Modells.
 
 ****
-[icon="images/icons/warning2.png"]
 [WARNING]
 
 Der _Subsurface_ Tauchplaner IST EXPERIMENTELL und setzt voraus, dass der Benutzer bereits mit der Benutzeroberfläche von _Subsurface_ vertraut ist. Es wird ausdrücklich unter den folgenden Bedingungen verwendet:
@@ -2244,8 +2227,8 @@ Bitte beachten Sie außerdem, dass das VPM-B-Modell davon ausgeht, dass die Entg
 
 Weitere Informationen außerhalb dieses Handbuchs finden Sie unter:
 
- * link:https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
- * link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ * link:https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ * link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, by Kevin Watts]
  * link:https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
 
 Eine ausgezeichnete nicht-technische Rezension, die sowohl das Bühlmann-Dekomodell als auch das VPM-B-Modell bespricht.
@@ -2317,7 +2300,6 @@ Basierend auf diesem Ergebnis werden keine automatischen Prüfungen durchgeführ
 Informationen zur isobaren Gegendiffusion: Bei Gaswechseln während des Aufstiegs bei hypoxischen Trimix-Tauchgängen mit offenem Kreislauf werden Informationen zur isobaren Gegendiffusion (ICD) unten in den Tauchplandetails angezeigt. Diese basieren auf der Fünftelregel (d. h. während eines Gaswechsels sollte der Anstieg des Stickstoffpartialdrucks nicht mehr als ein Fünftel des entsprechenden Heliumpartialdruckabfalls betragen). Für jeden Gaswechsel werden zwei Zeilen angezeigt, die die Änderungen der Gasanteile (%) und die entsprechenden Änderungen der Partialdrücke angeben. Wird die Fünftelregel nicht eingehalten, wird die entsprechende Information rot hervorgehoben und eine Warnmeldung erscheint unten in der Tabelle. Die Gaswechselereignisse im Tauchprofil liefern ebenfalls Informationen zur ICD. Diese werden unten im Informationsfeld angezeigt, wenn Sie mit der Maus über das entsprechende Gaswechselsymbol fahren. Diese Informationen werden nur für Gaswechsel angezeigt, die im Hinblick auf die ICD relevant sind. Wenn die Fünftelregel nicht eingehalten wird, wird über dem Gaswechselsymbol ein rotes Warnzeichen angezeigt. Das Informationsfeld enthält gegebenenfalls Informationen wie: ICD ΔHe: -13 % ΔN₂ + 3 % > 2,6 %. Das bedeutet: Bei diesem Gaswechsel verringerte sich der Heliumgehalt um 13 %, während der Stickstoffgehalt um 3 % zunahm. Dies ist mehr als die maximale Stickstoffzunahme von 2,6 %, die die Fünftelregel vorsieht.
 
 ****
-[icon="images/icons/warning2.png"]
 [WARNING]
 Die *Planvariationen* und *Mindestgas*-Schätzungen sind lediglich Richtlinien für Taucher bei der Tauchgangsplanung. Sie sollen die Sicherheit bei der Durchführung eines bestimmten Tauchgangs erhöhen und ersetzen nicht die formelle Notfallplanung für einen bestimmten Tauchgang. Sie sind NICHT präzise und sollten NICHT als einzige Sicherheitsvorkehrungen bei der Tauchgangsplanung herangezogen werden. Interpretieren Sie diese Schätzungen im Rahmen Ihrer Ausbildung zur Tauchgangsplanung.
 ****
@@ -2330,7 +2312,7 @@ image::images/Planner_pSCR.png["Abbildung: Tauchgang planen: pSCR Tauchgang",ali
 
 ==== Planung für die pSCR-Rettung
 
-[icon="images/pscr_b1.jpg"]
+[icon="pscr_b1.jpg"]
 [NOTE]
 Tauchen mit offenem Kreislauf ist oft Teil eines pSCR-Tauchgangs, da in geringen Tiefen der pO~2~ im Kreislauf oft zu niedrig zum Atmen ist und die flachen Abschnitte eines pSCR-Tauchgangs oft mit offenem Kreislauf durchgeführt werden. Der Wechsel vom Rebreather-Modus zum offenen Kreislauf oder umgekehrt wird durch Bailout-Ereignisse angezeigt. Es gibt zwei Möglichkeiten, Bailout bei Rebreather-Tauchgängen zu planen:
 1) Aktivieren Sie das Kontrollkästchen „Bailout“ im Abschnitt „Tauchmodus“ des Planers. In diesem Fall wird der Bailout-Bedarf ab dem letzten Abschnitt des Tauchgangs berechnet, der in der Tabelle „Tauchplaner-Punkte“ angegeben ist.
@@ -2415,7 +2397,7 @@ _Subsurface_ kann über die Befehlszeile gestartet werden, um spezielle Einstell
 	subsurface [options] [logfile ...] [--import logfile ...]
 
 Zu den Optionen gehören:
-|=====================
+|====================
 |*Befehlszeilenoption*|*Beschreibung*
 |--help|Drucken Sie eine Zusammenfassung der Befehlszeilenoptionen
 | -h|Drucken Sie eine Zusammenfassung der Befehlszeilenoptionen
@@ -2426,7 +2408,7 @@ Zu den Optionen gehören:
 |--version|Druckt die aktuelle Version von _Subsurface_
 |--user=<username>|Wählen Sie xref:S_user_space[Konfigurationsbereich] von dem <Benutzernamen>
 |--cloud-timeout=<duration>|Legen Sie das Timeout für die Cloud-Verbindung fest (0 < Dauer < 60). Dies ermöglicht längere Timeouts für langsame Internetverbindungen
-|=====================
+|====================
 
 == Beschreibung der Subsurface-Hauptmenüelemente
 
@@ -2519,7 +2501,7 @@ Dieser Abschnitt beschreibt die Funktionen und Bedienung der Menüpunkte im Haup
 == Anhang A: Betriebssystemspezifische Informationen zum Importieren von Tauchgangsdaten von einem Tauchcomputer.
 
 === Stellen Sie sicher, dass das Betriebssystem die erforderlichen Treiber installiert hat
-[icon="images/icons/drivers.jpg"]
+[icon="drivers.jpg"]
 [NOTE]
 Das Betriebssystem des Desktop-Computers benötigt die entsprechenden Treiber, um mit dem Tauchcomputer auf die vom Tauchcomputer bevorzugte Weise zu kommunizieren (z. B. Bluetooth, USB, Infrarot).
 
@@ -2531,7 +2513,7 @@ Das Betriebssystem des Desktop-Computers benötigt die entsprechenden Treiber, u
 
 [[S_HowFindDeviceName]]
 === So finden Sie den Gerätenamen für USB-Geräte und setzen die Schreibberechtigung
-[icon="images/icons/usb.jpg"]
+[icon="usb.jpg"]
 [NOTE]
 Wenn ein Tauchcomputer über einen USB-Anschluss angeschlossen wird, schlägt _Subsurface_ normalerweise entweder eine Auswahlliste mit dem korrekten Gerätenamen vor oder es deaktiviert die Geräteauswahl, wenn gar kein Gerätename benötigt wird. In den seltenen Fällen, in denen dies nicht funktioniert, gibt es hier einige Möglichkeiten, den Gerätenamen herauszufinden:
 
@@ -2613,7 +2595,7 @@ Mit dem entsprechenden Gerätenamen (z.B. +dev/ttyUSB3+) und mit einer Schreibbe
 
 [[S_HowFindBluetoothDeviceName]]
 === Manuelles Einrichten von Bluetooth-fähigen Geräten
-[icon="images/icons/bluetooth.jpg"]
+[icon="bluetooth.jpg"]
 [NOTE]
 Für Tauchcomputer, die über Bluetooth kommunizieren, wie z.B. der Heinrichs Weikamp Frog oder die Shearwater Predator, Petrel und Nerd, gibt es ein anderes Verfahren, um den Gerätenamen für die Kommunikation mit _Subsurface_ zu erhalten. Folgen Sie diesen Schritten:
 
@@ -2808,7 +2790,7 @@ Nach dem Herstellen der RFCOMM-Verbindung und während der Countdown für den Up
 [[S_ImportingIrDA]]
 === Importieren von Uwatec Galileo und Subgear Tauchcomputer mittels IrDA protocol
 
-[icon="images/icons/Galileo.jpg"]
+[icon="Galileo.jpg"]
 [NOTE]
 Einige Tauchcomputer von Uwatec und Subgear, wie der Uwatec Galileo, verwenden Infrarot-Kommunikation (IrDA) zwischen dem Tauchcomputer und _Subsurface_.
 
@@ -2861,7 +2843,6 @@ Unter Windows besteht eine ähnliche Situation. Treiber für den MCS7780 sind au
 
 ****
 *Mein Desktop-Computer verfügt nicht über eine Infrarot-Schnittstelle (IrDA) für die Kommunikation.*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 Viele der neuen Desktop-Betriebssysteme (z. B. MacOS 10.6 oder höher, Linux-Kernel 4.17 und neuer) bieten keine Unterstützung für IrDA-basierte Kommunikation. Die zugrunde liegenden Kernel-Treiber für IrDA werden nicht mehr bereitgestellt, da IrDA eine alte Technologie ist, die nicht mehr gut gewartet wird, was zu Problemen auf neueren Betriebssystemen führt.
@@ -2883,7 +2864,7 @@ Der Nachteil dieser Lösung besteht darin, dass das Gastbetriebssystem speziell 
 [[S_ImportingDR5]]
 === Importieren von Heinrichs Weikamp DR5
 
-[icon="images/icons/HW_DR5.jpg"]
+[icon="HW_DR5.jpg"]
 [NOTE]
 Wenn der Heinrichs Weikamp DR5 als USB-Laufwerk angeschlossen ist, speichert er für jeden Tauchgang eine einzelne UDDF-Datei. Markieren Sie alle Tauchgänge, die Sie importieren oder öffnen möchten. Hinweis: Der DR5 scheint weder Gradientenfaktoren noch Deko-Informationen zu speichern, so dass es für _Subsurface_ nicht möglich ist, diese anzuzeigen. Passen Sie die Gradientenfaktoren in den Profileinstellungen in _Subsurface an_, um ein Deko-Overlay im _Subsurface_-*Tauchprofil*-Feld zu erzeugen, aber beachten Sie bitte, dass die von _Subsurface_ berechnete Deko höchstwahrscheinlich von der auf dem DR5 angezeigten abweichen wird.
 
@@ -2891,7 +2872,7 @@ Wenn der Heinrichs Weikamp DR5 als USB-Laufwerk angeschlossen ist, speichert er 
 [[S_ImportingXDeep]]
 === Importieren aus xDEEP BLACK
 
-[icon="images/icons/HW_xdeepblack.jpg"]
+[icon="HW_xdeepblack.jpg"]
 [NOTE]
 Jeder Tauchgang muss einzeln als UDDF-Datei mit der Option "Export UDDF" im Logbuchmenü von BLACK gespeichert werden. Wenn ein USB-Laufwerk angeschlossen ist, sind die UDDF-Dateien im
 LOGBOOK-Verzeichnis verfügbar.
@@ -2900,14 +2881,14 @@ Hinweis: Das xDEEP BLACK speichert zwar die NDL-Zeit, scheint aber weder Gradien
 
 === Importieren von Shearwater Predator/Petrel/Nerd über Bluetooth
 
-[icon="images/icons/predator.jpg"]
+[icon="predator.jpg"]
 [NOTE]
 Spezifische Anweisungen für das Herunterladen von Tauchgängen über Bluetooth finden Sie im obigen Abschnitt, <<S_Bluetooth,_Verbinden des _Subsurface_ mit einem Bluetooth-fähigen Tauchcomputer_>>.
 
 [[S_PoseidonMkVI]]
 === Importieren vom Poseidon MkVI Discovery
 
-[icon="images/MkVI.jpeg"]
+[icon="MkVI.jpg"]
 [NOTE]
 Das Herunterladen von Tauchgangsprotokollen vom MkVI erfolgt über einen speziellen Kommunikationsadapter und die Poseidon PC-Konfigurationssoftware, die Sie beim Kauf des MKVI-Geräts erhalten. Letztere ist eine Windows-Anwendung, die die Konfiguration der Ausrüstung und die Speicherung von Tauchprotokollen ermöglicht. Die Kommunikation zwischen Tauchcomputer und Desktop-Computer erfolgt über das IrDA-Infrarotprotokoll. Es können jeweils nur Daten für einen Tauchgang in drei Dateien heruntergeladen werden:
 
@@ -2920,7 +2901,7 @@ _Subsurface_ greift auf die .txt und .csv Dateien zu, um die Tauchgangsdaten zu 
 
 === Importieren von APD Inspiration/Evolution CCR
 
-[icon="images/APDComputer.jpg"]
+[icon="APDComputer.jpg"]
 [NOTE]
 Die Tauchprotokolle eines APD Inspiration (Vision oder 2020Vision) CCR-Tauchcomputers werden mithilfe eines im Lieferumfang des Geräts enthaltenen Kommunikationsadapters (Vision) oder über Bluetooth (2020Vision) und die Software _AP DiveSight_ heruntergeladen, die von der Website https://www.apdiving.com/en/rebreathers/resources/software/[AP Diving Website] heruntergeladen werden kann. Die Tauchprotokolle können mit _AP DiveSight_ unter Windows oder macOS angezeigt und bearbeitet werden. APD-Protokolle können jedoch auch in _Subsurface_ angezeigt und verwaltet werden (zusammen mit Tauchgängen, die mit vielen anderen Arten von Tauchcomputern durchgeführt wurden). Um die Log-Dateien in _Subsurface_ zu importieren, bietet _AP DiveSight_ (2.0.0.5 oder neuer) die Option, sie im UDDF-Format zu exportieren.
 
@@ -2944,7 +2925,7 @@ Dieser Anhang enthält einige Informationen über den Export von Tauchgangsproto
 
 [[S_ImportingDivesSuunto]]
 === Exportieren aus *Suunto Divemanager (DM3, DM4 oder DM5)*
-[icon="images/icons/suuntologo.jpg"]
+[icon="suuntologo.jpg"]
 [NOTE]
 DiveManager ist eine Windows-Anwendung für Suunto Tauchcomputer. Divemanager 3 (DM3) ist eine ältere Version der Suunto-Software. Neuere Suunto-Tauchcomputer verwenden Divemanager Version 4 oder 5 (DM4 oder DM5). Die verschiedenen Versionen von Divemanager verwenden unterschiedliche Methoden und unterschiedliche Dateinamenskonventionen für den Export von Tauchprotokolldaten.
 
@@ -2993,7 +2974,7 @@ Erstellen einer Sicherungskopie der Suunto DM4/DM5-Datenbank:
 === Exportieren aus Atomic Logbook
 [[Atomic_Export]]
 
-[icon="images/icons/atomiclogo.jpg"]
+[icon="atomiclogo.jpg"]
 [NOTE]
 Atomic Logbook ist eine Windows-Software von Atomic Aquatics. Sie ermöglicht das Herunterladen von Tauchgangsinformationen von Cobalt und Cobalt 2 Tauchcomputern. Das Tauchprotokoll wird in einer SQLite-Datenbank unter
 C:\ProgramData\AtomicsAquatics\Cobalt-Logbook\Cobalt.db.
@@ -3003,7 +2984,7 @@ Diese Datei kann direkt in _Subsurface_ importiert werden.
 [[Mares_Export]]
 === Exportieren aus Mares Dive Organizer V2.1
 
-[icon="images/icons/mareslogo.jpg"]
+[icon="mareslogo.jpg"]
 [NOTE]
 Mares Dive Organizer ist eine Windows-Anwendung. Das Tauchprotokoll wird in einer Microsoft SQL Compact Edition Datenbank mit der Dateinamenerweiterung .sdf gespeichert. Die Datenbank enthält alle Dive Organizer-registrierten Taucher auf dem jeweiligen Computer und alle Mares Tauchcomputer verwendet. Der sicherste Weg, eine Kopie der Tauchgangsdatenbank zu erhalten, ist, die Informationen in ein anderes kompatibles Format zu exportieren, das dann in _Subsurface_ importiert werden kann.
 
@@ -3019,7 +3000,7 @@ Mares Dive Organizer ist eine Windows-Anwendung. Das Tauchprotokoll wird in eine
 [[S_ImportingDivingLog]]
 === Exportieren aus DivingLog 5.0 und 6.0*
 
-[icon="images/icons/divingloglogo.jpg"]
+[icon="divingloglogo.jpg"]
 [NOTE]
 Der beste Weg, Ihre Logs von DivingLog nach _Subsurface_ zu übertragen, ist die Konvertierung der gesamten Datenbank. Das liegt daran, dass andere Exportformate nicht alle Details enthalten, z.B. fehlen Gasschalter und Informationen über die verwendeten Einheiten. Mit dem Datenbankimport sind all diese Informationen enthalten und sofort verfügbar.
 
@@ -3141,7 +3122,7 @@ _Subsurface_ exportiert eine Tauchgangsliste namens (*dives*) sowie eine Liste v
 
 === Exportierte Tauchvariablen
 Es wird nur ein Teil der Tauchdaten exportiert:
-|=====================
+|====================
 |*Name*|*Beschreibung*
 |number| (*int*) Tauchgangsnummer
 |id| (*int*) eindeutige Tauchgangs-ID, die zum Abrufen des Tauchprofils verwendet werden sollte
@@ -3181,11 +3162,11 @@ Es wird nur ein Teil der Tauchdaten exportiert:
 |firstGas| (*string*) zuerst verwendetes Gas
 |salinity| (*string*) der Salzgehalt des Wassers für den Tauchgang
 |waterType| (*string*) die Art des Wassers für den Tauchgang
-|=====================
+|====================
 
 === Exportierte Flaschenobjektvariablen
 Es wird nur eine Teilmenge der Flaschendaten exportiert:
-|=====================
+|====================
 |*Name*|*Beschreibung*
 |description| (*string*) Flaschen Beschreibung
 |size| (*string*) Flaschen Größe
@@ -3196,7 +3177,7 @@ Es wird nur eine Teilmenge der Flaschendaten exportiert:
 |gasO2| (*int*) Sauerstoffanteil im Gasgemisch
 |gasHe| (*int*) Heliumanteil im Gasgemisch
 |gasN2| (*int*) Stickstoffanteil im Gasgemisch
-|=====================
+|====================
 
 
 Bitte beachten Sie, dass einige der Variablen wie 'Notizen' mit '|safe' erweitert werden müssen, um HTML-Stichworte zu unterstützen.
@@ -3207,7 +3188,7 @@ Andernfalls würden Stichworte wie „br“ nicht in Zeilenumbrüche umgewandelt
 
 _Subsurface_ exportiert auch *Vorlagenoptions*-Daten. Diese Daten müssen als _CSS_-Werte verwendet werden, um eine dynamisch bearbeitbare Vorlage bereitzustellen. Die exportierten Daten sind in der folgenden Tabelle dargestellt:
 
-|=====================
+|====================
 |*Name*|*Beschreibung*
 |font| (*string*) Schriftfamilie
 |borderwidth| (*int*) Der Rahmenbreitenwert wird dynamisch als 0,1 % der Seitenbreite mit einem Mindestwert von 1 Pixel berechnet.
@@ -3219,7 +3200,7 @@ _Subsurface_ exportiert auch *Vorlagenoptions*-Daten. Diese Daten müssen als _C
 |color4| (*string*) primäre Textfarbe
 |color5| (*string*) sekundäre Textfarbe
 |color6| (*string*) Randfarben
-|=====================
+|====================
 
 
 .template.html
@@ -3233,10 +3214,10 @@ _Subsurface_ exportiert auch *Vorlagenoptions*-Daten. Diese Daten müssen als _C
 ....
 
 Eine weitere Variable, die _Subsurface_ exportiert, ist *print_options*. Diese Variable enthält ein einzelnes Element:
-|=====================
+|====================
 |*Name*|*Beschreibung*
 |grayscale | Verwenden Sie _CSS_ Filter, um die Seite in Graustufen umzuwandeln (sollte zum Body-Stil hinzugefügt werden, um das Drucken von Graustufendrucken zu ermöglichen)
-|=====================
+|====================
 
 
 .template.html
@@ -3257,12 +3238,12 @@ Eine weitere Variable, die _Subsurface_ exportiert, ist *print_options*. Diese V
 Da das Tauchprofil nach dem Rendering platziert wird, verwendet _Subsurface_ spezielle CSS-Selektoren für die Suche in der HTML-Ausgabe. Die _CSS_-Selektoren in der folgenden Tabelle sollten hinzugefügt werden.
 
 
-|=====================
+|====================
 |*Selector*|*Type*|*Beschreibung* "Unklar ob es hier um eine Feldbezeichnung handelt"
 |dive_{{ dive.id }} | id | wird verwendet, um das entsprechende Tauchprofil
 |diveProfile | class | jeder Tauchgang, der ein Tauchgangsprofil enthält, sollte diesen Klassenselektor zusätzlich zum dive_{{ dive.id )) id-Selektor haben
 |dontbreak | class | verhindert, dass der Tauchgang mit dieser Klasse in zwei Seiten aufgeteilt wird. Dies kann nur in Flow Layout Templates verwendet werden (wenn data-numberofdives=0)
-|=====================
+|====================
 
 IMPORTANT: Das Rendern von Tauchgangsprofilen wird für Flow-Layout-Vorlagen nicht unterstützt (when data-numberofdives = 0).
 

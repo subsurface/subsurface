@@ -5,6 +5,7 @@
 // :revnumber: {version}
 // :revdate: {version-date}
 :icons:
+:iconsdir: mobile-images/icons/
 :toc:
 :toc-placement: manual
 :numbered:
@@ -184,7 +185,6 @@ Once registered, _Subsurface-mobile_ remembers the cloud credentials and it is n
 provide these again when launching the program.
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 *Cloud problems: FAQ*
 
@@ -339,7 +339,7 @@ _Forget remembered dive computers_ in the xref:S_Settings[_Settings_] menu.
 This feature is not supported on iOS.
 
 [width="100%"]
-|=======
+|====================
 a|image:mobile-images/USB-OTG.jpg["FIGURE: USB-OTG cable",align="center"] |
 Most current Android devices now have a USB
 Type C port and come with a simple A-to-C adapter plug, which lets you plug in
@@ -352,7 +352,7 @@ accommodates the full-sized male plug
 of the dive computer USB cable (see image on left). This means that two cables are used to connect
 the dive computer to the mobile device. *Not all Android devices support OTG cables*
 but usually all modern Android devices with a USB C plug can be used with a USB A-to-C adapter.
-|=======
+|====================
 
 _Subsurface-mobile_ remembers the settings for dive computers that
 have been successfully used (image on right, below). These appear
@@ -409,7 +409,7 @@ Each dive has a check-box on the left hand side, used for selecting which dives 
 _Subsurface-mobile_ dive list: dives that are not checked are ignored. Once you have picked the dives
 you want to add to the dive list, tap the button at the bottom left labeled _Accept_. The selected dives will
 now appear as part of
-the _Subsurface-mobile_ dive list. 
+the _Subsurface-mobile_ dive list.
 
 image::mobile-images/DC-Download.jpg["FIGURE: DC download screen",align="center"]
 
@@ -492,7 +492,7 @@ and the dives during the last six months.
 == Dive Statistics
 
 [width="100%", cols="2,3"]
-|===
+|====================
 a|image:mobile-images/StatsPanel.jpg["Image: Statistics panel",float="left"] |
 Creating meaningful statistics that convey the information you are looking for is surprisingly hard.
 Different users have very different needs and very different expectations. Subsurface-Mobile provides
@@ -508,12 +508,11 @@ The Statistics tool has two panels (image on left):
 
 2. The graph that has been requested (bottom).
 
-|===
+|====================
 
 [[S_Stats_Intro]]
 ****
 *A diver's introduction to statistical graphs*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 The extreme flexibility of the Statistics tool means that you need to provide detailed information about
@@ -659,12 +658,12 @@ image::mobile-images/StatsBarchartSubdivided.jpg["Stats subdivided barchart",ali
 === Scattergraphs
 
 [width="100%", cols="2,3"]
-|=======
+|====================
 a|image:mobile-images/StatsRegression.jpg["Regression data example",align="center"] |
 Sometimes you might wish to investigate the relationship between two dive variables. Has my SAC rate decreased over
 the years? Is the water temperature colder at greater dive depth? One of the ways of investigating these questions
 is to draw a scattergraph where the values of one variable is plotted against the other variable (see image on the left).
-|=======
+|====================
 
 
 For the dataset in the image above the SAC rate appears to have decreased over time. If the relationship between the two variables
@@ -758,7 +757,7 @@ buttons on the _Download from dive computer_ page.
 ==== Color theme
 
 [width="100%"]
-|=======
+|====================
 a|image:mobile-images/ThemeSettings.jpg["FIGURE: Theme Settings",align="center"] |
 Besides the default blue color scheme, _Subsurface-mobile_ supports two additional color schemes
 for users with different tastes (see image on left). All screenshots shown in this user manual are
@@ -766,7 +765,7 @@ based on the blue default color scheme. You can pick the _pink_ or _dark_ color 
 the drop down menu.
 
 The boxes in the image on the left show the various color choices in the theme of your choice.
-|=======
+|====================
 
 ==== Font size
 

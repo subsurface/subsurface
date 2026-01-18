@@ -1,5 +1,6 @@
 
 :icons:
+:iconsdir: mobile-images/icons/
 :toc:
 :toc-placement: manual
 :numbered:
