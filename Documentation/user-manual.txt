@@ -276,7 +276,6 @@ dive computers can be found at:
 link:https://subsurface-divelog.org/documentation/supported-dive-computers/[
 Supported dive computers].
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Several dive computers consume more power when they are in
 PC-Communication mode. **This could drain the dive computer's battery**. We
@@ -408,7 +407,6 @@ of the dive computer (at least for those not charging while connected via USB).
 
 ****
 *PROBLEMS WITH DATA DOWNLOAD FROM A DIVE COMPUTER?*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Check the following:
 
@@ -463,7 +461,8 @@ as well as contextual information about the dives recorded on the dive computer.
 
 [[S_Bluetooth]]
 ==== Connecting _Subsurface_ to a Bluetooth-enabled dive computer
-[icon="images/icons/bluetooth.jpg"]
+[icon="bluetooth.jpg"]
+[NOTE]
 
 Bluetooth is becoming a more common way of communication between dive computers
 and _Subsurface_. _Subsurface_ provides a largely operating system independent
@@ -529,7 +528,6 @@ If necessary, consult the user manual of the
 dive computer being used. This accomplishes steps 4 and 5, above.
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Currently _Subsurface_ does not support Bluetooth pairing with dive
 computers that require a custom PIN code. In order to pair the devices, use other
@@ -561,7 +559,6 @@ Bluetooth download on Windows is much the same as on Linux and macOS.
 A log message on the bottom left of the _Remote Bluetooth device selection_
 shows details about the current status of the Bluetooth agent (see image above).
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 Currently _Subsurface_ works only with local Bluetooth
 adapters which use Microsoft Bluetooth Stack. If the local device uses
@@ -569,7 +566,6 @@ _Widcomm_,  _Stonestreet One Bluetopia Bluetooth_ or _BlueSoleil_ drivers it
 will not work. However, Bluetooth hardware/dongles from these manufacturers
 (e.g. iSonic) that support the Microsoft Bluetooth Stack do work.
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 The Subsurface support for BLTE dive computers on Windows is *EXPERIMENTAL* and only
 supported on Windows 10.
@@ -578,7 +574,6 @@ link:https://en.wikipedia.org/wiki/Windows_10_version_history#Version_1803_(Apri
 requirement. Also make sure that you have installed the latest drivers for your
 motherboard and/or BTLE dongle.
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 *IN CASE OF PROBLEMS*:  If the Bluetooth adapter from the _Subsurface_ computer
@@ -704,7 +699,6 @@ image::images/undo.jpg["FIGURE:Performing an undo",align="center"]
 
 [[S_locations]]
 *Location*:
-[icon="images/icons/warning2.png"]
 [WARNING]
 Dive locations are managed as a *separate* part of the dive log (See the section entitled xref:S_DiveSiteManagement[Manipulating Dive Site Information]).
 The dive information in the *Notes* and *Equipment* tabs can therefore NOT be edited at the same
@@ -765,7 +759,6 @@ of the text box turns [white red-background]#RED#. Correct the typing error(s) a
 turns white again as it should be.
 Dive site information can later be added or edited by clicking the globe icon to the right of the
 dive site name in the *Notes tab*.
-[icon="images/icons/warning2.png"]
 [WARNING]
 GPS coordinates of a dive site are linked to the location
 name - so *saving* a dive site with only coordinates and no name
@@ -927,7 +920,6 @@ corresponds to the settings chosen in the _Preferences_.
 
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 *MY CYLINDER IS NOT LISTED IN THE DROPDOWN LIST*
 
@@ -1058,7 +1050,7 @@ the value that is typed here. The water density value (corresponding to salinity
 from the choice of water type.
 
 [[S_altitude]]
-[icon="images/atmpress.jpg"]
+[icon="atmpress.jpg"]
 [NOTE]
 *Altitude* If this dive was away from the sea and your dive computer does not record atmospheric
 pressure or altitude you may wish to edit the altitude because dives at altitude require special calculations.
@@ -1251,7 +1243,7 @@ This opens the imported dive log in the _Subsurface_ *Dive List*.
 
 Some other formats not accessible through the Import dialog are also supported, as explained below.
 
-==== Importing from  OSTCTools
+==== Importing from OSTCTools
 
 _OSTC Tools_ is a Microsoft-based suite of dive download and dive management tools for the OSTC
 family of dive computers. _OSTC Tools_ downloads dive data from the dive computer and stores it
@@ -1349,7 +1341,6 @@ _Subsurface_-formatted data into (see image below).
 
 image::images/smtk2ssrf.jpg["FIGURE:Download from SmartTrak",align="center"]
 
-[icon="images/icons/warning2.png"]
 [WARNING]
 Existing data in the destination file will be
 erased, so *DO NOT* use a regular subsurface divelog file as a destination:
@@ -1532,7 +1523,6 @@ The data from the _CSV_ file are imported and shown in the *Dive List* panel.
 [[S_CSV_Intro]]
 ****
 *A Diver's Introduction to _CSV_ Files*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 _CSV_ is an abbreviation for a data file format: _Comma-Separated Values_. It is a
@@ -1597,7 +1587,6 @@ of the dives into _Subsurface_.
 
 ****
 
-[icon="images/icons/important.png"]
 [IMPORTANT]
 But, the _CSV_ import has a couple of caveats. Avoid some special characters
 like ampersand (&), less than (<), greater than (>) and double quotes (") as part
@@ -1778,7 +1767,6 @@ so that all media associated with a dive are visible, including images taken bef
 
 ****
 *Ensuring that thumbnails are created for video files*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 Within a panel _Subsurface_ represents media by means of thumbnails (i.e. small versions of images
@@ -2027,7 +2015,7 @@ The profile graph will also be updated to reflect this change.
 [[S_sSCR_dives]]
 ==== Passive semi-closed circuit rebreather (pSCR) dives
 
-[icon="images/halcyon_RB80.jpg"]
+[icon="halcyon_RB80.jpg"]
 [NOTE]
 Passive semi-closed rebreathers (pSCR) are a technical advance in diving equipment that
 recirculates the breathing gas a diver uses, while removing carbon dioxide from
@@ -2070,7 +2058,7 @@ a checkbox labelled _Show equivalent OC pO~2~ with pSCR pO~2~_. This activates d
 fresh gas from the cylinder (an orange line). The vertical distance between the orange graph and the green graph
 indicates the "pO~2~ drop over the mouthpiece". Much of pSCR diving involves managing this pO~2~ difference.
 
-[icon="images/DiveModeChange.jpg"]
+[icon="DiveModeChange.jpg"]
 [NOTE]
 _pSCR and bailout_: Gases used in pSCR often yield very low pO~2~ values in shallow water. For this reason one
 often completes the shallow sections of a dive using open circuit (OC) rather than the rebreather. In this case
@@ -2090,7 +2078,7 @@ image::images/pSCR_profile_bailout.jpg["FIGURE: pSCR profile with bailout",align
 [[S_CCR_dives]]
 ==== Closed circuit rebreather (CCR) dives
 
-[icon="images/APD.jpg"]
+[icon="APD.jpg"]
 [NOTE]
 Closed system rebreathers also recirculate
 gas that has been breathed. However, they use advanced technology to maintain a
@@ -2245,16 +2233,16 @@ Poseidon and APD equipment can be found in xref:S_Appendix_B[Appendix B].
 
 The Dive Map has buttons useful for obtaining spatial information about a dive. These are:
 
-[icon="images/icons/MapViewMode.jpg"]
+[icon="MapViewMode.jpg"]
 [NOTE]
 Select this button to show the Dive Map as a satellite image or as a Google Maps
 representation.
 
-[icon="images/icons/MapViewPlus.jpg"]
+[icon="MapViewPlus.jpg"]
 [NOTE]
 Zoom in. Select a smaller area of the map.
 
-[icon="images/icons/MapViewMinus.jpg"]
+[icon="MapViewMinus.jpg"]
 [NOTE]
 Zoom out. Select a larger area of the map.
 
@@ -2284,7 +2272,7 @@ surface interval before the dive, the maximum and mean depths of the dive, the
 gas volume consumed, the surface air consumption (SAC) and the number of oxygen
 toxicity units (OTU) incurred.
 
-[icon="images/icons/info.jpg"]
+[icon="info.jpg"]
 [NOTE]
 Gas consumption and SAC calculations:
 _Subsurface_ calculates SAC and Gas consumption taking in account gas
@@ -2329,20 +2317,20 @@ dive depth as a function of time. In addition to
 depth, it also shows the ascent and descent rates compared to the recommended
 speed of going up or down in the water column. This information is given using
 different colors:
-|=====================
+|====================
 |*Color*|*Descent speed (m/min)*|*Ascent speed (m/min)*
 |Red|> 30|> 18
 |Orange|18 - 30|9 - 18
 |Yellow|9 - 18|4 - 9
 |Light green|1.5 - 9|1.5 - 4
 |Dark green|< 1.5|< 1.5
-|=====================
+|====================
 
 The profile also includes depth readings for the peaks and troughs in the graph.
 So users should see the depth of the deepest point and other peaks. Mean depth
 is plotted as a grey line, indicating mean dive depth up to a particular moment during the dive.
 
-[icon="images/icons/graph.png"]
+[icon="graph.png"]
 [NOTE]
 As a standard, the depth axis ranges down to 30m/90ft and the time axis extends up to
 30 minutes. If the depicted *dive profile* extends beyond these ranges, the axes of
@@ -2385,11 +2373,11 @@ M-value, corresponds to 100%), the time to surface (TTS), the calculated ceiling
 as of the statistics in the Information Box, shown as four
 buttons on the left of the profile panel. These are:
 
-[icon="images/icons/InfoBox.png"]
+[icon="InfoBox.png"]
 [NOTE]
 Show or hide the *Information Box*. This allows the Information Box to be hidden in order to see the entire dive profile without any obstructions.
 
-[icon="images/icons/MOD.jpg"]
+[icon="MOD.jpg"]
 [NOTE]
 Show the *Maximum Operating Depth (MOD)* of the dive, given the
 gas mixture used. MOD is dependent on the oxygen concentration in the breathing gas.
@@ -2397,7 +2385,7 @@ For air (21% oxygen) it is around 57 m if a maximum pO~2~ of 1.4 is specified in
 (select _File -> Preferences -> Tech setup_) and edit the text box _pO~2~ in calculating MOD_.
 When diving below the MOD there is a markedly increased risk of exposure to the dangers of oxygen toxicity.
 
-[icon="images/icons/NDL.jpg"]
+[icon="NDL.jpg"]
 [NOTE]
 Show either the *No-deco Limit (NDL)* or the
 *Total Time to Surface (TTS)*. NDL is the time duration that a diver can continue with a
@@ -2409,7 +2397,7 @@ time. Even if the profile contains several gas
 switches, TTS at a specific moment during the dive is calculated using the current gas.
 TTS longer than 2 hours is not accurately calculated and Subsurface only indicates _TTS > 2h_.
 
-[icon="images/icons/GFLow.jpg"]
+[icon="GFLow.jpg"]
 [NOTE]
 Show *Deco information*. When enabled, the information box shows  the current gradient factor (GF),
 the surface GF and the momentary
@@ -2419,7 +2407,7 @@ the diver is currently using. The surface GF is an indication of to what degree
 the partial pressure of nitrogen in the blood exceeds the partial pressure required for safely
 reaching the surface. Surface GF > 100% means that it is unsafe to surface.
 
-[icon="images/icons/SAC.jpg"]
+[icon="SAC.jpg"]
 [NOTE]
 Show the *Surface Air Consumption (SAC)*, an indication of the surface-normalized respiration
 rate of a diver. The value of SAC is less than the real
@@ -2428,7 +2416,7 @@ the equivalent rate at the surface. SAC gives an indication of breathing gas con
 independent of the depth of the dive, so the respiratory rates of different dives
 can be compared. The units for SAC is liters/min or cubic ft/min.
 
-[icon="images/icons/EAD.jpg"]
+[icon="EAD.jpg"]
 [NOTE]
 Show the *Equivalent Air Depth (EAD)* for
 nitrox dives as well as the *Equivalent
@@ -2548,16 +2536,16 @@ Partial pressures of oxygen are indicated in green, nitrogen in black,
 and helium in dark red. These
 partial pressure graphs are shown below the profile data.
 
-[icon="images/icons/O2.jpg"]
+[icon="O2.jpg"]
 [NOTE]
 Show the partial pressure of *oxygen* during the
 dive. This is shown below the dive depth and water temperature graphs.
 
-[icon="images/icons/N2.jpg"]
+[icon="N2.jpg"]
 [NOTE]
 Show the partial pressure of *nitrogen* during the dive.
 
-[icon="images/icons/He.jpg"]
+[icon="He.jpg"]
 [NOTE]
 Display of the partial pressure of *helium* during the dive.
 This is only important to divers using Trimix, Helitrox or similar breathing gases.
@@ -2579,7 +2567,7 @@ When in planner mode, the SAC is set to be constant during the bottom part
 of the dive as well during decompression. Therefore, when planning a dive,
 the color is a representation of the breathing gas density.
 
-[icon="images/icons/Heartbutton.png"]
+[icon="Heartbutton.png"]
 [NOTE]
 Clicking on the heart rate button allows display of heart rate information
 during the dive if the dive computer was attached to a heart rate sensor.
@@ -2592,7 +2580,7 @@ something free divers won’t care about.
 
 image::images/MeasuringBar.png["FIGURE: Measuring Bar",align="center"]
 
-[icon="images/icons/ruler.jpg"]
+[icon="ruler.jpg"]
 [NOTE]
 Measurements of *depth or time differences* can be achieved by using the
 *ruler button* on the left of the dive profile panel.
@@ -2601,7 +2589,7 @@ on the dive profile that you wish to measure. Information is then given
 in the horizontal white area underneath the
 two red dots.
 
-[icon="images/icons/ShowPhotos.png"]
+[icon="ShowPhotos.png"]
 [NOTE]
 Photographs and videos that have been added to a dive can be shown on the profile
 by selecting
@@ -2645,26 +2633,26 @@ depth at this instant of time given the inert gas loadings and is not a statemen
 about a possible ascent schedule in the remaining dive. To obtain the latter,
 use the "Edit dive in planner" option from the Log menu.
 
-[icon="images/icons/cceiling.jpg"]
+[icon="cceiling.jpg"]
 [NOTE]
 If the dive computer itself calculates a ceiling and makes it available to
 _Subsurface_ during upload of dives, this can be
 shown as a red area by checking *Dive computer reported ceiling* button on the Profile Panel.
 
-[icon="images/icons/ceiling1.jpg"]
+[icon="ceiling1.jpg"]
 [NOTE]
 If the *Calculated ceiling* button on the Profile Panel is clicked, then a ceiling,
 calculated by _Subsurface_, is shown in green if it exists for
 a particular dive (*A* in figure below). This setting can be modified in two ways:
 
-[icon="images/icons/ceiling2.jpg"]
+[icon="ceiling2.jpg"]
 [NOTE]
 If, in addition, the *show all tissues* button on the Profile Panel is clicked, the ceiling is shown for the tissue
 compartments following the Bühlmann model (*B* in figure below).
 
-[icon="images/icons/ceiling3.jpg"]
+[icon="ceiling3.jpg"]
 [NOTE]
-=========================================
+====================
 If, in addition, the *3m increments* button on the Profile Panel is clicked, then the ceiling is indicated in 3 m increments
 (*C* in figure below).
 
@@ -2672,14 +2660,14 @@ image::images/Ceilings2.jpg["FIGURE: Ceiling with 3m resolution",align="center"]
 
 Gradient Factor settings strongly affect the calculated ceilings and their depths. For more information about Gradient factors, see the section on xref:GradientFactors_Ref[Gradient Factor Preference settings]. The currently used gradient factors (e.g. GF 35/75) are shown above the depth profile if the appropriate toolbar buttons are activated. N.B.: The indicated gradient factors are NOT the gradient factors in use by the dive computer, but those used by Subsurface to calculate deco obligations during the dive. For more information external to this manual see:
 
- *** https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- *** link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
-=========================================
+ *** link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, by Kevin Watts]
+====================
 
 
 
-[icon="images/icons/ShowCylindersButton.jpg"]
+[icon="ShowCylindersButton.jpg"]
 [NOTE]
 By selecting this icon, the different cylinders used during a dive can be represented as a colored bar at the bottom
 of the *Dive Profile*. In general oxygen is represented by a green bar, nitrogen a yellow bar and helium a
@@ -2690,9 +2678,9 @@ image::images/ShowCylinders_f20.jpg["FIGURE: Cylinder use graph",align="center"]
 
 
 
-[icon="images/icons/heatmap.png"]
+[icon="heatmap.png"]
 [NOTE]
-=========================================
+====================
 Display the tissue heat-map. The heat map summarizes, for the duration of the dive, the inert gas tissue pressures
 for each of the 16 tissue compartments of the Bühlmann model. Blue colors mean low gas pressures in a tissue compartment
 and thus on-gassing, green to red means excess gas in the tissue and thus off-gassing. Fast to slow tissues are indicated from
@@ -2757,7 +2745,7 @@ The colors of the heat map are not affected by the gradient factor settings.
 This is because the heat map indicates tissue pressures relative to the Bühlmann M-value gradient, and
 not relative to any specific gradient factor. For more information external to this manual see:
 
-https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
 Since the colors of the heat map are not affected by the gradient factor(s), the heat map is also
 applicable when using the VPM-B decompression model.
@@ -2777,7 +2765,7 @@ However, on-gassing of slower tissues continues during the deep stops, which lea
 in slower tissues at the end of the dive.
 
 image::images/tissueHeatmap.jpg["FIGURE: Inert gas tissue pressure heat-map",align="center"]
-=========================================
+====================
 
 ==== The Dive Profile context menu
 
@@ -2917,7 +2905,6 @@ image::images/StatsPanel.jpg["Statistics panel",align="center"]
 [[S_Stats_Intro]]
 ****
 *A diver's introduction to statistical graphs*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 The extreme flexibility of the Statistics tool means that you need to provide detailed information about what information Subsurface should provide. It helps to have a clear objective, a solid understanding of what you want Subsurface to show you. In other words, you need to formulate the correct question. There are so many graphical display options that, if you do not formulate the question correctly, the information is unlikely to be presented in a valid or appropriate way. Because all statistical results in Subsurface are shown as graphs, formulating an appropriate specification requires four steps:
@@ -3067,17 +3054,17 @@ shown in the *Dive List* are saved and used when _Subsurface_ is re-opened.
 By selecting the _Media_ checkbox in the dropdown list, an icon is shown indicating whether any media
 are associated with a particular dive. There are three icons:
 
-[icon="images/icons/duringPhoto.png"]
+[icon="duringPhoto.png"]
 [NOTE]
 This dive has photographs or videos taken during the dive, typically using an underwater camera.
 
-[icon="images/icons/outsidePhoto.png"]
+[icon="outsidePhoto.png"]
 [NOTE]
 This dive has photographs or videos taken immediately before or immediately after the dive. This is useful for
 finding photos/media of dive teams or boats just before/after the dive, whales or other surface animals seen
 just before or after the dive, or of landscapes as seen from the boat.
 
-[icon="images/icons/inAndOutPhoto.png"]
+[icon="inAndOutPhoto.png"]
 [NOTE]
 This dive has photographs or videos taken both during the dive and immediately before or after the dive.
 
@@ -3252,10 +3239,6 @@ A dive log or part of it can be saved in several formats:
   you need a user-ID as well as a password for _Divelogs.de_. Log into _https://en.divelogs.de/_
   and subscribe to this service to upload dive log data from _Subsurface_.
 
-* _DiveShare_ is also a dive log repository on the Internet focusing on recreational
-  dives. To upload dives, you need a user ID, so registration with
-  _https://scubadiveshare.com/_ is required.
-
 * _CSV summary dive details_, that includes the most critical information of the dive
   profile. Included information of a dive is: dive number, date, time, buddy,
   duration, depth, temperature and atmospheric pressure: in short, most of the information
@@ -3383,7 +3366,6 @@ address confirmation)
 will be marked as verified and the _Subsurface cloud storage_ service is initialized for use.
 
 ****
-[icon="images/icons/important.png"]
 [IMPORTANT]
 If you encounter any problems during the cloud registration process, read the xref:S_Cloud_Faq[Cloud FAQ]
 ****
@@ -3409,7 +3391,7 @@ connected to the Internet.
 
 One of the nice side benefits of using _Subsurface cloud storage_ is that
 you can also access your dive data from any web browser. Simply open
-https://cloud.subsurface-divelog.org[_https://cloud.subsurface-divelog.org_],
+https://cloud.subsurface-divelog.org/[_https://cloud.subsurface-divelog.org/_],
 log in with the same email and password, and you can see an HTML export of
 the last dive data that was synced to _Subsurface cloud storage_. The dive information
 shown is only the contents of the recorded dive logs, NOT the calculated values
@@ -3808,9 +3790,9 @@ these items mainly pertain to oxygen management:
    harsh.
    For more information see:
 
- *** https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ *** https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
- *** link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ *** link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, by Kevin Watts]
 
 === Georeference
 
@@ -3873,7 +3855,6 @@ inert gas load during a dive by using the Bühlmann ZH-L16 algorithm with the ad
 of gradient factors as implemented by Erik Baker, or using the VPM-B model.
 
 ****
-[icon="images/icons/warning2.png"]
 [WARNING]
 
 The _Subsurface_ dive planner IS EXPERIMENTAL
@@ -4089,8 +4070,8 @@ next to the first ascent waypoint in the table on the left hand side.
 
 For more information external to this manual see:
 
- * link:https://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
- * link:https://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
+ * https://www.dive-tech.co.uk/resources/mvalues.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
+ * link:https://www.deep6gear.com/PDFs/GF-Watts.pdf[Gradient factors for dummies, by Kevin Watts]
  * link:https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&ie=UTF8&qid=1403932320&sr=1-1&keywords=deco+for+divers[_Deco for Divers_, by Mark Powell (2008). Aquapress] Southend-on-Sea, UK. ISBN 10: 1-905492-07-3.
 An excellent non-technical review that discusses both the Bühlmann deco model and the VPM-B model.
 
@@ -4293,7 +4274,6 @@ decreased with 13% while the nitrogen increased with 3% which
 is more than the 2.6% maximum increase in nitrogen suggested by the rule-of-fifths.
 
 ****
-[icon="images/icons/warning2.png"]
 [WARNING]
 The *plan variations* and *minimum gas* estimates are only guidelines for a diver performing
 dive planning, intended to enhance the safety of executing a particular dive plan and do not
@@ -4327,7 +4307,7 @@ image::images/Planner_pSCR.png["FIGURE: Planning a pSCR dive: setup",align="cent
 
 ==== Planning for pSCR bailout
 
-[icon="images/pscr_b1.jpg"]
+[icon="pscr_b1.jpg"]
 [NOTE]
 Open circuit diving is often part of a pSCR dive because, at shallow depths, the pO~2~ in the loop is often
 too low for breathing and the shallow parts of a pSCR dive are often done on OC. The change
@@ -4490,7 +4470,7 @@ command-line is:
 	subsurface [options] [logfile ...] [--import logfile ...]
 
 The options include:
-|=====================
+|====================
 |*Command-line option*|*Description*
 |--help|Print a summary of the command-line options
 | -h|Print a summary of the command-line options
@@ -4501,7 +4481,7 @@ The options include:
 |--version|Prints the current version of _Subsurface_
 |--user=<username>|Choose the xref:S_user_space[configuration space] of user <username>
 |--cloud-timeout=<duration>|Set the timeout for cloud connection (0 < duration < 60). This enables longer timeouts for slow Internet connections
-|=====================
+|====================
 
 == Description of the Subsurface Main Menu items
 
@@ -4584,7 +4564,7 @@ dealing with the appropriate operations.
 == APPENDIX A: Operating system specific information for importing dive information from a dive computer.
 
 === Make sure that the OS has the required drivers installed
-[icon="images/icons/drivers.jpg"]
+[icon="drivers.jpg"]
 [NOTE]
 The operating system of the desktop computer needs the appropriate drivers in
 order to communicate with the dive computer, the way the dive
@@ -4620,7 +4600,7 @@ https://www.silabs.com/support/pages/document-library.aspx?p=Interface&f=USB%20B
 
 [[S_HowFindDeviceName]]
 === How to Find the Device Name for USB devices and set its write permission
-[icon="images/icons/usb.jpg"]
+[icon="usb.jpg"]
 [NOTE]
 When connecting a dive computer by using a USB connector, usually
 _Subsurface_ will either propose a drop down list with the
@@ -4702,7 +4682,7 @@ dives.
 
 [[S_HowFindBluetoothDeviceName]]
 === Manually setting up Bluetooth enabled devices
-[icon="images/icons/bluetooth.jpg"]
+[icon="bluetooth.jpg"]
 [NOTE]
 For dive computers communicating through Bluetooth like the Heinrichs
 Weikamp Frog or the Shearwater Predator, Petrel and Nerd there is a
@@ -4908,7 +4888,7 @@ After establishing the RFCOMM connection and while the dive computer's upload mo
 [[S_ImportingIrDA]]
 === Importing from Uwatec and Subgear dive computers using the IrDA protocol
 
-[icon="images/icons/Galileo.jpg"]
+[icon="Galileo.jpg"]
 [NOTE]
 Some Uwatec and Subgear dive computers like the Uwatec Galileo use infra red (IrDA) communication
 between the dive computer and Subsurface.
@@ -4966,7 +4946,6 @@ available from some Internet web sites e.g. https://www.drivers-download.com/Drv
 
 ****
 *My desktop computer does not provide for infra-red (IrDA) communication*
-[icon="images/icons/important.png"]
 [IMPORTANT]
 
 Many of the new desktop operation systems (e.g. MacOS 10.6 or higher, Linux kernel 4.17 and newer) do not provide support for IrDA-based communication. The underlying kernel drivers for IrDA are not provided any more because IrDA is an old technology, not well-maintained any more, thus creating problems on newer operating systems.
@@ -4987,7 +4966,7 @@ The downside of this solution is that the guest operating system needs to be sta
 [[S_ImportingDR5]]
 === Importing from Heinrichs Weikamp DR5
 
-[icon="images/icons/HW_DR5.jpg"]
+[icon="HW_DR5.jpg"]
 [NOTE]
 When mounted as a USB drive the Heinrichs Weikamp DR5 saves a single UDDF file
 for every dive.
@@ -5002,7 +4981,7 @@ _Subsurface_ will most likely differ from the one displayed on the DR5.
 [[S_ImportingXDeep]]
 === Importing from xDEEP BLACK
 
-[icon="images/icons/HW_xdeepblack.jpg"]
+[icon="HW_xdeepblack.jpg"]
 [NOTE]
 Each dive has to be individually saved as UDDF file using "Export UDDF" option in BLACK's logbook menu.
 When mounted as a USB drive UDDF files are available in LOGBOOK directory.
@@ -5015,14 +4994,14 @@ _Subsurface_ will most likely differ from the one displayed on the xDEEP BLACK.
 
 === Importing from Shearwater Predator/Petrel/Nerd using Bluetooth
 
-[icon="images/icons/predator.jpg"]
+[icon="predator.jpg"]
 [NOTE]
 Specific instructions for downloading dives using Bluetooth are  given in the section above, <<S_Bluetooth,_Connecting Subsurface to a Bluetooth-enabled dive computer_>>.
 
 [[S_PoseidonMkVI]]
 === Importing from Poseidon MkVI Discovery
 
-[icon="images/MkVI.jpeg"]
+[icon="MkVI.jpg"]
 [NOTE]
 Download of dive logs from the MkVI is performed using a custom communications
 adapter and the _Poseidon PC Configuration Software_, obtained when purchasing
@@ -5042,7 +5021,7 @@ _Subsurface_ accesses the .txt and the .csv files to get dive log information.
 
 === Importing from APD Inspiration CCR
 
-[icon="images/APDComputer.jpg"]
+[icon="APDComputer.jpg"]
 [NOTE]
 The dive logs of an APD Inspiration (Vision or 2020Vision) CCR dive computer are downloaded using
 a communications adapter included with the unit (Vision), or Bluetooth (2020Vision), and the _AP DiveSight_ software, downloadable from the https://www.apdiving.com/en/rebreathers/resources/software/[AP Diving website].
@@ -5077,7 +5056,7 @@ dive log software. The procedures below mostly apply to Linux and/or Windows.
 
 [[S_ImportingDivesSuunto]]
 === Exporting from *Suunto Divemanager (DM3, DM4 or DM5)*
-[icon="images/icons/suuntologo.jpg"]
+[icon="suuntologo.jpg"]
 [NOTE]
 DiveManager is a Windows application for Suunto dive computers.
 Divemanager 3 (DM3) is an older version of the Suunto software. More recent
@@ -5134,7 +5113,7 @@ Making a backup copy of the Suunto DM4/DM5 database:
 [[Atomic_Export]]
 === Exporting from Atomic Logbook
 
-[icon="images/icons/atomiclogo.jpg"]
+[icon="atomiclogo.jpg"]
 [NOTE]
 Atomic Logbook is Windows software by Atomic Aquatics. It allows
 downloading of dive information from Cobalt and Cobalt 2 dive computers.
@@ -5145,7 +5124,7 @@ be directly imported to Subsurface.
 [[Mares_Export]]
 === Exporting from Mares Dive Organizer V2.1
 
-[icon="images/icons/mareslogo.jpg"]
+[icon="mareslogo.jpg"]
 [NOTE]
 Mares Dive Organizer is a Windows application. The dive log is kept as a
 Microsoft SQL Compact Edition database with a '.sdf' filename extension. The
@@ -5167,7 +5146,7 @@ which can then be imported into _Subsurface_.
 [[S_ImportingDivingLog]]
 === Exporting from *DivingLog 5.0 and 6.0*
 
-[icon="images/icons/divingloglogo.jpg"]
+[icon="divingloglogo.jpg"]
 [NOTE]
 The best way to bring your logs from DivingLog to Subsurface is to
 convert the whole database. This is because other export formats do not
@@ -5325,7 +5304,7 @@ possible to iterate over the list as follows:
 
 === Exported dive variables
 Only a subset of the dive data is exported:
-|=====================
+|====================
 |*Name*|*Description*
 |number| (*int*) dive number
 |id| (*int*) unique dive ID, should be used to fetch the dive profile
@@ -5365,11 +5344,11 @@ Only a subset of the dive data is exported:
 |firstGas| (*string*) first used gas
 |salinity| (*string*) the salinity of the water for the dive
 |waterType| (*string*) the type of the water for the dive
-|=====================
+|====================
 
 === Exported cylinder object variables
 Only a subset of the cylinder data is exported:
-|=====================
+|====================
 |*Name*|*Description*
 |description| (*string*) cylinder description
 |size| (*string*) cylinder size
@@ -5380,7 +5359,7 @@ Only a subset of the cylinder data is exported:
 |gasO2| (*int*) oxygen percentage of gas mix
 |gasHe| (*int*) helium percentage of gas mix
 |gasN2| (*int*) nitrogen percentage of gas mix
-|=====================
+|====================
 
 
 Please note that some of the variables like 'notes' need to be extended with '|safe' to support HTML tags:
@@ -5391,7 +5370,7 @@ Otherwise tags like 'br' would not be converted to line breaks.
 
 _Subsurface_ also exports *template_options* data. This data must be used as _CSS_ values to provide a dynamically
 editable template. The exported data is shown in the following table:
-|=====================
+|====================
 |*Name*|*Description*
 |font| (*string*) font family
 |borderwidth| (*int*) border-width value dynamically calculated as 0.1% of the page width with minimum value of 1px
@@ -5403,7 +5382,7 @@ editable template. The exported data is shown in the following table:
 |color4| (*string*) primary text color
 |color5| (*string*) secondary text color
 |color6| (*string*) border colors
-|=====================
+|====================
 
 .template.html
 ....
@@ -5416,10 +5395,10 @@ editable template. The exported data is shown in the following table:
 ....
 
 Another variable that _Subsurface_ exports is *print_options*. This variable contains a single member:
-|=====================
+|====================
 |*Name*|*Description*
 |grayscale | Use _CSS_ filters to convert the page into grayscale (should be added to body style to enable printing grayscale prints)
-|=====================
+|====================
 
 
 .template.html
@@ -5440,13 +5419,13 @@ Another variable that _Subsurface_ exports is *print_options*. This variable con
 As the dive profile is placed after rendering, _Subsurface_ uses special _CSS_ selectors to search
 in the HTML output. The _CSS_ selectors in the following table should be added.
 
-|=====================
+|====================
 |*Selector*|*Type*|*Description*
 |dive_{{ dive.id }} | id | is used to fetch the relevant dive profile
 |diveProfile | class | each dive that will contain a dive profile should have this class selector in addition to the dive_{{ dive.id }} id selector
 |dontbreak | class | prevents the dive with this class from being divided into two pages. This can be used
 in flow layout templates only (when data-numberofdives = 0)
-|=====================
+|====================
 
 IMPORTANT: Rendering dive profiles is not supported for flow layout templates (when data-numberofdives = 0).
 
