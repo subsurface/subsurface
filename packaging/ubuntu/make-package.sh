@@ -105,7 +105,7 @@ debuild -S -d
 # create builds for the newer Ubuntu releases that Launchpad supports
 #
 rel=focal
-others="jammy noble plucky questing"
+others="jammy noble questing"
 for next in $others
 do
 	sed -i "s/${rel}/${next}/g" debian/changelog
