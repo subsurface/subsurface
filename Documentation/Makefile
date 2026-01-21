@@ -12,12 +12,17 @@ BROWSER = firefox
 THEME = compact_subsurface
 PWD = $(realpath .)
 
-# Compute version information once for all targets
-VERSION := $(shell git log -1 --pretty=format:%H . | xargs ../scripts/get-version-for-changeset.sh)
-ifeq ($(VERSION),)
-VERSION := pre-6.0.0
+# Generate cached version file (regenerates when git state changes, falls back to <unknown> when git unavailable)
+.latest_change_version: $(wildcard ../.git/index)
+	@git log -1 --pretty=format:%H . 2>/dev/null | xargs ../scripts/get-version-for-changeset.sh > $@ 2>/dev/null || echo "<unknown>" > $@
+
+# Read version from cache (fast; .latest_change_version regenerates when git state changes)
+VERSION = $(shell test -f .latest_change_version && cat .latest_change_version || echo "<unknown>")
+VERSION_DATE = $(shell git log -1 --pretty=format:%ad --date=short . 2>/dev/null || echo "<unknown>")
+DISPLAY_VERSION = $(VERSION)
+ifeq ($(DISPLAY_VERSION),<unknown>)
+DISPLAY_VERSION = &lt;unknown&gt;
 endif
-VERSION_DATE := $(shell git log -1 --pretty=format:%ad --date=short .)
 
 .PHONY: all doc show clean
 
@@ -38,13 +43,14 @@ $(OUT)/%.text: $(OUT)/%.html
 	$(mkdir)
 	w3m -dump -T text/html $< > $@
 
-$(OUT)/%.pdf: %.txt
-	$(mkdir)
-	$(A2X) -a version=$(VERSION) -a version-date=$(VERSION_DATE) -o $(OUT)/$(basename $(notdir $<)).pdf $<
 
-$(OUT)/%.html: %.txt | $(OUT)/images
+$(OUT)/%.pdf: %.txt | .latest_change_version
 	$(mkdir)
-	$(ASCIIDOC) -a toc=left -a toc-position=left -a themedir=$(PWD) -a theme=$(THEME) -a version=$(VERSION) -a version-date=$(VERSION_DATE) -o $@ $<
+	$(A2X) -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)" -o $(OUT)/$(basename $(notdir $<)).pdf $<
+
+$(OUT)/%.html: %.txt | $(OUT)/images .latest_change_version
+	$(mkdir)
+	$(ASCIIDOC) -a toc=left -a toc-position=left -a themedir=$(PWD) -a theme=$(THEME) -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)" -o $@ $<
 
 # for the web facing version of the desktop manual, just use the post-processing script
 user-manual.html.wp: $(OUT)/user-manual.html
@@ -55,7 +61,7 @@ user-manual.html.wp: $(OUT)/user-manual.html
 # the table of context and then post process
 mobile-manual-v3.html.wp: mobile-manual-v3.txt
 	$(mkdir)
-	$(ASCIIDOC) -a toc=left -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -a version="$(VERSION)" -a version-date="$(VERSION_DATE)" -o $(<:%.txt=%.html.tmp) $< && \
+	$(ASCIIDOC) -a toc=left -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)" -o $(<:%.txt=%.html.tmp) $< && \
 		bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp) && \
 		rm $(<:%.txt=%.html.tmp) && \
 		mv $(<:%.txt=%.html.tmp.wp) $(OUT)/$@
@@ -64,5 +70,5 @@ show: $(HTMLDOC)
 	$(BROWSER) $<
 
 clean:
-	rm -f *~ *.xml docbook-xsl.css
+	rm -f *~ *.xml docbook-xsl.css .latest_change_version
 	rm -rf $(OUT)/
