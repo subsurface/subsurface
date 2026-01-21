@@ -46,6 +46,7 @@ gh_release_notes.md
 release_content_title.txt
 /output/
 /Documentation/output/
+/Documentation/.latest_change_version
 /metainfo/subsurface.metainfo.xml
 ReleaseNotes/MobileReleaseNotes.pdf
 ReleaseNotes/MobileReleaseNotes.text
