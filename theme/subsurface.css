@@ -1,0 +1,92 @@
+/* Subsurface Web UI Theme */
+
+/* General body styling */
+body {
+    font-family: "Arial", sans-serif; /* Match desktop application font */
+    font-size: 14px;
+    color: #333; /* Neutral dark text color */
+    background-color: #f5f5f5; /* Light gray background */
+    margin: 0;
+    padding: 0;
+}
+
+/* Header styling */
+#header_container {
+    background-color: #004080; /* Deep blue header */
+    color: #ffffff; /* White text for contrast */
+    padding: 10px;
+    text-align: center;
+}
+
+#header_container h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Dive list panel */
+#diveListPanel {
+    background-color: #ffffff; /* White background for content */
+    border: 1px solid #ccc; /* Subtle border */
+    border-radius: 5px;
+    padding: 15px;
+    margin: 15px;
+}
+
+/* Buttons */
+button {
+    background-color: #004080; /* Deep blue */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 3px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #0059b3; /* Slightly lighter blue on hover */
+}
+
+/* Links */
+a {
+    color: #004080; /* Deep blue links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Table headers */
+#header .item {
+    font-weight: bold;
+    background-color: #e6f0ff; /* Light blue background */
+    color: #004080; /* Deep blue text */
+    padding: 5px;
+    border-bottom: 2px solid #004080; /* Strong bottom border */
+}
+
+/* Advanced search panel */
+#advanced_search {
+    background-color: #f0f8ff; /* Very light blue */
+    border: 1px solid #004080; /* Deep blue border */
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+/* Checkbox labels */
+#advanced_search input[type="checkbox"] + label {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Footer */
+#controller {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#controller button {
+    margin: 0 5px;
+}

@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 
 	// now set up the export settings to create the HTML export
 	struct htmlExportSetting hes;
-	hes.themeFile = "sand.css";
+	hes.themeFile = "subsurface.css";
 	hes.exportPhotos = true;
 	hes.selectedOnly = false;
 	hes.listOnly = false;
