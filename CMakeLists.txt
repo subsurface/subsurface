@@ -584,6 +584,7 @@ add_subdirectory(backend-shared)
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
+	add_subdirectory(cli)
 endif()
 
 # create the executables
