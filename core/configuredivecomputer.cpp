@@ -141,13 +141,13 @@ bool ConfigureDiveComputer::saveXMLBackup(const QString &fileName, const DeviceD
 	writer.writeTextElement("AlwaysShowppO2", QString::number(details.alwaysShowppO2));
 	writer.writeTextElement("DecoGasConsumption", QString::number(details.decoGasConsumption));
 
-	writer.writeComment("Heinrichs Weikamp OSTC4 only:");
+	writer.writeComment("Heinrichs Weikamp OSTC 4/5 only:");
 	writer.writeTextElement("TravelGasConsumption", QString::number(details.travelGasConsumption));
 	writer.writeTextElement("VPMConservatism", QString::number(details.vpmConservatism));
 	writer.writeTextElement("ButtonSensitivity", QString::number(details.buttonSensitivity));
 	writer.writeTextElement("ButtonBalance", QString::number(details.buttonBalance));
 
-	writer.writeComment("Not used on Heinrichs Weikamp OSTC4:");
+	writer.writeComment("Not used on Heinrichs Weikamp OSTC 4/5:");
 	writer.writeTextElement("BottomGasConsumption", QString::number(details.bottomGasConsumption));
 	writer.writeTextElement("Saturation", QString::number(details.saturation));
 	writer.writeTextElement("Desaturation", QString::number(details.desaturation));

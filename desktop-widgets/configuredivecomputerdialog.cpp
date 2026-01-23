@@ -836,6 +836,9 @@ void ConfigureDiveComputerDialog::getDeviceData()
 
 	QString vendor = selectedDiveComputer.vendor;
 	QString product = selectedDiveComputer.product;
+	// libdivecomputer will auto-detect the correct dive computer between OSTC 4 and OSTC 5
+	if (product == "OSTC 4/5")
+		product = "OSTC 4";
 	device_data.vendor = vendor.toStdString();
 	device_data.product = product.toStdString();
 	device_data.descriptor = descriptorLookup.value(vendor.toLower() + product.toLower());

@@ -424,7 +424,7 @@ OstcFirmwareCheck::OstcFirmwareCheck(const QString &product)
 	} else if (product == "OSTC Sport") {
 		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_changelog.txt");
 		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc_sport_firmware.hex");
-	} else if (product == "OSTC 4/5") {
+	} else if (product == "OSTC 4" || product == "OSTC 5") {
 		url = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_changelog.txt");
 		latestFirmwareHexFile = QUrl("https://www.heinrichsweikamp.net/autofirmware/ostc4_firmware.bin");
 	} else { // not one of the known dive computers
@@ -467,7 +467,7 @@ bool OstcFirmwareCheck::checkLatest(device_data_t *data)
 	QStringList fwParts = latestFirmwareAvailable.split(".");
 
 	bool canBeUpdated = false;
-	if (data->product == "OSTC 4/5") {
+	if (data->product == "OSTC 4" || data->product == "OSTC 5") {
 		unsigned char first = (firmwareOnDevice >> OSTC4_VERSION_MAJOR_SHIFT) & OSTC4_VERSION_MASK;
 		unsigned char second = (firmwareOnDevice >> OSTC4_VERSION_MINOR_SHIFT) & OSTC4_VERSION_MASK;
 		unsigned char third = (firmwareOnDevice >> OSTC4_VERSION_PATCH_SHIFT) & OSTC4_VERSION_MASK;
@@ -539,7 +539,7 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 OstcFirmwareCheck *getOstcFirmwareCheck(const QString &product)
 {
 	if (product == "OSTC 3" || product == "OSTC 3+" || product == "OSTC cR" ||
-		product == "OSTC Sport" || product == "OSTC 4/5" || product == "OSTC Plus") {
+		product == "OSTC Sport" || product == "OSTC 4" || product == "OSTC 5" || product == "OSTC Plus") {
 				return new OstcFirmwareCheck(product);
 		}
 
