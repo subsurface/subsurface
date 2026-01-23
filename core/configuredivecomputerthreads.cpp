@@ -916,23 +916,17 @@ static dc_status_t write_ostc4_settings(device_data_t &device_data, const Device
 static dc_status_t read_ostc3_settings(device_data_t &device_data, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
-	unsigned char hardware[1];
 
 	dc_device_t *device = device_data.device;
-	//Read hardware type
-	rc = hw_ostc3_device_hardware (device, hardware, sizeof (hardware));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
 
-	dc_descriptor_t *desc = get_descriptor(DC_FAMILY_HW_OSTC3, hardware[0]);
-	if (desc) {
-		deviceDetails.model = dc_descriptor_get_product(desc);
-		dc_descriptor_free(desc);
-	} else {
+	// Use the descriptor that was already set during device initialization
+	if (!device_data.descriptor) {
 		return DC_STATUS_UNSUPPORTED;
 	}
 
-	if (deviceDetails.model == "OSTC 4/5")
+	deviceDetails.model = dc_descriptor_get_product(device_data.descriptor);
+
+	if (deviceDetails.model == "OSTC 4" || deviceDetails.model == "OSTC 5")
 		return read_ostc4_settings(device_data, deviceDetails, progress_cb, userdata);
 
 	dc_event_progress_t progress {
@@ -2139,7 +2133,7 @@ void ReadSettingsThread::run()
 		} else if (rc == DC_STATUS_UNSUPPORTED) {
 			emit error(tr("This feature is not yet available for the selected dive computer."));
 		} else {
-			emit error(tr("Failed!"));
+			emit error(tr("Reading Vyper settings failed!"));
 		}
 		break;
 	case DC_FAMILY_HW_OSTC3:
@@ -2147,7 +2141,7 @@ void ReadSettingsThread::run()
 		if (rc == DC_STATUS_SUCCESS)
 			emit devicedetails(std::move(deviceDetails));
 		else
-			emit error(tr("Failed!"));
+			emit error(tr("Reading OSTC3 settings failed!"));
 		break;
 
 #ifdef DEBUG_OSTC
@@ -2158,7 +2152,7 @@ void ReadSettingsThread::run()
 		if (rc == DC_STATUS_SUCCESS)
 			emit devicedetails(std::move(deviceDetails));
 		else
-			emit error(tr("Failed!"));
+			emit error(tr("Reading OSTC settings failed!"));
 		break;
 	default:
 		emit error(tr("This feature is not yet available for the selected dive computer."));
@@ -2191,7 +2185,7 @@ void WriteSettingsThread::run()
 		break;
 	case DC_FAMILY_HW_OSTC3:
 		// We trust m_deviceDetails because they were read from the device in read_ostc3_settings()
-		if (m_deviceDetails.model == "OSTC 4/5")
+		if (m_deviceDetails.model == "OSTC 4" || m_deviceDetails.model == "OSTC 5")
 			rc = write_ostc4_settings(*m_data, m_deviceDetails, DeviceThread::event_cb, this);
 		else
 			rc = write_ostc3_settings(*m_data, m_deviceDetails, DeviceThread::event_cb, this);
