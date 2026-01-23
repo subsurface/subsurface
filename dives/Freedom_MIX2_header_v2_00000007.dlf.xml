@@ -12,6 +12,7 @@
   <temperature water='10.3 C' />
   <surface pressure='0.999 bar' />
   <water salinity='1000 g/l' />
+  <extradata key='Time offset from UTC [s]' value='+3600' />
   <event time='0:00 min' type='25' flags='1' name='gaschange' cylinder='0' />
   <event time='30:15 min' type='25' flags='2' name='gaschange' cylinder='1' o2='50.0%' />
   <event time='40:32 min' type='25' flags='1' name='gaschange' cylinder='0' />
