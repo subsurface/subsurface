@@ -45,7 +45,7 @@ struct non_copying_unique_ptr : public std::unique_ptr<T> {
 struct dive {
 	struct dive_trip *divetrip = nullptr;
 private:
-	timestamp_t when = 0;			// To be accessed by accessor functions
+	datetime_t when;			// To be accessed by accessor functions
 public:
 	struct dive_site *dive_site = nullptr;
 	std::string notes;
@@ -96,6 +96,7 @@ public:
 
 	// Time is accessed by accessor functions, so that we might implement timezones later on.
 	timestamp_t get_time_local() const;
+	timestamp_t get_time_utc() const;
 	void set_time_local(timestamp_t local_time);
 	void set_time_local_dc(timestamp_t local_time);
 	void shift_time(timestamp_t delta);

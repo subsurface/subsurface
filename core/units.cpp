@@ -209,3 +209,16 @@ depth_t pressure_to_altitude(pressure_t pressure)
 {						// returns altitude in mm above sea level
 	return depth_t::from_base(static_cast<int32_t>(log(1013.0 / pressure.mbar) * 7800000));
 }
+
+/* Accessing the dive time relative to UTC is tricky, because we might
+ * not know the time-offset. For now, return local time as UTC, but
+ * using the current local time might be preferred.
+ */
+timestamp_t datetime_t::in_utc() const
+{
+	// If local time is undefined, return an undefined timestamp
+	if (!local_time)
+		return 0;
+	return offset_to_utc ? local_time + *offset_to_utc
+			     : local_time /* TODO: + local_offset_to_utc */ ;
+}
