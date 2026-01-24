@@ -196,8 +196,12 @@ QJsonObject diveToJsonFull(const struct dive *d)
 		cylObj["description"] = QString::fromStdString(cyl.type.description);
 		if (cyl.start.mbar > 0)
 			cylObj["start_pressure_bar"] = pressureToBar(cyl.start.mbar);
+		else if (cyl.sample_start.mbar > 0)
+			cylObj["start_pressure_bar"] = pressureToBar(cyl.sample_start.mbar);
 		if (cyl.end.mbar > 0)
 			cylObj["end_pressure_bar"] = pressureToBar(cyl.end.mbar);
+		else if (cyl.sample_end.mbar > 0)
+			cylObj["end_pressure_bar"] = pressureToBar(cyl.sample_end.mbar);
 		cylObj["gas_name"] = gasName(cyl.gasmix);
 		cylinders.append(cylObj);
 	}
