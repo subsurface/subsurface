@@ -1,0 +1,541 @@
+{% extends "base.html" %}
+
+{% block title %}{{ trip.location or 'Trip' }} - Subsurface{% endblock %}
+
+{% block breadcrumb %}
+<div class="breadcrumb">
+    <a href="/">Dives</a>
+    <span class="breadcrumb-sep">/</span>
+    <span>{{ trip.location or 'Trip' }}</span>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .trip-hero {
+        margin: calc(-1 * var(--space-xl));
+        margin-bottom: var(--space-xl);
+        padding: var(--space-xl);
+        background: linear-gradient(135deg, var(--depth-600) 0%, var(--depth-700) 100%);
+        border-radius: 12px 12px 0 0;
+        border-bottom: 1px solid var(--border-glow);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .trip-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 50%;
+        background: radial-gradient(ellipse at right center, rgba(69, 121, 172, 0.12) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .trip-hero-content {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        gap: var(--space-xl);
+        align-items: flex-start;
+    }
+
+    .trip-hero-main {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .trip-hero-notes {
+        flex: 1;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid var(--border-subtle);
+        border-radius: 8px;
+        padding: var(--space-md) var(--space-lg);
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--text-secondary);
+        white-space: pre-wrap;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .trip-hero-notes::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .trip-hero-notes::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 3px;
+    }
+
+    .trip-hero-notes::-webkit-scrollbar-thumb {
+        background: var(--border-subtle);
+        border-radius: 3px;
+    }
+
+    .trip-badge-large {
+        display: inline-flex;
+        align-items: center;
+        padding: var(--space-xs) var(--space-md);
+        background: rgba(69, 121, 172, 0.25);
+        border: 1px solid rgba(69, 121, 172, 0.4);
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--brand-light);
+        margin-bottom: var(--space-md);
+    }
+
+    .trip-location {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: var(--space-md);
+        letter-spacing: -0.02em;
+    }
+
+    .trip-meta {
+        display: flex;
+        gap: var(--space-xl);
+        flex-wrap: wrap;
+    }
+
+    .trip-meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+    }
+
+    .trip-meta-label {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    .trip-meta-value {
+        font-family: var(--font-mono);
+        font-size: 1rem;
+        color: var(--brand-light);
+    }
+
+    .section-title {
+        margin-bottom: var(--space-lg);
+    }
+
+    /* Dive table layout - same as main dive list */
+    .dive-table-container {
+        margin: 0 calc(-1 * var(--space-xl));
+    }
+
+    .dive-list {
+        list-style: none;
+    }
+
+    .dive-row {
+        display: grid;
+        grid-template-columns: 140px 1fr 65px 55px 130px 60px 50px 90px;
+        gap: var(--space-sm);
+        align-items: center;
+        padding: var(--space-sm) var(--space-xl);
+        border-bottom: 1px solid var(--border-subtle);
+        text-decoration: none;
+        transition: background 0.2s ease;
+        font-size: 0.9rem;
+    }
+
+    .dive-row:hover {
+        background: rgba(69, 121, 172, 0.08);
+    }
+
+    .dive-row:last-child {
+        border-bottom: none;
+    }
+
+    /* Column header */
+    .dive-header-row {
+        display: grid;
+        grid-template-columns: 140px 1fr 65px 55px 130px 60px 50px 90px;
+        gap: var(--space-sm);
+        padding: var(--space-sm) var(--space-xl);
+        border-bottom: 1px solid var(--border-subtle);
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+    .col-date {
+        font-family: var(--font-mono);
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+    }
+
+    .col-location {
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        color: var(--text-primary);
+        font-weight: 500;
+        min-width: 0;
+    }
+
+    .col-location span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .dive-row:hover .col-location {
+        color: var(--brand-light);
+    }
+
+    .globe-icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        fill: var(--accent-teal);
+        opacity: 0.8;
+    }
+
+    .col-depth, .col-duration {
+        font-family: var(--font-mono);
+        color: var(--brand-light);
+        text-align: right;
+    }
+
+    .col-buddy {
+        color: var(--text-secondary);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .col-gas {
+        font-family: var(--font-mono);
+        color: var(--accent-teal);
+        font-size: 0.85rem;
+    }
+
+    .col-sac {
+        font-family: var(--font-mono);
+        color: var(--text-secondary);
+        text-align: right;
+        font-size: 0.85rem;
+    }
+
+    .col-tags {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+    }
+
+    .mini-tag {
+        font-size: 0.7rem;
+        padding: 1px 6px;
+        background: rgba(69, 121, 172, 0.2);
+        border-radius: 3px;
+        color: var(--brand-light);
+    }
+
+    /* Responsive: hide columns from right as screen narrows */
+    @media (max-width: 1100px) {
+        .dive-row, .dive-header-row {
+            grid-template-columns: 140px 1fr 65px 55px 130px 60px 50px;
+        }
+        .col-tags, .dive-header-row > :nth-child(8) {
+            display: none;
+        }
+    }
+
+    @media (max-width: 950px) {
+        .dive-row, .dive-header-row {
+            grid-template-columns: 140px 1fr 65px 55px 130px 60px;
+        }
+        .col-sac, .dive-header-row > :nth-child(7) {
+            display: none;
+        }
+    }
+
+    @media (max-width: 850px) {
+        .dive-row, .dive-header-row {
+            grid-template-columns: 140px 1fr 65px 55px 130px;
+        }
+        .col-gas, .dive-header-row > :nth-child(6) {
+            display: none;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .dive-row, .dive-header-row {
+            grid-template-columns: 120px 1fr 60px 50px;
+        }
+        .col-buddy, .dive-header-row > :nth-child(5) {
+            display: none;
+        }
+        .col-date {
+            font-size: 0.8rem;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .dive-row, .dive-header-row {
+            grid-template-columns: 1fr 55px 50px;
+        }
+        .col-date {
+            display: none;
+        }
+        .dive-header-row > :first-child {
+            display: none;
+        }
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: var(--space-2xl);
+        color: var(--text-dim);
+    }
+
+    .loading-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-md);
+        padding: var(--space-xl);
+        color: var(--text-dim);
+    }
+
+    .loading-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border-subtle);
+        border-top-color: var(--brand-light);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .end-of-list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-lg);
+        color: var(--text-dim);
+        font-size: 0.9rem;
+        border-top: 1px solid var(--border-subtle);
+        margin-top: var(--space-md);
+    }
+
+    @media (max-width: 768px) {
+        .trip-hero-content {
+            flex-direction: column;
+        }
+
+        .trip-hero-notes {
+            max-height: none;
+        }
+
+        .trip-location {
+            font-size: 1.5rem;
+        }
+
+        .trip-meta {
+            gap: var(--space-lg);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="trip-hero">
+    <div class="trip-hero-content">
+        <div class="trip-hero-main">
+            <div class="trip-badge-large">Trip</div>
+            <h1 class="trip-location">{{ trip.location or 'Unnamed Trip' }}</h1>
+            <div class="trip-meta">
+                <div class="trip-meta-item">
+                    <span class="trip-meta-label">Dates</span>
+                    <span class="trip-meta-value">
+                        {{ trip.date_start }}{% if trip.date_end and trip.date_end != trip.date_start %} &mdash; {{ trip.date_end }}{% endif %}
+                    </span>
+                </div>
+                <div class="trip-meta-item">
+                    <span class="trip-meta-label">Dives</span>
+                    <span class="trip-meta-value">{{ trip.dive_count }}</span>
+                </div>
+            </div>
+        </div>
+        {% if trip.notes %}
+        <div class="trip-hero-notes">{{ trip.notes }}</div>
+        {% endif %}
+    </div>
+</div>
+
+<h2 class="section-title">Dives</h2>
+
+{% if dives %}
+<div class="dive-table-container">
+    <!-- Column headers -->
+    <div class="dive-header-row">
+        <span>Date</span>
+        <span>Location</span>
+        <span style="text-align: right;">Depth</span>
+        <span style="text-align: right;">Duration</span>
+        <span>Buddy</span>
+        <span>Gas</span>
+        <span style="text-align: right;">SAC</span>
+        <span>Tags</span>
+    </div>
+
+    <ul class="dive-list">
+    {% for dive in dives[:20] %}
+    <li>
+        <a href="/dive/{{ dive.dive_ref }}" class="dive-row">
+            <span class="col-date">{{ dive.date }} {{ dive.time }}</span>
+            <span class="col-location">
+                {% if dive.has_gps %}
+                <svg class="globe-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                {% endif %}
+                <span>{{ dive.location or 'Unknown Location' }}</span>
+            </span>
+            <span class="col-depth">{{ dive.max_depth_meters|round(1) if dive.max_depth_meters else '-' }}<span class="data-unit">m</span></span>
+            <span class="col-duration">{{ dive.duration_minutes if dive.duration_minutes else '-' }}<span class="data-unit">min</span></span>
+            <span class="col-buddy">{{ dive.buddy or '' }}</span>
+            <span class="col-gas">{{ dive.gas or 'Air' }}</span>
+            <span class="col-sac">{{ dive.sac|round(1) if dive.sac else '-' }}</span>
+            <span class="col-tags">
+                {% if dive.tags %}
+                    {% for tag in dive.tags[:2] %}
+                    <span class="mini-tag">{{ tag }}</span>
+                    {% endfor %}
+                {% endif %}
+            </span>
+        </a>
+    </li>
+    {% endfor %}
+    </ul>
+
+    <div id="loading-indicator" class="loading-indicator" style="display: none;">
+        <div class="loading-spinner"></div>
+        <span>Loading more dives...</span>
+    </div>
+
+    <div id="end-of-list" class="end-of-list" style="display: none;">
+        <span>You've reached the end</span>
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No dives in this trip.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+    const ITEMS_PER_PAGE = 20;
+    const allDives = {{ dives | tojson }};
+    let currentOffset = Math.min(ITEMS_PER_PAGE, allDives.length);
+    let isLoading = false;
+    let hasMore = allDives.length > ITEMS_PER_PAGE;
+
+    const diveList = document.querySelector('.dive-list');
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const endOfList = document.getElementById('end-of-list');
+
+    if (!diveList || allDives.length <= ITEMS_PER_PAGE) {
+        // Show end message if we have all items already
+        if (endOfList && allDives.length > 0 && allDives.length <= ITEMS_PER_PAGE) {
+            endOfList.style.display = 'flex';
+        }
+        return;
+    }
+
+    function createDiveItem(dive) {
+        const globeIcon = dive.has_gps
+            ? `<svg class="globe-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`
+            : '';
+        const depth = dive.max_depth_meters ? dive.max_depth_meters.toFixed(1) : '-';
+        const duration = dive.duration_minutes || '-';
+        const sac = dive.sac ? dive.sac.toFixed(1) : '-';
+        const tags = dive.tags ? dive.tags.slice(0, 2).map(t => `<span class="mini-tag">${t}</span>`).join('') : '';
+
+        return `
+            <li>
+                <a href="/dive/${dive.dive_ref}" class="dive-row">
+                    <span class="col-date">${dive.date} ${dive.time}</span>
+                    <span class="col-location">
+                        ${globeIcon}
+                        <span>${dive.location || 'Unknown Location'}</span>
+                    </span>
+                    <span class="col-depth">${depth}<span class="data-unit">m</span></span>
+                    <span class="col-duration">${duration}<span class="data-unit">min</span></span>
+                    <span class="col-buddy">${dive.buddy || ''}</span>
+                    <span class="col-gas">${dive.gas || 'Air'}</span>
+                    <span class="col-sac">${sac}</span>
+                    <span class="col-tags">${tags}</span>
+                </a>
+            </li>
+        `;
+    }
+
+    function loadMore() {
+        if (isLoading || !hasMore) return;
+
+        isLoading = true;
+        loadingIndicator.style.display = 'flex';
+
+        // Simulate async to show loading indicator briefly
+        setTimeout(() => {
+            const nextBatch = allDives.slice(currentOffset, currentOffset + ITEMS_PER_PAGE);
+
+            if (nextBatch.length === 0) {
+                hasMore = false;
+                endOfList.style.display = 'flex';
+            } else {
+                nextBatch.forEach(dive => {
+                    const html = createDiveItem(dive);
+                    diveList.insertAdjacentHTML('beforeend', html);
+                });
+
+                currentOffset += nextBatch.length;
+
+                if (currentOffset >= allDives.length) {
+                    hasMore = false;
+                    endOfList.style.display = 'flex';
+                }
+            }
+
+            isLoading = false;
+            loadingIndicator.style.display = 'none';
+        }, 100);
+    }
+
+    // Intersection Observer for infinite scroll
+    const sentinel = document.createElement('div');
+    sentinel.id = 'scroll-sentinel';
+    sentinel.style.height = '1px';
+    diveList.parentNode.insertBefore(sentinel, loadingIndicator);
+
+    const observer = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+            loadMore();
+        }
+    }, {
+        rootMargin: '200px'
+    });
+
+    observer.observe(sentinel);
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,450 @@
+{% extends "base.html" %}
+
+{% block title %}Dive #{{ dive.dive_number }} - Subsurface{% endblock %}
+
+{% block breadcrumb %}
+<div class="breadcrumb">
+    <a href="/">Dives</a>
+    <span class="breadcrumb-sep">/</span>
+    {% if dive.trip_ref %}
+    <a href="/trip/{{ dive.trip_ref }}">{{ dive.trip_location or 'Trip' }}</a>
+    <span class="breadcrumb-sep">/</span>
+    {% endif %}
+    <span>Dive #{{ dive.dive_number }}</span>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .dive-hero {
+        margin: calc(-1 * var(--space-xl));
+        margin-bottom: var(--space-xl);
+        padding: var(--space-xl);
+        background: linear-gradient(135deg, var(--depth-600) 0%, var(--depth-700) 100%);
+        border-radius: 12px 12px 0 0;
+        border-bottom: 1px solid var(--border-glow);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .dive-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 40%;
+        background: radial-gradient(ellipse at right center, rgba(69, 121, 172, 0.15) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .dive-hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .dive-number {
+        font-family: var(--font-mono);
+        font-size: 3rem;
+        font-weight: 600;
+        color: var(--brand-light);
+        text-shadow: 0 0 40px rgba(91, 142, 197, 0.5);
+        line-height: 1;
+        margin-bottom: var(--space-sm);
+    }
+
+    .dive-location {
+        font-size: 1.5rem;
+        font-weight: 500;
+        color: var(--text-primary);
+        margin-bottom: var(--space-md);
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+    }
+
+    .location-link {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .location-link:hover {
+        color: var(--accent-teal);
+    }
+
+    .location-link .globe-icon {
+        width: 24px;
+        height: 24px;
+        fill: var(--accent-teal);
+        flex-shrink: 0;
+        opacity: 0.8;
+        transition: all 0.2s ease;
+    }
+
+    .location-link:hover .globe-icon {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .dive-datetime {
+        font-family: var(--font-mono);
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+    }
+
+    .dive-section {
+        margin-bottom: var(--space-xl);
+    }
+
+    .dive-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: var(--space-md);
+    }
+
+    .info-card {
+        background: var(--surface-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: 8px;
+        padding: var(--space-md);
+        transition: all 0.2s ease;
+    }
+
+    .info-card:hover {
+        border-color: var(--border-glow);
+        box-shadow: 0 0 20px rgba(69, 121, 172, 0.15);
+    }
+
+    .info-label {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: var(--space-xs);
+    }
+
+    .info-value {
+        font-family: var(--font-mono);
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: var(--brand-light);
+    }
+
+    .info-value-text {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .rating-stars {
+        color: var(--warning-amber);
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+    }
+
+    .rating-stars .empty {
+        opacity: 0.3;
+    }
+
+    .cylinder-table, .weight-table {
+        margin-top: var(--space-md);
+    }
+
+    .cylinder-table td .data-value,
+    .weight-table td .data-value {
+        font-size: 0.9rem;
+    }
+
+    .gas-mix {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-xs);
+        padding: 2px 8px;
+        background: rgba(72, 181, 170, 0.15);
+        border: 1px solid rgba(72, 181, 170, 0.3);
+        border-radius: 4px;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--accent-teal);
+    }
+
+    .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+    }
+
+    .profile-placeholder {
+        background: var(--surface-elevated);
+        border: 2px dashed var(--border-subtle);
+        border-radius: 8px;
+        padding: var(--space-2xl);
+        text-align: center;
+        color: var(--text-dim);
+    }
+
+    .profile-placeholder svg {
+        width: 48px;
+        height: 48px;
+        margin-bottom: var(--space-md);
+        opacity: 0.5;
+    }
+
+    .notes-content {
+        background: var(--surface-elevated);
+        border: 1px solid var(--border-subtle);
+        border-radius: 8px;
+        padding: var(--space-lg);
+        white-space: pre-wrap;
+        line-height: 1.7;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+        .dive-number {
+            font-size: 2rem;
+        }
+
+        .dive-location {
+            font-size: 1.2rem;
+        }
+
+        .info-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{# Parse location - handle both string and object formats #}
+{% if dive.location is mapping %}
+    {% set location_name = dive.location.name or 'Unknown Location' %}
+    {% set gps_coords = dive.location.gps %}
+{% else %}
+    {% set location_name = dive.location or 'Unknown Location' %}
+    {% set gps_coords = none %}
+{% endif %}
+
+{# Also check for separate gps_lat/gps_lon fields #}
+{% if dive.gps_lat and dive.gps_lon %}
+    {% set gps_lat = dive.gps_lat %}
+    {% set gps_lon = dive.gps_lon %}
+{% elif gps_coords %}
+    {% set gps_parts = gps_coords.split(',') %}
+    {% set gps_lat = gps_parts[0] %}
+    {% set gps_lon = gps_parts[1] if gps_parts|length > 1 else none %}
+{% else %}
+    {% set gps_lat = none %}
+    {% set gps_lon = none %}
+{% endif %}
+
+{% set has_gps = gps_lat and gps_lon %}
+{% set maps_url = 'https://www.google.com/maps/place/' ~ gps_lat ~ ',' ~ gps_lon ~ '/@' ~ gps_lat ~ ',' ~ gps_lon ~ ',500m/data=!3m1!1e3' if has_gps else none %}
+
+<div class="dive-hero">
+    <div class="dive-hero-content">
+        <div class="dive-number">#{{ dive.dive_number }}</div>
+        <div class="dive-location">
+            {% if has_gps %}
+            <a href="{{ maps_url }}"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="location-link"
+               title="View {{ location_name }} on Google Maps">
+                <span>{{ location_name }}</span>
+                <svg class="globe-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            </a>
+            {% else %}
+            <span>{{ location_name }}</span>
+            {% endif %}
+        </div>
+        <div class="dive-datetime">{{ dive.date }} {{ dive.time }}</div>
+    </div>
+</div>
+
+<!-- Core Metrics -->
+<div class="dive-section">
+    <h2>Dive Metrics</h2>
+    <div class="info-grid">
+        {% if dive.duration_minutes %}
+        <div class="info-card">
+            <div class="info-label">Duration</div>
+            <div class="info-value">{{ dive.duration_minutes }}<span class="data-unit">min</span></div>
+        </div>
+        {% endif %}
+        {% if dive.max_depth_meters %}
+        <div class="info-card">
+            <div class="info-label">Max Depth</div>
+            <div class="info-value">{{ dive.max_depth_meters|round(1) }}<span class="data-unit">m</span></div>
+        </div>
+        {% endif %}
+        {% if dive.avg_depth_meters %}
+        <div class="info-card">
+            <div class="info-label">Avg Depth</div>
+            <div class="info-value">{{ dive.avg_depth_meters|round(1) }}<span class="data-unit">m</span></div>
+        </div>
+        {% endif %}
+        {% if dive.water_temp_celsius %}
+        <div class="info-card">
+            <div class="info-label">Water Temp</div>
+            <div class="info-value">{{ dive.water_temp_celsius|round(1) }}<span class="data-unit">&deg;C</span></div>
+        </div>
+        {% endif %}
+        {% if dive.air_temp_celsius %}
+        <div class="info-card">
+            <div class="info-label">Air Temp</div>
+            <div class="info-value">{{ dive.air_temp_celsius|round(1) }}<span class="data-unit">&deg;C</span></div>
+        </div>
+        {% endif %}
+        {% if dive.sac_rate %}
+        <div class="info-card">
+            <div class="info-label">SAC</div>
+            <div class="info-value">{{ dive.sac_rate|round(1) }}<span class="data-unit">l/min</span></div>
+        </div>
+        {% endif %}
+        {% if dive.visibility %}
+        <div class="info-card">
+            <div class="info-label">Visibility</div>
+            <div class="info-value-text">{{ dive.visibility }}</div>
+        </div>
+        {% endif %}
+        {% if dive.rating %}
+        <div class="info-card">
+            <div class="info-label">Rating</div>
+            <div class="rating-stars">
+                {% for i in range(5) %}
+                    {% if i < dive.rating %}<span>&#9733;</span>{% else %}<span class="empty">&#9733;</span>{% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- People -->
+{% if dive.buddy or dive.diveguide %}
+<div class="dive-section">
+    <h2>People</h2>
+    <div class="info-grid">
+        {% if dive.diveguide %}
+        <div class="info-card">
+            <div class="info-label">Diveguide</div>
+            <div class="info-value-text">{{ dive.diveguide }}</div>
+        </div>
+        {% endif %}
+        {% if dive.buddy %}
+        <div class="info-card">
+            <div class="info-label">Buddy</div>
+            <div class="info-value-text">{{ dive.buddy }}</div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Equipment -->
+{% if dive.suit or dive.cylinders or dive.weights %}
+<div class="dive-section">
+    <h2>Equipment</h2>
+
+    {% if dive.suit or dive.weights %}
+    <div class="info-grid" style="margin-bottom: var(--space-lg);">
+        {% if dive.suit %}
+        <div class="info-card">
+            <div class="info-label">Suit</div>
+            <div class="info-value-text">{{ dive.suit }}</div>
+        </div>
+        {% endif %}
+        {% if dive.weights %}
+        {% for w in dive.weights %}
+        <div class="info-card">
+            <div class="info-label">Weight {% if w.description %} ({{ w.description }}){% endif %}</div>
+            <div class="info-value-text">{{ w.weight_kg|round(1) }}<span class="data-unit">kg</span></div>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    {% endif %}
+
+
+    {% if dive.cylinders %}
+    <h3 style="margin-bottom: var(--space-sm);">Cylinders</h3>
+    <table class="cylinder-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Gas</th>
+                <th>Start</th>
+                <th>End</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cyl in dive.cylinders %}
+            <tr>
+                <td>{{ cyl.description or 'Unknown' }}</td>
+                <td><span class="data-value">{{ cyl.size_liters|round(1) if cyl.size_liters else '-' }}</span><span class="data-unit">L</span></td>
+                <td>
+                    <span class="gas-mix">
+                        {% if cyl.o2_percent == 21 and (not cyl.he_percent or cyl.he_percent == 0) %}
+                        Air
+                        {% elif cyl.he_percent and cyl.he_percent > 0 %}
+                        {{ cyl.o2_percent }}/{{ cyl.he_percent }}
+                        {% else %}
+                        EAN{{ cyl.o2_percent }}
+                        {% endif %}
+                    </span>
+                </td>
+                <td><span class="data-value">{{ cyl.start_pressure_bar|round(0)|int if cyl.start_pressure_bar else '-' }}</span><span class="data-unit">bar</span></td>
+                <td><span class="data-value">{{ cyl.end_pressure_bar|round(0)|int if cyl.end_pressure_bar else '-' }}</span><span class="data-unit">bar</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+</div>
+{% endif %}
+
+<!-- Tags -->
+{% if dive.tags %}
+<div class="dive-section">
+    <h2>Tags</h2>
+    <div class="tags-container">
+        {% for tag in dive.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Profile -->
+<div class="dive-section">
+    <h2>Dive Profile</h2>
+    <div class="profile-placeholder">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17h18v2H3v-2zm0-7h18v5H3v-5zm0-4h18v2H3V6z"/>
+        </svg>
+        <p>Dive profile visualization coming soon</p>
+    </div>
+</div>
+
+<!-- Notes -->
+{% if dive.notes %}
+<div class="dive-section">
+    <h2>Notes</h2>
+    <div class="notes-content">{{ dive.notes }}</div>
+</div>
+{% endif %}
+{% endblock %}

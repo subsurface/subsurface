@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Error - Subsurface{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-container {
+        text-align: center;
+        padding: var(--space-2xl) var(--space-xl);
+    }
+
+    .error-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto var(--space-xl);
+        border-radius: 50%;
+        background: rgba(255, 107, 107, 0.15);
+        border: 2px solid rgba(255, 107, 107, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .error-icon svg {
+        width: 40px;
+        height: 40px;
+        fill: var(--alert-coral);
+    }
+
+    .error-code {
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--alert-coral);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: var(--space-md);
+    }
+
+    .error-message {
+        font-size: 1.25rem;
+        color: var(--text-primary);
+        margin-bottom: var(--space-xl);
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .error-back {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-sm);
+        padding: var(--space-md) var(--space-xl);
+        background: rgba(0, 212, 255, 0.15);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        color: var(--cyan-glow);
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .error-back:hover {
+        background: rgba(0, 212, 255, 0.25);
+        border-color: rgba(0, 212, 255, 0.5);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    }
+
+    .error-back svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-icon">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+    </div>
+    <div class="error-code">Error: {{ error.error_code or 'UNKNOWN' }}</div>
+    <div class="error-message">{{ error.message or 'An unexpected error occurred.' }}</div>
+    <a href="/" class="error-back">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+        </svg>
+        Back to Dive List
+    </a>
+</div>
+{% endblock %}
