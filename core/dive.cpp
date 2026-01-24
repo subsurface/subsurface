@@ -2561,6 +2561,11 @@ timestamp_t dive::get_time_utc() const
 	return when.in_utc();
 }
 
+void dive::set_time(datetime_t time)
+{
+	when = time;
+}
+
 /* Set the local time. Doesn't change timezone information */
 void dive::set_time_local(timestamp_t local_time)
 {
@@ -2570,10 +2575,19 @@ void dive::set_time_local(timestamp_t local_time)
 /* Set time and also time of the first dc.
  * Note that we are not very consistent about setting the time of the first dc.
  */
+void dive::set_time_dc(datetime_t time)
+{
+	when = time;
+	dcs[0].when = time;
+}
+
+/* Set time and also time of the first dc.
+ * Note that we are not very consistent about setting the time of the first dc.
+ */
 void dive::set_time_local_dc(timestamp_t local_time)
 {
 	set_time_local(local_time);
-	dcs[0].when = local_time;
+	dcs[0].when = when;
 }
 
 void dive::shift_time(timestamp_t delta)

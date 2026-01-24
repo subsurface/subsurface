@@ -222,3 +222,23 @@ timestamp_t datetime_t::in_utc() const
 	return offset_to_utc ? local_time + *offset_to_utc
 			     : local_time /* TODO: + local_offset_to_utc */ ;
 }
+
+datetime_t::operator bool() const
+{
+	return !!local_time;
+}
+
+bool datetime_t::operator!() const
+{
+	return !local_time;
+}
+
+bool datetime_t::operator==(const datetime_t &d) const
+{
+	return local_time == d.local_time && offset_to_utc == d.offset_to_utc;
+}
+
+bool datetime_t::operator!=(const datetime_t &d) const
+{
+	return !(*this == d);
+}

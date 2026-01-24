@@ -122,7 +122,7 @@ void TabDiveNotes::divesChanged(const QVector<dive *> &dives, DiveField field)
 		updateNotes(currentDive);
 	if (field.datetime) {
 		updateDateTime(currentDive);
-		DivePlannerPointsModel::instance()->getDiveplan().when = currentDive->get_time_local();
+		DivePlannerPointsModel::instance()->getDiveplan().when = currentDive->get_time();
 	}
 	if (field.divesite)
 		updateDiveSite(currentDive);

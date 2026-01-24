@@ -81,8 +81,8 @@ void DivePlannerPointsModel::createSimpleDive(struct dive *dIn)
 	setupStartTime();
 
 	// initialize the start time in the plan
-	diveplan.when = dateTimeToTimestamp(startTime);
-	d->set_time_local(diveplan.when);
+	diveplan.when.local_time = dateTimeToTimestamp(startTime);
+	d->set_time(diveplan.when);
 
 	// Use gas from the first cylinder
 	int cylinderid = 0;
@@ -131,7 +131,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	removeDeco();
 	diveplan.dp.clear();
 
-	diveplan.when = d->get_time_local();
+	diveplan.when = d->get_time();
 	// is this a "new" dive where we marked manually entered samples?
 	// if yes then the first sample should be marked
 	// if it is we only add the manually entered samples as waypoints to the diveplan
@@ -792,16 +792,16 @@ void DivePlannerPointsModel::setSurfaceSegment(int duration)
 void DivePlannerPointsModel::setStartDate(const QDate &date)
 {
 	startTime.setDate(date);
-	diveplan.when = dateTimeToTimestamp(startTime);
-	d->set_time_local(diveplan.when);
+	diveplan.when.local_time = dateTimeToTimestamp(startTime);
+	d->set_time(diveplan.when);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setStartTime(const QTime &t)
 {
 	startTime.setTime(t);
-	diveplan.when = dateTimeToTimestamp(startTime);
-	d->set_time_local(diveplan.when);
+	diveplan.when.local_time = dateTimeToTimestamp(startTime);
+	d->set_time(diveplan.when);
 	emitDataChanged();
 }
 
@@ -1436,7 +1436,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	plannedDateTime = QDateTime(plannedDateTime.date(), plannedDateTime.time(), Qt::UTC);
 #endif
 	d->set_time_local(static_cast<time_t>(plannedDateTime.toSecsSinceEpoch()));
-	diveplan.when = d->get_time_local();
+	diveplan.when = d->get_time();
 
 	d->dcs[dcNr].divemode = static_cast<enum divemode_t>(diveMode);
 

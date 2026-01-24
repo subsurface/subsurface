@@ -114,6 +114,11 @@ struct datetime_t {
 	timestamp_t		local_time = 0;
 	std::optional<int32_t>	offset_to_utc;
 	timestamp_t		in_utc() const;
+	operator bool() const;
+	bool operator!() const;
+	// TODO: replace by C++20 operator<=>() = default;
+	bool operator==(const datetime_t &) const;
+	bool operator!=(const datetime_t &) const;
 };
 
 /*

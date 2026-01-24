@@ -994,7 +994,7 @@ std::array<std::unique_ptr<dive>, 2> dive_table::split_dive_at(const struct dive
 	auto it1 = d1->dcs.begin();
 	auto it2 = d2->dcs.begin();
 	while (it1 != d1->dcs.end() && it2 != d2->dcs.end()) {
-		it2->when += t;
+		it2->when.local_time += t;
 		for (auto &sample: it2->samples)
 			sample.time.seconds -= t;
 

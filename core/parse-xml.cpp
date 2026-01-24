@@ -850,9 +850,9 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf,
 
 	start_match("divecomputer", name, buf);
 
-	if (MATCH_STATE("date", divedate, &dc->when))
+	if (MATCH_STATE("date", divedate, &dc->when.local_time))
 		return;
-	if (MATCH_STATE("time", divetime, &dc->when))
+	if (MATCH_STATE("time", divetime, &dc->when.local_time))
 		return;
 	if (MATCH("model", utf8_string_std, &dc->model))
 		return;

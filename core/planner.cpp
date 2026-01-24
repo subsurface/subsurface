@@ -53,7 +53,7 @@ static std::vector<depth_t> decostoplevels_imperial = { 0_ft, 10_ft, 20_ft, 30_f
 void dump_plan(const struct diveplan &diveplan)
 {
 	struct tm tm;
-	utc_mkdate(diveplan.when, &tm);
+	utc_mkdate(diveplan.when.local_time, &tm);
 
 	printf("\nDiveplan @ %04d-%02d-%02d %02d:%02d:%02d (surfpres %dmbar):\n",
 	       tm.tm_year, tm.tm_mon + 1, tm.tm_mday,
@@ -227,7 +227,7 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 	// reset the cylinders and clear out the samples and events of the
 	// dive-to-be-planned so we can restart
 	reset_cylinders(dive, track_gas);
-	dive->set_time_local(diveplan.when);
+	dive->set_time(diveplan.when);
 	dc->when = diveplan.when;
 	dc->surface_pressure = diveplan.surface_pressure;
 	dc->salinity = diveplan.salinity;

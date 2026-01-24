@@ -216,11 +216,11 @@ static void save_salinity(struct membuffer *b, const struct divecomputer &dc)
 	put_salinity(b, dc.salinity, "salinity ", "g/l\n");
 }
 
-static void show_date(struct membuffer *b, timestamp_t when)
+static void show_date(struct membuffer *b, datetime_t when)
 {
 	struct tm tm;
 
-	utc_mkdate(when, &tm);
+	utc_mkdate(when.local_time, &tm);
 
 	put_format(b, "date %04u-%02u-%02u\n",
 		   tm.tm_year, tm.tm_mon + 1, tm.tm_mday);
@@ -391,7 +391,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 		put_format(b, "deviceid %08x\n", dc.deviceid);
 	if (dc.diveid)
 		put_format(b, "diveid %08x\n", dc.diveid);
-	if (dc.when && dc.when != dive.get_time_local())
+	if (dc.when && dc.when != dive.get_time())
 		show_date(b, dc.when);
 	if (dc.duration.seconds && dc.duration.seconds != dive.dcs[0].duration.seconds)
 		put_duration(b, dc.duration, "duration ", "min\n");
