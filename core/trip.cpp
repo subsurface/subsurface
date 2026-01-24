@@ -15,11 +15,11 @@ dive_trip::dive_trip() : id(dive_getUniqID())
 
 dive_trip::~dive_trip() = default;
 
-timestamp_t dive_trip::date() const
+datetime_t dive_trip::date() const
 {
 	if (dives.empty())
-		return 0;
-	return dives[0]->get_time_local();
+		return datetime_t();
+	return dives[0]->get_time();
 }
 
 static timestamp_t trip_enddate(const struct dive_trip &trip)

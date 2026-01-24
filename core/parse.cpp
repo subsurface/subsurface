@@ -384,8 +384,8 @@ void divecomputer_start(struct parser_state *state)
 
 void divecomputer_end(struct parser_state *state)
 {
-	if (!state->cur_dc->when)
-		state->cur_dc->when = state->cur_dive->get_time_local();
+	if (!state->cur_dc->when.local_time)
+		state->cur_dc->when = state->cur_dive->get_time();
 	state->cur_dc = NULL;
 }
 

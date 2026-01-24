@@ -98,6 +98,8 @@ public:
 	datetime_t get_time() const;
 	timestamp_t get_time_local() const;
 	timestamp_t get_time_utc() const;
+	void set_time(datetime_t time);
+	void set_time_dc(datetime_t time);
 	void set_time_local(timestamp_t local_time);
 	void set_time_local_dc(timestamp_t local_time);
 	void shift_time(timestamp_t delta);
