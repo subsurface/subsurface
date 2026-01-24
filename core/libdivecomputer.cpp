@@ -651,7 +651,11 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		tm.tm_hour = dt.hour;
 		tm.tm_min = dt.minute;
 		tm.tm_sec = dt.second;
-		dive->set_time_local_dc(utc_mktime(&tm));
+		datetime_t t;
+		t.local_time = utc_mktime(&tm);
+		if (dt.timezone != DC_TIMEZONE_NONE)
+			t.offset_to_utc = dt.timezone;
+		dive->set_time_dc(t);
 	}
 
 	// Parse the divetime.
