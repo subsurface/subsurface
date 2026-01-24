@@ -70,6 +70,8 @@ int cmdGetDive(const CliConfig &config, const QString &diveRef)
 			QString("Dive not found: %1").arg(diveRef)));
 		return CMD_ERROR_NOT_FOUND;
 	}
+	// let's get all the indirect data populated
+	d->fixup_dive();
 
 	// Generate response
 	QJsonObject result;
