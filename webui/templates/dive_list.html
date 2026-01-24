@@ -161,14 +161,6 @@
         color: var(--brand-light);
     }
 
-    .globe-icon {
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
-        fill: var(--accent-teal);
-        opacity: 0.8;
-    }
-
     .col-depth, .col-duration {
         font-family: var(--font-mono);
         color: var(--brand-light);
@@ -347,9 +339,6 @@
         <a href="/dive/{{ item.dive_ref }}" class="dive-row">
             <span class="col-date">{{ item.date }} {{ item.time }}</span>
             <span class="col-location">
-                {% if item.has_gps %}
-                <svg class="globe-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                {% endif %}
                 <span>{{ item.location or 'Unknown Location' }}</span>
             </span>
             <span class="col-depth">{{ item.max_depth_meters|round(1) if item.max_depth_meters else '-' }}<span class="data-unit">m</span></span>
@@ -421,9 +410,6 @@
     }
 
     function createDiveItem(item) {
-        const globeIcon = item.has_gps
-            ? `<svg class="globe-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`
-            : '';
         const depth = item.max_depth_meters ? item.max_depth_meters.toFixed(1) : '-';
         const duration = item.duration_minutes || '-';
         const sac = item.sac_rate ? item.sac_rate.toFixed(1) : '-';
@@ -434,7 +420,6 @@
                 <a href="/dive/${item.dive_ref}" class="dive-row">
                     <span class="col-date">${item.date} ${item.time}</span>
                     <span class="col-location">
-                        ${globeIcon}
                         <span>${item.location || 'Unknown Location'}</span>
                     </span>
                     <span class="col-depth">${depth}<span class="data-unit">m</span></span>
