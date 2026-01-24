@@ -356,7 +356,7 @@
             <span class="col-duration">{{ item.duration_minutes if item.duration_minutes else '-' }}<span class="data-unit">min</span></span>
             <span class="col-buddy">{{ item.buddy or '' }}</span>
             <span class="col-gas">{{ item.gas or 'Air' }}</span>
-            <span class="col-sac">{{ item.sac|round(1) if item.sac else '-' }}</span>
+            <span class="col-sac">{{ item.sac_rate|round(1) if item.sac_rate else '-' }}</span>
             <span class="col-tags">
                 {% if item.tags %}
                     {% for tag in item.tags[:2] %}
@@ -426,7 +426,7 @@
             : '';
         const depth = item.max_depth_meters ? item.max_depth_meters.toFixed(1) : '-';
         const duration = item.duration_minutes || '-';
-        const sac = item.sac ? item.sac.toFixed(1) : '-';
+        const sac = item.sac_rate ? item.sac_rate.toFixed(1) : '-';
         const tags = item.tags ? item.tags.slice(0, 2).map(t => `<span class="mini-tag">${t}</span>`).join('') : '';
 
         return `

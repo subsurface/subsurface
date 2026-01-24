@@ -411,7 +411,7 @@
             <span class="col-duration">{{ dive.duration_minutes if dive.duration_minutes else '-' }}<span class="data-unit">min</span></span>
             <span class="col-buddy">{{ dive.buddy or '' }}</span>
             <span class="col-gas">{{ dive.gas or 'Air' }}</span>
-            <span class="col-sac">{{ dive.sac|round(1) if dive.sac else '-' }}</span>
+            <span class="col-sac">{{ dive.sac_rate|round(1) if dive.sac_rate else '-' }}</span>
             <span class="col-tags">
                 {% if dive.tags %}
                     {% for tag in dive.tags[:2] %}
@@ -467,7 +467,7 @@
             : '';
         const depth = dive.max_depth_meters ? dive.max_depth_meters.toFixed(1) : '-';
         const duration = dive.duration_minutes || '-';
-        const sac = dive.sac ? dive.sac.toFixed(1) : '-';
+        const sac = dive.sac_rate ? dive.sac_rate.toFixed(1) : '-';
         const tags = dive.tags ? dive.tags.slice(0, 2).map(t => `<span class="mini-tag">${t}</span>`).join('') : '';
 
         return `
