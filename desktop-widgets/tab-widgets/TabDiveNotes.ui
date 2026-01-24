@@ -95,19 +95,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2" colspan="2">
-          <widget class="QLabel" name="depthLabely">
-           <property name="text">
-            <string> </string>
-           </property>
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-             <horstretch>2</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
           <widget class="QLabel" name="depthLabel">
            <property name="sizePolicy">
@@ -163,21 +150,18 @@
            </property>
            </widget>
          </item>
-         <item row="1" column="2" colspan="2">
-          <widget class="QLabel" name="depthLabelx">
-           <property name="text">
-            <string> </string>
-           </property>
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="depth">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-             <horstretch>2</horstretch>
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>1</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
           </widget>
          </item>
          <item row="1" column="2">
-          <widget class="QLineEdit" name="depth">
+          <widget class="QLabel" name="depthFixed">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
              <horstretch>1</horstretch>
@@ -195,7 +179,17 @@
             </sizepolicy>
            </property>
           </widget>
-          </item>
+         </item>
+         <item row="1" column="3">
+          <widget class="QLabel" name="durationFixed">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
          </layout>
        </item>
        <item>

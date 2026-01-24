@@ -235,8 +235,10 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.NotesLabel->setText(tr("Trip notes"));
 		ui.notes->setText(QString::fromStdString(currentTrip->notes));
 		ui.depth->setVisible(false);
+		ui.depthFixed->setVisible(false);
 		ui.depthLabel->setVisible(false);
 		ui.duration->setVisible(false);
+		ui.durationFixed->setVisible(false);
 		ui.durationLabel->setVisible(false);
 	} else {
 		// make all the fields visible writeable
@@ -255,6 +257,8 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.dateEdit->setReadOnly(false);
 		ui.timeLabel->setVisible(true);
 		ui.timeEdit->setVisible(true);
+		ui.depthLabel->setVisible(true);
+		ui.durationLabel->setVisible(true);
 		/* and fill them from the dive */
 		ui.rating->setCurrentStars(currentDive->rating);
 		// reset labels in case we last displayed trip notes
@@ -263,18 +267,26 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.tagWidget->setText(QString::fromStdString(taglist_get_tagstring(currentDive->tags)));
 		bool isManual = is_dc_manually_added_dive(&currentDive->dcs[0]);
 		ui.depth->setVisible(isManual);
-		ui.depthLabel->setVisible(isManual);
 		ui.duration->setVisible(isManual);
-		ui.durationLabel->setVisible(isManual);
+		ui.depthFixed->setVisible(!isManual);
+		ui.durationFixed->setVisible(!isManual);
 
 		updateNotes(currentDive);
 		updateDiveSite(currentDive);
 		updateDateTime(currentDive);
 		ui.diveguide->setText(QString::fromStdString(currentDive->diveguide));
 		ui.buddy->setText(QString::fromStdString(currentDive->buddy));
+
+		QString durationString = render_seconds_to_string(currentDive->duration.seconds);
+		QString depthString = get_depth_string(currentDive->maxdepth, true);
+		if (isManual) {
+			ui.duration->setText(durationString);
+			ui.depth->setText(depthString);
+		} else {
+			ui.durationFixed->setText(durationString);
+			ui.depthFixed->setText(depthString);
+		}
 	}
-	ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
-	ui.depth->setText(get_depth_string(currentDive->maxdepth, true));
 
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 	/* unset the special value text for date and time, just in case someone dove at midnight */
