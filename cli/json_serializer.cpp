@@ -109,6 +109,13 @@ QJsonObject diveToJsonSummary(const struct dive *d)
 
 	obj["dc_count"] = static_cast<int>(d->dcs.size());
 
+	// Tags
+	QJsonArray tags;
+	for (const auto &tag : d->tags)
+		tags.append(QString::fromStdString(tag->name));
+	if (!tags.isEmpty())
+		obj["tags"] = tags;
+
 	return obj;
 }
 
