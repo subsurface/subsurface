@@ -2430,7 +2430,7 @@ bool dive::time_during_dive_with_offset(timestamp_t local_time, timestamp_t offs
 {
 	timestamp_t start = get_time_local();
 	timestamp_t end = endtime_local();
-	return start - offset <= when && when <= end + offset;
+	return start - offset <= get_time_local() && get_time_local() <= end + offset;
 }
 
 /* this sets a usually unused copy of the preferences with the units
@@ -2543,12 +2543,18 @@ pressure_t dive::get_surface_pressure() const
 
 timestamp_t dive::get_time_local() const
 {
-	return when;
+	return when.local_time;
 }
 
+timestamp_t dive::get_time_utc() const
+{
+	return when.in_utc();
+}
+
+/* Set the local time. Doesn't change timezone information */
 void dive::set_time_local(timestamp_t local_time)
 {
-	when = local_time;
+	when.local_time = local_time;
 }
 
 /* Set time and also time of the first dc.
@@ -2556,13 +2562,13 @@ void dive::set_time_local(timestamp_t local_time)
  */
 void dive::set_time_local_dc(timestamp_t local_time)
 {
-	when = local_time;
+	set_time_local(local_time);
 	dcs[0].when = local_time;
 }
 
 void dive::shift_time(timestamp_t delta)
 {
-	when += delta;
+	when.local_time += delta;
 }
 
 /* This returns the conversion factor that you need to multiply
