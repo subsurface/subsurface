@@ -944,7 +944,7 @@ bool QMLManager::checkDate(struct dive *d, QString date)
 			QString dateFormatToDrop = format.contains(QLatin1String("ddd")) ? QStringLiteral("ddd") : QStringLiteral("dddd");
 			QDateTime ts;
 			QLocale loc = getLocale();
-			ts.setMSecsSinceEpoch(d->when * 1000L);
+			ts.setMSecsSinceEpoch(d->get_time_local() * 1000L);
 			QString drop = loc.toString(ts.toUTC(), dateFormatToDrop);
 			format.replace(dateFormatToDrop, "");
 			date.replace(drop, "");
@@ -1061,7 +1061,8 @@ parsed:
 			// add a hundred years.
 			if (newDate.addYears(100) < QDateTime::currentDateTime().addYears(1))
 				newDate = newDate.addYears(100);
-			d->dcs[0].when = d->when = dateTimeToTimestamp(newDate);
+			d->dcs[0].when = dateTimeToTimestamp(newDate);
+			d->set_time_local(d->dcs[0].when);
 			return true;
 		}
 		appendTextToLog("none of our parsing attempts worked for the date string");
@@ -1475,7 +1476,8 @@ bool QMLManager::canMerge(int diveId, int mergeIntoDiveId)
 		return false;
 
 	/* Don't merge dives if there's more than half an hour between them */
-	if ((dive->when <= mergeIntoDive->when && dive->endtime() + 30 * 60 >= mergeIntoDive->when) || (mergeIntoDive->when <= dive->when && mergeIntoDive->endtime() + 30 * 60 >= dive->when))
+	if ((dive->get_time_local() <= mergeIntoDive->get_time_local() && dive->endtime_local() + 30 * 60 >= mergeIntoDive->get_time_local()) ||
+	    (mergeIntoDive->get_time_local() <= dive->get_time_local() && mergeIntoDive->endtime_local() + 30 * 60 >= dive->get_time_local()))
 		return true;
 
 	return false;
@@ -1494,7 +1496,7 @@ void QMLManager::mergeDives(int diveId, int mergeIntoDiveId)
 		return;
 	}
 
-	if (dive->when > mergeIntoDive->when)
+	if (dive->get_time_local() > mergeIntoDive->get_time_local())
 		std::swap(dive, mergeIntoDive);
 
 	QVector<struct dive *> batch = { dive, mergeIntoDive };
@@ -1779,7 +1781,7 @@ QString QMLManager::getDate(const QString& diveId)
 	struct dive *d = divelog.dives.get_by_uniq_id(dive_id);
 	QString datestring;
 	if (d)
-		datestring = get_short_dive_date_string(d->when);
+		datestring = get_short_dive_date_string(d->get_time_local());
 	return datestring;
 }
 

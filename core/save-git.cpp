@@ -391,7 +391,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 		put_format(b, "deviceid %08x\n", dc.deviceid);
 	if (dc.diveid)
 		put_format(b, "diveid %08x\n", dc.diveid);
-	if (dc.when && dc.when != dive.when)
+	if (dc.when && dc.when != dive.get_time_local())
 		show_date(b, dc.when);
 	if (dc.duration.seconds && dc.duration.seconds != dive.dcs[0].duration.seconds)
 		put_duration(b, dc.duration, "duration ", "min\n");
@@ -555,7 +555,7 @@ static void create_dive_name(struct dive &dive, struct membuffer *name, struct t
 	struct tm tm;
 	static const char weekday[7][4] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
-	utc_mkdate(dive.when, &tm);
+	utc_mkdate(dive.get_time_local(), &tm);
 	if (tm.tm_year != dirtm->tm_year)
 		put_format(name, "%04u-", tm.tm_year);
 	if (tm.tm_mon != dirtm->tm_mon)
@@ -785,10 +785,10 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip *trip
 	for (auto &dive: divelog.dives) {
 		if (dive->divetrip != trip)
 			continue;
-		if (dive->when < first)
-			first = dive->when;
-		if (dive->when > last)
-			last = dive->when;
+		if (dive->get_time_local() < first)
+			first = dive->get_time_local();
+		if (dive->get_time_local() > last)
+			last = dive->get_time_local();
 	}
 	verify_shared_date(first, tm);
 	verify_shared_date(last, tm);
@@ -987,7 +987,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 		}
 
 		/* Create the date-based hierarchy */
-		utc_mkdate(trip ? trip->date() : dive->when, &tm);
+		utc_mkdate(trip ? trip->date() : dive->get_time_local(), &tm);
 		tree = mktree(repo, root, "%04d", tm.tm_year);
 		tree = mktree(repo, tree, "%02d", tm.tm_mon + 1);
 

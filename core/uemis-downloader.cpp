@@ -733,7 +733,7 @@ static void parse_tag(struct dive *dive, std::string_view tag, std::string_view 
 		report_info("Adding to dive %d : %s = %s\n", dive->dcs[0].diveid, std::string(tag).c_str(), std::string(val).c_str());
 #endif
 	if (tag == "date") {
-		dive->when = uemis_ts(val);
+		dive->set_time_local(uemis_ts(val));
 	} else if (tag == "duration") {
 		uemis_duration(val, dive->dcs[0].duration);
 	} else if (tag == "depth") {
@@ -1156,7 +1156,7 @@ static bool get_matching_dive(size_t idx, int &newmax, uemis_mem_status &mem_sta
 						 * have the same or higher logfile number.
 						 * UEMIS unfortunately deletes dives by deleting the dive details and not the logs. */
 #if UEMIS_DEBUG & 2
-						d_time = get_dive_date_c_string(dive->when);
+						d_time = get_dive_date_c_string(dive->get_time_local());
 						report_info("Matching dive log id %d from %s with dive details %d\n", dive->dcs[0].diveid, d_time.c_str(), dive_to_read);
 #endif
 						int divespot_id = uemis_obj.get_divespot_id_by_diveid(dive->dcs[0].diveid);
@@ -1166,7 +1166,7 @@ static bool get_matching_dive(size_t idx, int &newmax, uemis_mem_status &mem_sta
 					} else {
 						/* in this case we found a deleted file, so let's increment */
 #if UEMIS_DEBUG & 2
-						d_time = get_dive_date_c_string(dive->when);
+						d_time = get_dive_date_c_string(dive->get_time_local());
 						report_info("TRY matching dive log id %d from %s with dive details %d but details are deleted\n", dive->dcs[0].diveid, d_time.c_str(), dive_to_read);
 #endif
 						deleted_files++;

@@ -940,7 +940,7 @@ static int seconds_since_midnight(timestamp_t timestamp)
 static bool check_date_range(const filter_constraint &c, const struct dive *d)
 {
 	// We don't consider dives past midnight. Should we?
-	long day = days_since_epoch(d->when);
+	long day = days_since_epoch(d->get_time_local());
 	switch (c.range_mode) {
 	case FILTER_CONSTRAINT_EQUAL:
 		return (day == days_since_epoch(c.data.timestamp_range.from)) != c.negate;
@@ -963,12 +963,12 @@ static bool check_datetime_range(const filter_constraint &c, const struct dive *
 		// where the given timestamp is during that dive.
 		return d->time_during_dive_with_offset(c.data.timestamp_range.from, 0) != c.negate;
 	case FILTER_CONSTRAINT_LESS:
-		return (d->endtime() <= c.data.timestamp_range.to) != c.negate;
+		return (d->endtime_local() <= c.data.timestamp_range.to) != c.negate;
 	case FILTER_CONSTRAINT_GREATER:
-		return (d->when >= c.data.timestamp_range.from) != c.negate;
+		return (d->get_time_local() >= c.data.timestamp_range.from) != c.negate;
 	case FILTER_CONSTRAINT_RANGE:
-		return (d->when >= c.data.timestamp_range.from &&
-			d->endtime() <= c.data.timestamp_range.to) != c.negate;
+		return (d->get_time_local() >= c.data.timestamp_range.from &&
+			d->endtime_local() <= c.data.timestamp_range.to) != c.negate;
 	}
 	return false;
 }
@@ -982,15 +982,15 @@ static bool check_time_of_day_internal(const dive *d, enum filter_constraint_ran
 		// Exact mode is a bit strange for time_of_day. Therefore we return any dive
 		// where the given timestamp is during that dive. Note: this will fail for dives
 		// that run past midnight. We might want to special case that.
-		return (seconds_since_midnight(d->when) <= from &&
-			seconds_since_midnight(d->endtime()) >= from) != negate;
+		return (seconds_since_midnight(d->get_time_local()) <= from &&
+			seconds_since_midnight(d->endtime_local()) >= from) != negate;
 	case FILTER_CONSTRAINT_LESS:
-		return (seconds_since_midnight(d->endtime()) <= to) != negate;
+		return (seconds_since_midnight(d->endtime_local()) <= to) != negate;
 	case FILTER_CONSTRAINT_GREATER:
-		return (seconds_since_midnight(d->when) >= from) != negate;
+		return (seconds_since_midnight(d->get_time_local()) >= from) != negate;
 	case FILTER_CONSTRAINT_RANGE:
-		return (seconds_since_midnight(d->when) >= from &&
-			seconds_since_midnight(d->endtime()) <= to) != negate;
+		return (seconds_since_midnight(d->get_time_local()) >= from &&
+			seconds_since_midnight(d->endtime_local()) <= to) != negate;
 	}
 	return false;
 }
@@ -1014,7 +1014,7 @@ static bool check_time_of_day_range(const filter_constraint &c, const struct div
 static bool check_year_range(const filter_constraint &c, const struct dive *d)
 {
 	// Note: we don't consider new-year dives. Should we?
-	int year = utc_year(d->when);
+	int year = utc_year(d->get_time_local());
 	switch (c.range_mode) {
 	case FILTER_CONSTRAINT_EQUAL:
 		return (year == c.data.numerical_range.from) != c.negate;
@@ -1050,7 +1050,7 @@ bool filter_constraint_match_dive(const filter_constraint &c, const struct dive 
 	case FILTER_CONSTRAINT_YEAR:
 		return check_year_range(c, d);
 	case FILTER_CONSTRAINT_DAY_OF_WEEK:
-		return check_multiple_choice(c, utc_weekday(d->when)); // no support for midnight dives - should we?
+		return check_multiple_choice(c, utc_weekday(d->get_time_local())); // no support for midnight dives - should we?
 	case FILTER_CONSTRAINT_RATING:
 		return check_numerical_range(c, d->rating);
 	case FILTER_CONSTRAINT_WAVESIZE:

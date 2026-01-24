@@ -1011,6 +1011,7 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, 
 {
 	/* For cylinder related fields, we might have to create a cylinder first. */
 	cylinder_t cyl;
+	timestamp_t when;
 	if (MATCH("tanktype", utf8_string_std, &cyl.type.description)) {
 		dive->get_or_create_cylinder(0)->type.description = std::move(cyl.type.description);
 		return 1;
@@ -1031,9 +1032,12 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, 
 		dive->get_or_create_cylinder(0)->end = cyl.end;
 		return 1;
 	}
-	return MATCH_STATE("divedate", divedate, &dive->when) ||
-	       MATCH_STATE("entrytime", divetime, &dive->when) ||
-	       MATCH("divetime", duration, &dive->dcs[0].duration) ||
+	if (MATCH_STATE("divedate", divedate, &when) ||
+	    MATCH_STATE("entrytime", divetime, &when)) {
+		dive->set_time_local(when);
+		return 1;
+	}
+	return MATCH("divetime", duration, &dive->dcs[0].duration) ||
 	       MATCH_STATE("depth", depth, &dive->dcs[0].maxdepth) ||
 	       MATCH_STATE("depthavg", depth, &dive->dcs[0].meandepth) ||
 	       MATCH("comments", utf8_string_std, &dive->notes) ||
@@ -1100,14 +1104,18 @@ uddf_datedata(min, 0)
 
 static int uddf_dive_match(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
-	return MATCH_STATE("datetime", uddf_datetime, &dive->when) ||
-	       MATCH("diveduration", duration, &dive->dcs[0].duration) ||
+	timestamp_t when = 0;
+	if (MATCH_STATE("datetime", uddf_datetime, &when) ||
+	    MATCH_STATE("year.date", uddf_year, &when) ||
+	    MATCH_STATE("month.date", uddf_mon, &when) ||
+	    MATCH_STATE("day.date", uddf_mday, &when) ||
+	    MATCH_STATE("hour.time", uddf_hour, &when) ||
+	    MATCH_STATE("minute.time", uddf_min, &when)) {
+		dive->set_time_local(when);
+		return 1;
+	}
+	return MATCH("diveduration", duration, &dive->dcs[0].duration) ||
 	       MATCH_STATE("greatestdepth", depth, &dive->dcs[0].maxdepth) ||
-	       MATCH_STATE("year.date", uddf_year, &dive->when) ||
-	       MATCH_STATE("month.date", uddf_mon, &dive->when) ||
-	       MATCH_STATE("day.date", uddf_mday, &dive->when) ||
-	       MATCH_STATE("hour.time", uddf_hour, &dive->when) ||
-	       MATCH_STATE("minute.time", uddf_min, &dive->when) ||
 	       0;
 }
 
@@ -1252,6 +1260,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	cylinder_t *cyl = !dive->cylinders.empty() ? &dive->cylinders.back() : NULL;
 	weightsystem_t *ws = !dive->weightsystems.empty() > 0 ?
 		&dive->weightsystems.back() : NULL;
+	timestamp_t when;
 	pressure_t p;
 	weight_t w;
 	start_match("dive", name, buf);
@@ -1278,12 +1287,18 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH("tripflag", get_notrip, &dive->notrip))
 		return;
-	if (MATCH_STATE("date", divedate, &dive->when))
+	if (MATCH_STATE("date", divedate, &when)) {
+		dive->set_time_local(when);
 		return;
-	if (MATCH_STATE("time", divetime, &dive->when))
+	}
+	if (MATCH_STATE("time", divetime, &when)) {
+		dive->set_time_local(when);
 		return;
-	if (MATCH_STATE("datetime", divedatetime, &dive->when))
+	}
+	if (MATCH_STATE("datetime", divedatetime, &when)) {
+		dive->set_time_local(when);
 		return;
+	}
 	/*
 	 * Legacy format note: per-dive depths and duration get saved
 	 * in the first dive computer entry

@@ -118,7 +118,7 @@ ShiftTimesDialog::ShiftTimesDialog(std::vector<dive *> dives_in, QWidget *parent
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
-	when = dives[0]->when;
+	when = dives[0]->get_time_local();
 	ui.currentTime->setText(get_dive_date_string(when));
 	ui.shiftedTime->setText(get_dive_date_string(when));
 }
@@ -223,11 +223,11 @@ void ShiftImageTimesDialog::updateInvalid()
 	ui.warningLabel->hide();
 	ui.invalidFilesText->hide();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
-	QDateTime time_first = QDateTime::fromSecsSinceEpoch(first_selected_dive()->when, QTimeZone::utc());
-	QDateTime time_last = QDateTime::fromSecsSinceEpoch(last_selected_dive()->when, QTimeZone::utc());
+	QDateTime time_first = QDateTime::fromSecsSinceEpoch(first_selected_dive()->get_time_local(), QTimeZone::utc());
+	QDateTime time_last = QDateTime::fromSecsSinceEpoch(last_selected_dive()->get_time_local(), QTimeZone::utc());
 #else
-	QDateTime time_first = QDateTime::fromSecsSinceEpoch(first_selected_dive()->when, Qt::UTC);
-	QDateTime time_last = QDateTime::fromSecsSinceEpoch(last_selected_dive()->when, Qt::UTC);
+	QDateTime time_first = QDateTime::fromSecsSinceEpoch(first_selected_dive()->get_time_local(), Qt::UTC);
+	QDateTime time_last = QDateTime::fromSecsSinceEpoch(last_selected_dive()->get_time_local(), Qt::UTC);
 #endif
 	if (first_selected_dive() == last_selected_dive()) {
 		ui.invalidFilesText->setPlainText(tr("Selected dive date/time") + ": " + time_first.toString());

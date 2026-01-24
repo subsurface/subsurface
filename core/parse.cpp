@@ -104,7 +104,7 @@ void event_end(struct parser_state *state)
 bool is_dive(struct parser_state *state)
 {
 	return state->cur_dive &&
-		(state->cur_dive->dive_site || state->cur_dive->when || !state->cur_dive->dcs[0].samples.empty());
+		(state->cur_dive->dive_site || state->cur_dive->get_time_local() || !state->cur_dive->dcs[0].samples.empty());
 }
 
 void reset_dc_info(struct divecomputer *, struct parser_state *state)
@@ -385,7 +385,7 @@ void divecomputer_start(struct parser_state *state)
 void divecomputer_end(struct parser_state *state)
 {
 	if (!state->cur_dc->when)
-		state->cur_dc->when = state->cur_dive->when;
+		state->cur_dc->when = state->cur_dive->get_time_local();
 	state->cur_dc = NULL;
 }
 

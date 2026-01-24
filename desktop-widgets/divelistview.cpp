@@ -568,15 +568,15 @@ static bool can_merge(const struct dive *a, const struct dive *b, enum asked_use
 {
 	if (!a || !b)
 		return false;
-	if (a->when > b->when)
+	if (a->get_time_local() > b->get_time_local())
 		return false;
 	/* Don't merge dives if there's more than half an hour between them */
-	if (a->endtime() + 30 * 60 < b->when) {
+	if (a->endtime_local() + 30 * 60 < b->get_time_local()) {
 		if (*have_asked == NOTYET) {
 			if (QMessageBox::warning(MainWindow::instance(),
 						 MainWindow::tr("Warning"),
 						 MainWindow::tr("Trying to merge dives with %1min interval in between").arg(
-							 (b->when - a->endtime()) / 60),
+							 (b->get_time_local() - a->endtime_local()) / 60),
 					     QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Cancel) {
 				*have_asked = DONTMERGE;
 				return false;

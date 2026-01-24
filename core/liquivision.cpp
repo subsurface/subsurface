@@ -217,7 +217,7 @@ static void parse_dives(int log_version, const unsigned char *buf, unsigned int 
 		dive->meandepth.mm = array_uint16_le(buf + ptr) * 10;	// cm->mm
 		ptr += 2;
 
-		dive->when = array_uint32_le(buf + ptr);
+		dive->set_time_local(array_uint32_le(buf + ptr));
 		ptr += 4;
 
 		//unsigned int end_time = array_uint32_le(buf + ptr);

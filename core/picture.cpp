@@ -34,9 +34,9 @@ int get_picture_idx(const picture_table &t, const std::string &filename)
 /* Return distance of timestamp to time of dive. Result is always positive, 0 means during dive. */
 static timestamp_t time_from_dive(const struct dive &d, timestamp_t timestamp)
 {
-	timestamp_t end_time = d.endtime();
-	if (timestamp < d.when)
-		return d.when - timestamp;
+	timestamp_t end_time = d.endtime_local();
+	if (timestamp < d.get_time_local())
+		return d.get_time_local() - timestamp;
 	else if (timestamp > end_time)
 		return timestamp - end_time;
 	else
@@ -99,7 +99,7 @@ std::pair<std::optional<picture>, dive *> create_picture(const std::string &file
 
 	struct picture picture;
 	picture.filename = filename;
-	picture.offset.seconds = metadata.timestamp - dive->when + shift_time;
+	picture.offset.seconds = metadata.timestamp - dive->get_time_local() + shift_time;
 	picture.location = metadata.location;
 	return { picture, dive };
 }

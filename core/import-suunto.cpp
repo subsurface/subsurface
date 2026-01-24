@@ -177,7 +177,7 @@ static int dm4_dive(void *param, int, char **data, char **)
 	dive_start(state);
 	state->cur_dive->number = atoi(data[0]);
 
-	state->cur_dive->when = (time_t)(atol(data[1]));
+	state->cur_dive->set_time_local((time_t)(atol(data[1])));
 	if (data[2])
 		utf8_string_std(data[2], &state->cur_dive->notes);
 
@@ -366,7 +366,7 @@ static int dm5_dive(void *param, int, char **data, char **)
 	dive_start(state);
 	state->cur_dive->number = atoi(data[0]);
 
-	state->cur_dive->when = (time_t)(atol(data[1]));
+	state->cur_dive->set_time_local((time_t)(atol(data[1])));
 	if (data[2])
 		utf8_string_std(data[2], &state->cur_dive->notes);
 

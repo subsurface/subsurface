@@ -862,7 +862,7 @@ struct DateYearBinner : public IntBinner<DateYearBinner, IntBin> {
 		return QString::number(derived_bin(bin).value);
 	}
 	int to_bin_value(const dive *d) const {
-		return utc_year(d->when);
+		return utc_year(d->get_time_local());
 	}
 	double lowerBoundToFloatBase(int year) const {
 		return date_to_double(year, 0, 0);
@@ -897,7 +897,7 @@ struct DateQuarterBinner : public SimpleContinuousBinner<DateQuarterBinner, Date
 	}
 	year_quarter to_bin_value(const dive *d) const {
 		struct tm tm;
-		utc_mkdate(d->when, &tm);
+		utc_mkdate(d->get_time_local(), &tm);
 
 		int year = tm.tm_year;
 		switch (tm.tm_mon) {
@@ -941,7 +941,7 @@ struct DateMonthBinner : public SimpleContinuousBinner<DateMonthBinner, DateMont
 	}
 	year_month to_bin_value(const dive *d) const {
 		struct tm tm;
-		utc_mkdate(d->when, &tm);
+		utc_mkdate(d->get_time_local(), &tm);
 		return { tm.tm_year, tm.tm_mon };
 	}
 	void inc(DateMonthBin &bin) const {
@@ -960,7 +960,7 @@ struct DateVariable : public StatsVariableTemplate<StatsVariable::Type::Continuo
 		return StatsTranslations::tr("Date");
 	}
 	double toFloat(const dive *d) const override {
-		return d->when / 86400.0;
+		return d->get_time_local() / 86400.0;
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &date_year_binner, &date_quarter_binner, &date_month_binner };
@@ -1882,7 +1882,7 @@ struct DayOfWeekBinner : public SimpleBinner<DayOfWeekBinner, IntBin> {
 		return formatDayOfWeek(derived_bin(bin).value);
 	}
 	int to_bin_value(const dive *d) const {
-		return utc_weekday(d->when);
+		return utc_weekday(d->get_time_local());
 	}
 };
 
@@ -1892,7 +1892,7 @@ struct DayOfWeekVariable : public StatsVariableTemplate<StatsVariable::Type::Dis
 		return StatsTranslations::tr("Day of week");
 	}
 	QString diveCategories(const dive *d) const override {
-		return formatDayOfWeek(utc_weekday(d->when));
+		return formatDayOfWeek(utc_weekday(d->get_time_local()));
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &day_of_week_binner };
@@ -1905,7 +1905,7 @@ struct MonthOfYearBinner : public SimpleBinner<MonthOfYearBinner, IntBin> {
 		return QString(monthname(derived_bin(bin).value));
 	}
 	int to_bin_value(const dive *d) const {
-		return utc_month(d->when);
+		return utc_month(d->get_time_local());
 	}
 };
 
@@ -1915,7 +1915,7 @@ struct MonthOfYearVariable : public StatsVariableTemplate<StatsVariable::Type::D
 		return StatsTranslations::tr("Month of year");
 	}
 	QString diveCategories(const dive *d) const override {
-		return QString(monthname(utc_month(d->when)));
+		return QString(monthname(utc_month(d->get_time_local())));
 	}
 	std::vector<const StatsBinner *> binners() const override {
 		return { &month_of_year_binner };

@@ -211,7 +211,7 @@ static void put_HTML_coordinates(struct membuffer *b, const struct dive &dive)
 void put_HTML_date(struct membuffer *b, const struct dive &dive, const char *pre, const char *post)
 {
 	struct tm tm;
-	utc_mkdate(dive.when, &tm);
+	utc_mkdate(dive.get_time_local(), &tm);
 	put_format(b, "%s%04u-%02u-%02u%s", pre, tm.tm_year, tm.tm_mon + 1, tm.tm_mday, post);
 }
 
@@ -268,7 +268,7 @@ void put_HTML_weight_units(struct membuffer *b, unsigned int grams, const char *
 void put_HTML_time(struct membuffer *b, const struct dive &dive, const char *pre, const char *post)
 {
 	struct tm tm;
-	utc_mkdate(dive.when, &tm);
+	utc_mkdate(dive.get_time_local(), &tm);
 	put_format(b, "%s%02u:%02u:%02u%s", pre, tm.tm_hour, tm.tm_min, tm.tm_sec, post);
 }
 

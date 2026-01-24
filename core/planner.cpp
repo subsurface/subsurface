@@ -227,7 +227,8 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 	// reset the cylinders and clear out the samples and events of the
 	// dive-to-be-planned so we can restart
 	reset_cylinders(dive, track_gas);
-	dc->when = dive->when = diveplan.when;
+	dive->set_time_local(diveplan.when);
+	dc->when = diveplan.when;
 	dc->surface_pressure = diveplan.surface_pressure;
 	dc->salinity = diveplan.salinity;
 	dc->samples.clear();

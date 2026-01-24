@@ -165,7 +165,7 @@ static Stats loopDives(timestamp_t start)
 	Stats stats;
 	for (auto &dive: divelog.dives) {
 		// check if dive is newer than primaryStart (add to first column)
-		if (dive->when > start)
+		if (dive->get_time_local() > start)
 			calculateDive(dive.get(), stats);
 	}
 	return stats;

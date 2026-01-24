@@ -70,7 +70,7 @@ static dive *closestInSelection(timestamp_t when, const std::vector<dive *> &sel
 	// the supposed-to-be selected dive. (Note: this mimics the
 	// old behavior when the current dive changed).
 	for (auto it = selection.rbegin(); it < selection.rend(); ++it) {
-		if ((*it)->when > when && !(*it)->hidden_by_filter)
+		if ((*it)->get_time_local() > when && !(*it)->hidden_by_filter)
 			return *it;
 	}
 
@@ -147,7 +147,7 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 	current_dive = currentDive;
 	if (current_dive && !currentDive->selected) {
 		// Current not visible -> find a different dive.
-		setClosestCurrentDive(currentDive->when, selection, divesToSelect);
+		setClosestCurrentDive(currentDive->get_time_local(), selection, divesToSelect);
 	}
 
 	return divesToSelect;
@@ -188,7 +188,7 @@ bool setSelectionKeepCurrent(const std::vector<dive *> &selection)
 
 	dive *newCurrent = current_dive;
 	if (current_dive && std::find(selection.begin(), selection.end(), current_dive) == selection.end())
-		newCurrent = closestInSelection(current_dive->when, selection);
+		newCurrent = closestInSelection(current_dive->get_time_local(), selection);
 	setSelectionCore(selection, newCurrent);
 
 	return current_dive != oldCurrent;

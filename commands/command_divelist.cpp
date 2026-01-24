@@ -313,9 +313,10 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 		divesMoved.push_back({ entry.trip, entry.dive->divetrip, entry.dive });
 
 	// Sort lexicographically by from-trip, to-trip and by start-time.
-	// Use std::tie() for lexicographical sorting.
+	// Use std::tuple() for lexicographical sorting.
+	// (Not a fan, since get_time_local() is called even if the first two members are unequal.)
 	std::sort(divesMoved.begin(), divesMoved.end(), [] ( const DiveMoved &d1, const DiveMoved &d2)
-		  { return std::tie(d1.from, d1.to, d1.d->when) < std::tie(d2.from, d2.to, d2.d->when); });
+		  { return std::tuple(d1.from, d1.to, d1.d->get_time_local()) < std::tuple(d2.from, d2.to, d2.d->get_time_local()); });
 
 	// Now, process the dives in batches by trip
 	// TODO: this is a bit different from the cases above, so we don't use the processByTrip template,
@@ -597,7 +598,7 @@ void DeleteDive::redoit()
 	// Deselect all dives and select dive that was close to the first deleted dive
 	dive *newCurrent = nullptr;
 	if (!divesToAdd.dives.empty()) {
-		timestamp_t when = divesToAdd.dives[0].dive->when;
+		timestamp_t when = divesToAdd.dives[0].dive->get_time_local();
 		newCurrent = divelog.dives.find_next_visible_dive(when);
 	}
 	select_single_dive(newCurrent);
@@ -614,7 +615,7 @@ void ShiftTime::redoit()
 {
 	std::vector<dive_trip *> trips;
 	for (dive *d: diveList) {
-		d->when += timeChanged;
+		d->shift_time(timeChanged);
 		if (d->divetrip && std::find(trips.begin(), trips.end(), d->divetrip) == trips.end())
 			trips.push_back(d->divetrip);
 

@@ -1398,7 +1398,7 @@ static void create_new_dive(timestamp_t when, struct git_parser_state *state)
 	state->active_dive = std::make_unique<dive>();
 
 	/* We'll fill in more data from the dive file */
-	state->active_dive->when = when;
+	state->active_dive->set_time_local(when);
 
 	if (state->active_trip)
 		state->active_trip->add_dive(state->active_dive.get());
@@ -1648,7 +1648,7 @@ static struct divecomputer *create_new_dc(struct dive *dive)
 		dive->dcs.emplace_back();
 		dc = &dive->dcs.back();
 	}
-	dc->when = dive->when;
+	dc->when = dive->get_time_local();
 	dc->duration = dive->duration;
 	return dc;
 }

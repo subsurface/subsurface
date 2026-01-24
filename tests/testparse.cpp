@@ -223,7 +223,7 @@ void TestParse::testParseHUDC()
 	 */
 	if (!divelog.dives.empty()) {
 		struct dive &dive = *divelog.dives.back();
-		dive.when = 1255152761;
+		dive.set_time_local(1255152761);
 		dive.dcs[0].when = 1255152761;
 	}
 

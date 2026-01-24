@@ -88,7 +88,7 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 		QDateTime firstTime = timestampToDateTime(trip->date());
 		QString firstMonth = firstTime.toString("MMM");
 		QString firstYear = firstTime.toString("yyyy");
-		QDateTime lastTime = timestampToDateTime(trip->dives[0]->when);
+		QDateTime lastTime = timestampToDateTime(trip->dives[0]->get_time_local());
 		QString lastMonth = lastTime.toString("MMM");
 		QString lastYear = lastTime.toString("yyyy");
 		if (lastMonth == firstMonth && lastYear == firstYear)
@@ -273,7 +273,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 #ifdef SUBSURFACE_MOBILE
 	// Special roles for mobile
 	switch (role) {
-	case MobileListModel::DiveDateRole: return (qlonglong)d->when;
+	case MobileListModel::DiveDateRole: return (qlonglong)d->get_time_local();
 	// We have to return a QString as trip-id, because that will be used as section
 	// variable in the QtQuick list view. That has to be a string because it will try
 	// to do locale-aware sorting. And amazingly this can't be changed.
@@ -324,7 +324,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case NR:
 			return d->number;
 		case DATE:
-			return get_dive_date_string(d->when);
+			return get_dive_date_string(d->get_time_local());
 		case DEPTH:
 			return get_depth_string(d->maxdepth, prefs.units.show_units_table);
 		case DURATION:
@@ -814,7 +814,7 @@ dive *DiveTripModelTree::Item::getDive() const
 
 timestamp_t DiveTripModelTree::Item::when() const
 {
-	return d_or_t.trip ? d_or_t.trip->date() : d_or_t.dive->when;
+	return d_or_t.trip ? d_or_t.trip->date() : d_or_t.dive->get_time_local();
 }
 
 dive_or_trip DiveTripModelTree::tripOrDive(const QModelIndex &index) const

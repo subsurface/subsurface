@@ -56,7 +56,7 @@ QString diveNumberOrDate(struct dive *d)
 	if (d->number != 0)
 		return QStringLiteral("#%1").arg(d->number);
 	else
-		return QStringLiteral("@%1").arg(get_short_dive_date_string(d->when));
+		return QStringLiteral("@%1").arg(get_short_dive_date_string(d->get_time_local()));
 }
 
 QString getListOfDives(const std::vector<struct dive*> &dives)

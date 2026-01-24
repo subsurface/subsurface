@@ -191,7 +191,8 @@ static char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive, struct 
 	 * Next, Time in minutes since 00:00
 	 */
 	read_bytes(2);
-	dt_dive->dcs[0].when = dt_dive->when = (timestamp_t)date_time_to_ssrfc(tmp_4bytes, tmp_2bytes);
+	dt_dive->dcs[0].when = (timestamp_t)date_time_to_ssrfc(tmp_4bytes, tmp_2bytes);
+	dt_dive->set_time_local(dt_dive->dcs[0].when);
 
 	/*
 	 * Now, Locality, 1st byte is long of string, rest is string

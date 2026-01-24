@@ -122,7 +122,7 @@ void TabDiveNotes::divesChanged(const QVector<dive *> &dives, DiveField field)
 		updateNotes(currentDive);
 	if (field.datetime) {
 		updateDateTime(currentDive);
-		DivePlannerPointsModel::instance()->getDiveplan().when = currentDive->when;
+		DivePlannerPointsModel::instance()->getDiveplan().when = currentDive->get_time_local();
 	}
 	if (field.divesite)
 		updateDiveSite(currentDive);
@@ -171,7 +171,7 @@ void TabDiveNotes::updateNotes(const struct dive *d)
 
 void TabDiveNotes::updateDateTime(const struct dive *d)
 {
-	QDateTime localTime = timestampToDateTime(d->when);
+	QDateTime localTime = timestampToDateTime(d->get_time_local());
 	ui.dateEdit->setDate(localTime.date());
 	ui.timeEdit->setTime(localTime.time());
 }
@@ -352,8 +352,8 @@ void TabDiveNotes::on_depth_editingFinished()
 static void shiftTime(QDateTime &dateTime, dive *currentDive)
 {
 	timestamp_t when = dateTimeToTimestamp(dateTime);
-	if (currentDive->when != when) {
-		timestamp_t offset = when - currentDive->when;
+	if (currentDive->get_time_local() != when) {
+		timestamp_t offset = when - currentDive->get_time_local();
 		Command::shiftTime(getDiveSelection(), (int)offset);
 	}
 }
@@ -362,7 +362,7 @@ void TabDiveNotes::on_dateEdit_editingFinished()
 {
 	if (ignoreInput || !parent.currentDive)
 		return;
-	QDateTime dateTime = timestampToDateTime(parent.currentDive->when);
+	QDateTime dateTime = timestampToDateTime(parent.currentDive->get_time_local());
 	dateTime.setDate(ui.dateEdit->date());
 	shiftTime(dateTime, parent.currentDive);
 }
@@ -371,7 +371,7 @@ void TabDiveNotes::on_timeEdit_editingFinished()
 {
 	if (ignoreInput || !parent.currentDive)
 		return;
-	QDateTime dateTime = timestampToDateTime(parent.currentDive->when);
+	QDateTime dateTime = timestampToDateTime(parent.currentDive->get_time_local());
 	dateTime.setTime(ui.timeEdit->time());
 	shiftTime(dateTime, parent.currentDive);
 }

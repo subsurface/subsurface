@@ -107,7 +107,7 @@ static void merge_imported_dives(struct dive_table &table)
 		/* only try to merge overlapping dives - or if one of the dives has
 		 * zero duration (that might be a gps marker from the webservice) */
 		if (prev->duration.seconds && dive->duration.seconds &&
-		    prev->endtime() < dive->when)
+		    prev->endtime_local() < dive->get_time_local())
 			continue;
 
 		auto merged = table.try_to_merge(*prev, *dive, false);
@@ -238,7 +238,7 @@ static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive
 		 * by is_same_dive() were already merged, and is_same_dive() should be
 		 * transitive. But let's just go *completely* sure for the odd corner-case. */
 		if (j > 0 && (last_merged_into == std::string::npos || j > last_merged_into + 1) &&
-		    dives_to[j - 1]->endtime() > dive_to_add->when) {
+		    dives_to[j - 1]->endtime_local() > dive_to_add->get_time_local()) {
 			if (try_to_merge_into(*dive_to_add, dives_to[j - 1], prefer_imported,
 					      dives_to_add, dives_to_remove)) {
 				last_merged_into = j - 1;
@@ -250,7 +250,7 @@ static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive
 		/* That didn't merge into the previous dive.
 		 * Try to merge into next dive. */
 		if (j < dives_to.size() && (last_merged_into == std::string::npos || j > last_merged_into) &&
-		    dive_to_add->endtime() > dives_to[j]->when) {
+		    dive_to_add->endtime_local() > dives_to[j]->get_time_local()) {
 			if (try_to_merge_into(*dive_to_add, dives_to[j], prefer_imported,
 					      dives_to_add, dives_to_remove)) {
 				last_merged_into = j;

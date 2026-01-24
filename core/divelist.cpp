@@ -95,7 +95,7 @@ void dive_table::force_fixup_dive(struct dive &d) const
 std::unique_ptr<dive> dive_table::default_dive()
 {
 	auto d = std::make_unique<dive>();
-	d->when = time(nullptr) + gettimezoneoffset() + 3600;
+	d->set_time_local(time(nullptr) + gettimezoneoffset() + 3600);
 	d->dcs[0].duration = 40_min;
 	d->dcs[0].maxdepth = m_or_ft(15, 45);
 	d->dcs[0].meandepth = m_or_ft(13, 39); // this creates a resonable looking safety stop
@@ -259,20 +259,20 @@ int dive_table::calculate_cns(struct dive &dive) const
 #endif
 	/* Look at next dive in dive list table and correct i when needed */
 	while (i < nr_dives - 1) {
-		if ((*this)[i]->when > dive.when)
+		if ((*this)[i]->get_time_local() > dive.get_time_local())
 			break;
 		i++;
 	}
 	/* Look at previous dive in dive list table and correct i when needed */
 	while (i > 0) {
-		if ((*this)[i - 1]->when < dive.when)
+		if ((*this)[i - 1]->get_time_local() < dive.get_time_local())
 			break;
 		i--;
 	}
 #if DECO_CALC_DEBUG & 2
 	printf("Dive number corrected to #%d\n", i);
 #endif
-	last_starttime = dive.when;
+	last_starttime = dive.get_time_local();
 	/* Walk backwards to check previous dives - how far do we need to go back? */
 	while (i--) {
 		if (static_cast<size_t>(i) == divenr && i > 0)
@@ -289,13 +289,13 @@ int dive_table::calculate_cns(struct dive &dive) const
 #endif
 			continue;
 		}
-		if (pdive.when >= dive.when || pdive.endtime() + 12 * 60 * 60 < last_starttime) {
+		if (pdive.get_time_local() >= dive.get_time_local() || pdive.endtime_local() + 12 * 60 * 60 < last_starttime) {
 #if DECO_CALC_DEBUG & 2
 			printf("No\n");
 #endif
 			break;
 		}
-		last_starttime = pdive.when;
+		last_starttime = pdive.get_time_local();
 #if DECO_CALC_DEBUG & 2
 		printf("Yes\n");
 #endif
@@ -314,7 +314,7 @@ int dive_table::calculate_cns(struct dive &dive) const
 			continue;
 		}
 		/* Don't add future dives */
-		if (pdive.when >= dive.when) {
+		if (pdive.get_time_local() >= dive.get_time_local()) {
 #if DECO_CALC_DEBUG & 2
 			printf("No - future or same dive\n");
 #endif
@@ -333,7 +333,7 @@ int dive_table::calculate_cns(struct dive &dive) const
 
 		/* CNS reduced with 90min halftime during surface interval */
 		if (last_endtime)
-			cns /= pow(2, (pdive.when - last_endtime) / (90.0 * 60.0));
+			cns /= pow(2, (pdive.get_time_local() - last_endtime) / (90.0 * 60.0));
 #if DECO_CALC_DEBUG & 2
 		printf("CNS after surface interval: %f\n", cns);
 #endif
@@ -343,13 +343,13 @@ int dive_table::calculate_cns(struct dive &dive) const
 		printf("CNS after previous dive: %f\n", cns);
 #endif
 
-		last_starttime = pdive.when;
-		last_endtime = pdive.endtime();
+		last_starttime = pdive.get_time_local();
+		last_endtime = pdive.endtime_local();
 	}
 
 	/* CNS reduced with 90min halftime during surface interval */
 	if (last_endtime)
-		cns /= pow(2, (dive.when - last_endtime) / (90.0 * 60.0));
+		cns /= pow(2, (dive.get_time_local() - last_endtime) / (90.0 * 60.0));
 #if DECO_CALC_DEBUG & 2
 	printf("CNS after last surface interval: %f\n", cns);
 #endif
@@ -472,20 +472,20 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 #endif
 	/* Look at next dive in dive list table and correct i when needed */
 	while (i + 1 < nr_dives) {
-		if ((*this)[i]->when > dive->when)
+		if ((*this)[i]->get_time_local() > dive->get_time_local())
 			break;
 		i++;
 	}
 	/* Look at previous dive in dive list table and correct i when needed */
 	while (i > 0) {
-		if ((*this)[i - 1]->when < dive->when)
+		if ((*this)[i - 1]->get_time_local() < dive->get_time_local())
 			break;
 		i--;
 	}
 #if DECO_CALC_DEBUG & 2
 	printf("Dive number corrected to #%d\n", i);
 #endif
-	last_starttime = dive->when;
+	last_starttime = dive->get_time_local();
 	/* Walk backwards to check previous dives - how far do we need to go back? */
 	while (i--) {
 		if (static_cast<size_t>(i) == divenr && i > 0)
@@ -502,13 +502,13 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 #endif
 			continue;
 		}
-		if (pdive.when >= dive->when || pdive.endtime() + 48 * 60 * 60 < last_starttime) {
+		if (pdive.get_time_local() >= dive->get_time_local() || pdive.endtime_local() + 48 * 60 * 60 < last_starttime) {
 #if DECO_CALC_DEBUG & 2
 			printf("No\n");
 #endif
 			break;
 		}
-		last_starttime = pdive.when;
+		last_starttime = pdive.get_time_local();
 #if DECO_CALC_DEBUG & 2
 		printf("Yes\n");
 #endif
@@ -527,7 +527,7 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 			continue;
 		}
 		/* Don't add future dives */
-		if (pdive.when >= dive->when) {
+		if (pdive.get_time_local() >= dive->get_time_local()) {
 #if DECO_CALC_DEBUG & 2
 			printf("No - future or same dive\n");
 #endif
@@ -557,7 +557,7 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 			dump_tissues(ds);
 #endif
 		} else {
-			surface_time = pdive.when - last_endtime;
+			surface_time = pdive.get_time_local() - last_endtime;
 			if (surface_time < 0) {
 #if DECO_CALC_DEBUG & 2
 				printf("Exit because surface intervall is %d\n", surface_time);
@@ -573,8 +573,8 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 
 		add_dive_to_deco(ds, pdive, in_planner);
 
-		last_starttime = pdive.when;
-		last_endtime = pdive.endtime();
+		last_starttime = pdive.get_time_local();
+		last_endtime = pdive.endtime_local();
 		clear_vpmb_state(ds);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after added dive #%d:\n", pdive.number);
@@ -594,7 +594,7 @@ int dive_table::init_decompression(struct deco_state *ds, const struct dive *div
 		dump_tissues(ds);
 #endif
 	} else {
-		surface_time = dive->when - last_endtime;
+		surface_time = dive->get_time_local() - last_endtime;
 		if (surface_time < 0) {
 #if DECO_CALC_DEBUG & 2
 			printf("Exit because surface intervall is %d\n", surface_time);
@@ -662,9 +662,9 @@ int comp_dives(const struct dive &a, const struct dive &b)
 	int cmp;
 	if (&a == &b)
 		return 0;	/* reflexivity */
-	if (a.when < b.when)
+	if (a.get_time_local() < b.get_time_local())
 		return -1;
-	if (a.when > b.when)
+	if (a.get_time_local() > b.get_time_local())
 		return 1;
 	if (a.divetrip != b.divetrip) {
 		if (!b.divetrip)
@@ -841,16 +841,18 @@ bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
  * returned. This does *not* consider pathological cases such as dives
  * that happened inside other dives. The interval will always be calculated
  * with respect to the dive that started previously.
+ *
+ * TODO: Here we want to consider global tome
  */
 timestamp_t dive_table::get_surface_interval(timestamp_t when) const
 {
 	/* find previous dive. might want to use a binary search. */
 	auto it = std::find_if(rbegin(), rend(),
-			       [when] (auto &d) { return d->when < when; });
+			       [when] (auto &d) { return d->get_time_local() < when; });
 	if (it == rend())
 		return -1;
 
-	timestamp_t prev_end = (*it)->endtime();
+	timestamp_t prev_end = (*it)->endtime_local();
 	if (prev_end > when)
 		return 0;
 	return when - prev_end;
@@ -862,7 +864,7 @@ struct dive *dive_table::find_next_visible_dive(timestamp_t when)
 {
 	/* we might want to use binary search here */
 	auto it = std::find_if(begin(), end(),
-			       [when] (auto &d) { return d->when <= when; });
+			       [when] (auto &d) { return d->get_time_local() <= when; });
 
 	for (auto it2 = it; it2 != begin(); --it2) {
 		if (!(*std::prev(it2))->hidden_by_filter)
@@ -986,7 +988,7 @@ std::array<std::unique_ptr<dive>, 2> dive_table::split_dive_at(const struct dive
 	 * This is where we cut off events from d1,
 	 * and shift everything in d2
 	 */
-	d2->when += t;
+	d2->shift_time(t);
 	auto it1 = d1->dcs.begin();
 	auto it2 = d2->dcs.begin();
 	while (it1 != d1->dcs.end() && it2 != d2->dcs.end()) {
@@ -1130,7 +1132,7 @@ static struct dive_trip *get_preferred_trip(const struct dive &a, const struct d
 	 * Ok, so both have location and notes.
 	 * Pick the earlier one.
 	 */
-	if (a.when < b.when)
+	if (a.get_time_local() < b.get_time_local())
 		return atrip;
 	return btrip;
 }
@@ -1198,11 +1200,11 @@ merge_result dive_table::merge_dives(const std::vector<dive *> &dives) const
 		return res;
 	}
 
-	auto d = merge_two_dives(*dives[0], *dives[1], dives[1]->when - dives[0]->when, false);
+	auto d = merge_two_dives(*dives[0], *dives[1], dives[1]->get_time_local() - dives[0]->get_time_local(), false);
 	d->divetrip = get_preferred_trip(*dives[0], *dives[1]);
 
 	for (size_t i = 2; i < dives.size(); ++i) {
-		auto d2 = divelog.dives.merge_two_dives(*d, *dives[i], dives[i]->when - d->when, false);
+		auto d2 = divelog.dives.merge_two_dives(*d, *dives[i], dives[i]->get_time_local() - d->get_time_local(), false);
 		d2->divetrip = get_preferred_trip(*d, *dives[i]);
 		d = std::move(d2);
 	}
