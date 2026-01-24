@@ -426,7 +426,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 		put_format(b, " deviceid='%08x'", dc.deviceid);
 	if (dc.diveid)
 		put_format(b, " diveid='%08x'", dc.diveid);
-	if (dc.when && dc.when != dive.when)
+	if (dc.when && dc.when != dive.get_time_local())
 		show_date(b, dc.when);
 	if (dc.duration.seconds && dc.duration.seconds != dive.dcs[0].duration.seconds)
 		put_duration(b, dc.duration, " duration='", " min'");
@@ -508,7 +508,7 @@ void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anon
 		put_format(b, " divesiteid='%8x'", dive.dive_site->uuid);
 	if (dive.user_salinity)
 		put_salinity(b, dive.user_salinity, " watersalinity='", " g/l'");
-	show_date(b, dive.when);
+	show_date(b, dive.get_time_local());
 	if (surface_pressure.mbar)
 		put_pressure(b, surface_pressure, " airpressure='", " bar'");
 	if (dive.dcs[0].duration.seconds > 0)

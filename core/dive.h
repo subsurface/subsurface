@@ -44,7 +44,9 @@ struct non_copying_unique_ptr : public std::unique_ptr<T> {
 
 struct dive {
 	struct dive_trip *divetrip = nullptr;
-	timestamp_t when = 0;
+private:
+	timestamp_t when = 0;			// To be accessed by accessor functions
+public:
 	struct dive_site *dive_site = nullptr;
 	std::string notes;
 	std::string diveguide, buddy;
@@ -91,11 +93,17 @@ struct dive {
 	int number_of_computers() const;
 	void fixup_dive();
 	void fixup_dive_dc(struct divecomputer &dc);
-	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
+
+	// Time is accessed by accessor functions, so that we might implement timezones later on.
+	timestamp_t get_time_local() const;
+	void set_time_local(timestamp_t local_time);
+	void shift_time(timestamp_t delta);
+	timestamp_t endtime_local() const;	/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
 	temperature_t dc_airtemp() const;	/* average over divecomputers */
 	temperature_t dc_watertemp() const;	/* average over divecomputers */
 	pressure_t get_surface_pressure() const;
+
 
 	struct get_maximal_gas_result { int o2_p; int he_p; int o2low_p; };
 	get_maximal_gas_result get_maximal_gas() const;
@@ -114,7 +122,7 @@ struct dive {
 	const cylinder_t *get_cylinder(int idx) const;
 	weight_t total_weight() const;
 	int get_salinity() const;
-	bool time_during_dive_with_offset(timestamp_t when, timestamp_t offset) const;
+	bool time_during_dive_with_offset(timestamp_t local_time, timestamp_t offset) const;
 	std::string get_country() const;
 	std::string get_location() const;
 

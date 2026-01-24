@@ -2157,7 +2157,11 @@ bool dive::likely_same(const struct dive &b) const
 	int fuzz = std::max(duration.seconds, b.duration.seconds) / 2;
 	fuzz = std::max(fuzz, 60);
 
-	return (when <= b.when + fuzz) && (when >= b.when - fuzz);
+	/*
+	 * Probably not worth considering global time, here.
+	 */
+	return (get_time_local() <= b.get_time_local() + fuzz) &&
+	       (get_time_local() >= b.get_time_local() - fuzz);
 }
 
 static bool operator==(const sample &a, const sample &b)
@@ -2417,15 +2421,15 @@ duration_t dive::totaltime() const
 	return { .seconds = time };
 }
 
-timestamp_t dive::endtime() const
+timestamp_t dive::endtime_local() const
 {
-	return when + totaltime().seconds;
+	return get_time_local() + totaltime().seconds;
 }
 
-bool dive::time_during_dive_with_offset(timestamp_t when, timestamp_t offset) const
+bool dive::time_during_dive_with_offset(timestamp_t local_time, timestamp_t offset) const
 {
-	timestamp_t start = when;
-	timestamp_t end = endtime();
+	timestamp_t start = get_time_local();
+	timestamp_t end = endtime_local();
 	return start - offset <= when && when <= end + offset;
 }
 
@@ -2535,6 +2539,21 @@ bool dive::cache_is_valid() const
 pressure_t dive::get_surface_pressure() const
 {
 	return surface_pressure.mbar > 0 ? surface_pressure : 1_atm;
+}
+
+timestamp_t dive::get_time_local() const
+{
+	return when;
+}
+
+void dive::set_time_local(timestamp_t local_time)
+{
+	when = local_time;
+}
+
+void dive::shift_time(timestamp_t delta)
+{
+	when += delta;
 }
 
 /* This returns the conversion factor that you need to multiply

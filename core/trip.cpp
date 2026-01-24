@@ -19,14 +19,14 @@ timestamp_t dive_trip::date() const
 {
 	if (dives.empty())
 		return 0;
-	return dives[0]->when;
+	return dives[0]->get_time_local();
 }
 
 static timestamp_t trip_enddate(const struct dive_trip &trip)
 {
 	if (trip.dives.empty())
 		return 0;
-	return trip.dives.back()->endtime();
+	return trip.dives.back()->endtime_local();
 }
 
 /* Add dive to a trip. Caller is responsible for removing dive
@@ -80,10 +80,10 @@ std::pair<dive_trip *, std::unique_ptr<dive_trip>> get_trip_for_new_dive(const s
 	/* Find dive that is within TRIP_THRESHOLD of current dive */
 	for (auto &d: log.dives) {
 		/* Check if we're past the range of possible dives */
-		if (d->when >= new_dive->when + TRIP_THRESHOLD)
+		if (d->get_time_local() >= new_dive->get_time_local() + TRIP_THRESHOLD)
 			break;
 
-		if (d->when + TRIP_THRESHOLD >= new_dive->when && d->divetrip)
+		if (d->get_time_local() + TRIP_THRESHOLD >= new_dive->get_time_local() && d->divetrip)
 			return { d->divetrip, nullptr }; /* Found a dive with trip in the range */
 	}
 
@@ -143,7 +143,7 @@ std::vector<dives_to_autogroup_result> get_dives_to_autogroup(const struct dive_
 		/* We found a dive, let's see if we have to allocate a new trip */
 		std::unique_ptr<dive_trip> allocated;
 		dive_trip *trip;
-		if (!lastdive || dive->when >= lastdive->when + TRIP_THRESHOLD) {
+		if (!lastdive || dive->get_time_local() >= lastdive->get_time_local() + TRIP_THRESHOLD) {
 			/* allocate new trip */
 			allocated = create_trip_from_dive(dive.get());
 			allocated->autogen = true;
@@ -159,7 +159,7 @@ std::vector<dives_to_autogroup_result> get_dives_to_autogroup(const struct dive_
 		for (to = i + 1; to < table.size(); to++) {
 			auto &dive = table[to];
 			if (dive->divetrip || dive->notrip ||
-			    dive->when >= lastdive->when + TRIP_THRESHOLD)
+			    dive->get_time_local() >= lastdive->get_time_local() + TRIP_THRESHOLD)
 				break;
 			if (trip->location.empty())
 				trip->location = dive->get_location();
@@ -226,7 +226,7 @@ bool dive_trip::is_single_day() const
 {
 	if (dives.size() <= 1)
 		return true;
-	return is_same_day(dives.front()->when, dives.back()->when);
+	return is_same_day(dives.front()->get_time_local(), dives.back()->get_time_local());
 }
 
 int dive_trip::shown_dives() const
