@@ -1061,8 +1061,7 @@ parsed:
 			// add a hundred years.
 			if (newDate.addYears(100) < QDateTime::currentDateTime().addYears(1))
 				newDate = newDate.addYears(100);
-			d->dcs[0].when = dateTimeToTimestamp(newDate);
-			d->set_time_local(d->dcs[0].when);
+			d->set_time_local_dc(dateTimeToTimestamp(newDate));
 			return true;
 		}
 		appendTextToLog("none of our parsing attempts worked for the date string");

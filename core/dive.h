@@ -97,6 +97,7 @@ public:
 	// Time is accessed by accessor functions, so that we might implement timezones later on.
 	timestamp_t get_time_local() const;
 	void set_time_local(timestamp_t local_time);
+	void set_time_local_dc(timestamp_t local_time);
 	void shift_time(timestamp_t delta);
 	timestamp_t endtime_local() const;	/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */

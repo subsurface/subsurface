@@ -2551,6 +2551,15 @@ void dive::set_time_local(timestamp_t local_time)
 	when = local_time;
 }
 
+/* Set time and also time of the first dc.
+ * Note that we are not very consistent about setting the time of the first dc.
+ */
+void dive::set_time_local_dc(timestamp_t local_time)
+{
+	when = local_time;
+	dcs[0].when = local_time;
+}
+
 void dive::shift_time(timestamp_t delta)
 {
 	when += delta;
