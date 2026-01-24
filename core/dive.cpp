@@ -2426,6 +2426,11 @@ timestamp_t dive::endtime_local() const
 	return get_time_local() + totaltime().seconds;
 }
 
+timestamp_t dive::endtime_utc() const
+{
+	return get_time_utc() + totaltime().seconds;
+}
+
 bool dive::time_during_dive_with_offset(timestamp_t local_time, timestamp_t offset) const
 {
 	timestamp_t start = get_time_local();
@@ -2539,6 +2544,11 @@ bool dive::cache_is_valid() const
 pressure_t dive::get_surface_pressure() const
 {
 	return surface_pressure.mbar > 0 ? surface_pressure : 1_atm;
+}
+
+datetime_t dive::get_time() const
+{
+	return when;
 }
 
 timestamp_t dive::get_time_local() const

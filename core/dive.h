@@ -95,12 +95,14 @@ public:
 	void fixup_dive_dc(struct divecomputer &dc);
 
 	// Time is accessed by accessor functions, so that we might implement timezones later on.
+	datetime_t get_time() const;
 	timestamp_t get_time_local() const;
 	timestamp_t get_time_utc() const;
 	void set_time_local(timestamp_t local_time);
 	void set_time_local_dc(timestamp_t local_time);
 	void shift_time(timestamp_t delta);
 	timestamp_t endtime_local() const;	/* maximum over divecomputers (with samples) */
+	timestamp_t endtime_utc() const;	/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
 	temperature_t dc_airtemp() const;	/* average over divecomputers */
 	temperature_t dc_watertemp() const;	/* average over divecomputers */

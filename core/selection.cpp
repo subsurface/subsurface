@@ -64,13 +64,13 @@ void dump_selection()
 
 // Get closest dive in selection, if possible a newer dive.
 // Supposes that selection is sorted
-static dive *closestInSelection(timestamp_t when, const std::vector<dive *> &selection)
+static dive *closestInSelection(datetime_t when, const std::vector<dive *> &selection)
 {
 	// Start from back until we get the first dive that is before
 	// the supposed-to-be selected dive. (Note: this mimics the
 	// old behavior when the current dive changed).
 	for (auto it = selection.rbegin(); it < selection.rend(); ++it) {
-		if ((*it)->get_time_local() > when && !(*it)->hidden_by_filter)
+		if ((*it)->get_time_utc() > when.in_utc() && !(*it)->hidden_by_filter)
 			return *it;
 	}
 
@@ -91,7 +91,7 @@ static dive *closestInSelection(timestamp_t when, const std::vector<dive *> &sel
 // If a current dive outside of the selection was set, add
 // it to the list of selected dives, so that we never end up
 // in a situation where we display a non-selected dive.
-static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &selection, QVector<dive *> &divesToSelect)
+static void setClosestCurrentDive(datetime_t when, const std::vector<dive *> &selection, QVector<dive *> &divesToSelect)
 {
 	if (dive *d = closestInSelection(when, selection)) {
 		current_dive = d;
@@ -147,7 +147,7 @@ QVector<dive *> setSelectionCore(const std::vector<dive *> &selection, dive *cur
 	current_dive = currentDive;
 	if (current_dive && !currentDive->selected) {
 		// Current not visible -> find a different dive.
-		setClosestCurrentDive(currentDive->get_time_local(), selection, divesToSelect);
+		setClosestCurrentDive(currentDive->get_time(), selection, divesToSelect);
 	}
 
 	return divesToSelect;
@@ -188,7 +188,7 @@ bool setSelectionKeepCurrent(const std::vector<dive *> &selection)
 
 	dive *newCurrent = current_dive;
 	if (current_dive && std::find(selection.begin(), selection.end(), current_dive) == selection.end())
-		newCurrent = closestInSelection(current_dive->get_time_local(), selection);
+		newCurrent = closestInSelection(current_dive->get_time(), selection);
 	setSelectionCore(selection, newCurrent);
 
 	return current_dive != oldCurrent;
