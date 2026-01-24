@@ -598,7 +598,7 @@ void DeleteDive::redoit()
 	// Deselect all dives and select dive that was close to the first deleted dive
 	dive *newCurrent = nullptr;
 	if (!divesToAdd.dives.empty()) {
-		timestamp_t when = divesToAdd.dives[0].dive->get_time_local();
+		datetime_t when = divesToAdd.dives[0].dive->get_time();
 		newCurrent = divelog.dives.find_next_visible_dive(when);
 	}
 	select_single_dive(newCurrent);
