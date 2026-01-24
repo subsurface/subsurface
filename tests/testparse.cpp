@@ -221,11 +221,8 @@ void TestParse::testParseHUDC()
 	 * CSV import uses time and date stamps relative to current
 	 * time, thus we need to use a static (random) timestamp
 	 */
-	if (!divelog.dives.empty()) {
-		struct dive &dive = *divelog.dives.back();
-		dive.set_time_local(1255152761);
-		dive.dcs[0].when = 1255152761;
-	}
+	if (!divelog.dives.empty())
+		divelog.dives.back()->set_time_local_dc(1255152761);
 
 	QCOMPARE(save_dives("./testhudcout.ssrf"), 0);
 	FILE_COMPARE("./testhudcout.ssrf",
