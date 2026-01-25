@@ -4,7 +4,11 @@
 #include "qthelper.h"
 #include "errorhelper.h"
 #include "settings/qPrefCloudStorage.h"
+#ifdef SUBSURFACE_CLI
+#include <QCoreApplication>
+#else
 #include <QApplication>
+#endif
 
 CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) :
 	QObject(parent),
