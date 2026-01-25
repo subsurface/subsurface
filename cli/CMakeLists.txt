@@ -16,9 +16,21 @@ set(CLI_HDRS
 	json_serializer.h
 )
 
-add_executable(subsurface-cli ${CLI_SRCS} ${CLI_HDRS})
+# Profile rendering needs Qt resources for event icons
+if(USINGQT6)
+	qt_add_resources(CLI_RESOURCES ${CMAKE_SOURCE_DIR}/profile.qrc)
+else()
+	qt5_add_resources(CLI_RESOURCES ${CMAKE_SOURCE_DIR}/profile.qrc)
+endif()
+
+add_executable(subsurface-cli ${CLI_SRCS} ${CLI_HDRS} ${CLI_RESOURCES})
 
 target_link_libraries(subsurface-cli
+	# backend_shared and profile have circular dependencies, so list
+	# backend_shared twice for GNU ld's single-pass symbol resolution
+	subsurface_backend_shared
+	subsurface_profile
+	subsurface_backend_shared
 	subsurface_corelib
 	${QT_LIBRARIES}
 	${LIBDIVECOMPUTER_LIBRARIES}

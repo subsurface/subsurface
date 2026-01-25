@@ -2,6 +2,7 @@
 #include "commands.h"
 #include "dive_ref.h"
 #include "json_serializer.h"
+#include "backend-shared/exportfuncs.h"
 #include "core/dive.h"
 #include "core/divelog.h"
 #include "core/file.h"
@@ -128,18 +129,53 @@ int cmdGetTrip(const CliConfig &config, const QString &tripRef)
 
 int cmdGetProfile(const CliConfig &config, const QString &diveRef, int dcIndex, int width, int height)
 {
-	Q_UNUSED(config);
-	Q_UNUSED(diveRef);
+	// TODO: dc_number is still hardcoded to 0 in exportOneProfile's draw() call.
+	// To support dcIndex, the export API would need further changes.
 	Q_UNUSED(dcIndex);
-	Q_UNUSED(width);
-	Q_UNUSED(height);
 
-	// Profile rendering is not yet implemented in the CLI tool.
-	// This requires refactoring the profile-widget library to separate
-	// the rendering code from the interactive desktop widget code.
-	outputJson(errorResponse("NOT_IMPLEMENTED",
-		"Profile rendering is not yet available in the CLI tool"));
-	return CMD_ERROR_INTERNAL;
+	if (diveRef.isEmpty()) {
+		outputJson(errorResponse("INVALID_ARGS", "dive-ref parameter is required"));
+		return CMD_ERROR_INVALID_ARGS;
+	}
+
+	// Load dive data
+	if (parse_file(config.repo_path.toStdString().c_str(), &divelog) < 0) {
+		// Security: Don't leak internal paths in error messages
+		outputJson(errorResponse("REPO_NOT_FOUND", "Failed to load dive data"));
+		return CMD_ERROR_IO;
+	}
+
+	// Find the dive
+	struct dive *d = findDiveByRef(diveRef);
+	if (!d) {
+		// Security: Don't echo back user input verbatim (could be used for XSS if displayed)
+		outputJson(errorResponse("NOT_FOUND", "Dive not found"));
+		return CMD_ERROR_NOT_FOUND;
+	}
+	// let's get all the indirect data populated
+	d->fixup_dive();
+
+	// Create a secure temp directory for the profile image
+	QString tempDir = createSecureTempDir(config);
+	if (tempDir.isEmpty()) {
+		outputJson(errorResponse("TEMP_DIR_FAILED", "Failed to create temp directory"));
+		return CMD_ERROR_IO;
+	}
+
+	QString filename = tempDir + "/profile.png";
+
+	// Compute dpr from requested width relative to the base logical width (800)
+	double dpr = width / 800.0;
+	auto profileScene = getPrintProfile(dpr);
+	exportOneProfile(*profileScene, *d, filename, false, width, height);
+
+	// Output result JSON with the file path
+	QJsonObject result;
+	result["status"] = "success";
+	result["profile_path"] = filename;
+	outputJson(result);
+
+	return CMD_SUCCESS;
 }
 
 int cmdGetStats(const CliConfig &config)
