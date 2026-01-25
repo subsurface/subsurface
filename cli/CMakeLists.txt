@@ -22,14 +22,11 @@ target_link_libraries(subsurface-cli
 	subsurface_corelib
 	${QT_LIBRARIES}
 	${LIBDIVECOMPUTER_LIBRARIES}
-	${LIBGIT2_LIBRARIES}
-	${LIBXSLT_LIBRARIES}
-	${LIBXML_LIBRARIES}
-	${LIBMTP_LIBRARIES}
-	${LIBUSB_LIBRARIES}
 	${LIBZIP_LIBRARIES}
-	${HID_LIB}
-	-lsqlite3 -lz -lxslt -lxml2 -lgit2
+	-lsqlite3
+	-lxslt
+	-lxml2
+	-lgit2
 )
 
 install(TARGETS subsurface-cli DESTINATION bin)
