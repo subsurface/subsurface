@@ -17,180 +17,52 @@ namespace {
 }
 BTDiscovery *BTDiscovery::m_instance = NULL;
 
-struct modelPattern {
-	uint16_t    model;
-	const char *vendor;
-	const char *product;
-};
-static struct modelPattern model[] = {
-	{ 0x4552, "Oceanic", "Pro Plus X" },
-	{ 0x455A, "Aqualung", "i750TC" },
-	{ 0x4647, "Sherwood", "Sage" },
-	{ 0x4648, "Aqualung", "i300C" },
-	{ 0x4649, "Aqualung", "i200C" },
-	{ 0x4749, "Aqualung", "i200Cv2" },
-	{ 0x4651, "Aqualung", "i770R" },
-	{ 0x4652, "Aqualung", "i550C" },
-	{ 0x4653, "Oceanic", "Geo 4.0" },
-	{ 0x4654, "Oceanic", "Veo 4.0" },
-	{ 0x4655, "Sherwood", "Wisdom 4" },
-	{ 0x4656, "Oceanic", "Pro Plus 4" },
-	{ 0x4741, "Apeks", "DSX" },
-	{ 0x4743, "Aqualung", "i470TC" },
-	{ 0x4744, "Aqualung", "i330R" },
-};
-
-// The Cressi BT interfaces for Goa-style computers advertise names with pattern:
-//  <model number>_<4 digit lowercase hex serial number>
-// The source of truth for model numbers is in libdivecomputer/src/descriptor.c
-static QRegularExpression cressiBTNamePattern("^([1-9][0-9]?)_[0-9a-f]{4}$");
-static QMap<int, QString> cressiModelNumToProduct{
-	{ 1, "Cartesio"},
-	{ 2, "Goa"},
-	{ 3, "Leonardo 2.0"},
-	{ 4, "Donatello"},
-        { 5, "Michelangelo"},
-	{ 9, "Neon"},
-	{10, "Nepto"}
-};
-
-struct namePattern {
-	const char *prefix;
-	const char *vendor;
-	const char *product;
-};
-// search is in order of this array, and as a prefix search, so more specific names
-// should be added before less specific names (i.e. "Perdix 2" before "Perdix")
-static struct namePattern name[] = {
-	// Shearwater dive computers
-	{ "Predator", "Shearwater", "Predator" },
-	{ "Perdix 2", "Shearwater", "Perdix 2"},
-	{ "Petrel 3", "Shearwater", "Petrel 3"},
-	// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device
-	// but only the Petrel 2 is listed as available dive computer on iOS (which requires BLE support)
-	// so always pick the "Petrel 2" as product when seeing a Petrel
-	{ "Petrel", "Shearwater", "Petrel 2" },
-	{ "Perdix", "Shearwater", "Perdix" },
-	{ "Teric", "Shearwater", "Teric" },
-	{ "Peregrine", "Shearwater", "Peregrine" },
-	{ "NERD 2", "Shearwater", "NERD 2" },
-	{ "NERD", "Shearwater", "NERD" }, // order is important, test for the more specific one first
-	{ "Predator", "Shearwater", "Predator" },
-	{ "Tern", "Shearwater", "Tern" },
-	// Suunto dive computers
-	{ "EON Steel", "Suunto", "EON Steel" },
-	{ "EON Core", "Suunto", "EON Core" },
-	{ "Suunto D5", "Suunto", "D5" },
-	// Scubapro dive computers
-	{ "G2", "Scubapro", "G2" },
-	{ "HUD", "Scubapro", "G2 HUD" },
-	{ "G3", "Scubapro", "G3" },
-	{ "Aladin", "Scubapro", "Aladin Sport Matrix" },
-	{ "A1", "Scubapro", "Aladin A1" },
-	{ "A2", "Scubapro", "Aladin A2" },
-	{ "Luna 2.0 AI", "Scubapro", "Luna 2.0 AI" },
-	{ "Luna 2.0", "Scubapro", "Luna 2.0" },
-	// Mares dive computers
-	{ "Mares Genius", "Mares", "Genius" },
-	{ "Sirius", "Mares", "Sirius" },
-	{ "Mares", "Mares", "Quad" }, // we actually don't know and just pick a common one - user needs to fix in UI
-	// Cress dive computers
-	{ "CARESIO_", "Cressi", "Cartesio" },
-	{ "GOA_", "Cressi", "Goa" },
-	// Deepblu dive computesr
-	{ "COSMIQ", "Deepblu", "Cosmiq+" },
-	// Oceans dive computers
-	{ "S1", "Oceans", "S1" },
-	// McLean dive computers
-	{ "McLean Extreme", "McLean", "Extreme" },
-	// Tecdiving dive computers
-	{ "DiveComputer", "Tecdiving", "DiveComputer.eu" }
-};
-
-static dc_descriptor_t *getDeviceType(QString btName)
+static dc_descriptor_t *getDeviceType(QString btName, int transports)
 // central function to convert a BT name to a Subsurface known vendor/model pair
 {
-	QString vendor, product;
+	dc_status_t status = DC_STATUS_SUCCESS;
+	dc_descriptor_t *result = NULL;
+	const QByteArray tmp = btName.toLocal8Bit();
+	const char *namestr = tmp.constData();
 
-	if (btName.startsWith("OSTC")) {
-		vendor = "Heinrichs Weikamp";
-		if (btName.mid(4,1) == "3") product = "OSTC Plus";
-		else if (btName.mid(4,2) == "s#") product = "OSTC Sport";
-		else if (btName.mid(4,2) == "s ") product = "OSTC Sport";
-		else if (btName.mid(4,2) == "4-" || btName.mid(4,2) == "5-") product = "OSTC 4/5";
-		else if (btName.mid(4,2) == "2-") product = "OSTC 2N";
-		else if (btName.mid(4,2) == "+ ") product = "OSTC 2";
-		// all BT/BLE enabled OSTCs are HW_FAMILY_OSTC_3, so when we do not know,
-		// just use a default product that allows the code to download from the
-		// user's dive computer
-		else product = "OSTC 2";
-	} else if (btName.contains(QRegularExpression("^DS\\d{6}"))) {
-		// The Ratio bluetooth name looks like the Pelagic ones,
-		// but that seems to be just happenstance.
-		vendor = "Ratio";
-		product = "iX3M 2021 GPS Easy"; // we don't know which of the Bluetooth models, so set one that supports BLE
-	} else if (btName.contains(QRegularExpression("^IX5M\\d{6}")) ||
-		btName.contains(QRegularExpression("^RATIO-\\d{6}"))) {
-		// The 2021 iX3M models (square buttons) report as iX5M,
-		// eventhough the physical model states iX3M.
-		vendor = "Ratio";
-		product = "iX3M 2021 GPS Easy"; // we don't know which of the Bluetooth models, so set one that supports BLE
-	} else if (btName.contains(QRegularExpression("^[A-Z]{2}\\d{6}"))) {
-		// try the Pelagic/Aqualung name patterns
-		// the source of truth for this data is in libdivecomputer/src/descriptor.c
-		// we'd prefer to use the filter functions there but current design makes that really challenging
-		// The Pelagic dive computers (generally branded as Oceanic, Aqualung, or Sherwood)
-		// show up with a two-byte model code followed by six bytes of serial
-		// number. The model code matches the hex model (so "FQ" is 0x4651,
-		// where 'F' is 46h and 'Q' is 51h in ASCII).
-		for (uint16_t i = 0; i < sizeof(model) / sizeof(struct modelPattern); i++) {
-			QString pattern = QString("^%1%2\\d{6}$").arg(QChar(model[i].model >> 8)).arg(QChar(model[i].model & 0xFF));
-			if (btName.contains(QRegularExpression(pattern))) {
-				vendor = model[i].vendor;
-				product = model[i].product;
+	dc_iterator_t *iterator = NULL;
+	status = dc_descriptor_iterator_new (&iterator, NULL);
+	if (status != DC_STATUS_SUCCESS) {
+		report_error ("Error creating the device descriptor iterator.");
+		return NULL;
+	}
+
+	dc_descriptor_t *descriptor = NULL;
+	while ((status = dc_iterator_next (iterator, &descriptor)) == DC_STATUS_SUCCESS) {
+		if (transports & DC_TRANSPORT_BLE) {
+			if (dc_descriptor_filter(descriptor, DC_TRANSPORT_BLE, namestr)) {
+				result = descriptor;
 				break;
 			}
 		}
-	} else if (auto m = cressiBTNamePattern.match(btName); m.hasMatch()) {
-		auto num = m.captured(1);
-		product = cressiModelNumToProduct.value(num.toInt());
-		if (!product.isEmpty()) {
-			vendor = "Cressi";
-		}
-	} else { // finally try all the string prefix based ones
-		for (uint16_t i = 0; i < sizeof(name) / sizeof(struct namePattern); i++) {
-			if (btName.startsWith(name[i].prefix)) {
-				vendor = name[i].vendor;
-				product = name[i].product;
+		if (transports & DC_TRANSPORT_BLUETOOTH) {
+			if (dc_descriptor_filter(descriptor, DC_TRANSPORT_BLUETOOTH, namestr)) {
+				result = descriptor;
 				break;
 			}
 		}
+
+		dc_descriptor_free (descriptor);
 	}
 
-	// check if we found a known dive computer
-	if (!vendor.isEmpty() && !product.isEmpty()) {
-		dc_descriptor_t *lookup = descriptorLookup.value(vendor.toLower() + product.toLower());
-		if (!lookup) {
-			// the Ratio dive computers come in BT only or BLE only and we can't tell
-			// which just from the name; so while this is fairly unlikely, the user
-			// could be on an older computer / device that only supports BT and no BLE
-			// and giving the BLE only name might therefore not work, so try the other
-			// one just in case
-			if (vendor == "Ratio" && product == "iX3M 2021 GPS Easy") {
-				product = "iX3M GPS Easy"; // this one is BT only
-				lookup = descriptorLookup.value(vendor.toLower() + product.toLower());
-			}
-			if (!lookup) // still nothing?
-				qWarning("known dive computer %s not found in descriptorLookup", qPrintable(QString(vendor + product)));
-		}
-		return lookup;
+	dc_iterator_free (iterator);
+
+	if (status != DC_STATUS_SUCCESS && status != DC_STATUS_DONE) {
+		report_error ("Error iterating the device descriptors.");
+		return NULL;
 	}
-	return nullptr;
+
+	return result;
 }
 
 bool matchesKnownDiveComputerNames(QString btName)
 {
-	return getDeviceType(btName) != nullptr;
+	return getDeviceType(btName, DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE) != nullptr;
 }
 
 BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
@@ -347,8 +219,11 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device, bool from
 {
 	btVendorProduct btVP;
 
+	dc_transport_t transport = device.address.startsWith("LE:") ?
+		DC_TRANSPORT_BLE : DC_TRANSPORT_BLUETOOTH;
+
 	QString newDevice;
-	dc_descriptor_t *newDC = getDeviceType(device.name);
+	dc_descriptor_t *newDC = getDeviceType(device.name, transport);
 	if (newDC)
 		newDevice = dc_descriptor_get_product(newDC);
 	else
