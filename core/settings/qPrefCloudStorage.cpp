@@ -29,10 +29,9 @@ HANDLE_PREFERENCE_BOOL(CloudStorage, "cloud_auto_sync", cloud_auto_sync);
 void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 {
 	if (value.toStdString() != prefs.cloud_base_url) {
-		// only free and set if not default
-		if (prefs.cloud_base_url != default_prefs.cloud_base_url)
-			prefs.cloud_base_url = value.toStdString();
-
+		prefs.cloud_base_url = value.toStdString();
+		// This doesn't save the value to persistent storage.
+		// Call store_cloud_base_url (as well) if you need that.
 		emit instance()->cloud_base_urlChanged(value);
 	}
 }
