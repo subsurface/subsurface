@@ -30,15 +30,21 @@ static QJsonObject errorResponse(const QString &code, const QString &message)
 
 int cmdListDives(const CliConfig &config, int start, int count)
 {
-	// Validate parameters
+	// Security: Validate and clamp pagination parameters
+	// Prevent negative values and unreasonably large values that could cause issues
+	constexpr int MAX_START = 100000;  // Reasonable upper bound for dive collections
+	constexpr int MAX_COUNT = 500;
+	constexpr int DEFAULT_COUNT = 50;
+
 	if (start < 0) start = 0;
-	if (count <= 0) count = 50;
-	if (count > 500) count = 500;
+	if (start > MAX_START) start = MAX_START;
+	if (count <= 0) count = DEFAULT_COUNT;
+	if (count > MAX_COUNT) count = MAX_COUNT;
 
 	// Load dive data
 	if (parse_file(config.repo_path.toStdString().c_str(), &divelog) < 0) {
-		outputJson(errorResponse("REPO_NOT_FOUND",
-			QString("Failed to load dive data from: %1").arg(config.repo_path)));
+		// Security: Don't leak internal paths in error messages
+		outputJson(errorResponse("REPO_NOT_FOUND", "Failed to load dive data"));
 		return CMD_ERROR_IO;
 	}
 
@@ -58,16 +64,16 @@ int cmdGetDive(const CliConfig &config, const QString &diveRef)
 
 	// Load dive data
 	if (parse_file(config.repo_path.toStdString().c_str(), &divelog) < 0) {
-		outputJson(errorResponse("REPO_NOT_FOUND",
-			QString("Failed to load dive data from: %1").arg(config.repo_path)));
+		// Security: Don't leak internal paths in error messages
+		outputJson(errorResponse("REPO_NOT_FOUND", "Failed to load dive data"));
 		return CMD_ERROR_IO;
 	}
 
 	// Find the dive
 	struct dive *d = findDiveByRef(diveRef);
 	if (!d) {
-		outputJson(errorResponse("NOT_FOUND",
-			QString("Dive not found: %1").arg(diveRef)));
+		// Security: Don't echo back user input verbatim (could be used for XSS if displayed)
+		outputJson(errorResponse("NOT_FOUND", "Dive not found"));
 		return CMD_ERROR_NOT_FOUND;
 	}
 	// let's get all the indirect data populated
@@ -91,16 +97,16 @@ int cmdGetTrip(const CliConfig &config, const QString &tripRef)
 
 	// Load dive data
 	if (parse_file(config.repo_path.toStdString().c_str(), &divelog) < 0) {
-		outputJson(errorResponse("REPO_NOT_FOUND",
-			QString("Failed to load dive data from: %1").arg(config.repo_path)));
+		// Security: Don't leak internal paths in error messages
+		outputJson(errorResponse("REPO_NOT_FOUND", "Failed to load dive data"));
 		return CMD_ERROR_IO;
 	}
 
 	// Find the trip
 	struct dive_trip *trip = findTripByRef(tripRef);
 	if (!trip) {
-		outputJson(errorResponse("NOT_FOUND",
-			QString("Trip not found: %1").arg(tripRef)));
+		// Security: Don't echo back user input verbatim
+		outputJson(errorResponse("NOT_FOUND", "Trip not found"));
 		return CMD_ERROR_NOT_FOUND;
 	}
 
@@ -140,8 +146,8 @@ int cmdGetStats(const CliConfig &config)
 {
 	// Load dive data
 	if (parse_file(config.repo_path.toStdString().c_str(), &divelog) < 0) {
-		outputJson(errorResponse("REPO_NOT_FOUND",
-			QString("Failed to load dive data from: %1").arg(config.repo_path)));
+		// Security: Don't leak internal paths in error messages
+		outputJson(errorResponse("REPO_NOT_FOUND", "Failed to load dive data"));
 		return CMD_ERROR_IO;
 	}
 
