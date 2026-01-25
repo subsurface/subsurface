@@ -82,23 +82,36 @@ def validate_email(email):
     return EMAIL_PATTERN.match(email) is not None
 
 
+class AuthenticationRequired(Exception):
+    """Raised when authentication is required but user is not logged in."""
+    pass
+
+
+@app.errorhandler(AuthenticationRequired)
+def handle_auth_required(e):
+    """Redirect to login page when authentication is required."""
+    return redirect(f"/login?next={request.path}")
+
+
 def get_authenticated_user():
-    """Get the authenticated user from headers or dev mode."""
-    if app.config.get('DEV_MODE'):
-        return app.config.get('DEV_USER', 'dev@localhost')
+    """Get the authenticated user from Flask-Login session or dev mode.
 
-    # Security: In production, verify request came through trusted proxy
-    # Check for a secret header that only the proxy can set
-    trusted_proxy_secret = app.config.get('TRUSTED_PROXY_SECRET')
-    if trusted_proxy_secret:
-        proxy_secret = request.headers.get('X-Proxy-Secret')
-        if proxy_secret != trusted_proxy_secret:
-            abort(403, description="Request must come through trusted proxy")
+    Authentication is handled by the flask-auth-proxy app on port 5000.
+    Both apps share the same SECRET_KEY so they can read each other's sessions.
+    Flask-Login stores the user ID in session['_user_id'].
+    """
+    if app.config.get("DEV_MODE"):
+        return app.config.get("DEV_USER", "dev@localhost")
 
-    auth_header = app.config.get('AUTH_HEADER', 'X-Authenticated-User')
-    user = request.headers.get(auth_header)
+    # Check for Flask-Login session (shared with flask-auth-proxy)
+    # Flask-Login stores the user ID in '_user_id' key
+    user = session.get("_user_id")
     if not user:
-        abort(401, description="Authentication required")
+        # Not authenticated
+        # Use abort with 401 for API requests, custom exception for web pages
+        if request.path.startswith("/api/"):
+            abort(401, description="Authentication required")
+        raise AuthenticationRequired()
 
     # Security: Validate user format to prevent injection attacks
     if not validate_email(user):
