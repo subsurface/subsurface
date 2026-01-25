@@ -12,14 +12,16 @@
 #include "profile-widget/diveeventitem.h"
 #include "profile-widget/divetextitem.h"
 #include "profile-widget/divetooltipitem.h"
+#if defined(SUBSURFACE_DESKTOP)
 #include "profile-widget/divehandler.h"
+#endif
 #include "core/planner.h"
 #include "profile-widget/ruleritem.h"
 #include "core/pref.h"
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/models.h"
 #include "core/errorhelper.h"
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURACE_DESKTOP)
 #include "desktop-widgets/simplewidgets.h"
 #include "commands/command.h"
 #include "core/gettextfromc.h"
@@ -54,14 +56,14 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 	plannerModel(plannerModelIn),
 	zoomLevel(0),
 	zoomedPosition(0.0),
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	toolTipItem(new ToolTipItem()),
 #endif
 	d(nullptr),
 	dc(0),
 	empty(true),
 	panning(false),
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	mouseFollowerVertical(new DiveLineItem()),
 	mouseFollowerHorizontal(new DiveLineItem()),
 	rulerItem(new RulerItem2()),
@@ -72,7 +74,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 	setupItemOnScene();
 	addItemsToScene();
 	scene()->installEventFilter(this);
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	setAcceptDrops(true);
 
 	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged, this, &ProfileWidget2::updateThumbnail, Qt::QueuedConnection);
@@ -84,7 +86,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &ProfileWidget2::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::deviceEdited, this, &ProfileWidget2::replot);
 	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, &ProfileWidget2::diveComputerEdited);
-#endif // SUBSURFACE_MOBILE
+#endif // SUBSURFACE_DESKTOP
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
 	QTableView *diveDepthTableView = new QTableView();
@@ -124,7 +126,7 @@ ProfileWidget2::~ProfileWidget2()
 {
 }
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 void ProfileWidget2::keyPressEvent(QKeyEvent *e)
 {
 	switch (e->key()) {
@@ -136,11 +138,11 @@ void ProfileWidget2::keyPressEvent(QKeyEvent *e)
 	}
 	QGraphicsView::keyPressEvent(e);
 }
-#endif // SUBSURFACE_MOBILE
+#endif // SUBSURFACE_DESKTOP
 
 void ProfileWidget2::addItemsToScene()
 {
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	scene()->addItem(toolTipItem);
 	scene()->addItem(rulerItem);
 	scene()->addItem(rulerItem->sourceNode());
@@ -156,7 +158,7 @@ void ProfileWidget2::addItemsToScene()
 
 void ProfileWidget2::setupItemOnScene()
 {
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	toolTipItem->setZValue(9998);
 	toolTipItem->setTimeAxis(profileScene->timeAxis);
 	rulerItem->setZValue(9997);
@@ -220,7 +222,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 			       flags & RenderFlags::DontRecalculatePlotInfo,
 			       shouldCalculateMax, zoom, zoomedPosition);
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	toolTipItem->setVisible(prefs.infobox);
 	toolTipItem->setPlotInfo(profileScene->plotInfo);
 	rulerItem->setVisible(prefs.rulergraph && currentState != PLAN && currentState != EDIT);
@@ -263,7 +265,7 @@ void ProfileWidget2::actionRequestedReplot(bool)
 {
 	/* this is called via infoboxChanged, therefore in currentState==PROFILE
 	   we have to set the mouseFollowerVertical to visible (if prefs.infobox) */
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	if (currentState == PROFILE) {
 		mouseFollowerHorizontal->setVisible(false);
 		if (!prefs.infobox)
@@ -287,7 +289,7 @@ void ProfileWidget2::resizeEvent(QResizeEvent *event)
 	plotDive(d, dc, RenderFlags::Instant | RenderFlags::DontRecalculatePlotInfo); // disable animation on resize events
 }
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 void ProfileWidget2::mousePressEvent(QMouseEvent *event)
 {
 	QGraphicsView::mousePressEvent(event);
@@ -337,7 +339,7 @@ void ProfileWidget2::setZoom(int level)
 	plotDive(d, dc, RenderFlags::DontRecalculatePlotInfo);
 }
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 void ProfileWidget2::wheelEvent(QWheelEvent *event)
 {
 	if (!d)
@@ -430,12 +432,14 @@ static void hideAll(const T &container)
 void ProfileWidget2::clear()
 {
 	currentState = INIT;
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	clearPictures();
 #endif
 	disconnectPlannerModel();
 	profileScene->clear();
+#if defined(SUBSURFACE_DESKTOP)
 	handles.clear();
+#endif
 	gases.clear();
 	empty = true;
 	d = nullptr;
@@ -455,9 +459,9 @@ void ProfileWidget2::setProfileState()
 	/* when infobox is active in currentState==PROFILE
 	   or, when switching to currentState==PROFILE
 	   the mouseFollowers are needed to be set.
-	   However, in currentState==PROFILE on toggling infobox, 
+	   However, in currentState==PROFILE on toggling infobox,
 	   this needs to be set too!  */
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	mouseFollowerHorizontal->setVisible(false);
 	if (!prefs.infobox)
 		mouseFollowerVertical->setVisible(false);
@@ -472,17 +476,17 @@ void ProfileWidget2::setProfileState()
 	currentState = PROFILE;
 	setBackgroundBrush(getColor(::BACKGROUND, profileScene->isGrayscale));
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	toolTipItem->readPos();
 	toolTipItem->setVisible(prefs.infobox);
 	rulerItem->setVisible(prefs.rulergraph);
+	handles.clear();
 #endif
 
-	handles.clear();
 	gases.clear();
 }
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 void ProfileWidget2::setEditState(const dive *d, int dc)
 {
 	if (currentState == EDIT)
@@ -538,7 +542,7 @@ struct int ProfileWidget2::getEntryFromPos(QPointF pos)
 }
 #endif
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 static bool isDiveTextItem(const QGraphicsItem *item, const DiveTextItem *textItem)
 {
 	while (item) {
@@ -848,7 +852,7 @@ void ProfileWidget2::connectPlannerModel()
 
 void ProfileWidget2::disconnectPlannerModel()
 {
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	if (plannerModel) {
 		disconnect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
 		disconnect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
@@ -861,6 +865,7 @@ void ProfileWidget2::disconnectPlannerModel()
 #endif
 }
 
+#if defined(SUBSURFACE_DESKTOP)
 int ProfileWidget2::handleIndex(const DiveHandler *h) const
 {
 	auto it = std::find_if(handles.begin(), handles.end(),
@@ -868,8 +873,9 @@ int ProfileWidget2::handleIndex(const DiveHandler *h) const
 			       { return h == h2.get(); });
 	return it != handles.end() ? it - handles.begin() : -1;
 }
+#endif
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 
 DiveHandler *ProfileWidget2::createHandle()
 {
@@ -1324,7 +1330,7 @@ void ProfileWidget2::profileChanged(dive *dive)
 
 void ProfileWidget2::dropEvent(QDropEvent *event)
 {
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	if (event->mimeData()->hasFormat("application/x-subsurfaceimagedrop") && d) {
 		QByteArray itemData = event->mimeData()->data("application/x-subsurfaceimagedrop");
 		QDataStream dataStream(&itemData, QIODevice::ReadOnly);
@@ -1351,7 +1357,7 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 #endif
 }
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 void ProfileWidget2::pictureOffsetChanged(dive *dIn, QString filenameIn, offset_t offset)
 {
 	if (dIn != d)

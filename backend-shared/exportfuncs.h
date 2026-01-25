@@ -14,9 +14,10 @@ struct ExportCallback {
 	virtual bool canceled() const;
 };
 
-void exportProfile(QString filename, bool selected_only, ExportCallback &cb, bool diveinfo, int width, int height);
-void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename, bool diveinfo, int width, int height);
-std::unique_ptr<ProfileScene> getPrintProfile();
+void exportOneProfile(ProfileScene &profile, const struct dive &dive, const QString &filename, bool diveinfo,
+		      int width = 3200, int height = 2400);
+std::unique_ptr<ProfileScene> getPrintProfile(double dpr = 4.0);
+void exportProfile(QString filename, bool selected_only, ExportCallback &cb, bool diveinfo);
 void export_TeX(const char *filename, bool selected_only, bool plain, ExportCallback &cb);
 void export_depths(const char *filename, bool selected_only);
 std::vector<const dive_site *> getDiveSitesToExport(bool selectedOnly);
