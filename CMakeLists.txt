@@ -163,7 +163,7 @@ else()
 endif()
 pkg_config_library(LIBZIP libzip REQUIRED)
 
-if(NOT ANDROID)
+if(NOT ANDROID AND NOT SUBSURFACE_TARGET_EXECUTABLE STREQUAL "CLI")
 	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		pkg_config_library(BLUEZ bluez REQUIRED)
 	endif()
