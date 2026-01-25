@@ -93,6 +93,11 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
+	// Security: Define limits for numeric parameters
+	constexpr int MIN_DIMENSION = 100;
+	constexpr int MAX_DIMENSION = 4096;
+	constexpr int MAX_DC_INDEX = 100;
+
 	// Parse command-specific options
 	int start = 0;
 	int count = 50;
@@ -112,11 +117,11 @@ int main(int argc, char *argv[])
 		} else if (arg.startsWith("--trip-ref=")) {
 			tripRef = arg.mid(11);
 		} else if (arg.startsWith("--dc-index=")) {
-			dcIndex = arg.mid(11).toInt();
+			dcIndex = qBound(0, arg.mid(11).toInt(), MAX_DC_INDEX);
 		} else if (arg.startsWith("--width=")) {
-			width = arg.mid(8).toInt();
+			width = qBound(MIN_DIMENSION, arg.mid(8).toInt(), MAX_DIMENSION);
 		} else if (arg.startsWith("--height=")) {
-			height = arg.mid(9).toInt();
+			height = qBound(MIN_DIMENSION, arg.mid(9).toInt(), MAX_DIMENSION);
 		}
 	}
 
