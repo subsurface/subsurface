@@ -133,7 +133,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Duration (h:mm)</string>
+            <string>Duration (h:mm(:ss))</string>
            </property>
           <property name="isHeader" stdset="0">
            <bool>true</bool>
