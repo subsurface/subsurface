@@ -65,6 +65,11 @@ struct dive *findDiveByRef(const QString &diveRef)
 	if (diveRef.isEmpty())
 		return nullptr;
 
+	// Validate dive ref length - should be exactly 24 chars (yyyy/mm/dd-DDD-hh=mm=ss)
+	// Allow some slack for old colon format, but reject anything too long
+	if (diveRef.length() > 30)
+		return nullptr;
+
 	// Parse the dive reference: yyyy/mm/dd-DDD-hh=mm=ss
 	// Also support old format with colons: yyyy/mm/dd-DDD-hh:mm:ss
 	static QRegularExpression re(R"((\d{4})/(\d{2})/(\d{2})-\w{3}-(\d{2})[=:](\d{2})[=:](\d{2}))");
@@ -104,8 +109,14 @@ struct dive_trip *findTripByRef(const QString &tripRef)
 	if (tripRef.isEmpty())
 		return nullptr;
 
+	// Validate trip ref length to prevent DoS with huge strings
+	if (tripRef.length() > 100)
+		return nullptr;
+
 	// Parse the trip reference: yyyy/mm/dd-Location
-	static QRegularExpression re(R"((\d{4})/(\d{2})/(\d{2})-(.+))");
+	// Location is restricted to alphanumeric, spaces, and hyphens (max 50 chars)
+	// This prevents path traversal and injection attacks
+	static QRegularExpression re(R"((\d{4})/(\d{2})/(\d{2})-([\w\s-]{1,50}))");
 	QRegularExpressionMatch match = re.match(tripRef);
 
 	if (!match.hasMatch())
