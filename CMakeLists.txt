@@ -61,8 +61,8 @@ option(BUILD_TESTS "Build the tests" OFF)
 # Option whether we should try to build against Qt6, if it is available
 option(BUILD_WITH_QT6 "try to build against Qt6 (incomplete)" OFF)
 
-SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable, MobileExecutable, or DownloaderExecutable")
-LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable" "DownloaderExecutable")
+SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable, MobileExecutable, CLI or DownloaderExecutable")
+LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable" "DownloaderExecutable" "CLI")
 SET_PROPERTY(CACHE SUBSURFACE_TARGET_EXECUTABLE PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_EXECUTABLES})
 
 #verify if Platform is correct and warn on wxit with example.
@@ -412,6 +412,13 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	set(LIBRAW_SUPPORT OFF)
 	add_definitions(-DSUBSURFACE_DOWNLOADER)
 	message(STATUS "building the embedded Subsurface-downloader app")
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
+	set(SUBSURFACE_TARGET subsurface-cli)
+	set(BTSUPPORT OFF)
+	set(LIBRAW_SUPPORT OFF)
+	set(MAPSUPPORT OFF)
+	add_definitions(-DSUBSURFACE_CLI)
+	message(STATUS "building the subsurface-cli tool")
 endif()
 
 if(ANDROID)
@@ -509,6 +516,11 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	# let's pick a version that's not ancient
 	find_package(Qt${QT_VERSION_MAJOR} 5.11 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
 	set(BUILD_TESTS OFF)
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
+	# CLI needs these Qt components for subsurface_corelib dependencies
+	set(QT_FIND_COMPONENTS Core Concurrent Gui Network Widgets)
+	find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
+	set(BUILD_TESTS OFF)
 endif()
 
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
@@ -520,7 +532,7 @@ endif()
 
 #set up the subsurface_link_libraries variable
 LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES} ${LIBMTP_LIBRARIES})
-if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable" AND NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 	if(USINGQT6)
 		if(MAPSUPPORT)
 			qt_add_resources(SUBSURFACE_RESOURCES map-widget/qml/map-widget.qrc)
@@ -539,13 +551,15 @@ if(DEFINED ENV{LGTM_SRC})
 endif()
 
 # include translations
-if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable" AND NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 add_subdirectory(translations)
 endif()
 add_subdirectory(core)
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 add_subdirectory(qt-models)
 add_subdirectory(commands)
-if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+endif()
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable" AND NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 add_subdirectory(profile-widget)
 if(MAPSUPPORT)
 add_subdirectory(map-widget)
@@ -553,10 +567,14 @@ endif()
 add_subdirectory(mobile-widgets)
 add_subdirectory(stats)
 endif()
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 add_subdirectory(backend-shared)
+endif()
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
+endif()
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 	add_subdirectory(cli)
 endif()
 
@@ -658,6 +676,9 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
+	# CLI executable is created in cli/CMakeLists.txt
+	# Nothing else needed here - the subdirectory handles everything
 endif()
 
 add_dependencies(subsurface_corelib version)

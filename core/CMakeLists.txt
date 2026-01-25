@@ -35,6 +35,17 @@ if(BLESUPPORT)
 	list(APPEND BT_CORE_SRC_FILES qt-ble.cpp qt-ble.h)
 endif()
 
+# Files not needed for CLI builds
+if(NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
+	set(NON_CLI_SRC_FILES
+		imagedownloader.cpp
+		imagedownloader.h
+		qt-init.cpp
+		videoframeextractor.cpp
+		videoframeextractor.h
+	)
+endif()
+
 # compile the core library part in C, part in C++
 set(SUBSURFACE_CORE_LIB_SRCS
 	checkcloudconnection.cpp
@@ -115,8 +126,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	git-access.h
 	globals.cpp
 	globals.h
-	imagedownloader.cpp
-	imagedownloader.h
 	import-asd.cpp
 	import-cobalt.cpp
 	import-csv.cpp
@@ -152,7 +161,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	profile.cpp
 	profile.h
 	qt-gui.h
-	qt-init.cpp
 	qthelper.cpp
 	qthelper.h
 	range.h
@@ -198,8 +206,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	uploadDiveLogsDE.h
 	version.cpp
 	version.h
-	videoframeextractor.cpp
-	videoframeextractor.h
 	webservice.h
 	windowtitleupdate.cpp
 	windowtitleupdate.h
@@ -254,6 +260,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	${SERIAL_FTDI}
 	${PLATFORM_SRC}
 	${BT_CORE_SRC_FILES}
+	${NON_CLI_SRC_FILES}
 )
 source_group("Subsurface Core" FILES ${SUBSURFACE_CORE_LIB_SRCS})
 
