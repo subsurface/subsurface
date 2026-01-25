@@ -12,7 +12,7 @@
 #include "core/errorhelper.h"
 #include "core/tag.h"
 #include "core/settings/qPref.h"
-#include <QGuiApplication>
+#include <QApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 #include <git2.h>
@@ -40,10 +40,11 @@ static void printUsage()
 
 int main(int argc, char *argv[])
 {
-	// QGuiApplication is needed for QGraphicsScene (used in profile rendering)
-	// We use offscreen platform to avoid needing a display
+	// QApplication (not QGuiApplication) is needed because ProfileScene uses
+	// QGraphicsScene which requires the full QtWidgets infrastructure.
+	// We use offscreen platform to avoid needing a display.
 	qputenv("QT_QPA_PLATFORM", "offscreen");
-	QGuiApplication app(argc, argv);
+	QApplication app(argc, argv);
 	QCoreApplication::setApplicationName("subsurface-cli");
 	QCoreApplication::setApplicationVersion("1.0");
 
@@ -122,6 +123,10 @@ int main(int argc, char *argv[])
 			width = qBound(MIN_DIMENSION, arg.mid(8).toInt(), MAX_DIMENSION);
 		} else if (arg.startsWith("--height=")) {
 			height = qBound(MIN_DIMENSION, arg.mid(9).toInt(), MAX_DIMENSION);
+		} else {
+			fprintf(stderr, "Unknown argument: %s\n", qPrintable(arg));
+			printUsage();
+			return 1;
 		}
 	}
 
