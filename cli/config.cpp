@@ -56,8 +56,9 @@ static bool isAllowedConfigPath(const QString &path)
 
 	// Allow config files in:
 	// 1. Standard config location (~/.config/subsurface-cli/)
-	// 2. /tmp/ for web server generated configs
+	// 2. /tmp/subsurface* for web server generated configs
 	// 3. /var/lib/subsurface/ for system-wide configs
+	// 4. /run/subsurface* for systemd RuntimeDirectory managed configs
 	QString configDir = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
 	QString homeDir = QDir::homePath();
 
@@ -66,6 +67,8 @@ static bool isAllowedConfigPath(const QString &path)
 	if (canonical.startsWith("/tmp/subsurface"))
 		return true;
 	if (canonical.startsWith("/var/lib/subsurface"))
+		return true;
+	if (canonical.startsWith("/run/subsurface"))
 		return true;
 	// Also allow in user's home .config directory
 	if (canonical.startsWith(homeDir + "/.config/subsurface"))
