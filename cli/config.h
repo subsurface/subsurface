@@ -19,4 +19,13 @@ CliConfig loadConfig(const QString &configPath);
 // Get default config path (~/.config/subsurface-cli/config.json)
 QString defaultConfigPath();
 
+// Validate that a config path is in an allowed location
+// (security check before loading config)
+bool validateConfigPath(const QString &configPath);
+
+// Create a secure temp directory with a random UUID subdirectory.
+// Returns the path to the created directory, or empty string on failure.
+// The directory is created with restrictive permissions (owner-only on Unix).
+QString createSecureTempDir(const CliConfig &config);
+
 #endif // CLI_CONFIG_H
