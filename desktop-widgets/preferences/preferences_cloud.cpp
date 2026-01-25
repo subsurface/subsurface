@@ -104,7 +104,6 @@ void PreferencesCloud::syncSettings()
 	cloud->set_save_password_local(ui->save_password_local->isChecked());
 	cloud->set_cloud_storage_password(password);
 	cloud->set_cloud_verification_status(prefs.cloud_verification_status);
-	cloud->set_cloud_base_url(QString::fromStdString(prefs.cloud_base_url));
 }
 
 void PreferencesCloud::updateCloudAuthenticationState()
