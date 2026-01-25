@@ -2,6 +2,8 @@
 # Flask configuration for Subsurface Web UI
 
 import os
+import sys
+
 
 class Config:
     """Base configuration."""
@@ -22,6 +24,10 @@ class Config:
     # Header name for authenticated user (from Apache/proxy)
     AUTH_HEADER = os.environ.get('SUBSURFACE_AUTH_HEADER', 'X-Authenticated-User')
 
+    # Security: Secret shared with reverse proxy to verify requests came through it
+    # Set this to a random string in your proxy config and Flask config
+    TRUSTED_PROXY_SECRET = os.environ.get('SUBSURFACE_PROXY_SECRET', None)
+
     # Development mode: skip authentication
     DEV_MODE = os.environ.get('SUBSURFACE_DEV_MODE', 'false').lower() == 'true'
     DEV_USER = os.environ.get('SUBSURFACE_DEV_USER', 'dev@localhost')
@@ -34,6 +40,24 @@ class DevelopmentConfig(Config):
 
 
 class ProductionConfig(Config):
-    """Production configuration."""
+    """Production configuration.
+
+    Security requirements:
+    - SECRET_KEY must be set via environment variable
+    - DEV_MODE is always False
+    - DEBUG is always False
+    """
     DEBUG = False
     DEV_MODE = False
+
+    def __init__(self):
+        super().__init__()
+        # Security: Fail loudly if SECRET_KEY is not properly configured
+        if self.SECRET_KEY == 'dev-secret-key-change-in-production':
+            print("ERROR: SECRET_KEY environment variable must be set in production!", file=sys.stderr)
+            print("Generate one with: python -c \"import secrets; print(secrets.token_hex(32))\"", file=sys.stderr)
+            sys.exit(1)
+
+        # Security: Warn if proxy secret is not configured
+        if not self.TRUSTED_PROXY_SECRET:
+            print("WARNING: SUBSURFACE_PROXY_SECRET not set - auth header spoofing possible!", file=sys.stderr)
