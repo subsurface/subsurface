@@ -35,6 +35,7 @@ void PreferencesCloud::on_resetPassword_clicked()
 
 void PreferencesCloud::refreshSettings()
 {
+	ui->cloud_storage_server->setText(QString::fromStdString(prefs.cloud_storage_server));
 	ui->cloud_storage_email->setText(QString::fromStdString(prefs.cloud_storage_email));
 	ui->cloud_storage_password->setText(QString::fromStdString(prefs.cloud_storage_password));
 	ui->save_password_local->setChecked(prefs.save_password_local);
@@ -49,6 +50,14 @@ void PreferencesCloud::syncSettings()
 	QString password = ui->cloud_storage_password->text();
 	QString newpassword = ui->cloud_storage_new_passwd->text();
 	QString emailpasswordformatwarning = tr("Change ignored. Cloud storage email and new password can only consist of letters, numbers, and '.', '-', '_', and '+'.");
+
+	if (prefs.cloud_storage_server != ui->cloud_storage_server->text()) {
+		cloud->set_cloud_storage_server(ui->cloud_storage_server->text());
+
+		CheckCloudConnection c;
+		c.pickServer();
+		c.checkServer();
+	}
 
 	//TODO: Change this to the Cloud Storage Stuff, not preferences.
 	if (prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED && !newpassword.isEmpty()) {
