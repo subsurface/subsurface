@@ -62,6 +62,7 @@ public slots:
 	static void set_cloud_storage_email_encoded(const QString &value);
 	static void set_cloud_storage_password(const QString &value);
 	static void set_cloud_storage_pin(const QString &value);
+	static void set_cloud_storage_server(const QString &value);
 	static void set_cloud_timeout(int value);
 	static void set_cloud_verification_status(int value);
 	static void set_save_password_local(bool value);
@@ -77,6 +78,7 @@ signals:
 	void cloud_storage_email_encodedChanged(const QString &value);
 	void cloud_storage_passwordChanged(const QString &value);
 	void cloud_storage_pinChanged(const QString &value);
+	void cloud_storage_serverChanged(const QString &value);
 	void cloud_timeoutChanged(int value);
 	void cloud_verification_statusChanged(int value);
 	void save_password_localChanged(bool value);
@@ -95,6 +97,7 @@ private:
 	static void disk_cloud_storage_email_encoded(bool doSync);
 	static void disk_cloud_storage_password(bool doSync);
 	static void disk_cloud_storage_pin(bool doSync);
+	static void disk_cloud_storage_server(bool doSync);
 	static void disk_cloud_timeout(bool doSync);
 	static void disk_cloud_verification_status(bool doSync);
 	static void disk_save_password_local(bool doSync);

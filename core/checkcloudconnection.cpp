@@ -107,6 +107,10 @@ bool CheckCloudConnection::nextServer()
 		{ CLOUD_HOST_U2, false }
 	};
 	const char *server = nullptr;
+
+	if (!prefs.cloud_storage_server.empty())
+		return false;
+
 	for (serverTried &item: cloudServers) {
 		if (contains(prefs.cloud_base_url, item.server))
 			item.tried = true;
@@ -127,6 +131,18 @@ bool CheckCloudConnection::nextServer()
 
 void CheckCloudConnection::pickServer()
 {
+	if (!prefs.cloud_storage_server.empty()) {
+		QString base_url = QString::fromStdString("https://" + prefs.cloud_storage_server + "/");
+
+		if (base_url != prefs.cloud_base_url) {
+			if (verbose)
+				report_info("remember cloud server %s set by user", qPrintable(base_url));
+
+			qPrefCloudStorage::set_cloud_base_url(base_url);
+			qPrefCloudStorage::store_cloud_base_url(base_url);
+		}
+		return;
+	}
 	QNetworkRequest request(QString(GET_EXTERNAL_IP_API));
 	request.setRawHeader("Accept", "text/plain");
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
@@ -191,7 +207,7 @@ void CheckCloudConnection::gotContinent(QNetworkReply *reply)
 	if (base_url != prefs.cloud_base_url) {
 		if (verbose)
 			report_info("remember cloud server %s based on IP location in %s", base_url, qPrintable(continentString));
-		qPrefCloudStorage::instance()->store_cloud_base_url(base_url);
+		qPrefCloudStorage::store_cloud_base_url(base_url);
 	}
 }
 

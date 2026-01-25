@@ -5,6 +5,7 @@
 #include "core/cloudstorage.h"
 #include "core/errorhelper.h"
 #include "core/settings/qPrefCloudStorage.h"
+#include "core/checkcloudconnection.h"
 #include <QRegularExpression>
 #include <QMessageBox>
 #include <QDesktopServices>
@@ -25,7 +26,11 @@ PreferencesCloud::~PreferencesCloud()
 
 void PreferencesCloud::on_resetPassword_clicked()
 {
-	QDesktopServices::openUrl(QUrl("https://cloud.subsurface-divelog.org/passwordreset"));
+	std::string server = prefs.cloud_storage_server.empty() ? "cloud.subsurface-divelog.org"
+								: prefs.cloud_storage_server;
+
+	QUrl url(QStringLiteral("https://%1/passwordreset").arg(QString::fromStdString(server)));
+	QDesktopServices::openUrl(url);
 }
 
 void PreferencesCloud::refreshSettings()
@@ -55,7 +60,7 @@ void PreferencesCloud::syncSettings()
 				QMessageBox::warning(this, tr("Warning"), emailpasswordformatwarning);
 				return;
 			}
-			if (!reg.match(email).hasMatch() || (!newpassword.isEmpty() && !reg.match(newpassword).hasMatch())) {
+			if (!newpassword.isEmpty() && !reg.match(newpassword).hasMatch()) {
 				QMessageBox::warning(this, tr("Warning"), emailpasswordformatwarning);
 				ui->cloud_storage_new_passwd->setText(QString());
 				return;
