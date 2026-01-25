@@ -32,7 +32,6 @@ void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 		if (prefs.cloud_base_url != default_prefs.cloud_base_url)
 			prefs.cloud_base_url = value.toStdString();
 
-		disk_cloud_base_url(true);
 		emit instance()->cloud_base_urlChanged(value);
 	}
 }
