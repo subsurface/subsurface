@@ -17,7 +17,7 @@ FIT: File import
 Garmin: Descent Mk1, Descent Mk2(i)/Mk3(i)(S)/G1/G2/X50i
 Genesis: Centauri, React Pro, React Pro White
 Halcyon: Symbios HUD, Symbios Handset
-Heinrichs Weikamp: Frog, OSTC, OSTC 2, OSTC 2 TR, OSTC 2C, OSTC 2N, OSTC 3, OSTC 4/5, OSTC Mk2, OSTC Plus, OSTC Sport, OSTC cR
+Heinrichs Weikamp: Frog, OSTC, OSTC 2, OSTC 2 TR, OSTC 2C, OSTC 2N, OSTC 3, OSTC 4, OSTC 5, OSTC Mk2, OSTC Plus, OSTC Sport, OSTC cR
 Hollis: DG02, DG03, TX1
 Liquivision: Kaon, Lynx, Xen, Xeo
 Mares: Airlab, Darwin, Darwin Air, Genius, Horizon, Icon HD, Icon HD Net Ready, M1, M2, Matrix, Nemo, Nemo Air, Nemo Apneist, Nemo Excel, Nemo Steel, Nemo Titanium, Nemo Wide, Nemo Wide 2, Puck, Puck 2, Puck 4, Puck Air, Puck Air 2, Puck Lite, Puck Pro, Puck Pro +, Puck Pro EZ, Puck Pro Ultra, Quad, Quad 2, Quad Air, Quad Ci, Sirius, Smart, Smart Air, Smart Apnea
