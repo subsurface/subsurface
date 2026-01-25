@@ -54,7 +54,7 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 
 void DiveHandler::selfRemove()
 {
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	setSelected(true);
 	ProfileWidget2 *view = qobject_cast<ProfileWidget2 *>(scene()->views().first());
 	view->keyDeleteAction();
