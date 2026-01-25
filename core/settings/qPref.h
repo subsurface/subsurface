@@ -4,7 +4,9 @@
 #include "core/pref.h"
 
 #include <QObject>
+#ifndef SUBSURFACE_CLI
 #include <QQmlEngine>
+#endif
 
 class qPref {
 public:
@@ -12,8 +14,10 @@ public:
 	static void load() { loadSync(false); }
 	static void sync() { loadSync(true); }
 
+#ifndef SUBSURFACE_CLI
 	// Register QML
 	static void registerQML(QQmlEngine *engine);
+#endif
 
 private:
 	static void loadSync(bool doSync);
