@@ -84,6 +84,7 @@ def validate_email(email):
 
 class AuthenticationRequired(Exception):
     """Raised when authentication is required but user is not logged in."""
+
     pass
 
 
@@ -157,7 +158,8 @@ def get_cli_config_path(user):
 
     # Security: Sanitize username for use in path
     # Replace characters that could be problematic in paths
-    safe_user = re.sub(r"[^a-zA-Z0-9._+-]", "_", user)
+    # Note: @ is allowed since git repos use email addresses as directory names
+    safe_user = re.sub(r"[^a-zA-Z0-9._+@-]", "_", user)
     if not safe_user or safe_user.startswith("."):
         abort(400, description="Invalid user format")
 
