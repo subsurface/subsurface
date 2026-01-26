@@ -365,13 +365,14 @@
         <div class="info-card">
             <div class="info-label">Cylinder {% if cyl.description %} ({{ cyl.description }}){% endif %}</div>
             <span class="gas-mix">{{ cyl.gas_name }}</span>
+            {% if cyl.start_pressure_bar or cyl.end_pressure_bar %}
             <span style="white-space: nowrap;">
                 <span class="data-value">{{ cyl.start_pressure_bar|round(0)|int if cyl.start_pressure_bar else '-' }}</span><span
                     class="data-unit">bar</span> &#10132;
                 <span class="data-value">{{ cyl.end_pressure_bar|round(0)|int if cyl.end_pressure_bar else '-' }}</span><span
                     class="data-unit">bar</span>
             </span>
-
+            {% endif %}
         </div>
         {% endfor %}
         {% endif %}
