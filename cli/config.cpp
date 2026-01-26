@@ -135,12 +135,35 @@ CliConfig loadConfig(const QString &configPath)
 	QJsonObject obj = doc.object();
 
 	// Security: Validate repo_path - must exist and not contain traversal
+	// The repo_path may include a branch specification in the form path[branch]
+	// which is used for bare git repositories. Extract and validate separately.
 	QString repoPath = obj.value("repo_path").toString();
-	config.repo_path = validatePath(repoPath);
-	if (config.repo_path.isEmpty() && !repoPath.isEmpty()) {
+	QString branch;
+
+	// Check for [branch] suffix
+	int bracketStart = repoPath.lastIndexOf('[');
+	int bracketEnd = repoPath.lastIndexOf(']');
+	if (bracketStart > 0 && bracketEnd == repoPath.length() - 1 && bracketEnd > bracketStart) {
+		// Extract branch name and validate it (should be an email for user branches)
+		branch = repoPath.mid(bracketStart + 1, bracketEnd - bracketStart - 1);
+		repoPath = repoPath.left(bracketStart);
+
+		// Remove trailing slashes from path
+		while (repoPath.endsWith('/'))
+			repoPath.chop(1);
+	}
+
+	QString validatedPath = validatePath(repoPath);
+	if (validatedPath.isEmpty() && !repoPath.isEmpty()) {
 		fprintf(stderr, "Invalid repo_path in config\n");
 		return config;
 	}
+
+	// Reconstruct path with branch if present
+	if (!branch.isEmpty())
+		config.repo_path = validatedPath + "[" + branch + "]";
+	else
+		config.repo_path = validatedPath;
 
 	// Security: Validate userid as email address
 	// Allow common email characters while rejecting dangerous ones
