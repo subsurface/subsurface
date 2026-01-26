@@ -344,7 +344,13 @@
             <span class="col-depth">{{ item.max_depth_meters|round(1) if item.max_depth_meters else '-' }}<span class="data-unit">m</span></span>
             <span class="col-duration">{{ item.duration_minutes if item.duration_minutes else '-' }}<span class="data-unit">min</span></span>
             <span class="col-buddy">{{ item.buddy or '' }}</span>
-            <span class="col-gas">{{ item.gas or 'Air' }}</span>
+            <span class="col-gas">
+                {% if item.gases %}
+                    {% for gas in item.gases %}
+                    <span class="col-gas">{{ gas }}{% if not loop.last %},{% endif %}</span>
+                    {% endfor %}
+                {% endif %}
+            </span>
             <span class="col-sac">{{ item.sac_rate|round(1) if item.sac_rate else '-' }}</span>
             <span class="col-tags">
                 {% if item.tags %}
@@ -414,6 +420,7 @@
         const duration = item.duration_minutes || '-';
         const sac = item.sac_rate ? item.sac_rate.toFixed(1) : '-';
         const tags = item.tags ? item.tags.slice(0, 2).map(t => `<span class="mini-tag">${t}</span>`).join('') : '';
+        const gas = item.gases ? item.gases.slice(0, 2).map(gas => `<span class="col-gas">${gas}</span>`).join(',') : '';
 
         return `
             <li>
@@ -425,7 +432,7 @@
                     <span class="col-depth">${depth}<span class="data-unit">m</span></span>
                     <span class="col-duration">${duration}<span class="data-unit">min</span></span>
                     <span class="col-buddy">${item.buddy || ''}</span>
-                    <span class="col-gas">${item.gas || 'Air'}</span>
+                    <span class="col-gas">${gas}</span>
                     <span class="col-sac">${sac}</span>
                     <span class="col-tags">${tags}</span>
                 </a>
