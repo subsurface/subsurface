@@ -174,7 +174,11 @@ def get_cli_config_path(user):
     if not real_user_repo.startswith(real_repo_base + os.sep):
         abort(400, description="Invalid user")
 
-    config_data = {"repo_path": user_repo, "userid": user, "temp_dir": os.path.join(temp_dir, "profiles")}
+    # For bare git repos, the branch is the user email
+    # Format: /path/to/repo[branch]
+    repo_path_with_branch = f"{user_repo}[{user}]"
+
+    config_data = {"repo_path": repo_path_with_branch, "userid": user, "temp_dir": os.path.join(temp_dir, "profiles")}
 
     # Write temp config file with restrictive permissions
     config_file = os.path.join(temp_dir, "config.json")
