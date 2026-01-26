@@ -11,7 +11,7 @@ from flask import Flask, render_template, request, jsonify, abort, send_from_dir
 # Security: Regex patterns for validating input parameters
 # These must match the patterns used in the CLI (dive_ref.cpp)
 DIVE_REF_PATTERN = re.compile(r"^(\d{4})/(\d{2})/(\d{2})-\w{3}-(\d{2})[=:](\d{2})[=:](\d{2})$")
-TRIP_REF_PATTERN = re.compile(r"^(\d{4})/(\d{2})/(\d{2})-([\w\s-]{1,50})$")
+TRIP_REF_PATTERN = re.compile(r"^(\d{4})/(\d{2})/(\d{2})-([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,28}[a-zA-Z0-9])?)$")
 # Email pattern matching CLI validation (config.cpp)
 EMAIL_PATTERN = re.compile(
     r"^[a-zA-Z0-9._+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)+$"
