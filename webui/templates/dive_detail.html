@@ -333,9 +333,17 @@
 </div>
 
 <!-- People -->
-{% if dive.buddy or dive.diveguide %}
+{% if dive.buddy or dive.diveguide or dive.tags %}
 <div class="dive-section">
+    {% if dive.buddy or dive.diveguide %}
+    {% if dive.tags %}
+    <h2>People and Tags</h2>
+    {% else %}
     <h2>People</h2>
+    {% endif %}
+    {% else %}
+    <h2>Tags</h2>
+    {% endif %}
     <div class="info-grid">
         {% if dive.diveguide %}
         <div class="info-card">
@@ -347,6 +355,14 @@
         <div class="info-card">
             <div class="info-label">Buddy</div>
             <div class="info-value-text">{{ dive.buddy }}</div>
+        </div>
+        {% endif %}
+        {% if dive.tags %}
+        <div class="info-card">
+            <div class="info-label">Tags</div>
+            {% for tag in dive.tags %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
         </div>
         {% endif %}
     </div>
@@ -392,18 +408,6 @@
         {% endif %}
     </div>
     {% endif %}
-</div>
-{% endif %}
-
-<!-- Tags -->
-{% if dive.tags %}
-<div class="dive-section">
-    <h2>Tags</h2>
-    <div class="tags-container">
-        {% for tag in dive.tags %}
-        <span class="tag">{{ tag }}</span>
-        {% endfor %}
-    </div>
 </div>
 {% endif %}
 
