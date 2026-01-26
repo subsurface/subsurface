@@ -28,6 +28,34 @@ QString getDiveRef(const struct dive *d)
 		.arg(tm.tm_sec, 2, 10, QChar('0'));
 }
 
+// Convert a freeform string into a URL-safe slug.
+// Only keeps [a-zA-Z0-9], replaces spaces/underscores with hyphens,
+// drops everything else, collapses consecutive hyphens, and truncates.
+static QString slugify(const QString &input, int maxLen = 30)
+{
+	QString result;
+	result.reserve(maxLen);
+	bool lastWasHyphen = true; // true to skip leading hyphens
+
+	for (int i = 0; i < input.length() && result.length() < maxLen; i++) {
+		QChar c = input[i];
+		if (c.isLetterOrNumber() && c.unicode() < 128) {
+			result += c;
+			lastWasHyphen = false;
+		} else if ((c == ' ' || c == '_' || c == '-') && !lastWasHyphen) {
+			result += '-';
+			lastWasHyphen = true;
+		}
+		// all other characters are silently dropped
+	}
+
+	// Remove trailing hyphen
+	while (result.endsWith('-'))
+		result.chop(1);
+
+	return result;
+}
+
 QString getTripRef(const struct dive_trip *trip)
 {
 	if (!trip)
@@ -40,24 +68,16 @@ QString getTripRef(const struct dive_trip *trip)
 	struct tm tm;
 	utc_mkdate(when, &tm);
 
-	// Format: yyyy/mm/dd-Location (location truncated to 15 chars, special chars removed)
-	QString location = QString::fromStdString(trip->location);
+	// Format: yyyy/mm/dd-location-slug
+	QString location = slugify(QString::fromStdString(trip->location));
 	if (location.isEmpty())
-		location = "Trip";
-
-	// Remove problematic characters (matching save-git.cpp logic)
-	QString cleanLoc;
-	for (int i = 0; i < location.length() && cleanLoc.length() < 15; i++) {
-		QChar c = location[i];
-		if (c != ',' && c != '.' && c != '/' && c != '\\' && c != ':')
-			cleanLoc += c;
-	}
+		location = "trip";
 
 	return QString("%1/%2/%3-%4")
 		.arg(tm.tm_year, 4, 10, QChar('0'))
 		.arg(tm.tm_mon + 1, 2, 10, QChar('0'))
 		.arg(tm.tm_mday, 2, 10, QChar('0'))
-		.arg(cleanLoc);
+		.arg(location);
 }
 
 struct dive *findDiveByRef(const QString &diveRef)
@@ -113,10 +133,9 @@ struct dive_trip *findTripByRef(const QString &tripRef)
 	if (tripRef.length() > 100)
 		return nullptr;
 
-	// Parse the trip reference: yyyy/mm/dd-Location
-	// Location is restricted to alphanumeric, spaces, and hyphens (max 50 chars)
-	// This prevents path traversal and injection attacks
-	static QRegularExpression re(R"((\d{4})/(\d{2})/(\d{2})-([\w\s-]{1,50}))");
+	// Parse the trip reference: yyyy/mm/dd-location-slug
+	// Slug is restricted to [a-zA-Z0-9-] (URL-safe characters only)
+	static QRegularExpression re(R"((\d{4})/(\d{2})/(\d{2})-([a-zA-Z0-9](?:[a-zA-Z0-9-]{0,28}[a-zA-Z0-9])?))");
 	QRegularExpressionMatch match = re.match(tripRef);
 
 	if (!match.hasMatch())
@@ -125,7 +144,7 @@ struct dive_trip *findTripByRef(const QString &tripRef)
 	int year = match.captured(1).toInt();
 	int month = match.captured(2).toInt();
 	int day = match.captured(3).toInt();
-	QString locationPart = match.captured(4);
+	QString locationSlug = match.captured(4);
 
 	// Convert to approximate timestamp (start of day)
 	struct tm tm = {};
@@ -138,20 +157,14 @@ struct dive_trip *findTripByRef(const QString &tripRef)
 	timestamp_t dayStart = utc_mktime(&tm);
 	timestamp_t dayEnd = dayStart + 24 * 60 * 60;
 
-	// Search for trip that starts on this day and has matching location prefix
+	// Search for trip that starts on this day and has matching location slug
 	for (auto &trip : divelog.trips) {
 		timestamp_t tripDate = trip->date();
 		if (tripDate >= dayStart && tripDate < dayEnd) {
-			// Check if location matches (prefix match)
-			QString tripLoc = QString::fromStdString(trip->location);
-			// Remove problematic chars for comparison
-			QString cleanLoc;
-			for (int i = 0; i < tripLoc.length() && cleanLoc.length() < 15; i++) {
-				QChar c = tripLoc[i];
-				if (c != ',' && c != '.' && c != '/' && c != '\\' && c != ':')
-					cleanLoc += c;
-			}
-			if (cleanLoc == locationPart || (trip->location.empty() && locationPart == "Trip"))
+			QString tripSlug = slugify(QString::fromStdString(trip->location));
+			if (tripSlug.isEmpty())
+				tripSlug = "trip";
+			if (tripSlug == locationSlug)
 				return trip.get();
 		}
 	}
