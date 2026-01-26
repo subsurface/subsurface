@@ -66,6 +66,8 @@ static QString gasName(struct gasmix mix)
 {
 	if (gasmix_is_air(mix))
 		return "Air";
+	if (mix.o2.permille == 1000)
+		return QString("O₂");
 	if (mix.he.permille == 0)
 		return QString("EAN%1").arg(get_o2(mix) / 10);
 	return QString("Tx%1/%2").arg(get_o2(mix) / 10).arg(get_he(mix) / 10);
