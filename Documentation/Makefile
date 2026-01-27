@@ -12,8 +12,17 @@ BROWSER = firefox
 THEME = compact_subsurface
 PWD = $(realpath .)
 
-# Generate cached version file (regenerates when git state changes, falls back to <unknown> when git unavailable)
-.latest_change_version: $(wildcard ../.git/index)
+# Track the last commit hash affecting Documentation/ (not the version string)
+# FORCE ensures this rule always runs to check for git changes
+.latest_change_git_hash: FORCE
+	@NEW_HASH=$$(git log -1 --pretty=format:%H . 2>/dev/null || echo "unknown"); \
+	CURRENT=$$(cat $@ 2>/dev/null || echo ""); \
+	if [ "$$NEW_HASH" != "$$CURRENT" ]; then \
+		echo "$$NEW_HASH" > $@; \
+	fi
+
+# Rebuild version file only when Documentation/ commit history changes
+.latest_change_version: .latest_change_git_hash
 	@git log -1 --pretty=format:%H . 2>/dev/null | xargs ../scripts/get-version-for-changeset.sh > $@ 2>/dev/null || echo "<unknown>" > $@
 
 # Read version from cache (fast; .latest_change_version regenerates when git state changes)
@@ -26,11 +35,9 @@ endif
 
 .PHONY: all doc show clean
 
-.NOTPARALLEL:
-
 mkdir = @mkdir -p $(@D)
 
-all: $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
+all: .latest_change_version $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
 
 doc: $(HTMLDOCS)
 
@@ -44,11 +51,11 @@ $(OUT)/%.text: $(OUT)/%.html
 	w3m -dump -T text/html $< > $@
 
 
-$(OUT)/%.pdf: %.txt | .latest_change_version
+$(OUT)/%.pdf: %.txt .latest_change_version
 	$(mkdir)
 	$(A2X) -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)" -o $(OUT)/$(basename $(notdir $<)).pdf $<
 
-$(OUT)/%.html: %.txt | $(OUT)/images .latest_change_version
+$(OUT)/%.html: %.txt .latest_change_version | $(OUT)/images
 	$(mkdir)
 	$(ASCIIDOC) -a toc=left -a toc-position=left -a themedir=$(PWD) -a theme=$(THEME) -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)" -o $@ $<
 
@@ -70,5 +77,8 @@ show: $(HTMLDOC)
 	$(BROWSER) $<
 
 clean:
-	rm -f *~ *.xml docbook-xsl.css .latest_change_version
+	rm -f *~ *.xml docbook-xsl.css .latest_change_version .latest_change_git_hash
 	rm -rf $(OUT)/
+
+.PHONY: FORCE
+FORCE:
