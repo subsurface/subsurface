@@ -138,7 +138,7 @@
 
     .dive-row {
         display: grid;
-        grid-template-columns: 140px 1fr 65px 55px 130px 60px 50px 90px;
+        grid-template-columns: 40px 140px 1fr 65px 55px 130px 60px 50px 90px;
         gap: var(--space-sm);
         align-items: center;
         padding: var(--space-sm) var(--space-xl);
@@ -152,14 +152,14 @@
         background: rgba(69, 121, 172, 0.08);
     }
 
-    .dive-row:last-child {
+    li:last-child > .dive-row {
         border-bottom: none;
     }
 
     /* Column header */
     .dive-header-row {
         display: grid;
-        grid-template-columns: 140px 1fr 65px 55px 130px 60px 50px 90px;
+        grid-template-columns: 40px 140px 1fr 65px 55px 130px 60px 50px 90px;
         gap: var(--space-sm);
         padding: var(--space-sm) var(--space-xl);
         border-bottom: 1px solid var(--border-subtle);
@@ -169,6 +169,13 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
         background: rgba(0, 0, 0, 0.2);
+    }
+
+    .col-number {
+        font-family: var(--font-mono);
+        color: var(--text-dim);
+        font-size: 0.85rem;
+        text-align: right;
     }
 
     .col-date {
@@ -239,36 +246,36 @@
     /* Responsive: hide columns from right as screen narrows */
     @media (max-width: 1100px) {
         .dive-row, .dive-header-row {
-            grid-template-columns: 140px 1fr 65px 55px 130px 60px 50px;
+            grid-template-columns: 40px 140px 1fr 65px 55px 130px 60px 50px;
         }
-        .col-tags, .dive-header-row > :nth-child(8) {
+        .col-tags, .dive-header-row > :nth-child(9) {
             display: none;
         }
     }
 
     @media (max-width: 950px) {
         .dive-row, .dive-header-row {
-            grid-template-columns: 140px 1fr 65px 55px 130px 60px;
+            grid-template-columns: 40px 140px 1fr 65px 55px 130px 60px;
         }
-        .col-sac, .dive-header-row > :nth-child(7) {
+        .col-sac, .dive-header-row > :nth-child(8) {
             display: none;
         }
     }
 
     @media (max-width: 850px) {
         .dive-row, .dive-header-row {
-            grid-template-columns: 140px 1fr 65px 55px 130px;
+            grid-template-columns: 40px 140px 1fr 65px 55px 130px;
         }
-        .col-gas, .dive-header-row > :nth-child(6) {
+        .col-gas, .dive-header-row > :nth-child(7) {
             display: none;
         }
     }
 
     @media (max-width: 700px) {
         .dive-row, .dive-header-row {
-            grid-template-columns: 120px 1fr 60px 50px;
+            grid-template-columns: 40px 120px 1fr 60px 50px;
         }
-        .col-buddy, .dive-header-row > :nth-child(5) {
+        .col-buddy, .dive-header-row > :nth-child(6) {
             display: none;
         }
         .col-date {
@@ -278,12 +285,12 @@
 
     @media (max-width: 500px) {
         .dive-row, .dive-header-row {
-            grid-template-columns: 1fr 55px 50px;
+            grid-template-columns: 40px 1fr 55px 50px;
         }
         .col-date {
             display: none;
         }
-        .dive-header-row > :first-child {
+        .dive-header-row > :nth-child(2) {
             display: none;
         }
     }
@@ -378,6 +385,7 @@
 <div class="dive-table-container">
     <!-- Column headers -->
     <div class="dive-header-row">
+        <span style="text-align: right;">#</span>
         <span>Date</span>
         <span>Location</span>
         <span style="text-align: right;">Depth</span>
@@ -392,6 +400,7 @@
     {% for dive in dives[:20] %}
     <li>
         <a href="/dive/{{ dive.dive_ref }}" class="dive-row">
+            <span class="col-number">{{ dive.dive_number }}</span>
             <span class="col-date">{{ dive.date }} {{ dive.time }}</span>
             <span class="col-location">
                 <span>{{ dive.location or 'Unknown Location' }}</span>
@@ -466,6 +475,7 @@
         return `
             <li>
                 <a href="/dive/${dive.dive_ref}" class="dive-row">
+                    <span class="col-number">${dive.dive_number || ''}</span>
                     <span class="col-date">${dive.date} ${dive.time}</span>
                     <span class="col-location">
                         <span>${dive.location || 'Unknown Location'}</span>

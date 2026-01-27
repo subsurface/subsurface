@@ -53,7 +53,7 @@ static bool isAllowedConfigPath(const QString &path)
 	QString canonical = validatePath(path);
 	if (canonical.isEmpty())
 		return false;
-
+	fprintf(stderr, "canonical %s\n", qPrintable(canonical));
 	// Allow config files in:
 	// 1. Standard config location (~/.config/subsurface-cli/)
 	// 2. /tmp/subsurface* for web server generated configs
@@ -99,6 +99,7 @@ CliConfig loadConfig(const QString &configPath)
 
 	// Security: Validate config file is in an allowed location
 	if (!isAllowedConfigPath(configPath)) {
+		fprintf(stderr, "%s\n", qPrintable(configPath));
 		fprintf(stderr, "Config file path not in allowed location\n");
 		return config;
 	}
