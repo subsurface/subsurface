@@ -24,6 +24,9 @@ ifeq ($(DISPLAY_VERSION),<unknown>)
 DISPLAY_VERSION = &lt;unknown&gt;
 endif
 
+VERSION_OPTIONS := -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)"
+ASCIIDOC_OPTIONS = -a toc=left -a themedir=$(PWD) -a theme=$(THEME) --failure-level=WARN $(VERSION_OPTIONS)
+
 .PHONY: all doc show clean
 
 .NOTPARALLEL:
@@ -43,14 +46,13 @@ $(OUT)/%.text: $(OUT)/%.html
 	$(mkdir)
 	w3m -dump -T text/html $< > $@
 
-
 $(OUT)/%.pdf: %.txt | .latest_change_version
 	$(mkdir)
-	$(A2X) -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)" -o $(OUT)/$(basename $(notdir $<)).pdf $<
+	$(A2X) $(VERSION_OPTIONS) --failure-level=WARN -o $(OUT)/$(basename $(notdir $<)).pdf $<
 
 $(OUT)/%.html: %.txt | $(OUT)/images .latest_change_version
 	$(mkdir)
-	$(ASCIIDOC) -a toc=left -a toc-position=left -a themedir=$(PWD) -a theme=$(THEME) -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)" -o $@ $<
+	$(ASCIIDOC) $(ASCIIDOC_OPTIONS) -a toc-position=left -o $@ $<
 
 # for the web facing version of the desktop manual, just use the post-processing script
 user-manual.html.wp: $(OUT)/user-manual.html
@@ -61,14 +63,14 @@ user-manual.html.wp: $(OUT)/user-manual.html
 # the table of context and then post process
 mobile-manual-v3.html.wp: mobile-manual-v3.txt
 	$(mkdir)
-	$(ASCIIDOC) -a toc=left -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)" -o $(<:%.txt=%.html.tmp) $< && \
-		bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp) && \
-		rm $(<:%.txt=%.html.tmp) && \
-		mv $(<:%.txt=%.html.tmp.wp) $(OUT)/$@
+	$(ASCIIDOC) $(ASCIIDOC_OPTIONS) -a toclevels=1 -o $(<:%.txt=%.html.tmp) $<
+	bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp)
+	$(RM) $(<:%.txt=%.html.tmp)
+	mv $(<:%.txt=%.html.tmp.wp) $(OUT)/$@
 
 show: $(HTMLDOC)
 	$(BROWSER) $<
 
 clean:
-	rm -f *~ *.xml docbook-xsl.css .latest_change_version
-	rm -rf $(OUT)/
+	$(RM) *~ *.xml docbook-xsl.css .latest_change_version
+	$(RM) -r $(OUT)/
