@@ -47,6 +47,7 @@ release_content_title.txt
 /output/
 /Documentation/output/
 /Documentation/.latest_change_version
+/Documentation/.latest_change_git_hash
 /metainfo/subsurface.metainfo.xml
 ReleaseNotes/MobileReleaseNotes.pdf
 ReleaseNotes/MobileReleaseNotes.text
