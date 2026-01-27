@@ -183,20 +183,36 @@
         gap: var(--space-sm);
     }
 
-    .profile-placeholder {
+    .profile-container {
         background: var(--surface-elevated);
-        border: 2px dashed var(--border-subtle);
+        border: 1px solid var(--border-subtle);
         border-radius: 8px;
-        padding: var(--space-2xl);
-        text-align: center;
-        color: var(--text-dim);
+        overflow: hidden;
+        aspect-ratio: 5 / 3;
     }
 
-    .profile-placeholder svg {
-        width: 48px;
-        height: 48px;
-        margin-bottom: var(--space-md);
-        opacity: 0.5;
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: contain;
+    }
+
+    .profile-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: var(--text-dim);
+        font-size: 0.9rem;
+    }
+
+    .profile-error {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: var(--text-dim);
     }
 
     .notes-content {
@@ -272,6 +288,33 @@
         <div class="dive-datetime">{{ dive.date }} {{ dive.time }}</div>
     </div>
 </div>
+<!-- Profile -->
+<div class="dive-section">
+    <h2>Dive Profile</h2>
+    <div class="profile-container" id="profile-container">
+        <div class="profile-loading">Loading profile...</div>
+    </div>
+</div>
+<script>
+(function() {
+    const container = document.getElementById('profile-container');
+    const dpr = window.devicePixelRatio || 1;
+    const width = Math.round(container.clientWidth * dpr);
+    const height = Math.round(container.clientHeight * dpr);
+
+    const img = new Image();
+    img.className = 'profile-image';
+    img.alt = 'Dive Profile';
+    img.onload = function() {
+        container.innerHTML = '';
+        container.appendChild(img);
+    };
+    img.onerror = function() {
+        container.innerHTML = '<div class="profile-error">Profile not available</div>';
+    };
+    img.src = '/api/profile/{{ dive.dive_ref }}?width=' + width + '&height=' + height;
+})();
+</script>
 
 <!-- Core Metrics -->
 <div class="dive-section">
@@ -410,17 +453,6 @@
     {% endif %}
 </div>
 {% endif %}
-
-<!-- Profile -->
-<div class="dive-section">
-    <h2>Dive Profile</h2>
-    <div class="profile-placeholder">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 17h18v2H3v-2zm0-7h18v5H3v-5zm0-4h18v2H3V6z"/>
-        </svg>
-        <p>Dive profile visualization coming soon</p>
-    </div>
-</div>
 
 <!-- Notes -->
 {% if dive.notes %}

@@ -340,6 +340,68 @@ def api_get_dive(dive_ref):
     return jsonify(result), status_code
 
 
+@app.route("/api/profile/<path:dive_ref>")
+def api_get_profile(dive_ref):
+    """API: Get dive profile as PNG image."""
+    # Security: Validate dive_ref format
+    if not validate_dive_ref(dive_ref):
+        abort(400, description="Invalid dive reference format")
+
+    # Get optional dimensions from query params, clamped to safe range
+    width = max(100, min(request.args.get("width", 1024, type=int), 4096))
+    height = max(100, min(request.args.get("height", 768, type=int), 4096))
+
+    cli_path = app.config.get("CLI_PATH", "subsurface-cli")
+    user = get_authenticated_user()
+    config_path = get_cli_config_path(user)
+
+    try:
+        cmd = [
+            cli_path,
+            f"--config={config_path}",
+            "get-profile",
+            f"--dive-ref={dive_ref}",
+            f"--width={width}",
+            f"--height={height}",
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
+
+        if result.returncode != 0 and not result.stdout:
+            abort(500, description="Profile generation failed")
+
+        data = json.loads(result.stdout)
+
+        if data.get("status") != "success" or "profile_path" not in data:
+            error_code = data.get("error_code", "INTERNAL_ERROR")
+            abort(404 if error_code == "NOT_FOUND" else 500)
+
+        profile_path = data["profile_path"]
+
+        # Security: Read the file into memory before cleanup
+        # The path comes from our own CLI, but validate it's a real file
+        if not os.path.isfile(profile_path):
+            abort(500, description="Profile generation failed")
+
+        with open(profile_path, "rb") as f:
+            image_data = f.read()
+
+        from flask import Response
+
+        return Response(
+            image_data,
+            mimetype="image/png",
+            headers={"Cache-Control": "public, max-age=300"},
+        )
+
+    except subprocess.TimeoutExpired:
+        abort(504, description="Profile generation timed out")
+    except (json.JSONDecodeError, OSError):
+        abort(500, description="Profile generation failed")
+    finally:
+        if config_path and not app.config.get("CLI_CONFIG_PATH"):
+            cleanup_temp_dir(config_path)
+
+
 @app.route("/api/stats")
 def api_get_stats():
     """API: Get statistics."""
