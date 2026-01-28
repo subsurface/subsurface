@@ -42,3 +42,6 @@ target_link_libraries(subsurface-cli
 )
 
 install(TARGETS subsurface-cli DESTINATION bin)
+
+# Include tests subdirectory
+add_subdirectory(tests)

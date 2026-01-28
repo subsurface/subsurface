@@ -118,6 +118,18 @@ jobs:
           !build/tests/Test*
           build/tests/Testing/
 
+    - name: build and test subsurface-cli
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building CLI"
+        cd ..
+        bash -e -x subsurface/scripts/build.sh -cli
+
+        echo "--------------------------------------------------------------"
+        echo "running CLI tests"
+        cd build-cli
+        python3 ../subsurface/cli/tests/test_cli.py --cli-path ./subsurface-cli
+
     - name: build subsurface-downloader
       run: |
         echo "--------------------------------------------------------------"
