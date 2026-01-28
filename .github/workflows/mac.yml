@@ -177,6 +177,27 @@ jobs:
         echo "Created $IMG"
         echo "dmg=$IMG" >> $GITHUB_OUTPUT
 
+    - name: build and test subsurface-cli
+      if: matrix.arch == 'arm64' && matrix.qtversion != 5
+      run: |
+        cd ${GITHUB_WORKSPACE}/..
+        # set up the paths for Qt
+        export QT_ROOT=$(pwd)/Qt/${{ matrix.qtversion }}/macos
+        export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
+        export PATH=$QT_ROOT/bin:$PATH
+        export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
+        # ensure that only our packages are used, not anything from Homebrew
+        export PKG_CONFIG_LIBDIR=$(pwd)/install-root/lib/pkgconfig
+
+        echo "--------------------------------------------------------------"
+        echo "building CLI"
+        bash -e -x ./subsurface/scripts/build.sh -cli -build-with-qt6
+
+        echo "--------------------------------------------------------------"
+        echo "running CLI tests"
+        cd subsurface/build-cli
+        python3 ../cli/tests/test_cli.py --cli-path ./cli/subsurface-cli
+
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
       uses: actions/upload-artifact@v6
