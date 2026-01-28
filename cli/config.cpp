@@ -66,6 +66,9 @@ static bool isAllowedConfigPath(const QString &path)
 		return true;
 	if (canonical.startsWith("/tmp/subsurface"))
 		return true;
+	// macOS: /tmp is a symlink to /private/tmp
+	if (canonical.startsWith("/private/tmp/subsurface"))
+		return true;
 	if (canonical.startsWith("/var/lib/subsurface"))
 		return true;
 	if (canonical.startsWith("/run/subsurface"))
