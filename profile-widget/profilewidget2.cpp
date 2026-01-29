@@ -21,7 +21,7 @@
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/models.h"
 #include "core/errorhelper.h"
-#if defined(SUBSURACE_DESKTOP)
+#if defined(SUBSURFACE_DESKTOP)
 #include "desktop-widgets/simplewidgets.h"
 #include "commands/command.h"
 #include "core/gettextfromc.h"
