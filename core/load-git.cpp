@@ -718,7 +718,7 @@ static void parse_dc_airtemp(char *line, struct git_parser_state *state)
 { state->active_dc->airtemp = get_temperature(line); }
 
 static void parse_dc_date(char *line, struct git_parser_state *state)
-{ update_date(&state->active_dc->when, line); }
+{ update_date(&state->active_dc->when.local_time, line); }
 
 static void parse_dc_deviceid(char *line, struct git_parser_state *state)
 {
@@ -759,7 +759,7 @@ static void parse_dc_surfacetime(char *line, struct git_parser_state *state)
 { state->active_dc->surfacetime = get_duration(line); }
 
 static void parse_dc_time(char *line, struct git_parser_state *state)
-{ update_time(&state->active_dc->when, line); }
+{ update_time(&state->active_dc->when.local_time, line); }
 
 static void parse_dc_watertemp(char *line, struct git_parser_state *state)
 { state->active_dc->watertemp = get_temperature(line); }
@@ -1397,7 +1397,7 @@ static void create_new_dive(timestamp_t when, struct git_parser_state *state)
 	state->active_dive = std::make_unique<dive>();
 
 	/* We'll fill in more data from the dive file */
-	state->active_dive->when = when;
+	state->active_dive->set_time_local(when);
 
 	if (state->active_trip)
 		state->active_trip->add_dive(state->active_dive.get());
@@ -1647,7 +1647,7 @@ static struct divecomputer *create_new_dc(struct dive *dive)
 		dive->dcs.emplace_back();
 		dc = &dive->dcs.back();
 	}
-	dc->when = dive->when;
+	dc->when = dive->get_time();
 	dc->duration = dive->duration;
 	return dc;
 }

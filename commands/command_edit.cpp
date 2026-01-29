@@ -726,8 +726,10 @@ void PasteState::swap()
 		std::swap(*weightsystems, d.weightsystems);
 	if (number.has_value())
 		std::swap(*number, d.number);
-	if (when.has_value())
-		std::swap(*when, d.when);
+	if (when.has_value()) {
+		auto time = std::exchange(*when, d.get_time_local());
+		d.set_time_local(time);
+	}
 }
 
 // ***** Paste *****
@@ -800,7 +802,7 @@ ReplanDive::ReplanDive(dive *source) : d(current_dive),
 	source->maxdepth = source->dcs[0].maxdepth = 0_m;
 	divelog.dives.fixup_dive(*source);
 
-	when = source->when;
+	when = source->get_time_local();
 	maxdepth = source->maxdepth;
 	meandepth = source->meandepth;
 	notes = source->notes;
@@ -826,7 +828,8 @@ bool ReplanDive::workToBeDone()
 
 void ReplanDive::undo()
 {
-	std::swap(d->when, when);
+	auto time = std::exchange(when, d->get_time_local());
+	d->set_time_local(time);
 	std::swap(d->maxdepth, maxdepth);
 	std::swap(d->meandepth, meandepth);
 	std::swap(d->cylinders, cylinders);
@@ -1390,7 +1393,7 @@ EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_s
 	changedFields = DiveField::NONE;
 	if (oldDive->number != newDive->number)
 		changedFields |= DiveField::NR;
-	if (oldDive->when != newDive->when)
+	if (oldDive->get_time_local() != newDive->get_time_local())
 		changedFields |= DiveField::DATETIME;
 	if (oldDive->maxdepth.mm != newDive->maxdepth.mm)
 		changedFields |= DiveField::DEPTH;
@@ -1482,7 +1485,7 @@ void EditDive::exchangeDives()
 
 	// Changing times may have unsorted the dive and trip tables
 	QVector<dive *> dives = { oldDive };
-	timestamp_t delta = oldDive->when - newDive->when;
+	timestamp_t delta = oldDive->get_time_local() - newDive->get_time_local();
 	if (delta != 0) {
 		divelog.dives.sort();
 		divelog.trips.sort();
