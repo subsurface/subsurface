@@ -26,7 +26,7 @@ static std::string string_or_empty(const char * whatever)
 
 static std::string system_default_path()
 {
-	std::string home = string_or_empty(getenv("HOME"));
+	std::string home(getenv("HOME") ?: "");
 	if (home.empty())
 		home = "~";
 	return home + "/.subsurface";
@@ -34,7 +34,7 @@ static std::string system_default_path()
 
 static std::string make_default_filename()
 {
-	std::string user = string_or_empty(getenv("LOGNAME"));
+	std::string user(getenv("LOGNAME") ?: "");
 	if (user.empty())
 		user = "username";
 	return system_default_path() + "/" + user + ".xml";
