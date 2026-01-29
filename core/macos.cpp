@@ -35,13 +35,15 @@
 
 static std::string system_default_path()
 {
-	std::string home(getenv("HOME"));
+	std::string home(getenv("HOME") ?: "");
+	if (home.empty())
+		home = "~";
 	return home + "/Library/Application Support/Subsurface";
 }
 
 static std::string make_default_filename()
 {
-	std::string user = getenv("LOGNAME");
+	std::string user(getenv("LOGNAME") ?: "");
 	if (user.empty())
 		user = "username";
 	return system_default_path() + "/" + user + ".xml";
