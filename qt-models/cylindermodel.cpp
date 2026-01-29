@@ -234,20 +234,20 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case HE:
 			return percent_string(cyl->gasmix.he);
 		case DEPTH:
-			return get_depth_string(cyl->depth, true);
+			return get_depth_string(cyl->depth, true, false);
 		case MOD:
 			if (cyl->bestmix_o2) {
 				return QStringLiteral("*");
 			} else {
 				pressure_t modpO2;
 				modpO2.mbar = inPlanner ? prefs.bottompo2 : (int)(prefs.modpO2 * 1000.0);
-				return get_depth_string(d->gas_mod(cyl->gasmix, modpO2, m_or_ft(1, 1)), true);
+				return get_depth_string(d->gas_mod(cyl->gasmix, modpO2, m_or_ft(1, 1)), true, false);
 			}
 		case MND:
 			if (cyl->bestmix_he)
 				return QStringLiteral("*");
 			else
-				return get_depth_string(d->gas_mnd(cyl->gasmix, prefs.bestmixend, m_or_ft(1, 1)), true);
+				return get_depth_string(d->gas_mnd(cyl->gasmix, prefs.bestmixend, m_or_ft(1, 1)), true, false);
 			break;
 		case USE:
 			return gettextFromC::tr(cylinderuse_text[cyl->cylinder_use]);
