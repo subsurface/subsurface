@@ -875,13 +875,41 @@ static void save_dive_sites_buffer(struct membuffer *b, const struct dive_site *
 	put_format(b, "</divesites>\n");
 }
 
-int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize)
+static void save_dive_sites_buffer_kml(struct membuffer *b, const struct dive_site *sites[], int nr_sites, bool anonymize)
+{
+	int i;
+	put_format(b, "<?xml version=\"1.0\"  encoding=\"UTF-8\"?>\n");
+	put_format(b, "<kml xmlns=\"http://www.opengis.net/kml/2.2\">\n<Document>\n");
+	put_format(b, "  <Style id=\"subsurfaceIcon\">\n");
+	put_format(b, "    <IconStyle>\n      <Icon>\n");
+	put_format(b, "        <href>data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFVklEQVRYR62Xe1BUdRTHv3d32V2WdywBIjjGjKY8G1rwAZSTaTomqDVO01imlRWj04xTTkymAsKkpukfmo+aXj4TgZZQMU1NReUlGC2KIi95FJKwCMs+uJ3fxSVK2L3XPDN3Zufu+f3O555zfuf8DseTdHd3obS8BBwnA3gMKy4uLvT/8P9JeWuz2WC2WKCL0cHd3ROc0djJF5cUIzoqWso+/1u3ylCF6MhocMdPHOVjnoqBTEZfT9JjtqHPwhzBQ06vVAqZ8DyKr/8vdXnFFXBnzp7iO7gg6C80oK61Ez29fbBYbKDIQE6G5QQmk8mhUsrh7qqEl7sKPh4qaL3U8PdxRaCPGqO1bvDzVsKNdByBWm1AQ3sPiqrbca6yBcE+9GGrthfyJ4qbRwq9aFczWBXlicJFDqWCHhcZPQr095MvKa/umcz0cRaY+voG82xqhBbcG5l6/sr1dtGG7IosYkqFC0xm6/1XI2Svg50nh/uBWywA/CkZgC0I8tPg+ZgxCPH3wNYjleg0miTtMzn8cQJYn8eXP4QH2JFl8c7PnAVXlQK7fjJg/8/XpQGE2QGuiffAi/GhMPZYkBAZCKWcQ3xEgGB0T0E19hZWSwTwH/BAWfUfohYG+JGrU6aiw9iHCSHeg2u6eswoq7mDzw6Ww3iPkkykDIag1NDmdAk7jvs+mYGAxzQP6FY33kXlzQ6cKmuAoa7D6V52hbgw5oGMXF4MwLgQX+z+4NlhNzdR8brVakTK5l9gs/WLBwgPIID0XL7E0Op00cLpTyIlOfwBPSsZrG3phsVqxbubTjndZ6iCLkwAyOGLf3cOkPlOAhLuJ9zQTWxUaHbqq5B7pga9ffaaII4jdgDgCF9c5RiA9YkfP50LLzcl7nab4e2uHLRQ39aN19KPUcUT73r7Yt3EQJYDOfzl31ocIo+i7P9+9UxB54u8KqxYECH8ZmV2a/ZVZJ++RuVVeiV8eiJ54HXygDMAZkyjVlDl84DZytNpGIBhYrb2Y+X2IpQZmsT5fYiWLox5ID2bv3TVsQeG7szCUbhlvlD9ein7XakDsjqQsvksapuk9RRd+H2Ai5XNkuh3fDgT44O9sGzjSSycPh6zYsegrs2IN7NOoNckvhDpwkdRCNKy+YuVtyUBrHw1DvMTn8BzKw5Te7VgxqRQrFsSh/XflSD/V/H9IFYAWMcAxMfPV+uFjKVT6AKixksf5QjgWh8N9Bvm4csCA/bklIn+mNiIIMqBtYf5CyIBWPy/Wj0bvp5qpGwsRENr16Cxr9fMQW2zEWm7z0gF+IE/XyHOAwkxoUhdFIO3s46hse0f48zinIRxSFkQjaRVOTBTWORyOTQaNXRhQQjwdRNuSd/oS8HT0bVLXORo8sA6AihvdEodHKTFtvenYVdeBY6eezDOKqUCBVtexr6TN4Rb0hSq8+NHe+NOlwnnr97G6ZJ6VNb8u+nFRQazHCAA6mKORK1W4UBGEto7e/FWhn7EmpO6NBHJ8WPRcucejl+qR2HRTdxoGrk7TooSAA7x55wAsKvP0c8X4tilBmzdd2FEVn9fd7qeeaLU0IJ+EZVxUlQIAaw96ByAleDUOWj7qwdrdkjreI48KwAsJoCzpfVOc2D3x0k0H3BYmpbrVFesQjxdaLll6w/xhUW3nK75Nm0egrQemLl8L6w03z0KmTctFNyO/Xp+w96qEYdSu6FXXoiCp5sKO7MvPwrbkNHcl7VkwsBwunxTPh0TOgnSO+rDwdB1PjlxLNLfmw3OPp4fKDiNipu91OH6QaOhZJFxPOzTu4Ku63I22TIZMtKzn5RGCBujwaK5zwjj+d8nJRk5l/zfUgAAAABJRU5ErkJggg==</href>\n");
+	put_format(b, "      </Icon>\n    </IconStyle>\n");
+	put_format(b, "  </Style>\n>");
+
+	/* save the dive sites */
+	for (i = 0; i < nr_sites; i++) {
+		const struct dive_site *ds = sites[i];
+
+		put_format(b, "  <Placemark>\n");
+		show_utf8_blanked(b, ds->name.c_str(), "    <name>", "</name>\n", 1, anonymize);
+		put_format(b, "    <styleUrl>#subsurfaceIcon</styleUrl>\n");
+		show_utf8_blanked(b, ds->description.c_str(), "    <description>", "</description>\n", 1, anonymize);
+		put_location_kml(b, &ds->location, "    <Point>\n      <coordinates>", "</coordinates>\n    </Point>\n");
+		put_format(b, "  </Placemark>\n");
+	}
+	put_format(b, "</Document>\n</kml>\n");
+}
+
+int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize, bool kml)
 {
 	membuffer buf;
 	FILE *f;
 	int error = 0;
 
-	save_dive_sites_buffer(&buf, sites, nr_sites, anonymize);
+	if (kml)
+		save_dive_sites_buffer_kml(&buf, sites, nr_sites, anonymize);
+	else
+		save_dive_sites_buffer(&buf, sites, nr_sites, anonymize);
 
 	if (same_string(filename, "-")) {
 		f = stdout;
