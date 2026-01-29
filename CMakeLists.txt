@@ -677,7 +677,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 	# CLI executable is created in cli/CMakeLists.txt
-	# Nothing else needed here - the subdirectory handles everything
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES} ${LIBMTP_LIBRARIES})
 endif()
 
 add_dependencies(subsurface_corelib version)
