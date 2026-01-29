@@ -281,6 +281,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::NumberRole: return d->number;
 	case MobileListModel::LocationRole: return QString::fromStdString(d->get_location());
 	case MobileListModel::DepthRole: return get_depth_string(d->dcs[0].maxdepth.mm, true, true);
+	case MobileListModel::AverageDepthRole: return get_depth_string(d->dcs[0].meandepth.mm, true, true);
 	case MobileListModel::DurationRole: return formatDiveDuration(d);
 	case MobileListModel::DepthDurationRole: return QStringLiteral("%1 / %2").arg(get_depth_string(d->dcs[0].maxdepth.mm, true, true),
 										      formatDiveDuration(d));
