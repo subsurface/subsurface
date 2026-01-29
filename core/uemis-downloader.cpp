@@ -431,7 +431,7 @@ static std::string first_object_id_val(std::string_view buf)
 			return res;
 		}
 	}
-	return NULL;
+	return {};
 }
 
 /* ultra-simplistic; it doesn't deal with the case when the object_id is
@@ -1233,8 +1233,8 @@ std::string do_uemis_import(device_data_t *data)
 	}
 
 #if UEMIS_DEBUG
-	home = getenv("HOME");
-	user = getenv("LOGNAME");
+	home = getenv("HOME") ?: "";
+	user = getenv("LOGNAME") ?: "";
 #endif
 	uemis_info(translate("gettextFromC", "Initialise communication"));
 	if (!uemis_init(mountpath)) {

@@ -164,7 +164,7 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 		if (desc) {
 			// We found a supported device
 			// we can safely proceed with reading/writing to this device.
-			deviceDetails.model = dc_descriptor_get_product(desc);
+			deviceDetails.model = dc_descriptor_get_product(desc) ?: "";
 			dc_descriptor_free(desc);
 		} else {
 			return DC_STATUS_UNSUPPORTED;
