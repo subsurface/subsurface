@@ -33,7 +33,7 @@ target_link_libraries(subsurface-cli
 	subsurface_backend_shared
 	subsurface_corelib
 	${QT_LIBRARIES}
-	${LIBDIVECOMPUTER_LIBRARIES}
+	${SUBSURFACE_LINK_LIBRARIES}
 	${LIBZIP_LIBRARIES}
 	-lsqlite3
 	-lxslt
