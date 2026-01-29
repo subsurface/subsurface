@@ -82,6 +82,7 @@ struct preferences {
 	std::string cloud_storage_email_encoded;
 	std::string cloud_storage_password;
 	std::string cloud_storage_pin;
+	std::string cloud_storage_server;
 	int         cloud_timeout;
 	int         cloud_verification_status;
 	bool        save_password_local;

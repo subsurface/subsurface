@@ -110,13 +110,14 @@ int main(int argc, char **argv)
 #endif
 	setup_system_prefs();
 	prefs = default_prefs;
-	CheckCloudConnection ccc;
-	ccc.pickServer();
 	fill_computer_list();
 	reset_tank_info_table(tank_info_table);
 	parse_xml_init();
 	taglist_init_global();
 	init_ui();
+	if (prefs.cloud_storage_server.empty()) {
+	    CheckCloudConnection().pickServer();
+	}
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
 			if (!prefs.default_filename.empty())

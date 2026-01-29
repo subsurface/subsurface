@@ -5,6 +5,7 @@
 #include "core/cloudstorage.h"
 #include "core/errorhelper.h"
 #include "core/settings/qPrefCloudStorage.h"
+#include "core/checkcloudconnection.h"
 #include <QRegularExpression>
 #include <QMessageBox>
 #include <QDesktopServices>
@@ -25,11 +26,16 @@ PreferencesCloud::~PreferencesCloud()
 
 void PreferencesCloud::on_resetPassword_clicked()
 {
-	QDesktopServices::openUrl(QUrl("https://cloud.subsurface-divelog.org/passwordreset"));
+	std::string server = prefs.cloud_storage_server.empty() ? "cloud.subsurface-divelog.org"
+								: prefs.cloud_storage_server;
+
+	QUrl url(QStringLiteral("https://%1/passwordreset").arg(QString::fromStdString(server)));
+	QDesktopServices::openUrl(url);
 }
 
 void PreferencesCloud::refreshSettings()
 {
+	ui->cloud_storage_server->setText(QString::fromStdString(prefs.cloud_storage_server));
 	ui->cloud_storage_email->setText(QString::fromStdString(prefs.cloud_storage_email));
 	ui->cloud_storage_password->setText(QString::fromStdString(prefs.cloud_storage_password));
 	ui->save_password_local->setChecked(prefs.save_password_local);
@@ -45,6 +51,14 @@ void PreferencesCloud::syncSettings()
 	QString newpassword = ui->cloud_storage_new_passwd->text();
 	QString emailpasswordformatwarning = tr("Change ignored. Cloud storage email and new password can only consist of letters, numbers, and '.', '-', '_', and '+'.");
 
+	if (prefs.cloud_storage_server != ui->cloud_storage_server->text()) {
+		cloud->set_cloud_storage_server(ui->cloud_storage_server->text());
+
+		CheckCloudConnection c;
+		c.pickServer();
+		c.checkServer();
+	}
+
 	//TODO: Change this to the Cloud Storage Stuff, not preferences.
 	if (prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED && !newpassword.isEmpty()) {
 		// deal with password change
@@ -55,7 +69,7 @@ void PreferencesCloud::syncSettings()
 				QMessageBox::warning(this, tr("Warning"), emailpasswordformatwarning);
 				return;
 			}
-			if (!reg.match(email).hasMatch() || (!newpassword.isEmpty() && !reg.match(newpassword).hasMatch())) {
+			if (!newpassword.isEmpty() && !reg.match(newpassword).hasMatch()) {
 				QMessageBox::warning(this, tr("Warning"), emailpasswordformatwarning);
 				ui->cloud_storage_new_passwd->setText(QString());
 				return;
@@ -104,7 +118,6 @@ void PreferencesCloud::syncSettings()
 	cloud->set_save_password_local(ui->save_password_local->isChecked());
 	cloud->set_cloud_storage_password(password);
 	cloud->set_cloud_verification_status(prefs.cloud_verification_status);
-	cloud->set_cloud_base_url(QString::fromStdString(prefs.cloud_base_url));
 }
 
 void PreferencesCloud::updateCloudAuthenticationState()

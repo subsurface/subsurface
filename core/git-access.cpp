@@ -42,21 +42,6 @@ bool git_remote_sync_successful = false;
 
 int (*update_progress_cb)(const char *) = NULL;
 
-static bool includes_string_caseinsensitive(const char *haystack, const char *needle)
-{
-	if (!needle)
-		return 1; /* every string includes the NULL string */
-	if (!haystack)
-		return 0; /* nothing is included in the NULL string */
-	int len = strlen(needle);
-	while (*haystack) {
-		if (strncasecmp(haystack, needle, len))
-			return 1;
-		haystack++;
-	}
-	return 0;
-}
-
 void set_git_update_cb(int(*cb)(const char *))
 {
 	update_progress_cb = cb;
@@ -870,9 +855,10 @@ static bool create_local_repo(struct git_info *info)
 		} else {
 			 report_info("git storage: giterr_last() is null\n");
 		}
-		std::string pattern = format_string_std("reference 'refs/remotes/origin/%s' not found", info->branch.c_str());
 		// it seems that we sometimes get 'Reference' and sometimes 'reference'
-		if (includes_string_caseinsensitive(msg, pattern.c_str())) {
+		if (QString(msg).contains(QStringLiteral("reference 'refs/remotes/origin/%1' not found")
+							.arg(QString::fromStdString(info->branch)),
+										    Qt::CaseInsensitive)) {
 			/* we're trying to open the remote branch that corresponds
 			 * to our cloud storage and the branch doesn't exist.
 			 * So we need to create the branch and push it to the remote */
