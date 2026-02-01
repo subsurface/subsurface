@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Extra Info</string>
+   <string>Dive Computer Info</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
