@@ -206,4 +206,35 @@ void range_remove(Range &v, const Element &item)
 		v.erase(it);
 }
 
+// Sort a range by order of other range. Unoptimized.
+// The items must possess quick operator<() and operator==() for binary lookup.
+template<typename Range1, typename Range2>
+void sort_by_reference(Range1 &v, const Range2 &reference)
+{
+	// Sort range for binary lookup.
+	std::sort(std::begin(v), std::end(v));
+
+	// Collect indexes
+	std::vector<size_t> indexes(v.size(), std::string::npos);
+	for (const auto &item: reference) {
+		auto it = std::lower_bound(std::begin(v), std::end(v), item);
+		if (it == std::end(v) || *it != item)
+			continue;
+		indexes[it - std::begin(v)] = &item - reference.data();
+	}
+
+	// Generate permutation table
+	std::vector<size_t> permutation(v.size());
+	std::iota(permutation.begin(), permutation.end(), 0);
+	std::sort(permutation.begin(), permutation.end(),
+		  [&indexes](size_t i1, size_t i2) { return indexes[i1] < indexes[i2]; });
+
+	// Generate result
+	Range1 res;
+	res.reserve(v.size());
+	for (size_t i: permutation)
+		res.push_back(std::move(v[i]));
+	v = std::move(res);
+}
+
 #endif
