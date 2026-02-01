@@ -77,12 +77,13 @@ static QString fmt_int(T i, vasprintf_flags flags, int field_width, int precisio
 		return fmt_string(res, flags, field_width, -1);
 	}
 
-	// If we have to prepend a '+' or a space character, remove that from the field width
 	char sign = 0;
-	if (i >= 0 && (flags.space || flags.sign) && field_width > 0) {
+	if (i >= 0 && (flags.space || flags.sign))
 		sign = flags.sign ? '+' : ' ';
+
+	// If we have to prepend a '+' or a space character, remove that from the field width
+	if (sign && field_width > 0)
 		--field_width;
-	}
 	if (flags.left)
 		field_width = -field_width;
 	QChar fillChar = flags.zero && !flags.left ? '0' : ' ';
