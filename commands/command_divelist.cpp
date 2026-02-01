@@ -630,7 +630,7 @@ void ShiftTime::redoit()
 
 	// Send signals
 	QVector<dive *> dives = stdToQt<dive *>(diveList);
-	emit diveListNotifier.divesTimeChanged(timeChanged, dives);
+	emit diveListNotifier.divesTimeChanged(dives);
 	emit diveListNotifier.divesChanged(dives, DiveField::DATETIME);
 
 	// Select the changed dives

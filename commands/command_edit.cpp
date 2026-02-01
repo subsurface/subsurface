@@ -1494,7 +1494,7 @@ void EditDive::exchangeDives()
 			qWarning("Command::EditDive::redo(): This command does not support moving between trips!");
 		if (oldDive->divetrip)
 			newDive->divetrip->sort_dives(); // Keep the trip-table in order
-		emit diveListNotifier.divesTimeChanged(delta, dives);
+		emit diveListNotifier.divesTimeChanged(dives);
 	}
 
 	// Send signals

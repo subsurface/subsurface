@@ -1376,13 +1376,13 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 	divesAdded(to, createTo, dives);
 }
 
-void DiveTripModelTree::divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives)
+void DiveTripModelTree::divesTimeChanged(const QVector<dive *> &dives)
 {
-	processByTrip(dives, [this, delta] (dive_trip *trip, const QVector<dive *> &divesInTrip)
-		      { divesTimeChangedTrip(trip, delta, divesInTrip); });
+	processByTrip(dives, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+		      { divesTimeChangedTrip(trip, divesInTrip); });
 }
 
-void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &divesIn)
+void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, const QVector<dive *> &divesIn)
 {
 	QVector <dive *> dives = visibleDives(divesIn);
 	if (dives.empty())
@@ -1703,7 +1703,7 @@ void DiveTripModelList::diveChanged(dive *d)
 	divesChanged(QVector<dive *> { d });
 }
 
-void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *> &divesIn)
+void DiveTripModelList::divesTimeChanged(const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = visibleDives(divesIn);
 	if (dives.empty())

@@ -92,7 +92,7 @@ signals:
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
-	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
+	void divesTimeChanged(const QVector<dive *> &dives);
 	void divesImported(); // A general signal when multiple dives have been imported.
 
 	void diveComputerEdited(dive &dive, divecomputer &dc);
