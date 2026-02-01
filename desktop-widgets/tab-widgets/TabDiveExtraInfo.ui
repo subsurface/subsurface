@@ -10,9 +10,181 @@
     <height>300</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <widget class="QTableView" name="extraData"/>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QGroupBox">
+     <property name="title">
+      <string>Model</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter</set>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter</set>
+      </property>
+      <item>
+       <widget class="QLabel" name="model" />
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QGroupBox">
+     <property name="title">
+      <string>Serial</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter</set>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter</set>
+      </property>
+      <item>
+       <widget class="QLabel" name="serial" native="true"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="2">
+    <widget class="QGroupBox">
+     <property name="title">
+      <string>Firmware</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter</set>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter</set>
+      </property>
+      <item>
+       <widget class="QLabel" name="firmware" native="true"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox">
+     <property name="title">
+      <string>Date</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter</set>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter</set>
+      </property>
+      <item>
+       <widget class="QLabel" name="date" />
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QGroupBox">
+     <property name="title">
+      <string>Duration</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter</set>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter</set>
+      </property>
+      <item>
+       <widget class="QLabel" name="duration" native="true"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="2">
+    <widget class="QGroupBox">
+     <property name="title">
+      <string>Dive Mode</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter</set>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter</set>
+      </property>
+      <item>
+       <widget class="QLabel" name="diveMode" native="true"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="3">
+    <widget class="QGroupBox">
+     <property name="title">
+      <string>Extra Data</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter</set>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMaximumSize</enum>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter</set>
+      </property>
+      <item>
+       <widget class="QTableView" name="extraData"/>
+      </item>
+     </layout>
+    </widget>
    </item>
   </layout>
  </widget>
