@@ -5,6 +5,7 @@
 #include "core/qthelper.h"
 #include "core/pref.h"
 #include "core/selection.h"
+#include "core/string-format.h"
 #include "core/subsurface-string.h"
 #include "core/string-format.h"
 #include "core/tag.h"
@@ -15,6 +16,7 @@
 #include "qt-models/diveplannermodel.h"
 #include "commands/command.h"
 
+#include <charconv>
 #include <QCompleter>
 #include <QMessageBox>
 
@@ -23,6 +25,59 @@ struct Completers {
 	QCompleter *buddy;
 	QCompleter *tags;
 };
+
+// Parse a string view to an integer or return empty on error.
+// Is rather strict: no spurious characters allowed. No overflow allowed.
+// Empty string is allowed and parsed as zero.
+static std::optional<int> to_int(std::string_view s)
+{
+	int i;
+	if (s.empty())
+		return 0;
+	auto res = std::from_chars<int>(s.data(), s.data() + s.size(), i);
+	if (res.ec == std::errc() && res.ptr == s.data() + s.size())
+		return i;
+	return {};
+}
+
+// Convert offset to utc into seconds.
+// Fprmat: +/-h:m or +/-h
+static std::pair<std::optional<int32_t>, bool>  parse_utc_offset(std::string_view s)
+{
+	if (!s.empty() && s[0] == '+')
+		s.remove_prefix(1);
+	if (s.empty())
+		return { {}, true };
+
+	size_t pos = s.find(':');
+	std::optional<int> h, m;
+	if (pos == std::string::npos) {
+		h = to_int(s);
+		m = 0;
+	} else {
+		h = to_int(s.substr(0, pos));
+		m = to_int(s.substr(pos + 1));
+	}
+
+	// Sanity check
+	// Note: this allows values from -12:59 to 14:59.
+	if (!h || !m || *m < 0 || *m >= 60 || *h < -12 || *h > 14)
+		return { {}, false };
+
+	int32_t res = *h >= 0 ? *h * 3600 + *m * 60
+			      : *h * 3600 - *m * 60;
+	return { res, true };
+}
+
+class UTCOffsetValidator : public QValidator {
+	State validate(QString &input, int & /*pos*/) const override {
+		if (input == QStringLiteral("-"))
+			return Intermediate;
+		auto [offset, ok] = parse_utc_offset(input.toStdString());
+		return ok ? Acceptable : Invalid;
+	}
+};
+static UTCOffsetValidator utc_offset_validator;
 
 TabDiveNotes::TabDiveNotes(MainTab *parent) : TabBase(parent),
 	ignoreInput(false),
@@ -80,6 +135,7 @@ TabDiveNotes::TabDiveNotes(MainTab *parent) : TabBase(parent),
 	ui.depthLabel->hide();
 	ui.duration->hide();
 	ui.durationLabel->hide();
+	ui.utcOffsetEdit->setValidator(&utc_offset_validator);
 	setMinimumHeight(0);
 	setMinimumWidth(0);
 
@@ -174,6 +230,7 @@ void TabDiveNotes::updateDateTime(const struct dive *d)
 	QDateTime localTime = timestampToDateTime(d->get_time_local());
 	ui.dateEdit->setDate(localTime.date());
 	ui.timeEdit->setTime(localTime.time());
+	ui.utcOffsetEdit->setText(get_utc_offset_string(d->get_offset_to_utc()));
 }
 
 void TabDiveNotes::updateTripDate(const struct dive_trip *t)
@@ -223,6 +280,8 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.dateEdit->setReadOnly(true);
 		ui.timeLabel->setVisible(false);
 		ui.timeEdit->setVisible(false);
+		ui.utcOffsetLabel->setVisible(false);
+		ui.utcOffsetEdit->setVisible(false);
 		ui.diveTripLocation->show();
 		ui.location->hide();
 		ui.locationPopupButton->hide();
@@ -257,6 +316,8 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.dateEdit->setReadOnly(false);
 		ui.timeLabel->setVisible(true);
 		ui.timeEdit->setVisible(true);
+		ui.utcOffsetLabel->setVisible(true);
+		ui.utcOffsetEdit->setVisible(true);
 		/* and fill them from the dive */
 		ui.rating->setCurrentStars(currentDive->rating);
 		// reset labels in case we last displayed trip notes
@@ -300,6 +361,7 @@ void TabDiveNotes::clear()
 	ui.timeEdit->setSpecialValueText(QString("-"));
 	ui.timeEdit->setMinimumTime(QTime(0, 0, 0, 0));
 	ui.timeEdit->setTime(QTime(0, 0, 0, 0));
+	ui.utcOffsetEdit->clear();
 	ui.tagWidget->clear();
 }
 
@@ -374,6 +436,16 @@ void TabDiveNotes::on_timeEdit_editingFinished()
 	QDateTime dateTime = timestampToDateTime(parent.currentDive->get_time_local());
 	dateTime.setTime(ui.timeEdit->time());
 	shiftTime(dateTime, parent.currentDive);
+}
+
+void TabDiveNotes::on_utcOffsetEdit_editingFinished()
+{
+	if (ignoreInput || !parent.currentDive)
+		return;
+	auto [offset, ok] = parse_utc_offset(ui.utcOffsetEdit->text().toStdString());
+	if (!ok)
+		return;
+	Command::setUtcOffset(getDiveSelection(), offset);
 }
 
 void TabDiveNotes::on_tagWidget_editingFinished()

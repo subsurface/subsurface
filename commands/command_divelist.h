@@ -66,6 +66,8 @@ protected:
 	// Register dive sites where counts changed so that we can signal the frontend later.
 	void diveSiteCountChanged(struct dive_site *ds);
 
+	// Reorder dives and trips, when time of dives changed
+	static void updateDiveAndTripLists(const std::vector<dive *> &dives, const std::vector<dive_trip *> &trips);
 private:
 	// Keep track of dive sites where the number of dives changed
 	std::vector<dive_site *> sitesCountChanged;
@@ -148,6 +150,19 @@ private:
 	// For redo and undo
 	std::vector<dive *> diveList;
 	int timeChanged;
+};
+
+// Since changing the UtcOffset may change the order of dives, this is a divelist-command
+class SetUtcOffset : public DiveListBase {
+public:
+	SetUtcOffset(const std::vector<dive *> &changedDives, std::optional<int32_t> offset);
+private:
+	void undoit() override;
+	void redoit() override;
+	bool workToBeDone() override;
+
+	// For redo and undo: pairs of dive / offset
+	std::vector<std::pair<dive *, std::optional<int32_t>>> diveList;
 };
 
 class RenumberDives : public DiveListBase {

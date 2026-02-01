@@ -45,6 +45,7 @@ void addDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber);
 void importDives(struct divelog *log, int flags, const QString &source); // The tables are consumed!
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const std::vector<dive *> &changedDives, int amount);
+void setUtcOffset(const std::vector<dive *> &changedDives, std::optional<int32_t> offset);
 void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);
 void removeDivesFromTrip(const QVector<dive *> &divesToRemove);
 void removeAutogenTrips();

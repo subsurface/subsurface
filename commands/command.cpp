@@ -33,6 +33,11 @@ void shiftTime(const std::vector<dive *> &changedDives, int amount)
 	execute(new ShiftTime(changedDives, amount));
 }
 
+void setUtcOffset(const std::vector<dive *> &changedDives, std::optional<int32_t> offset)
+{
+	execute(new SetUtcOffset(changedDives, offset));
+}
+
 void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber)
 {
 	execute(new RenumberDives(divesToRenumber));

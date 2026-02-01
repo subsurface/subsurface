@@ -37,6 +37,7 @@ QString formatTripTitle(const dive_trip &trip);
 QString formatTripTitleWithDives(const dive_trip &trip);
 
 // Functions that format arbitrary data
+QString get_utc_offset_string(std::optional<int> offset);
 QString get_depth_string(depth_t depth, bool showunit = false, bool showdecimal = true);
 QString get_depth_string(int mm, bool showunit = false, bool showdecimal = true);
 QString get_depth_unit(bool metric);

@@ -388,6 +388,20 @@ void DiveListBase::redo()
 	finishWork();
 }
 
+// This function is used when the times of dives are edited and thus
+// the dive and trips may have to be resorted.
+void DiveListBase::updateDiveAndTripLists(const std::vector<dive *> &dives, const std::vector<dive_trip *> &trips)
+{
+	if (dives.empty())
+		return;
+
+	// Changing times may have unsorted the dive and trip tables
+	divelog.dives.sort();
+	divelog.trips.sort();
+	for (dive_trip *trip: trips)
+		trip->sort_dives();
+}
+
 AddDive::AddDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber)
 {
 	setText(Command::Base::tr("add dive"));
@@ -622,11 +636,7 @@ void ShiftTime::redoit()
 		d->invalidate_cache();
 	}
 
-	// Changing times may have unsorted the dive and trip tables
-	divelog.dives.sort();
-	divelog.trips.sort();
-	for (dive_trip *trip: trips)
-		trip->sort_dives();
+	updateDiveAndTripLists(diveList, trips);
 
 	// Send signals
 	QVector<dive *> dives = stdToQt<dive *>(diveList);
@@ -651,6 +661,51 @@ void ShiftTime::undoit()
 	redoit();
 }
 
+SetUtcOffset::SetUtcOffset(const std::vector<dive *> &changedDives, std::optional<int32_t> offset)
+{
+	diveList.reserve(changedDives.size());
+	for (dive *d: changedDives) {
+		if (offset != d->get_offset_to_utc())
+			diveList.push_back({ d, offset });
+	}
+
+	setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("set gmt offset of %n dive(s)", "", changedDives.size())).arg(getListOfDives(changedDives)));
+}
+
+bool SetUtcOffset::workToBeDone()
+{
+	return !diveList.empty();
+}
+
+void SetUtcOffset::redoit()
+{
+	std::vector<dive_trip *> trips;
+	std::vector<dive *> dives;
+	dives.reserve(diveList.size());
+	for (auto &[d, offset]: diveList) {
+		auto new_offset = std::exchange(offset, d->get_offset_to_utc());
+		d->set_offset_to_utc(new_offset);
+		if (d->divetrip && std::find(trips.begin(), trips.end(), d->divetrip) == trips.end())
+			trips.push_back(d->divetrip);
+		dives.push_back(d);
+	}
+
+	updateDiveAndTripLists(dives, trips);
+
+	// Send signals
+	auto divesChanged = stdToQt<dive *>(dives);
+	emit diveListNotifier.divesTimeChanged(divesChanged);
+	emit diveListNotifier.divesChanged(divesChanged, DiveField::DATETIME);
+
+	// Select the changed dives
+	setSelection(dives, dives[0], -1);
+}
+
+void SetUtcOffset::undoit()
+{
+	// Same as redoit()
+	redoit();
+}
 
 RenumberDives::RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumberIn) : divesToRenumber(divesToRenumberIn)
 {

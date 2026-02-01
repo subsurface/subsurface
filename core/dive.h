@@ -98,10 +98,12 @@ public:
 	datetime_t get_time() const;
 	timestamp_t get_time_local() const;
 	timestamp_t get_time_utc() const;
+	std::optional<int32_t> get_offset_to_utc() const;
 	void set_time(datetime_t time);
 	void set_time_dc(datetime_t time);
 	void set_time_local(timestamp_t local_time);
 	void set_time_local_dc(timestamp_t local_time);
+	void set_offset_to_utc(std::optional<int32_t> offset);
 	void shift_time(timestamp_t delta);
 	timestamp_t endtime_local() const;	/* maximum over divecomputers (with samples) */
 	timestamp_t endtime_utc() const;	/* maximum over divecomputers (with samples) */

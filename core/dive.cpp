@@ -2561,6 +2561,11 @@ timestamp_t dive::get_time_utc() const
 	return when.in_utc();
 }
 
+std::optional<int32_t> dive::get_offset_to_utc() const
+{
+	return when.offset_to_utc;
+}
+
 void dive::set_time(datetime_t time)
 {
 	when = time;
@@ -2579,6 +2584,11 @@ void dive::set_time_dc(datetime_t time)
 {
 	when = time;
 	dcs[0].when = time;
+}
+
+void dive::set_offset_to_utc(std::optional<int32_t> offset)
+{
+	when.offset_to_utc = offset;
 }
 
 /* Set time and also time of the first dc.

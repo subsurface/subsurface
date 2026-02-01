@@ -321,6 +321,15 @@ QString formatTripTitleWithDives(const dive_trip &trip)
 	       gettextFromC::tr("(%n dive(s))", "", nr);
 }
 
+QString get_utc_offset_string(std::optional<int> offset)
+{
+	if (!offset)
+		return QString();
+	if (*offset == 0)
+		return QStringLiteral("0:00");
+	return qasprintf_loc("%+d:%02d", *offset / 3600, std::abs(*offset / 60) % 60);
+}
+
 QString get_depth_string(int mm, bool showunit, bool showdecimal)
 {
 	if (prefs.units.length == units::METERS) {
