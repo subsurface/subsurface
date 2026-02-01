@@ -10,9 +10,6 @@
     <height>421</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Information</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="KMessageWidget" name="multiDiveWarningMessage"/>
