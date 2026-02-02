@@ -37,6 +37,7 @@
 #include "libdivecomputer.h"
 #include "core/version.h"
 #include "core/qthelper.h"
+#include "core/string-format.h"
 #include "core/file.h"
 #include <algorithm>
 #include <array>

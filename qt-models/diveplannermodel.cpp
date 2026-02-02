@@ -16,6 +16,7 @@
 #include "core/sample.h"
 #include "core/selection.h"
 #include "core/subsurface-time.h"
+#include "core/string-format.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefUnit.h"

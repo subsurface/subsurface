@@ -6,6 +6,7 @@
 #include "core/profile.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/qthelper.h"
+#include "core/string-format.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefLog.h"
 #include "libdivecomputer/parser.h"

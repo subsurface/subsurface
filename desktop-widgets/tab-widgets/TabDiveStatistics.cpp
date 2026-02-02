@@ -6,6 +6,7 @@
 #include "core/qthelper.h"
 #include "core/selection.h"
 #include "core/statistics.h"
+#include "core/string-format.h"
 #include <QLabel>
 #include <QIcon>
 

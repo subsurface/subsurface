@@ -5,6 +5,7 @@
 #include "divesite.h"
 #include "event.h"
 #include "format.h"
+#include "gettextfromc.h"
 #include "qthelper.h"
 #include "range.h"
 #include "subsurface-string.h"
@@ -317,4 +318,235 @@ QString formatTripTitleWithDives(const dive_trip &trip)
 	int nr = static_cast<int>(trip.dives.size());
 	return formatTripTitle(trip) + " " +
 	       gettextFromC::tr("(%n dive(s))", "", nr);
+}
+
+QString get_depth_string(int mm, bool showunit, bool showdecimal)
+{
+	if (prefs.units.length == units::METERS) {
+		double meters = mm / 1000.0;
+		return QStringLiteral("%L1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0).arg(showunit ? gettextFromC::tr("m") : QString());
+	} else {
+		double feet = mm_to_feet(mm);
+		return QStringLiteral("%L1%2").arg(feet, 0, 'f', 0).arg(showunit ? gettextFromC::tr("ft") : QString());
+	}
+}
+
+QString get_depth_string(depth_t depth, bool showunit, bool showdecimal)
+{
+	return get_depth_string(depth.mm, showunit, showdecimal);
+}
+
+QString get_depth_unit(bool metric)
+{
+	if (metric)
+		return gettextFromC::tr("m");
+	else
+		return gettextFromC::tr("ft");
+}
+
+QString get_depth_unit()
+{
+	return get_depth_unit(prefs.units.length == units::METERS);
+}
+
+static QString weight_string(weight_t weight)
+{
+	QString str;
+	if (get_units()->weight == units::KG) {
+		double kg = (double) weight.grams / 1000.0;
+		str = QString("%L1").arg(kg, 0, 'f', kg >= 20.0 ? 0 : 1);
+	} else {
+		double lbs = grams_to_lbs(weight.grams);
+		str = QString("%L1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1);
+	}
+	return str;
+}
+
+QString get_weight_string(weight_t weight, bool showunit)
+{
+	QString str = weight_string(weight);
+	return showunit ? str + get_weight_unit() : str;
+}
+
+QString get_weight_unit(bool metric)
+{
+	if (metric)
+		return gettextFromC::tr("kg");
+	else
+		return gettextFromC::tr("lbs");
+}
+
+QString get_weight_unit()
+{
+	return get_weight_unit(prefs.units.weight == units::KG);
+}
+
+QString get_temperature_string(temperature_t temp, bool showunit)
+{
+	if (temp.mkelvin == 0) {
+		return ""; //temperature not defined
+	} else if (prefs.units.temperature == units::CELSIUS) {
+		double celsius = mkelvin_to_C(temp.mkelvin);
+		return QString("%L1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? "°" : "").arg(showunit ? gettextFromC::tr("C") : QString());
+	} else {
+		double fahrenheit = mkelvin_to_F(temp.mkelvin);
+		return QString("%L1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? "°" : "").arg(showunit ? gettextFromC::tr("F") : QString());
+	}
+}
+
+QString get_temp_unit(bool metric)
+{
+	if (metric)
+		return QStringLiteral("°C");
+	else
+		return QStringLiteral("°F");
+}
+
+QString get_temp_unit()
+{
+	return get_temp_unit(prefs.units.temperature == units::CELSIUS);
+}
+
+QString get_volume_string(int mliter, bool showunit)
+{
+	const char *unit;
+	int decimals;
+	double value = get_volume_units(mliter, &decimals, &unit);
+	return QString("%L1%2").arg(value, 0, 'f', decimals).arg(showunit ? unit : "");
+}
+
+QString get_volume_string(volume_t volume, bool showunit)
+{
+	return get_volume_string(volume.mliter, showunit);
+}
+
+QString get_volume_unit(bool metric)
+{
+	if (metric)
+		return gettextFromC::tr("L");
+	else
+		return gettextFromC::tr("cuft");
+}
+
+QString get_volume_unit()
+{
+	return get_volume_unit(prefs.units.volume == units::LITER);
+}
+
+QString get_pressure_string(pressure_t pressure, bool showunit)
+{
+	if (prefs.units.pressure == units::BAR) {
+		double bar = pressure.mbar / 1000.0;
+		return QString("%L1%2").arg(bar, 0, 'f', 0).arg(showunit ? gettextFromC::tr("bar") : QString());
+	} else {
+		double psi = mbar_to_PSI(pressure.mbar);
+		return QString("%L1%2").arg(psi, 0, 'f', 0).arg(showunit ? gettextFromC::tr("psi") : QString());
+	}
+}
+
+QString get_salinity_string(int salinity)
+{
+	return QStringLiteral("%L1%2").arg(salinity / 10.0).arg(gettextFromC::tr("g/L"));
+}
+
+// the water types need to match the watertypes enum
+static const char *waterTypes[] = {
+	QT_TRANSLATE_NOOP("gettextFromC", "Fresh"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Brackish"),
+	QT_TRANSLATE_NOOP("gettextFromC", "EN13319"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Salt"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Use DC")
+};
+
+QString get_water_type_string(int salinity)
+{
+	if (salinity < 10050)
+		return gettextFromC::tr(waterTypes[FRESHWATER]);
+	else if (salinity < 10190)
+		return gettextFromC::tr(waterTypes[BRACKISHWATER]);
+	else if (salinity < 10210)
+		return gettextFromC::tr(waterTypes[EN13319WATER]);
+	else
+		return gettextFromC::tr(waterTypes[SALTWATER]);
+}
+
+QStringList get_water_types_as_string()
+{
+	QStringList res;
+	res.reserve(std::size(waterTypes));
+	for (const char *t: waterTypes)
+		res.push_back(gettextFromC::tr(t));
+	return res;
+}
+
+QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText, QString separator, bool isFreeDive)
+{
+	int hrs, mins, fullmins, secs;
+	mins = (when + 30) / 60;
+	fullmins = when / 60;
+	secs = when - 60 * fullmins;
+	hrs = mins / 60;
+
+	QString displayTime;
+	if (prefs.units.duration_units == units::ALWAYS_HOURS || (prefs.units.duration_units == units::MIXED && hrs)) {
+		mins -= hrs * 60;
+		displayTime = QString("%1%2%3%4%5").arg(hrs).arg(separator == ":" ? "" : hoursText).arg(separator)
+			.arg(mins, 2, 10, QChar('0')).arg(separator == ":" ? hoursText : minutesText);
+	} else if (isFreeDive && ( prefs.units.duration_units == units::MINUTES_ONLY || minutesText != "" )) {
+		// Freedive <1h and we display no hours but only minutes for other dives
+		// --> display a short (5min 35sec) freedives e.g. as "5:35"
+		// Freedive <1h and we display a unit for minutes
+		// --> display a short (5min 35sec) freedives e.g. as "5:35min"
+		if (separator == ":") displayTime = QString("%1%2%3%4").arg(fullmins).arg(separator)
+			.arg(secs, 2, 10, QChar('0')).arg(minutesText);
+		else displayTime = QString("%1%2%3%4%5").arg(fullmins).arg(minutesText).arg(separator)
+			.arg(secs).arg(secondsText);
+	} else if (isFreeDive) {
+		// Mixed display (hh:mm / mm only) and freedive < 1h and we have no unit for minutes
+		// --> Prefix duration with "0:" --> "0:05:35"
+		if (separator == ":") displayTime = QString("%1%2%3%4%5%6").arg(hrs).arg(separator)
+			.arg(fullmins, 2, 10, QChar('0')).arg(separator)
+			.arg(secs, 2, 10, QChar('0')).arg(hoursText);
+		// Separator != ":" and no units for minutes --> unlikely case - remove?
+		else displayTime = QString("%1%2%3%4%5%6%7%8").arg(hrs).arg(hoursText).arg(separator)
+			.arg(fullmins).arg(minutesText).arg(separator)
+			.arg(secs).arg(secondsText);
+	} else {
+		displayTime = QString("%1%2").arg(mins).arg(minutesText);
+	}
+	return displayTime;
+}
+
+QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText)
+{
+	return get_dive_duration_string(when, hoursText, minutesText, gettextFromC::tr("sec"), QStringLiteral(":"), false);
+}
+
+QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator, int maxdays)
+{
+	int days, hrs, mins;
+	days = when / 3600 / 24;
+	hrs = (when - days * 3600 * 24) / 3600;
+	mins = (when + 30 - days * 3600 * 24 - hrs * 3600) / 60;
+
+	QString displayInt;
+	if (maxdays && days > maxdays) displayInt = gettextFromC::tr("more than %1 days").arg(maxdays);
+	else if (days) displayInt = QString("%1%2%3%4%5%6%7%8").arg(days).arg(daysText).arg(separator)
+		.arg(hrs).arg(hoursText).arg(separator)
+		.arg(mins).arg(minutesText);
+	else displayInt = QString("%1%2%3%4%5").arg(hrs).arg(hoursText).arg(separator)
+		.arg(mins).arg(minutesText);
+	return displayInt;
+}
+
+QString get_dive_date_string(timestamp_t when)
+{
+	QDateTime ts;
+	ts.setMSecsSinceEpoch(when * 1000L);
+	return loc.toString(ts.toUTC(), QString::fromStdString(prefs.date_format + " " + prefs.time_format));
+}
+
+std::string get_dive_date_c_string(timestamp_t when)
+{
+	return get_short_dive_date_string(when).toStdString();
 }

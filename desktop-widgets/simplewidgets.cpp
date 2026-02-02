@@ -23,6 +23,7 @@
 #include "commands/command.h"
 #include "core/metadata.h"
 #include "core/range.h"
+#include "core/string-format.h"
 #include "core/tag.h"
 
 void RenumberDialog::buttonClicked(QAbstractButton *button)
