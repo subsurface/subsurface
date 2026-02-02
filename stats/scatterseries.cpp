@@ -10,7 +10,7 @@
 #include "zvalues.h"
 #include "core/dive.h"
 #include "core/divelist.h"
-#include "core/qthelper.h"
+#include "core/string-format.h"
 #include "core/selection.h"
 
 ScatterSeries::ScatterSeries(StatsView &view, StatsAxis *xAxis, StatsAxis *yAxis,

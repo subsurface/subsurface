@@ -9,6 +9,7 @@
 #include "core/range.h"
 #include "core/sample.h"
 #include "core/selection.h"
+#include "core/string-format.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/subsurface-string.h"
 #include "core/tanksensormapping.h"

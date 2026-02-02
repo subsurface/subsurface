@@ -41,26 +41,8 @@ QString localFilePath(const QString &originalFilename);
 std::optional<std::string> getCloudURL(); // move to prefs.h, probably.
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 void init_proxy();
-QStringList getWaterTypesAsString();
 QStringList mediaExtensionFilters();
 QStringList imageExtensionFilters();
-QString get_depth_string(depth_t depth, bool showunit = false, bool showdecimal = true);
-QString get_depth_string(int mm, bool showunit = false, bool showdecimal = true);
-QString get_depth_unit(bool metric);
-QString get_depth_unit(); // use preferences unit
-QString get_weight_string(weight_t weight, bool showunit = false);
-QString get_weight_unit(bool metric);
-QString get_weight_unit(); // use preferences unit
-QString get_temperature_string(temperature_t temp, bool showunit = false);
-QString get_temp_unit(bool metric);
-QString get_temp_unit(); // use preferences unit
-QString get_volume_string(volume_t volume, bool showunit = false);
-QString get_volume_string(int mliter, bool showunit = false);
-QString get_volume_unit(bool metric);
-QString get_volume_unit(); // use preferences unit
-QString get_pressure_string(pressure_t pressure, bool showunit = false);
-QString get_salinity_string(int salinity);
-QString get_water_type_string(int salinity);
 QString getSubsurfaceDataPath(QString folderToFind);
 QString getPrintingTemplatePathUser();
 QString getPrintingTemplatePathBundle();
@@ -73,10 +55,6 @@ int parsePressureToMbar(const QString &text);
 int parseGasMixO2(const QString &text);
 int parseGasMixHE(const QString &text);
 QString render_seconds_to_string(int seconds);
-QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText = gettextFromC::tr("sec"), QString separator = ":", bool isFreeDive = false);
-QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator = " ", int maxdays = 4);
-QString get_dive_date_string(timestamp_t when);
-std::string get_dive_date_c_string(timestamp_t when);
 QString get_first_dive_date_string();
 QString get_last_dive_date_string();
 QString get_short_dive_date_string(timestamp_t when);

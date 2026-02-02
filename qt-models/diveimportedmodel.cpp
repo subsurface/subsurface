@@ -1,7 +1,8 @@
 #include "diveimportedmodel.h"
 #include "core/dive.h"
-#include "core/qthelper.h"
 #include "core/divelist.h"
+#include "core/qthelper.h"
+#include "core/string-format.h"
 #include "commands/command.h"
 
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o)
