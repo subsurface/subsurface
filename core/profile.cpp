@@ -3,10 +3,6 @@
 /* creates all the necessary data for drawing the dive profile
  */
 #include "gettext.h"
-#include <limits.h>
-#include <string.h>
-#include <assert.h>
-#include <stdlib.h>
 
 #include "dive.h"
 #include "divelist.h"
@@ -29,6 +25,12 @@
 #include "qthelper.h"
 #include "range.h"
 #include "format.h"
+
+#include <limits.h>
+#include <string.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <QMutex>
 
 //#define DEBUG_GAS 1
 
@@ -841,6 +843,18 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 			next_stop -= deco_stepsize;
 		}
 	}
+}
+
+QMutex planLock;
+
+static void lock_planner()
+{
+	planLock.lock();
+}
+
+static void unlock_planner()
+{
+	planLock.unlock();
 }
 
 /* Let's try to do some deco calculations.
