@@ -43,7 +43,7 @@ void print_version()
 	printf("Subsurface v%s,\n", subsurface_canonical_version());
 #endif
 	printf("built with libdivecomputer v%s\n", dc_version(NULL));
-	print_qt_versions();
+	printf("built with Qt Version %s, runtime from Qt Version %s\n", QT_VERSION_STR, qVersion());
 	int git_maj, git_min, git_rev;
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	printf("built with libgit2 %d.%d.%d\n", git_maj, git_min, git_rev);
