@@ -1546,18 +1546,6 @@ void parse_seabear_header(const char *filename, struct xml_params *params)
 	f.close();
 }
 
-QMutex planLock;
-
-void lock_planner()
-{
-	planLock.lock();
-}
-
-void unlock_planner()
-{
-	planLock.unlock();
-}
-
 // function to call to allow the UI to show updates for longer running activities
 void (*uiNotificationCallback)(QString msg) = nullptr;
 
