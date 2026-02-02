@@ -54,7 +54,13 @@ jobs:
           SupportedDivecomputers.html
 
     # only publish a 'release' on push events (those include merging a PR)
-    - name: upload binaries
+    - name: Create compressed archive (tar.gz)
+      if: github.event_name == 'push'
+      run: |
+        cp SupportedDivecomputers.html Documentation/output/
+        tar -czvf -C Documentation/output Subsurface-Documentation-${{ steps.version_number.outputs.version }}.tar.gz .
+
+    - name: upload documentation
       if: github.event_name == 'push'
       uses: softprops/action-gh-release@v2
       with:
@@ -64,5 +70,4 @@ jobs:
         prerelease: false
         fail_on_unmatched_files: true
         files: |
-          Documentation/output/**
-          SupportedDivecomputers.html
+          Subsurface-Documentation-${{ steps.version_number.outputs.version }}.tar.gz
