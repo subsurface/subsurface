@@ -34,10 +34,6 @@
 
 #include <QUrlQuery>
 
-#ifndef PATH_MAX
-#define PATH_MAX 4096
-#endif
-
 WebServices::WebServices(QWidget *parent) : QDialog(parent, QFlag(0)), reply(0)
 {
 	ui.setupUi(this);
