@@ -3,6 +3,7 @@
 #include "maintab.h"
 #include "ui_TabDiveStatistics.h"
 
+#include "core/gettextfromc.h"
 #include "core/qthelper.h"
 #include "core/selection.h"
 #include "core/statistics.h"

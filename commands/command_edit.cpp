@@ -5,6 +5,7 @@
 #include "core/divelog.h"
 #include "core/event.h"
 #include "core/fulltext.h"
+#include "core/gettextfromc.h"
 #include "core/qthelper.h"
 #include "core/range.h"
 #include "core/sample.h"

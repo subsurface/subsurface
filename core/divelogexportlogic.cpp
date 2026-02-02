@@ -6,6 +6,7 @@
 #include <QTextStream>
 #include "divelogexportlogic.h"
 #include "errorhelper.h"
+#include "gettextfromc.h"
 #include "qthelper.h"
 #include "units.h"
 #include "statistics.h"

@@ -11,6 +11,7 @@
 #include "core/divelog.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
+#include "core/gettextfromc.h"
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "core/selection.h"
