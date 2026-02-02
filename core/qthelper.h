@@ -3,13 +3,15 @@
 #define QTHELPER_H
 
 #include "core/pref.h"
-#include "core/gettextfromc.h"
 #include "subsurface-time.h"
-#include <QString>
 #include <optional>
 #include <string>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
+#include <QDateTime>
+#include <QLocale>
+#include <QPair>
+#include <QString>
 
 struct picture;
 struct dive_trip;

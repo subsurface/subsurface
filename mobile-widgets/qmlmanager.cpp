@@ -29,6 +29,7 @@
 #include "core/divefilter.h"
 #include "core/divelog.h"
 #include "core/filterconstraint.h"
+#include "core/gettextfromc.h"
 #include "core/qthelper.h"
 #include "core/qt-gui.h"
 #include "core/git-access.h"
