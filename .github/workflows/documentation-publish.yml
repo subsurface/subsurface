@@ -58,7 +58,7 @@ jobs:
       if: github.event_name == 'push'
       run: |
         cp SupportedDivecomputers.html Documentation/output/
-        tar -czvf -C Documentation/output Subsurface-Documentation-${{ steps.version_number.outputs.version }}.tar.gz .
+        tar -czvf Subsurface-Documentation-${{ steps.version_number.outputs.version }}.tar.gz -C Documentation/output/ .
 
     - name: upload documentation
       if: github.event_name == 'push'
