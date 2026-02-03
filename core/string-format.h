@@ -61,5 +61,7 @@ QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hour
 QString get_dive_date_string(timestamp_t when);
 std::string get_dive_date_c_string(timestamp_t when);
 QString distance_string(int distanceInMeters);
+QString printGPSCoords(const location_t *loc);
+std::string printGPSCoordsC(const location_t *loc);
 
 #endif

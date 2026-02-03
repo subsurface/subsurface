@@ -569,3 +569,40 @@ QString distance_string(int distanceInMeters)
 	return str;
 }
 
+QString printGPSCoords(const location_t *location)
+{
+	int lat = location->lat.udeg;
+	int lon = location->lon.udeg;
+	unsigned int latdeg, londeg;
+	unsigned int latmin, lonmin;
+	double latsec, lonsec;
+	QString lath, lonh, result;
+
+	if (!has_location(location))
+		return QString();
+
+	if (prefs.coordinates_traditional) {
+		lath = lat >= 0 ? gettextFromC::tr("N") : gettextFromC::tr("S");
+		lonh = lon >= 0 ? gettextFromC::tr("E") : gettextFromC::tr("W");
+		lat = abs(lat);
+		lon = abs(lon);
+		latdeg = lat / 1000000U;
+		londeg = lon / 1000000U;
+		latmin = (lat % 1000000U) * 60U;
+		lonmin = (lon % 1000000U) * 60U;
+		latsec = (latmin % 1000000) * 60;
+		lonsec = (lonmin % 1000000) * 60;
+		result = QString::asprintf("%u°%02d\'%06.3f\"%s %u°%02d\'%06.3f\"%s",
+			       latdeg, latmin / 1000000, latsec / 1000000, qPrintable(lath),
+			       londeg, lonmin / 1000000, lonsec / 1000000, qPrintable(lonh));
+	} else {
+		result = QString::asprintf("%f %f", (double) lat / 1000000.0, (double) lon / 1000000.0);
+	}
+	return result;
+}
+
+std::string printGPSCoordsC(const location_t *location)
+{
+	return printGPSCoords(location).toStdString();
+}
+
