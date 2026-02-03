@@ -550,3 +550,22 @@ std::string get_dive_date_c_string(timestamp_t when)
 {
 	return get_short_dive_date_string(when).toStdString();
 }
+
+QString distance_string(int distanceInMeters)
+{
+	QString str;
+	if(get_units()->length == units::METERS) {
+		if (distanceInMeters >= 1000)
+			str = gettextFromC::tr("%1km").arg(distanceInMeters / 1000);
+		else
+			str = gettextFromC::tr("%1m").arg(distanceInMeters);
+	} else {
+		double miles = m_to_mile(distanceInMeters);
+		if (miles >= 1.0)
+			str = gettextFromC::tr("%1mi").arg((int)miles);
+		else
+			str = gettextFromC::tr("%1yd").arg((int)(miles * 1760));
+	}
+	return str;
+}
+
