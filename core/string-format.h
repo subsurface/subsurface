@@ -60,5 +60,6 @@ QString get_dive_duration_string(timestamp_t when, QString hoursText, QString mi
 QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator = " ", int maxdays = 4);
 QString get_dive_date_string(timestamp_t when);
 std::string get_dive_date_c_string(timestamp_t when);
+QString distance_string(int distanceInMeters);
 
 #endif

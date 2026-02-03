@@ -18,6 +18,7 @@
 #include "core/qthelper.h"
 #include "core/divesite.h"
 #include "core/selection.h"
+#include "core/string-format.h"
 #include "desktop-widgets/simplewidgets.h"
 
 #include <QCompleter>
