@@ -32,6 +32,7 @@
 #include "membuffer.h"
 #include "picture.h"
 #include "qthelper.h"
+#include "string-format.h"
 #include "range.h"
 #include "sample.h"
 #include "tag.h"

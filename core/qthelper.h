@@ -2,7 +2,7 @@
 #ifndef QTHELPER_H
 #define QTHELPER_H
 
-#include "core/pref.h"
+#include "core/pref.h" // for enum deco_mode
 #include "subsurface-time.h"
 #include <optional>
 #include <string>
@@ -64,8 +64,6 @@ void initUiLanguage();
 QLocale getLocale();
 QVector<QPair<QString, int>> selectedDivesGasUsed();
 QString getUserAgent();
-QString printGPSCoords(const location_t *loc);
-std::string printGPSCoordsC(const location_t *loc);
 std::vector<int> get_cylinder_map_for_remove(int count, int n);
 std::vector<int> get_cylinder_map_for_add(int count, int n);
 std::string get_current_date();

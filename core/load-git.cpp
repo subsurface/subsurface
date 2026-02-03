@@ -26,6 +26,7 @@
 #include "picture.h"
 #include "qthelper.h"
 #include "sample.h"
+#include "string-format.h"
 #include "subsurface-string.h"
 #include "subsurface-time.h"
 #include "tag.h"

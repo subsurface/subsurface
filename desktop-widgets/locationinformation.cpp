@@ -16,6 +16,7 @@
 #include "core/taxonomy.h"
 #include "core/selection.h"
 #include "core/settings/qPrefUnit.h"
+#include "core/string-format.h"
 #include "commands/command.h"
 
 #include <QShowEvent>
