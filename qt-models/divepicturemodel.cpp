@@ -4,7 +4,7 @@
 #include "core/metrics.h"
 #include "core/imagedownloader.h"
 #include "core/picture.h"
-#include "core/qthelper.h"
+#include "core/pref.h"
 #include "core/range.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"

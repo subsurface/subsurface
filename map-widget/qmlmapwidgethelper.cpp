@@ -9,6 +9,7 @@
 #include "core/divelist.h"
 #include "core/divelog.h"
 #include "core/divesite.h"
+#include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/range.h"
 #include "core/string-format.h"

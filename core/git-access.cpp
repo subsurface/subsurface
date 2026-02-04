@@ -23,6 +23,7 @@
 #include "subsurface-string.h"
 #include "format.h"
 #include "membuffer.h"
+#include "pref.h"
 #include "qthelper.h"
 #include "file.h"
 #include "errorhelper.h"

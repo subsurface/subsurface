@@ -5,11 +5,6 @@
  *
  * (c) Dirk Hohndel 2013
  */
-#include <stdlib.h>
-#include <assert.h>
-#include <unistd.h>
-#include <ctype.h>
-#include <string.h>
 #include "dive.h"
 #include "divelist.h" // for init_decompression()
 #include "divelog.h"
@@ -20,12 +15,18 @@
 #include "event.h"
 #include "interpolate.h"
 #include "planner.h"
+#include "pref.h"
 #include "range.h"
 #include "subsurface-time.h"
 #include "gettext.h"
 #include "libdivecomputer/parser.h"
-#include "qthelper.h"
 #include "version.h"
+
+#include <stdlib.h>
+#include <assert.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <string.h>
 
 //#define DEBUG_PLAN 255
 
@@ -147,7 +148,7 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 		 * portion of the dive.
 		 * Remember the value for later.
 		 */
-		if ((decoMode(true) == VPMB) && (lastdepth.mm > sample.depth.mm)) {
+		if ((pref_deco_mode(true) == VPMB) && (lastdepth.mm > sample.depth.mm)) {
 			pressure_t ceiling_pressure;
 			nuclear_regeneration(ds, t0.seconds);
 			vpmb_start_gradient(ds);
@@ -520,7 +521,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, depth_t trial_dep
 		add_segment(ds, dive->depth_to_bar(trial_depth),
 			    gasmix,
 			    wait_time, po2, divemode, prefs.decosac, true);
-	if (decoMode(true) == VPMB) {
+	if (pref_deco_mode(true) == VPMB) {
 		double tolerance_limit = tissue_tolerance_calc(ds, dive, dive->depth_to_bar(stoplevel), true);
 		update_regression(ds, dive);
 		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1).mm > stoplevel.mm) {
@@ -538,7 +539,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, depth_t trial_dep
 			    gasmix,
 			    base_timestep, po2, divemode, prefs.decosac, true);
 		tolerance_limit = tissue_tolerance_calc(ds, dive, dive->depth_to_bar(trial_depth), true);
-		if (decoMode(true) == VPMB)
+		if (pref_deco_mode(true) == VPMB)
 			update_regression(ds, dive);
 		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1).mm > trial_depth.mm - deltad) {
 			/* We should have stopped */
@@ -707,12 +708,12 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	/* Find the gases available for deco */
 
 	bool inappropriate_cylinder_use = false;
-	bool deco_on_loop = divemode == CCR && !(prefs.dobailout && decoMode(true) != RECREATIONAL);
+	bool deco_on_loop = divemode == CCR && !(prefs.dobailout && pref_deco_mode(true) != RECREATIONAL);
 	std::vector<gaschanges> gaschanges = analyze_gaslist(diveplan, dive, dcNr, depth.mm, &best_first_ascend_cylinder, deco_on_loop, inappropriate_cylinder_use);
 	if (inappropriate_cylinder_use) {
 		error = PLAN_ERROR_INAPPROPRIATE_GAS;
 	}
-	if (divemode == CCR && prefs.dobailout && decoMode(true) != RECREATIONAL && best_first_ascend_cylinder == -1) {
+	if (divemode == CCR && prefs.dobailout && pref_deco_mode(true) != RECREATIONAL && best_first_ascend_cylinder == -1) {
 		error = PLAN_ERROR_NO_SUITABLE_BAILOUT_GAS;
 	}
 	if (prefs.doo2breaks) {
@@ -739,7 +740,7 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	nuclear_regeneration(ds, clock);
 	vpmb_start_gradient(ds);
 
-	if (decoMode(true) == RECREATIONAL) {
+	if (pref_deco_mode(true) == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth.mm >= 10000;
 		track_ascent_gas(depth, dive, current_cylinder, avg_depth, bottom_time, safety_stop, divemode);
 		// How long can we stay at the current depth and still directly ascent to the surface?
@@ -826,7 +827,7 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	do {
 		if (decostoptable)
 			decostoptable->clear();
-		is_final_plan = (decoMode(true) == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
+		is_final_plan = (pref_deco_mode(true) == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
 		if (ds->deco_time != 10000000)
 			vpmb_next_gradient(ds, ds->deco_time, diveplan.surface_pressure.mbar / 1000.0, true);
 
@@ -1045,7 +1046,7 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	} while (!is_final_plan && error == PLAN_OK);
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0_m, current_cylinder, po2, false, divemode);
-	if (decoMode(true) == VPMB) {
+	if (pref_deco_mode(true) == VPMB) {
 		diveplan.eff_gfhigh = lrint(100.0 * regressionb(ds));
 		diveplan.eff_gflow = lrint(100.0 * (regressiona(ds) * first_stop_depth.mm + regressionb(ds)));
 	}

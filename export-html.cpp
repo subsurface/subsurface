@@ -5,6 +5,7 @@
 #include <QCommandLineParser>
 #include <QApplication>
 
+#include "core/pref.h"
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/file.h"

@@ -32,6 +32,7 @@
 #include "git-access.h"
 #include "version.h"
 #include "picture.h"
+#include "pref.h"
 #include "qthelper.h"
 #include "range.h"
 #include "gettext.h"

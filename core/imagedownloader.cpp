@@ -3,6 +3,7 @@
 #include "metrics.h"
 #include "divelist.h"
 #include "errorhelper.h"
+#include "pref.h"
 #include "qthelper.h"
 #include "imagedownloader.h"
 #include "videoframeextractor.h"

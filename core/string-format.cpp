@@ -6,6 +6,7 @@
 #include "event.h"
 #include "format.h"
 #include "gettextfromc.h"
+#include "pref.h"
 #include "qthelper.h"
 #include "range.h"
 #include "subsurface-string.h"

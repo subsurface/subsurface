@@ -4,6 +4,7 @@
 #include "divesite.h"
 #include "errorhelper.h"
 #include "gettextfromc.h"
+#include "pref.h"
 #include "qthelper.h"
 #include "tag.h"
 #include "trip.h"

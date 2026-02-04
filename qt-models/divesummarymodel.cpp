@@ -3,6 +3,7 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
+#include "core/pref.h"
 #include "core/qthelper.h"
 
 #include <QLocale>

@@ -3,6 +3,7 @@
 #include "maintab.h"
 #include "core/divesite.h"
 #include "core/qthelper.h"
+#include "core/pref.h"
 #include "core/selection.h"
 #include "core/subsurface-string.h"
 #include "core/string-format.h"

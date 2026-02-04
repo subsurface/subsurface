@@ -16,7 +16,7 @@
 #include "errorhelper.h"
 #include "file.h"
 #include "git-access.h"
-#include "qthelper.h"
+#include "pref.h"
 #include "import-csv.h"
 #include "parse.h"
 

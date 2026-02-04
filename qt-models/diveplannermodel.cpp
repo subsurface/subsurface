@@ -1144,7 +1144,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 
 static bool shouldComputeVariations()
 {
-	return prefs.display_variations && decoMode(true) != RECREATIONAL;
+	return prefs.display_variations && pref_deco_mode(true) != RECREATIONAL;
 }
 
 void DivePlannerPointsModel::updateDiveProfile()

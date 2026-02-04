@@ -2,7 +2,6 @@
 #ifndef QTHELPER_H
 #define QTHELPER_H
 
-#include "core/pref.h" // for enum deco_mode
 #include "subsurface-time.h"
 #include <optional>
 #include <string>
@@ -86,7 +85,6 @@ void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 std::string local_file_path(const struct picture &picture);
 std::string hashfile_name();
-enum deco_mode decoMode(bool in_planner);
 void parse_seabear_header(const char *filename, struct xml_params *params);
 time_t get_dive_datetime_from_isostring(const char *when);
 xsltStylesheetPtr get_stylesheet(const char *name);

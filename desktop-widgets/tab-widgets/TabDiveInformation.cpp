@@ -9,6 +9,7 @@
 #include "core/units.h"
 #include "core/dive.h"
 #include "core/gettextfromc.h"
+#include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/selection.h"
 #include "core/statistics.h"
