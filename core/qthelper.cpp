@@ -1100,11 +1100,6 @@ void subsurface_mkdir(const char *dir)
 		report_info("failed to create path %s", dir);
 }
 
-enum deco_mode decoMode(bool in_planner)
-{
-	return in_planner ? prefs.planner_deco_mode : prefs.display_deco_mode;
-}
-
 void init_proxy()
 {
 	QNetworkProxy proxy;

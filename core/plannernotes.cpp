@@ -20,6 +20,7 @@
 #include "range.h"
 #include "gettext.h"
 #include "libdivecomputer/parser.h"
+#include "pref.h"
 #include "qthelper.h"
 #include "format.h"
 #include "subsurface-string.h"
@@ -89,8 +90,8 @@ const char *get_planner_disclaimer()
 /* Returns newly allocated buffer. Must be freed by caller */
 extern std::string get_planner_disclaimer_formatted()
 {
-	const char *deco = decoMode(true) == VPMB ? translate("gettextFromC", "VPM-B")
-						  : translate("gettextFromC", "BUHLMANN");
+	const char *deco = pref_deco_mode(true) == VPMB ? translate("gettextFromC", "VPM-B")
+							: translate("gettextFromC", "BUHLMANN");
 	return format_string_std(get_planner_disclaimer(), deco);
 }
 
@@ -178,7 +179,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 	}
 	buf += "<br/>\n";
 
-	if (prefs.display_variations && decoMode(true) != RECREATIONAL)
+	if (prefs.display_variations && pref_deco_mode(true) != RECREATIONAL)
 		buf += casprintf_loc(translate("gettextFromC", "Runtime: %dmin%s"),
 			duration(), "VARIATIONS");
 	else
@@ -431,16 +432,16 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 
 	/* Print the settings for the diveplan next. */
 	buf += "<div>\n";
-	if (decoMode(true) == BUEHLMANN) {
+	if (pref_deco_mode(true) == BUEHLMANN) {
 		buf += casprintf_loc(translate("gettextFromC", "Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%"), gflow, gfhigh);
-	} else if (decoMode(true) == VPMB) {
+	} else if (pref_deco_mode(true) == VPMB) {
 		if (vpmb_conservatism == 0)
 			buf += translate("gettextFromC", "Deco model: VPM-B at nominal conservatism");
 		else
 			buf += casprintf_loc(translate("gettextFromC", "Deco model: VPM-B at +%d conservatism"), vpmb_conservatism);
 		if (eff_gflow)
 			buf += casprintf_loc( translate("gettextFromC", ", effective GF=%d/%d"), eff_gflow, eff_gfhigh);
-	} else if (decoMode(true) == RECREATIONAL) {
+	} else if (pref_deco_mode(true) == RECREATIONAL) {
 		buf += casprintf_loc(translate("gettextFromC", "Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%"),
 			     gflow, gfhigh);
 	}
@@ -510,7 +511,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 
 			/* Do and print minimum gas calculation for last bottom gas, but only for OC mode, */
 			/* not for recreational mode and if no other warning was set before. */
-			} else if (lastbottomdp && gasidx == lastbottomdp->cylinderid && dive.dcs[0].divemode == OC && decoMode(true) != RECREATIONAL) {
+			} else if (lastbottomdp && gasidx == lastbottomdp->cylinderid && dive.dcs[0].divemode == OC && pref_deco_mode(true) != RECREATIONAL) {
 					/* Calculate minimum gas volume. */
 					volume_t mingasv;
 					mingasv.mliter = lrint(prefs.sacfactor / 100.0 * prefs.problemsolvingtime * prefs.bottomsac

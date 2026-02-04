@@ -14,6 +14,7 @@
 #include "fulltext.h"
 #include "interpolate.h"
 #include "planner.h"
+#include "pref.h"
 #include "qthelper.h" // for emit_reset_signal() -> should be removed
 #include "range.h"
 #include "gettext.h"

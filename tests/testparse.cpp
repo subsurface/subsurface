@@ -8,7 +8,7 @@
 #include "core/file.h"
 #include "core/import-csv.h"
 #include "core/parse.h"
-#include "core/qthelper.h"
+#include "core/pref.h"
 #include "core/subsurface-string.h"
 #include "core/trip.h"
 #include "core/xmlparams.h"

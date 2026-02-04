@@ -24,7 +24,7 @@
 #include "format.h"
 #include "git-access.h"
 #include "picture.h"
-#include "qthelper.h"
+#include "pref.h"
 #include "sample.h"
 #include "string-format.h"
 #include "subsurface-string.h"

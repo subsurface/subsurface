@@ -4,7 +4,7 @@
 #include "divelist.h"
 #include "divelog.h"
 #include "gettextfromc.h"
-#include "qthelper.h"
+#include "pref.h"
 #include "range.h"
 #include "selection.h"
 #include "subsurface-qt/divelistnotifier.h"

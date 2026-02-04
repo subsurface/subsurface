@@ -7,8 +7,8 @@
 #include "core/trip.h"
 #include "core/file.h"
 #include "core/errorhelper.h"
+#include <core/pref.h>
 #include <QString>
-#include <core/qthelper.h>
 
 void TestAirPressure::initTestCase()
 {

@@ -244,7 +244,7 @@ void ToolTipItem::refresh(const dive *d, const QPointF &pos, bool inPlanner)
 	if (idx) {
 		const struct plot_data *entry = &pInfo.entry[idx];
 		painter.setPen(QColor(0, 0, 0, 255));
-		if (decoMode(inPlanner) == BUEHLMANN)
+		if (pref_deco_mode(inPlanner) == BUEHLMANN)
 			painter.drawLine(0, lrint(60 - entry->gfline / 2), 16, lrint(60 - entry->gfline / 2));
 		painter.drawLine(0, lrint(60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure / 2),
 				16, lrint(60 - AMB_PERCENTAGE * (entry->pressures.n2 + entry->pressures.he) / entry->ambpressure /2));

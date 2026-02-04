@@ -22,7 +22,7 @@
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 #include "membuffer.h"
-#include "qthelper.h"
+#include "pref.h"
 #include "range.h"
 #include "format.h"
 
@@ -878,7 +878,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 	deco_state_cache cache_data_initial;
 	lock_planner();
 	/* For VPM-B outside the planner, cache the initial deco state for CVA iterations */
-	if (decoMode(in_planner) == VPMB) {
+	if (pref_deco_mode(in_planner) == VPMB) {
 		cache_data_initial.cache(ds);
 	}
 	/* For VPM-B outside the planner, iterate until deco time converges (usually one or two iterations after the initial)
@@ -887,7 +887,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 	while ((abs(prev_deco_time - ds->deco_time) >= 30) && (count_iteration < 10)) {
 		depth_t first_ceiling, current_ceiling, last_ceiling;
 		int last_ndl_tts_calc_time = 0, final_tts = 0 , time_clear_ceiling = 0;
-		if (decoMode(in_planner) == VPMB)
+		if (pref_deco_mode(in_planner) == VPMB)
 			ds->first_ceiling_pressure.mbar = dive->depth_to_mbar(first_ceiling);
 
 		gasmix_loop loop_gas(*dive, *dc);
@@ -921,7 +921,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				entry.ceiling = prev.ceiling;
 			} else {
 				/* Keep updating the VPM-B gradients until the start of the ascent phase of the dive. */
-				if (decoMode(in_planner) == VPMB && last_ceiling.mm >= first_ceiling.mm && first_iteration == true) {
+				if (pref_deco_mode(in_planner) == VPMB && last_ceiling.mm >= first_ceiling.mm && first_iteration == true) {
 					nuclear_regeneration(ds, t1);
 					vpmb_start_gradient(ds);
 					/* For CVA iterations, calculate next gradient */
@@ -935,7 +935,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 					current_ceiling = entry.ceiling;
 				last_ceiling = current_ceiling;
 				/* If using VPM-B, take first_ceiling_pressure as the deepest ceiling */
-				if (decoMode(in_planner) == VPMB) {
+				if (pref_deco_mode(in_planner) == VPMB) {
 					if  (current_ceiling.mm >= first_ceiling.mm ||
 					     (time_deep_ceiling == t0 && entry.depth.mm == prev.depth.mm)) {
 						time_deep_ceiling = t1;
@@ -996,8 +996,8 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			* We don't for print-mode because this info doesn't show up there
 			* If the ceiling hasn't cleared by the last data point, we need tts for VPM-B CVA calculation
 			* It is not necessary to do these calculation on the first VPMB iteration, except for the last data point */
-			if ((prefs.calcndltts && (decoMode(in_planner) != VPMB || in_planner || !first_iteration)) ||
-			    (decoMode(in_planner) == VPMB && !in_planner && i == pi.nr - 1)) {
+			if ((prefs.calcndltts && (pref_deco_mode(in_planner) != VPMB || in_planner || !first_iteration)) ||
+			    (pref_deco_mode(in_planner) == VPMB && !in_planner && i == pi.nr - 1)) {
 				/* only calculate ndl/tts on every 30 seconds */
 				if ((entry.sec - last_ndl_tts_calc_time) < 30 && i != pi.nr - 1) {
 					struct plot_data &prev_entry = pi.entry[i - 1];
@@ -1013,13 +1013,13 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				deco_state_cache cache_data;
 				cache_data.cache(ds);
 				calculate_ndl_tts(ds, dive, entry, *gasmix, surface_pressure, current_divemode, in_planner);
-				if (decoMode(in_planner) == VPMB && !in_planner && i == pi.nr - 1)
+				if (pref_deco_mode(in_planner) == VPMB && !in_planner && i == pi.nr - 1)
 					final_tts = entry.tts_calc;
 				/* Restore "real" deco state for next real time step */
-				cache_data.restore(ds, decoMode(in_planner) == VPMB);
+				cache_data.restore(ds, pref_deco_mode(in_planner) == VPMB);
 			}
 		}
-		if (decoMode(in_planner) == VPMB && !in_planner) {
+		if (pref_deco_mode(in_planner) == VPMB && !in_planner) {
 			int this_deco_time;
 			prev_deco_time = ds->deco_time;
 			// Do we need to update deco_time?

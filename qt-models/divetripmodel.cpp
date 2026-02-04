@@ -10,6 +10,7 @@
 #include "core/selection.h"
 #include "core/string-format.h"
 #include "core/trip.h"
+#include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/range.h"
 #include "core/divesite.h"
