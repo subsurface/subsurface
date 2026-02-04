@@ -617,6 +617,8 @@ void ShiftTime::redoit()
 		d->when += timeChanged;
 		if (d->divetrip && std::find(trips.begin(), trips.end(), d->divetrip) == trips.end())
 			trips.push_back(d->divetrip);
+
+		d->invalidate_cache();
 	}
 
 	// Changing times may have unsorted the dive and trip tables
