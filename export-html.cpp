@@ -20,6 +20,13 @@
 #include "core/divelogexportlogic.h"
 #include "core/statistics.h"
 
+// We don't link the undo-code into smtk_standalone, so we have to provide
+// a placeholder for Command::changesMade(), which is needed by the git
+// code.
+namespace Command {
+	std::string changesMade() { return {}; }
+}
+
 int main(int argc, char **argv)
 {
 	QApplication *application = new QApplication(argc, argv);

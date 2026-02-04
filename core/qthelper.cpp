@@ -1270,15 +1270,6 @@ void uiNotification(const QString &msg)
 		uiNotificationCallback(msg);
 }
 
-// function to call to get changes for a git commit
-QString (*changesCallback)() = nullptr;
-
-std::string get_changes_made()
-{
-	return changesCallback != nullptr ? changesCallback().toStdString()
-					  : std::string();
-}
-
 // Generate a cylinder-renumber map for use when the n-th cylinder
 // of a dive with count cylinders is removed. It fills an int vector
 // with 0..n, -1, n..count-1. Each entry in the vector represents
