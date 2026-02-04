@@ -46,10 +46,18 @@ int ExtraDataModel::rowCount(const QModelIndex&) const
 
 void ExtraDataModel::updateDiveComputer(const struct divecomputer *dc)
 {
+	std::vector<extra_data> new_items;
+	if (dc) {
+		new_items.reserve(dc->extra_data.size());
+		for (const extra_data &data: dc->extra_data) {
+			// Filter out serial and firmware version, because these data
+			// have their own field in struct divecomputer.
+			if (data.key != "Serial" && data.key != "FW Version" && data.key != "Firmware")
+				new_items.push_back(data);
+		}
+	}
+
 	beginResetModel();
-	if (dc)
-		items = dc->extra_data;
-	else
-		items.clear();
+	items = std::move(new_items);
 	endResetModel();
 }
