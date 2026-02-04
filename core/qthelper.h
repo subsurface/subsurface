@@ -67,9 +67,7 @@ std::vector<int> get_cylinder_map_for_remove(int count, int n);
 std::vector<int> get_cylinder_map_for_add(int count, int n);
 std::string get_current_date();
 
-extern QString (*changesCallback)();
 void uiNotification(const QString &msg);
-std::string get_changes_made();
 std::string subsurface_user_agent();
 std::string get_file_name(const std::string &fileName);
 std::string move_away(const std::string &path);

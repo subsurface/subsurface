@@ -12,16 +12,12 @@ namespace Command {
 
 static QUndoStack *undoStack;
 
-// forward declaration
-QString changesMade();
-
 // General commands
 void init()
 {
 	undoStack = make_global<QUndoStack>();
 	QObject::connect(undoStack, &QUndoStack::cleanChanged, &updateWindowTitle);
 	QObject::connect(&diveListNotifier, &DiveListNotifier::dataReset, &Command::clear);
-	changesCallback = &changesMade;
 }
 
 void clear()
@@ -91,23 +87,23 @@ QString getListOfDives(QVector<struct dive *> dives)
 // to go backwards from the last one written; this isn't perfect as a user could undo a command
 // and then do something else instead of redoing that undo - the undo information is then lost
 // for the changelog -- but of course the git history will show what happened
-QString changesMade()
+std::string changesMade()
 {
 	static int nextToWrite = 0;
 	int curIdx = undoStack->index();
-	QString changeTexts;
+	std::string changeTexts;
 
 	if (curIdx > nextToWrite) {
 		for (int i = nextToWrite; i < curIdx; i++)
-			changeTexts += undoStack->text(i) + "\n";
+			changeTexts += undoStack->text(i).toStdString() + "\n";
 	} else if (curIdx < nextToWrite) { // we walked back undoing things
 		for (int i = nextToWrite - 1; i >= curIdx; i--)
-			changeTexts += "(undo) " + undoStack->text(i) + "\n";
+			changeTexts += "(undo) " + undoStack->text(i).toStdString() + "\n";
 	} else if (curIdx > 0) {
 		// so this means we undid something (or more than one thing) and then did something else
 		// so we lost the information of what was undone - and how many things were changed;
 		// just show the last change
-		changeTexts += undoStack->text(curIdx - 1) + "\n";
+		changeTexts += undoStack->text(curIdx - 1).toStdString() + "\n";
 	}
 	nextToWrite = curIdx;
 	return changeTexts;

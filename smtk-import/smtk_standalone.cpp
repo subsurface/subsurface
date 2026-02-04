@@ -8,6 +8,13 @@
 #include "smrtk2ssrfc_window.h"
 #include <QApplication>
 
+// We don't link the undo-code into smtk_standalone, so we have to provide
+// a placeholder for Command::changesMade(), which is needed by the git
+// code.
+namespace Command {
+	std::string changesMade() { return {}; }
+}
+
 /*
  * Simple command line interface to call directly smartrak_import() or launch
  * the GUI if called without arguments.
