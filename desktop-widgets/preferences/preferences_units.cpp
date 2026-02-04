@@ -43,6 +43,7 @@ void PreferencesUnits::refreshSettings()
 	ui->duration_no_hours->setChecked(prefs.units.duration_units == units::MINUTES_ONLY);
 	ui->duration_show_hours->setChecked(prefs.units.duration_units == units::ALWAYS_HOURS);
 	ui->show_units_table->setChecked(prefs.units.show_units_table);
+	ui->show_mdecimal->setChecked(prefs.units.show_mdecimal);
 }
 
 void PreferencesUnits::syncSettings()
@@ -60,4 +61,5 @@ void PreferencesUnits::syncSettings()
 	qPrefUnits::set_coordinates_traditional(ui->gpsTraditional->isChecked());
 	qPrefUnits::set_duration_units(ui->duration_mixed->isChecked() ? units::MIXED : (ui->duration_no_hours->isChecked() ? units::MINUTES_ONLY : units::ALWAYS_HOURS));
 	qPrefUnits::set_show_units_table(ui->show_units_table->isChecked());
+	qPrefUnits::set_show_mdecimal(ui->show_mdecimal->isChecked());
 }
