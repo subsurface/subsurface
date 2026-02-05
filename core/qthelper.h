@@ -27,7 +27,6 @@ enum watertypes {FRESHWATER, BRACKISHWATER, EN13319WATER, SALTWATER, DC_WATERTYP
 #define SKIP_EMPTY QString::SkipEmptyParts
 #endif
 
-bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
 QString get_gas_string(struct gasmix gas);
 QString get_dive_gas(const struct dive *d, int dcNr, int cylinderId);
 std::vector<std::pair<int, QString>> get_dive_gas_list(const struct dive *d, int dcNr, bool showOnlyAppropriate);
