@@ -113,7 +113,7 @@ void TabDiveNotes::divesChanged(const QVector<dive *> &dives, DiveField field)
 
 	dive *currentDive = parent.currentDive;
 	if (field.duration)
-		ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
+		ui.duration->setText(get_duration_string_short(currentDive->duration));
 	if (field.depth)
 		ui.depth->setText(get_depth_string(currentDive->maxdepth, true));
 	if (field.rating)
@@ -275,7 +275,7 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.diveguide->setText(QString::fromStdString(currentDive->diveguide));
 		ui.buddy->setText(QString::fromStdString(currentDive->buddy));
 	}
-	ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
+	ui.duration->setText(get_duration_string_short(currentDive->duration));
 	ui.depth->setText(get_depth_string(currentDive->maxdepth, true));
 
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());

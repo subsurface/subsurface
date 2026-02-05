@@ -523,6 +523,14 @@ QString get_dive_duration_string(timestamp_t when, QString hoursText, QString mi
 	return get_dive_duration_string(when, hoursText, minutesText, gettextFromC::tr("sec"), QStringLiteral(":"), false);
 }
 
+QString get_duration_string_short(duration_t duration)
+{
+	auto seconds = std::abs(duration.seconds);
+	const char *prefix = duration.seconds < 0 ? "-" : "";
+	return seconds % 60 == 0 ? qasprintf_loc("%s%d:%02d", prefix, seconds / 3600, (seconds / 60) % 60)
+				 : qasprintf_loc("%s%d:%02d:%02d", prefix, seconds / 3600, (seconds / 60) % 60, seconds % 60);
+}
+
 QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator, int maxdays)
 {
 	int days, hrs, mins;
