@@ -606,4 +606,3 @@ std::string printGPSCoordsC(const location_t *location)
 {
 	return printGPSCoords(location).toStdString();
 }
-
