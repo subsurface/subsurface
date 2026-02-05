@@ -4,7 +4,6 @@
 
 #include "gas.h"
 
-#include <memory>
 #include <string>
 #include <vector>
 
