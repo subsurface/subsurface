@@ -82,6 +82,16 @@ static void divetime(const char *buffer, timestamp_t *when, struct parser_state 
 	}
 }
 
+static void utc_offset(const char *buffer, std::optional<int> *utc_offset, struct parser_state *)
+{
+	int h, m = 0;
+	if (sscanf(buffer, "%d:%d", &h, &m) >= 2) {
+		*utc_offset = h * 3600 + m * 60;
+	} else {
+		utc_offset->reset();
+	}
+}
+
 /* Libdivecomputer: "2011-03-20 10:22:38" */
 static void divedatetime(const char *buffer, timestamp_t *when, struct parser_state *state)
 {
@@ -854,6 +864,8 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf,
 		return;
 	if (MATCH_STATE("time", divetime, &dc->when.local_time))
 		return;
+	if (MATCH_STATE("offset_to_utc", utc_offset, &dc->when.offset_to_utc))
+		return;
 	if (MATCH("model", utf8_string_std, &dc->model))
 		return;
 	if (MATCH("deviceid", hex_value, &deviceid))
@@ -1261,6 +1273,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	weightsystem_t *ws = !dive->weightsystems.empty() > 0 ?
 		&dive->weightsystems.back() : NULL;
 	timestamp_t when;
+	std::optional<int> offset_to_utc;
 	pressure_t p;
 	weight_t w;
 	start_match("dive", name, buf);
@@ -1297,6 +1310,10 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	}
 	if (MATCH_STATE("datetime", divedatetime, &when)) {
 		dive->set_time_local(when);
+		return;
+	}
+	if (MATCH_STATE("offset_to_utc", utc_offset, &offset_to_utc)) {
+		dive->set_offset_to_utc(offset_to_utc);
 		return;
 	}
 	/*

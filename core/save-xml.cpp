@@ -407,6 +407,9 @@ static void show_date(struct membuffer *b, datetime_t when)
 	if (tm.tm_hour || tm.tm_min || tm.tm_sec)
 		put_format(b, " time='%02u:%02u:%02u'",
 			   tm.tm_hour, tm.tm_min, tm.tm_sec);
+	if (when.offset_to_utc)
+		put_format(b, " offset_to_utc='%+d:%02d'", *when.offset_to_utc / 3600,
+							   (std::abs(*when.offset_to_utc) / 60) % 60);
 }
 
 static void save_samples(struct membuffer *b, const struct divecomputer &dc)

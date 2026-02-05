@@ -226,6 +226,9 @@ static void show_date(struct membuffer *b, datetime_t when)
 		   tm.tm_year, tm.tm_mon + 1, tm.tm_mday);
 	put_format(b, "time %02u:%02u:%02u\n",
 		   tm.tm_hour, tm.tm_min, tm.tm_sec);
+	if (when.offset_to_utc)
+		put_format(b, "offset_to_utc %+d:%02d\n", *when.offset_to_utc / 3600,
+							  (std::abs(*when.offset_to_utc) / 60) % 60);
 }
 
 static void show_integer(struct membuffer *b, int value, const char *pre, const char *post)
