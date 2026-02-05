@@ -67,7 +67,7 @@ extern int add_event_to_dc(struct divecomputer *dc, struct event ev); // event s
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const std::string &name);
 extern struct event remove_event_from_dc(struct divecomputer *dc, int idx);
 struct event *get_event(struct divecomputer *dc, int idx);
-extern void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value);
+extern void add_extra_data(struct divecomputer *dc, const std::string &key, std::string_view value);
 extern uint32_t calculate_string_hash(std::string_view sv);
 extern bool is_dc_planner(const struct divecomputer *dc);
 extern void make_planner_dc(struct divecomputer *dc);

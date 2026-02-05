@@ -54,4 +54,7 @@ inline bool contains(std::string_view haystack, const std::string &needle)
 
 std::string join(const std::vector<std::string> &l, const std::string &separator, bool skip_empty = false);
 
+void trim(std::string_view &sv);
+std::string trimmed(std::string_view sv);
+
 #endif // SUBSURFACE_STRING_H
