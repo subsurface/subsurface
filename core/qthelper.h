@@ -63,8 +63,6 @@ void initUiLanguage();
 QLocale getLocale();
 QVector<QPair<QString, int>> selectedDivesGasUsed();
 QString getUserAgent();
-std::vector<int> get_cylinder_map_for_remove(int count, int n);
-std::vector<int> get_cylinder_map_for_add(int count, int n);
 std::string get_current_date();
 
 void uiNotification(const QString &msg);

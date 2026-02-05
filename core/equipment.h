@@ -96,6 +96,8 @@ extern cylinder_t default_cylinder(const struct dive *d);
 extern cylinder_t create_new_manual_cylinder(const struct dive *dive); /* dive is needed to fill out MOD, which depends on salinity. */
 extern void add_default_cylinder(struct dive *dive);
 extern int first_hidden_cylinder(const struct dive *d);
+extern std::vector<int> get_cylinder_map_for_remove(int count, int n);
+extern std::vector<int> get_cylinder_map_for_add(int count, int n);
 #ifdef DEBUG_CYL
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif

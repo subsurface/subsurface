@@ -1270,39 +1270,6 @@ void uiNotification(const QString &msg)
 		uiNotificationCallback(msg);
 }
 
-// Generate a cylinder-renumber map for use when the n-th cylinder
-// of a dive with count cylinders is removed. It fills an int vector
-// with 0..n, -1, n..count-1. Each entry in the vector represents
-// the new id of the cylinder, whereby <0 means that this particular
-// cylinder does not get any new id. This should probably be moved
-// to the C-core, but using std::vector is simply more convenient.
-// The function assumes that n < count!
-std::vector<int> get_cylinder_map_for_remove(int count, int n)
-{
-	// 1) Fill mapping[0]..mapping[n-1] with 0..n-1
-	// 2) Set mapping[n] to -1
-	// 3) Fill mapping[n+1]..mapping[count-1] with n..count-2
-	std::vector<int> mapping(count);
-	std::iota(mapping.begin(), mapping.begin() + n, 0);
-	mapping[n] = -1;
-	std::iota(mapping.begin() + n + 1, mapping.end(), n);
-	return mapping;
-}
-
-// Generate a cylinder-renumber map for use when a cylinder is added
-// before the n-th cylinder. It fills an int vector with
-// with 0..n-1, n+1..count. Each entry in the vector represents
-// the new id of the cylinder. This probably should be moved
-// to the C-core, but using std::vector is simply more convenient.
-// This function assumes that that n <= count!
-std::vector<int> get_cylinder_map_for_add(int count, int n)
-{
-	std::vector<int> mapping(count);
-	std::iota(mapping.begin(), mapping.begin() + n, 0);
-	std::iota(mapping.begin() + n, mapping.end(), n + 1);
-	return mapping;
-}
-
 void emit_reset_signal()
 {
 	emit diveListNotifier.dataReset();
