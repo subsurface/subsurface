@@ -958,7 +958,7 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const std
 	// Serial number and nickname matter
 	if (!strcmp(key, "serial")) {
 		cid->serial = value;
-		cid->deviceid = calculate_string_hash(value.c_str());
+		cid->deviceid = calculate_string_hash(value);
 		return;
 	}
 	if (!strcmp(key, "nickname")) {

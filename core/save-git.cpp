@@ -825,7 +825,7 @@ static void save_one_device(struct membuffer *b, const struct device &d)
 		return;
 
 	show_utf8(b, "divecomputerid ", d.model.c_str(), "");
-	put_format(b, " deviceid=%08x", calculate_string_hash(d.serialNumber.c_str()));
+	put_format(b, " deviceid=%08x", calculate_string_hash(d.serialNumber));
 	show_utf8(b, " serial=", d.serialNumber.c_str(), "");
 	show_utf8(b, " nickname=", d.nickName.c_str(), "");
 	put_string(b, "\n");

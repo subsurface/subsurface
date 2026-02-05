@@ -6,6 +6,7 @@
 #include "units.h"
 #include <set>
 #include <string>
+#include <string_view>
 #include <vector>
 
 struct extra_data;
@@ -67,7 +68,7 @@ extern struct event *add_event(struct divecomputer *dc, unsigned int time, int t
 extern struct event remove_event_from_dc(struct divecomputer *dc, int idx);
 struct event *get_event(struct divecomputer *dc, int idx);
 extern void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value);
-extern uint32_t calculate_string_hash(const char *str);
+extern uint32_t calculate_string_hash(std::string_view sv);
 extern bool is_dc_planner(const struct divecomputer *dc);
 extern void make_planner_dc(struct divecomputer *dc);
 extern const char *manual_dc_name;

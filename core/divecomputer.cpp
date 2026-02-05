@@ -369,7 +369,7 @@ struct event *get_event(struct divecomputer *dc, int idx)
 void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value)
 {
 	if (key == "Serial") {
-		dc->deviceid = calculate_string_hash(value.c_str());
+		dc->deviceid = calculate_string_hash(value);
 		dc->serial = value;
 	}
 	if (key == "FW Version")

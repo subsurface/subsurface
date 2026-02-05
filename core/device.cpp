@@ -73,7 +73,7 @@ int create_device_node(device_table &dcs, const std::string &m, const std::strin
 		it->nickName = n;
 		return it - dcs.begin();
 	} else {
-		dev.deviceId = calculate_string_hash(s.c_str());
+		dev.deviceId = calculate_string_hash(s);
 		it = dcs.insert(it, dev);
 		return it - dcs.begin();
 	}
