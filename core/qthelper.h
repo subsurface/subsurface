@@ -53,7 +53,6 @@ int parseTemperatureToMkelvin(const QString &text);
 int parsePressureToMbar(const QString &text);
 int parseGasMixO2(const QString &text);
 int parseGasMixHE(const QString &text);
-QString render_seconds_to_string(int seconds);
 QString get_first_dive_date_string();
 QString get_last_dive_date_string();
 QString get_short_dive_date_string(timestamp_t when);

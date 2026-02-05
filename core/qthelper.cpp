@@ -490,21 +490,6 @@ timestamp_t dateTimeToTimestamp(const QDateTime &t)
 	return t.toSecsSinceEpoch();
 }
 
-QString render_seconds_to_string(int seconds)
-{
-#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
-	if (seconds % 60 == 0)
-		return QDateTime::fromSecsSinceEpoch(seconds, QTimeZone::utc()).toUTC().toString("h:mm");
-	else
-		return QDateTime::fromSecsSinceEpoch(seconds, QTimeZone::utc()).toUTC().toString("h:mm:ss");
-#else
-	if (seconds % 60 == 0)
-		return QDateTime::fromSecsSinceEpoch(seconds, Qt::UTC).toUTC().toString("h:mm");
-	else
-		return QDateTime::fromSecsSinceEpoch(seconds, Qt::UTC).toUTC().toString("h:mm:ss");
-#endif
-}
-
 int parseDurationToSeconds(const QString &text)
 {
 	int secs;
