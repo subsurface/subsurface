@@ -324,7 +324,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case NR:
 			return d->number;
 		case DATE:
-			return get_dive_date_string(d->get_time_local());
+			return get_dive_datetime_string(d->get_time());
 		case DEPTH:
 			return get_depth_string(d->maxdepth, prefs.units.show_units_table);
 		case DURATION:

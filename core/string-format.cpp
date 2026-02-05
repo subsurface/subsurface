@@ -561,6 +561,14 @@ std::string get_dive_date_c_string(timestamp_t when)
 	return get_short_dive_date_string(when).toStdString();
 }
 
+QString get_dive_datetime_string(datetime_t when)
+{
+	QString s = get_dive_date_string(when.local_time);
+	if (!when.offset_to_utc)
+		return s;
+	return QStringLiteral("%1 (%2)").arg(s, get_utc_offset_string(when.offset_to_utc));
+}
+
 QString distance_string(int distanceInMeters)
 {
 	QString str;

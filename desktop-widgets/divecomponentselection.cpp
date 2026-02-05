@@ -3,7 +3,6 @@
 #include "core/dive.h"
 #include "core/divesite.h"
 #include "core/format.h"
-#include "core/qthelper.h" // for get_dive_date_string()
 #include "core/selection.h"
 #include "core/string-format.h"
 
@@ -98,7 +97,7 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 		if (data.number)
 			text += tr("Dive number: ").toStdString() + casprintf_loc("%d", current_dive->number) + '\n';
 		if (data.when)
-			text += tr("Date / time: ").toStdString() + get_dive_date_string(current_dive->get_time_local()).toStdString() + '\n';
+			text += tr("Date / time: ").toStdString() + get_dive_datetime_string(current_dive->get_time()).toStdString() + '\n';
 		QApplication::clipboard()->setText(QString::fromStdString(text));
 	}
 }
