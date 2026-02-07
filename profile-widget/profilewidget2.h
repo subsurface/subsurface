@@ -57,7 +57,7 @@ public:
 	void setEditState(const struct dive *d, int dc);
 	bool isPlanner() const;
 	void clear();
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	bool eventFilter(QObject *, QEvent *) override;
 #endif
 	std::unique_ptr<ProfileScene> profileScene;
@@ -74,7 +74,7 @@ slots: // Necessary to call from QAction's signals.
 	void settingsChanged();
 	void actionRequestedReplot(bool triggered);
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	void plotPictures();
 	void picturesRemoved(dive *d, QVector<QString> filenames);
 	void picturesAdded(dive *d, QVector<picture> pics);
@@ -96,7 +96,7 @@ slots: // Necessary to call from QAction's signals.
 private:
 	void setProfileState(); // keep currently displayed dive
 	void resizeEvent(QResizeEvent *event) override;
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	void wheelEvent(QWheelEvent *event) override;
 	void mouseMoveEvent(QMouseEvent *event) override;
 	void contextMenuEvent(QContextMenuEvent *event) override;
@@ -140,7 +140,7 @@ private:
 	DivePlannerPointsModel *plannerModel; // If null, no planning supported.
 	int zoomLevel;
 	double zoomedPosition;	// Position, when zoomed: 0.0 = beginning, 1.0 = end.
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	ToolTipItem *toolTipItem;
 #endif
 	const struct dive *d;
@@ -149,7 +149,7 @@ private:
 	bool panning; // Currently panning.
 	double panningOriginalMousePosition;
 	double panningOriginalProfilePosition;
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	DiveLineItem *mouseFollowerVertical;
 	DiveLineItem *mouseFollowerHorizontal;
 	RulerItem2 *rulerItem;
@@ -157,7 +157,7 @@ private:
 
 	std::vector<std::unique_ptr<QGraphicsSimpleTextItem>> gases;
 
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
 	// For the same offset, sort by filename.
 	// Pictures that are outside of the dive time are not shown.
@@ -182,12 +182,12 @@ private:
 	void keyDownAction();
 	void keyLeftAction();
 	void keyRightAction();
-#endif
 
 	std::vector<std::unique_ptr<DiveHandler>> handles;
 	int handleIndex(const DiveHandler *h) const;
+#endif
 	void disconnectPlannerModel();
-#ifndef SUBSURFACE_MOBILE
+#if defined(SUBSURFACE_DESKTOP)
 	void connectPlannerModel();
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
