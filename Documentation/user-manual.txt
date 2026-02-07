@@ -3228,8 +3228,8 @@ A dive log or part of it can be saved in several formats:
 
 * _Subsurface XML_ format. This is the native format used by _Subsurface_.
 
-* _Subsurface dive sites XML_. Export the dive sites in XML format. This allows the
-  sharing of dive sites with other divers or software.
+* _Dive sites_. Export the dive sites in Subsurface XML format. This allows the
+  sharing of dive sites with other divers or software. By selecting the "as KML" option, you can also export the dive sites to a file that can be imported to Google Earth and similar programs.
 
 * Universal Dive Data Format (_UDDF_). Refer to _https://uddf.org/_ for more information.
   UDDF is a generic format that enables communication among many dive computers
