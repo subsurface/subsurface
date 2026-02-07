@@ -31,6 +31,7 @@ Item {
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
+	property alias averageDepthText: txtAverageDepth.text
 	property alias weightText: txtWeight.text
 	property var usedGas: []
 	property var endpressure: []
@@ -62,6 +63,7 @@ Item {
 		detailsEdit.locationText = ""
 		detailsEdit.durationText = ""
 		detailsEdit.depthText = ""
+		detailsEdit.averageDepthText = ""
 		detailsEdit.airtempText = ""
 		detailsEdit.watertempText = ""
 		detailsEdit.diveguideText = ""
@@ -117,7 +119,7 @@ Item {
 
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.number, detailsEdit.dateText, locationBox.editText, detailsEdit.gpsText, detailsEdit.durationText,
-				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText,
+				      detailsEdit.depthText, detailsEdit.averageDepthText, detailsEdit.airtempText, detailsEdit.watertempText,
 				      suitBox.editText, buddyBox.editText, diveguideBox.editText, detailsEdit.tagText,
 				      detailsEdit.weightText, detailsEdit.notesText, startpressure,
 				      endpressure, usedGas, usedCyl,
@@ -183,6 +185,19 @@ Item {
 				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					id: txtDepth
+					validator: RegExpValidator { regExp: /[^-]*/ }
+					flickable: detailsEditFlickable
+				}
+			}
+			RowLayout {
+				TemplateLabelSmall {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					horizontalAlignment: Text.AlignRight
+					text: qsTr("Average depth:")
+				}
+				SsrfTextField {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					id: txtAverageDepth
 					validator: RegExpValidator { regExp: /[^-]*/ }
 					flickable: detailsEditFlickable
 				}
