@@ -88,7 +88,7 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 		QDateTime firstTime = timestampToDateTime(trip->date());
 		QString firstMonth = firstTime.toString("MMM");
 		QString firstYear = firstTime.toString("yyyy");
-		QDateTime lastTime = timestampToDateTime(trip->dives[0]->when);
+		QDateTime lastTime = timestampToDateTime(trip->dives[0]->get_time_local());
 		QString lastMonth = lastTime.toString("MMM");
 		QString lastYear = lastTime.toString("yyyy");
 		if (lastMonth == firstMonth && lastYear == firstYear)
@@ -273,7 +273,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 #ifdef SUBSURFACE_MOBILE
 	// Special roles for mobile
 	switch (role) {
-	case MobileListModel::DiveDateRole: return (qlonglong)d->when;
+	case MobileListModel::DiveDateRole: return (qlonglong)d->get_time_local();
 	// We have to return a QString as trip-id, because that will be used as section
 	// variable in the QtQuick list view. That has to be a string because it will try
 	// to do locale-aware sorting. And amazingly this can't be changed.
@@ -324,7 +324,7 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		case NR:
 			return d->number;
 		case DATE:
-			return get_dive_date_string(d->when);
+			return get_dive_datetime_string(d->get_time());
 		case DEPTH:
 			return get_depth_string(d->maxdepth, prefs.units.show_units_table);
 		case DURATION:
@@ -814,7 +814,7 @@ dive *DiveTripModelTree::Item::getDive() const
 
 timestamp_t DiveTripModelTree::Item::when() const
 {
-	return d_or_t.trip ? d_or_t.trip->date() : d_or_t.dive->when;
+	return d_or_t.trip ? d_or_t.trip->date() : d_or_t.dive->get_time_local();
 }
 
 dive_or_trip DiveTripModelTree::tripOrDive(const QModelIndex &index) const
@@ -1227,6 +1227,34 @@ void DiveTripModelTree::divesDeletedInternal(dive_trip *trip, bool deleteTrip, c
 	}
 }
 
+// Delete dives, which might not be sorted in the correct order (because the dive times were changed).
+void DiveTripModelTree::divesDeletedUnsorted(dive_trip *trip, QVector<dive *> dives)
+{
+	if (!trip) {
+		// This is outside of a trip. Delete top-level dives in batches.
+		std::vector<dive *> toplevel_dives;
+		toplevel_dives.reserve(items.size());
+		for (const auto &item: items) {
+			if (item.d_or_t.dive)
+				toplevel_dives.push_back(item.d_or_t.dive);
+		}
+		sort_by_reference(dives, toplevel_dives);
+		removeDivesTopLevel(dives);
+	} else {
+		int idx = findTripIdx(trip);
+		if (idx < 0) {
+			// We don't know the trip - this shouldn't happen. We seem to have
+			// missed some signals!
+			qWarning() << "DiveTripModelTree::divesDeleted(): unknown trip";
+			return;
+		}
+
+		sort_by_reference(dives, items[idx].dives);
+		removeDivesFromTrip(idx, dives);
+		topLevelChanged(idx); // If necessary, move the trip
+	}
+}
+
 // Helper function: collect the dives that are at the given dive site
 static QVector<dive *> getDivesForSite(struct dive_site *ds)
 {
@@ -1348,29 +1376,27 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 	divesAdded(to, createTo, dives);
 }
 
-void DiveTripModelTree::divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives)
+void DiveTripModelTree::divesTimeChanged(const QVector<dive *> &dives)
 {
-	processByTrip(dives, [this, delta] (dive_trip *trip, const QVector<dive *> &divesInTrip)
-		      { divesTimeChangedTrip(trip, delta, divesInTrip); });
+	processByTrip(dives, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
+		      { divesTimeChangedTrip(trip, divesInTrip); });
 }
 
-void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &divesIn)
+void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, const QVector<dive *> &divesIn)
 {
 	QVector <dive *> dives = visibleDives(divesIn);
 	if (dives.empty())
 		return;
 
-	// As in the case of divesMovedBetweenTrips(), this is a tricky, but solvable, problem.
-	// We have to consider the direction (delta < 0 or delta >0) and that dives at their destination
-	// position have different contiguous batches than at their original position. For now,
-	// cheat and simply do a remove/add pair. Note that for this to work it is crucial the the
-	// order of the dives don't change. This is indeed the case, as all starting-times were
-	// moved by the same delta.
+	// This is even more complicated than divesMovedBetweenTrips:
+	// We allow a resorting of the dives. And worse: since the backend
+	// already adopted new values of the time, the sort-order of the dives
+	// might not correspond to the sort order in the model.
+	// Therefore, use a special function when deleting the dives.
 
-	// Cheating!
 	// Unfortunately, removing the dives means that their selection is lost.
 	// Thus, remember the selection and re-add it later.
-	divesDeletedInternal(trip, false, dives); // Use internal version to keep current dive
+	divesDeletedUnsorted(trip, dives); // Use internal version to keep current dive
 	divesAdded(trip, false, dives);
 }
 
@@ -1596,9 +1622,14 @@ void DiveTripModelList::addDives(QVector<dive *> &dives)
 		     });
 }
 
-void DiveTripModelList::removeDives(QVector<dive *> dives)
+// If "unsorted" is true, the dive-order may have changed, because the
+// dives' timestamps have been edited.
+void DiveTripModelList::removeDives(QVector<dive *> dives, bool unsorted)
 {
-	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
+	if (unsorted)
+		sort_by_reference(dives, items);
+	else
+		std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 	processRangesZip(items, dives,
 			 std::equal_to<const dive *>(), // Condition: dive-pointers are equal
 			 [&](std::vector<dive *> &items, const QVector<dive *> &, int from, int to, int) -> int { // Action
@@ -1620,6 +1651,11 @@ void DiveTripModelList::divesDeleted(dive_trip *trip, bool, const QVector<dive *
 void DiveTripModelList::divesDeletedInternal(const QVector<dive *> &dives)
 {
 	removeDives(dives);
+}
+
+void DiveTripModelList::divesDeletedUnsorted(const QVector<dive *> &dives)
+{
+	removeDives(dives, true);
 }
 
 void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &divesIn)
@@ -1667,7 +1703,7 @@ void DiveTripModelList::diveChanged(dive *d)
 	divesChanged(QVector<dive *> { d });
 }
 
-void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *> &divesIn)
+void DiveTripModelList::divesTimeChanged(const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = visibleDives(divesIn);
 	if (dives.empty())
@@ -1675,7 +1711,7 @@ void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *
 	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 
 	// See comment for DiveTripModelTree::divesTimeChanged above.
-	divesDeletedInternal(dives); // Use internal version to keep current dive
+	divesDeletedUnsorted(dives); // Use internal version to keep current dive
 	divesAdded(nullptr, false, dives);
 }
 

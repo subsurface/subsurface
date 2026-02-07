@@ -134,7 +134,7 @@ stats_summary calculate_stats_summary(bool selected_only)
 		//process_dive(dp, &stats);
 
 		/* yearly statistics */
-		utc_mkdate(dp->when, &tm);
+		utc_mkdate(dp->get_time_local(), &tm);
 
 		if (current_year != tm.tm_year || out.stats_yearly.empty()) {
 			current_year = tm.tm_year;
