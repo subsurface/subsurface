@@ -20,15 +20,12 @@ PictureEntry::PictureEntry(dive *dIn, const picture &p) : d(dIn),
 }
 
 // Note: it is crucial that this uses the same sorting as the core.
-// Therefore, we use the C strcmp functions [std::string::operator<()
-// should give the same result].
 bool PictureEntry::operator<(const PictureEntry &p2) const
 {
 	if (int cmp = comp_dives_ptr(d, p2.d))
 		return cmp < 0;
-	if (offsetSeconds != p2.offsetSeconds)
-		return offsetSeconds < p2.offsetSeconds;
-	return strcmp(filename.c_str(), p2.filename.c_str()) < 0;
+	return std::tie(offsetSeconds, filename) <
+	       std::tie(p2.offsetSeconds, p2.filename);
 }
 
 DivePictureModel *DivePictureModel::instance()
