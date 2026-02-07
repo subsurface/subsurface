@@ -372,7 +372,8 @@ void add_extra_data(struct divecomputer *dc, const std::string &key, const std::
 		dc->deviceid = calculate_string_hash(value.c_str());
 		dc->serial = value;
 	}
-	if (key == "FW Version" || key == "Firmware")
+	// Support dives imported with the legacy Garmin backend
+	if (key == STRING_KEY_FIRMWARE_VERSION || key == "Firmware")
 		dc->fw_version = value;
 
 	dc->extra_data.push_back(extra_data { key, value });
