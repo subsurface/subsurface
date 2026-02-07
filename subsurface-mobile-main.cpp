@@ -57,8 +57,6 @@ int main(int argc, char **argv)
 	else
 		default_prefs.units = IMPERIAL_units;
 	prefs = default_prefs;
-	CheckCloudConnection ccc;
-	ccc.pickServer();
 	fill_computer_list();
 	reset_tank_info_table(tank_info_table);
 
@@ -76,6 +74,9 @@ int main(int argc, char **argv)
 		initial_font_size = QGuiApplication::font().pixelSize() * 10.0 / fm.height();
 	}
 	init_ui();
+	if (prefs.cloud_storage_server.empty()) {
+	    CheckCloudConnection().pickServer();
+	}
 	if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE)
 		existing_filename = prefs.default_filename;
 	else

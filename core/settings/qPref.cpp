@@ -22,7 +22,7 @@
 
 void qPref::loadSync(bool doSync)
 {
-	// the following calls, ensures qPref* is instanciated, registred and
+	// the following calls, ensures qPref* is instantiated, registered and
 	// that properties are loaded
 	qPrefCloudStorage::loadSync(doSync);
 	qPrefDisplay::loadSync(doSync);
