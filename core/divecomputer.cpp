@@ -366,16 +366,20 @@ struct event *get_event(struct divecomputer *dc, int idx)
 	return &dc->events[idx];
 }
 
-void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value)
+void add_extra_data(struct divecomputer *dc, const std::string &key, std::string_view value)
 {
 	if (key == "Serial") {
-		dc->deviceid = calculate_string_hash(value.c_str());
+		dc->deviceid = calculate_string_hash(value);
 		dc->serial = value;
 	}
-	if (key == "FW Version")
-		dc->fw_version = value;
 
-	dc->extra_data.push_back(extra_data { key, value });
+	// Some libdivecomputer backends add a spurious '\n' character at the
+	// end of FW Version. Remove this for now. Note that, for now,
+	// the sanitized string will not be written to the log.
+	if (key == "FW Version")
+		dc->fw_version = trimmed(value);
+
+	dc->extra_data.push_back(extra_data { key, std::string(value) });
 }
 
 /*
