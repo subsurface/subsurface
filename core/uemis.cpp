@@ -356,9 +356,9 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		dive->dcs[0].duration = sample->time - 1_sec;
 
 	/* get data from the footer */
-	add_extra_data(dc, "FW Version",
+	add_extra_data(dc, STRING_KEY_FIRMWARE_VERSION,
 		       format_string_std("%1u.%02u", data[18], data[17]));
-	add_extra_data(dc, "Serial",
+	add_extra_data(dc, STRING_KEY_SERIAL_NUMBER,
 		       format_string_std("%08x", *(uint32_t *)(data.data() + 9)));
 	add_extra_data(dc, "main battery after dive",
 		       std::to_string(*(uint16_t *)(data.data() + i + 35)));
