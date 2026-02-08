@@ -20,7 +20,7 @@
 #include "core/divelogexportlogic.h"
 #include "core/statistics.h"
 
-// We don't link the undo-code into smtk_standalone, so we have to provide
+// We don't link the undo-code into the html exporter, so we have to provide
 // a placeholder for Command::changesMade(), which is needed by the git
 // code.
 namespace Command {
