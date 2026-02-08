@@ -407,9 +407,9 @@ PlannerSettingsWidget::PlannerSettingsWidget(PlannerWidgets *parent)
 	connect(ui.min_switch_duration, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_min_switch_duration);
 	connect(ui.surface_segment, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_surface_segment);
 
-	connect(ui.recreational_deco, &QAbstractButton::clicked, [this, parent] { parent->disableDecoElements(RECREATIONAL, parent->getDiveMode()); });
-	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [this, parent] { parent->disableDecoElements(BUEHLMANN, parent->getDiveMode()); });
-	connect(ui.vpmb_deco, &QAbstractButton::clicked, [this, parent] { parent->disableDecoElements(VPMB, parent->getDiveMode()); });
+	connect(ui.recreational_deco, &QAbstractButton::clicked, [parent] { parent->disableDecoElements(RECREATIONAL, parent->getDiveMode()); });
+	connect(ui.buehlmann_deco, &QAbstractButton::clicked, [parent] { parent->disableDecoElements(BUEHLMANN, parent->getDiveMode()); });
+	connect(ui.vpmb_deco, &QAbstractButton::clicked, [parent] { parent->disableDecoElements(VPMB, parent->getDiveMode()); });
 
 	connect(ui.sacfactor, QOverload<double>::of(&QDoubleSpinBox::valueChanged), &PlannerShared::set_sacfactor);
 	connect(ui.problemsolvingtime, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setProblemSolvingTime);
