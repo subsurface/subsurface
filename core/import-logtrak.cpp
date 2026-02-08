@@ -614,7 +614,7 @@ int logtrak_import(const std::string &mem, struct divelog *log)
 			add_extra_data(&lt_dive->dcs[0], "DC Type", ltd_type);
 		free(ltd_type);
 		if (!lt_dive->dcs[0].fw_version.empty() && strcmp(lt_dive->dcs[0].fw_version.c_str(), "0"))
-			add_extra_data(&lt_dive->dcs[0], "DC Firmware Version", lt_dive->dcs[0].fw_version);
+			add_extra_data(&lt_dive->dcs[0], STRING_KEY_FIRMWARE_VERSION, lt_dive->dcs[0].fw_version);
 		Lt_String gfl(ltd_gf_low);
 		Lt_String gfh(ltd_gf_high);
 		if (gfl.string() != "" && gfl.string() != "0")
