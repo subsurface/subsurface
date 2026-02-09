@@ -17,6 +17,13 @@
 #include <QCommandLineOption>
 #include <git2.h>
 
+// We don't link the undo-code into the cli, so we have to provide
+// a placeholder for Command::changesMade(), which is needed by the git
+// code.
+namespace Command {
+	std::string changesMade() { return {}; }
+}
+
 static void printUsage()
 {
 	fprintf(stderr, "Usage: subsurface-cli [--config=<path>] <command> [options]\n");
