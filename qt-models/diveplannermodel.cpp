@@ -38,6 +38,16 @@ static double unit_factor()
 
 static constexpr int decotimestep = 60; // seconds
 
+static cylinder_t *real_cylinder_or_null(struct dive *d, int cylinderId)
+{
+	return d && cylinderId >= 0 && static_cast<size_t>(cylinderId) < d->cylinders.size() ? d->get_cylinder(cylinderId) : nullptr;
+}
+
+static bool is_surface_air_cylinder(const struct dive *d, int cylinderId)
+{
+	return d && cylinderId >= 0 && static_cast<size_t>(cylinderId) == d->cylinders.size();
+}
+
 CylindersModel *DivePlannerPointsModel::cylindersModel()
 {
 	return &cylinders;
@@ -252,6 +262,15 @@ void DivePlannerPointsModel::setPlanMode(Mode m)
 	}
 }
 
+void DivePlannerPointsModel::resetPlanState()
+{
+	setPlanMode(NOTHING);
+	clear();
+	diveplan.dp.clear();
+	d = nullptr;
+	dcNr = 0;
+}
+
 bool DivePlannerPointsModel::isPlanner() const
 {
 	return mode == PLAN;
@@ -272,7 +291,10 @@ static divemode_t get_local_divemode(struct dive *d, int dcNr, int cylinderId, d
 
 		break;
 	case CCR:
-		divemode = d->get_cylinder(cylinderId)->cylinder_use == DILUENT ? CCR : OC;
+		if (cylinder_t *cyl = real_cylinder_or_null(d, cylinderId))
+			divemode = cyl->cylinder_use == DILUENT ? CCR : OC;
+		else
+			divemode = OC;
 		if (divemode == OC && prefs.allowOcGasAsDiluent && selectedDivemode == CCR)
 			divemode = CCR;
 
@@ -288,8 +310,16 @@ static divemode_t get_local_divemode(struct dive *d, int dcNr, int cylinderId, d
 
 QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 {
+	if (!d || mode == NOTHING)
+		return QVariant();
+
+	if (!index.isValid() || index.row() < 0 || index.row() >= divepoints.count())
+		return QVariant();
+
 	const divedatapoint p = divepoints.at(index.row());
-	bool isInappropriateCylinder = !is_cylinder_use_appropriate(*d->get_dc(dcNr), *d->get_cylinder(p.cylinderid), false);
+	cylinder_t *cyl_for_check = real_cylinder_or_null(d, p.cylinderid);
+	bool isInappropriateCylinder = cyl_for_check ? !is_cylinder_use_appropriate(*d->get_dc(dcNr), *cyl_for_check, false)
+						     : !is_surface_air_cylinder(d, p.cylinderid);
 	divemode_t divemode = get_local_divemode(d, dcNr, p.cylinderid, p.divemode);
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 
@@ -308,7 +338,12 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 		case DIVEMODE:
 			return gettextFromC::tr(divemode_text_ui[divemode]);
 		case GAS:
-			return get_dive_gas(d, dcNr, p.cylinderid);
+			if (cyl_for_check)
+				return get_dive_gas(d, dcNr, p.cylinderid);
+			else if (is_surface_air_cylinder(d, p.cylinderid))
+				return get_gas_string(gasmix_air);
+			else
+				return QVariant();
 		}
 	} else if (role == Qt::DecorationRole) {
 		switch (index.column()) {
@@ -467,6 +502,10 @@ Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 {
 	if (!index.isValid())
 		return QAbstractItemModel::flags(index);
+	if (!d || mode == NOTHING)
+		return QAbstractItemModel::flags(index);
+	if (index.row() < 0 || index.row() >= divepoints.count())
+		return QAbstractItemModel::flags(index);
 
 	if (index.column() == REMOVE)
 		return Qt::ItemIsEnabled;
@@ -481,9 +520,11 @@ Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 
 		break;
 	case DIVEMODE:
-		if (!((d->get_dc(dcNr)->divemode == CCR && prefs.allowOcGasAsDiluent && d->get_cylinder(p.cylinderid)->cylinder_use == OC_GAS) || d->get_dc(dcNr)->divemode == PSCR))
-			return QAbstractItemModel::flags(index) & ~Qt::ItemIsEditable & ~Qt::ItemIsEnabled;
-
+		{
+			cylinder_t *cyl = real_cylinder_or_null(d, p.cylinderid);
+			if (!((d->get_dc(dcNr)->divemode == CCR && prefs.allowOcGasAsDiluent && cyl && cyl->cylinder_use == OC_GAS) || d->get_dc(dcNr)->divemode == PSCR))
+				return QAbstractItemModel::flags(index) & ~Qt::ItemIsEditable & ~Qt::ItemIsEnabled;
+		}
 		break;
 	}
 
@@ -519,15 +560,23 @@ DivePlannerPointsModel *DivePlannerPointsModel::instance()
 void DivePlannerPointsModel::emitDataChanged()
 {
 	// add a reasonable setpoint for CCR segments that don't have one yet
-	if (d)
-		for (int j = 0; j < rowCount(); j++) {
+	if (d && !divepoints.isEmpty()) {
+		int rows = rowCount();
+		for (int j = 0; j < rows && j < static_cast<int>(divepoints.size()); j++) {
 			divedatapoint &p = divepoints[j];
-			if (d->get_cylinder(p.cylinderid)->cylinder_use == DILUENT && p.setpoint == 0)
+			cylinder_t *cyl = real_cylinder_or_null(d, p.cylinderid);
+			if (!cyl)
+				continue;
+			if (cyl->cylinder_use == DILUENT && p.setpoint == 0)
 				p.setpoint = prefs.defaultsetpoint;
 		}
+	}
 
 	updateDiveProfile();
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS - 1));
+	int numRows = rowCount();
+	if (numRows > 0) {
+		emit dataChanged(createIndex(0, 0), createIndex(numRows - 1, COLUMNS - 1));
+	}
 }
 
 void DivePlannerPointsModel::setBottomSac(double sac)
@@ -1080,8 +1129,7 @@ void DivePlannerPointsModel::cancelPlan()
 	}
 	*/
 
-	setPlanMode(NOTHING);
-	diveplan.dp.clear();
+	resetPlanState();
 
 	emit planCanceled();
 }
@@ -1153,6 +1201,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 {
 	if (!d)
 		return;
+
 	createTemporaryPlan();
 	if (diveplan.is_empty())
 		return;
@@ -1388,8 +1437,6 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 		// If we save as new create a copy of the dive here
 	}
 
-	setPlanMode(NOTHING);
-
 	// Now, add or modify the dive.
 	if (!current_dive || d->id != current_dive->id) {
 		// we were planning a new dive, not re-planning an existing one
@@ -1407,9 +1454,10 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 		}
 	}
 
-	// Remove and clean the diveplan, so we don't delete
+	// Clear the model state after finishing with the dive
+	// This includes removing and clearing the diveplan, so we don't delete
 	// the dive by mistake.
-	diveplan.dp.clear();
+	resetPlanState();
 
 	planCreated(); // This signal will exit the UI from planner state.
 }
