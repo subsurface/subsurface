@@ -337,8 +337,8 @@ void ProfileWidget::exitEditMode()
 	if (!editedDive)
 		return;
 
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	view->setProfileState(d, dc); // switch back to original dive before erasing the copy.
+	DivePlannerPointsModel::instance()->resetPlanState();
 	editedDive.reset();
 }
 
