@@ -17,4 +17,3 @@ struct htmlExportSetting {
 void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes);
 
 #endif // DIVELOGEXPORTLOGIC_H
-

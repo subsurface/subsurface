@@ -27,4 +27,3 @@ void QMLTestSetup::qmlEngineAvailable(QQmlEngine *engine)
 	// register C++ objects (but not types and classes)
 	qPref::registerQML(engine);
 };
-

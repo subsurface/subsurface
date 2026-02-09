@@ -22,4 +22,3 @@ extern void dump_trip_list();
 Q_DECLARE_METATYPE(trip_table *);
 
 #endif
-
