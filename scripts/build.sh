@@ -545,8 +545,20 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	if [[ "$MAKE_PACKAGE" = "1" && "$BUILDDIR" = "build" && "$PLATFORM" = "Darwin" ]] ; then
 		# special case of building a distributable macOS package
 		echo "finished initial cmake setup of Subsurface - next run the packaging script to build the DMG"
+		# Use pipefail to ensure we catch errors even when using tee
+		set -o pipefail
 		bash -e -x ../packaging/macosx/make-package.sh | tee "$SRC"/mp.log 2>&1
+		PACKAGE_STATUS=$?
+		set +o pipefail
+		if [ $PACKAGE_STATUS -ne 0 ]; then
+			echo "ERROR: DMG creation failed with exit code $PACKAGE_STATUS"
+			exit $PACKAGE_STATUS
+		fi
 		IMG=$(grep ^created: "$SRC"/mp.log | tail -1 | cut -b10-)
+		if [ -z "$IMG" ]; then
+			echo "ERROR: No DMG file was created (grep found no 'created:' line in mp.log)"
+			exit 1
+		fi
 		echo "Created $IMG"
 	else
 		LIBRARY_PATH=$INSTALL_ROOT/lib make
