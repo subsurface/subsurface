@@ -3,8 +3,10 @@
 
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
-export DEB_BUILD_OPTIONS+=nocheck
-export DEB_BUILD+OPTIONS+="parallel=12"
+
+# lto causes subsurface to segfault while initializing QApplication
+export DEB_BUILD_MAINT_OPTIONS = optimize=-lto nocheck
+
 export MY_INSTALL_ROOT=$(CURDIR)/install-root
 export QTVERSION=$(shell qmake -query QT_VERSION)
 
