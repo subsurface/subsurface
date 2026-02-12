@@ -60,6 +60,7 @@ override_dh_auto_configure:
 			-DLIBGIT2_DYNAMIC=ON -DLIBGIT2_FROM_PKGCONFIG=ON \
 			-DFORCE_LIBSSH=1 \
 			-DNO_PRINTING=OFF \
+			-DNO_USERMANUAL=OFF \
 			-DBUILD_DOCS=ON \
 			$$(pwd)/.. ; )
 

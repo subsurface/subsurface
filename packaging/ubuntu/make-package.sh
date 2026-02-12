@@ -99,19 +99,39 @@ else
 fi
 
 cp debian/changelog ../changelog$SUFFIX
+cp debian/control ../control$SUFFIX
 
 debuild -S -d
 
 # create builds for the newer Ubuntu releases that Launchpad supports
 #
 rel=focal
-others="jammy noble questing"
-for next in $others
-do
+others="jammy noble"
+others_nowebkit="questing"
+
+build() {
+	local next="$1"
+
 	sed -i "s/${rel}/${next}/g" debian/changelog
 	debuild -S -d
 	rel=$next
+}
+
+# older ubuntu releases have libqt5webkit5-dev, so use that
+for next in $others
+do
+	build "$next"
 done
+
+# newer ubuntu releases no longer have libqt5webkit5-dev, so drop the dependency
+sed -i '/libqt5webkit5-dev/d' debian/control
+sed -i -re 's/NO_(PRINTING|USERMANUAL)=OFF/NO_\1=ON/g' debian/rules
+
+for next in $others_nowebkit
+do
+	build "$next"
+done
+
 if [ -f debian/control.bak ] ; then
 	mv debian/control.bak debian/control
 fi
