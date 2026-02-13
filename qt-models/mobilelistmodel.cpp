@@ -967,6 +967,6 @@ MobileSwipeModel *MobileModels::swipeModel()
 // This is called when the settings changed. Instead of rebuilding the model, send a changed signal on all entries.
 void MobileModels::invalidate()
 {
-	sm.invalidate();
+	lm.invalidate();
 	sm.invalidate();
 }
