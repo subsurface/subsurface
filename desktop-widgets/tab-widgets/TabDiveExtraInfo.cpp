@@ -28,9 +28,9 @@ void TabDiveExtraInfo::updateData(const std::vector<dive *> &, dive *currentDive
 	if (currentDive) {
 		const divecomputer *dc = currentDive->get_dc(currentDC);
 
-		ui->model->setText(QString::fromStdString(dc->model));
-		ui->serial->setText(QString::fromStdString(dc->serial));
-		ui->firmware->setText(QString::fromStdString(dc->fw_version));
+		ui->model->setText(QString::fromStdString(dc->model).trimmed());
+		ui->serial->setText(QString::fromStdString(dc->serial).trimmed());
+		ui->firmware->setText(QString::fromStdString(dc->fw_version).trimmed());
 		ui->date->setText(get_dive_date_string(dc->when));
 		ui->duration->setText(get_dive_duration_string(dc->duration.seconds, tr("h"), tr("min"), tr("sec"),
 				" ", dc->divemode == FREEDIVE));
