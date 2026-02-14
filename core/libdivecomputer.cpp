@@ -652,6 +652,11 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		tm.tm_min = dt.minute;
 		tm.tm_sec = dt.second;
 		dive->when = dive->dcs[0].when = utc_mktime(&tm);
+
+		if (dt.timezone != DC_TIMEZONE_NONE) {
+			std::string timezone_offset = format_string_std("%+d", dt.timezone);
+			add_extra_data(&dive->dcs[0], "Time offset from UTC [s]", timezone_offset);
+		}
 	}
 
 	// Parse the divetime.
