@@ -23,6 +23,13 @@
 
 #include <array> // for std::array
 #include <cmath>
+#include <cstddef>
+
+// MSVC doesn't define ssize_t
+#ifdef _MSC_VER
+typedef ptrdiff_t ssize_t;
+#endif
+
 #include <QQuickItem>
 #include <QQuickWindow>
 #include <QSGImageNode>

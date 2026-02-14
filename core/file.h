@@ -10,6 +10,11 @@
 #include <utility>
 #include <memory>
 
+// MSVC doesn't define mode_t
+#ifdef _MSC_VER
+typedef unsigned int mode_t;
+#endif
+
 struct divelog;
 struct zip;
 
