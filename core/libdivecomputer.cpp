@@ -1094,8 +1094,8 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				report_info("EVENT_DEVINFO gave us a different detected product (model %d instead of %d), which we are using now.",
 					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 				devdata->descriptor = better_descriptor;
-				devdata->product = dc_descriptor_get_product(better_descriptor);
-				devdata->vendor = dc_descriptor_get_vendor(better_descriptor);
+				devdata->product = dc_descriptor_get_product(better_descriptor) ?: "";
+				devdata->vendor = dc_descriptor_get_vendor(better_descriptor) ?: "";
 				devdata->model = devdata->vendor + " " + devdata->product;
 			} else {
 				report_info("EVENT_DEVINFO gave us a different detected product (model %d instead of %d), but that one is unknown.",
@@ -1601,8 +1601,8 @@ int prepare_device_descriptor(int data_model, dc_family_t dc_fam, device_data_t 
 	dc_descriptor_t *data_descriptor = get_descriptor(dc_fam, data_model);
 	if (data_descriptor) {
 		dev_data.descriptor = data_descriptor;
-		dev_data.vendor = dc_descriptor_get_vendor(data_descriptor);
-		dev_data.model = dc_descriptor_get_product(data_descriptor);
+		dev_data.vendor = dc_descriptor_get_vendor(data_descriptor) ?: "";
+		dev_data.model = dc_descriptor_get_product(data_descriptor) ?: "";
 	} else {
 		return 0;
 	}

@@ -8,7 +8,7 @@
 #include "range.h"
 #include "selection.h"
 #include "subsurface-qt/divelistnotifier.h"
-#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
+#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER) && !defined(SUBSURFACE_CLI)
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
@@ -138,7 +138,7 @@ bool DiveFilter::showDive(const struct dive *d) const
 			   [d] (const filter_constraint &c) { return filter_constraint_match_dive(c, d); });
 }
 
-#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
+#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER) && !defined(SUBSURFACE_CLI)
 void DiveFilter::startFilterDiveSites(std::vector<dive_site *> ds)
 {
 	if (++diveSiteRefCount > 1) {
