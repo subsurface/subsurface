@@ -247,8 +247,8 @@ static bool cylinder_used(const cylinder_t &cyl)
 {
 	int start_mbar, end_mbar;
 
-	start_mbar = cyl.start.mbar ?: cyl.sample_start.mbar;
-	end_mbar = cyl.end.mbar ?: cyl.sample_end.mbar;
+	start_mbar = cyl.start.mbar ? cyl.start.mbar : cyl.sample_start.mbar;
+	end_mbar = cyl.end.mbar ? cyl.end.mbar : cyl.sample_end.mbar;
 
 	// More than 5 bar used? This matches statistics.cpp
 	// heuristics

@@ -551,8 +551,10 @@ int logtrak_import(const std::string &mem, struct divelog *log)
 			devdata->descriptor = get_data_descriptor(dc_model, DC_FAMILY_UWATEC_SMART);
 			if (devdata->descriptor) {
 				// No need to check vendor or product if we got a correct descriptor
-				devdata->vendor = dc_descriptor_get_vendor(devdata->descriptor);
-				devdata->product = dc_descriptor_get_product(devdata->descriptor);
+				const char *vendor = dc_descriptor_get_vendor(devdata->descriptor);
+				const char *product = dc_descriptor_get_product(devdata->descriptor);
+				devdata->vendor = vendor ? vendor : "";
+				devdata->product = product ? product : "";
 				devdata->model = format_string_std("%s %s", devdata->vendor.c_str(), devdata->product.c_str()).c_str();
 				lt_dive->dcs[0].model = devdata->model;
 				// Galileo TMX devices use a different data set and parsing model in libdc.
