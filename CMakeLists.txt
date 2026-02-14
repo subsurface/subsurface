@@ -125,15 +125,24 @@ if (SUBSURFACE_ASAN_BUILD)
 	SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 endif()
 
-# every compiler understands -Wall
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror=format")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror=format")
+# Compiler-specific warning flags
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# MSVC: /W4 is similar to -Wall, format warnings are on by default
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+else()
+	# GCC/Clang
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror=format")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror=format")
+endif()
 
-# by detault optimize with -O2 even for debug builds
-set (GCC_OPTIMIZATION_FLAGS "-O2" CACHE STRING "GCC optimization flags")
-message (STATUS "GCC optimization flags: " ${GCC_OPTIMIZATION_FLAGS})
-set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
-set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+# by default optimize with -O2 even for debug builds (GCC/Clang only)
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set(GCC_OPTIMIZATION_FLAGS "-O2" CACHE STRING "GCC optimization flags")
+	message(STATUS "GCC optimization flags: " ${GCC_OPTIMIZATION_FLAGS})
+	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+endif()
 
 # pkgconfig for required libraries
 find_package(PkgConfig)
@@ -445,9 +454,15 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 	set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lwsock32 -lws2_32)
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES wsock32 ws2_32)
+		add_definitions(-D_WIN32)
+	else()
+		# GCC/MinGW
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lwsock32 -lws2_32)
+		add_definitions(-mwindows -D_WIN32)
+	endif()
 	remove_definitions(-DUNICODE)
-	add_definitions(-mwindows -D_WIN32)
 endif()
 
 if(BTSUPPORT)
