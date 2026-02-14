@@ -203,19 +203,21 @@ fi
 # the user can explicitly pick the builds requested
 # for historic reasons, -both builds mobile and desktop, -all builds the downloader as well
 
+DEFAULT_PREFIX="$SRC_DIR/"
+
 if [ "$BUILD_MOBILE" = "1" ] ; then
-	echo "building Subsurface-mobile in ${SRC_DIR}/build-mobile"
+	echo "building Subsurface-mobile in ${BUILD_PREFIX:-$DEFAULT_PREFIX}build-mobile"
 	BUILDS+=( "MobileExecutable" )
 	BUILDDIRS+=( "${BUILD_PREFIX}build-mobile" )
 fi
 if [ "$BUILD_DOWNLOADER" = "1" ] ; then
-	echo "building Subsurface-downloader in ${SRC_DIR}/build-downloader"
+	echo "building Subsurface-downloader in ${BUILD_PREFIX:-$DEFAULT_PREFIX}build-downloader"
 	BUILDS+=( "DownloaderExecutable" )
 	BUILDDIRS+=( "${BUILD_PREFIX}build-downloader" )
 fi
 if [ "$BUILD_DESKTOP" = "1" ] || [ "$BUILDS" = "" ] ; then
 	# if no option is given, we build the desktop version
-	echo "building Subsurface in ${SRC_DIR}/build"
+	echo "building Subsurface in ${BUILD_PREFIX:-$DEFAULT_PREFIX}build"
 	BUILDS+=( "DesktopExecutable" )
 	BUILDDIRS+=( "${BUILD_PREFIX}build" )
 fi
@@ -542,7 +544,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		fi
 	fi
 
-	if [[ "$MAKE_PACKAGE" = "1" && "$BUILDDIR" = "build" && "$PLATFORM" = "Darwin" ]] ; then
+	if [[ "$MAKE_PACKAGE" = "1" && "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" && "$PLATFORM" = "Darwin" ]] ; then
 		# special case of building a distributable macOS package
 		echo "finished initial cmake setup of Subsurface - next run the packaging script to build the DMG"
 		# Use pipefail to ensure we catch errors even when using tee
