@@ -11,6 +11,30 @@ if(LIBGIT2_FROM_PKGCONFIG)
 		pkg_config_library(LIBSSH2 libssh2 REQUIRED)
 		set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} ${LIBSSH2_LIBRARIES} -lcrypto)
 	endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# On Windows with MSVC/vcpkg, use find_package with CONFIG mode
+	find_package(LIBGIT2 REQUIRED)
+	include_directories(${LIBGIT2_INCLUDE_DIR})
+
+	# vcpkg's libgit2 is built with libssh2 and curl support, so we just need
+	# to find them for linking
+	find_package(Libssh2 CONFIG QUIET)
+	if(Libssh2_FOUND OR LIBSSH2_FOUND)
+		set(LIBSSH2_LIBRARIES Libssh2::libssh2)
+	endif()
+
+	find_package(CURL CONFIG QUIET)
+	if(CURL_FOUND)
+		set(LIBCURL_LIBRARIES CURL::libcurl)
+	endif()
+
+	# On Windows, we link against the SSL libraries that vcpkg provides
+	find_package(OpenSSL QUIET)
+	if(OPENSSL_FOUND)
+		set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} ${LIBSSH2_LIBRARIES} ${LIBCURL_LIBRARIES} OpenSSL::SSL OpenSSL::Crypto)
+	else()
+		set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} ${LIBSSH2_LIBRARIES} ${LIBCURL_LIBRARIES})
+	endif()
 else()
 	find_package(LIBGIT2 REQUIRED)
 	include_directories(${LIBGIT2_INCLUDE_DIR})
