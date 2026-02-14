@@ -17,7 +17,17 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <stdarg.h>
+#ifdef _MSC_VER
+#include <io.h>
+#include <windows.h>
+#define read _read
+#define write _write
+#define close _close
+#define lseek _lseek
+#define usleep(x) Sleep((x) / 1000)
+#else
 #include <unistd.h>
+#endif
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>

@@ -1,7 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0
+#ifdef _MSC_VER
+#include <io.h>
+#define read _read
+#else
 #include <unistd.h>
+#endif
 #include <fcntl.h>
 #include <sys/stat.h>
+
+// MSVC doesn't define S_ISREG
+#ifdef _MSC_VER
+#ifndef S_ISREG
+#define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
+#endif
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
