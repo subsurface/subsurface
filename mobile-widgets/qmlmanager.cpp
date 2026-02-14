@@ -1168,6 +1168,24 @@ bool QMLManager::checkDepth(dive *d, QString depth)
 	return false;
 }
 
+bool QMLManager::checkMeanDepth(dive *d, QString averageDepth)
+{
+	if (get_depth_string(d->dcs[0].meandepth.mm, true, true) != averageDepth) {
+		int depthValue = parseLengthToMm(averageDepth);
+		// the QML code should stop negative depth, but massively huge depth can make
+		// the profile extremely slow or even run out of memory and crash, so keep
+		// the depth <= 500m
+		if (0 <= depthValue && depthValue <= 500000) {
+			d->meandepth.mm = depthValue;
+			if (is_dc_manually_added_dive(&d->dcs[0])) {
+				d->dcs[0].meandepth.mm = d->meandepth.mm;
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
 static weight_t parseWeight(const QString &text)
 {
 	QString numOnly = text;
@@ -1192,7 +1210,7 @@ static weight_t parseWeight(const QString &text)
 }
 
 // update the dive and return the notes field, stripped of the HTML junk
-void QMLManager::commitChanges(QString diveId, QString number, QString date, QString location, QString gps, QString duration, QString depth,
+void QMLManager::commitChanges(QString diveId, QString number, QString date, QString location, QString gps, QString duration, QString depth, QString averageDepth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveGuide, QString tags, QString weight, QString notes,
 			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state)
 {
@@ -1210,6 +1228,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		report_info("gps     :'%s'", qPrintable(gps));
 		report_info("duration:'%s'", qPrintable(duration));
 		report_info("depth   :'%s'", qPrintable(depth));
+		report_info("avgdepth:'%s'", qPrintable(averageDepth));
 		report_info("airtemp :'%s'", qPrintable(airtemp));
 		report_info("watertmp:'%s'", qPrintable(watertemp));
 		report_info("suit    :'%s'", qPrintable(suit));
@@ -1239,6 +1258,7 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	diveChanged |= checkDuration(d, duration);
 
 	diveChanged |= checkDepth(d, depth);
+	diveChanged |= checkMeanDepth(d, averageDepth);
 
 	if (QString::number(d->number) != number) {
 		diveChanged = true;
@@ -1384,9 +1404,14 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 			// so we have depth > 0, a manually added dive and no samples
 			// let's create an actual profile so the desktop version can work it
 			// first clear out the mean depth (or the fake_dc() function tries
-			// to be too clever)
+			// to be too clever), but preserve user-entered mean depth
+			depth_t saved_meandepth = d->meandepth;
 			d->meandepth = d->dcs[0].meandepth = 0_m;
 			fake_dc(&d->dcs[0]);
+			// restore user-entered mean depth if it was set
+			if (saved_meandepth.mm > 0) {
+				d->meandepth = d->dcs[0].meandepth = saved_meandepth;
+			}
 		}
 		divelog.dives.fixup_dive(*d);
 		Command::editDive(orig, d_ptr.release(), dsChange.createdDs.release(), dsChange.editDs, dsChange.location); // With release() we're giving up ownership

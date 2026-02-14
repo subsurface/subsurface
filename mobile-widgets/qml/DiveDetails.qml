@@ -24,6 +24,7 @@ Kirigami.Page {
 	property alias diveguideModel: detailsEdit.diveguideModel
 	property alias tagText: detailsEdit.tagText
 	property alias depth: detailsEdit.depthText
+	property alias averageDepth: detailsEdit.averageDepthText
 	property alias duration: detailsEdit.durationText
 	property alias location: detailsEdit.locationText
 	property alias gps: detailsEdit.gpsText
@@ -347,6 +348,7 @@ Kirigami.Page {
 		gps = modelData.gps
 		duration = modelData.duration
 		depth = modelData.depth
+		averageDepth = modelData.averageDepth !== undefined ? modelData.averageDepth : ""
 		airtemp = modelData.airTemp
 		watertemp = modelData.waterTemp
 		suitIndex = manager.suitList.indexOf(modelData.suit)
