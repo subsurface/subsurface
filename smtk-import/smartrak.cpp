@@ -989,7 +989,7 @@ void smartrak_import(const char *file, struct divelog *log)
 		/* Date issues with libdc parser - Take date time from mdb */
 		smtk_date_to_tm((char *)col[coln(_DATE)]->bind_ptr, &tm_date);
 		smtk_time_to_tm((char *)col[coln(INTIME)]->bind_ptr, &tm_date);
-		smtkdive->dcs[0].when = smtkdive->when = smtk_timegm(&tm_date);
+		smtkdive->set_time_local_dc(smtk_timegm(&tm_date));
 		smtkdive->dcs[0].surfacetime.seconds = smtk_time_to_secs((char *)col[coln(INTVAL)]->bind_ptr);
 
 		/* Data that user may have registered manually if not supported by DC, or not parsed */

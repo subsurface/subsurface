@@ -148,6 +148,15 @@ static void update_time(timestamp_t *when, const char *line)
 	*when = utc_mktime(&tm);
 }
 
+static void update_offset_to_utc(std::optional<int> *utc_offset, const char *line)
+{
+	unsigned h, m = 0;
+
+	if (sscanf(line, "%02u:%02u", &h, &m) < 2)
+		return;
+	*utc_offset = h * 3600 + m * 60;
+}
+
 static duration_t get_duration(const char *line)
 {
 	int m = 0, s = 0;
@@ -171,6 +180,13 @@ static int get_index(const char *line)
 
 static int get_hex(const char *line)
 { return strtoul(line, NULL, 16); }
+
+static void parse_dive_offset_to_utc(char *line, struct git_parser_state *state)
+{
+	std::optional<int> utc_offset;
+	update_offset_to_utc(&utc_offset, line);
+	state->active_dive->set_offset_to_utc(utc_offset);
+}
 
 static void parse_dive_gps(char *line, struct git_parser_state *state)
 {
@@ -719,7 +735,7 @@ static void parse_dc_airtemp(char *line, struct git_parser_state *state)
 { state->active_dc->airtemp = get_temperature(line); }
 
 static void parse_dc_date(char *line, struct git_parser_state *state)
-{ update_date(&state->active_dc->when, line); }
+{ update_date(&state->active_dc->when.local_time, line); }
 
 static void parse_dc_deviceid(char *line, struct git_parser_state *state)
 {
@@ -760,7 +776,10 @@ static void parse_dc_surfacetime(char *line, struct git_parser_state *state)
 { state->active_dc->surfacetime = get_duration(line); }
 
 static void parse_dc_time(char *line, struct git_parser_state *state)
-{ update_time(&state->active_dc->when, line); }
+{ update_time(&state->active_dc->when.local_time, line); }
+
+static void parse_dc_offset_to_utc(char *line, struct git_parser_state *state)
+{ update_offset_to_utc(&state->active_dc->when.offset_to_utc, line); }
 
 static void parse_dc_watertemp(char *line, struct git_parser_state *state)
 { state->active_dc->watertemp = get_temperature(line); }
@@ -1069,7 +1088,7 @@ static const std::array dc_action {
 #define D(x) keyword_action { #x, parse_dc_ ## x }
 	D(airtemp), D(date), D(dctype), D(deviceid), D(diveid), D(duration),
 	D(event), D(keyvalue), D(lastmanualtime), D(maxdepth), D(meandepth), D(model), D(numberofoxygensensors),
-	D(salinity), D(surfacepressure), D(surfacetime), D(tanksensormapping), D(time), D(watertemp)
+	D(offset_to_utc), D(salinity), D(surfacepressure), D(surfacetime), D(tanksensormapping), D(time), D(watertemp)
 };
 
 /* Sample lines start with a space or a number */
@@ -1088,7 +1107,8 @@ static const std::array dive_action {
 	/* For historical reasons, we accept divemaster and diveguide */
 	D(airpressure), D(airtemp), D(buddy), D(chill), D(current), D(cylinder), D(diveguide),
 	keyword_action { "divemaster", parse_dive_diveguide },
-	D(divesiteid), D(duration), D(gps), D(invalid), D(location), D(notes), D(notrip), D(rating), D(suit), D(surge),
+	D(divesiteid), D(duration), D(gps), D(invalid), D(location), D(offset_to_utc),
+	D(notes), D(notrip), D(rating), D(suit), D(surge),
 	D(tags), D(visibility), D(watersalinity), D(watertemp), D(wavesize), D(weightsystem)
 };
 
@@ -1398,7 +1418,7 @@ static void create_new_dive(timestamp_t when, struct git_parser_state *state)
 	state->active_dive = std::make_unique<dive>();
 
 	/* We'll fill in more data from the dive file */
-	state->active_dive->when = when;
+	state->active_dive->set_time_local(when);
 
 	if (state->active_trip)
 		state->active_trip->add_dive(state->active_dive.get());
@@ -1648,7 +1668,7 @@ static struct divecomputer *create_new_dc(struct dive *dive)
 		dive->dcs.emplace_back();
 		dc = &dive->dcs.back();
 	}
-	dc->when = dive->when;
+	dc->when = dive->get_time();
 	dc->duration = dive->duration;
 	return dc;
 }

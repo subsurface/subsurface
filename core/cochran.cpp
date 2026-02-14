@@ -694,7 +694,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		tm.tm_sec = log[CMD_SEC];
 		tm.tm_isdst = -1;
 
-		dive->when = dc->when = utc_mktime(&tm);
+		dive->set_time_local_dc(utc_mktime(&tm));
 		dive->number = log[CMD_NUMBER] + log[CMD_NUMBER + 1] * 256 + 1;
 		dc->duration.seconds = (log[CMD_BT] + log[CMD_BT + 1] * 256) * 60;
 		dc->surfacetime.seconds = (log[CMD_SIT] + log[CMD_SIT + 1] * 256) * 60;
@@ -738,7 +738,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		tm.tm_sec = log[EMC_SEC];
 		tm.tm_isdst = -1;
 
-		dive->when = dc->when = utc_mktime(&tm);
+		dive->set_time_local_dc(utc_mktime(&tm));
 		dive->number = log[EMC_NUMBER] + log[EMC_NUMBER + 1] * 256 + 1;
 		dc->duration.seconds = (log[EMC_BT] + log[EMC_BT + 1] * 256) * 60;
 		dc->surfacetime.seconds = (log[EMC_SIT] + log[EMC_SIT + 1] * 256) * 60;
