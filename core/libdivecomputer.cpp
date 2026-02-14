@@ -589,9 +589,9 @@ static uint32_t calculate_diveid(const unsigned char *fingerprint, unsigned int 
 	return SHA1_uint32(fingerprint, fsize);
 }
 
-uint32_t calculate_string_hash(const char *str)
+uint32_t calculate_string_hash(std::string_view sv)
 {
-	return calculate_diveid((const unsigned char *)str, strlen(str));
+	return calculate_diveid((const unsigned char *)sv.data(), sv.size());
 }
 
 static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str)
@@ -943,7 +943,7 @@ static std::string fingerprint_file(device_data_t *devdata)
 	uint32_t model, serial;
 
 	// Model hash and libdivecomputer 32-bit 'serial number' for the file name
-	model = calculate_string_hash(devdata->model.c_str());
+	model = calculate_string_hash(devdata->model);
 	serial = devdata->devinfo.serial;
 
 	return format_string_std("%s/fingerprints/%04x.%u",
@@ -1040,7 +1040,7 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 		return;
 
 	/* first try our in memory data - raw_data is owned by the table, the dc_device_set_fingerprint function copies the data */
-	auto [fsize, raw_data] = get_fingerprint_data(fingerprints, calculate_string_hash(devdata->model.c_str()), devdata->devinfo.serial);
+	auto [fsize, raw_data] = get_fingerprint_data(fingerprints, calculate_string_hash(devdata->model), devdata->devinfo.serial);
 	if (fsize) {
 		if (verbose)
 			dev_info("... found fingerprint in dive table");
@@ -1582,7 +1582,7 @@ std::string do_libdivecomputer_import(device_data_t *data)
 	 */
 	save_fingerprint(data);
 	if (data->fingerprint && data->fdiveid)
-		create_fingerprint_node(fingerprints, calculate_string_hash(data->model.c_str()), data->devinfo.serial,
+		create_fingerprint_node(fingerprints, calculate_string_hash(data->model), data->devinfo.serial,
 					data->fingerprint, data->fsize, data->fdeviceid, data->fdiveid);
 	free(data->fingerprint);
 	data->fingerprint = NULL;
