@@ -7,7 +7,16 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef _MSC_VER
+#include <io.h>
+#define write _write
+#define close _close
+#define unlink _unlink
+#define R_OK 4
+#define W_OK 2
+#else
 #include <unistd.h>
+#endif
 #include <inttypes.h>
 #include <string.h>
 #include <sys/types.h>
