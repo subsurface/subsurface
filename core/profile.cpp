@@ -103,11 +103,8 @@ int get_maxdepth(const struct plot_info &pi)
 	return prefs.zoomed_plot ? mm : std::max(30000, mm);
 }
 
-/* UNUSED! */
-static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *dive) __attribute__((unused));
-
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
-static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *dive)
+[[maybe_unused]] static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *dive)
 {
 	int index = 0;
 	cylinder_t *cyl;
