@@ -24,7 +24,6 @@
 
 #include <stdlib.h>
 #include <assert.h>
-#include <unistd.h>
 #include <ctype.h>
 #include <string.h>
 

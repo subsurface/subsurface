@@ -9,7 +9,6 @@
 #include "videoframeextractor.h"
 #include "qt-models/divepicturemodel.h"
 #include "metadata.h"
-#include <unistd.h>
 #include <QString>
 #include <QImageReader>
 #include <QSvgRenderer>
