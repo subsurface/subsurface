@@ -92,6 +92,7 @@ jobs:
             libgit2 `
             libssh2 `
             curl[ssl] `
+            openssl `
             libusb `
             hidapi `
             libraw `
@@ -213,15 +214,20 @@ jobs:
             "${{ env.VCPKG_ROOT }}\installed\x64-windows"
           ) -join ";"
 
+          $vcpkgInstalled = "${{ env.VCPKG_ROOT }}\installed\x64-windows"
+
           cmake "${{ github.workspace }}" `
             -G Ninja `
             -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} `
             -DCMAKE_PREFIX_PATH="$prefixPath" `
             -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake" `
+            -DSUBSURFACE_VCPKG_ROOT="${{ env.VCPKG_ROOT }}" `
             -DSUBSURFACE_TARGET_EXECUTABLE=DesktopExecutable `
             -DBUILD_WITH_QT6=ON `
             -DLIBDIVECOMPUTER_INCLUDE_DIR="$installPrefix\include" `
             -DLIBDIVECOMPUTER_LIBRARIES="$installPrefix\lib\divecomputer.lib" `
+            -DLIBGIT2_INCLUDE_DIR="$vcpkgInstalled\include" `
+            -DLIBGIT2_LIBRARIES="$vcpkgInstalled\lib\git2.lib" `
             -DMAKE_TESTS=OFF `
             -DNO_USERMANUAL=ON
 

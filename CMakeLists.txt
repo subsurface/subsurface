@@ -156,20 +156,69 @@ include(cmake_variables_helper)
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	include_directories(${CMAKE_OSX_SYSROOT}/usr/include/libxml2)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lxml2 -lxslt -lsqlite3)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# On Windows with MSVC/vcpkg, set paths directly
+	# Use SUBSURFACE_VCPKG_ROOT to avoid conflicts with vcpkg toolchain variables
+	# The vcpkg toolchain sets VCPKG_INSTALLED_DIR based on toolchain file location,
+	# which can point to VS bundled vcpkg instead of the one we installed deps to
+	if(DEFINED SUBSURFACE_VCPKG_ROOT)
+		set(_VCPKG_PREFIX "${SUBSURFACE_VCPKG_ROOT}/installed/x64-windows")
+	elseif(DEFINED ENV{VCPKG_ROOT})
+		set(_VCPKG_PREFIX "$ENV{VCPKG_ROOT}/installed/x64-windows")
+	else()
+		set(_VCPKG_PREFIX "C:/vcpkg/installed/x64-windows")
+	endif()
+	message(STATUS "Using vcpkg prefix: ${_VCPKG_PREFIX}")
+
+	# libxml2: headers are in include/libxml2/, library is libxml2.lib
+	set(LIBXML2_INCLUDE_DIR "${_VCPKG_PREFIX}/include/libxml2")
+	set(LIBXML2_LIBRARY "${_VCPKG_PREFIX}/lib/libxml2.lib")
+	# libxslt: headers are in include/, library is libxslt.lib
+	set(LIBXSLT_INCLUDE_DIR "${_VCPKG_PREFIX}/include")
+	set(LIBXSLT_LIBRARIES "${_VCPKG_PREFIX}/lib/libxslt.lib")
+	# sqlite3: library is sqlite3.lib
+	set(SQLITE3_LIBRARY "${_VCPKG_PREFIX}/lib/sqlite3.lib")
+
+	include_directories(${LIBXML2_INCLUDE_DIR} ${LIBXSLT_INCLUDE_DIR})
+
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBXML2_LIBRARY} ${LIBXSLT_LIBRARIES} ${SQLITE3_LIBRARY})
 else()
 	pkg_config_library(LIBXML libxml-2.0 REQUIRED)
 	pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
 	pkg_config_library(LIBXSLT libxslt REQUIRED)
 endif()
-pkg_config_library(LIBZIP libzip REQUIRED)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# Use direct path - _VCPKG_PREFIX was set above
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES "${_VCPKG_PREFIX}/lib/zip.lib")
+else()
+	pkg_config_library(LIBZIP libzip REQUIRED)
+endif()
 
 if(NOT ANDROID)
 	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		pkg_config_library(BLUEZ bluez REQUIRED)
 	endif()
-	pkg_config_library(LIBUSB libusb-1.0 QUIET)
-	pkg_config_library(LIBMTP libmtp QUIET)
-	pkg_config_library(LIBRAW libraw_r )
+	if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		find_package(libusb CONFIG QUIET)
+		if(libusb_FOUND)
+			set(LIBUSB_FOUND TRUE)
+			get_target_property(LIBUSB_INCLUDE_DIRS libusb-1.0 INTERFACE_INCLUDE_DIRECTORIES)
+			set(LIBUSB_LIBRARIES libusb-1.0)
+			include_directories(${LIBUSB_INCLUDE_DIRS})
+			LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBUSB_LIBRARIES})
+		endif()
+		find_package(libraw CONFIG QUIET)
+		if(libraw_FOUND)
+			set(LIBRAW_FOUND TRUE)
+			LIST(APPEND SUBSURFACE_LINK_LIBRARIES libraw::raw_r)
+		endif()
+		# libmtp is not available via vcpkg, skip for now
+	else()
+		pkg_config_library(LIBUSB libusb-1.0 QUIET)
+		pkg_config_library(LIBMTP libmtp QUIET)
+		pkg_config_library(LIBRAW libraw_r )
+	endif()
 endif()
 
 include_directories(.
