@@ -321,51 +321,56 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 	return DC_STATUS_SUCCESS;
 }
 
+/* we mark these for translation here, but we store the untranslated strings
+ * and only translate them when they are displayed on screen */
+static const char *get_event_name(int type)
+{
+	switch (type) {
+	case SAMPLE_EVENT_NONE:			return QT_TRANSLATE_NOOP("gettextFromC", "none");
+	case SAMPLE_EVENT_DECOSTOP:		return QT_TRANSLATE_NOOP("gettextFromC", "deco stop");
+	case SAMPLE_EVENT_RBT:			return QT_TRANSLATE_NOOP("gettextFromC", "rbt");
+	case SAMPLE_EVENT_ASCENT:		return QT_TRANSLATE_NOOP("gettextFromC", "ascent");
+	case SAMPLE_EVENT_CEILING:		return QT_TRANSLATE_NOOP("gettextFromC", "ceiling");
+	case SAMPLE_EVENT_WORKLOAD:		return QT_TRANSLATE_NOOP("gettextFromC", "workload");
+	case SAMPLE_EVENT_TRANSMITTER:		return QT_TRANSLATE_NOOP("gettextFromC", "transmitter");
+	case SAMPLE_EVENT_VIOLATION:		return QT_TRANSLATE_NOOP("gettextFromC", "violation");
+	case SAMPLE_EVENT_BOOKMARK:		return QT_TRANSLATE_NOOP("gettextFromC", "bookmark");
+	case SAMPLE_EVENT_SURFACE:		return QT_TRANSLATE_NOOP("gettextFromC", "surface");
+	case SAMPLE_EVENT_SAFETYSTOP:		return QT_TRANSLATE_NOOP("gettextFromC", "safety stop");
+	case SAMPLE_EVENT_GASCHANGE:		return QT_TRANSLATE_NOOP("gettextFromC", "gaschange");
+	case SAMPLE_EVENT_SAFETYSTOP_VOLUNTARY:	return QT_TRANSLATE_NOOP("gettextFromC", "safety stop (voluntary)");
+	case SAMPLE_EVENT_SAFETYSTOP_MANDATORY:	return QT_TRANSLATE_NOOP("gettextFromC", "safety stop (mandatory)");
+	case SAMPLE_EVENT_DEEPSTOP:		return QT_TRANSLATE_NOOP("gettextFromC", "deepstop");
+	case SAMPLE_EVENT_CEILING_SAFETYSTOP:	return QT_TRANSLATE_NOOP("gettextFromC", "ceiling (safety stop)");
+	// The third argument to QT_TRANSLATE_NOOP3 is a comment for translators:
+	// "event showing dive is below deco floor and adding deco time"
+	case SAMPLE_EVENT_FLOOR:		return QT_TRANSLATE_NOOP("gettextFromC", "below floor");
+	case SAMPLE_EVENT_DIVETIME:		return QT_TRANSLATE_NOOP("gettextFromC", "divetime");
+	case SAMPLE_EVENT_MAXDEPTH:		return QT_TRANSLATE_NOOP("gettextFromC", "maxdepth");
+	case SAMPLE_EVENT_OLF:			return QT_TRANSLATE_NOOP("gettextFromC", "OLF");
+	case SAMPLE_EVENT_PO2:			return QT_TRANSLATE_NOOP("gettextFromC", "pO₂");
+	case SAMPLE_EVENT_AIRTIME:		return QT_TRANSLATE_NOOP("gettextFromC", "airtime");
+	case SAMPLE_EVENT_RGBM:			return QT_TRANSLATE_NOOP("gettextFromC", "rgbm");
+	case SAMPLE_EVENT_HEADING:		return QT_TRANSLATE_NOOP("gettextFromC", "heading");
+	case SAMPLE_EVENT_TISSUELEVEL:		return QT_TRANSLATE_NOOP("gettextFromC", "tissue level warning");
+	case SAMPLE_EVENT_GASCHANGE2:		return QT_TRANSLATE_NOOP("gettextFromC", "gaschange");
+	default:				return nullptr;
+	}
+}
+
 static void handle_event(struct divecomputer *dc, const struct sample &sample, dc_sample_value_t value)
 {
 	int type, time;
 	struct event *ev;
-
-	/* we mark these for translation here, but we store the untranslated strings
-	 * and only translate them when they are displayed on screen */
-	static const char *events[] = {
-		[SAMPLE_EVENT_NONE]			= QT_TRANSLATE_NOOP("gettextFromC", "none"),
-		[SAMPLE_EVENT_DECOSTOP]			= QT_TRANSLATE_NOOP("gettextFromC", "deco stop"),
-		[SAMPLE_EVENT_RBT]			= QT_TRANSLATE_NOOP("gettextFromC", "rbt"),
-		[SAMPLE_EVENT_ASCENT]			= QT_TRANSLATE_NOOP("gettextFromC", "ascent"),
-		[SAMPLE_EVENT_CEILING]			= QT_TRANSLATE_NOOP("gettextFromC", "ceiling"),
-		[SAMPLE_EVENT_WORKLOAD]			= QT_TRANSLATE_NOOP("gettextFromC", "workload"),
-		[SAMPLE_EVENT_TRANSMITTER]		= QT_TRANSLATE_NOOP("gettextFromC", "transmitter"),
-		[SAMPLE_EVENT_VIOLATION]		= QT_TRANSLATE_NOOP("gettextFromC", "violation"),
-		[SAMPLE_EVENT_BOOKMARK]			= QT_TRANSLATE_NOOP("gettextFromC", "bookmark"),
-		[SAMPLE_EVENT_SURFACE]			= QT_TRANSLATE_NOOP("gettextFromC", "surface"),
-		[SAMPLE_EVENT_SAFETYSTOP]		= QT_TRANSLATE_NOOP("gettextFromC", "safety stop"),
-		[SAMPLE_EVENT_GASCHANGE]		= QT_TRANSLATE_NOOP("gettextFromC", "gaschange"),
-		[SAMPLE_EVENT_SAFETYSTOP_VOLUNTARY]	= QT_TRANSLATE_NOOP("gettextFromC", "safety stop (voluntary)"),
-		[SAMPLE_EVENT_SAFETYSTOP_MANDATORY]	= QT_TRANSLATE_NOOP("gettextFromC", "safety stop (mandatory)"),
-		[SAMPLE_EVENT_DEEPSTOP]			= QT_TRANSLATE_NOOP("gettextFromC", "deepstop"),
-		[SAMPLE_EVENT_CEILING_SAFETYSTOP]	= QT_TRANSLATE_NOOP("gettextFromC", "ceiling (safety stop)"),
-		[SAMPLE_EVENT_FLOOR]			= std::array<const char *, 2>{QT_TRANSLATE_NOOP3("gettextFromC", "below floor", "event showing dive is below deco floor and adding deco time")}[1],
-		[SAMPLE_EVENT_DIVETIME]			= QT_TRANSLATE_NOOP("gettextFromC", "divetime"),
-		[SAMPLE_EVENT_MAXDEPTH]			= QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"),
-		[SAMPLE_EVENT_OLF]			= QT_TRANSLATE_NOOP("gettextFromC", "OLF"),
-		[SAMPLE_EVENT_PO2]			= QT_TRANSLATE_NOOP("gettextFromC", "pO₂"),
-		[SAMPLE_EVENT_AIRTIME]			= QT_TRANSLATE_NOOP("gettextFromC", "airtime"),
-		[SAMPLE_EVENT_RGBM]			= QT_TRANSLATE_NOOP("gettextFromC", "rgbm"),
-		[SAMPLE_EVENT_HEADING]			= QT_TRANSLATE_NOOP("gettextFromC", "heading"),
-		[SAMPLE_EVENT_TISSUELEVEL]		= QT_TRANSLATE_NOOP("gettextFromC", "tissue level warning"),
-		[SAMPLE_EVENT_GASCHANGE2]		= QT_TRANSLATE_NOOP("gettextFromC", "gaschange"),
-	};
-	const int nr_events = sizeof(events) / sizeof(const char *);
 	const char *name;
 
 	/*
 	 * Other evens might be more interesting, but for now we just print them out.
 	 */
 	type = value.event.type;
-	name = QT_TRANSLATE_NOOP("gettextFromC", "invalid event number");
-	if (type < nr_events && events[type])
-		name = events[type];
+	name = get_event_name(type);
+	if (!name)
+		name = QT_TRANSLATE_NOOP("gettextFromC", "invalid event number");
 #ifdef SAMPLE_EVENT_STRING
 	if (type == SAMPLE_EVENT_STRING)
 		name = value.event.name;
