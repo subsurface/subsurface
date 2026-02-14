@@ -389,9 +389,16 @@ void TabDiveNotes::on_location_diveSiteSelected()
 	if (ignoreInput || !parent.currentDive)
 		return;
 
+	QString name = ui.location->text().trimmed();
+	// editingFinished is also emitted for empty text: interpret that as "remove dive site".
+	if (name.isEmpty()) {
+		divesEdited(Command::editDiveSite(nullptr, false));
+		return;
+	}
+
 	struct dive_site *newDs = ui.location->currDiveSite();
-	if (newDs == RECENTLY_ADDED_DIVESITE)
-		divesEdited(Command::editDiveSiteNew(ui.location->text(), false));
+	if (!newDs)
+		divesEdited(Command::editDiveSiteNew(name, false));
 	else
 		divesEdited(Command::editDiveSite(newDs, false));
 }
