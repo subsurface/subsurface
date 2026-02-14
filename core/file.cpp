@@ -1,4 +1,17 @@
 // SPDX-License-Identifier: GPL-2.0
+// Include Qt-using headers first to avoid MSVC/Qt6 version tagging conflicts
+#include "dive.h"
+#include "divelog.h"
+#include "subsurface-string.h"
+#include "format.h"
+#include "errorhelper.h"
+#include "file.h"
+#include "git-access.h"
+#include "pref.h"
+#include "import-csv.h"
+#include "parse.h"
+#include "gettext.h"
+
 #ifdef _MSC_VER
 #include <io.h>
 #define read _read
@@ -17,20 +30,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include "gettext.h"
 #include <zip.h>
 #include <time.h>
-
-#include "dive.h"
-#include "divelog.h"
-#include "subsurface-string.h"
-#include "format.h"
-#include "errorhelper.h"
-#include "file.h"
-#include "git-access.h"
-#include "pref.h"
-#include "import-csv.h"
-#include "parse.h"
 
 /* For SAMPLE_* */
 #include <libdivecomputer/parser.h>
