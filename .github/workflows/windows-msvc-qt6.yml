@@ -258,7 +258,7 @@ jobs:
             -DSUBSURFACE_TARGET_EXECUTABLE=DesktopExecutable `
             -DBUILD_WITH_QT6=ON `
             -DLIBDIVECOMPUTER_INCLUDE_DIR="$installPrefix\include" `
-            -DLIBDIVECOMPUTER_LIBRARIES="$installPrefix\lib\divecomputer.lib" `
+            -DLIBDIVECOMPUTER_LIBRARIES="$installPrefix\lib\libdivecomputer.lib" `
             -DLIBGIT2_INCLUDE_DIR="$vcpkgInstalled\include" `
             -DLIBGIT2_LIBRARIES="$vcpkgInstalled\lib\git2.lib" `
             -DMAKE_TESTS=OFF `
