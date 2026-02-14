@@ -10,7 +10,6 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
-#include <unistd.h>
 #include <QSettings>
 #include <QKeyEvent>
 #include <QFileDialog>
@@ -18,6 +17,7 @@
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QHeaderView>
+#include <QThread>
 #include "commands/command.h"
 #include "commands/command_base.h"
 #include "core/errorhelper.h"
@@ -892,7 +892,7 @@ void DiveListView::loadImagesFromURLs(const QString &urls)
 			QNetworkReply *reply = manager.get(request);
 			while (reply->isRunning()) {
 				loop.processEvents();
-				sleep(1);
+				QThread::sleep(1);
 			}
 			QByteArray imageData = reply->readAll();
 

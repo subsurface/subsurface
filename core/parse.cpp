@@ -3,7 +3,6 @@
 #include <stdarg.h>
 #include "membuffer.h"
 #include <stdlib.h>
-#include <unistd.h>
 #include <libdivecomputer/parser.h>
 
 #include "parse.h"

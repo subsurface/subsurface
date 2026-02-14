@@ -6,7 +6,6 @@
  * (c) Dirk Hohndel 2013
  */
 #include <assert.h>
-#include <unistd.h>
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>

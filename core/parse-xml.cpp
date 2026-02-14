@@ -8,7 +8,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <assert.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
