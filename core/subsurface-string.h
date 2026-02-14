@@ -10,6 +10,12 @@
 #include <string_view>
 #include <vector>
 
+// MSVC doesn't have strcasecmp/strncasecmp, use _stricmp/_strnicmp instead
+#ifdef _MSC_VER
+#define strcasecmp _stricmp
+#define strncasecmp _strnicmp
+#endif
+
 // string handling
 
 static inline bool same_string(const char *a, const char *b)

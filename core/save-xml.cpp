@@ -707,7 +707,6 @@ static void save_backup(const char *name, const char *ext, const char *new_ext)
 		return;
 	if (name[len - 1] != '.')
 		return;
-	/* msvc doesn't have strncasecmp, has _strnicmp instead - crazy */
 	if (strncasecmp(name + len, ext, a))
 		return;
 
