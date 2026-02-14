@@ -92,7 +92,11 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
         set(SMTK_LINK_LIBRARIES ${SMTK_LINK_LIBRARIES} -lssh2 -lz -lpthread)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	remove_definitions(-DUNICODE)
-        add_definitions(-mwindows -D_WIN32)
+	if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		# GCC/MinGW only
+		add_definitions(-mwindows)
+	endif()
+	add_definitions(-D_WIN32)
 endif()
 
 set(SMTK_LINK_LIBRARIES ${SMTK_LINK_LIBRARIES} ${LIBMDB_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES})
