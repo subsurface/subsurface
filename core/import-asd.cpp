@@ -159,8 +159,10 @@ extern "C" int prepare_data(int data_model, dc_family_t dc_fam, device_data_t *d
 	dev_data->context = NULL;
 	dev_data->descriptor = get_data_descriptor(data_model, dc_fam);
 	if (dev_data->descriptor) {
-		dev_data->vendor = dc_descriptor_get_vendor(dev_data->descriptor) ?: "";
-		dev_data->product = dc_descriptor_get_product(dev_data->descriptor) ?: "";
+		const char *vendor = dc_descriptor_get_vendor(dev_data->descriptor);
+		const char *product = dc_descriptor_get_product(dev_data->descriptor);
+		dev_data->vendor = vendor ? vendor : "";
+		dev_data->product = product ? product : "";
 		std::string tmp (dev_data->vendor);
 		tmp += " ";
 		tmp += dev_data->product;
