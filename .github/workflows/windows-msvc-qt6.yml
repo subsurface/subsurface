@@ -233,6 +233,12 @@ jobs:
         run: |
           $installPrefix = "${{ github.workspace }}\install"
           $buildDir = "${{ github.workspace }}\build"
+          $vcpkgRoot = "C:\vcpkg"
+          $vcpkgInstalled = "$vcpkgRoot\installed\x64-windows"
+
+          Write-Host "Using VCPKG_ROOT: $vcpkgRoot"
+          Write-Host "vcpkg installed dir: $vcpkgInstalled"
+
           New-Item -ItemType Directory -Force -Path $buildDir
           Push-Location $buildDir
 
@@ -240,17 +246,15 @@ jobs:
           $prefixPath = @(
             "$env:Qt6_DIR",
             "$installPrefix",
-            "${{ env.VCPKG_ROOT }}\installed\x64-windows"
+            "$vcpkgInstalled"
           ) -join ";"
-
-          $vcpkgInstalled = "${{ env.VCPKG_ROOT }}\installed\x64-windows"
 
           cmake "${{ github.workspace }}" `
             -G Ninja `
             -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} `
             -DCMAKE_PREFIX_PATH="$prefixPath" `
-            -DCMAKE_TOOLCHAIN_FILE="${{ env.VCPKG_ROOT }}/scripts/buildsystems/vcpkg.cmake" `
-            -DSUBSURFACE_VCPKG_ROOT="${{ env.VCPKG_ROOT }}" `
+            -DCMAKE_TOOLCHAIN_FILE="$vcpkgRoot/scripts/buildsystems/vcpkg.cmake" `
+            -DSUBSURFACE_VCPKG_ROOT="$vcpkgRoot" `
             -DSUBSURFACE_TARGET_EXECUTABLE=DesktopExecutable `
             -DBUILD_WITH_QT6=ON `
             -DLIBDIVECOMPUTER_INCLUDE_DIR="$installPrefix\include" `
