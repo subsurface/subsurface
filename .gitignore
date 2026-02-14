@@ -29,6 +29,8 @@ Subsurface.app
 .vscode
 !android/**/*.xml
 build*
+!build.ps1
+!build.sh
 nightly-builds/
 mobile-widgets/qml/kirigami
 mobile-widgets/3rdparty/ECM/
