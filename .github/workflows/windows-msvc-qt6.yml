@@ -112,18 +112,47 @@ jobs:
       # ---------------------------------------------------------------
       # Build libdivecomputer from submodule
       # ---------------------------------------------------------------
-      - name: Set up msys2 for libdivecomputer autotools
-        uses: msys2/setup-msys2@v2
-        with:
-          install: autoconf automake libtool pkg-config make gcc
-
-      - name: Generate libdivecomputer revision.h
-        shell: msys2 {0}
+      - name: Generate libdivecomputer version.h and revision.h
+        shell: pwsh
         working-directory: libdivecomputer
         run: |
-          autoreconf --install --force
-          ./configure
-          make -C src revision.h
+          # Parse version info from configure.ac (following upstream's approach)
+          $configureAc = Get-Content "configure.ac" -Raw
+
+          if ($configureAc -match 'm4_define\(\[dc_version_major\],\[(\d+)\]\)') {
+            $major = $matches[1]
+          } else { $major = "0" }
+
+          if ($configureAc -match 'm4_define\(\[dc_version_minor\],\[(\d+)\]\)') {
+            $minor = $matches[1]
+          } else { $minor = "0" }
+
+          if ($configureAc -match 'm4_define\(\[dc_version_micro\],\[(\d+)\]\)') {
+            $micro = $matches[1]
+          } else { $micro = "0" }
+
+          if ($configureAc -match 'm4_define\(\[dc_version_suffix\],\[([^\]]*)\]\)') {
+            $suffix = $matches[1]
+            $version = "$major.$minor.$micro-$suffix"
+          } else {
+            $version = "$major.$minor.$micro"
+          }
+
+          Write-Host "Parsed version from configure.ac: $version (major=$major, minor=$minor, micro=$micro)"
+
+          # Generate version.h from version.h.in template
+          $versionH = Get-Content "include/libdivecomputer/version.h.in" -Raw
+          $versionH = $versionH -replace '@DC_VERSION@', $version
+          $versionH = $versionH -replace '@DC_VERSION_MAJOR@', $major
+          $versionH = $versionH -replace '@DC_VERSION_MINOR@', $minor
+          $versionH = $versionH -replace '@DC_VERSION_MICRO@', $micro
+          $versionH | Out-File -FilePath "include/libdivecomputer/version.h" -Encoding utf8
+          Write-Host "Generated version.h"
+
+          # Generate revision.h with git commit hash
+          $revision = git rev-parse --verify HEAD
+          "#define DC_VERSION_REVISION `"$revision`"" | Out-File -FilePath "src/revision.h" -Encoding utf8
+          Write-Host "Generated revision.h with revision: $revision"
 
       - name: Set up MSBuild
         uses: microsoft/setup-msbuild@v2
