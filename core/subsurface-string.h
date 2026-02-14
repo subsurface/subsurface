@@ -14,12 +14,12 @@
 
 static inline bool same_string(const char *a, const char *b)
 {
-	return !strcmp(a ?: "", b ?: "");
+	return !strcmp(a ? a : "", b ? b : "");
 }
 
 static inline bool same_string_caseinsensitive(const char *a, const char *b)
 {
-	return !strcasecmp(a ?: "", b ?: "");
+	return !strcasecmp(a ? a : "", b ? b : "");
 }
 
 static inline bool empty_string(const char *s)

@@ -1233,8 +1233,10 @@ std::string do_uemis_import(device_data_t *data)
 	}
 
 #if UEMIS_DEBUG
-	home = getenv("HOME");
-	user = getenv("LOGNAME");
+	const char *home_env = getenv("HOME");
+	const char *user_env = getenv("LOGNAME");
+	home = home_env ? home_env : "";
+	user = user_env ? user_env : "";
 #endif
 	uemis_info(translate("gettextFromC", "Initialise communication"));
 	if (!uemis_init(mountpath)) {
