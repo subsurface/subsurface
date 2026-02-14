@@ -243,25 +243,50 @@ if (-not $SkipLibdivecomputer) {
         exit 1
     }
 
-    # Check if revision.h exists
-    $revisionH = Join-Path $libdcDir "src\revision.h"
-    if (-not (Test-Path $revisionH)) {
-        Write-Host "revision.h not found. Generating..." -ForegroundColor Yellow
-        Write-Host "You may need to run autoreconf in MSYS2 or WSL first:" -ForegroundColor Yellow
-        Write-Host "  cd libdivecomputer && autoreconf --install && ./configure && make -C src revision.h" -ForegroundColor Yellow
+    # Parse version info from configure.ac (following upstream's approach)
+    $configureAc = Get-Content (Join-Path $libdcDir "configure.ac") -Raw
 
-        # Try to generate a basic revision.h
-        $gitHash = git -C $libdcDir rev-parse --short HEAD 2>$null
-        if ($gitHash) {
-            @"
-// Auto-generated revision.h
-#define DC_VERSION_REVISION "$gitHash"
-"@ | Out-File -FilePath $revisionH -Encoding utf8
-            Write-Host "Generated basic revision.h with hash $gitHash" -ForegroundColor Green
-        } else {
-            Write-Error "Could not generate revision.h. Please run autoreconf manually."
-            exit 1
-        }
+    if ($configureAc -match 'm4_define\(\[dc_version_major\],\[(\d+)\]\)') {
+        $major = $matches[1]
+    } else { $major = "0" }
+
+    if ($configureAc -match 'm4_define\(\[dc_version_minor\],\[(\d+)\]\)') {
+        $minor = $matches[1]
+    } else { $minor = "0" }
+
+    if ($configureAc -match 'm4_define\(\[dc_version_micro\],\[(\d+)\]\)') {
+        $micro = $matches[1]
+    } else { $micro = "0" }
+
+    if ($configureAc -match 'm4_define\(\[dc_version_suffix\],\[([^\]]*)\]\)') {
+        $suffix = $matches[1]
+        $version = "$major.$minor.$micro-$suffix"
+    } else {
+        $version = "$major.$minor.$micro"
+    }
+
+    Write-Host "Parsed version from configure.ac: $version" -ForegroundColor Green
+
+    # Generate version.h from version.h.in template
+    $versionHIn = Join-Path $libdcDir "include\libdivecomputer\version.h.in"
+    $versionHOut = Join-Path $libdcDir "include\libdivecomputer\version.h"
+    $versionH = Get-Content $versionHIn -Raw
+    $versionH = $versionH -replace '@DC_VERSION@', $version
+    $versionH = $versionH -replace '@DC_VERSION_MAJOR@', $major
+    $versionH = $versionH -replace '@DC_VERSION_MINOR@', $minor
+    $versionH = $versionH -replace '@DC_VERSION_MICRO@', $micro
+    $versionH | Out-File -FilePath $versionHOut -Encoding utf8
+    Write-Host "Generated version.h" -ForegroundColor Green
+
+    # Generate revision.h with git commit hash
+    $revisionH = Join-Path $libdcDir "src\revision.h"
+    $gitHash = git -C $libdcDir rev-parse --verify HEAD 2>$null
+    if ($gitHash) {
+        "#define DC_VERSION_REVISION `"$gitHash`"" | Out-File -FilePath $revisionH -Encoding utf8
+        Write-Host "Generated revision.h with revision: $gitHash" -ForegroundColor Green
+    } else {
+        Write-Error "Could not get git revision for libdivecomputer"
+        exit 1
     }
 
     # Set up include/lib paths for vcpkg
