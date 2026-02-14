@@ -71,7 +71,11 @@ popd
 bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-qt6 -build-with-homebrew -ftdi -install-docs
 
 # now move the user manual into place
-DATADIR="$(pwd)/subsurface/build/Subsurface.app/Contents/Resources/share/Documentation"
+BUILDDIR="$(pwd)/subsurface/build/"
+if [[ -L subsurface && -d subsurface ]] ; then
+    BUILDDIR="$(pwd)/build/"
+fi
+DATADIR="$BUILDDIR/Subsurface.app/Contents/Resources/share/Documentation"
 mkdir -p "$DATADIR"
 pushd subsurface/Documentation/output
 cp -a user-manual*.html images "$DATADIR"
