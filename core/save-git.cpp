@@ -65,10 +65,12 @@ static void quote(struct membuffer *b, const char *text)
 		case 0:
 			escape = NULL;
 			break;
-		case 1 ... 8:
+		case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8:
 		case 11:
 		case 12:
-		case 14 ... 31:
+		case 14: case 15: case 16: case 17: case 18: case 19: case 20:
+		case 21: case 22: case 23: case 24: case 25: case 26: case 27:
+		case 28: case 29: case 30: case 31:
 			escape = "?";
 			break;
 		case '\\':
@@ -701,20 +703,10 @@ static void create_trip_name(dive_trip *trip, struct membuffer *name, struct tm 
 
 		for (i = 0; i < MAXTRIPNAME; ) {
 			char c = *p++;
-			switch (c) {
-			case 0:
-			case ',':
-			case '.':
+			if (c == 0 || c == ',' || c == '.')
 				break;
-
-			case 'a' ... 'z':
-			case 'A' ... 'Z':
+			if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 				ascii_loc[i++] = c;
-				continue;
-			default:
-				continue;
-			}
-			break;
 		}
 		if (i > 1) {
 			put_bytes(name, ascii_loc, i);

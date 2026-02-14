@@ -508,25 +508,18 @@ static void match_standard_cylinder(cylinder_type_t &type)
 	int psi = lrint(to_PSI(type.workingpressure));
 
 	const char *fmt;
-	switch (psi) {
-	case 2300 ... 2500: /* 2400 psi: LP tank */
+	if (psi >= 2300 && psi <= 2500) /* 2400 psi: LP tank */
 		fmt = "LP%d";
-		break;
-	case 2600 ... 2700: /* 2640 psi: LP+10% */
+	else if (psi >= 2600 && psi <= 2700) /* 2640 psi: LP+10% */
 		fmt = "LP%d";
-		break;
-	case 2900 ... 3100: /* 3000 psi: ALx tank */
+	else if (psi >= 2900 && psi <= 3100) /* 3000 psi: ALx tank */
 		fmt = "AL%d";
-		break;
-	case 3400 ... 3500: /* 3442 psi: HP tank */
+	else if (psi >= 3400 && psi <= 3500) /* 3442 psi: HP tank */
 		fmt = "HP%d";
-		break;
-	case 3700 ... 3850: /* HP+10% */
+	else if (psi >= 3700 && psi <= 3850) /* HP+10% */
 		fmt = "HP%d+";
-		break;
-	default:
+	else
 		return;
-	}
 	type.description = format_string_std(fmt, int_cast<int>(cuft));
 }
 
