@@ -901,10 +901,10 @@ struct DateQuarterBinner : public SimpleContinuousBinner<DateQuarterBinner, Date
 
 		int year = tm.tm_year;
 		switch (tm.tm_mon) {
-		case 0 ... 2: return { year, 1 };
-		case 3 ... 5: return { year, 2 };
-		case 6 ... 8: return { year, 3 };
-		default:      return { year, 4 };
+		case 0: case 1: case 2: return { year, 1 };
+		case 3: case 4: case 5: return { year, 2 };
+		case 6: case 7: case 8: return { year, 3 };
+		default:                return { year, 4 };
 		}
 	}
 	void inc(DateQuarterBin &bin) const {
