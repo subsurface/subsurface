@@ -516,6 +516,15 @@ static int match_state(const char *pattern, const char *name,
 	return 1;
 }
 
+#ifdef _MSC_VER
+// MSVC doesn't support GNU statement expressions ({ ... })
+// Type checking is done implicitly through the function pointer cast
+#define MATCH(pattern, fn, dest) \
+	match(pattern, name, (matchfn_t)(fn), buf, dest)
+
+#define MATCH_STATE(pattern, fn, dest) \
+	match_state(pattern, name, (matchfn_state_t)(fn), buf, dest, state)
+#else
 #define MATCH(pattern, fn, dest) ({ 			\
 	/* Silly type compatibility test */ 		\
 	if (0) (fn)("test", dest);			\
@@ -525,6 +534,7 @@ static int match_state(const char *pattern, const char *name,
 	/* Silly type compatibility test */ 		\
 	if (0) (fn)("test", dest, state);		\
 	match_state(pattern, name, (matchfn_state_t) (fn), buf, dest, state); })
+#endif
 
 static void get_index(const char *buffer, int *i)
 {
