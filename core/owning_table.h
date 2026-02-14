@@ -109,14 +109,21 @@ public:
 // Note: there must not be any elements that compare equal!
 template <typename T, int (*CMP)(const T &, const T &)>
 class sorted_owning_table : public owning_table<T> {
+private:
+	// MSVC has issues with using non-type template parameters (function pointers)
+	// inside lambdas. Use static member functions instead.
+	static bool compare_ptr(const std::unique_ptr<T> &a, const std::unique_ptr<T> &b) {
+		return CMP(*a, *b) < 0;
+	}
+	static bool compare_ptr_raw(const std::unique_ptr<T> &a, const T *b) {
+		return CMP(*a, *b) < 0;
+	}
 public:
 	using typename owning_table<T>::put_result;
 	using typename owning_table<T>::pull_result;
 	// Returns index of added item
 	put_result put(std::unique_ptr<T> item) {
-		auto it = std::lower_bound(this->begin(), this->end(), item,
-				[] (const auto &i1, const auto &i2)
-				{ return CMP(*i1, *i2) < 0; });
+		auto it = std::lower_bound(this->begin(), this->end(), item, compare_ptr);
 		if (it != this->end() && CMP(**it, *item) == 0)
 			report_info("Warning: adding duplicate item in %s", __func__);
 		size_t idx = it - this->begin();
@@ -130,9 +137,7 @@ public:
 	// Note: this is probaly slower than a linesr search. But for now,
 	// it helps finding consistency problems.
 	size_t get_idx(const T *item) const {
-		auto it = std::lower_bound(this->begin(), this->end(), item,
-				[] (const auto &i1, const auto &i2)
-				{ return CMP(*i1, *i2) < 0; });
+		auto it = std::lower_bound(this->begin(), this->end(), item, compare_ptr_raw);
 		if (it == this->end() || CMP(**it, *item) != 0) {
 			size_t idx = owning_table<T>::get_idx(item);
 			if (idx != std::string::npos)
@@ -144,9 +149,7 @@ public:
 
 	// Get place where insertion would take place
 	size_t get_insertion_index(const T *item) const {
-		auto it = std::lower_bound(this->begin(), this->end(), item,
-				[] (const auto &i1, const auto &i2)
-				{ return CMP(*i1, *i2) < 0; });
+		auto it = std::lower_bound(this->begin(), this->end(), item, compare_ptr_raw);
 		return it - this->begin();
 	}
 
@@ -164,7 +167,7 @@ public:
 	}
 
 	void sort() {
-		std::sort(this->begin(), this->end(), [](const auto &a, const auto &b) { return CMP(*a, *b) < 0; });
+		std::sort(this->begin(), this->end(), compare_ptr);
 	}
 };
 
