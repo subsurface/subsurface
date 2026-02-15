@@ -835,10 +835,169 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		set(MAKENSIS makensis)
 	endif()
 
-	# the script we created above is now added as a command to run at
-	# install time - so this ensures that subsurface.exe has been
-	# built before this is run
-	install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DSUBSURFACE_TARGET=${SUBSURFACE_TARGET} -DSUBSURFACE_SOURCE=${SUBSURFACE_SOURCE} -DSTAGING=${WINDOWSSTAGING} -P ${CMAKE_SOURCE_DIR}/cmake/Modules/dlllist.cmake)")
+	# Copy DLLs at install time
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		# For MSVC builds, use windeployqt to copy Qt dependencies
+		# and copy vcpkg DLLs
+		find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${QT_INSTALL_PREFIX}/bin")
+		if(WINDEPLOYQT_EXECUTABLE)
+			message(STATUS "Found windeployqt: ${WINDEPLOYQT_EXECUTABLE}")
+			install(CODE "
+				message(STATUS \"Running windeployqt on ${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\")
+				execute_process(
+					COMMAND \"${WINDEPLOYQT_EXECUTABLE}\"
+						--verbose 2
+						--no-opengl-sw
+						--no-system-d3d-compiler
+						--qmldir \"${CMAKE_SOURCE_DIR}/mobile-widgets/qml\"
+						--qmldir \"${CMAKE_SOURCE_DIR}/map-widget\"
+						--qmldir \"${CMAKE_SOURCE_DIR}/stats\"
+						\"${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\"
+					WORKING_DIRECTORY \"${WINDOWSSTAGING}\"
+					RESULT_VARIABLE _windeployqt_result
+					OUTPUT_VARIABLE _windeployqt_output
+					ERROR_VARIABLE _windeployqt_error
+				)
+				message(STATUS \"windeployqt result: \${_windeployqt_result}\")
+				if(_windeployqt_output)
+					message(STATUS \"windeployqt output: \${_windeployqt_output}\")
+				endif()
+				if(_windeployqt_error)
+					message(STATUS \"windeployqt errors: \${_windeployqt_error}\")
+				endif()
+				if(NOT _windeployqt_result EQUAL 0)
+					message(WARNING \"windeployqt failed with code \${_windeployqt_result}\")
+				endif()
+			")
+		else()
+			message(WARNING "windeployqt not found - Qt DLLs will not be copied automatically")
+		endif()
+
+		# Manually copy Qt plugins since windeployqt doesn't always work reliably
+		install(CODE "
+			message(STATUS \"Copying Qt plugins from ${QT_INSTALL_PREFIX}/plugins...\")
+			# Create plugin directories
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/platforms\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/styles\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/imageformats\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/iconengines\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/tls\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/networkinformation\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/geoservices\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/position\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/generic\")
+
+			# Copy platform plugins (critical - qwindows.dll is required)
+			file(GLOB _platform_plugins \"${QT_INSTALL_PREFIX}/plugins/platforms/qwindows.dll\")
+			foreach(_plugin \${_platform_plugins})
+				file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/platforms\")
+			endforeach()
+
+			# Copy style plugins
+			file(GLOB _style_plugins \"${QT_INSTALL_PREFIX}/plugins/styles/*.dll\")
+			foreach(_plugin \${_style_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/styles\")
+				endif()
+			endforeach()
+
+			# Copy imageformat plugins (skip debug versions ending in 'd.dll')
+			file(GLOB _imgformat_plugins \"${QT_INSTALL_PREFIX}/plugins/imageformats/*.dll\")
+			foreach(_plugin \${_imgformat_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/imageformats\")
+				endif()
+			endforeach()
+
+			# Copy iconengines plugins
+			file(GLOB _iconengine_plugins \"${QT_INSTALL_PREFIX}/plugins/iconengines/*.dll\")
+			foreach(_plugin \${_iconengine_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/iconengines\")
+				endif()
+			endforeach()
+
+			# Copy TLS plugins (for HTTPS support)
+			file(GLOB _tls_plugins \"${QT_INSTALL_PREFIX}/plugins/tls/*.dll\")
+			foreach(_plugin \${_tls_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\" AND NOT _name MATCHES \"openssl\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/tls\")
+				endif()
+			endforeach()
+
+			# Copy networkinformation plugins
+			file(GLOB _netinfo_plugins \"${QT_INSTALL_PREFIX}/plugins/networkinformation/*.dll\")
+			foreach(_plugin \${_netinfo_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/networkinformation\")
+				endif()
+			endforeach()
+
+			# Copy geoservices plugins
+			file(GLOB _geoservices_plugins \"${QT_INSTALL_PREFIX}/plugins/geoservices/*.dll\")
+			foreach(_plugin \${_geoservices_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/geoservices\")
+				endif()
+			endforeach()
+
+			# Copy position plugins
+			file(GLOB _position_plugins \"${QT_INSTALL_PREFIX}/plugins/position/*.dll\")
+			foreach(_plugin \${_position_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/position\")
+				endif()
+			endforeach()
+
+			# Copy generic plugins
+			file(GLOB _generic_plugins \"${QT_INSTALL_PREFIX}/plugins/generic/*.dll\")
+			foreach(_plugin \${_generic_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/generic\")
+				endif()
+			endforeach()
+		")
+
+		# Copy vcpkg DLLs from the bin directory
+		install(CODE "
+			message(STATUS \"Copying vcpkg DLLs from ${_VCPKG_PREFIX}/bin...\")
+			file(GLOB _vcpkg_dlls \"${_VCPKG_PREFIX}/bin/*.dll\")
+			foreach(_dll \${_vcpkg_dlls})
+				file(COPY \"\${_dll}\" DESTINATION \"${WINDOWSSTAGING}\")
+			endforeach()
+		")
+
+		# Copy libdivecomputer DLL - derive bin dir from library path
+		if(LIBDIVECOMPUTER_LIBRARIES)
+			get_filename_component(_LIBDC_LIB_DIR "${LIBDIVECOMPUTER_LIBRARIES}" DIRECTORY)
+			get_filename_component(_LIBDC_PREFIX "${_LIBDC_LIB_DIR}" DIRECTORY)
+			install(CODE "
+				message(STATUS \"Copying libdivecomputer DLLs from ${_LIBDC_PREFIX}/bin...\")
+				file(GLOB _libdc_dlls \"${_LIBDC_PREFIX}/bin/*.dll\")
+				foreach(_dll \${_libdc_dlls})
+					file(COPY \"\${_dll}\" DESTINATION \"${WINDOWSSTAGING}\")
+				endforeach()
+			")
+		endif()
+
+		# Copy MSVC runtime DLLs
+		set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+		include(InstallRequiredSystemLibraries)
+		if(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
+			install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${WINDOWSSTAGING})
+		endif()
+	else()
+		# For MinGW/MXE builds, use the existing dlllist.cmake script
+		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DSUBSURFACE_TARGET=${SUBSURFACE_TARGET} -DSUBSURFACE_SOURCE=${SUBSURFACE_SOURCE} -DSTAGING=${WINDOWSSTAGING} -P ${CMAKE_SOURCE_DIR}/cmake/Modules/dlllist.cmake)")
+	endif()
 
 	# create the subsurface-x.y.z.exe installer - this needs to depend
 	# on the install target but cmake doesn't allow that, so we depend
