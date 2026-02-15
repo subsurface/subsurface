@@ -26,7 +26,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build-documentation:
+    uses: ./.github/workflows/documentation-build.yml
+
   build:
+    needs: build-documentation
     runs-on: windows-latest
 
     steps:
@@ -108,6 +112,15 @@ jobs:
           path: ${{ github.workspace }}/vcpkg-cache
           # key: vcpkg-x64-windows-${{ hashFiles('.github/workflows/windows-msvc-qt6.yml') }}
           key: vcpkg-x64-windows-v1
+
+      - name: load the documentation from cache
+        id: load-cache
+        uses: actions/cache@v5
+        with:
+          path: Documentation/output
+          key: ${{ needs.build-documentation.outputs.cache-key }}
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
 
       # ---------------------------------------------------------------
       # Build libdivecomputer from submodule
@@ -296,7 +309,8 @@ jobs:
             -DLIBGIT2_INCLUDE_DIR="$vcpkgInstalled\include" `
             -DLIBGIT2_LIBRARIES="$vcpkgInstalled\lib\git2.lib" `
             -DMAKE_TESTS=OFF `
-            -DNO_USERMANUAL=OFF
+            -DNO_USERMANUAL=OFF `
+            -DINSTALL_DOCS=ON
 
           Pop-Location
 
@@ -316,6 +330,19 @@ jobs:
           choco install nsis -y
           # Add NSIS to PATH
           echo "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Copy documentation to build directory
+        shell: pwsh
+        run: |
+          # CMakeLists.txt expects documentation in build/Documentation/
+          # but the cache restores it to Documentation/output/ in the source tree
+          $srcDoc = "${{ github.workspace }}\Documentation\output"
+          $destDoc = "${{ github.workspace }}\build\Documentation"
+          New-Item -ItemType Directory -Force -Path $destDoc
+          Copy-Item "$srcDoc\user-manual*.html" -Destination $destDoc
+          Copy-Item -Recurse "$srcDoc\images" -Destination $destDoc -Force
+          Write-Host "Documentation files copied:"
+          Get-ChildItem $destDoc
 
       - name: Install to staging directory
         shell: pwsh

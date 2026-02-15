@@ -6,12 +6,18 @@ on:
       container-image:
         type: string
         required: false
+    outputs:
+      cache-key:
+        description: "The cache key used for the documentation"
+        value: ${{ jobs.documentation.outputs.cache-key }}
 
 jobs:
   documentation:
     runs-on: ubuntu-24.04
     container:
       image: ${{ inputs.container-image }}
+    outputs:
+      cache-key: ${{ steps.compute-cache-key.outputs.key }}
 
     steps:
     - name: install packages for checkout
@@ -28,12 +34,19 @@ jobs:
         fetch-depth: 0
         submodules: recursive
 
+    - name: compute cache key
+      id: compute-cache-key
+      run: |
+        KEY="documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}"
+        echo "key=$KEY" >> $GITHUB_OUTPUT
+        echo "Computed cache key: $KEY"
+
     - name: cache the documentation
       id: cache-documentation
       uses: actions/cache@v5
       with:
         path: Documentation/output
-        key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
+        key: ${{ steps.compute-cache-key.outputs.key }}
         enableCrossOsArchive: true
 
     - name: install packages for the build
