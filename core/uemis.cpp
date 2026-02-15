@@ -23,6 +23,9 @@
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct uemis_sample
 {
 	uint16_t dive_time;
@@ -50,7 +53,12 @@ struct uemis_sample
 	uint8_t rgt; // (remaining gas time in minutes)
 	uint8_t cns;
 	uint8_t flags[8];
+#ifdef _MSC_VER
+};
+#pragma pack(pop)
+#else
 } __attribute((packed));
+#endif
 
 /*
  * following code is based on code found in at base64.sourceforge.net/b64.c
