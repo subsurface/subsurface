@@ -112,7 +112,7 @@ static timestamp_t uemis_ts(std::string_view buffer)
 	struct tm tm;
 
 	memset(&tm, 0, sizeof(tm));
-	sscanf(buffer.begin(), "%d-%d-%dT%d:%d:%d",
+	sscanf(buffer.data(), "%d-%d-%dT%d:%d:%d",
 	       &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
 	       &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
 	tm.tm_mon -= 1;
