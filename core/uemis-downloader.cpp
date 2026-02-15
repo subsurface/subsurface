@@ -21,6 +21,9 @@
 #include <stdarg.h>
 #ifdef _MSC_VER
 #include <io.h>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #define read _read
 #define write _write
