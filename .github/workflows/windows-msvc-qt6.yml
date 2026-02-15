@@ -94,6 +94,7 @@ jobs:
             curl[ssl] `
             openssl `
             libusb `
+            libmtp `
             hidapi `
             libraw `
             --triplet x64-windows

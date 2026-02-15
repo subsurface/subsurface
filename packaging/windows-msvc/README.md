@@ -127,7 +127,7 @@ If you prefer to run commands manually:
 $env:VCPKG_ROOT = "C:\vcpkg"
 & "$env:VCPKG_ROOT\vcpkg.exe" install `
     libxml2 libxslt libzip sqlite3 libgit2 libssh2 `
-    curl[ssl] openssl libusb hidapi libraw `
+    curl[ssl] openssl libusb libmtp hidapi libraw `
     --triplet x64-windows
 ```
 

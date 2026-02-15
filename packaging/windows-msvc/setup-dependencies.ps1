@@ -72,6 +72,7 @@ $dependencies = @(
     "curl[ssl]",
     "openssl",
     "libusb",
+    "libmtp",
     "hidapi",
     "libraw"
 )
