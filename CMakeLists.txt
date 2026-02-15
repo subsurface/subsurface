@@ -262,11 +262,6 @@ find_package(QT NAMES ${CHECK_QT6} Qt5 REQUIRED COMPONENTS Core Widgets)
 if(QT_VERSION_MAJOR STREQUAL "6")
 	set(USINGQT6 ON)
 	set(QT5OR6 "")
-	# Get Qt6 install prefix from Qt6_DIR (which is like /path/to/Qt/lib/cmake/Qt6)
-	# Go up 3 directory levels to get the Qt install prefix
-	get_filename_component(QT_INSTALL_PREFIX "${Qt6_DIR}" DIRECTORY)
-	get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
-	get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
 	# for Qt6 we want the Qt5 compatibility package
 	LIST(APPEND QT_EXTRA_COMPONENTS Core5Compat)
 	LIST(APPEND QT_TEST_LIBRARIES Qt::Core5Compat)
@@ -809,6 +804,28 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# "make install", copies everything into a staging area
 	# "make installer", uses makensis to create an installer executable
 	set(WINDOWSSTAGING ${CMAKE_BINARY_DIR}/staging)
+
+	# Set QT_INSTALL_PREFIX from Qt6_DIR or Qt5 variables
+	if(USINGQT6)
+		if(Qt6_DIR)
+			# Qt6_DIR is like /path/to/Qt/lib/cmake/Qt6, go up 3 levels
+			get_filename_component(QT_INSTALL_PREFIX "${Qt6_DIR}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+		elseif(Qt6Core_DIR)
+			# Qt6Core_DIR is like /path/to/Qt/lib/cmake/Qt6Core, go up 3 levels
+			get_filename_component(QT_INSTALL_PREFIX "${Qt6Core_DIR}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+		endif()
+	else()
+		set(QT_INSTALL_PREFIX "${_qt5Core_install_prefix}")
+	endif()
+	if(NOT QT_INSTALL_PREFIX OR QT_INSTALL_PREFIX STREQUAL "")
+		message(FATAL_ERROR "Could not determine Qt install prefix. Qt6_DIR=${Qt6_DIR} Qt6Core_DIR=${Qt6Core_DIR}")
+	endif()
+	message(STATUS "Qt install prefix for Windows bundling: ${QT_INSTALL_PREFIX}")
+
 	if(BUILD_DOCS OR INSTALL_DOCS)
 		install(DIRECTORY Documentation/images DESTINATION ${WINDOWSSTAGING}/Documentation)
 		install(FILES ${DOCFILES} DESTINATION ${WINDOWSSTAGING}/Documentation)
@@ -822,13 +839,17 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
 
 	if(NOT QT_VERSION VERSION_LESS 5.11.0)
-		# hack to work around the fact that we don't process the dependencies of plugins
-		# as of Qt 5.11 this additional DLL is needed and it's only referenced in the qml DLLs
+		# QtPositioningQuick is required - it's referenced by QML plugins
 		if(USINGQT6)
-			install(FILES ${QT_INSTALL_PREFIX}/bin/Qt6PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+			set(_positioning_quick_dll "${QT_INSTALL_PREFIX}/bin/Qt6PositioningQuick.dll")
 		else()
-			install(FILES ${QT_INSTALL_PREFIX}/bin/Qt5PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+			set(_positioning_quick_dll "${QT_INSTALL_PREFIX}/bin/Qt5PositioningQuick.dll")
 		endif()
+		if(NOT EXISTS "${_positioning_quick_dll}")
+			message(FATAL_ERROR "QtPositioningQuick DLL not found at ${_positioning_quick_dll}. "
+				"QT_INSTALL_PREFIX=${QT_INSTALL_PREFIX}. Make sure Qt Positioning module is installed.")
+		endif()
+		install(FILES "${_positioning_quick_dll}" DESTINATION ${WINDOWSSTAGING})
 	endif()
 
 	if(NOT DEFINED MAKENSIS)
@@ -874,6 +895,10 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		endif()
 
 		# Manually copy Qt plugins since windeployqt doesn't always work reliably
+		if(NOT QT_INSTALL_PREFIX OR QT_INSTALL_PREFIX STREQUAL "")
+			message(FATAL_ERROR "QT_INSTALL_PREFIX is not set - cannot copy Qt plugins. Check Qt6_DIR is set correctly.")
+		endif()
+		message(STATUS "Will copy Qt plugins from ${QT_INSTALL_PREFIX}/plugins")
 		install(CODE "
 			message(STATUS \"Copying Qt plugins from ${QT_INSTALL_PREFIX}/plugins...\")
 			# Create plugin directories
