@@ -121,7 +121,7 @@ static std::vector<uint8_t> convert_base64(std::string_view base64)
 		report_info("suspiciously short data block %d", datalen);
 
 	std::vector<uint8_t> res(datalen);
-	decode((unsigned char *)base64.begin(), res.data(), len);
+	decode((unsigned char *)base64.data(), res.data(), len);
 
 	if (memcmp(res.data(), "Dive\01\00\00", 7))
 		report_info("Missing Dive100 header");
