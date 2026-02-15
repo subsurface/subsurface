@@ -469,7 +469,7 @@ if [[ "$QUICK" != "1" && "$BUILD_DESKTOP" == "1" && "$BUILD_WITH_QT6" == "1" ]] 
 	git submodule update
 
 	# qlitehtml currently (2025-12-01) only allows in source tree builds
-	cmake $MAC_CMAKE .
+	cmake $MAC_CMAKE -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} .
 	make
 	make install
 	if [ "$PLATFORM" = Darwin ] ; then
