@@ -64,11 +64,14 @@ Set the environment variable:
    .\packaging\windows-msvc\build.ps1
    ```
 
-5. Create installer (optional):
+5. Install and create installer:
    ```powershell
    cd build-msvc
-   cmake --build . --target installer
+   ninja install
+   ninja installer
    ```
+
+   The installer `subsurface-<version>.exe` will be created in the build directory.
 
 ## Script Options
 
@@ -181,27 +184,38 @@ cmake .. -G Ninja `
     -DMAKE_TESTS=OFF `
     -DNO_USERMANUAL=ON
 
-cmake --build . --config Release
+ninja
 ```
 
-### 5. Create installer
+### 5. Install and create installer
+
+The `ninja install` target handles all DLL deployment automatically:
+- Copies `subsurface.exe` and resources to the staging directory
+- Copies Qt plugins (platforms, styles, imageformats, etc.)
+- Copies vcpkg DLLs (libxml2, libxslt, libzip, etc.)
+- Copies libdivecomputer DLL
+- Copies MSVC runtime DLLs
 
 ```powershell
-cmake --build . --target install --config Release
+# Install everything to the staging directory
+ninja install
 
-# Run windeployqt to gather Qt DLLs
-windeployqt --release --no-translations `
-    --qmldir ..\mobile-widgets\qml `
-    staging\subsurface.exe
+# Create the NSIS installer
+ninja installer
+```
 
-# Copy vcpkg DLLs
-copy "$env:VCPKG_ROOT\installed\x64-windows\bin\*.dll" staging\
+The installer will be created at `build-msvc/subsurface-<version>.exe`.
 
-# Copy libdivecomputer DLL
-copy ..\install\bin\*.dll staging\
+## Version Number
 
-# Build installer
-cmake --build . --target installer --config Release
+The version number is determined by `scripts/get-version.ps1`, which is the PowerShell equivalent of
+`scripts/get-version.sh`. It reads the base version from `scripts/subsurface-base-version.txt` and
+combines it with the build number from the `nightly-builds` repository.
+
+To check your version:
+```powershell
+.\scripts\get-version.ps1
+# Output: 6.0.5541-patch.59.local (example)
 ```
 
 ## Troubleshooting
@@ -220,6 +234,20 @@ $env:Qt6_DIR = "C:\Qt\6.8.0\msvc2022_64"
 
 ### libdivecomputer build fails
 Make sure you have the vcpkg include/lib paths in your INCLUDE and LIB environment variables, or run from the VS Developer Command Prompt.
+
+### "No Qt platform plugin could be initialized"
+This means Qt plugins are missing from the staging directory. The `ninja install` target should copy
+these automatically. If they're missing, check that `QT_INSTALL_PREFIX` was correctly detected during
+cmake configuration. You can also manually copy them:
+```powershell
+copy -Recurse "$env:Qt6_DIR\plugins\platforms" staging\plugins\
+copy -Recurse "$env:Qt6_DIR\plugins\styles" staging\plugins\
+```
+
+### MSVC runtime DLLs missing (MSVCP140.dll, VCRUNTIME140.dll)
+The `ninja install` target should bundle these automatically via `InstallRequiredSystemLibraries`.
+If missing, you can install the Visual C++ Redistributable on the target machine, or manually copy
+the DLLs from your Visual Studio installation.
 
 ## Directory Structure
 
