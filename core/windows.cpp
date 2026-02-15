@@ -228,7 +228,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 		RegCloseKey(hKey);
 	}
 	if (transport & DC_TRANSPORT_USBSTORAGE) {
-		int i;
+		int j;
 		int count_drives = 0;
 		const int bufdef = 512;
 		const char *dlabels[] = {"UEMISSDA", "GARMIN", NULL};
@@ -244,10 +244,10 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 			while (*p) {
 				memset(bufval, 0, bufdef);
 				if (GetVolumeInformationA(p, bufval, bufdef, NULL, NULL, NULL, NULL, 0)) {
-					for (i = 0; dlabels[i] != NULL; i++)
-						if (!strcmp(bufval, dlabels[i])) {
+					for (j = 0; dlabels[j] != NULL; j++)
+						if (!strcmp(bufval, dlabels[j])) {
 							char data[512];
-							snprintf(data, sizeof(data), "%s (%s)", p, dlabels[i]);
+							snprintf(data, sizeof(data), "%s (%s)", p, dlabels[j]);
 							callback(data, userdata);
 							if (is_default_dive_computer_device(p))
 								index = count_drives;
@@ -344,9 +344,9 @@ FILE *subsurface_fopen(const char *path, const char *mode)
 		return NULL;
 	std::wstring wpath = utf8_to_utf16(path);
 	if (!wpath.empty()) {
-		const int len = strlen(mode);
+		const size_t len = strlen(mode);
 		std::wstring wmode(len, ' ');
-		for (int i = 0; i < len; i++)
+		for (size_t i = 0; i < len; i++)
 			wmode[i] = (wchar_t)mode[i];
 		return _wfopen(wpath.c_str(), wmode.c_str());
 	}
