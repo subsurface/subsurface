@@ -37,6 +37,9 @@
 #include <vector>
 
 #if defined(WIN32) || defined(_WIN32)
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #endif
 

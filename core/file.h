@@ -17,6 +17,7 @@ typedef unsigned int mode_t;
 
 // MSVC doesn't have dirent.h - provide minimal types and declarations
 #ifdef _MSC_VER
+#define NOMINMAX
 #include <windows.h>
 struct _wdirent {
 	wchar_t d_name[MAX_PATH];
