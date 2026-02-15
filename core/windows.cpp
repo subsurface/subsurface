@@ -182,7 +182,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 	if (transport & DC_TRANSPORT_SERIAL) {
 		// Open the registry key.
 		HKEY hKey;
-		LONG rc = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "HARDWARE\\DEVICEMAP\\SERIALCOMM", 0, KEY_QUERY_VALUE, &hKey);
+		LONG rc = RegOpenKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DEVICEMAP\\SERIALCOMM", 0, KEY_QUERY_VALUE, &hKey);
 		if (rc != ERROR_SUCCESS) {
 			return -1;
 		}
@@ -200,7 +200,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 			DWORD name_len = sizeof(name);
 			DWORD data_len = sizeof(data);
 			DWORD type = 0;
-			rc = RegEnumValue(hKey, i, name, &name_len, NULL, &type, (LPBYTE)data, &data_len);
+			rc = RegEnumValueA(hKey, i, name, &name_len, NULL, &type, (LPBYTE)data, &data_len);
 			if (rc != ERROR_SUCCESS) {
 				RegCloseKey(hKey);
 				return -1;
