@@ -328,11 +328,13 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	endif()
 
 	# Try QLiteHtml first, but ONLY for Qt6 builds
-	if(REQUEST_QLITEHTML AND USINGQT6 AND QLITEHTML_FOUND)
+	# If QLiteHtml is found, use it (this is the preferred option for Qt6)
+	if(USINGQT6 AND QLITEHTML_FOUND)
 		message(STATUS "building with QLiteHtml (Qt6)")
 		LIST(APPEND QT_EXTRA_COMPONENTS PrintSupport)
 		LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${QLITEHTML_LIBRARIES})
 		add_definitions(-DUSE_QLITEHTML)
+		# for now, QLiteHtml isn't used for printing, yet
 		add_definitions(-DNO_PRINTING)
 		set(NO_PRINTING ON)
 		set(REQUEST_WEBKIT OFF)
@@ -867,7 +869,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				message(STATUS \"Running windeployqt on ${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\")
 				execute_process(
 					COMMAND \"${WINDEPLOYQT_EXECUTABLE}\"
-						--verbose 2
+						--verbose 1
 						--no-opengl-sw
 						--no-system-d3d-compiler
 						--qmldir \"${CMAKE_SOURCE_DIR}/mobile-widgets/qml\"
@@ -1010,6 +1012,17 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				foreach(_dll \${_libdc_dlls})
 					file(COPY \"\${_dll}\" DESTINATION \"${WINDOWSSTAGING}\")
 				endforeach()
+			")
+		endif()
+
+		# Qt6PrintSupport is a dependency of qlitehtml but windeployqt doesn't detect it
+		# because it's not directly linked by subsurface.exe
+		if(QLITEHTML_FOUND)
+			install(CODE "
+				if(EXISTS \"${QT_INSTALL_PREFIX}/bin/Qt6PrintSupport.dll\")
+					message(STATUS \"Copying Qt6PrintSupport.dll...\")
+					file(COPY \"${QT_INSTALL_PREFIX}/bin/Qt6PrintSupport.dll\" DESTINATION \"${WINDOWSSTAGING}\")
+				endif()
 			")
 		endif()
 
