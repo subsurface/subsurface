@@ -48,31 +48,40 @@ if (Test-Path $BuildNumberFile) {
 
     if (-not (Test-Path $NightlyBuildsDir)) {
         # Clone nightly-builds repo
+        # Use Start-Process or call operator for paths with spaces
         try {
-            git clone https://github.com/subsurface/nightly-builds $NightlyBuildsDir *>$null
+            & git clone "https://github.com/subsurface/nightly-builds" "$NightlyBuildsDir" 2>&1 | Out-Null
         } catch {
-            # If we can't clone, use a default
-            $BuildNr = 0
+            # Ignore clone errors
         }
     }
 
     if (Test-Path $NightlyBuildsDir) {
         Push-Location $NightlyBuildsDir
         try {
-            git fetch *>$null
+            & git fetch 2>&1 | Out-Null
 
             # Get list of build branches sorted by commit date
-            $branches = git branch -a --sort=-committerdate --list 2>$null |
-                Where-Object { $_ -match "remotes/origin/branch-for" } |
-                ForEach-Object { ($_ -split "/")[2] }
+            $branchOutput = & git branch -a --sort=-committerdate --list 2>&1
+            $branches = @()
+            foreach ($line in $branchOutput) {
+                $line = $line.Trim()
+                if ($line -match "remotes/origin/(branch-for-.+)$") {
+                    $branches += $Matches[1]
+                }
+            }
 
             $LastBuildBranch = $null
             $LastBuildSha = $null
 
             foreach ($branch in $branches) {
-                $sha = ($branch -split "-")[2]
-                if ($sha) {
-                    $result = git -C $SubsurfaceSource merge-base --is-ancestor $sha HEAD 2>$null
+                # Branch format is: branch-for-<sha>
+                # Extract the SHA (last component after splitting by -)
+                $parts = $branch -split "-"
+                $sha = $parts[-1]
+                if ($sha -and $sha -match "^[0-9a-f]+$") {
+                    # Use call operator and proper argument passing
+                    & git -C "$SubsurfaceSource" merge-base --is-ancestor $sha HEAD 2>&1 | Out-Null
                     if ($LASTEXITCODE -eq 0) {
                         $LastBuildBranch = $branch
                         $LastBuildSha = $sha
@@ -82,16 +91,29 @@ if (Test-Path $BuildNumberFile) {
             }
 
             if ($LastBuildBranch) {
-                git checkout $LastBuildBranch *>$null
+                # Use try/catch around checkout since git writes to stderr even on success
+                try {
+                    $null = & git checkout $LastBuildBranch 2>&1
+                } catch {
+                    # Ignore - git writes "Already on..." to stderr which PowerShell treats as error
+                }
                 $BuildNrFile = Join-Path $NightlyBuildsDir "latest-subsurface-buildnumber"
                 if (Test-Path $BuildNrFile) {
-                    $BuildNr = [int](Get-Content $BuildNrFile -Raw).Trim()
+                    $content = (Get-Content $BuildNrFile -Raw).Trim()
+                    if ($content -match '^\d+$') {
+                        $BuildNr = [int]$content
+                    }
                 }
 
                 # Count commits since last build
-                $logOutput = git -C $SubsurfaceSource log --pretty="oneline" "${LastBuildSha}...HEAD" 2>$null
+                $logOutput = & git -C "$SubsurfaceSource" log --pretty="oneline" "${LastBuildSha}...HEAD" 2>&1
                 if ($logOutput) {
-                    $CommitsSince = ($logOutput | Measure-Object -Line).Lines
+                    # Count lines properly - handle both array and string cases
+                    if ($logOutput -is [array]) {
+                        $CommitsSince = $logOutput.Count
+                    } else {
+                        $CommitsSince = 1
+                    }
                 }
             }
         } catch {
