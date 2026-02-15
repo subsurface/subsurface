@@ -262,6 +262,11 @@ find_package(QT NAMES ${CHECK_QT6} Qt5 REQUIRED COMPONENTS Core Widgets)
 if(QT_VERSION_MAJOR STREQUAL "6")
 	set(USINGQT6 ON)
 	set(QT5OR6 "")
+	# Get Qt6 install prefix from Qt6_DIR (which is like /path/to/Qt/lib/cmake/Qt6)
+	# Go up 3 directory levels to get the Qt install prefix
+	get_filename_component(QT_INSTALL_PREFIX "${Qt6_DIR}" DIRECTORY)
+	get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+	get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
 	# for Qt6 we want the Qt5 compatibility package
 	LIST(APPEND QT_EXTRA_COMPONENTS Core5Compat)
 	LIST(APPEND QT_TEST_LIBRARIES Qt::Core5Compat)
@@ -843,7 +848,11 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if(NOT QT_VERSION VERSION_LESS 5.11.0)
 		# hack to work around the fact that we don't process the dependencies of plugins
 		# as of Qt 5.11 this additional DLL is needed and it's only referenced in the qml DLLs
-		install(FILES ${QT_INSTALL_PREFIX}/bin/Qt5PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+		if(USINGQT6)
+			install(FILES ${QT_INSTALL_PREFIX}/bin/Qt6PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+		else()
+			install(FILES ${QT_INSTALL_PREFIX}/bin/Qt5PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+		endif()
 	endif()
 
 	if(NOT DEFINED MAKENSIS)
