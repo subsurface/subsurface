@@ -14,7 +14,48 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <assert.h>
+#ifndef _MSC_VER
 #include <dirent.h>
+#else
+// MSVC dirent implementation - types are in file.h
+_WDIR *_wopendir(const wchar_t *path)
+{
+	_WDIR *dir = new _WDIR;
+	std::wstring search_path(path);
+	search_path += L"\\*";
+	dir->handle = FindFirstFileW(search_path.c_str(), &dir->find_data);
+	if (dir->handle == INVALID_HANDLE_VALUE) {
+		delete dir;
+		return nullptr;
+	}
+	dir->first = true;
+	return dir;
+}
+
+struct _wdirent *_wreaddir(_WDIR *dir)
+{
+	if (!dir)
+		return nullptr;
+	if (dir->first) {
+		dir->first = false;
+	} else {
+		if (!FindNextFileW(dir->handle, &dir->find_data))
+			return nullptr;
+	}
+	wcsncpy(dir->entry.d_name, dir->find_data.cFileName, MAX_PATH - 1);
+	dir->entry.d_name[MAX_PATH - 1] = L'\0';
+	return &dir->entry;
+}
+
+int _wclosedir(_WDIR *dir)
+{
+	if (!dir)
+		return -1;
+	FindClose(dir->handle);
+	delete dir;
+	return 0;
+}
+#endif
 #include <zip.h>
 #include <lmcons.h>
 #include <string>

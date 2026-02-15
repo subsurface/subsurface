@@ -14,7 +14,9 @@
  * Modified by Guido Lerch guido.lerch@gmail.com in August 2015
  */
 #include <fcntl.h>
+#ifndef _MSC_VER
 #include <dirent.h>
+#endif
 #include <stdio.h>
 #include <stdarg.h>
 #ifdef _MSC_VER
