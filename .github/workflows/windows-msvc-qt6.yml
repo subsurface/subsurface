@@ -226,6 +226,40 @@ jobs:
           Pop-Location
 
       # ---------------------------------------------------------------
+      # Build qlitehtml library (for user manual support)
+      # ---------------------------------------------------------------
+      - name: Clone qlitehtml
+        shell: pwsh
+        run: |
+          $qlitehtmlVersion = "b8f9096eae730ec9464b24874e4e6312144aa9ce"
+
+          git clone https://github.com/dirkhh/qlitehtml.git qlitehtml
+          Push-Location qlitehtml
+          git checkout -f $qlitehtmlVersion
+          git submodule init
+          git submodule update
+          Pop-Location
+
+      - name: Build qlitehtml
+        shell: pwsh
+        run: |
+          $installPrefix = "${{ github.workspace }}\install"
+
+          Push-Location qlitehtml
+
+          # qlitehtml currently only allows in-source builds
+          cmake . `
+            -G Ninja `
+            -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} `
+            -DCMAKE_PREFIX_PATH="$env:Qt6_DIR" `
+            -DCMAKE_INSTALL_PREFIX="$installPrefix"
+
+          ninja
+          ninja install
+
+          Pop-Location
+
+      # ---------------------------------------------------------------
       # Configure and build Subsurface
       # ---------------------------------------------------------------
       - name: Configure Subsurface
@@ -262,7 +296,7 @@ jobs:
             -DLIBGIT2_INCLUDE_DIR="$vcpkgInstalled\include" `
             -DLIBGIT2_LIBRARIES="$vcpkgInstalled\lib\git2.lib" `
             -DMAKE_TESTS=OFF `
-            -DNO_USERMANUAL=ON
+            -DNO_USERMANUAL=OFF
 
           Pop-Location
 
