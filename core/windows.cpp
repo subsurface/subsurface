@@ -9,6 +9,9 @@
 #include "subsurfacestartup.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x500
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include <shlobj.h>
 #include <stdio.h>
