@@ -282,9 +282,14 @@ int subsurface_rename(const char *path, const char *newpath)
 // if the QDir based rename fails, we try this one
 int subsurface_dir_rename(const char *path, const char *newpath)
 {
+	std::wstring wpath = utf8_to_utf16(path);
+	std::wstring wnewpath = utf8_to_utf16(newpath);
+	if (wpath.empty() || wnewpath.empty())
+		return EXIT_FAILURE;
+
 	// check if the folder exists
 	BOOL exists = FALSE;
-	DWORD attrib = GetFileAttributes(path);
+	DWORD attrib = GetFileAttributesW(wpath.c_str());
 	if (attrib != INVALID_FILE_ATTRIBUTES && attrib & FILE_ATTRIBUTE_DIRECTORY)
 		exists = TRUE;
 	if (!exists && verbose) {
@@ -297,7 +302,7 @@ int subsurface_dir_rename(const char *path, const char *newpath)
 	DWORD errorCode;
 
 	// if this fails something has already obatained (more) exclusive access to the folder
-	HANDLE h = CreateFile(path, GENERIC_WRITE, FILE_SHARE_WRITE |
+	HANDLE h = CreateFileW(wpath.c_str(), GENERIC_WRITE, FILE_SHARE_WRITE |
 			      FILE_SHARE_DELETE, 0, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, 0);
 	if (h == INVALID_HANDLE_VALUE) {
 		errorCode = GetLastError();
@@ -310,7 +315,7 @@ int subsurface_dir_rename(const char *path, const char *newpath)
 		CloseHandle(h);
 
 		// attempt to rename
-		BOOL result = MoveFile(path, newpath);
+		BOOL result = MoveFileW(wpath.c_str(), wnewpath.c_str());
 		if (!result) {
 			errorCode = GetLastError();
 			if (verbose)
@@ -374,8 +379,29 @@ int subsurface_stat(const char* path, struct stat* buf)
 	if (!path)
 		return -1;
 	std::wstring wpath = utf8_to_utf16(path);
-	if (!wpath.empty())
+	if (!wpath.empty()) {
+#ifdef _MSC_VER
+		// MSVC uses _wstat with struct _stat
+		struct _stat msbuf;
+		int ret = _wstat(wpath.c_str(), &msbuf);
+		if (ret == 0) {
+			buf->st_dev = msbuf.st_dev;
+			buf->st_ino = msbuf.st_ino;
+			buf->st_mode = msbuf.st_mode;
+			buf->st_nlink = msbuf.st_nlink;
+			buf->st_uid = msbuf.st_uid;
+			buf->st_gid = msbuf.st_gid;
+			buf->st_rdev = msbuf.st_rdev;
+			buf->st_size = msbuf.st_size;
+			buf->st_atime = msbuf.st_atime;
+			buf->st_mtime = msbuf.st_mtime;
+			buf->st_ctime = msbuf.st_ctime;
+		}
+		return ret;
+#else
 		return wstat(wpath.c_str(), buf);
+#endif
+	}
 	return -1;
 }
 
