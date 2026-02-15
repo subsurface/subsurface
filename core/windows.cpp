@@ -7,7 +7,6 @@
 #include "file.h"
 #include "errorhelper.h"
 #include "subsurfacestartup.h"
-#include "subsurfacesysinfo.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x500
 #include <windows.h>
@@ -107,15 +106,13 @@ double system_divelist_default_font_size = -1;
 
 void subsurface_OS_pref_setup()
 {
-	system_divelist_default_font = isWin7Or8() ? current_system_divelist_default_font
-						   : non_standard_system_divelist_default_font;
+	system_divelist_default_font = current_system_divelist_default_font;
 }
 
 bool subsurface_ignore_font(const std::string &font)
 {
-	// if this is running on a recent enough version of Windows and the font
-	// passed in is the pre 4.3 default font, ignore it
-	return isWin7Or8() && font == non_standard_system_divelist_default_font;
+	// if the font passed in is the pre 4.3 default font, ignore it
+	return font == non_standard_system_divelist_default_font;
 }
 
 #define utf8_to_utf16(s) utf8_to_utf16_fl(s, __FILE__, __LINE__)
