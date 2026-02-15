@@ -49,7 +49,7 @@ if (Test-Path $BuildNumberFile) {
     if (-not (Test-Path $NightlyBuildsDir)) {
         # Clone nightly-builds repo
         try {
-            git clone https://github.com/subsurface/nightly-builds $NightlyBuildsDir 2>$null
+            git clone https://github.com/subsurface/nightly-builds $NightlyBuildsDir *>$null
         } catch {
             # If we can't clone, use a default
             $BuildNr = 0
@@ -59,7 +59,7 @@ if (Test-Path $BuildNumberFile) {
     if (Test-Path $NightlyBuildsDir) {
         Push-Location $NightlyBuildsDir
         try {
-            git fetch 2>$null
+            git fetch *>$null
 
             # Get list of build branches sorted by commit date
             $branches = git branch -a --sort=-committerdate --list 2>$null |
@@ -82,7 +82,7 @@ if (Test-Path $BuildNumberFile) {
             }
 
             if ($LastBuildBranch) {
-                git checkout $LastBuildBranch 2>$null
+                git checkout $LastBuildBranch *>$null
                 $BuildNrFile = Join-Path $NightlyBuildsDir "latest-subsurface-buildnumber"
                 if (Test-Path $BuildNrFile) {
                     $BuildNr = [int](Get-Content $BuildNrFile -Raw).Trim()
@@ -126,5 +126,6 @@ switch ($Digits) {
     default { $Version = "${SubsurfaceBaseVersion}.${BuildNr}${VersionExtension}" }
 }
 
-# Output without newline (like printf '%s')
-Write-Host -NoNewline $Version
+# Output to stdout without any newline or CRLF
+# Use .NET Console.Out.Write for clean output that CMake can capture
+[Console]::Out.Write($Version)
