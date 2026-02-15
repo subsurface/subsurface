@@ -185,8 +185,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	subsurface-string.h
 	subsurfacestartup.cpp
 	subsurfacestartup.h
-	subsurfacesysinfo.cpp
-	subsurfacesysinfo.h
 	tag.cpp
 	tag.h
 	tanksensormapping.h
