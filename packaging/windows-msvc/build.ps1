@@ -32,6 +32,9 @@
 .PARAMETER SkipGooglemaps
     Skip building the googlemaps plugin.
 
+.PARAMETER SkipQlitehtml
+    Skip building the qlitehtml library.
+
 .PARAMETER Jobs
     Number of parallel build jobs. Defaults to number of processors.
 
@@ -54,6 +57,7 @@ param(
     [switch]$Clean,
     [switch]$SkipLibdivecomputer,
     [switch]$SkipGooglemaps,
+    [switch]$SkipQlitehtml,
     [int]$Jobs = 0
 )
 
@@ -377,6 +381,79 @@ if (-not $SkipGooglemaps) {
 }
 
 # ---------------------------------------------------------------
+# Build qlitehtml library
+# ---------------------------------------------------------------
+
+if (-not $SkipQlitehtml) {
+    Write-Step "Building qlitehtml library"
+
+    $qlitehtmlDir = Join-Path $SourceDir "qlitehtml"
+    $qlitehtmlVersion = "b8f9096eae730ec9464b24874e4e6312144aa9ce"
+
+    # Clone if not present
+    if (-not (Test-Path $qlitehtmlDir)) {
+        Write-Host "Cloning qlitehtml..."
+        git clone https://github.com/dirkhh/qlitehtml.git $qlitehtmlDir
+    }
+
+    Push-Location $qlitehtmlDir
+
+    # Checkout the correct version
+    $currentSha = git rev-parse HEAD 2>$null
+    if ($currentSha -ne $qlitehtmlVersion) {
+        Write-Host "Checking out version $qlitehtmlVersion..."
+        git fetch origin
+        git checkout -f $qlitehtmlVersion
+    }
+
+    # Initialize and update submodules
+    Write-Host "Initializing submodules..."
+    git submodule init
+    git submodule update
+
+    # qlitehtml currently only allows in-source builds
+    # Configure with cmake
+    $cmakeQlitehtmlArgs = @(
+        ".",
+        "-G", "Ninja",
+        "-DCMAKE_BUILD_TYPE=$BuildType",
+        "-DCMAKE_PREFIX_PATH=$Qt6Dir",
+        "-DCMAKE_INSTALL_PREFIX=$InstallDir"
+    )
+
+    Write-Host "Running cmake..."
+    cmake @cmakeQlitehtmlArgs
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "qlitehtml cmake configuration failed"
+        Pop-Location
+        exit $LASTEXITCODE
+    }
+
+    Write-Host "Building qlitehtml..."
+    ninja
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "qlitehtml build failed"
+        Pop-Location
+        exit $LASTEXITCODE
+    }
+
+    Write-Host "Installing qlitehtml..."
+    ninja install
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "qlitehtml install failed"
+        Pop-Location
+        exit $LASTEXITCODE
+    }
+
+    Pop-Location
+
+    Write-Host "qlitehtml built successfully" -ForegroundColor Green
+}
+
+# ---------------------------------------------------------------
 # Configure and build Subsurface
 # ---------------------------------------------------------------
 
@@ -403,7 +480,7 @@ $cmakeArgs = @(
     "-DLIBGIT2_INCLUDE_DIR=$vcpkgInstalled\include",
     "-DLIBGIT2_LIBRARIES=$vcpkgInstalled\lib\git2.lib",
     "-DMAKE_TESTS=OFF",
-    "-DNO_USERMANUAL=ON"
+    "-DNO_USERMANUAL=OFF"
 )
 
 Write-Host "Running cmake..."
