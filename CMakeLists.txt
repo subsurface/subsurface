@@ -116,6 +116,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   # using Intel C++
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
+  # Disable Qt version tagging which causes segment errors on MSVC
+  add_definitions(-DQT_NO_VERSION_TAGGING)
 endif()
 
 # set up profiling
