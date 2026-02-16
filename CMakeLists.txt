@@ -492,11 +492,12 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	# that's available as kde-extra-cmake-modules on Homebrew, on all Linux flavors
 	# Android and iOS are built via qmake, Windows build of Subsurface-mobile isn't supported
 	find_package(ECM REQUIRED CONFIG PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/ECM)
+	find_package(KF6KirigamiPlatform REQUIRED PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami-install)
+	find_package(KF6Kirigami REQUIRED PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami-install)
 	set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
 	set(BREEZEICONS_DIR mobile-widgets/3rdparty/breeze-icons/)
 
 	SET(QML_IMPORT_PATH ${QML_IMPORT_PATH} ${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src ${CMAKE_SOURCE_DIR}/mobile-widgets/qml)
-	add_subdirectory(mobile-widgets/3rdparty)
 
 	set(MOBILE_SRC
 		subsurface-mobile-main.cpp
@@ -506,7 +507,6 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		qt_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
 		qt_add_resources(MOBILE_RESOURCES profile.qrc)
 		qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
-		qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
 	else()
 		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
 		qt5_add_resources(MOBILE_RESOURCES profile.qrc)
@@ -519,6 +519,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	# arguments to the add_executable() call
 	add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
 	target_sources(${SUBSURFACE_TARGET} PUBLIC ${MOBILE_SRC} ${MOBILE_RESOURCES})
+	target_link_directories(${SUBSURFACE_TARGET} PUBLIC mobile-widgets/3rdparty/lib/x86_64-linux-gnu/)
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
 		subsurface_mobile
@@ -529,7 +530,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_commands
 		subsurface_corelib
 		subsurface_stats
-		kirigamiplugin
+		KF6::Kirigami
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
