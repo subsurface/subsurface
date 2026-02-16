@@ -1,0 +1,87 @@
+name: Generic Qt 6 workflow for Debian and derivatives
+
+on:
+  workflow_call:
+    inputs:
+      container-image:
+        type: string
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ inputs.container-image }}
+
+    steps:
+    - name: get container ready for build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "update distro and install dependencies"
+
+        apt-get update
+        DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
+        autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
+        libgit2-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
+        libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
+        pkg-config xvfb libbluetooth-dev libmtp-dev libraw-dev mdbtools-dev \
+        libqt6qml6 libqt6quick6 qt6-svg-dev libqt6svg6 qt6-5compat-dev \
+        qml6-module-qtpositioning qml6-module-qtlocation \
+        qmake6 qt6-location-dev qt6-connectivity-dev \
+        qml6-module-qtquick qt6-declarative-dev qt6-tools-dev qt6-tools-dev-tools \
+        qt6-positioning-dev qt6-declarative-private-dev
+
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
+    # needs git from the previous step
+    - name: checkout sources
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        no-increment: true
+
+    - name: build subsurface
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building desktop"
+
+        BUILD_EXTRA_ARGS=""
+        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
+          echo "Building a release version"
+          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} -release"
+        fi
+
+        # now build for the desktop version
+        cd ..
+        bash -e -x subsurface/scripts/build.sh -desktop -build-with-qt6 -build-tests ${BUILD_EXTRA_ARGS}
+
+    - name: test desktop build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "running tests for desktop"
+        cd build/tests
+        # xvfb-run --auto-servernum ./TestGitStorage -v2
+        xvfb-run --auto-servernum make check
+        if [ $? -ne 0 ]; then
+          echo "Tests failed - adding the build output as artifacts"
+          exit 1
+        fi
+
+    - name: upload test artifacts
+      if: failure()
+      uses: actions/upload-artifact@v6
+      with:
+        name: test-output-${{ steps.version_number.outputs.version }}
+        path: |
+          build/tests/
+          !build/tests/CMakeFiles/
+          !build/tests/Test*
+          build/tests/Testing/
