@@ -7,7 +7,7 @@
 # - ARCHS              architectures to build
 # - SRC                the 'parent src dir' - this is the directory under which everything is anchored
 # - SRC_DIR            usually 'subsurface'
-# - MAC_CMAKE          which cmake to use
+# - CMAKE_ARGS         which cmake options to use
 # - MAC_OPTS           macOS specific options
 # - MAC_OPTS_OPENSSL   ditto for openssl
 # - INSTALL_ROOT
@@ -42,8 +42,8 @@ if [ "$RUNNER_OS" = "macOS" ]; then
     export PKG_CONFIG_LIBDIR="${INSTALL_ROOT}/lib/pkgconfig"
     unset PKG_CONFIG_PATH
     export CMAKE_IGNORE_PATH="/opt/homebrew:/usr/local"
-    MAC_CMAKE="-DCMAKE_PREFIX_PATH=${INSTALL_ROOT} -DCMAKE_IGNORE_PATH=/opt/homebrew;/usr/local \
-        -DCMAKE_IGNORE_PREFIX_PATH=/opt/homebrew;/usr/local -DPKG_CONFIG_USE_CMAKE_PREFIX_PATH=ON ${MAC_CMAKE}"
+    CMAKE_ARGS="-DCMAKE_PREFIX_PATH=${INSTALL_ROOT} -DCMAKE_IGNORE_PATH=/opt/homebrew;/usr/local \
+        -DCMAKE_IGNORE_PREFIX_PATH=/opt/homebrew;/usr/local -DPKG_CONFIG_USE_CMAKE_PREFIX_PATH=ON ${CMAKE_ARGS}"
 
     pkg-config --variable pc_path pkg-config
 fi
@@ -57,7 +57,7 @@ pushd libz
 sed -i .bak 's/share\/pkgconfig/pkgconfig/' CMakeLists.txt
 mkdir -p build
 cd build
-cmake $MAC_CMAKE ..
+cmake $CMAKE_ARGS ..
 make
 make install
 popd
@@ -108,7 +108,7 @@ get_dep libssh2
 pushd libssh2
 mkdir -p build
 cd build
-cmake $MAC_CMAKE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF \
+cmake $CMAKE_ARGS -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF \
         -DOPENSSL_ROOT_DIR="${INSTALL_ROOT}" \
         -DOPENSSL_INCLUDE_DIR="${INSTALL_ROOT}/include" \
         -DOPENSSL_CRYPTO_LIBRARY="${INSTALL_ROOT}/lib/libcrypto.dylib" \
@@ -135,7 +135,7 @@ get_dep libcurl
 pushd libcurl
 mkdir -p build
 cd build
-cmake  $MAC_CMAKE -DBUILD_CURL_EXE=OFF -DCURL_DISABLE_ALTSVC=ON -DCURL_DISABLE_COOKIES=ON \
+cmake  $CMAKE_ARGS -DBUILD_CURL_EXE=OFF -DCURL_DISABLE_ALTSVC=ON -DCURL_DISABLE_COOKIES=ON \
             -DCURL_DISABLE_CRYPTO_AUTH=ON -DCURL_DISABLE_DICT=ON -DCURL_DISABLE_DOH=ON \
             -DCURL_DISABLE_FILE=ON -DCURL_DISABLE_FTP=ON -DCURL_DISABLE_GETOPTIONS=ON \
             -DCURL_DISABLE_GOPHER=ON -DCURL_DISABLE_HSTS=ON -DCURL_DISABLE_IMAP=ON \
@@ -160,7 +160,7 @@ pushd libgit2
 mkdir -p build
 cd build
 LIBGIT_ARGS="-DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.dylib"
-cmake $MAC_CMAKE -DBUILD_CLAR=OFF ..
+cmake $CMAKE_ARGS -DBUILD_CLAR=OFF ..
 make
 make install
 popd
@@ -180,7 +180,7 @@ get_dep libzip
 pushd libzip
 mkdir -p build
 cd build
-cmake $MAC_CMAKE ..
+cmake $CMAKE_ARGS ..
 make
 make install
 popd
@@ -194,7 +194,7 @@ pushd hidapi
 bash ./bootstrap
 mkdir -p build
 cd build
-cmake $MAC_CMAKE -DCMAKE_INSTALL_LIBDIR="$INSTALL_ROOT/lib" ..
+cmake $CMAKE_ARGS -DCMAKE_INSTALL_LIBDIR="$INSTALL_ROOT/lib" ..
 make
 make install
 popd
@@ -219,7 +219,7 @@ get_dep libftdi1
 pushd libftdi1
 mkdir -p build
 cd build
-cmake $MAC_CMAKE -DFTDI_EEPROM=OFF -DCMAKE_INSTALL_LIBDIR="$INSTALL_ROOT/lib" ..
+cmake $CMAKE_ARGS -DFTDI_EEPROM=OFF -DCMAKE_INSTALL_LIBDIR="$INSTALL_ROOT/lib" ..
 make
 make install
 popd

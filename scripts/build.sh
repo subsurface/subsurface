@@ -236,6 +236,7 @@ export INSTALL_ROOT DEBUGRELEASE
 # make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
 export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 
+CMAKE_ARGS="-DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} "
 # Verify that the Xcode Command Line Tools are installed
 if [ "$PLATFORM" = Darwin ] ; then
 	SDKROOT=$(xcrun --show-sdk-path)
@@ -252,11 +253,11 @@ if [ "$PLATFORM" = Darwin ] ; then
 	export BASESDK
 	if [ "$ARCHS" != "" ] ; then
 		# we do assume that the two architectures mentioned are x86_64 and arm64 .. that's kinda wrong
-		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64' -DCMAKE_BUILD_TYPE=${DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
+		CMAKE_ARGS+="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES='x86_64;arm64' -DCMAKE_BUILD_TYPE=${DEBUGRELEASE} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
 		MAC_OPTS="-mmacosx-version-min=${BASESDK} -arch arm64 -arch x86_64"
 	else
 		ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
-		MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES="$ARCHS" -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
+		CMAKE_ARGS+="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES="$ARCHS" -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
 		MAC_OPTS="-mmacosx-version-min=${BASESDK}"
 	fi
 	# OpenSSL can't deal with multi arch build
@@ -265,7 +266,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 
 	# if all we want is to build the dependencies, we are done with prep here
 	if [[ "$BUILD_DEPS_ONLY" == "1" ]] ; then
-		export ARCHS SRC SRC_DIR MAC_CMAKE MAC_OPTS MAC_OPTS_OPENSSL
+		export ARCHS SRC SRC_DIR CMAKE_ARGS MAC_OPTS MAC_OPTS_OPENSSL
 		bash "./${SRC_DIR}/packaging/macosx/build-deps.sh"
 		exit
 	fi
@@ -306,7 +307,7 @@ fi
 
 # on Debian and Ubuntu based systems, the private QtLocation and
 # QtPositioning headers aren't bundled. Download them if necessary.
-if [ "$PLATFORM" = Linux ] && [[ $QT_VERSION == 5* ]] ; then
+if [ "$PLATFORM" = Linux ] ; then
 	QT_HEADERS_PATH=$($QMAKE -query QT_INSTALL_HEADERS)
 
 	if [ ! -d "$QT_HEADERS_PATH/QtLocation/$QT_VERSION/QtLocation/private" ] &&
@@ -329,10 +330,13 @@ if [ "$PLATFORM" = Linux ] && [[ $QT_VERSION == 5* ]] ; then
 		find . -name '*_p.h' -print0 | xargs -0 cp -t "$QTLOC_PRIVATE"
 		cd "$SRC"
 
-		mkdir -p "$QTPOS_PRIVATE"
-		cd $QTLOC_GIT/src/positioning
-		find . -name '*_p.h' -print0 | xargs -0 cp -t "$QTPOS_PRIVATE"
-		cd "$SRC"
+		# for Qt 6 the positioning headers aren't included
+		if [ -d $QTLOC_GIT/src/positioning ]; then
+			mkdir -p "$QTPOS_PRIVATE"
+			cd $QTLOC_GIT/src/positioning
+			find . -name '*_p.h' -print0 | xargs -0 cp -t "$QTPOS_PRIVATE"
+			cd "$SRC"
+		fi
 
 		echo "* cleanup..."
 		rm -rf $QTLOC_GIT > /dev/null 2>&1
@@ -385,7 +389,7 @@ if [[ $PLATFORM != Darwin && "$LIBGITMAJ" -lt "1" && "$LIBGIT" -lt "26" ]] ; the
 	pushd libgit2
 	mkdir -p build
 	cd build
-	cmake $MAC_CMAKE -DBUILD_CLAR=OFF ..
+	cmake $CMAKE_ARGS -DBUILD_CLAR=OFF ..
 	make
 	make install
 	popd
@@ -469,7 +473,7 @@ if [[ "$QUICK" != "1" && "$BUILD_DESKTOP" == "1" && "$BUILD_WITH_QT6" == "1" ]] 
 	git submodule update
 
 	# qlitehtml currently (2025-12-01) only allows in source tree builds
-	cmake $MAC_CMAKE .
+	cmake $CMAKE_ARGS .
 	make
 	make install
 	if [ "$PLATFORM" = Darwin ] ; then
