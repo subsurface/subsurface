@@ -9,8 +9,9 @@ if(MSVC)
 	)
 else()
 	add_custom_target(themeLink ALL
-		COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/theme
-		COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/theme ${CMAKE_BINARY_DIR}/theme
+		COMMAND
+		rm -f ${CMAKE_BINARY_DIR}/theme &&
+		ln -sf ${CMAKE_SOURCE_DIR}/theme ${CMAKE_BINARY_DIR}/theme
 	)
 endif()
 if(NOT NO_PRINTING)
@@ -21,8 +22,9 @@ if(NOT NO_PRINTING)
 		)
 	else()
 		add_custom_target(printing_templatesLink ALL
-			COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/printing_templates
-			COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/printing_templates ${CMAKE_BINARY_DIR}/printing_templates
+			COMMAND
+			rm -f ${CMAKE_BINARY_DIR}/printing_templates &&
+			ln -sf ${CMAKE_SOURCE_DIR}/printing_templates ${CMAKE_BINARY_DIR}/printing_templates
 		)
 	endif()
 endif()
@@ -36,8 +38,9 @@ if(BUILD_DOCS OR INSTALL_DOCS)
 	else()
 		add_custom_target(
 			install_documentation ALL
-			COMMAND ${CMAKE_COMMAND} -E rm -rf ${CMAKE_BINARY_DIR}/Documentation
-			COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_SOURCE_DIR}/Documentation/output ${CMAKE_BINARY_DIR}/Documentation
+			COMMAND
+			rm -rf ${CMAKE_BINARY_DIR}/Documentation &&
+			ln -sf ${CMAKE_SOURCE_DIR}/Documentation/output ${CMAKE_BINARY_DIR}/Documentation
 		)
 	endif()
 endif()
