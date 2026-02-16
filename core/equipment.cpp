@@ -77,12 +77,12 @@ enum cylinderuse cylinderuse_from_text(const char *text)
 /* Add a metric or an imperial tank info structure. Copies the passed-in string. */
 static void add_tank_info_metric(std::vector<tank_info> &table, const std::string &name, int ml, int bar)
 {
-	table.push_back(tank_info{ name, .ml = ml, .bar = bar });
+	table.push_back(tank_info{ .name = name, .ml = ml, .bar = bar });
 }
 
 static void add_tank_info_imperial(std::vector<tank_info> &table, const std::string &name, int cuft, int psi)
 {
-	table.push_back(tank_info{ name, .cuft = cuft, .psi = psi });
+	table.push_back(tank_info{ .name = name, .cuft = cuft, .psi = psi });
 }
 
 struct tank_info *get_tank_info(std::vector<tank_info> &table, const std::string &name)

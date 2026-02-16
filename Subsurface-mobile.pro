@@ -4,7 +4,7 @@ QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth
 
 DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT MAP_SUPPORT
 
-CONFIG += c++17
+CONFIG += c++20
 CONFIG += qtquickcompiler
 
 SOURCES += subsurface-mobile-main.cpp \
