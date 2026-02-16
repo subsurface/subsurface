@@ -39,7 +39,6 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/gettextfromc.cpp \
 	core/metrics.cpp \
 	core/qt-init.cpp \
-	core/subsurfacesysinfo.cpp \
 	core/windowtitleupdate.cpp \
 	core/file.cpp \
 	core/fulltext.cpp \
@@ -238,7 +237,6 @@ HEADERS += \
 	core/sha1.h \
 	core/string-format.h \
 	core/subsurfacestartup.h \
-	core/subsurfacesysinfo.h \
 	core/taxonomy.h \
 	core/trip.h \
 	core/triptable.h \
