@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
+import QtQuick 6.0
 import QtQuick.Controls 2.12
-import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.12
-import QtQuick.Dialogs 1.3
+import QtQuick.Layouts 6.0
+import QtQuick.Dialogs 6.0
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.4 as Kirigami
 
@@ -551,14 +550,16 @@ TemplatePage {
 			}
 		}
 	}
-	actions.left: Kirigami.Action {
-		icon {
-			name: state = ":/icons/undo.svg"
-			color: subsurfaceTheme.primaryColor
+	actions: [
+		Kirigami.Action {
+			icon {
+				name: state = ":/icons/undo.svg"
+				color: subsurfaceTheme.primaryColor
+			}
+			text: "Return"
+			onTriggered: {
+				pageStack.pop()
+			}
 		}
-		text: "Return"
-		onTriggered: {
-			pageStack.pop()
-		}
-	}
+	]
 }

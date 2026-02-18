@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
+import QtQuick 6.0
 import QtQuick.Controls 2.2 as Controls
-import QtQuick.Layouts 1.2
+import QtQuick.Layouts 6.0
 import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
-import org.kde.kirigami 2.5 as Kirigami
+import QtQuick.Dialogs 6.0
+import org.kde.kirigami 2.4  as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.ScrollablePage {
@@ -38,7 +38,7 @@ Kirigami.ScrollablePage {
 
 	Component {
 		id: diveOrTripDelegate
-		Kirigami.AbstractListItem {
+		Kirigami.SwipeListItem {
 			// this allows us to access properties of the currentItem from outside
 			property variant modelData: model
 			property var view: ListView.view
@@ -474,8 +474,8 @@ Kirigami.ScrollablePage {
 	property QtObject addDiveAction: Kirigami.Action {
 		icon {
 			name: ":/icons/list-add"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		text: qsTr("Add dive")
 		onTriggered: {
 			startAddDive()
@@ -485,8 +485,8 @@ Kirigami.ScrollablePage {
 	property QtObject filterToggleAction: Kirigami.Action {
 		icon {
 			name: ":icons/ic_filter_list"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		text: qsTr("Filter dives")
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
@@ -498,8 +498,7 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	onBackRequested: {
-		if (startPage.visible && diveListView.count > 0 &&
+	onBackRequested: { 		if (startPage.visible && diveListView.count > 0 &&
 		    Backend.cloud_verification_status !== Enums.CS_INCORRECT_USER_PASSWD) {
 			Backend.cloud_verification_status = oldStatus
 			event.accepted = true;
