@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "config.h"
+#include "core/cloudstorage.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QJsonDocument>
@@ -169,19 +170,8 @@ CliConfig loadConfig(const QString &configPath)
 		config.repo_path = validatedPath;
 
 	// Security: Validate userid as email address
-	// Allow common email characters while rejecting dangerous ones
 	QString userid = obj.value("userid").toString();
-	if (userid.length() > 254) {  // RFC 5321 max email length
-		fprintf(stderr, "userid too long\n");
-		return config;
-	}
-	// Email pattern allowing common characters:
-	// Local part: alphanumeric, dots, plus (for sub-addressing), hyphen, underscore
-	// Domain: alphanumeric, dots, hyphens
-	// This covers user+subsurface@sub.domain.com style addresses
-	static QRegularExpression useridRe(
-		R"(^[a-zA-Z0-9._+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)+$)");
-	if (!useridRe.match(userid).hasMatch()) {
+	if (!isValidEmail(userid)) {
 		fprintf(stderr, "Invalid userid format (expected email address)\n");
 		return config;
 	}
