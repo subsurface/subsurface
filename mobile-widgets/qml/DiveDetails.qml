@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
+import QtQuick 6.0
 import QtQuick.Controls 2.2
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs 6.0
 import QtQuick.Layouts 1.2
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.4 as Kirigami
@@ -227,8 +227,8 @@ Kirigami.Page {
 		text: qsTr("Delete dive")
 		icon {
 			name: ":/icons/trash-empty.svg"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		onTriggered: manager.deleteDive(currentItem.modelData.id)
 	}
 
@@ -236,8 +236,8 @@ Kirigami.Page {
 		text: qsTr("Cancel edit")
 		icon {
 			name: ":/icons/dialog-cancel.svg"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		onTriggered: {
 			endEditMode()
 		}
@@ -247,30 +247,32 @@ Kirigami.Page {
 		text: qsTr("Show on map")
 		icon {
 			name: ":/icons/gps"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		onTriggered: {
 			showMap()
 			mapPage.centerOnDiveSite(currentItem.modelData.diveSite)
 		}
 	}
 
-	actions.main: Kirigami.Action {
-		icon {
-			name: state !== "view" ? ":/icons/document-save.svg" :
-						 ":/icons/document-edit.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: state !== "view" ? qsTr("Save edits") : qsTr("Edit dive")
-		onTriggered: {
-			manager.appendTextToLog("save/edit button triggered")
-			if (state === "edit" || state === "add") {
-				detailsEdit.saveData()
-			} else {
-				startEditMode()
+	actions: [
+		Kirigami.Action {
+			icon {
+				name: state !== "view" ? ":/icons/document-save.svg" :
+							 ":/icons/document-edit.svg"
+				color: subsurfaceTheme.primaryColor
+			}
+			text: state !== "view" ? qsTr("Save edits") : qsTr("Edit dive")
+			onTriggered: {
+				manager.appendTextToLog("save/edit button triggered")
+				if (state === "edit" || state === "add") {
+					detailsEdit.saveData()
+				} else {
+					startEditMode()
+				}
 			}
 		}
-	}
+	]
 
 	onBackRequested: {
 		// if one of the drawers/menus is open, the back button should close those
