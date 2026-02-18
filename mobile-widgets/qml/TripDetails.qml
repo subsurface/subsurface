@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
+import QtQuick 6.0
 import QtQuick.Controls 2.2 as Controls
 import QtQuick.Layouts 1.2
 import org.subsurfacedivelog.mobile 1.0
@@ -23,8 +23,10 @@ Kirigami.Page {
 	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
 	Kirigami.Theme.textColor: subsurfaceTheme.textColor
 
-	actions.main: saveAction
-	actions.right: cancelAction
+	actions : [
+		saveAction,
+		cancelAction
+	]
 	onVisibleChanged: {
 		resetState()
 	}
@@ -55,7 +57,7 @@ Kirigami.Page {
 		}
 	]
 
-	property QtObject saveAction: Kirigami.Action {
+	property Kirigami.Action saveAction: Kirigami.Action {
 		icon {
 			name: ":/icons/document-save.svg"
 			color: enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
@@ -68,7 +70,7 @@ Kirigami.Page {
 			pageStack.pop()
 		}
 	}
-	property QtObject cancelAction: Kirigami.Action {
+	property Kirigami.Action cancelAction: Kirigami.Action {
 		text: qsTr("Cancel edit")
 		icon {
 			name: ":/icons/dialog-cancel.svg"

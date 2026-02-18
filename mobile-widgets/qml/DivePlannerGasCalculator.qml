@@ -1,6 +1,6 @@
 // GasCalculator.qml
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
+import QtQuick 6.0
 import QtQuick.Controls 2.12 as Controls
 import QtQuick.Layouts 1.12
 import org.subsurfacedivelog.mobile 1.0
@@ -141,14 +141,16 @@ TemplatePage {
 		}
 	}
 	
-	actions.left: Kirigami.Action {
-		icon {
-			name: state = ":/icons/undo.svg"
-			color: subsurfaceTheme.primaryColor
+	actions: [
+		Kirigami.Action {
+			icon {
+				name: state = ":/icons/undo.svg"
+				color: subsurfaceTheme.primaryColor
+			}
+			text: "Return"
+			onTriggered: {
+				pageStack.pop()
+			}
 		}
-		text: "Return"
-		onTriggered: {
-			pageStack.pop()
-		}
-	}
+	]
 }

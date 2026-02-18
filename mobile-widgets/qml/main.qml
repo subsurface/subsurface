@@ -1,24 +1,23 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
+import QtQuick 6.0
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.1
 import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs 6.0
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.4 as Kirigami
-import QtGraphicalEffects 1.0
 import QtQuick.Templates 2.0 as QtQuickTemplates
 
 Kirigami.ApplicationWindow {
 	id: rootItem
 	title: qsTr("Subsurface-mobile")
-	reachableModeEnabled: false // while it's a good idea, it seems to confuse more than help
 	wideScreen: false // workaround for probably Kirigami bug. See commits.
 
 	// ensure we get all information on screen rotation
-	Screen.orientationUpdateMask: Qt.LandscapeOrientation | Qt.PortraitOrientation | Qt.InvertedLandscapeOrientation | Qt.InvertedPortraitOrientation
+	// This was removed and has to be replaced.
+	//Screen.orientationUpdateMask: Qt.LandscapeOrientation | Qt.PortraitOrientation | Qt.InvertedLandscapeOrientation | Qt.InvertedPortraitOrientation
 
 	// the documentation claims that the ApplicationWindow should pick up the font set on
 	// the C++ side. But as a matter of fact, it doesn't, unless you add this line:
@@ -200,6 +199,8 @@ Kirigami.ApplicationWindow {
 			Layout.maximumHeight: myHeight
 			sourceSize.width: parent.width
 			fillMode: Image.PreserveAspectCrop
+			/* QtGraphicalEffects does not exist on Qt6.
+			 * Should be replaced by "mordern" methods.
 			LinearGradient {
 				anchors {
 					left: parent.left
@@ -220,6 +221,7 @@ Kirigami.ApplicationWindow {
 					}
 				}
 			}
+			*/
 			ColumnLayout {
 				id: textblock
 				anchors {
