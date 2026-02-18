@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
+import QtQuick 6.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.2
 import org.subsurfacedivelog.mobile 1.0
@@ -47,7 +47,7 @@ Kirigami.Page {
 
 	Component {
 		id: chartListDelegate
-		Kirigami.AbstractListItem {
+		Kirigami.SwipeListItem {
 			id: chartListDelegateItem
 			height: isHeader ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing // delegateInnerItem.height
 			onClicked: {

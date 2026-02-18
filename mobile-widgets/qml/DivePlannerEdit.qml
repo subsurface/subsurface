@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
+import QtQuick 6.0
 import QtQuick.Controls 2.12 as Controls
 import QtQuick.Layouts 1.12
 import org.subsurfacedivelog.mobile 1.0
@@ -333,7 +333,7 @@ TemplatePage {
 							}
 						}
 					}
-					validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
+					validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
 				TemplateCheckBox {
@@ -630,35 +630,36 @@ TemplatePage {
 			}
 		}
 	}
-	actions.right: Kirigami.Action {
-		icon {
-			name: state = ":/icons/ic_settings.svg"
-			color: subsurfaceTheme.primaryColor
+	actions: [
+		Kirigami.Action {
+			icon {
+				name: state = ":/icons/ic_settings.svg"
+				color: subsurfaceTheme.primaryColor
+			}
+			text: "Settings"
+			onTriggered: {
+				showPage(divePlannerSetupWindow)
+			}
+		},
+		Kirigami.Action {
+			icon {
+				name: state = ":icons/media-playlist-repeat.svg"
+				color: subsurfaceTheme.primaryColor
+			}
+			text: "Refresh"
+			onTriggered: {
+				generatePlan()
+			}
+		},
+		Kirigami.Action {
+			icon {
+				name: state = ":/icons/undo.svg"
+				color: subsurfaceTheme.primaryColor
+			}
+			text: "Back"
+			onTriggered: {
+				pageStack.pop()
+			}
 		}
-		text: "Settings"
-		onTriggered: {
-			showPage(divePlannerSetupWindow)
-		}
-	}
-	actions.main: Kirigami.Action {
-		icon {
-			name: state = ":icons/media-playlist-repeat.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Refresh"
-		onTriggered: {
-			generatePlan()
-		}
-	}
-	actions.left: Kirigami.Action {
-		icon {
-			name: state = ":/icons/undo.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Back"
-		onTriggered: {
-			pageStack.pop()
-		}
-	}
-
+	]
 }
