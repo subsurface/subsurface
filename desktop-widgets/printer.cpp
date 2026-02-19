@@ -18,6 +18,7 @@
 #if defined(USE_QLITEHTML)
 # include <QUrl>
 # include <QFile>
+# include <QVBoxLayout>
 # include <qlitehtmlwidget.h>
 #else
 #include <QtWebKitWidgets>
@@ -230,8 +231,9 @@ void Printer::preview()
 	previewer.setWindowTitle(tr("Print Preview"));
 	previewer.setWindowIcon(QIcon(":subsurface-icon"));
 
-	QLiteHtmlWidget previewWidget(&previewer);
-	previewWidget.setResourceHandler([](const QUrl &url) -> QByteArray {
+	QVBoxLayout *layout = new QVBoxLayout(&previewer);
+	QLiteHtmlWidget *previewWidget = new QLiteHtmlWidget(&previewer);
+	previewWidget->setResourceHandler([](const QUrl &url) -> QByteArray {
 		if (url.isLocalFile()) {
 			QFile file(url.toLocalFile());
 			if (file.open(QIODevice::ReadOnly)) {
@@ -242,16 +244,12 @@ void Printer::preview()
 		}
 		return QByteArray();
 	});
-	previewWidget.setGeometry(QRect(0, 0, 1200, 1000));
-	QString colorBack = previewer.palette().highlight().color().name(QColor::HexRgb);
-	QString colorText = previewer.palette().highlightedText().color().name(QColor::HexRgb);
-	previewWidget.setStyleSheet(QString(
-		"QLiteHtmlWidget"
-		" { selection-background-color: %1; selection-color: %2; }")
-		.arg(colorBack).arg(colorText));
+	previewWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	layout->addWidget(previewWidget);
 
-	previewWidget.setUrl(QUrl("file:///", QUrl::TolerantMode));
-	previewWidget.setHtml(content);
+	previewWidget->setUrl(QUrl("file:///", QUrl::TolerantMode));
+	previewWidget->setHtml(content);
+	previewer.resize(1000, 800);
 	previewer.exec();
 #endif
 }
