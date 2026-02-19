@@ -498,7 +498,6 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	SET(QML_IMPORT_PATH ${QML_IMPORT_PATH} ${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src ${CMAKE_SOURCE_DIR}/mobile-widgets/qml)
 	add_subdirectory(mobile-widgets/3rdparty)
 	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src)
-	include(${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/KF5Kirigami2Macros.cmake)
 
 	set(MOBILE_SRC
 		subsurface-mobile-main.cpp
