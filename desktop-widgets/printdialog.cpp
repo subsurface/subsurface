@@ -187,11 +187,18 @@ void PrintDialog::createPrinterObj()
 void PrintDialog::previewClicked()
 {
 	createPrinterObj();
+#ifdef USE_QLITEHTML
+	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+	printer->preview();
+	progressBar->setValue(0);
+	disconnect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+#else
 	QPrintPreviewDialog previewDialog(qprinter, this, Qt::Window
 		| Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint
 		| Qt::WindowTitleHint);
 	connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
 	previewDialog.exec();
+#endif
 }
 
 void PrintDialog::exportHtmlClicked()
