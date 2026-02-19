@@ -22,9 +22,6 @@ public:
 		PRINT,
 		PREVIEW
 	};
-#ifdef USE_QLITEHTML
-	void Preview(QString content, QPrinter *printer);
-#endif
 
 private:
 	QPaintDevice *paintDevice;
@@ -40,6 +37,7 @@ private:
 	void render(int Pages);
 	void flowRender();
 	std::vector<dive *> getDives() const;
+	QString generateContent();
 	void putProfileImage(const QRect &box, const QRect &viewPort, QPainter *painter,
 			     struct dive *dive, ProfileScene *profile);
 	QTemporaryDir printDir;
@@ -53,6 +51,7 @@ public:
 		PrintMode printMode, dive *singleDive);
 	~Printer();
 	void print();
+	void preview();
 	void previewOnePage();
 	QString exportHtml();
 

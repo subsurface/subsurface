@@ -199,6 +199,63 @@ QString Printer::exportHtml()
 	return html;
 }
 
+QString Printer::generateContent()
+{
+	auto profile = getPrintProfile();
+	for (struct dive *dive : getDives())
+		exportProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false);
+
+	TemplateLayout t(printOptions, templateOptions);
+	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
+
+	QString html;
+	if (printOptions.type == print_options::DIVELIST)
+		html = t.generate(getDives());
+	else if (printOptions.type == print_options::STATISTICS)
+		html = t.generateStatistics();
+
+	// Replace dive profile divs with profile images
+	QString repl = QString("<img height=\"30%\" width=\"30%\" src=\"file:///%1/dive_\\1.png\">").arg(printDir.path());
+	html.replace(QRegularExpression("<div\\s+class=\"diveProfile\"\\s+id=\"dive_([^\"]*)\"\\s*>\\s*</div>"), repl);
+
+	return html;
+}
+
+void Printer::preview()
+{
+#ifdef USE_QLITEHTML
+	QString content = generateContent();
+
+	QDialog previewer;
+	previewer.setWindowTitle(tr("Print Preview"));
+	previewer.setWindowIcon(QIcon(":subsurface-icon"));
+
+	QLiteHtmlWidget previewWidget(&previewer);
+	previewWidget.setResourceHandler([](const QUrl &url) -> QByteArray {
+		if (url.isLocalFile()) {
+			QFile file(url.toLocalFile());
+			if (file.open(QIODevice::ReadOnly)) {
+				QByteArray data = file.readAll();
+				file.close();
+				return data;
+			}
+		}
+		return QByteArray();
+	});
+	previewWidget.setGeometry(QRect(0, 0, 1200, 1000));
+	QString colorBack = previewer.palette().highlight().color().name(QColor::HexRgb);
+	QString colorText = previewer.palette().highlightedText().color().name(QColor::HexRgb);
+	previewWidget.setStyleSheet(QString(
+		"QLiteHtmlWidget"
+		" { selection-background-color: %1; selection-color: %2; }")
+		.arg(colorBack).arg(colorText));
+
+	previewWidget.setUrl(QUrl("file:///", QUrl::TolerantMode));
+	previewWidget.setHtml(content);
+	previewer.exec();
+#endif
+}
+
 void Printer::print()
 {
 	// we can only print if "PRINT" mode is selected
@@ -206,28 +263,41 @@ void Printer::print()
 		return;
 	}
 
-	auto profile = getPrintProfile();
-	for(struct dive *dive: getDives())
-		exportProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false);
+	QPrinter *printerPtr = static_cast<QPrinter*>(paintDevice);
 
-
-	QPrinter *printerPtr;
-	printerPtr = static_cast<QPrinter*>(paintDevice);
-
-	TemplateLayout t(printOptions, templateOptions);
-	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
 	int dpi = printerPtr->resolution();
 	//rendering resolution = selected paper size in inchs * printer dpi
 	pageSize.setHeight(qCeil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
 	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
 #ifdef USE_QLITEHTML
-	Preview(t.generate(getDives()), printerPtr);
+	QString content = generateContent();
+
+	QLiteHtmlWidget printWidget;
+	printWidget.setResourceHandler([](const QUrl &url) -> QByteArray {
+		if (url.isLocalFile()) {
+			QFile file(url.toLocalFile());
+			if (file.open(QIODevice::ReadOnly)) {
+				QByteArray data = file.readAll();
+				file.close();
+				return data;
+			}
+		}
+		return QByteArray();
+	});
+	printWidget.setUrl(QUrl("file:///", QUrl::TolerantMode));
+	printWidget.setHtml(content);
+	printWidget.print(printerPtr);
 #else
+	auto profile = getPrintProfile();
+	for (struct dive *dive : getDives())
+		exportProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false);
+
+	TemplateLayout t(printOptions, templateOptions);
+	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
+
 	webView->page()->setViewportSize(pageSize);
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 
-	// export border width with at least 1 pixel
-	// templateOptions.borderwidth = std::max(1, pageSize.width() / 1000);
 	if (printOptions.type == print_options::DIVELIST)
 		webView->setHtml(t.generate(getDives()));
 	else if (printOptions.type == print_options::STATISTICS )
@@ -236,7 +306,6 @@ void Printer::print()
 		printerPtr->setColorMode(QPrinter::Color);
 	else
 		printerPtr->setColorMode(QPrinter::GrayScale);
-	// apply user settings
 	int divesPerPage;
 
 	// get number of dives per page from data-numberofdives attribute in the body of the selected template
@@ -291,52 +360,3 @@ void Printer::previewOnePage()
 	}
 }
 
-#ifdef USE_QLITEHTML
-void Printer::Preview(QString content, QPrinter *printer)
-{
-	QDialog previewer;
-
-	previewer.setWindowTitle(tr("Print Preview"));
-	previewer.setWindowIcon(QIcon(":subsurface-icon"));
-
-	QLiteHtmlWidget previewWidget(&previewer);
-	//QLiteHtmlWidget previewWidget;
-	//= new QLiteHtmlWidget(this);
-	// Set up resource handler for loading images, CSS, etc.
-	previewWidget.setResourceHandler([](const QUrl &url) -> QByteArray {
-		if (url.isLocalFile()) {
-			QFile file(url.toLocalFile());
-			if (file.open(QIODevice::ReadOnly)) {
-				QByteArray data = file.readAll();
-				file.close();
-				return data;
-			}
-		}
-		return QByteArray();
-	});
-	previewWidget.setGeometry(QRect(0,0,1200,1000));
-	QString colorBack = previewer.palette().highlight().color().name(QColor::HexRgb);
-	QString colorText = previewer.palette().highlightedText().color().name(QColor::HexRgb);
-	previewWidget.setStyleSheet(QString(
-					  "QLiteHtmlWidget"
-					  " { selection-background-color: %1; selection-color: %2; }")
-					  .arg(colorBack).arg(colorText));
-
-	// QFile file("/Users/Helling_1/logbuch.html");
-	// if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-	// 	return;
-
-	// QTextStream in(&file);
-	// previewWidget.setHtml(in.readAll());
-
-	QString repl = QString("<img height=\"30%\" width=\"30%\" src=\"file:///%1/dive_\\1.png\">").arg(printDir.path());
-	content.replace(QRegularExpression("<div\\s+class=\"diveProfile\"\\s+id=\"dive_([^\"]*)\"\\s*>\\s*</div>"), repl);
-
-	previewWidget.setUrl(QUrl("file:///", QUrl::TolerantMode));
-	previewWidget.setHtml(content);
-	previewWidget.print(printer);
-	//previewer.resize(700, 500);
-	previewer.exec();
-	//previewWidget.exec();
-}
-#endif
