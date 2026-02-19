@@ -200,9 +200,96 @@ QString Printer::exportHtml()
 	return html;
 }
 
+// Helper: replace CSS viewport units (vw or vh) with px values
+// computed from the actual page/viewport dimension.
+// 1vw = pageWidth/100, 1vh = pageHeight/100.
+static QString replaceViewportUnit(const QString &html, const QString &unit, int dimension)
+{
+	QRegularExpression re(QString("([\\d.]+)%1").arg(unit));
+	QString result;
+	int lastEnd = 0;
+	QRegularExpressionMatchIterator it = re.globalMatch(html);
+	while (it.hasNext()) {
+		QRegularExpressionMatch match = it.next();
+		result += html.mid(lastEnd, match.capturedStart() - lastEnd);
+		double value = match.captured(1).toDouble();
+		int px = qRound(value * dimension / 100.0);
+		result += QString::number(px) + "px";
+		lastEnd = match.capturedEnd();
+	}
+	result += html.mid(lastEnd);
+	return result;
+}
+
+// Adapt HTML/CSS from printing templates for litehtml compatibility.
+// This allows existing user-created templates (designed for WebKit) to
+// work without modification under QLiteHtml/litehtml.
+// pageWidth/pageHeight are the rendering dimensions in pixels so that
+// viewport units (vw/vh) can be converted to concrete px values.
+static QString adaptForLiteHtml(QString html, int pageWidth, int pageHeight)
+{
+	// 1. Replace viewport units (not supported by litehtml) with px
+	//    computed from the actual rendering dimensions.  This makes
+	//    the output correct for both the on-screen preview (≈1000px)
+	//    and the printer (e.g. 4500px at 600 dpi on letter paper).
+	html = replaceViewportUnit(html, "vw", pageWidth);
+	html = replaceViewportUnit(html, "vh", pageHeight);
+
+	// 2. Strip -webkit- vendor prefixes
+	html.replace("-webkit-box-sizing", "box-sizing");
+	html.replace(QRegularExpression("-webkit-filter\\s*:"), "filter:");
+	html.replace(QRegularExpression("-webkit-column-break-inside\\s*:[^;]*;"), "");
+
+	// 3. Inject CSS overrides before </style>:
+	//    - Remove float from h1/p (commonly floated in templates for
+	//      WebKit table cell layout, but causes overlap in litehtml).
+	//      Don't use !important so inline styles (e.g. float:right)
+	//      still take precedence.
+	//    - Reset diveProfile height (templates set percentage heights
+	//      for empty placeholder divs; with actual images, auto is correct).
+	html.replace("</style>",
+		"\n\t\th1 { float: none; }\n"
+		"\t\tp { float: none; }\n"
+		"\t\t.diveProfile { height: auto; }\n"
+		"\t</style>");
+
+	// 4. Insert clearing divs to fix float clearing.
+	//    litehtml doesn't support the overflow:hidden BFC trick that
+	//    WebKit templates use for float clearing. Instead, find CSS
+	//    classes that use float: and insert an explicit clearing div
+	//    in the HTML before any sibling table/div that does NOT use
+	//    one of those float classes.
+	QSet<QString> floatClasses;
+	QRegularExpression floatClassRe("\\.([\\w-]+)\\s*\\{[^}]*float\\s*:");
+	QRegularExpressionMatchIterator it = floatClassRe.globalMatch(html);
+	while (it.hasNext())
+		floatClasses.insert(it.next().captured(1));
+
+	if (!floatClasses.isEmpty()) {
+		// Build a pattern that matches the closing tag of a floated element
+		// followed by a table/div that does NOT have one of the float classes.
+		// We look for </table> followed by <table class="non-float-class">.
+		QString floatClassAlternation;
+		for (const QString &cls : floatClasses) {
+			if (!floatClassAlternation.isEmpty())
+				floatClassAlternation += "|";
+			floatClassAlternation += QRegularExpression::escape(cls);
+		}
+		// Match </table> (with whitespace) followed by <table class="...">
+		// where the class does NOT contain any float class name.
+		// We use a negative lookahead to exclude float classes.
+		QRegularExpression afterFloatRe(
+			QString("(</table>\\s*)"
+				"(<table\\s+class=\"(?:(?!%1)[^\"]*)\")").arg(floatClassAlternation));
+		html.replace(afterFloatRe, "\\1<div style=\"clear:both;\"></div>\\2");
+	}
+
+	return html;
+}
+
 QString Printer::generateContent()
 {
-	auto profile = getPrintProfile();
+	std::unique_ptr<ProfileScene> profile = getPrintProfile();
 	for (struct dive *dive : getDives())
 		exportProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false);
 
@@ -215,9 +302,36 @@ QString Printer::generateContent()
 	else if (printOptions.type == print_options::STATISTICS)
 		html = t.generateStatistics();
 
-	// Replace dive profile divs with profile images
-	QString repl = QString("<img height=\"30%\" width=\"30%\" src=\"file:///%1/dive_\\1.png\">").arg(printDir.path());
+	// Compute a max-height for profile images based on page dimensions
+	// and the number of dives per page (from data-numberofdives).
+	// The profile should take about 40% of each cell's height.
+	QRegularExpression numDivesRe("data-numberofdives\\s*=\\s*\"?\\s*(\\d+)");
+	QRegularExpressionMatch numMatch = numDivesRe.match(html);
+	int divesPerPage = numMatch.hasMatch() ? numMatch.captured(1).toInt() : 1;
+	int rows;
+	if (divesPerPage <= 0)
+		rows = 3; // flow layout: assume ~3 dives visible
+	else if (divesPerPage <= 2)
+		rows = divesPerPage;
+	else
+		rows = (divesPerPage + 1) / 2; // grid: 2 columns
+	int profileMaxHeight = pageSize.height() * 40 / (100 * rows);
+
+	// Replace dive profile divs with profile images, keeping the div
+	// wrapper so that the template's .diveProfile CSS (float, margins)
+	// still applies.  Use max-width/max-height to constrain the image
+	// proportionally — the image picks whichever is more restrictive
+	// while maintaining its aspect ratio.
+	QString repl = QString("<div class=\"diveProfile\" id=\"dive_\\1\">"
+			       "<img style=\"max-width:100%%; max-height:%1px;\" src=\"file:///%2/dive_\\1.png\">"
+			       "</div>").arg(profileMaxHeight).arg(printDir.path());
 	html.replace(QRegularExpression("<div\\s+class=\"diveProfile\"\\s+id=\"dive_([^\"]*)\"\\s*>\\s*</div>"), repl);
+
+	// Adapt the HTML for litehtml compatibility.
+	// pageSize must be set before calling generateContent() —
+	// preview() sets it to the widget dimensions, print() sets it
+	// from the printer resolution.
+	html = adaptForLiteHtml(html, pageSize.width(), pageSize.height());
 
 	return html;
 }
@@ -225,6 +339,15 @@ QString Printer::generateContent()
 void Printer::preview()
 {
 #ifdef USE_QLITEHTML
+	// Use the printer's actual page dimensions to compute the preview
+	// size, so the preview matches the printed page's aspect ratio.
+	QPrinter *printerPtr = static_cast<QPrinter*>(paintDevice);
+	QRectF pageRect = printerPtr->pageRect(QPrinter::Inch);
+	double aspectRatio = pageRect.height() / pageRect.width();
+	int previewWidth = 800;
+	int previewHeight = qRound(previewWidth * aspectRatio);
+
+	pageSize = QSize(previewWidth, previewHeight);
 	QString content = generateContent();
 
 	QDialog previewer;
@@ -249,7 +372,7 @@ void Printer::preview()
 
 	previewWidget->setUrl(QUrl("file:///", QUrl::TolerantMode));
 	previewWidget->setHtml(content);
-	previewer.resize(1000, 800);
+	previewer.resize(previewWidth, previewHeight);
 	previewer.exec();
 #endif
 }
@@ -286,7 +409,7 @@ void Printer::print()
 	printWidget.setHtml(content);
 	printWidget.print(printerPtr);
 #else
-	auto profile = getPrintProfile();
+	std::unique_ptr<ProfileScene> profile = getPrintProfile();
 	for (struct dive *dive : getDives())
 		exportProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false);
 
