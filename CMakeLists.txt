@@ -578,20 +578,10 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface-mobile-main.cpp
 		subsurface-helper.cpp
 	)
-	if(USINGQT6)
-		qt_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
-		qt_add_resources(MOBILE_RESOURCES profile.qrc)
-		qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
-	else()
-		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
-		qt5_add_resources(MOBILE_RESOURCES profile.qrc)
-		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
-		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
-	endif()
+	qt_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
+	qt_add_resources(MOBILE_RESOURCES profile.qrc)
+	qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
 
-	# the following is split across two commands since in cmake 3.12 this would result
-	# in a non-sensical "no sources given to target" error if done all as one set of
-	# arguments to the add_executable() call
 	add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
 	target_sources(${SUBSURFACE_TARGET} PUBLIC ${MOBILE_SRC} ${MOBILE_RESOURCES})
 	target_link_directories(${SUBSURFACE_TARGET} PUBLIC mobile-widgets/3rdparty/lib/x86_64-linux-gnu/)
@@ -779,12 +769,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		# and with Qt 5.14 we need another library that isn't always copied by macdeployqt
 		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtQmlWorkerScript.framework)")
 		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/lib/QtQmlWorkerScript.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
-	endif()
-	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/qml/QtQuick ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
-		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/qml/QtGraphicalEffects ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
-		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/qml/QtQml ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
-		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/qml/QtPositioning ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	endif()
 	install(CODE "execute_process(COMMAND codesign --force --deep --sign - ${APP_BUNDLE_DIR})")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
