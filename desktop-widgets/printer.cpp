@@ -20,6 +20,8 @@
 # include <QFile>
 # include <QVBoxLayout>
 # include <qlitehtmlwidget.h>
+# include <container_qpainter.h>
+# include <litehtml/master_css.h>
 #else
 #include <QtWebKitWidgets>
 #include <QWebElementCollection>
@@ -250,6 +252,7 @@ static QString adaptForLiteHtml(QString html, int pageWidth, int pageHeight)
 	html.replace("</style>",
 		"\n\t\th1 { float: none; }\n"
 		"\t\tp { float: none; }\n"
+		"\t\t.diveDetails { float: none; }\n"
 		"\t\t.diveProfile { height: auto; }\n"
 		"\t</style>");
 
@@ -266,22 +269,34 @@ static QString adaptForLiteHtml(QString html, int pageWidth, int pageHeight)
 		floatClasses.insert(it.next().captured(1));
 
 	if (!floatClasses.isEmpty()) {
-		// Build a pattern that matches the closing tag of a floated element
-		// followed by a table/div that does NOT have one of the float classes.
-		// We look for </table> followed by <table class="non-float-class">.
-		QString floatClassAlternation;
-		for (const QString &cls : floatClasses) {
-			if (!floatClassAlternation.isEmpty())
-				floatClassAlternation += "|";
-			floatClassAlternation += QRegularExpression::escape(cls);
+		// Insert a clearing div between </table> and any subsequent
+		// <table> whose class list does NOT contain a float class.
+		QRegularExpression tableTransitionRe(
+			"(</table>\\s*)(<table\\s+class=\"([^\"]*)\")");
+		int searchPos = 0;
+		while (true) {
+			QRegularExpressionMatch match = tableTransitionRe.match(html, searchPos);
+			if (!match.hasMatch())
+				break;
+			// Split the class attribute into individual class names
+			// and check if any is a float class.
+			QStringList classNames = match.captured(3).split(' ', SKIP_EMPTY);
+			bool hasFloat = false;
+			for (const QString &cls : classNames) {
+				if (floatClasses.contains(cls)) {
+					hasFloat = true;
+					break;
+				}
+			}
+			if (!hasFloat) {
+				QString clearDiv = "<div style=\"clear:both;\"></div>";
+				int insertPos = match.capturedStart(2);
+				html.insert(insertPos, clearDiv);
+				searchPos = insertPos + clearDiv.length() + match.captured(2).length();
+			} else {
+				searchPos = match.capturedEnd();
+			}
 		}
-		// Match </table> (with whitespace) followed by <table class="...">
-		// where the class does NOT contain any float class name.
-		// We use a negative lookahead to exclude float classes.
-		QRegularExpression afterFloatRe(
-			QString("(</table>\\s*)"
-				"(<table\\s+class=\"(?:(?!%1)[^\"]*)\")").arg(floatClassAlternation));
-		html.replace(afterFloatRe, "\\1<div style=\"clear:both;\"></div>\\2");
 	}
 
 	return html;
@@ -317,6 +332,19 @@ QString Printer::generateContent()
 		rows = (divesPerPage + 1) / 2; // grid: 2 columns
 	int profileMaxHeight = pageSize.height() * 40 / (100 * rows);
 
+	// For fixed-layout templates (divesPerPage > 0), inject an explicit
+	// pixel height on .mainContainer.  The templates use CSS percentage
+	// heights (100%, 50%, 33.333%) which require an explicit parent
+	// height to resolve — litehtml doesn't assume viewport height as
+	// the base like WebKit did.  Without this, dives take their natural
+	// content height and page boundaries fall in the middle of dives.
+	if (divesPerPage > 0) {
+		int containerHeight = pageSize.height() / rows;
+		QString heightRule = QString("\n\t\t.mainContainer { height: %1px; overflow: hidden; }\n\t")
+			.arg(containerHeight);
+		html.replace("</style>", heightRule + "</style>");
+	}
+
 	// Replace dive profile divs with profile images, keeping the div
 	// wrapper so that the template's .diveProfile CSS (float, margins)
 	// still applies.  Use max-width/max-height to constrain the image
@@ -336,6 +364,127 @@ QString Printer::generateContent()
 	return html;
 }
 
+#if defined(USE_QLITEHTML)
+// Find all <div> blocks whose class contains "dontbreak".
+// Returns a list of (start_position, length) pairs in the HTML string.
+static QVector<QPair<int, int>> findDontbreakBlocks(const QString &html)
+{
+	QVector<QPair<int, int>> blocks;
+	QRegularExpression openRe("<div[^>]*class=\"[^\"]*\\bdontbreak\\b[^\"]*\"[^>]*>");
+	QRegularExpression tagRe("<(/?)div(?:\\s[^>]*)?>", QRegularExpression::DotMatchesEverythingOption);
+	QRegularExpressionMatchIterator openIt = openRe.globalMatch(html);
+	while (openIt.hasNext()) {
+		QRegularExpressionMatch openMatch = openIt.next();
+		int startPos = openMatch.capturedStart();
+		int pos = openMatch.capturedEnd();
+		int depth = 1;
+		QRegularExpressionMatchIterator tagIt = tagRe.globalMatch(html, pos);
+		while (tagIt.hasNext() && depth > 0) {
+			QRegularExpressionMatch tagMatch = tagIt.next();
+			if (tagMatch.captured(1) == "/")
+				depth--;
+			else
+				depth++;
+			if (depth == 0)
+				blocks.append({startPos, tagMatch.capturedEnd() - startPos});
+		}
+	}
+	return blocks;
+}
+
+// For flow layouts (data-numberofdives = 0), measure each dive's
+// position in the full rendered document and insert padding before
+// dives that would be split across a page boundary.  QLiteHtml's
+// print() scrolls through the document in fixed page-sized chunks,
+// so the padding pushes dives to the next page cleanly.
+//
+// Uses DocumentContainer::anchorY() to measure block positions in
+// the actual full-document context.
+static QString paginateFlowLayout(const QString &html, int pageWidth, int pageHeight,
+				  QPaintDevice *paintDevice)
+{
+	QVector<QPair<int, int>> blocks = findDontbreakBlocks(html);
+	if (blocks.isEmpty())
+		return html;
+
+	// Add id attributes to each dontbreak div so we can measure their
+	// Y positions via anchorY().
+	QString markedHtml = html;
+	int markOffset = 0;
+	QRegularExpression divOpenRe("<div([^>]*)>");
+	for (int i = 0; i < blocks.size(); i++) {
+		int blockStart = blocks[i].first + markOffset;
+		// Find the opening <div...> tag at this block's position
+		QRegularExpressionMatch divMatch = divOpenRe.match(markedHtml, blockStart);
+		if (divMatch.hasMatch() && divMatch.capturedStart() == blockStart) {
+			// Insert id="pbN" into the div's attributes
+			QString idAttr = QString(" id=\"pb%1\"").arg(i);
+			int insertPos = divMatch.capturedStart(1);
+			markedHtml.insert(insertPos, idAttr);
+			markOffset += idAttr.length();
+		}
+	}
+	// End marker after the last block
+	int endPos = blocks.last().first + blocks.last().second + markOffset;
+	markedHtml.insert(endPos, "<div id=\"pb_end\"></div>");
+
+	// Render the full document and read anchor positions.
+	// A master stylesheet is required for litehtml to know default
+	// display types (div=block, table=table, etc.).  QLiteHtmlWidget
+	// sets this internally via its context, but we use a standalone
+	// DocumentContainer, so we need to provide it ourselves.
+	DocumentContainerContext context;
+	context.setMasterStyleSheet(litehtml::master_css);
+	DocumentContainer dc;
+	dc.setPaintDevice(paintDevice);
+	dc.setDataCallback([](const QUrl &url) -> QByteArray {
+		if (url.isLocalFile()) {
+			QFile file(url.toLocalFile());
+			if (file.open(QIODevice::ReadOnly))
+				return file.readAll();
+		}
+		return QByteArray();
+	});
+	dc.setDocument(markedHtml.toUtf8(), &context);
+	dc.render(pageWidth, pageHeight);
+	int docHeight = dc.documentHeight();
+
+	QVector<int> positions;
+	for (int i = 0; i < blocks.size(); i++)
+		positions.append(dc.anchorY(QString("pb%1").arg(i)));
+	int endY = dc.anchorY("pb_end");
+
+	// Compute block heights from consecutive anchor positions
+	QVector<int> heights;
+	for (int i = 0; i < blocks.size(); i++) {
+		int nextY = (i + 1 < blocks.size()) ? positions[i + 1] : (endY > 0 ? endY : docHeight);
+		heights.append(nextY - positions[i]);
+	}
+
+	// Walk forward, simulating the layout with padding insertions.
+	// Each padding shifts all subsequent blocks down by exactly the
+	// padding amount (the padding div has a fixed pixel height).
+	QString result = html;
+	int padOffset = 0;    // accumulated string offset from insertions
+	int totalPadding = 0; // accumulated pixel shift from padding
+	for (int i = 0; i < blocks.size(); i++) {
+		int adjustedY = positions[i] + totalPadding;
+		int remainingOnPage = pageHeight - (adjustedY % pageHeight);
+
+		// If this block doesn't fit in the remaining page space, pad
+		if (adjustedY > 0 && remainingOnPage < pageHeight && heights[i] > remainingOnPage) {
+			QString padDiv = QString("<div style=\"height:%1px;\"></div>").arg(remainingOnPage);
+			int insertPos = blocks[i].first + padOffset;
+			result.insert(insertPos, padDiv);
+			padOffset += padDiv.length();
+			totalPadding += remainingOnPage;
+		}
+	}
+
+	return result;
+}
+#endif // USE_QLITEHTML
+
 void Printer::preview()
 {
 #ifdef USE_QLITEHTML
@@ -349,6 +498,16 @@ void Printer::preview()
 
 	pageSize = QSize(previewWidth, previewHeight);
 	QString content = generateContent();
+
+	// For flow layouts, paginate the preview too so the user can see
+	// where page breaks will occur.
+	QRegularExpression numDivesRe("data-numberofdives\\s*=\\s*\"?\\s*(\\d+)");
+	QRegularExpressionMatch numMatch = numDivesRe.match(content);
+	int divesPerPage = numMatch.hasMatch() ? numMatch.captured(1).toInt() : 1;
+	if (divesPerPage == 0) {
+		QPixmap screenDevice(1, 1);
+		content = paginateFlowLayout(content, previewWidth, previewHeight, &screenDevice);
+	}
 
 	QDialog previewer;
 	previewer.setWindowTitle(tr("Print Preview"));
@@ -392,6 +551,14 @@ void Printer::print()
 	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
 #ifdef USE_QLITEHTML
 	QString content = generateContent();
+
+	// For flow layouts (data-numberofdives = 0), paginate so that
+	// individual dives are not split across page boundaries.
+	QRegularExpression numDivesRe("data-numberofdives\\s*=\\s*\"?\\s*(\\d+)");
+	QRegularExpressionMatch numMatch = numDivesRe.match(content);
+	int divesPerPage = numMatch.hasMatch() ? numMatch.captured(1).toInt() : 1;
+	if (divesPerPage == 0)
+		content = paginateFlowLayout(content, pageSize.width(), pageSize.height(), printerPtr);
 
 	QLiteHtmlWidget printWidget;
 	printWidget.setResourceHandler([](const QUrl &url) -> QByteArray {
