@@ -584,7 +584,6 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 
 	add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
 	target_sources(${SUBSURFACE_TARGET} PUBLIC ${MOBILE_SRC} ${MOBILE_RESOURCES})
-	target_link_directories(${SUBSURFACE_TARGET} PUBLIC mobile-widgets/3rdparty/lib/x86_64-linux-gnu/)
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
 		subsurface_mobile
