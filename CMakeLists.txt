@@ -715,7 +715,11 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	# macdeployqt simplifies a lot of this process, but still doesn't get everything right
 	# - it misses a couple of resources and frameworks
 	# - it seems to always deploy the SQL plugins (even though they aren't needed)
-	set(MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Resources/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_SOURCE_DIR}/../install-root/lib")
+	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
+		set(MACDEPLOY_ARGS "-qmldir=${CMAKE_SOURCE_DIR}/mobile-widgets/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_SOURCE_DIR}/../install-root/lib")
+	else()
+		set(MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Resources/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_SOURCE_DIR}/../install-root/lib")
+	endif()
 	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources)
 	set(PLUGINDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns)
 	if(BUILD_DOCS OR INSTALL_DOCS)
