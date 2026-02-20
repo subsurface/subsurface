@@ -454,7 +454,11 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 	if [[ $QT_VERSION == 6* ]]; then
 		# the latest version of googlemaps as of Nov 2025 builds out of the box with Qt 6.10
 		# but no longer builds against Qt 5... so we have two branches now
-		git checkout qt6-upstream
+
+		# We need to fetch first as this isn't the branch checked out by get-dep-lib.sh
+		git fetch
+
+		git switch qt6-upstream
 	fi
 	mkdir -p build
 	cd build
