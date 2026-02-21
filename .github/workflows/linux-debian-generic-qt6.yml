@@ -21,15 +21,15 @@ jobs:
 
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
-        autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
+        autoconf automake bzip2 cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
         libgit2-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
         libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
         pkg-config xvfb libbluetooth-dev libmtp-dev libraw-dev mdbtools-dev \
         libqt6qml6 libqt6quick6 qt6-svg-dev libqt6svg6 qt6-5compat-dev \
         qml6-module-qtpositioning qml6-module-qtlocation \
-        qmake6 qt6-location-dev qt6-connectivity-dev \
+        qmake6 qt6-location-dev qt6-connectivity-dev qt6-base-private-dev \
         qml6-module-qtquick qt6-declarative-dev qt6-tools-dev qt6-tools-dev-tools \
-        qt6-positioning-dev qt6-declarative-private-dev
+        qt6-positioning-dev qt6-declarative-private-dev qt6-shadertools-dev
 
         git config --global user.email "ci@subsurface-divelog.org"
         git config --global user.name "Subsurface CI"
