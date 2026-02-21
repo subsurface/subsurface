@@ -1,0 +1,89 @@
+From 0ede1cf4f928903ce0c875c79e08befa38eb7d0a Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Fri, 20 Feb 2026 17:05:59 -0800
+Subject: [PATCH 2/2] fix upstream compatibility issue with auto-generated
+ plugin code
+
+The KirigamiPlugin class in kirigamiplugin.h uses the old QQmlExtensionPlugin
+with IID org.qt-project.Qt.QQmlExtensionInterface. All other Kirigami
+sub-modules (templates, primitives, delegates, etc.) use auto-generated plugin
+code with the new QQmlEngineExtensionPlugin.
+
+The old plugin interface causes Qt to apply restrictive version checking, which
+makes DragAxis.activeValue (added in Qt 6.6 with a revision marker) inaccessible
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/private/globaltoolbar/HandleButton.qml | 11 +++++++++--
+ src/templates/private/DrawerHandle.qml              | 11 +++++++++--
+ 2 files changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/src/controls/private/globaltoolbar/HandleButton.qml b/src/controls/private/globaltoolbar/HandleButton.qml
+index a3215939..aeb6ae4b 100644
+--- a/src/controls/private/globaltoolbar/HandleButton.qml
++++ b/src/controls/private/globaltoolbar/HandleButton.qml
+@@ -56,11 +56,19 @@ P.PrivateActionToolButton {
+     DragHandler {
+         target: null
+         acceptedDevices: PointerDevice.TouchScreen
++        property real __lastX
+         xAxis {
+             enabled: root.drawer && (root.drawer.edge === Qt.LeftEdge || root.drawer.edge === Qt.RightEdge)
+             minimum: 0
+             maximum: root.drawer?.contentItem.width ?? 0
+-            onActiveValueChanged: (delta) => {
++        }
++        yAxis.enabled: false
++        onActiveChanged: if (active) __lastX = centroid.position.x
++        onCentroidChanged: {
++            if (active && xAxis.enabled) {
++                let currentX = centroid.position.x;
++                let delta = currentX - __lastX;
++                __lastX = currentX;
+                 let positionDelta = delta / root.drawer.contentItem.width;
+                 if (root.drawer.edge === Qt.RightEdge) {
+                     positionDelta *= -1;
+@@ -68,7 +76,6 @@ P.PrivateActionToolButton {
+                 root.drawer.position += positionDelta;
+             }
+         }
+-        yAxis.enabled: false
+         onGrabChanged: (transition, point) => {
+             switch (transition) {
+             case PointerDevice.GrabExclusive:
+diff --git a/src/templates/private/DrawerHandle.qml b/src/templates/private/DrawerHandle.qml
+index 9d8c0bf4..12c76ec9 100644
+--- a/src/templates/private/DrawerHandle.qml
++++ b/src/templates/private/DrawerHandle.qml
+@@ -66,11 +66,19 @@ Item {
+         DragHandler {
+             target: null
+             acceptedDevices: PointerDevice.TouchScreen | PointerDevice.Stylus
++            property real __lastX
+             xAxis {
+                 enabled: root.drawer.edge === Qt.LeftEdge || root.drawer.edge === Qt.RightEdge
+                 minimum: 0
+                 maximum: root.drawer.contentItem.width
+-                onActiveValueChanged: (delta) => {
++            }
++            yAxis.enabled: false
++            onActiveChanged: if (active) __lastX = centroid.position.x
++            onCentroidChanged: {
++                if (active && xAxis.enabled) {
++                    let currentX = centroid.position.x;
++                    let delta = currentX - __lastX;
++                    __lastX = currentX;
+                     let positionDelta = delta / root.drawer.contentItem.width;
+                     if (root.drawer.edge === Qt.RightEdge) {
+                         positionDelta *= -1;
+@@ -78,7 +86,6 @@ Item {
+                     root.drawer.position += positionDelta;
+                 }
+             }
+-            yAxis.enabled: false
+             onGrabChanged: (transition, point) => {
+                 switch (transition) {
+                 case PointerDevice.GrabExclusive:
+-- 
+2.51.1
+
