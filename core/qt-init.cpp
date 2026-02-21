@@ -8,8 +8,8 @@
 #include "qthelper.h"
 #include "errorhelper.h"
 #include "core/settings/qPref.h"
+#include "core/subsurfacestartup.h"
 
-std::string settings_suffix;
 static QTranslator qtTranslator, ssrfTranslator, parentLanguageTranslator;
 
 void init_qt_late()

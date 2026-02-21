@@ -16,9 +16,12 @@
 extern void show_computer_list();
 
 int quit, force_root, ignore_bt;
+
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 std::string testqml;
 #endif
+
+std::string settings_suffix;
 
 /*
  * track whether we switched to importing dives
