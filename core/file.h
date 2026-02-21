@@ -10,6 +10,32 @@
 #include <utility>
 #include <memory>
 
+// MSVC doesn't define mode_t
+#ifdef _MSC_VER
+typedef unsigned int mode_t;
+#endif
+
+// MSVC doesn't have dirent.h - provide minimal types and declarations
+#ifdef _MSC_VER
+#define NOMINMAX
+#include <windows.h>
+struct _wdirent {
+	wchar_t d_name[MAX_PATH];
+};
+struct _WDIR {
+	HANDLE handle;
+	WIN32_FIND_DATAW find_data;
+	struct _wdirent entry;
+	bool first;
+};
+typedef struct _WDIR _WDIR;
+typedef struct _wdirent _wdirent;
+
+extern _WDIR *_wopendir(const wchar_t *path);
+extern struct _wdirent *_wreaddir(_WDIR *dir);
+extern int _wclosedir(_WDIR *dir);
+#endif
+
 struct divelog;
 struct zip;
 

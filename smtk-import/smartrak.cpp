@@ -37,6 +37,9 @@
 #include <vector>
 
 #if defined(WIN32) || defined(_WIN32)
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #endif
 
@@ -312,7 +315,7 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 					}
 					break;
 				}
-				case 6 ... 9:
+				case 6: case 7: case 8: case 9:
 				case 14:
 				case 15: {
 					const char *tmp = table.get_data(i);

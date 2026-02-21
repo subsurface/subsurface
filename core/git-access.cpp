@@ -12,7 +12,13 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef _MSC_VER
+#include <io.h>
+#define access _access
+#define F_OK 0
+#else
 #include <unistd.h>
+#endif
 #include <fcntl.h>
 #include <stdarg.h>
 #include <git2.h>

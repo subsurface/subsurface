@@ -3,7 +3,6 @@
 #include <stdarg.h>
 #include "membuffer.h"
 #include <stdlib.h>
-#include <unistd.h>
 #include <libdivecomputer/parser.h>
 
 #include "parse.h"
@@ -28,7 +27,7 @@ parser_state::~parser_state() = default;
  */
 struct divecomputer *get_dc(struct parser_state *state)
 {
-	return state->cur_dc ?: &state->cur_dive->dcs[0];
+	return state->cur_dc ? state->cur_dc : &state->cur_dive->dcs[0];
 }
 
 void start_match(const char *type, const char *name, char *buffer)

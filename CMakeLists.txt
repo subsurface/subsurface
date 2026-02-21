@@ -82,7 +82,12 @@ add_definitions(-DSUBSURFACE_SOURCE="${SUBSURFACE_SOURCE}")
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
-set(CMAKE_CXX_STANDARD 17)
+# MSVC requires C++20 for designated initializers; GCC/Clang accept them as an extension in C++17
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set(CMAKE_CXX_STANDARD 20)
+else()
+	set(CMAKE_CXX_STANDARD 17)
+endif()
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 #
@@ -111,6 +116,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   # using Intel C++
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
+  # Disable Qt version tagging which causes segment errors on MSVC
+  add_definitions(-DQT_NO_VERSION_TAGGING)
 endif()
 
 # set up profiling
@@ -125,15 +132,24 @@ if (SUBSURFACE_ASAN_BUILD)
 	SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 endif()
 
-# every compiler understands -Wall
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror=format")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror=format")
+# Compiler-specific warning flags
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# MSVC: /W4 is similar to -Wall, format warnings are on by default
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+else()
+	# GCC/Clang
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror=format")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror=format")
+endif()
 
-# by detault optimize with -O2 even for debug builds
-set (GCC_OPTIMIZATION_FLAGS "-O2" CACHE STRING "GCC optimization flags")
-message (STATUS "GCC optimization flags: " ${GCC_OPTIMIZATION_FLAGS})
-set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
-set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+# by default optimize with -O2 even for debug builds (GCC/Clang only)
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set(GCC_OPTIMIZATION_FLAGS "-O2" CACHE STRING "GCC optimization flags")
+	message(STATUS "GCC optimization flags: " ${GCC_OPTIMIZATION_FLAGS})
+	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+endif()
 
 # pkgconfig for required libraries
 find_package(PkgConfig)
@@ -156,20 +172,69 @@ include(cmake_variables_helper)
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	include_directories(${CMAKE_OSX_SYSROOT}/usr/include/libxml2)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lxml2 -lxslt -lsqlite3)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# On Windows with MSVC/vcpkg, set paths directly
+	# Use SUBSURFACE_VCPKG_ROOT to avoid conflicts with vcpkg toolchain variables
+	# The vcpkg toolchain sets VCPKG_INSTALLED_DIR based on toolchain file location,
+	# which can point to VS bundled vcpkg instead of the one we installed deps to
+	if(DEFINED SUBSURFACE_VCPKG_ROOT)
+		set(_VCPKG_PREFIX "${SUBSURFACE_VCPKG_ROOT}/installed/x64-windows")
+	elseif(DEFINED ENV{VCPKG_ROOT})
+		set(_VCPKG_PREFIX "$ENV{VCPKG_ROOT}/installed/x64-windows")
+	else()
+		set(_VCPKG_PREFIX "C:/vcpkg/installed/x64-windows")
+	endif()
+	message(STATUS "Using vcpkg prefix: ${_VCPKG_PREFIX}")
+
+	# libxml2: headers are in include/libxml2/, library is libxml2.lib
+	set(LIBXML2_INCLUDE_DIR "${_VCPKG_PREFIX}/include/libxml2")
+	set(LIBXML2_LIBRARY "${_VCPKG_PREFIX}/lib/libxml2.lib")
+	# libxslt: headers are in include/, library is libxslt.lib
+	set(LIBXSLT_INCLUDE_DIR "${_VCPKG_PREFIX}/include")
+	set(LIBXSLT_LIBRARIES "${_VCPKG_PREFIX}/lib/libxslt.lib")
+	# sqlite3: library is sqlite3.lib
+	set(SQLITE3_LIBRARY "${_VCPKG_PREFIX}/lib/sqlite3.lib")
+
+	include_directories(${LIBXML2_INCLUDE_DIR} ${LIBXSLT_INCLUDE_DIR})
+
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBXML2_LIBRARY} ${LIBXSLT_LIBRARIES} ${SQLITE3_LIBRARY})
 else()
 	pkg_config_library(LIBXML libxml-2.0 REQUIRED)
 	pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
 	pkg_config_library(LIBXSLT libxslt REQUIRED)
 endif()
-pkg_config_library(LIBZIP libzip REQUIRED)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# Use direct path - _VCPKG_PREFIX was set above
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES "${_VCPKG_PREFIX}/lib/zip.lib")
+else()
+	pkg_config_library(LIBZIP libzip REQUIRED)
+endif()
 
 if(NOT ANDROID)
 	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		pkg_config_library(BLUEZ bluez REQUIRED)
 	endif()
-	pkg_config_library(LIBUSB libusb-1.0 QUIET)
-	pkg_config_library(LIBMTP libmtp QUIET)
-	pkg_config_library(LIBRAW libraw_r )
+	if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		find_package(libusb CONFIG QUIET)
+		if(libusb_FOUND)
+			set(LIBUSB_FOUND TRUE)
+			get_target_property(LIBUSB_INCLUDE_DIRS libusb-1.0 INTERFACE_INCLUDE_DIRECTORIES)
+			set(LIBUSB_LIBRARIES libusb-1.0)
+			include_directories(${LIBUSB_INCLUDE_DIRS})
+			LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBUSB_LIBRARIES})
+		endif()
+		find_package(libraw CONFIG QUIET)
+		if(libraw_FOUND)
+			set(LIBRAW_FOUND TRUE)
+			LIST(APPEND SUBSURFACE_LINK_LIBRARIES libraw::raw_r)
+		endif()
+		# libmtp is not available via vcpkg, skip for now
+	else()
+		pkg_config_library(LIBUSB libusb-1.0 QUIET)
+		pkg_config_library(LIBMTP libmtp QUIET)
+		pkg_config_library(LIBRAW libraw_r )
+	endif()
 endif()
 
 include_directories(.
@@ -263,11 +328,13 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	endif()
 
 	# Try QLiteHtml first, but ONLY for Qt6 builds
-	if(REQUEST_QLITEHTML AND USINGQT6 AND QLITEHTML_FOUND)
+	# If QLiteHtml is found, use it (this is the preferred option for Qt6)
+	if(USINGQT6 AND QLITEHTML_FOUND)
 		message(STATUS "building with QLiteHtml (Qt6)")
 		LIST(APPEND QT_EXTRA_COMPONENTS PrintSupport)
 		LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${QLITEHTML_LIBRARIES})
 		add_definitions(-DUSE_QLITEHTML)
+		# for now, QLiteHtml isn't used for printing, yet
 		add_definitions(-DNO_PRINTING)
 		set(NO_PRINTING ON)
 		set(REQUEST_WEBKIT OFF)
@@ -396,9 +463,15 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 	set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lwsock32 -lws2_32)
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES wsock32 ws2_32)
+		add_definitions(-D_WIN32)
+	else()
+		# GCC/MinGW
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lwsock32 -lws2_32)
+		add_definitions(-mwindows -D_WIN32)
+	endif()
 	remove_definitions(-DUNICODE)
-	add_definitions(-mwindows -D_WIN32)
 endif()
 
 if(BTSUPPORT)
@@ -733,6 +806,28 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# "make install", copies everything into a staging area
 	# "make installer", uses makensis to create an installer executable
 	set(WINDOWSSTAGING ${CMAKE_BINARY_DIR}/staging)
+
+	# Set QT_INSTALL_PREFIX from Qt6_DIR or Qt5 variables
+	if(USINGQT6)
+		if(Qt6_DIR)
+			# Qt6_DIR is like /path/to/Qt/lib/cmake/Qt6, go up 3 levels
+			get_filename_component(QT_INSTALL_PREFIX "${Qt6_DIR}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+		elseif(Qt6Core_DIR)
+			# Qt6Core_DIR is like /path/to/Qt/lib/cmake/Qt6Core, go up 3 levels
+			get_filename_component(QT_INSTALL_PREFIX "${Qt6Core_DIR}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+		endif()
+	else()
+		set(QT_INSTALL_PREFIX "${_qt5Core_install_prefix}")
+	endif()
+	if(NOT QT_INSTALL_PREFIX OR QT_INSTALL_PREFIX STREQUAL "")
+		message(FATAL_ERROR "Could not determine Qt install prefix. Qt6_DIR=${Qt6_DIR} Qt6Core_DIR=${Qt6Core_DIR}")
+	endif()
+	message(STATUS "Qt install prefix for Windows bundling: ${QT_INSTALL_PREFIX}")
+
 	if(BUILD_DOCS OR INSTALL_DOCS)
 		install(DIRECTORY Documentation/images DESTINATION ${WINDOWSSTAGING}/Documentation)
 		install(FILES ${DOCFILES} DESTINATION ${WINDOWSSTAGING}/Documentation)
@@ -746,19 +841,201 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
 
 	if(NOT QT_VERSION VERSION_LESS 5.11.0)
-		# hack to work around the fact that we don't process the dependencies of plugins
-		# as of Qt 5.11 this additional DLL is needed and it's only referenced in the qml DLLs
-		install(FILES ${QT_INSTALL_PREFIX}/bin/Qt5PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+		# QtPositioningQuick is required - it's referenced by QML plugins
+		if(USINGQT6)
+			set(_positioning_quick_dll "${QT_INSTALL_PREFIX}/bin/Qt6PositioningQuick.dll")
+		else()
+			set(_positioning_quick_dll "${QT_INSTALL_PREFIX}/bin/Qt5PositioningQuick.dll")
+		endif()
+		if(NOT EXISTS "${_positioning_quick_dll}")
+			message(FATAL_ERROR "QtPositioningQuick DLL not found at ${_positioning_quick_dll}. "
+				"QT_INSTALL_PREFIX=${QT_INSTALL_PREFIX}. Make sure Qt Positioning module is installed.")
+		endif()
+		install(FILES "${_positioning_quick_dll}" DESTINATION ${WINDOWSSTAGING})
 	endif()
 
 	if(NOT DEFINED MAKENSIS)
 		set(MAKENSIS makensis)
 	endif()
 
-	# the script we created above is now added as a command to run at
-	# install time - so this ensures that subsurface.exe has been
-	# built before this is run
-	install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DSUBSURFACE_TARGET=${SUBSURFACE_TARGET} -DSUBSURFACE_SOURCE=${SUBSURFACE_SOURCE} -DSTAGING=${WINDOWSSTAGING} -P ${CMAKE_SOURCE_DIR}/cmake/Modules/dlllist.cmake)")
+	# Copy DLLs at install time
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		# For MSVC builds, use windeployqt to copy Qt dependencies
+		# and copy vcpkg DLLs
+		find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${QT_INSTALL_PREFIX}/bin")
+		if(WINDEPLOYQT_EXECUTABLE)
+			message(STATUS "Found windeployqt: ${WINDEPLOYQT_EXECUTABLE}")
+			install(CODE "
+				message(STATUS \"Running windeployqt on ${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\")
+				execute_process(
+					COMMAND \"${WINDEPLOYQT_EXECUTABLE}\"
+						--verbose 1
+						--no-opengl-sw
+						--no-system-d3d-compiler
+						--qmldir \"${CMAKE_SOURCE_DIR}/mobile-widgets/qml\"
+						--qmldir \"${CMAKE_SOURCE_DIR}/map-widget\"
+						--qmldir \"${CMAKE_SOURCE_DIR}/stats\"
+						\"${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\"
+					WORKING_DIRECTORY \"${WINDOWSSTAGING}\"
+					RESULT_VARIABLE _windeployqt_result
+					OUTPUT_VARIABLE _windeployqt_output
+					ERROR_VARIABLE _windeployqt_error
+				)
+				message(STATUS \"windeployqt result: \${_windeployqt_result}\")
+				if(_windeployqt_output)
+					message(STATUS \"windeployqt output: \${_windeployqt_output}\")
+				endif()
+				if(_windeployqt_error)
+					message(STATUS \"windeployqt errors: \${_windeployqt_error}\")
+				endif()
+				if(NOT _windeployqt_result EQUAL 0)
+					message(WARNING \"windeployqt failed with code \${_windeployqt_result}\")
+				endif()
+			")
+		else()
+			message(WARNING "windeployqt not found - Qt DLLs will not be copied automatically")
+		endif()
+
+		# Manually copy Qt plugins since windeployqt doesn't always work reliably
+		if(NOT QT_INSTALL_PREFIX OR QT_INSTALL_PREFIX STREQUAL "")
+			message(FATAL_ERROR "QT_INSTALL_PREFIX is not set - cannot copy Qt plugins. Check Qt6_DIR is set correctly.")
+		endif()
+		message(STATUS "Will copy Qt plugins from ${QT_INSTALL_PREFIX}/plugins")
+		install(CODE "
+			message(STATUS \"Copying Qt plugins from ${QT_INSTALL_PREFIX}/plugins...\")
+			# Create plugin directories
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/platforms\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/styles\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/imageformats\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/iconengines\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/tls\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/networkinformation\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/geoservices\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/position\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/generic\")
+
+			# Copy platform plugins (critical - qwindows.dll is required)
+			file(GLOB _platform_plugins \"${QT_INSTALL_PREFIX}/plugins/platforms/qwindows.dll\")
+			foreach(_plugin \${_platform_plugins})
+				file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/platforms\")
+			endforeach()
+
+			# Copy style plugins
+			file(GLOB _style_plugins \"${QT_INSTALL_PREFIX}/plugins/styles/*.dll\")
+			foreach(_plugin \${_style_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/styles\")
+				endif()
+			endforeach()
+
+			# Copy imageformat plugins (skip debug versions ending in 'd.dll')
+			file(GLOB _imgformat_plugins \"${QT_INSTALL_PREFIX}/plugins/imageformats/*.dll\")
+			foreach(_plugin \${_imgformat_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/imageformats\")
+				endif()
+			endforeach()
+
+			# Copy iconengines plugins
+			file(GLOB _iconengine_plugins \"${QT_INSTALL_PREFIX}/plugins/iconengines/*.dll\")
+			foreach(_plugin \${_iconengine_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/iconengines\")
+				endif()
+			endforeach()
+
+			# Copy TLS plugins (for HTTPS support)
+			file(GLOB _tls_plugins \"${QT_INSTALL_PREFIX}/plugins/tls/*.dll\")
+			foreach(_plugin \${_tls_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\" AND NOT _name MATCHES \"openssl\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/tls\")
+				endif()
+			endforeach()
+
+			# Copy networkinformation plugins
+			file(GLOB _netinfo_plugins \"${QT_INSTALL_PREFIX}/plugins/networkinformation/*.dll\")
+			foreach(_plugin \${_netinfo_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/networkinformation\")
+				endif()
+			endforeach()
+
+			# Copy geoservices plugins
+			file(GLOB _geoservices_plugins \"${QT_INSTALL_PREFIX}/plugins/geoservices/*.dll\")
+			foreach(_plugin \${_geoservices_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/geoservices\")
+				endif()
+			endforeach()
+
+			# Copy position plugins
+			file(GLOB _position_plugins \"${QT_INSTALL_PREFIX}/plugins/position/*.dll\")
+			foreach(_plugin \${_position_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/position\")
+				endif()
+			endforeach()
+
+			# Copy generic plugins
+			file(GLOB _generic_plugins \"${QT_INSTALL_PREFIX}/plugins/generic/*.dll\")
+			foreach(_plugin \${_generic_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/generic\")
+				endif()
+			endforeach()
+		")
+
+		# Copy vcpkg DLLs from the bin directory
+		install(CODE "
+			message(STATUS \"Copying vcpkg DLLs from ${_VCPKG_PREFIX}/bin...\")
+			file(GLOB _vcpkg_dlls \"${_VCPKG_PREFIX}/bin/*.dll\")
+			foreach(_dll \${_vcpkg_dlls})
+				file(COPY \"\${_dll}\" DESTINATION \"${WINDOWSSTAGING}\")
+			endforeach()
+		")
+
+		# Copy libdivecomputer DLL - derive bin dir from library path
+		if(LIBDIVECOMPUTER_LIBRARIES)
+			get_filename_component(_LIBDC_LIB_DIR "${LIBDIVECOMPUTER_LIBRARIES}" DIRECTORY)
+			get_filename_component(_LIBDC_PREFIX "${_LIBDC_LIB_DIR}" DIRECTORY)
+			install(CODE "
+				message(STATUS \"Copying libdivecomputer DLLs from ${_LIBDC_PREFIX}/bin...\")
+				file(GLOB _libdc_dlls \"${_LIBDC_PREFIX}/bin/*.dll\")
+				foreach(_dll \${_libdc_dlls})
+					file(COPY \"\${_dll}\" DESTINATION \"${WINDOWSSTAGING}\")
+				endforeach()
+			")
+		endif()
+
+		# Qt6PrintSupport is a dependency of qlitehtml but windeployqt doesn't detect it
+		# because it's not directly linked by subsurface.exe
+		if(QLITEHTML_FOUND)
+			install(CODE "
+				if(EXISTS \"${QT_INSTALL_PREFIX}/bin/Qt6PrintSupport.dll\")
+					message(STATUS \"Copying Qt6PrintSupport.dll...\")
+					file(COPY \"${QT_INSTALL_PREFIX}/bin/Qt6PrintSupport.dll\" DESTINATION \"${WINDOWSSTAGING}\")
+				endif()
+			")
+		endif()
+
+		# Copy MSVC runtime DLLs
+		set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+		include(InstallRequiredSystemLibraries)
+		if(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
+			install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${WINDOWSSTAGING})
+		endif()
+	else()
+		# For MinGW/MXE builds, use the existing dlllist.cmake script
+		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DSUBSURFACE_TARGET=${SUBSURFACE_TARGET} -DSUBSURFACE_SOURCE=${SUBSURFACE_SOURCE} -DSTAGING=${WINDOWSSTAGING} -P ${CMAKE_SOURCE_DIR}/cmake/Modules/dlllist.cmake)")
+	endif()
 
 	# create the subsurface-x.y.z.exe installer - this needs to depend
 	# on the install target but cmake doesn't allow that, so we depend

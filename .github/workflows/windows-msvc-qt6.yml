@@ -1,0 +1,371 @@
+name: Windows MSVC
+
+on:
+  push:
+    branches:
+      - master
+      - windows-msvc
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+    # Manual trigger - allows running from GitHub Actions UI
+
+env:
+  # Qt version - use 6.8.x which is an LTS release (promised until 2029) and
+  # includes Positioning and Location modules
+  QT_VERSION: "6.8"
+  QT_ARCH: "win64_msvc2022_64"
+  # vcpkg configuration
+  VCPKG_DEFAULT_TRIPLET: x64-windows
+  # Build configuration
+  BUILD_TYPE: Release
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-documentation:
+    uses: ./.github/workflows/documentation-build.yml
+
+  build:
+    needs: build-documentation
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      # ---------------------------------------------------------------
+      # Install Qt via aqtinstall (includes Location, Positioning, etc.)
+      # ---------------------------------------------------------------
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          arch: ${{ env.QT_ARCH }}
+          # Install all modules to ensure Location, Positioning, Bluetooth,
+          # and other required modules are available
+          modules: >-
+            qtconnectivity
+            qtlocation
+            qtpositioning
+            qt5compat
+            qtwebchannel
+            qtwebengine
+          cache: true
+
+      # ---------------------------------------------------------------
+      # Set up vcpkg for C/C++ dependencies
+      # ---------------------------------------------------------------
+      - name: Set vcpkg environment
+        shell: pwsh
+        run: |
+          # vcpkg is pre-installed on GitHub runners at C:\vcpkg
+          echo "VCPKG_ROOT=C:\vcpkg" >> $env:GITHUB_ENV
+          # Set up binary caching directory
+          echo "VCPKG_DEFAULT_BINARY_CACHE=${{ github.workspace }}\vcpkg-cache" >> $env:GITHUB_ENV
+
+      - name: Create vcpkg cache directory
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\vcpkg-cache"
+
+      - name: Restore vcpkg cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg-cache
+          # key: vcpkg-x64-windows-${{ hashFiles('.github/workflows/windows-msvc-qt6.yml') }}
+          key: vcpkg-x64-windows-v1
+          restore-keys: |
+            vcpkg-x64-windows-
+
+      - name: Install vcpkg dependencies
+        shell: pwsh
+        run: |
+          # Install all the C/C++ library dependencies Subsurface needs
+          C:\vcpkg\vcpkg.exe install `
+            libxml2 `
+            libxslt `
+            libzip `
+            sqlite3 `
+            libgit2 `
+            libssh2 `
+            curl[ssl] `
+            openssl `
+            libusb `
+            hidapi `
+            libraw `
+            --triplet x64-windows
+
+          # Print installed packages for debugging
+          C:\vcpkg\vcpkg.exe list
+
+      - name: Save vcpkg cache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: ${{ github.workspace }}/vcpkg-cache
+          # key: vcpkg-x64-windows-${{ hashFiles('.github/workflows/windows-msvc-qt6.yml') }}
+          key: vcpkg-x64-windows-v1
+
+      - name: load the documentation from cache
+        id: load-cache
+        uses: actions/cache@v5
+        with:
+          path: Documentation/output
+          key: ${{ needs.build-documentation.outputs.cache-key }}
+          enableCrossOsArchive: true
+          fail-on-cache-miss: true
+
+      # ---------------------------------------------------------------
+      # Build libdivecomputer from submodule
+      # ---------------------------------------------------------------
+      - name: Generate libdivecomputer version.h and revision.h
+        shell: pwsh
+        working-directory: libdivecomputer
+        run: |
+          # Parse version info from configure.ac (following upstream's approach)
+          $configureAc = Get-Content "configure.ac" -Raw
+
+          if ($configureAc -match 'm4_define\(\[dc_version_major\],\[(\d+)\]\)') {
+            $major = $matches[1]
+          } else { $major = "0" }
+
+          if ($configureAc -match 'm4_define\(\[dc_version_minor\],\[(\d+)\]\)') {
+            $minor = $matches[1]
+          } else { $minor = "0" }
+
+          if ($configureAc -match 'm4_define\(\[dc_version_micro\],\[(\d+)\]\)') {
+            $micro = $matches[1]
+          } else { $micro = "0" }
+
+          if ($configureAc -match 'm4_define\(\[dc_version_suffix\],\[([^\]]*)\]\)') {
+            $suffix = $matches[1]
+            $version = "$major.$minor.$micro-$suffix"
+          } else {
+            $version = "$major.$minor.$micro"
+          }
+
+          Write-Host "Parsed version from configure.ac: $version (major=$major, minor=$minor, micro=$micro)"
+
+          # Generate version.h from version.h.in template
+          $versionH = Get-Content "include/libdivecomputer/version.h.in" -Raw
+          $versionH = $versionH -replace '@DC_VERSION@', $version
+          $versionH = $versionH -replace '@DC_VERSION_MAJOR@', $major
+          $versionH = $versionH -replace '@DC_VERSION_MINOR@', $minor
+          $versionH = $versionH -replace '@DC_VERSION_MICRO@', $micro
+          $versionH | Out-File -FilePath "include/libdivecomputer/version.h" -Encoding utf8
+          Write-Host "Generated version.h"
+
+          # Generate revision.h with git commit hash
+          $revision = git rev-parse --verify HEAD
+          "#define DC_VERSION_REVISION `"$revision`"" | Out-File -FilePath "src/revision.h" -Encoding utf8
+          Write-Host "Generated revision.h with revision: $revision"
+
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Build libdivecomputer with MSVC
+        shell: pwsh
+        run: |
+          $installPrefix = "${{ github.workspace }}\install"
+          $vcpkgInclude = "${{ env.VCPKG_ROOT }}\installed\x64-windows\include"
+          $vcpkgLib = "${{ env.VCPKG_ROOT }}\installed\x64-windows\lib"
+
+          # Add vcpkg paths to INCLUDE and LIB environment variables
+          $env:INCLUDE = "$vcpkgInclude;$env:INCLUDE"
+          $env:LIB = "$vcpkgLib;$env:LIB"
+
+          # Build libdivecomputer using the MSVC project file
+          # Suppress C4996 warnings/errors about deprecated POSIX names (strdup -> _strdup, etc.)
+          # /WX- disables treating warnings as errors, /wd4996 disables warning 4996
+          $env:CL = "/WX- /wd4996 /D_CRT_NONSTDC_NO_WARNINGS /D_CRT_SECURE_NO_WARNINGS"
+          msbuild -m -p:Platform=x64 -p:Configuration=${{ env.BUILD_TYPE }} `
+            libdivecomputer/contrib/msvc/libdivecomputer.vcxproj
+
+          # Copy the built files to install directory
+          $outputDir = "libdivecomputer/contrib/msvc/x64/${{ env.BUILD_TYPE }}/bin"
+          New-Item -ItemType Directory -Force -Path "$installPrefix/bin"
+          New-Item -ItemType Directory -Force -Path "$installPrefix/lib"
+          New-Item -ItemType Directory -Force -Path "$installPrefix/include"
+
+          # Copy DLLs and libs
+          Copy-Item "$outputDir/*.dll" -Destination "$installPrefix/bin" -ErrorAction SilentlyContinue
+          Copy-Item "$outputDir/*.lib" -Destination "$installPrefix/lib" -ErrorAction SilentlyContinue
+
+          # Copy headers (preserve libdivecomputer/ subdirectory structure)
+          New-Item -ItemType Directory -Force -Path "$installPrefix/include/libdivecomputer"
+          Copy-Item "libdivecomputer/include/libdivecomputer/*" -Destination "$installPrefix/include/libdivecomputer" -Recurse
+
+      # ---------------------------------------------------------------
+      # Set up MSVC environment (needed for googlemaps and Subsurface builds)
+      # ---------------------------------------------------------------
+      - name: Set up MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      # ---------------------------------------------------------------
+      # Build googlemaps plugin
+      # ---------------------------------------------------------------
+      - name: Clone googlemaps plugin
+        shell: pwsh
+        run: |
+          git clone https://github.com/Subsurface/googlemaps.git googlemaps
+          Push-Location googlemaps
+          # Use qt6-upstream branch for Qt6 builds
+          git checkout qt6-upstream
+          Pop-Location
+
+      - name: Build googlemaps plugin
+        shell: pwsh
+        run: |
+          $buildDir = "${{ github.workspace }}\googlemaps\build"
+          New-Item -ItemType Directory -Force -Path $buildDir
+          Push-Location $buildDir
+
+          # googlemaps uses qmake
+          qmake "CONFIG+=release" ../googlemaps.pro
+          nmake
+
+          # Install the plugin to Qt's plugin directory
+          nmake install
+
+          Pop-Location
+
+      # ---------------------------------------------------------------
+      # Build qlitehtml library (for user manual support)
+      # ---------------------------------------------------------------
+      - name: Clone qlitehtml
+        shell: pwsh
+        run: |
+          $qlitehtmlVersion = "b8f9096eae730ec9464b24874e4e6312144aa9ce"
+
+          git clone https://github.com/dirkhh/qlitehtml.git qlitehtml
+          Push-Location qlitehtml
+          git checkout -f $qlitehtmlVersion
+          git submodule init
+          git submodule update
+          Pop-Location
+
+      - name: Build qlitehtml
+        shell: pwsh
+        run: |
+          $installPrefix = "${{ github.workspace }}\install"
+
+          Push-Location qlitehtml
+
+          # qlitehtml currently only allows in-source builds
+          cmake . `
+            -G Ninja `
+            -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} `
+            -DCMAKE_PREFIX_PATH="$env:Qt6_DIR" `
+            -DCMAKE_INSTALL_PREFIX="$installPrefix"
+
+          ninja
+          ninja install
+
+          Pop-Location
+
+      # ---------------------------------------------------------------
+      # Configure and build Subsurface
+      # ---------------------------------------------------------------
+      - name: Configure Subsurface
+        shell: pwsh
+        run: |
+          $installPrefix = "${{ github.workspace }}\install"
+          $buildDir = "${{ github.workspace }}\build"
+          $vcpkgRoot = "C:\vcpkg"
+          $vcpkgInstalled = "$vcpkgRoot\installed\x64-windows"
+
+          Write-Host "Using VCPKG_ROOT: $vcpkgRoot"
+          Write-Host "vcpkg installed dir: $vcpkgInstalled"
+
+          New-Item -ItemType Directory -Force -Path $buildDir
+          Push-Location $buildDir
+
+          # Set up the CMAKE_PREFIX_PATH to find all our dependencies
+          $prefixPath = @(
+            "$env:Qt6_DIR",
+            "$installPrefix",
+            "$vcpkgInstalled"
+          ) -join ";"
+
+          cmake "${{ github.workspace }}" `
+            -G Ninja `
+            -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} `
+            -DCMAKE_PREFIX_PATH="$prefixPath" `
+            -DCMAKE_TOOLCHAIN_FILE="$vcpkgRoot/scripts/buildsystems/vcpkg.cmake" `
+            -DSUBSURFACE_VCPKG_ROOT="$vcpkgRoot" `
+            -DSUBSURFACE_TARGET_EXECUTABLE=DesktopExecutable `
+            -DBUILD_WITH_QT6=ON `
+            -DLIBDIVECOMPUTER_INCLUDE_DIR="$installPrefix\include" `
+            -DLIBDIVECOMPUTER_LIBRARIES="$installPrefix\lib\libdivecomputer.lib" `
+            -DLIBGIT2_INCLUDE_DIR="$vcpkgInstalled\include" `
+            -DLIBGIT2_LIBRARIES="$vcpkgInstalled\lib\git2.lib" `
+            -DMAKE_TESTS=OFF `
+            -DNO_USERMANUAL=OFF `
+            -DINSTALL_DOCS=ON
+
+          Pop-Location
+
+      - name: Build Subsurface
+        shell: pwsh
+        run: |
+          Push-Location "${{ github.workspace }}\build"
+          ninja
+          Pop-Location
+
+      # ---------------------------------------------------------------
+      # Create installer
+      # ---------------------------------------------------------------
+      - name: Install NSIS
+        shell: pwsh
+        run: |
+          choco install nsis -y
+          # Add NSIS to PATH
+          echo "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Copy documentation to build directory
+        shell: pwsh
+        run: |
+          # CMakeLists.txt expects documentation in build/Documentation/
+          # but the cache restores it to Documentation/output/ in the source tree
+          $srcDoc = "${{ github.workspace }}\Documentation\output"
+          $destDoc = "${{ github.workspace }}\build\Documentation"
+          New-Item -ItemType Directory -Force -Path $destDoc
+          Copy-Item "$srcDoc\user-manual*.html" -Destination $destDoc
+          Copy-Item -Recurse "$srcDoc\images" -Destination $destDoc -Force
+          Write-Host "Documentation files copied:"
+          Get-ChildItem $destDoc
+
+      - name: Install to staging directory
+        shell: pwsh
+        run: |
+          Push-Location "${{ github.workspace }}\build"
+          # ninja install handles everything:
+          # - Copies subsurface.exe and resources to staging
+          # - Copies Qt plugins (platforms, styles, imageformats, etc.)
+          # - Copies vcpkg DLLs
+          # - Copies libdivecomputer DLL
+          # - Copies MSVC runtime DLLs
+          ninja install
+          Pop-Location
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          Push-Location "${{ github.workspace }}\build"
+          ninja installer
+          Pop-Location
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: subsurface-windows-msvc-installer
+          path: ${{ github.workspace }}/build/subsurface-*.exe

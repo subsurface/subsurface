@@ -9,7 +9,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <unistd.h>
 #include <fcntl.h>
 
 #include "device.h"
@@ -78,17 +77,11 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 
 static void blankout(std::string &s)
 {
-	for(char &c: s) {
-		switch (c) {
-		case 'A'...'Z':
+	for (char &c: s) {
+		if (c >= 'A' && c <= 'Z')
 			c = 'X';
-			break;
-		case 'a'...'z':
+		else if (c >= 'a' && c <= 'z')
 			c = 'x';
-			break;
-		default:
-			;
-		}
 	}
 }
 
@@ -714,7 +707,6 @@ static void save_backup(const char *name, const char *ext, const char *new_ext)
 		return;
 	if (name[len - 1] != '.')
 		return;
-	/* msvc doesn't have strncasecmp, has _strnicmp instead - crazy */
 	if (strncasecmp(name + len, ext, a))
 		return;
 

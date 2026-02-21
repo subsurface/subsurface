@@ -7,15 +7,58 @@
 #include "file.h"
 #include "errorhelper.h"
 #include "subsurfacestartup.h"
-#include "subsurfacesysinfo.h"
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x500
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>
 #include <shlobj.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <assert.h>
+#ifndef _MSC_VER
 #include <dirent.h>
+#else
+// MSVC dirent implementation - types are in file.h
+_WDIR *_wopendir(const wchar_t *path)
+{
+	_WDIR *dir = new _WDIR;
+	std::wstring search_path(path);
+	search_path += L"\\*";
+	dir->handle = FindFirstFileW(search_path.c_str(), &dir->find_data);
+	if (dir->handle == INVALID_HANDLE_VALUE) {
+		delete dir;
+		return nullptr;
+	}
+	dir->first = true;
+	return dir;
+}
+
+struct _wdirent *_wreaddir(_WDIR *dir)
+{
+	if (!dir)
+		return nullptr;
+	if (dir->first) {
+		dir->first = false;
+	} else {
+		if (!FindNextFileW(dir->handle, &dir->find_data))
+			return nullptr;
+	}
+	wcsncpy(dir->entry.d_name, dir->find_data.cFileName, MAX_PATH - 1);
+	dir->entry.d_name[MAX_PATH - 1] = L'\0';
+	return &dir->entry;
+}
+
+int _wclosedir(_WDIR *dir)
+{
+	if (!dir)
+		return -1;
+	FindClose(dir->handle);
+	delete dir;
+	return 0;
+}
+#endif
 #include <zip.h>
 #include <lmcons.h>
 #include <string>
@@ -107,15 +150,13 @@ double system_divelist_default_font_size = -1;
 
 void subsurface_OS_pref_setup()
 {
-	system_divelist_default_font = isWin7Or8() ? current_system_divelist_default_font
-						   : non_standard_system_divelist_default_font;
+	system_divelist_default_font = current_system_divelist_default_font;
 }
 
 bool subsurface_ignore_font(const std::string &font)
 {
-	// if this is running on a recent enough version of Windows and the font
-	// passed in is the pre 4.3 default font, ignore it
-	return isWin7Or8() && font == non_standard_system_divelist_default_font;
+	// if the font passed in is the pre 4.3 default font, ignore it
+	return font == non_standard_system_divelist_default_font;
 }
 
 #define utf8_to_utf16(s) utf8_to_utf16_fl(s, __FILE__, __LINE__)
@@ -141,7 +182,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 	if (transport & DC_TRANSPORT_SERIAL) {
 		// Open the registry key.
 		HKEY hKey;
-		LONG rc = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "HARDWARE\\DEVICEMAP\\SERIALCOMM", 0, KEY_QUERY_VALUE, &hKey);
+		LONG rc = RegOpenKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DEVICEMAP\\SERIALCOMM", 0, KEY_QUERY_VALUE, &hKey);
 		if (rc != ERROR_SUCCESS) {
 			return -1;
 		}
@@ -159,7 +200,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 			DWORD name_len = sizeof(name);
 			DWORD data_len = sizeof(data);
 			DWORD type = 0;
-			rc = RegEnumValue(hKey, i, name, &name_len, NULL, &type, (LPBYTE)data, &data_len);
+			rc = RegEnumValueA(hKey, i, name, &name_len, NULL, &type, (LPBYTE)data, &data_len);
 			if (rc != ERROR_SUCCESS) {
 				RegCloseKey(hKey);
 				return -1;
@@ -187,7 +228,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 		RegCloseKey(hKey);
 	}
 	if (transport & DC_TRANSPORT_USBSTORAGE) {
-		int i;
+		int j;
 		int count_drives = 0;
 		const int bufdef = 512;
 		const char *dlabels[] = {"UEMISSDA", "GARMIN", NULL};
@@ -203,10 +244,10 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 			while (*p) {
 				memset(bufval, 0, bufdef);
 				if (GetVolumeInformationA(p, bufval, bufdef, NULL, NULL, NULL, NULL, 0)) {
-					for (i = 0; dlabels[i] != NULL; i++)
-						if (!strcmp(bufval, dlabels[i])) {
+					for (j = 0; dlabels[j] != NULL; j++)
+						if (!strcmp(bufval, dlabels[j])) {
 							char data[512];
-							snprintf(data, sizeof(data), "%s (%s)", p, dlabels[i]);
+							snprintf(data, sizeof(data), "%s (%s)", p, dlabels[j]);
 							callback(data, userdata);
 							if (is_default_dive_computer_device(p))
 								index = count_drives;
@@ -241,9 +282,14 @@ int subsurface_rename(const char *path, const char *newpath)
 // if the QDir based rename fails, we try this one
 int subsurface_dir_rename(const char *path, const char *newpath)
 {
+	std::wstring wpath = utf8_to_utf16(path);
+	std::wstring wnewpath = utf8_to_utf16(newpath);
+	if (wpath.empty() || wnewpath.empty())
+		return EXIT_FAILURE;
+
 	// check if the folder exists
 	BOOL exists = FALSE;
-	DWORD attrib = GetFileAttributes(path);
+	DWORD attrib = GetFileAttributesW(wpath.c_str());
 	if (attrib != INVALID_FILE_ATTRIBUTES && attrib & FILE_ATTRIBUTE_DIRECTORY)
 		exists = TRUE;
 	if (!exists && verbose) {
@@ -256,7 +302,7 @@ int subsurface_dir_rename(const char *path, const char *newpath)
 	DWORD errorCode;
 
 	// if this fails something has already obatained (more) exclusive access to the folder
-	HANDLE h = CreateFile(path, GENERIC_WRITE, FILE_SHARE_WRITE |
+	HANDLE h = CreateFileW(wpath.c_str(), GENERIC_WRITE, FILE_SHARE_WRITE |
 			      FILE_SHARE_DELETE, 0, OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, 0);
 	if (h == INVALID_HANDLE_VALUE) {
 		errorCode = GetLastError();
@@ -269,7 +315,7 @@ int subsurface_dir_rename(const char *path, const char *newpath)
 		CloseHandle(h);
 
 		// attempt to rename
-		BOOL result = MoveFile(path, newpath);
+		BOOL result = MoveFileW(wpath.c_str(), wnewpath.c_str());
 		if (!result) {
 			errorCode = GetLastError();
 			if (verbose)
@@ -298,9 +344,9 @@ FILE *subsurface_fopen(const char *path, const char *mode)
 		return NULL;
 	std::wstring wpath = utf8_to_utf16(path);
 	if (!wpath.empty()) {
-		const int len = strlen(mode);
+		const size_t len = strlen(mode);
 		std::wstring wmode(len, ' ');
-		for (int i = 0; i < len; i++)
+		for (size_t i = 0; i < len; i++)
 			wmode[i] = (wchar_t)mode[i];
 		return _wfopen(wpath.c_str(), wmode.c_str());
 	}
@@ -333,8 +379,29 @@ int subsurface_stat(const char* path, struct stat* buf)
 	if (!path)
 		return -1;
 	std::wstring wpath = utf8_to_utf16(path);
-	if (!wpath.empty())
+	if (!wpath.empty()) {
+#ifdef _MSC_VER
+		// MSVC uses _wstat with struct _stat
+		struct _stat msbuf;
+		int ret = _wstat(wpath.c_str(), &msbuf);
+		if (ret == 0) {
+			buf->st_dev = msbuf.st_dev;
+			buf->st_ino = msbuf.st_ino;
+			buf->st_mode = msbuf.st_mode;
+			buf->st_nlink = msbuf.st_nlink;
+			buf->st_uid = msbuf.st_uid;
+			buf->st_gid = msbuf.st_gid;
+			buf->st_rdev = msbuf.st_rdev;
+			buf->st_size = msbuf.st_size;
+			buf->st_atime = msbuf.st_atime;
+			buf->st_mtime = msbuf.st_mtime;
+			buf->st_ctime = msbuf.st_ctime;
+		}
+		return ret;
+#else
 		return wstat(wpath.c_str(), buf);
+#endif
+	}
 	return -1;
 }
 

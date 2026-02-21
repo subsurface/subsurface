@@ -2,6 +2,13 @@
 #include "format.h"
 #include "membuffer.h"
 
+#include <cstddef>
+
+// MSVC doesn't define ssize_t
+#ifdef _MSC_VER
+typedef ptrdiff_t ssize_t;
+#endif
+
 QString qasprintf_loc(const char *cformat, ...)
 {
 	va_list ap;

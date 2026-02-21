@@ -14,10 +14,25 @@
  * Modified by Guido Lerch guido.lerch@gmail.com in August 2015
  */
 #include <fcntl.h>
+#ifndef _MSC_VER
 #include <dirent.h>
+#endif
 #include <stdio.h>
 #include <stdarg.h>
+#ifdef _MSC_VER
+#include <io.h>
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <windows.h>
+#define read _read
+#define write _write
+#define close _close
+#define lseek _lseek
+#define usleep(x) Sleep((x) / 1000)
+#else
 #include <unistd.h>
+#endif
 #include <string.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -97,7 +112,7 @@ static timestamp_t uemis_ts(std::string_view buffer)
 	struct tm tm;
 
 	memset(&tm, 0, sizeof(tm));
-	sscanf(buffer.begin(), "%d-%d-%dT%d:%d:%d",
+	sscanf(buffer.data(), "%d-%d-%dT%d:%d:%d",
 	       &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
 	       &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
 	tm.tm_mon -= 1;
@@ -1233,8 +1248,10 @@ std::string do_uemis_import(device_data_t *data)
 	}
 
 #if UEMIS_DEBUG
-	home = getenv("HOME");
-	user = getenv("LOGNAME");
+	const char *home_env = getenv("HOME");
+	const char *user_env = getenv("LOGNAME");
+	home = home_env ? home_env : "";
+	user = user_env ? user_env : "";
 #endif
 	uemis_info(translate("gettextFromC", "Initialise communication"));
 	if (!uemis_init(mountpath)) {

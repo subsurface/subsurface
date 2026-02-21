@@ -103,11 +103,8 @@ int get_maxdepth(const struct plot_info &pi)
 	return prefs.zoomed_plot ? mm : std::max(30000, mm);
 }
 
-/* UNUSED! */
-static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *dive) __attribute__((unused));
-
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
-static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *dive)
+[[maybe_unused]] static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *dive)
 {
 	int index = 0;
 	cylinder_t *cyl;
@@ -1530,8 +1527,8 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 					const cylinder_t *cyl = d->get_cylinder(cylinder_index);
 
 					// TODO: Implement addition/subtraction on units.h types
-					volumes_used[cylinder_index] += (cyl->gas_volume((pressure_t){ .mbar = last_pressures[cylinder_index] }) -
-									 cyl->gas_volume((pressure_t){ .mbar = next_pressure })).mliter;
+					volumes_used[cylinder_index] += (cyl->gas_volume(pressure_t::from_base(last_pressures[cylinder_index])) -
+									 cyl->gas_volume(pressure_t::from_base(next_pressure))).mliter;
 				}
 
 				// check if the gas in this cylinder is being used
