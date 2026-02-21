@@ -43,24 +43,18 @@ jobs:
 
     - name: install Android SDK/NDK
       run: |
-        export DEBIAN_FRONTEND=noninteractive
-        # Preseed the mirror selection
-        echo "google-android-installers google-android-installers/mirror select https://dl.google.com/android/repository" | sudo debconf-set-selections
+        # Use the pre-installed Android SDK on GitHub Actions runners
+        echo "ANDROID_SDK_ROOT=${ANDROID_HOME}" >> $GITHUB_ENV
+
+        # accept licenses and install required SDK components via sdkmanager
+        SDKMANAGER="${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"
+        yes | ${SDKMANAGER} --licenses > /dev/null 2>&1 || true
+        ${SDKMANAGER} "platforms;android-35" "build-tools;35.0.0" "platform-tools" "ndk;27.2.12479018"
+
+        echo "ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk/27.2.12479018" >> $GITHUB_ENV
 
         sudo apt-get update
-        sudo apt-get install -y -q \
-          google-android-cmdline-tools-13.0-installer google-android-ndk-r26c-installer \
-          autoconf automake libtool pkg-config
-
-        # set up SDK paths
-        export ANDROID_SDK_ROOT=/usr/lib/android-sdk
-        export ANDROID_NDK_ROOT=/usr/lib/android-ndk
-        echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}" >> $GITHUB_ENV
-        echo "ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT}" >> $GITHUB_ENV
-
-        # accept licenses and install required SDK components
-        yes | sudo sdkmanager --licenses || true
-        sudo sdkmanager "platforms;android-35" "build-tools;35.0.0" "platform-tools"
+        sudo apt-get install -y -q autoconf automake libtool pkg-config
 
     - name: install Qt for Android
       uses: jurplel/install-qt-action@v4
