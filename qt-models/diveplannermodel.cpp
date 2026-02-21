@@ -27,6 +27,7 @@
 #include <QTextDocument>
 #include <QtConcurrent>
 #include <QVariantMap>
+#include "core/gasblending.h"
 
 #define VARIATIONS_IN_BACKGROUND 1
 
@@ -1441,6 +1442,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	d->dcs[dcNr].divemode = static_cast<enum divemode_t>(diveMode);
 
 	// Populate cylinders from QML data
+	std::vector<int> cylinder_start_pressures;
 	for (const QVariant &cylData : cylindersData) {
 		QVariantMap map = cylData.toMap();
 		cylinder_t newCyl;
@@ -1462,7 +1464,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		d->cylinders.add(d->cylinders.size(), newCyl);
 	}
 	this->cylinders.updateDive(d, dcNr);
-	reset_cylinders(d, true);
+	//reset_cylinders(d, true);
 
 	// Add available OC-gases as "time=0" waypoints for the planner engine
 	pressure_t deco_po2_limit = { .mbar = qPrefDivePlanner::decopo2() };
@@ -1472,6 +1474,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 			depth_t mod = d->gas_mod(cyl.gasmix, deco_po2_limit, 1_m);
 			divedatapoint point(0, mod, i, 0, false); // time=0, depth=MOD, cylinderid=i
 			diveplan.dp.push_back(point);
+			//log cylinder pressure
 		}
 	}
 	diveplan.salinity = waterType;
@@ -1547,21 +1550,15 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	return results;
 }
 
-QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderType, int o2_permille, int he_permille)
+QString DivePlannerPointsModel::calculateGasInfo(const QString &cylinderType, int o2_permille, int he_permille)
 {
-	// Create a temporary dive context for calculations
 	struct dive temp_dive;
 	make_planner_dc(&temp_dive.dcs[0]);
-
-	// Create a temporary cylinder with the specified gas mix
 	cylinder_t temp_cyl;
 
-	// Populate cylinder type info
 	std::pair<volume_t, pressure_t> type_info = get_tank_info_data(tank_info_table, cylinderType.toStdString());
-	volume_t size = type_info.first;
-	pressure_t pressure = type_info.second;
-	temp_cyl.type.size = size;
-	temp_cyl.type.workingpressure = pressure;
+	temp_cyl.type.size = type_info.first;
+	temp_cyl.type.workingpressure = type_info.second;
 	temp_cyl.type.description = cylinderType.toStdString();
 
 	// Populate gas mix
@@ -1569,19 +1566,13 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 	temp_cyl.gasmix.he.permille = he_permille;
 	sanitize_gasmix(temp_cyl.gasmix);
 
-	// Get narcotic preference
 	bool o2_is_narcotic = qPrefDivePlanner::o2narcotic();
-	int fNarcotic_permille;
-	if (o2_is_narcotic) {
-		// If O2 is narcotic, the narcotic fraction is N2 + O2.
-		fNarcotic_permille = get_n2(temp_cyl.gasmix) + o2_permille;
-	} else {
-		// Otherwise, it's just N2.
-		fNarcotic_permille = get_n2(temp_cyl.gasmix);
-	}
+	int fNarcotic_permille = o2_is_narcotic ? (get_n2(temp_cyl.gasmix) + o2_permille) : get_n2(temp_cyl.gasmix);
 
-	QVariantList results;
-	// Calculate for a standard range of pO₂ values
+	QString results = "<table width='100%'>";
+	QString ead_header = o2_is_narcotic ? tr("END @ MOD") : tr("EAD @ MOD");
+	results += QString("<tr><th align='center' style='padding-bottom: 5px;'><b>pO₂</b></th><th align='center' style='padding-bottom: 5px;'><b>MOD</b></th><th align='center' style='padding-bottom: 5px;'><b>%1</b></th></tr>").arg(ead_header);
+
 	double po2_values[] = { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0 };
 
 	for (double po2 : po2_values) {
@@ -1589,8 +1580,6 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 
 		// Calculate MOD
 		depth_t mod = temp_dive.gas_mod(temp_cyl.gasmix, po2_limit, 1_m);
-
-		// Calculate EAD/END at the MOD
 		double p_amb_at_mod = temp_dive.depth_to_atm(mod);
 
 		double p_narcotic = p_amb_at_mod * fNarcotic_permille / 1000.0;
@@ -1600,14 +1589,286 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 			double divisor = o2_is_narcotic ? 1.0 : 0.79;
 			double ead_atm = p_narcotic / divisor;
 			narcotic_depth.mm = static_cast<int>((ead_atm - 1.0) * 10000.0);
-			if (narcotic_depth.mm < 0) narcotic_depth.mm = 0;
+			if (narcotic_depth.mm < 0)
+				narcotic_depth.mm = 0;
 		}
 
-		QVariantMap row;
-		row["po2"] = QString::number(po2, 'f', 1);
-		row["mod"] = get_depth_string(mod, true);
-		row["ead"] = get_depth_string(narcotic_depth, true);
-		results.append(row);
+		results += QString("<tr><td align='center'>%1</td><td align='center'>%2</td><td align='center'>%3</td></tr>")
+				   .arg(QString::number(po2, 'f', 1))
+				   .arg(get_depth_string(mod, true))
+				   .arg(get_depth_string(narcotic_depth, true));
 	}
+	results += "</table>";
 	return results;
+}
+
+
+QVariantMap DivePlannerPointsModel::parseGasMix(const QString &mixStr) {
+	QVariantMap gas;
+	QStringList parts = mixStr.split('/');
+	if (parts.size() == 2) {
+		bool o2Ok, heOk;
+		int o2 = parts[0].toInt(&o2Ok);
+		int he = parts[1].toInt(&heOk);
+
+		if (o2Ok && heOk && o2 >= 0 && o2 <= 100 && he >= 0 && he <= 100 && (o2 + he) <= 100) {
+			gas["o2"] = o2;
+			gas["he"] = he;
+			return gas;
+		}
+	}
+	// Return an empty map if parsing fails
+	return QVariantMap();
+}
+
+static double to_mbar_internal(double inputPressure) {
+    if (prefs.units.pressure == units::BAR) {
+        return inputPressure * 1000.0;
+    } else {
+        // PSI to mbar
+        return psi_to_mbar(inputPressure);
+    }
+}
+
+QString DivePlannerPointsModel::calculateCheapestBlend(
+    const QString &target_amount,        // e.g., "AL80"
+    const QString &target_start_mix,     // e.g., "21/0"
+    int target_start_pressure,           // e.g., 500
+    const QString &target_end_mix,       // e.g., "32/0"
+    int target_end_pressure,             // e.g., 3000
+    const QVariantList &available_gases_in, 
+    bool simple_blend)
+{
+	QString result = "";
+    // 1. Setup the Target Cylinder
+    Blender::TargetCylinder target;
+
+    // A. Cylinder Physical Properties
+    // Lookup the cylinder type from the Subsurface tank info table
+    std::pair<volume_t, pressure_t> type_info = get_tank_info_data(tank_info_table, target_amount.toStdString());
+    
+    // If lookup fails or returns 0 size (custom), default to AL80 roughly
+    if (type_info.first.mliter == 0) {
+		result += QString("Could not find cylinder type [%1], defaulting to AL80<br>").arg(target_amount);
+		return result;
+    } else {
+		result += QString("Found cylinder type [%1] with volume [%2] and w.pressure [%3]<br>").arg(target_amount).arg(type_info.first.mliter).arg(type_info.second.mbar);
+        target.wetVolume = type_info.first;
+        target.workingPressure = type_info.second;
+    }
+    
+    // Assign Fill Volume (calculated or nominal)
+    target.fillVolume.mliter = 0; 
+
+    // B. Target Pressures
+
+    target.currentPressure.mbar = to_mbar_internal(target_start_pressure);
+    target.targetPressure.mbar = to_mbar_internal(target_end_pressure); 
+
+    // C. Target Mixes
+
+	target.currentO2_permille = parseGasMixO2(target_start_mix);
+	target.currentHe_permille = parseGasMixHE(target_start_mix);
+
+	target.targetO2_permille = parseGasMixO2(target_end_mix);
+	target.targetHe_permille = parseGasMixHE(target_end_mix);
+
+	result += QString("Target Cylinder Current o2/He permille: %1/%2<br>").arg(target.currentO2_permille).arg(target.currentHe_permille);
+
+	result += QString("Target Cylinder Target o2/He permille: %1/%2<br>").arg(target.targetO2_permille).arg(target.targetHe_permille);
+
+	result += QString("Target Cylinder Working Pressure: %1 mbar<br>").arg(target.targetPressure.mbar);
+	result += QString("Target Cylinder Current Pressure: %1 mbar<br>").arg(target.currentPressure.mbar);
+    // D. Calculate Volumes (Fill in currentVolume based on pressures)
+    Blender::calculate_cylinder_volumes(target);
+	result += QString("Target Cylinder Current Pressure2: %1 mbar<br>").arg(target.currentPressure.mbar);
+
+
+    // 2. Setup Available Gas Sources
+    std::vector<Blender::GasSource> sources;
+    int cylinderCounter = 0;
+
+    for (const QVariant &item : available_gases_in) {
+        QVariantMap map = item.toMap();
+        Blender::GasSource source;
+
+        // A. Gas Mix
+        //auto sourceMix = parse_mix_string_internal(map["mix"].toString());
+        source.o2_permille = parseGasMixO2(map["mix"].toString());
+        source.he_permille = parseGasMixHE(map["mix"].toString());
+		source.boosted = map["boost"].toBool();
+
+        // B. Cost
+        source.cost_per_unit_volume = map["cost"].toString().toDouble();
+
+        // C. Limits (Amount and Pressure)
+        QString amountStr = map["amount"].toString();
+        
+        // If Simple Blend mode, OR if QML passed "∞" or "UNLIMITED"
+        if (simple_blend || amountStr == "∞" || amountStr == "UNLIMITED") {
+            source.unlimited = true;
+			//Add the mix to the result
+			result += "Added unlimited cylinder (" + amountStr + "): (" + map["mix"].toString() + ") " + QString::number(source.o2_permille) + "/" + QString::number(source.he_permille) + "<br>";
+
+
+        } else {
+            source.unlimited = false;
+
+            // Lookup Source Cylinder Physical Props based on the 'amount' string (e.g. "AL40")
+            std::pair<volume_t, pressure_t> src_type_info = get_tank_info_data(tank_info_table, amountStr.toStdString());
+            
+            if (src_type_info.first.mliter == 0) {
+                // Fallback if unknown cylinder string
+                source.wetVolume.mliter = 11100; 
+                source.workingPressure.mbar = 207000;
+            } else {
+                source.wetVolume = src_type_info.first;
+                source.workingPressure = src_type_info.second;
+            }
+
+            // Current Pressure from QML input
+			result += "Current pressure: " + map["pressure"].toString() + " units<br>";
+            source.currentPressure.mbar = to_mbar_internal(map["pressure"].toString().toDouble()); 
+			result += "Current Pressure mbar: " + QString::number(source.currentPressure.mbar) + "<br>";
+
+            // Calculate exact gas volume currently in this partial cylinder
+            // Using Z-factor logic from Blender namespace
+			int n2_permille = 1000 - source.o2_permille - source.he_permille;
+            double z = Blender::get_compressibility_factor(source.o2_permille, source.he_permille, n2_permille, source.currentPressure);
+            if (z > 0.0) {
+                 source.currentVolume.mliter = ((source.currentPressure.mbar) / (z * Blender::ATM) * source.wetVolume.mliter);
+            } else {
+                 source.currentVolume.mliter = source.wetVolume.mliter;
+            }
+
+		}
+
+        source.cylinder_number = cylinderCounter++;
+        sources.push_back(source);
+    }
+
+    std::vector<Blender::Blend> blends;
+	std::vector<Blender::BlendTriangle> blend_triangles;
+	std::vector<Blender::SourceTriangle> source_triangles;
+	// If we only have a single source, we will treat this as a special top off calculator
+	if (sources.size() == 1) {
+		const Blender::Blend* blend = Blender::calculateTopOffBlend(target, sources[0]);
+		if (blend != nullptr) {
+			blends.push_back(*blend);
+		}
+
+
+	} else {
+
+    	blend_triangles = Blender::generateExhaustiveBlends(target, sources);
+	    source_triangles = Blender::getSourceTriangles(sources);
+
+	}
+    for(auto& b_triangle : blend_triangles) {
+        for(auto& s_triangle : source_triangles) {
+            // FIX: Use pointers to handle nullable blend states
+            const Blender::Blend* blend1 = nullptr;
+            const Blender::Blend* blend2 = nullptr;
+            const Blender::Blend* blend3 = nullptr;
+
+            const Blender::GasSource* source1 = nullptr;
+            const Blender::GasSource* source2 = nullptr;
+            const Blender::GasSource* source3 = nullptr;
+
+            if(b_triangle.itemCount > 0) {
+                blend1 = &b_triangle.blend1; // Assign address
+            }
+            if(b_triangle.itemCount > 1) {
+                blend2 = &b_triangle.blend2; // Assign address
+            }
+            if(b_triangle.itemCount > 2) {
+                blend3 = &b_triangle.blend3; // Assign address
+            }
+            if(s_triangle.itemCount > 0) {
+                source1 = &s_triangle.source1; // Assign address
+            }
+            if(s_triangle.itemCount > 1) {
+                source2 = &s_triangle.source2; // Assign address
+            }
+            if(s_triangle.itemCount > 2) {
+                source3 = &s_triangle.source3; // Assign address
+            }
+
+            // Calculate blend returns a pointer
+            Blender::Blend* blend = Blender::calculate_blend(blend1, blend2, blend3, source1, source2, source3);
+            
+            if (blend && blend->validate(false)) {
+                blends.push_back(*blend); // Copy the valid result
+                delete blend; // Clean up the pointer
+            }
+        }
+    }
+
+    if (blends.empty()) {
+		//Print out how many blend_triangles and source_triangles we have plus item_count in the first of each
+		result += "Found " + QString::number(blend_triangles.size()) + " blend triangles and " + QString::number(source_triangles.size()) + " source triangles.<br>";
+		if (blend_triangles.size() > 0){
+			result += "First blend triangle item count: " + QString::number(blend_triangles[0].itemCount) + "<br>";
+		}
+		if (source_triangles.size() > 0){
+			result += "First source triangle item count: " + QString::number(source_triangles[0].itemCount) + "<br>";
+		}
+        result += tr("No valid blend configuration found.");
+		return result;
+    }
+
+	//The cost given here makes assumptions on what units were used. These might be incorrect, but the proportion
+	//should be correct, so it should still find the cheapest blend.
+    Blender::Blend cheapest = blends[0];
+    for (auto& blend : blends) {
+        if (blend.cost() < cheapest.cost()) {
+            cheapest = blend;
+        }
+    }
+
+	std::vector<Blender::OutputStep> output_steps = cheapest.getOutputSteps();
+	double real_cost = 0.0;
+    QString output = "<b><span style='color: red;'>DISCLAIMER/WARNING: ALWAYS TEST YOUR BLENDS. THIS CALCULATOR IS IN BETA AND INCLUDES NO GUARANTEE OF ACCURACY OR WARRANTY.</span><br> Pressures and mix ratios given are representitave of margins of error. Volume and weight calculations are more accurate than pressure. Be mindful of the accuracy of your pressure guage.</b><br>";
+	output += "Found " + QString::number(blends.size()) + " blend(s).<br>";
+	output += "<b>" + tr("Best Blend Result") + ":</b><br>";
+	for (Blender::OutputStep step : output_steps) {
+		//Convert pressure and volume units, if needed
+		QString pressureString;
+		if (prefs.units.pressure == units::BAR) {
+			pressureString = QString::number(step.gaugePressure.mbar/1000.0, 'f', 1) + " Bar";
+		} else {
+			pressureString = QString::number(mbar_to_PSI(step.gaugePressure.mbar), 'f', 0) + " PSI";
+		}
+		QString limitedPressureString = "";
+		if (step.limited_pressure != -1) {
+			if (prefs.units.pressure == units::BAR) {
+				limitedPressureString = " (source to " + QString::number(step.limited_pressure/1000.0, 'f', 1) + " Bar)";
+			} else {
+				limitedPressureString = " (source to " + QString::number(mbar_to_PSI(step.limited_pressure), 'f', 0) + " PSI) ";
+			}
+		}
+		QString volumeString;
+		double stepVol = 0.0;
+		if (prefs.units.volume == units::LITER) {
+			stepVol = step.volume.mliter/1000.0;
+			volumeString = " (" + QString::number(stepVol, 'f', 2) + " Liters)";
+		} else {
+			stepVol = ml_to_cuft(step.volume.mliter);
+			volumeString = " (" +QString::number(stepVol, 'f', 2) + " Cuft)";
+		}
+		QString weightString = QString::number(step.weight, 'f', 0) + " Grams";
+		real_cost += stepVol * step.cost_per_unit_volume;
+
+		if (step.add) {
+			output += "Add " + weightString + volumeString + " to " + pressureString + " of " + QString::fromStdString(step.mix) + "(" + QString::number(step.cylinder_number) + ")" + limitedPressureString + "<br>";
+
+		} else {
+			output += "Remove " + weightString + volumeString + " to " + pressureString + "<br>";
+		}
+		
+	}
+	//Add the final mix, as calculated
+	output += "<br>Final Mix: " + QString::number(cheapest.currentO2() / 10.0, 'f', 2) + "/" + QString::number(cheapest.currentHe() / 10.0, 'f', 2) + "<br>";
+	output += tr("<br>Total Cost: %1").arg(QString::number(real_cost, 'f', 2)) + "<br><br>";    
+    return output;
 }
