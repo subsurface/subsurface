@@ -492,6 +492,19 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	# that's available as kde-extra-cmake-modules on Homebrew, on all Linux flavors
 	# Android and iOS are built via qmake, Windows build of Subsurface-mobile isn't supported
 	find_package(ECM REQUIRED CONFIG PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/ECM)
+	# KF6KirigamiPlatform declares a dependency on Qt6::GuiPrivate, but some distros
+	# (e.g. Debian) don't ship the CMake config for private modules even when the
+	# private headers are installed. Since Kirigami is already compiled as a static
+	# library, create a shim target so CMake dependency resolution succeeds.
+	if(NOT TARGET Qt6::GuiPrivate)
+		find_package(Qt6 QUIET COMPONENTS GuiPrivate)
+		if(NOT TARGET Qt6::GuiPrivate)
+			add_library(Qt6::GuiPrivate INTERFACE IMPORTED)
+			set_target_properties(Qt6::GuiPrivate PROPERTIES
+				INTERFACE_LINK_LIBRARIES Qt6::Gui
+			)
+		endif()
+	endif()
 	find_package(KF6KirigamiPlatform REQUIRED PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami-install)
 	find_package(KF6Kirigami REQUIRED PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami-install)
 	set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
@@ -509,8 +522,13 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 
 	add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
 	target_sources(${SUBSURFACE_TARGET} PUBLIC ${MOBILE_SRC} ${MOBILE_RESOURCES})
+	# tell qmlimportscanner where to find Kirigami's QML modules
+	set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+		QT_QML_IMPORT_PATH "${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami-install/lib/qml"
+	)
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
+		PRIVATE
 		subsurface_mobile
 		subsurface_profile
 		${SUBSURFACE_MAPWIDGET}
@@ -522,6 +540,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		KF6::Kirigami
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
+	qt_import_qml_plugins(${SUBSURFACE_TARGET})
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	set(SUBSURFACE_APP
 		subsurface-desktop-main.cpp
