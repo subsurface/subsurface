@@ -3,6 +3,8 @@
 #define PRINTER_H
 
 #include "printoptions.h"
+#include <QPrinter>
+#include <QTemporaryDir>
 #include "templateedit.h"
 
 struct dive;
@@ -20,10 +22,15 @@ public:
 		PRINT,
 		PREVIEW
 	};
+#ifdef USE_QLITEHTML
+	void Preview(QString content, QPrinter *printer);
+#endif
 
 private:
 	QPaintDevice *paintDevice;
+#ifndef USE_QLITEHTML
 	QWebView *webView;
+#endif
 	const print_options &printOptions;
 	const template_options &templateOptions;
 	QSize pageSize;
@@ -35,6 +42,7 @@ private:
 	std::vector<dive *> getDives() const;
 	void putProfileImage(const QRect &box, const QRect &viewPort, QPainter *painter,
 			     struct dive *dive, ProfileScene *profile);
+	QTemporaryDir printDir;
 
 private slots:
 	void templateProgessUpdated(int value);
