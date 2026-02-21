@@ -1,7 +1,7 @@
-From a17a22e08e3398b243dbc369a8ff4c790c58db44 Mon Sep 17 00:00:00 2001
+From 227d01e985356ada6097de1077309054ca3a8c1a Mon Sep 17 00:00:00 2001
 From: Dirk Hohndel <dirk@hohndel.org>
 Date: Thu, 3 Dec 2020 15:01:18 -0800
-Subject: [PATCH 08/11] include the shared / not shared result in log
+Subject: [PATCH 1/2] include the shared / not shared result in log
 
 We shouldn't be building Kirigami as shared library, yet that's
 what makes our GitHub builds fail.
@@ -12,10 +12,10 @@ Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 9f1404ac..6e4f4bba 100644
+index 65349a48..d75f17a4 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -37,9 +37,12 @@ set(AUTOMOC_MOC_OPTIONS -Muri=org.kde.kirigami)
+@@ -52,9 +52,12 @@ set(AUTOMOC_MOC_OPTIONS -Muri=org.kde.kirigami)
  set(CMAKE_INCLUDE_CURRENT_DIR ON)
  
  if(NOT BUILD_SHARED_LIBS)
@@ -29,5 +29,5 @@ index 9f1404ac..6e4f4bba 100644
  
  ################# set KDE specific information #################
 -- 
-2.25.1
+2.51.1
 
