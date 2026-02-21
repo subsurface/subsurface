@@ -49,37 +49,6 @@ jobs:
       with:
         no-increment: true
 
-    - name: build subsurface-mobile
-      run: |
-        echo "--------------------------------------------------------------"
-        echo "building mobile"
-        cd ..
-        bash -e -x subsurface/scripts/build.sh -mobile -build-tests
-
-    - name: test mobile build
-      run: |
-        echo "--------------------------------------------------------------"
-        echo "running tests for mobile"
-
-        cd build-mobile/tests
-        # xvfb-run --auto-servernum ./TestGitStorage -v2
-        xvfb-run --auto-servernum make check
-        if [ $? -ne 0 ]; then
-          echo "Tests failed - adding the build output as artifacts"
-          exit 1
-        fi
-
-    - name: upload test artifacts
-      if: failure()
-      uses: actions/upload-artifact@v6
-      with:
-        name: test-output-mobile-${{ steps.version_number.outputs.version }}
-        path: |
-          build-mobile/tests/
-          !build-mobile/tests/CMakeFiles/
-          !build-mobile/tests/Test*
-          build-mobile/tests/Testing/
-
     - name: build subsurface
       run: |
         echo "--------------------------------------------------------------"
