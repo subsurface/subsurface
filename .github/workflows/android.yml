@@ -17,9 +17,10 @@ jobs:
   build:
     env:
       KEYSTORE_FILE: ${{ github.workspace }}/../subsurface.keystore
-    runs-on: ubuntu-latest
-    container:
-      image: docker://subsurface/android-build:5.15.3
+      QT_VERSION: '6.8.3'
+      QT_ARCH: 'android_arm64_v8a'
+      ANDROID_BUILD_ABI: 'arm64-v8a'
+    runs-on: ubuntu-24.04
 
     steps:
     - name: checkout sources
@@ -34,6 +35,114 @@ jobs:
       with:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
+    - name: set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: install Android SDK/NDK
+      run: |
+        export DEBIAN_FRONTEND=noninteractive
+        # Preseed the mirror selection
+        echo "google-android-installers google-android-installers/mirror select https://dl.google.com/android/repository" | sudo debconf-set-selections
+
+        sudo apt-get update
+        sudo apt-get install -y -q \
+          google-android-cmdline-tools-13.0-installer google-android-ndk-r26c-installer \
+          autoconf automake libtool pkg-config
+
+        # set up SDK paths
+        export ANDROID_SDK_ROOT=/usr/lib/android-sdk
+        export ANDROID_NDK_ROOT=/usr/lib/android-ndk
+        echo "ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}" >> $GITHUB_ENV
+        echo "ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT}" >> $GITHUB_ENV
+
+        # accept licenses and install required SDK components
+        yes | sudo sdkmanager --licenses || true
+        sudo sdkmanager "platforms;android-35" "build-tools;35.0.0" "platform-tools"
+
+    - name: install Qt for Android
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ env.QT_VERSION }}
+        target: 'android'
+        arch: ${{ env.QT_ARCH }}
+        modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtshadertools'
+
+    - name: install Qt for host tools
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ env.QT_VERSION }}
+        target: 'desktop'
+        arch: 'linux_gcc_64'
+        modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtshadertools'
+        set-env: false
+        extra: '--external 7z'
+
+    - name: install build dependencies
+      run: |
+        sudo apt-get install -y -q \
+          libxml2-dev libxslt1-dev libsqlite3-dev libssl-dev \
+          libcurl4-gnutls-dev libgit2-dev libzip-dev libusb-1.0-0-dev
+
+    - name: configure environment
+      run: |
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
+
+        # Qt host tools path (for moc, rcc, etc. during cross-compilation)
+        QT_HOST_PATH="${RUNNER_WORKSPACE}/Qt/${QT_VERSION}/gcc_64"
+        echo "QT_HOST_PATH=${QT_HOST_PATH}" >> $GITHUB_ENV
+
+        # Qt Android path
+        QT_ANDROID_PATH="${RUNNER_WORKSPACE}/Qt/${QT_VERSION}/${QT_ARCH}"
+        echo "QT_ANDROID_PATH=${QT_ANDROID_PATH}" >> $GITHUB_ENV
+
+    - name: build 3rdparty components (ECM, Kirigami)
+      run: |
+        cd $GITHUB_WORKSPACE
+        bash ./scripts/mobilecomponents.sh
+
+    - name: cross-compile native dependencies
+      run: |
+        export BUILDROOT="${RUNNER_WORKSPACE}"
+        export SUBSURFACE_SOURCE="${GITHUB_WORKSPACE}"
+        TOOLCHAIN="${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64"
+        API_LEVEL=24
+
+        export CC="${TOOLCHAIN}/bin/aarch64-linux-android${API_LEVEL}-clang"
+        export CXX="${TOOLCHAIN}/bin/aarch64-linux-android${API_LEVEL}-clang++"
+        export AR="${TOOLCHAIN}/bin/llvm-ar"
+        export RANLIB="${TOOLCHAIN}/bin/llvm-ranlib"
+        export STRIP="${TOOLCHAIN}/bin/llvm-strip"
+        SYSROOT="${TOOLCHAIN}/sysroot"
+
+        PREFIX="${BUILDROOT}/install-root-${ANDROID_BUILD_ABI}"
+        mkdir -p "${PREFIX}"/{include,lib/pkgconfig}
+        export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
+        echo "ANDROID_INSTALL_PREFIX=${PREFIX}" >> $GITHUB_ENV
+
+        CFLAGS="--sysroot=${SYSROOT} -fPIC"
+        CPPFLAGS="--sysroot=${SYSROOT} -fPIC"
+        CXXFLAGS="--sysroot=${SYSROOT} -fPIC"
+        TARGET="aarch64-linux-android"
+
+        # libdivecomputer
+        if [ ! -f libdivecomputer/configure ]; then
+          cd libdivecomputer && autoreconf -i && cd ..
+        fi
+        mkdir -p libdivecomputer-build
+        cd libdivecomputer-build
+        CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+          ../libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
+          --enable-static --disable-shared --enable-examples=no
+        make -j$(nproc)
+        make install
+        cd ..
+
     - name: set up the keystore
       if: github.event_name == 'push'
       env:
@@ -41,43 +150,82 @@ jobs:
       run: |
         echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > $KEYSTORE_FILE
 
-    - name: run build
-      id: build
+    - name: build Subsurface-mobile
       env:
-        KEYSTORE_PASSWORD: pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
         BUILDNR: ${{ steps.version_number.outputs.buildnr }}
         VERSION: ${{ steps.version_number.outputs.version }}
         VERSION_4: ${{ steps.version_number.outputs.version_4 }}
       run: |
-        BUILD_EXTRA_ARGS=""
+        BUILD_TYPE="Debug"
         if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
-          echo "Building a release version"
-          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} release"
+          BUILD_TYPE="Release"
         fi
 
-        # this is rather awkward, but it allows us to use the preinstalled
-        # Android and Qt versions with relative paths
-        cd ..
-        ln -s /android/5.15.* .
-        ln -s /android/build-tools .
-        ln -s /android/cmdline-tools .
-        ln -s /android/ndk .
-        ln -s /android/platform-tools .
-        ln -s /android/platforms .
-        ln -s /android/tools .
-        git config --global user.email "ci@subsurface-divelog.org"
-        git config --global user.name "Subsurface CI"
-        git config --global --add safe.directory $GITHUB_WORKSPACE
-        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
-        # get the build number via curl so this works both for a pull request as well as a push
-        export OUTPUT_DIR="$GITHUB_WORKSPACE"
-        bash -x ./subsurface/packaging/android/qmake-build.sh ${BUILD_EXTRA_ARGS} -buildnr $BUILDNR -canonicalversion $VERSION -canonicalversion_4 $VERSION_4
+        # write version header
+        mkdir -p build-android
+        cd build-android
+        cat > ssrf-version.h <<VEOF
+        #define CANONICAL_VERSION_STRING "${VERSION}"
+        #define CANONICAL_VERSION_STRING_4 "${VERSION_4}"
+        VEOF
+
+        # configure with Qt6 Android toolchain
+        cmake "${GITHUB_WORKSPACE}" \
+          -DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
+          -DQT_HOST_PATH="${QT_HOST_PATH}" \
+          -DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
+          -DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
+          -DANDROID_ABI="${ANDROID_BUILD_ABI}" \
+          -DANDROID_PLATFORM=24 \
+          -DCMAKE_FIND_ROOT_PATH="${ANDROID_INSTALL_PREFIX}" \
+          -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+          -DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable \
+          -DNO_DOCS=ON \
+          -DBUILD_TESTS=OFF \
+          -DQT_ANDROID_BUILD_ALL_ABIS=OFF
+
+        cmake --build . -j$(nproc)
+
+    - name: create APK
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        cd build-android
+
+        # use androiddeployqt to create the APK
+        ${QT_ANDROID_PATH}/bin/androiddeployqt \
+          --input android-Subsurface-mobile-deployment-settings.json \
+          --output android-build \
+          --android-platform android-35 \
+          --gradle
+
+        APK=$(find android-build -name "*.apk" | head -1)
+        cp "${APK}" "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.apk"
+
+    - name: sign APK
+      if: github.event_name == 'push'
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        APK="${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.apk"
+        ALIGNED="${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}-aligned.apk"
+        SIGNED="${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}-signed.apk"
+
+        ${ANDROID_SDK_ROOT}/build-tools/35.0.0/zipalign -p 4 "${APK}" "${ALIGNED}"
+        ${ANDROID_SDK_ROOT}/build-tools/35.0.0/apksigner sign \
+          --ks "${KEYSTORE_FILE}" \
+          --ks-pass "pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          --ks-key-alias "${{ secrets.ANDROID_KEYSTORE_ALIAS }}" \
+          --in "${ALIGNED}" \
+          --out "${SIGNED}"
+
+        mv "${SIGNED}" "${APK}"
+        rm -f "${ALIGNED}"
 
     - name: delete the keystore
       if: github.event_name == 'push'
       run: |
-        rm $KEYSTORE_FILE
+        rm -f $KEYSTORE_FILE
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'

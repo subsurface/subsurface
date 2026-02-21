@@ -351,7 +351,6 @@ if(ANDROID)
 	set(NO_PRINTING ON)
 	set(NO_USERMANUAL ON)
 	set(BUILD_TESTS OFF)
-	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -llog)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# add pthread to the end of the library list on Linux
@@ -417,20 +416,18 @@ else()
 endif()
 
 if(ANDROID)
-	# when building for Android, the toolchain file requires all cmake modules
-	# to be inside the CMAKE_FIND_ROOT_PATH - which prevents cmake from finding
-	# our Qt installation. This is ugly, but it works.
+	# when cross-compiling for Android, the toolchain file restricts find_package
+	# to the sysroot - this ensures system-root paths are also searched
 	set(CMAKE_FIND_ROOT_PATH "/;${CMAKE_FIND_ROOT_PATH}")
 endif()
 set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick ${QT_EXTRA_COMPONENTS})
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-	# Kirigami 5.62 and newer require at least Qt 5.12
 	if(ANDROID)
-		find_package(Qt${QT_VERSION_MAJOR} 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools)
+		find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools)
 	else()
-		find_package(Qt${QT_VERSION_MAJOR} 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
+		find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	# let's pick a version that's not ancient
@@ -639,20 +636,10 @@ endforeach()
 
 # now for each platform the install instructions
 if(ANDROID)
-	# Android template directory
-	include(${QT_ANDROID_CMAKE})
-	if((DEFINED ENV{KEYSTORE}) AND (DEFINED ENV{KEYSTORE_PASSWORD}))
-		add_qt_android_apk(${SUBSURFACE_TARGET}.apk ${SUBSURFACE_TARGET}
-			PACKAGE_SOURCES ${CMAKE_BINARY_DIR}/android-mobile DEPENDS ${ANDROID_NATIVE_LIBSSL} ${ANDROID_NATIVE_LIBCRYPT}
-			KEYSTORE $ENV{KEYSTORE} Subsurface-mobile KEYSTORE_PASSWORD $ENV{KEYSTORE_PASSWORD}
-		)
-		message(STATUS "KEYSTORE=$ENV{KEYSTORE} KEYSTORE_PASSWORD=$ENV{KEYSTORE_PASSWORD}")
-	else()
-		add_qt_android_apk(${SUBSURFACE_TARGET}.apk ${SUBSURFACE_TARGET}
-			PACKAGE_SOURCES ${CMAKE_BINARY_DIR}/android-mobile DEPENDS ${ANDROID_NATIVE_LIBSSL} ${ANDROID_NATIVE_LIBCRYPT}
-		)
-		message(STATUS "no KEYSTORE")
-	endif()
+	# Qt6 handles Android deployment via androiddeployqt, configured through target properties
+	set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+		QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/android-mobile"
+	)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(APP_BUNDLE_DIR "${SUBSURFACE_TARGET}.app")
 	# macdeployqt simplifies a lot of this process, but still doesn't get everything right
