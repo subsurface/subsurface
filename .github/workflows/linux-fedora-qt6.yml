@@ -28,7 +28,7 @@ jobs:
         dnf update -y
         dnf install -y autoconf automake bluez-libs-devel cmake gcc-c++ git-core \
         libcurl-devel libsqlite3x-devel libssh2-devel libtool libudev-devel \
-        libusbx-devel libxml2-devel libxslt-devel make \
+        libusbx-devel libxml2-devel libxslt-devel make which \
         qt6-qtbase-devel qt6-qtconnectivity-devel qt6-qtdeclarative-devel \
         qt6-qtlocation-devel qt6-qtsvg-devel \
         qt6-qttools-devel redhat-rpm-config \
