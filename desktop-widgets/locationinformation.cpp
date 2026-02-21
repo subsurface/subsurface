@@ -607,18 +607,16 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &name)
 
 void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 {
+	const QString before = text();
+	const int key = ev->key();
 	QLineEdit::keyPressEvent(ev);
-	if (ev->key() != Qt::Key_Left &&
-	    ev->key() != Qt::Key_Right &&
-	    ev->key() != Qt::Key_Escape &&
-	    ev->key() != Qt::Key_Return) {
-
-		if (ev->key() != Qt::Key_Up && ev->key() != Qt::Key_Down)
-			currDs = RECENTLY_ADDED_DIVESITE;
-		else
-			showPopup();
-	} else if (ev->key() == Qt::Key_Escape) {
+	const bool textChanged = (text() != before);
+	if (key == Qt::Key_Escape) {
 		view->hide();
+	} else if (key == Qt::Key_Up || key == Qt::Key_Down) {
+		showPopup();
+	} else if (textChanged) {
+		currDs = RECENTLY_ADDED_DIVESITE;
 	}
 }
 
