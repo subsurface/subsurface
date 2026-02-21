@@ -216,16 +216,19 @@ static void save_salinity(struct membuffer *b, const struct divecomputer &dc)
 	put_salinity(b, dc.salinity, "salinity ", "g/l\n");
 }
 
-static void show_date(struct membuffer *b, timestamp_t when)
+static void show_date(struct membuffer *b, datetime_t when)
 {
 	struct tm tm;
 
-	utc_mkdate(when, &tm);
+	utc_mkdate(when.local_time, &tm);
 
 	put_format(b, "date %04u-%02u-%02u\n",
 		   tm.tm_year, tm.tm_mon + 1, tm.tm_mday);
 	put_format(b, "time %02u:%02u:%02u\n",
 		   tm.tm_hour, tm.tm_min, tm.tm_sec);
+	if (when.offset_to_utc)
+		put_format(b, "offset_to_utc %+d:%02d\n", *when.offset_to_utc / 3600,
+							  (std::abs(*when.offset_to_utc) / 60) % 60);
 }
 
 static void show_integer(struct membuffer *b, int value, const char *pre, const char *post)
@@ -391,7 +394,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 		put_format(b, "deviceid %08x\n", dc.deviceid);
 	if (dc.diveid)
 		put_format(b, "diveid %08x\n", dc.diveid);
-	if (dc.when && dc.when != dive.when)
+	if (dc.when && dc.when != dive.get_time())
 		show_date(b, dc.when);
 	if (dc.duration.seconds && dc.duration.seconds != dive.dcs[0].duration.seconds)
 		put_duration(b, dc.duration, "duration ", "min\n");
@@ -555,7 +558,7 @@ static void create_dive_name(struct dive &dive, struct membuffer *name, struct t
 	struct tm tm;
 	static const char weekday[7][4] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
 
-	utc_mkdate(dive.when, &tm);
+	utc_mkdate(dive.get_time_local(), &tm);
 	if (tm.tm_year != dirtm->tm_year)
 		put_format(name, "%04u-", tm.tm_year);
 	if (tm.tm_mon != dirtm->tm_mon)
@@ -785,10 +788,10 @@ static int save_one_trip(git_repository *repo, struct dir *tree, dive_trip *trip
 	for (auto &dive: divelog.dives) {
 		if (dive->divetrip != trip)
 			continue;
-		if (dive->when < first)
-			first = dive->when;
-		if (dive->when > last)
-			last = dive->when;
+		if (dive->get_time_local() < first)
+			first = dive->get_time_local();
+		if (dive->get_time_local() > last)
+			last = dive->get_time_local();
 	}
 	verify_shared_date(first, tm);
 	verify_shared_date(last, tm);
@@ -987,7 +990,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 		}
 
 		/* Create the date-based hierarchy */
-		utc_mkdate(trip ? trip->date() : dive->when, &tm);
+		utc_mkdate(trip ? trip->date() : dive->get_time_local(), &tm);
 		tree = mktree(repo, root, "%04d", tm.tm_year);
 		tree = mktree(repo, tree, "%02d", tm.tm_mon + 1);
 

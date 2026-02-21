@@ -2157,7 +2157,11 @@ bool dive::likely_same(const struct dive &b) const
 	int fuzz = std::max(duration.seconds, b.duration.seconds) / 2;
 	fuzz = std::max(fuzz, 60);
 
-	return (when <= b.when + fuzz) && (when >= b.when - fuzz);
+	/*
+	 * Probably not worth considering global time, here.
+	 */
+	return (get_time_local() <= b.get_time_local() + fuzz) &&
+	       (get_time_local() >= b.get_time_local() - fuzz);
 }
 
 static bool operator==(const sample &a, const sample &b)
@@ -2417,16 +2421,21 @@ duration_t dive::totaltime() const
 	return { .seconds = time };
 }
 
-timestamp_t dive::endtime() const
+timestamp_t dive::endtime_local() const
 {
-	return when + totaltime().seconds;
+	return get_time_local() + totaltime().seconds;
 }
 
-bool dive::time_during_dive_with_offset(timestamp_t when, timestamp_t offset) const
+timestamp_t dive::endtime_utc() const
 {
-	timestamp_t start = when;
-	timestamp_t end = endtime();
-	return start - offset <= when && when <= end + offset;
+	return get_time_utc() + totaltime().seconds;
+}
+
+bool dive::time_during_dive_with_offset(timestamp_t local_time, timestamp_t offset) const
+{
+	timestamp_t start = get_time_local();
+	timestamp_t end = endtime_local();
+	return start - offset <= get_time_local() && get_time_local() <= end + offset;
 }
 
 /* this sets a usually unused copy of the preferences with the units
@@ -2535,6 +2544,65 @@ bool dive::cache_is_valid() const
 pressure_t dive::get_surface_pressure() const
 {
 	return surface_pressure.mbar > 0 ? surface_pressure : 1_atm;
+}
+
+datetime_t dive::get_time() const
+{
+	return when;
+}
+
+timestamp_t dive::get_time_local() const
+{
+	return when.local_time;
+}
+
+timestamp_t dive::get_time_utc() const
+{
+	return when.in_utc();
+}
+
+std::optional<int32_t> dive::get_offset_to_utc() const
+{
+	return when.offset_to_utc;
+}
+
+void dive::set_time(datetime_t time)
+{
+	when = time;
+}
+
+/* Set the local time. Doesn't change timezone information */
+void dive::set_time_local(timestamp_t local_time)
+{
+	when.local_time = local_time;
+}
+
+/* Set time and also time of the first dc.
+ * Note that we are not very consistent about setting the time of the first dc.
+ */
+void dive::set_time_dc(datetime_t time)
+{
+	when = time;
+	dcs[0].when = time;
+}
+
+void dive::set_offset_to_utc(std::optional<int32_t> offset)
+{
+	when.offset_to_utc = offset;
+}
+
+/* Set time and also time of the first dc.
+ * Note that we are not very consistent about setting the time of the first dc.
+ */
+void dive::set_time_local_dc(timestamp_t local_time)
+{
+	set_time_local(local_time);
+	dcs[0].when = when;
+}
+
+void dive::shift_time(timestamp_t delta)
+{
+	when.local_time += delta;
 }
 
 /* This returns the conversion factor that you need to multiply
