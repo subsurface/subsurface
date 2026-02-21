@@ -107,7 +107,26 @@ jobs:
         QT_ANDROID_PATH="${GITHUB_WORKSPACE}/Qt/${QT_VERSION}/${QT_ARCH}"
         echo "QT_ANDROID_PATH=${QT_ANDROID_PATH}" >> $GITHUB_ENV
 
+        # install prefix for cross-compiled native dependencies
+        BUILDROOT="$(dirname "${GITHUB_WORKSPACE}")"
+        ANDROID_INSTALL_PREFIX="${BUILDROOT}/install-root-${ANDROID_BUILD_ABI}"
+        echo "ANDROID_INSTALL_PREFIX=${ANDROID_INSTALL_PREFIX}" >> $GITHUB_ENV
+        echo "PKG_CONFIG_LIBDIR=${ANDROID_INSTALL_PREFIX}/lib/pkgconfig" >> $GITHUB_ENV
+
+    # --- 3rdparty components (ECM, Kirigami) with caching ---
+
+    - name: restore 3rdparty cache
+      id: thirdparty_cache
+      uses: actions/cache/restore@v4
+      with:
+        path: |
+          mobile-widgets/3rdparty/ECM
+          mobile-widgets/3rdparty/kirigami-install
+          mobile-widgets/3rdparty/breeze-icons
+        key: android-3rdparty-qt${{ env.QT_VERSION }}-${{ hashFiles('scripts/get-dep-lib.sh', 'scripts/mobilecomponents.sh', 'mobile-widgets/3rdparty/00*.patch') }}
+
     - name: build 3rdparty components (ECM, Kirigami)
+      if: steps.thirdparty_cache.outputs.cache-hit != 'true'
       run: |
         cd $GITHUB_WORKSPACE
         bash ./scripts/mobilecomponents.sh \
@@ -118,7 +137,27 @@ jobs:
           -DANDROID_ABI="${ANDROID_BUILD_ABI}" \
           -DANDROID_PLATFORM=24
 
+    - name: save 3rdparty cache
+      if: steps.thirdparty_cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: |
+          mobile-widgets/3rdparty/ECM
+          mobile-widgets/3rdparty/kirigami-install
+          mobile-widgets/3rdparty/breeze-icons
+        key: ${{ steps.thirdparty_cache.outputs.cache-primary-key }}
+
+    # --- native dependencies with caching ---
+
+    - name: restore native deps cache
+      id: native_deps_cache
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ env.ANDROID_INSTALL_PREFIX }}
+        key: android-native-deps-ndk27.2-${{ hashFiles('scripts/get-dep-lib.sh', '.github/workflows/android.yml') }}
+
     - name: cross-compile native dependencies
+      if: steps.native_deps_cache.outputs.cache-hit != 'true'
       run: |
         BUILDROOT="$(dirname "${GITHUB_WORKSPACE}")"
         SUBSURFACE_SOURCE="${GITHUB_WORKSPACE}"
@@ -134,11 +173,9 @@ jobs:
         export ANDROID_NDK_HOME="${ANDROID_NDK_ROOT}"
         SYSROOT="${TOOLCHAIN}/sysroot"
 
-        PREFIX="${BUILDROOT}/install-root-${ANDROID_BUILD_ABI}"
+        PREFIX="${ANDROID_INSTALL_PREFIX}"
         mkdir -p "${PREFIX}"/{include,lib/pkgconfig}
         export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
-        echo "ANDROID_INSTALL_PREFIX=${PREFIX}" >> $GITHUB_ENV
-        echo "PKG_CONFIG_LIBDIR=${PREFIX}/lib/pkgconfig" >> $GITHUB_ENV
 
         TARGET="aarch64-linux-android"
         cd "${BUILDROOT}"
@@ -256,6 +293,13 @@ jobs:
           --enable-static --disable-shared --enable-examples=no
         make -j$(nproc) && make install
         cd "${BUILDROOT}"
+
+    - name: save native deps cache
+      if: steps.native_deps_cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ env.ANDROID_INSTALL_PREFIX }}
+        key: ${{ steps.native_deps_cache.outputs.cache-primary-key }}
 
     - name: set up the keystore
       if: github.event_name == 'push'
