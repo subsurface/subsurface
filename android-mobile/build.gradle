@@ -1,24 +1,22 @@
 /*******************************************************
- * SPDX-License-Identifier: GPL-2.0 
+ * SPDX-License-Identifier: GPL-2.0
  * Subsurface-Mobile own Gradle build spec. Derived from
  * the one supplied by Qt.
  *******************************************************/
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
 	google()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.4'
+        classpath 'com.android.tools.build:gradle:8.2.2'
     }
 }
 
 allprojects {
     repositories {
         mavenCentral()
-        jcenter()
         maven { url 'https://jitpack.io' }
 	google()
     }
@@ -29,7 +27,7 @@ apply plugin: 'com.android.application'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.github.mik3y:usb-serial-for-android:v3.10.0'
-    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'androidx.core:core:1.12.0'
 }
 
 android {
@@ -37,9 +35,9 @@ android {
      * The following variables:
      * - androidBuildToolsVersion,
      * - androidCompileSdkVersion
-     * - qt5AndroidDir - holds the path to qt android files
-     *                   needed to build any Qt application
-     *                   on Android.
+     * - qtAndroidDir - holds the path to qt android files
+     *                  needed to build any Qt application
+     *                  on Android.
      *
      * are defined in gradle.properties file. This file is
      * updated by QtCreator and androiddeployqt tools.
@@ -47,15 +45,18 @@ android {
      *******************************************************/
 
     compileSdkVersion androidCompileSdkVersion.toInteger()
+    ndkVersion androidNdkVersion
 
     buildToolsVersion androidBuildToolsVersion
+
+    namespace "org.subsurfacedivelog.mobile"
 
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = [qt5AndroidDir + '/src', 'src', 'java']
-            aidl.srcDirs = [qt5AndroidDir + '/src', 'src', 'aidl']
-            res.srcDirs = [qt5AndroidDir + '/res', 'res']
+            java.srcDirs = [qtAndroidDir + '/src', 'src', 'java']
+            aidl.srcDirs = [qtAndroidDir + '/src', 'src', 'aidl']
+            res.srcDirs = [qtAndroidDir + '/res', 'res']
             resources.srcDirs = ['src']
             renderscript.srcDirs = ['src']
             assets.srcDirs = ['assets']
@@ -64,16 +65,16 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
-    lintOptions {
+    lint {
         abortOnError false
     }
 
-    packagingOptions {
+    packaging {
         /* Exclude this as it is included in more than one dependency. */
-        exclude 'META-INF/androidx/annotation/annotation/LICENSE.txt'
+        resources.excludes += 'META-INF/androidx/annotation/annotation/LICENSE.txt'
     }
 }
