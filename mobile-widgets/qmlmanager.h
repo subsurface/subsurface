@@ -228,8 +228,8 @@ public slots:
 	void usbRescan();
 	void rescanConnections();
 #if defined(Q_OS_ANDROID)
-	void showDownloadPage(QAndroidJniObject usbDevice);
-	void restartDownload(QAndroidJniObject usbDevice);
+	void showDownloadPage(QJniObject usbDevice);
+	void restartDownload(QJniObject usbDevice);
 	void androidUsbPopoulateConnections();
 	QString getProductVendorConnectionIdx(android_usb_serial_device_descriptor descriptor);
 #endif
