@@ -43,8 +43,21 @@ jobs:
 
     - name: install Android SDK/NDK
       run: |
-        # Use the pre-installed Android SDK on GitHub Actions runners
+        # On GitHub runners ANDROID_HOME is pre-set; set it ourselves if not
+        if [ -z "${ANDROID_HOME}" ]; then
+          export ANDROID_HOME=/opt/android-sdk
+          mkdir -p ${ANDROID_HOME}
+        fi
         echo "ANDROID_SDK_ROOT=${ANDROID_HOME}" >> $GITHUB_ENV
+
+        # Install cmdline-tools if not already present
+        if [ ! -f "${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager" ]; then
+          mkdir -p ${ANDROID_HOME}/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdline-tools.zip
+          unzip -q /tmp/cmdline-tools.zip -d /tmp/cmdline-tools-tmp
+          mv /tmp/cmdline-tools-tmp/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
+          rm -f /tmp/cmdline-tools.zip
+        fi
 
         # accept licenses and install required SDK components via sdkmanager
         SDKMANAGER="${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"
@@ -53,8 +66,11 @@ jobs:
 
         echo "ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk/27.2.12479018" >> $GITHUB_ENV
 
+    - name: install build dependencies
+      run: |
         sudo apt-get update
-        sudo apt-get install -y -q autoconf automake libtool pkg-config
+        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y -q \
+          autoconf automake libtool pkg-config cmake p7zip-full
 
     - name: install Qt for Android
       uses: jurplel/install-qt-action@v4
@@ -63,6 +79,7 @@ jobs:
         target: 'android'
         arch: ${{ env.QT_ARCH }}
         modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtshadertools'
+        dir: '${{ github.workspace }}'
 
     - name: install Qt for host tools
       uses: jurplel/install-qt-action@v4
@@ -71,14 +88,9 @@ jobs:
         target: 'desktop'
         arch: 'linux_gcc_64'
         modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtshadertools'
+        dir: '${{ github.workspace }}'
         set-env: false
         extra: '--external 7z'
-
-    - name: install build dependencies
-      run: |
-        sudo apt-get install -y -q \
-          libxml2-dev libxslt1-dev libsqlite3-dev libssl-dev \
-          libcurl4-gnutls-dev libgit2-dev libzip-dev libusb-1.0-0-dev
 
     - name: configure environment
       run: |
@@ -88,54 +100,162 @@ jobs:
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
 
         # Qt host tools path (for moc, rcc, etc. during cross-compilation)
-        QT_HOST_PATH="${RUNNER_WORKSPACE}/Qt/${QT_VERSION}/gcc_64"
+        QT_HOST_PATH="${GITHUB_WORKSPACE}/Qt/${QT_VERSION}/gcc_64"
         echo "QT_HOST_PATH=${QT_HOST_PATH}" >> $GITHUB_ENV
 
         # Qt Android path
-        QT_ANDROID_PATH="${RUNNER_WORKSPACE}/Qt/${QT_VERSION}/${QT_ARCH}"
+        QT_ANDROID_PATH="${GITHUB_WORKSPACE}/Qt/${QT_VERSION}/${QT_ARCH}"
         echo "QT_ANDROID_PATH=${QT_ANDROID_PATH}" >> $GITHUB_ENV
 
     - name: build 3rdparty components (ECM, Kirigami)
       run: |
         cd $GITHUB_WORKSPACE
-        bash ./scripts/mobilecomponents.sh
+        bash ./scripts/mobilecomponents.sh \
+          -DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
+          -DQT_HOST_PATH="${QT_HOST_PATH}" \
+          -DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
+          -DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
+          -DANDROID_ABI="${ANDROID_BUILD_ABI}" \
+          -DANDROID_PLATFORM=24
 
     - name: cross-compile native dependencies
       run: |
-        export BUILDROOT="${RUNNER_WORKSPACE}"
-        export SUBSURFACE_SOURCE="${GITHUB_WORKSPACE}"
+        BUILDROOT="$(dirname "${GITHUB_WORKSPACE}")"
+        SUBSURFACE_SOURCE="${GITHUB_WORKSPACE}"
         TOOLCHAIN="${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64"
         API_LEVEL=24
 
+        export PATH="${TOOLCHAIN}/bin:${PATH}"
         export CC="${TOOLCHAIN}/bin/aarch64-linux-android${API_LEVEL}-clang"
         export CXX="${TOOLCHAIN}/bin/aarch64-linux-android${API_LEVEL}-clang++"
         export AR="${TOOLCHAIN}/bin/llvm-ar"
         export RANLIB="${TOOLCHAIN}/bin/llvm-ranlib"
         export STRIP="${TOOLCHAIN}/bin/llvm-strip"
+        export ANDROID_NDK_HOME="${ANDROID_NDK_ROOT}"
         SYSROOT="${TOOLCHAIN}/sysroot"
 
         PREFIX="${BUILDROOT}/install-root-${ANDROID_BUILD_ABI}"
         mkdir -p "${PREFIX}"/{include,lib/pkgconfig}
         export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
         echo "ANDROID_INSTALL_PREFIX=${PREFIX}" >> $GITHUB_ENV
+        echo "PKG_CONFIG_LIBDIR=${PREFIX}/lib/pkgconfig" >> $GITHUB_ENV
 
+        TARGET="aarch64-linux-android"
+        cd "${BUILDROOT}"
+
+        # download all source dependencies
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . openssl
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . sqlite
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxml2
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxslt
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libgit2
+
+        # --- OpenSSL (build before setting sysroot CFLAGS) ---
+        mkdir -p openssl-build
+        cp -r openssl/* openssl-build/
+        cd openssl-build
+        perl -pi -e 's/-mandroid//g' Configure
+        ./Configure shared android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm \
+          --prefix="${PREFIX}" -DOPENSSL_NO_UI_CONSOLE -DOPENSSL_NO_STDIO \
+          -D__ANDROID_API__=${API_LEVEL}
+        make depend
+        make SHLIB_VERSION_NUMBER= SHLIB_EXT=_1_1.so build_libs
+        cp -RL include/openssl "${PREFIX}"/include/openssl
+        cp libcrypto.a libssl.a "${PREFIX}"/lib/
+        cp libcrypto_1_1.so* libssl_1_1.so* "${PREFIX}"/lib/ 2>/dev/null || true
+        cp *.pc "${PKG_CONFIG_PATH}"/
+        cd "${BUILDROOT}"
+
+        # sysroot flags for autotools-based builds
         CFLAGS="--sysroot=${SYSROOT} -fPIC"
         CPPFLAGS="--sysroot=${SYSROOT} -fPIC"
         CXXFLAGS="--sysroot=${SYSROOT} -fPIC"
-        TARGET="aarch64-linux-android"
 
-        # libdivecomputer
+        # --- SQLite ---
+        mkdir -p sqlite-build && cd sqlite-build
+        CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+          ../sqlite/configure --host="${TARGET}" --prefix="${PREFIX}" --enable-static --disable-shared
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
+
+        # --- libxml2 ---
+        if [ ! -f libxml2/configure ]; then
+          cd libxml2 && autoreconf --install && cd "${BUILDROOT}"
+        fi
+        mkdir -p libxml2-build && cd libxml2-build
+        CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+          ../libxml2/configure --host="${TARGET}" --prefix="${PREFIX}" \
+          --without-python --without-iconv --enable-static --disable-shared
+        perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
+        perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
+
+        # --- libxslt ---
+        if [ ! -f libxslt/configure ]; then
+          cd libxslt && autoreconf --install && cd "${BUILDROOT}"
+        fi
+        mkdir -p libxslt-build && cd libxslt-build
+        CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+          ../libxslt/configure --host="${TARGET}" --prefix="${PREFIX}" \
+          --with-libxml-prefix="${PREFIX}" --without-python --without-crypto \
+          --enable-static --disable-shared
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
+
+        # --- libzip ---
+        cd libzip
+        git reset --hard
+        sed -i 's/SIZEOF_SIZE_T/__SIZEOF_SIZE_T__/g' lib/compat.h
+        sed -i 's/ADD_SUBDIRECTORY(man)//' CMakeLists.txt
+        sed -i 's/^FIND_PACKAGE(ZLIB/#&/' CMakeLists.txt
+        cd "${BUILDROOT}"
+        mkdir -p libzip-build && cd libzip-build
+        cmake \
+          -DCMAKE_C_COMPILER="${CC}" \
+          -DCMAKE_LINKER="${CC}" \
+          -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
+          -DCMAKE_INSTALL_LIBDIR="lib" \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
+          -DZLIB_VERSION_STRING=1.2.7 \
+          -DZLIB_LIBRARY=z \
+          ../libzip/
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
+
+        # --- libgit2 ---
+        mkdir -p libgit2-build && cd libgit2-build
+        cmake \
+          -DCMAKE_C_COMPILER="${CC}" \
+          -DCMAKE_LINKER="${CC}" \
+          -DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
+          -DCURL=OFF \
+          -DUSE_SSH=OFF \
+          -DOPENSSL_SSL_LIBRARY="${PREFIX}"/lib/libssl.a \
+          -DOPENSSL_CRYPTO_LIBRARY="${PREFIX}"/lib/libcrypto.a \
+          -DOPENSSL_INCLUDE_DIR="${PREFIX}"/include \
+          -DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
+          ../libgit2/
+        find ../libgit2 -name 'CMakeLists.txt' -exec sed -i 's|C_STANDARD 90|C_STANDARD 99|' {} \;
+        make -j$(nproc) && make install
+        perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' "${PKG_CONFIG_PATH}"/libgit2.pc
+        cd "${BUILDROOT}"
+
+        # --- libdivecomputer ---
+        cd "${SUBSURFACE_SOURCE}"
         if [ ! -f libdivecomputer/configure ]; then
           cd libdivecomputer && autoreconf -i && cd ..
         fi
-        mkdir -p libdivecomputer-build
-        cd libdivecomputer-build
+        cd "${BUILDROOT}"
+        mkdir -p libdivecomputer-build && cd libdivecomputer-build
         CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
-          ../libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
+          "${SUBSURFACE_SOURCE}"/libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
           --enable-static --disable-shared --enable-examples=no
-        make -j$(nproc)
-        make install
-        cd ..
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
 
     - name: set up the keystore
       if: github.event_name == 'push'
@@ -174,9 +294,13 @@ jobs:
           -DCMAKE_FIND_ROOT_PATH="${ANDROID_INSTALL_PREFIX}" \
           -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
           -DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable \
+          -DLIBGIT2_FROM_PKGCONFIG=ON \
+          -DFORCE_LIBSSH=OFF \
           -DNO_DOCS=ON \
           -DBUILD_TESTS=OFF \
-          -DQT_ANDROID_BUILD_ALL_ABIS=OFF
+          -DQT_ANDROID_BUILD_ALL_ABIS=OFF \
+          -DBUILD_WITH_QT6=ON
+
 
         cmake --build . -j$(nproc)
 

@@ -22,9 +22,10 @@ fi
 ./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty extra-cmake-modules
 
 # now install the ECM to keep things more contained, install into 3rdparty/ECM
+# clear CMAKE_PREFIX_PATH so ECM doesn't pick up a cross-compiled Qt
 mkdir -p "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
 cd "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
-cmake -DSHARE_INSTALL_DIR=.. ../extra-cmake-modules
+CMAKE_PREFIX_PATH="" cmake -DSHARE_INSTALL_DIR=.. ../extra-cmake-modules
 make install
 
 # add our patches to Kirigami
@@ -37,6 +38,7 @@ do
 done
 
 # finally, build and install Kirigami
-cmake -B build -DBUILD_SHARED_LIBS=OFF -DSHARE_INSTALL_DIR=.. -DCMAKE_INSTALL_PREFIX=../kirigami-install -DECM_DIR="$SRC"/subsurface/mobile-widgets/3rdparty/ECM/cmake -DUSE_DBUS=OFF
+# any extra arguments (e.g. cross-compilation flags) are forwarded to cmake
+cmake -B build -DBUILD_SHARED_LIBS=OFF -DSHARE_INSTALL_DIR=.. -DCMAKE_INSTALL_PREFIX=../kirigami-install -DECM_DIR="$SRC"/subsurface/mobile-widgets/3rdparty/ECM/cmake -DUSE_DBUS=OFF "$@"
 cmake --build build/
 cmake --install build/
