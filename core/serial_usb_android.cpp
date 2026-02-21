@@ -4,9 +4,9 @@
 
 #include <cstring>
 
-#include <QAndroidJniObject>
-#include <QAndroidJniEnvironment>
-#include <QtAndroid>
+#include <QJniObject>
+#include <QJniEnvironment>
+#include <QCoreApplication>
 #include <QRegularExpression>
 
 #include <thread>
@@ -22,7 +22,7 @@ static dc_status_t serial_usb_android_sleep(void *io, unsigned int timeout)
 {
 	TRACE ("%s: %i", __FUNCTION__, timeout);
 
-	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
+	QJniObject *device = static_cast<QJniObject *>(io);
 	if (device == nullptr)
 		return DC_STATUS_INVALIDARGS;
 
@@ -34,7 +34,7 @@ static dc_status_t serial_usb_android_set_timeout(void *io, int timeout)
 {
 	TRACE ("%s: %i", __FUNCTION__, timeout);
 
-	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
+	QJniObject *device = static_cast<QJniObject *>(io);
 	if (device == nullptr)
 		return DC_STATUS_INVALIDARGS;
 
@@ -45,7 +45,7 @@ static dc_status_t serial_usb_android_set_dtr(void *io, unsigned int value)
 {
 	TRACE ("%s: %i", __FUNCTION__, value);
 
-	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
+	QJniObject *device = static_cast<QJniObject *>(io);
 	if (device == nullptr)
 		return DC_STATUS_INVALIDARGS;
 
@@ -56,7 +56,7 @@ static dc_status_t serial_usb_android_set_rts(void *io, unsigned int value)
 {
 	TRACE ("%s: %i", __FUNCTION__, value);
 
-	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
+	QJniObject *device = static_cast<QJniObject *>(io);
 	if (device == nullptr)
 		return DC_STATUS_INVALIDARGS;
 
@@ -67,7 +67,7 @@ static dc_status_t serial_usb_android_close(void *io)
 {
 	TRACE ("%s", __FUNCTION__);
 
-	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
+	QJniObject *device = static_cast<QJniObject *>(io);
 	if (device == nullptr)
 		return DC_STATUS_SUCCESS;
 
@@ -80,7 +80,7 @@ static dc_status_t serial_usb_android_purge(void *io, dc_direction_t direction)
 {
 	TRACE ("%s: %i", __FUNCTION__, direction);
 
-	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
+	QJniObject *device = static_cast<QJniObject *>(io);
 	if (device == nullptr)
 		return DC_STATUS_INVALIDARGS;
 
@@ -93,7 +93,7 @@ static dc_status_t serial_usb_android_configure(void *io, unsigned int baudrate,
 	TRACE ("%s: baudrate=%i, databits=%i, parity=%i, stopbits=%i, flowcontrol=%i", __FUNCTION__,
 	       baudrate, databits, parity, stopbits, flowcontrol);
 
-	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
+	QJniObject *device = static_cast<QJniObject *>(io);
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
@@ -104,11 +104,11 @@ static dc_status_t serial_usb_android_read(void *io, void *data, size_t size, si
 {
 	TRACE ("%s: size: %zu", __FUNCTION__, size);
 
-	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
+	QJniObject *device = static_cast<QJniObject *>(io);
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	QAndroidJniEnvironment env;
+	QJniEnvironment env;
 	jbyteArray array = env->NewByteArray(size);
 	env->SetByteArrayRegion(array, 0, size, (const jbyte *) data);
 
@@ -133,11 +133,11 @@ static dc_status_t serial_usb_android_write(void *io, const void *data, size_t s
 {
 	TRACE ("%s: size: %zu", __FUNCTION__, size);
 
-	QAndroidJniObject *device = static_cast<QAndroidJniObject *>(io);
+	QJniObject *device = static_cast<QJniObject *>(io);
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	QAndroidJniEnvironment env;
+	QJniEnvironment env;
 	jbyteArray array = env->NewByteArray(size);
 	env->SetByteArrayRegion(array, 0, size, (const jbyte *) data);
 
@@ -152,7 +152,7 @@ static dc_status_t serial_usb_android_write(void *io, const void *data, size_t s
 	return DC_STATUS_SUCCESS;
 }
 
-dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context, QAndroidJniObject usbDevice, std::string driverClassName)
+dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *context, QJniObject usbDevice, std::string driverClassName)
 {
 	TRACE("%s", __FUNCTION__);
 
@@ -169,15 +169,15 @@ dc_status_t serial_usb_android_open(dc_iostream_t **iostream, dc_context_t *cont
 		.close = serial_usb_android_close, /* close */
 	};
 
-	QAndroidJniObject localdevice = QAndroidJniObject::callStaticObjectMethod("org/subsurfacedivelog/mobile/AndroidSerial",
+	QJniObject localdevice = QJniObject::callStaticObjectMethod("org/subsurfacedivelog/mobile/AndroidSerial",
 										  "open_android_serial",
 										  "(Landroid/hardware/usb/UsbDevice;Ljava/lang/String;)Lorg/subsurfacedivelog/mobile/AndroidSerial;",
 										  usbDevice.object<jobject>(),
-										  QAndroidJniObject::fromString(driverClassName.c_str()).object());
+										  QJniObject::fromString(driverClassName.c_str()).object());
 	if (localdevice == nullptr)
 		return DC_STATUS_IO;
 
-	QAndroidJniObject *device = new QAndroidJniObject(localdevice);
+	QJniObject *device = new QJniObject(localdevice);
 	TRACE("%s", "calling dc_custom_open())");
 	return dc_custom_open(iostream, context, DC_TRANSPORT_SERIAL, &callbacks, device);
 }
@@ -226,9 +226,9 @@ static bool knownChipset(int vid, int pid)
 	return false;
 }
 
-android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
+android_usb_serial_device_descriptor getDescriptor(QJniObject usbDevice)
 {
-	QAndroidJniEnvironment env;
+	QJniEnvironment env;
 
 	android_usb_serial_device_descriptor descriptor;
 
@@ -237,7 +237,7 @@ android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 	descriptor.vid = usbDevice.callMethod<jint>("getVendorId");
 
 	// descriptor.manufacturer = UsbDevice.getManufacturerName();
-	QAndroidJniObject usbManufacturerName = usbDevice.callObjectMethod<jstring>("getManufacturerName");
+	QJniObject usbManufacturerName = usbDevice.callObjectMethod<jstring>("getManufacturerName");
 	if (usbManufacturerName.isValid()) {
 		const char *charArray = env->GetStringUTFChars(usbManufacturerName.object<jstring>(), nullptr);
 		descriptor.usbManufacturer = std::string(charArray);
@@ -245,7 +245,7 @@ android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 	}
 
 	// descriptor.product = UsbDevice.getProductName();
-	QAndroidJniObject usbProductName = usbDevice.callObjectMethod<jstring>("getProductName");
+	QJniObject usbProductName = usbDevice.callObjectMethod<jstring>("getProductName");
 	if (usbManufacturerName.isValid()) {
 		const char *charArray = env->GetStringUTFChars(usbProductName.object<jstring>(), nullptr);
 		descriptor.usbProduct = std::string(charArray);
@@ -256,7 +256,7 @@ android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice)
 	guessVendorProduct(descriptor);
 
 	// Get busnum and portnum
-	QAndroidJniObject usbDeviceNameString = usbDevice.callObjectMethod<jstring>("getDeviceName");
+	QJniObject usbDeviceNameString = usbDevice.callObjectMethod<jstring>("getDeviceName");
 	const char *charArray = env->GetStringUTFChars(usbDeviceNameString.object<jstring>(), nullptr);
 	QRegularExpression reg("/dev/bus/usb/(\\d*)/(\\d*)");
 	QRegularExpressionMatch match = reg.match(charArray);
@@ -286,24 +286,24 @@ std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices
 	std::vector<std::string> driverNames = { "CdcAcmSerialDriver", "Ch34xSerialDriver", "Cp21xxSerialDriver", "FtdiSerialDriver", "ProlificSerialDriver" };
 
 	// Get the current main activity of the application.
-	QAndroidJniObject activity = QtAndroid::androidActivity();
-	QAndroidJniObject usb_service = QAndroidJniObject::fromString("usb");
-	QAndroidJniEnvironment env;
+	QJniObject activity = QJniObject(QNativeInterface::QAndroidApplication::context());
+	QJniObject usb_service = QJniObject::fromString("usb");
+	QJniEnvironment env;
 
 	// Get UsbManager from activity
-	QAndroidJniObject usbManager = activity.callObjectMethod("getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;", QAndroidJniObject::fromString("usb").object());
+	QJniObject usbManager = activity.callObjectMethod("getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;", QJniObject::fromString("usb").object());
 
 	//UsbDevice[] arrayOfDevices = usbManager.getDeviceList().values().toArray();
-	QAndroidJniObject deviceListHashMap = usbManager.callObjectMethod("getDeviceList","()Ljava/util/HashMap;");
-	QAndroidJniObject deviceListCollection = deviceListHashMap.callObjectMethod("values", "()Ljava/util/Collection;");
+	QJniObject deviceListHashMap = usbManager.callObjectMethod("getDeviceList","()Ljava/util/HashMap;");
+	QJniObject deviceListCollection = deviceListHashMap.callObjectMethod("values", "()Ljava/util/Collection;");
 	jint numDevices = deviceListCollection.callMethod<jint>("size");
-	QAndroidJniObject arrayOfDevices = deviceListCollection.callObjectMethod("toArray", "()[Ljava/lang/Object;");
+	QJniObject arrayOfDevices = deviceListCollection.callObjectMethod("toArray", "()[Ljava/lang/Object;");
 
 	std::vector<android_usb_serial_device_descriptor> retval;
 	for (int i = 0; i < numDevices ; i++) {
 		// UsbDevice usbDevice = arrayOfDevices[i]
 		jobject value = env->GetObjectArrayElement(arrayOfDevices.object<jobjectArray>(), i);
-		QAndroidJniObject usbDevice(value);
+		QJniObject usbDevice(value);
 		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
 		if (knownChipset(descriptor.vid, descriptor.pid)) {
 			retval.push_back(descriptor);

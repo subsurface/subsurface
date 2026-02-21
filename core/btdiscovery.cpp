@@ -401,12 +401,12 @@ void BTDiscovery::getBluetoothDevices()
 	// Query via Android Java API.
 
 	// returns a BluetoothAdapter
-	QAndroidJniObject adapter=QAndroidJniObject::callStaticObjectMethod("android/bluetooth/BluetoothAdapter","getDefaultAdapter","()Landroid/bluetooth/BluetoothAdapter;");
+	QJniObject adapter=QJniObject::callStaticObjectMethod("android/bluetooth/BluetoothAdapter","getDefaultAdapter","()Landroid/bluetooth/BluetoothAdapter;");
 	if (checkException("BluetoothAdapter.getDefaultAdapter()", &adapter)) {
 		return;
 	}
 	// returns a Set<BluetoothDevice>
-	QAndroidJniObject pairedDevicesSet=adapter.callObjectMethod("getBondedDevices","()Ljava/util/Set;");
+	QJniObject pairedDevicesSet=adapter.callObjectMethod("getBondedDevices","()Ljava/util/Set;");
 	if (checkException("BluetoothAdapter.getBondedDevices()", &pairedDevicesSet)) {
 		return;
 	}
@@ -414,13 +414,13 @@ void BTDiscovery::getBluetoothDevices()
 	checkException("Set<BluetoothDevice>.size()", &pairedDevicesSet);
 	if (size > 0) {
 		// returns an Iterator<BluetoothDevice>
-		QAndroidJniObject iterator=pairedDevicesSet.callObjectMethod("iterator","()Ljava/util/Iterator;");
+		QJniObject iterator=pairedDevicesSet.callObjectMethod("iterator","()Ljava/util/Iterator;");
 		if (checkException("Set<BluetoothDevice>.iterator()", &iterator)) {
 			return;
 		}
 		for (int i = 0; i < size; i++) {
 			// returns a BluetoothDevice
-			QAndroidJniObject dev=iterator.callObjectMethod("next","()Ljava/lang/Object;");
+			QJniObject dev=iterator.callObjectMethod("next","()Ljava/lang/Object;");
 			if (checkException("Iterator<BluetoothDevice>.next()", &dev)) {
 				continue;
 			}
@@ -441,9 +441,9 @@ void BTDiscovery::getBluetoothDevices()
 	}
 }
 
-bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *obj)
+bool BTDiscovery::checkException(const char* method, const QJniObject *obj)
 {
-	static QAndroidJniEnvironment env;
+	static QJniEnvironment env;
 	bool result = false;
 
 	if (env->ExceptionCheck()) {

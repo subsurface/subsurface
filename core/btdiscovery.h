@@ -12,8 +12,8 @@
 #include "core/libdivecomputer.h"
 
 #if defined(Q_OS_ANDROID)
-#include <QAndroidJniObject>
-#include <QAndroidJniEnvironment>
+#include <QJniObject>
+#include <QJniEnvironment>
 #endif
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo);
@@ -67,7 +67,7 @@ private:
 	QList<struct btVendorProduct> btAllDevices;	// all paired BT stuff
 
 #if defined(Q_OS_ANDROID)
-	bool checkException(const char* method, const QAndroidJniObject* obj);
+	bool checkException(const char* method, const QJniObject* obj);
 #endif
 
 	QList<struct btPairedDevice> btPairedDevices;
