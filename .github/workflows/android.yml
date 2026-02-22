@@ -193,14 +193,13 @@ jobs:
         cp -r openssl/* openssl-build/
         cd openssl-build
         perl -pi -e 's/-mandroid//g' Configure
-        ./Configure shared android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm \
-          --prefix="${PREFIX}" -DOPENSSL_NO_UI_CONSOLE -DOPENSSL_NO_STDIO \
+        ./Configure no-shared android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm \
+          --prefix="${PREFIX}" -fPIC -DOPENSSL_NO_UI_CONSOLE \
           -D__ANDROID_API__=${API_LEVEL}
         make depend
-        make SHLIB_VERSION_NUMBER= SHLIB_EXT=_1_1.so build_libs
+        make build_libs
         cp -RL include/openssl "${PREFIX}"/include/openssl
         cp libcrypto.a libssl.a "${PREFIX}"/lib/
-        cp libcrypto_1_1.so* libssl_1_1.so* "${PREFIX}"/lib/ 2>/dev/null || true
         cp *.pc "${PKG_CONFIG_PATH}"/
         cd "${BUILDROOT}"
 
@@ -254,6 +253,7 @@ jobs:
           -DCMAKE_LINKER="${CC}" \
           -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
           -DCMAKE_INSTALL_LIBDIR="lib" \
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
           -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
           -DZLIB_VERSION_STRING=1.2.7 \
@@ -267,6 +267,7 @@ jobs:
         cmake \
           -DCMAKE_C_COMPILER="${CC}" \
           -DCMAKE_LINKER="${CC}" \
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
           -DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
           -DCURL=OFF \
@@ -356,7 +357,7 @@ jobs:
 
         # use androiddeployqt to create the APK
         ${QT_ANDROID_PATH}/bin/androiddeployqt \
-          --input android-Subsurface-mobile-deployment-settings.json \
+          --input android-subsurface-mobile-deployment-settings.json \
           --output android-build \
           --android-platform android-35 \
           --gradle
