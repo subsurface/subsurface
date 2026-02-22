@@ -56,7 +56,7 @@
         </provider>
     </application>
 
-    <uses-sdk android:minSdkVersion="24"
+    <uses-sdk android:minSdkVersion="28"
 	      android:targetSdkVersion="35" />
 
     <supports-screens
