@@ -17,6 +17,7 @@
 #include <QJniObject>
 #include <QJniEnvironment>
 #include <QCoreApplication>
+#include <QStandardPaths>
 #include <QDebug>
 #include <core/serial_usb_android.h>
 
