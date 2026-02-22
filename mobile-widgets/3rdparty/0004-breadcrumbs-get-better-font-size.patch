@@ -1,0 +1,28 @@
+From dac37f68303d9df2d32083f42b345834885e6f39 Mon Sep 17 00:00:00 2001
+From: Berthold Stoeger <bstoeger@mail.tuwien.ac.at>
+Date: Sun, 22 Feb 2026 13:16:57 +0100
+Subject: [PATCH 4/4] breadcrumbs: get better font size
+
+Original by Dirk Hohndel <dirk@hohndel.org>, ported to
+Kirigami v6.23.0.
+
+Signed-off-by: Berthold Stoeger <bstoeger@mail.tuwien.ac.at>
+---
+ src/controls/private/globaltoolbar/BreadcrumbControl.qml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/controls/private/globaltoolbar/BreadcrumbControl.qml b/src/controls/private/globaltoolbar/BreadcrumbControl.qml
+index cf6d6317..d63fb211 100644
+--- a/src/controls/private/globaltoolbar/BreadcrumbControl.qml
++++ b/src/controls/private/globaltoolbar/BreadcrumbControl.qml
+@@ -193,6 +193,7 @@ RowLayout {
+                 Kirigami.Heading {
+                     Layout.leftMargin: Kirigami.Units.largeSpacing
+                     Layout.rightMargin: Kirigami.Units.largeSpacing
++                    font: Kirigami.Theme.defaultFont
+                     color: Kirigami.Theme.textColor
+                     verticalAlignment: Text.AlignVCenter
+                     wrapMode: Text.NoWrap
+-- 
+2.51.0
+
