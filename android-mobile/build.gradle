@@ -51,6 +51,11 @@ android {
 
     namespace "org.subsurfacedivelog.mobile"
 
+    defaultConfig {
+        minSdkVersion 28
+        targetSdkVersion 35
+    }
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
