@@ -1156,10 +1156,8 @@ static degrees_t parse_degrees(const char *buf, const char **end)
 	} while (--decimals);
 
 	/* Rounding */
-	switch (*buf) {
-	case '5': case '6': case '7': case '8': case '9':
+	if (*buf >= '5' && *buf <= '9')
 		value++;
-	}
 	while (isdigit(*buf))
 		buf++;
 
