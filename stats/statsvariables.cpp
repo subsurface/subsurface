@@ -900,12 +900,7 @@ struct DateQuarterBinner : public SimpleContinuousBinner<DateQuarterBinner, Date
 		utc_mkdate(d->when, &tm);
 
 		int year = tm.tm_year;
-		switch (tm.tm_mon) {
-		case 0: case 1: case 2: return { year, 1 };
-		case 3: case 4: case 5: return { year, 2 };
-		case 6: case 7: case 8: return { year, 3 };
-		default:                return { year, 4 };
-		}
+		return { year, tm.tm_mon / 3 + 1 };
 	}
 	void inc(DateQuarterBin &bin) const {
 		if (++bin.value.second > 4) {

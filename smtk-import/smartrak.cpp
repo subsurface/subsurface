@@ -296,38 +296,27 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
 		if (!strcmp(table.get_data(1), site_idx)) {
 			concat(notes, "\n", translate("gettextFromC", "Wreck Data"));
 			for (i = 3; i < 16; i++) {
-				switch (i) {
-				case 3:
-				case 4: {
+				if (i == 3 || i == 4) {
 					std::string_view tmp = table.get_string_view(i);
 					if (!tmp.empty()) {
 						tmp = tmp.substr(0, tmp.find(' '));
 						concat(notes, "\n", format_string_std("%s: %s", wreck_fields[i - 3], std::string(tmp).c_str()));
 					}
-					break;
-				}
-				case 5: {
+				} else if (i == 5) {
 					std::string_view tmp = table.get_string_view(i);
 					if (!tmp.empty()) {
 						size_t pos = tmp.rfind(' ');
 						tmp.remove_prefix(pos + 1);
 						concat(notes, "\n", format_string_std("%s: %s", wreck_fields[i - 3], std::string(tmp).c_str()));
 					}
-					break;
-				}
-				case 6: case 7: case 8: case 9:
-				case 14:
-				case 15: {
+				} else if ((i >= 6 && i <= 9) || i == 14 || i == 15) {
 					const char *tmp = table.get_data(i);
 					if (!empty_string(tmp))
 						concat(notes, "\n", format_string_std("%s: %s", wreck_fields[i - 3], tmp));
-					break;
-				}
-				default:
+				} else {
 					d = lrintl(strtold(table.get_data(1), NULL));
 					if (d)
 						concat(notes, "\n", format_string_std("%s: %d", wreck_fields[i - 3], d));
-					break;
 				}
 			}
 			concat(ds->notes, "\n", notes);

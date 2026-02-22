@@ -57,26 +57,23 @@ QVariant DiveSummaryModel::data(const QModelIndex &index, int role) const
 		return dataDisplay(index.row(), index.column());
 
 	// The QML case
+	// this relies on the ordering of the enums - but so did the gcc-style switch statement
 	int row = index.row();
-	switch (role) {
-	case HEADER_ROLE:
+	if (role == HEADER_ROLE)
 		return headerData(row, Qt::Vertical, Qt::DisplayRole);
-	case COLUMN0_ROLE:
+	if (role == COLUMN0_ROLE)
 		return dataDisplay(row, 0);
-	case COLUMN1_ROLE:
+	if (role == COLUMN1_ROLE)
 		return dataDisplay(row, 1);
-	case SECTION_ROLE:
-		switch (row) {
-		case DIVES: case DIVES_EAN: case DIVES_DEEP: case PLANS:
+	if (role == SECTION_ROLE) {
+		if (row >= DIVES && row <= PLANS)
 			return tr("Number of dives");
-		case TIME: case TIME_MAX: case TIME_AVG:
+		if (row >= TIME && row <= TIME_AVG)
 			return tr("Time");
-		case DEPTH_MAX: case DEPTH_AVG:
+		if (row >= DEPTH_MAX && row <= DEPTH_AVG)
 			return tr("Depth");
-		case SAC_MIN: case SAC_MAX: case SAC_AVG:
+		if (row >= SAC_MIN && row <= SAC_AVG)
 			return tr("SAC");
-		default: return QVariant();
-		}
 	}
 
 	// The unsupported case

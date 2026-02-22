@@ -74,27 +74,8 @@ static bool parseExif(QFile &f, struct metadata *metadata)
 	if (getBE<uint16_t>(f) != 0xffd8)
 		return false;
 	for (;;) {
-		switch (getBE<uint16_t>(f)) {
-		case 0xffc0:
-		case 0xffc2:
-		case 0xffc4:
-		case 0xffd0: case 0xffd1: case 0xffd2: case 0xffd3:
-		case 0xffd4: case 0xffd5: case 0xffd6: case 0xffd7:
-		case 0xffdb:
-		case 0xffdd:
-		case 0xffe0:
-		case 0xffe2: case 0xffe3: case 0xffe4: case 0xffe5:
-		case 0xffe6: case 0xffe7: case 0xffe8: case 0xffe9:
-		case 0xffea: case 0xffeb: case 0xffec: case 0xffed:
-		case 0xffee: case 0xffef:
-		case 0xfffe: {
-			uint16_t len = getBE<uint16_t>(f);
-			if (len < 2)
-				return false;
-			f.seek(f.pos() + len - 2); // TODO: switch to QFile::skip()
-			break;
-		}
-		case 0xffe1: {
+		uint16_t marker = getBE<uint16_t>(f);
+		if (marker == 0xffe1) {
 			uint16_t len = getBE<uint16_t>(f);
 			if (len < 2)
 				return false;
@@ -108,12 +89,19 @@ static bool parseExif(QFile &f, struct metadata *metadata)
 			metadata->location = create_location(exif.GeoLocation.Latitude, exif.GeoLocation.Longitude);
 			metadata->timestamp = exif.epoch();
 			return true;
-		}
-		case 0xffda:
-		case 0xffd9:
+		} else if (marker == 0xffda || marker == 0xffd9) {
 			// We expect EXIF data before any scan data
 			return false;
-		default:
+		} else if (marker == 0xffc0 || marker == 0xffc2 || marker == 0xffc4 ||
+			   (marker >= 0xffd0 && marker <= 0xffd7) ||
+			   marker == 0xffdb || marker == 0xffdd || marker == 0xffe0 ||
+			   (marker >= 0xffe2 && marker <= 0xffef) ||
+			   marker == 0xfffe) {
+			uint16_t len = getBE<uint16_t>(f);
+			if (len < 2)
+				return false;
+			f.seek(f.pos() + len - 2); // TODO: switch to QFile::skip()
+		} else {
 			return false;
 		}
 	}

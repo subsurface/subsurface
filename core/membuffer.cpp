@@ -214,44 +214,25 @@ void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_
 	for (;text;) {
 		const char *escape;
 
-		switch (*p++) {
-		default:
-			continue;
-		case 0:
+		char c = *p++;
+		if (c == 0) {
 			escape = NULL;
-			break;
-		case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8:
-		case 11:
-		case 12:
-		case 14: case 15: case 16: case 17: case 18: case 19: case 20:
-		case 21: case 22: case 23: case 24: case 25: case 26: case 27:
-		case 28: case 29: case 30: case 31:
+		} else if ((c > 0 && c < 9) || c == 11 || c == 12 || (c >= 14 && c <= 31)) {
 			escape = "?";
-			break;
-		case '<':
+		} else if (c == '<') {
 			escape = "&lt;";
-			break;
-		case '>':
+		} else if (c == '>') {
 			escape = "&gt;";
-			break;
-		case '&':
+		} else if (c == '&') {
 			escape = "&amp;";
-			break;
-		case '\'':
-			if (!is_attribute)
-				continue;
+		} else if (c == '\'' && is_attribute) {
 			escape = "&apos;";
-			break;
-		case '\"':
-			if (!is_attribute)
-				continue;
+		} else if (c == '\"' && is_attribute) {
 			escape = "&quot;";
-			break;
-		case '\n':
-			if (!is_html)
-				continue;
-			else
-				escape = "<br>";
+		} else if (c == '\n' && is_html) {
+			escape = "<br>";
+		} else {
+			continue;
 		}
 		put_bytes(b, text, (p - text - 1));
 		if (!escape)
