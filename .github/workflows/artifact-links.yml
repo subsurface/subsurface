@@ -6,6 +6,7 @@ on:
       - Publish the Documentation
       - Ubuntu 20.04 / Qt 5 for AppImage
       - Windows
+      - Windows MSVC
       - Android
       - Mac
       - iOS
