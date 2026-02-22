@@ -21,10 +21,6 @@ env:
   # Build configuration
   BUILD_TYPE: Release
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   build-documentation:
     uses: ./.github/workflows/documentation-build.yml
