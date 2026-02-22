@@ -75,10 +75,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ github.workspace }}/vcpkg-cache
-          # key: vcpkg-x64-windows-${{ hashFiles('.github/workflows/windows-msvc-qt6.yml') }}
-          key: vcpkg-x64-windows-v1
-          restore-keys: |
-            vcpkg-x64-windows-
+          key: windows-vcpkg-${{ hashFiles('.github/workflows/windows-msvc-qt6.yml') }}
 
       - name: Install vcpkg dependencies
         shell: pwsh
@@ -106,8 +103,7 @@ jobs:
         if: always()
         with:
           path: ${{ github.workspace }}/vcpkg-cache
-          # key: vcpkg-x64-windows-${{ hashFiles('.github/workflows/windows-msvc-qt6.yml') }}
-          key: vcpkg-x64-windows-v1
+          key: windows-vcpkg-${{ hashFiles('.github/workflows/windows-msvc-qt6.yml') }}
 
       - name: load the documentation from cache
         id: load-cache
