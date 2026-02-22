@@ -347,22 +347,19 @@ jobs:
           -DBUILD_WITH_QT6=ON
 
 
+        # patch androiddeployqt to not emit enableUncompressedNativeLibs
+        # which was removed in AGP 8.1 (same length replacement keeps binary valid)
+        sed -i 's/enableUncompressedNativeLibs/disableUncompressedNativeLib/g' \
+          ${QT_HOST_PATH}/bin/androiddeployqt \
+          ${QT_HOST_PATH}/bin/androiddeployqt6
+
         cmake --build . -j$(nproc)
 
-    - name: create APK
+    - name: collect APK
       env:
         VERSION: ${{ steps.version_number.outputs.version }}
       run: |
-        cd build-android
-
-        # use androiddeployqt to create the APK
-        ${QT_ANDROID_PATH}/bin/androiddeployqt \
-          --input android-subsurface-mobile-deployment-settings.json \
-          --output android-build \
-          --android-platform android-35 \
-          --gradle
-
-        APK=$(find android-build -name "*.apk" | head -1)
+        APK=$(find build-android/android-build -name "*.apk" | head -1)
         cp "${APK}" "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.apk"
 
     - name: sign APK
