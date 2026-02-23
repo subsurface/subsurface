@@ -44,7 +44,13 @@ android {
      * Changing them manually might break the compilation!
      *******************************************************/
 
-    compileSdkVersion androidCompileSdkVersion.toInteger()
+    // androidCompileSdkVersion may be an integer ("35") or a platform
+    // string ("android-36-ext19"); handle both forms
+    if (androidCompileSdkVersion.isInteger()) {
+        compileSdkVersion androidCompileSdkVersion.toInteger()
+    } else {
+        compileSdkVersion androidCompileSdkVersion
+    }
     ndkVersion androidNdkVersion
 
     buildToolsVersion androidBuildToolsVersion
