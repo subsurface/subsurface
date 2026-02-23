@@ -8,9 +8,7 @@
 
 package org.subsurfacedivelog.mobile;
 
-import org.qtproject.qt5.android.QtNative;
-
-import org.qtproject.qt5.android.bindings.QtActivity;
+import org.qtproject.qt.android.QtActivity;
 import android.os.*;
 import android.content.*;
 import android.app.*;
@@ -22,8 +20,8 @@ import android.hardware.usb.UsbManager;
 import android.util.Log;
 import java.io.File;
 import android.net.Uri;
-import android.support.v4.content.FileProvider;
-import android.support.v4.app.ShareCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.app.ShareCompat;
 import android.content.pm.PackageManager;
 import java.util.List;
 import android.content.pm.ResolveInfo;
@@ -39,14 +37,10 @@ public class SubsurfaceMobileActivity extends QtActivity
 
 	// you can share one or two files
 	public boolean shareViaEmail(String subject, String recipient, String body, String path1, String path2) {
-		// better save than sorry
-		if (QtNative.activity() == null)
-			return false;
-
 		Log.d(TAG + " shareFile - trying to share: ", path1 + " and " + path2 + " to " + recipient);
 
 		// Can't get this to work building my own intent, so let's use the IntentBuilder
-		Intent shareFileIntent = ShareCompat.IntentBuilder.from(QtNative.activity()).getIntent();
+		Intent shareFileIntent = new ShareCompat.IntentBuilder(this).getIntent();
 		shareFileIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
 		// recipients are always an array, even if there's only one
 		shareFileIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { recipient });
@@ -57,7 +51,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 		File fileToShare = new File(path1);
 		Uri uri;
 		try {
-			uri = FileProvider.getUriForFile(QtNative.activity(), fileProviderAuthority, fileToShare);
+			uri = FileProvider.getUriForFile(this, fileProviderAuthority, fileToShare);
 		} catch (IllegalArgumentException e) {
 			Log.d(TAG + " shareFile - cannot get URI for ", path1);
 			return false;
@@ -73,7 +67,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 		if (!path2.isEmpty()) {
 			fileToShare = new File(path2);
 			try {
-				uri = FileProvider.getUriForFile(QtNative.activity(), fileProviderAuthority, fileToShare);
+				uri = FileProvider.getUriForFile(this, fileProviderAuthority, fileToShare);
 			} catch (IllegalArgumentException e) {
 				Log.d(TAG + " shareFile - cannot get URI for ", path2);
 				return false;
@@ -88,7 +82,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Log.d(TAG + " sendFile ", " create activity for the Intent");
 		// this actually allows sharing with any app that will take "text/plain" files, including Dropbox, etc
 		// in order for the recipient / subject to work, the user needs to be clever enough to share with an email app
-		QtNative.activity().startActivity(shareFileIntent);
+		this.startActivity(shareFileIntent);
 		return true;
 	}
 
