@@ -8,7 +8,7 @@
 
 package org.subsurfacedivelog.mobile;
 
-import org.qtproject.qt.android.QtActivity;
+import org.qtproject.qt.android.bindings.QtActivity;
 import android.os.*;
 import android.content.*;
 import android.app.*;
