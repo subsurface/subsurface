@@ -716,9 +716,30 @@ endforeach()
 # now for each platform the install instructions
 if(ANDROID)
 	# Qt6 handles Android deployment via androiddeployqt, configured through target properties
+	# libomp.so is needed at runtime by Kirigami (linked against OpenMP);
+	# find it in the NDK toolchain and bundle it into the APK
+	if(CMAKE_ANDROID_NDK)
+		set(_ndk "${CMAKE_ANDROID_NDK}")
+	else()
+		set(_ndk "${ANDROID_NDK_ROOT}")
+	endif()
+	file(GLOB_RECURSE _libomp_candidates "${_ndk}/toolchains/llvm/prebuilt/*/lib/*/libomp.so")
+	set(ANDROID_LIBOMP "")
+	foreach(_lib ${_libomp_candidates})
+		if(_lib MATCHES "aarch64")
+			set(ANDROID_LIBOMP "${_lib}")
+			break()
+		endif()
+	endforeach()
+	set(_extra_libs "${ANDROID_LIBOMP}")
 	set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
 		QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/android-mobile"
 	)
+	if(_extra_libs)
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			QT_ANDROID_EXTRA_LIBS "${_extra_libs}"
+		)
+	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(APP_BUNDLE_DIR "${SUBSURFACE_TARGET}.app")
 	# macdeployqt simplifies a lot of this process, but still doesn't get everything right
