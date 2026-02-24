@@ -264,6 +264,15 @@ jobs:
           Pop-Location
 
       # ---------------------------------------------------------------
+      # grab the version / build number
+      # -- this runs on Linux and uses the shared code between all
+      #    workflows to generate a new build nr if necessary
+      # ---------------------------------------------------------------
+      - name: set the version information
+        id: version_number
+        uses: ./.github/actions/manage-version
+
+      # ---------------------------------------------------------------
       # Configure and build Subsurface
       # ---------------------------------------------------------------
       - name: Configure Subsurface
@@ -353,8 +362,53 @@ jobs:
           ninja installer
           Pop-Location
 
-      - name: Upload installer
-        uses: actions/upload-artifact@v4
+      - name: Rename installer to something sensible
+        id: installer-name
+        shell: pwsh
+        run: |
+          $buildDir = "${{ github.workspace }}\build"
+          # Find the current installer (e.g., subsurface-6.0.5547-patch.57.local.exe)
+          $oldInstaller = Get-ChildItem "$buildDir\subsurface-*.exe" | Select-Object -First 1
+
+          if (-not $oldInstaller) {
+            Write-Error "No installer found in $buildDir"
+            exit 1
+          }
+
+          Write-Host "Found installer: $($oldInstaller.Name)"
+
+          # Create new name with qt-6 identifier
+          $newName = "subsurface-qt-6-${{ steps.version_number.outputs.version }}.exe"
+          $newPath = Join-Path $buildDir $newName
+
+          # Rename the installer
+          Move-Item -Path $oldInstaller.FullName -Destination $newPath -Force
+          Write-Host "Renamed to: $newName"
+
+          # Output the installer name for use in subsequent steps
+          "installer=$newName" >> $env:GITHUB_OUTPUT
+
+      # ---------------------------------------------------------------
+      # Publish result
+      # ---------------------------------------------------------------
+
+      - name: publish pull request artifacts
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v6
         with:
-          name: subsurface-windows-msvc-installer
-          path: ${{ github.workspace }}/build/subsurface-*.exe
+          name: Subsurface-Windows-MSVC-qt-6-${{ steps.version_number.outputs.version }}
+          path: ${{ github.workspace }}/build/${{ steps.installer-name.outputs.installer }}
+          compression-level: 0
+
+      # only publish a 'release' on push events (those include merging a PR)
+      # this is disabled for now with the '&& false' in the if: clause below
+      - name: upload binaries
+        if: github.event_name == 'push' && false
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.version_number.outputs.version }}
+          repository: ${{ github.repository_owner }}/nightly-builds
+          token: ${{ secrets.NIGHTLY_BUILDS }}
+          prerelease: false
+          fail_on_unmatched_files: true
+          files: ${{ github.workspace }}/build/${{ steps.installer-name.outputs.installer }}
