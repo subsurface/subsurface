@@ -1,4 +1,5 @@
 name: Manage the Subsurface CICD versioning
+description: Shared code for CICD versioning
 
 inputs:
   no-increment:
