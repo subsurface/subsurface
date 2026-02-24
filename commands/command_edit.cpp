@@ -378,8 +378,6 @@ void EditDiveSite::redo()
 static struct dive_site *createDiveSite(const std::string &name)
 {
 	struct dive_site *ds = new dive_site;
-	if (current_dive && current_dive->dive_site)
-		*ds = *current_dive->dive_site;
 
 	// If the current dive has a location, use that as location for the new dive site
 	if (current_dive) {

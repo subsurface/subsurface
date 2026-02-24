@@ -294,7 +294,7 @@ bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIn
 		return false;
 
 	struct dive_site *ds = sourceModel()->index(sourceRow, LocationInformationModel::DIVESITE, parent).data().value<dive_site *>();
-	if (!ds || ds == ignoreDs || ds == RECENTLY_ADDED_DIVESITE || !has_location(&ds->location))
+	if (!ds || ds == ignoreDs || !has_location(&ds->location))
 		return false;
 
 	return distance <= 0 ? ds->location == location

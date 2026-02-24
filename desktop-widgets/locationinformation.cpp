@@ -388,7 +388,7 @@ bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, cons
 
 	// If there is a current location, sort by that - otherwise use the provided column
 	if (has_location(&currentLocation)) {
-		// The dive sites are -2 because of the first two items.
+		// The dive sites are -2 because of the first two synthetic items.
 		auto loc1 = (divelog.sites)[source_left.row() - 2]->location;
 		auto loc2 = (divelog.sites)[source_right.row() - 2]->location;
 		return get_distance(loc1, currentLocation) < get_distance(loc2, currentLocation);
@@ -410,21 +410,18 @@ void DiveLocationModel::resetModel()
 QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 {
 	static const QIcon plusIcon(":list-add-icon");
-	static const QIcon geoCode(":geotag-icon");
 
 	if (index.row() < 0 || index.row() >= (int)divelog.sites.size() + 2)
 		return QVariant();
 
 	if (index.row() <= 1) { // two special cases.
 		if (index.column() == LocationInformationModel::DIVESITE)
-			return QVariant::fromValue<dive_site *>(RECENTLY_ADDED_DIVESITE);
+			return QVariant::fromValue<dive_site *>(nullptr);
 		switch (role) {
 		case Qt::DisplayRole:
 			return new_ds_value[index.row()];
 		case Qt::ToolTipRole:
-			return current_dive && current_dive->dive_site ?
-				tr("Create a new dive site, copying relevant information from the current dive.") :
-				tr("Create a new dive site with this name");
+			return tr("Create a new dive site with this name");
 		case Qt::DecorationRole:
 			return plusIcon;
 		}
@@ -451,7 +448,7 @@ Qt::ItemFlags DiveLocationModel::flags(const QModelIndex &index) const
 	// This is crazy: If an entry is not marked as editable, the QListView
 	// (or rather the QAbstractItemView base class) clears the WA_InputMethod
 	// flag, which means that key-composition events are disabled. This
-	// breaks composition as long as the popup is openen. Therefore,
+	// breaks composition as long as the popup is open. Therefore,
 	// make all items editable.
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
@@ -549,9 +546,11 @@ void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
 	if (index.column() == LocationInformationModel::DIVESITE)
 		idx = index.model()->index(index.row(), LocationInformationModel::NAME);
 
-	dive_site *ds = index.model()->index(index.row(), LocationInformationModel::DIVESITE).data().value<dive_site *>();
-	currDs = ds;
-	setText(idx.data().toString());
+	dive_site *ds = index.model()->index(index.row(), LocationInformationModel::DIVESITE)
+			    .data().value<dive_site *>();
+	currDs = index.row() <= 1 ? nullptr : ds;
+	if (index.row() >= 1)
+		setText(idx.data().toString());
 	if (view->isVisible())
 		view->hide();
 	emit diveSiteSelected();
@@ -569,7 +568,7 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 		if (dsName.toLower().startsWith(str.toLower()))
 			return ds.get();
 	}
-	return NULL;
+	return nullptr;
 }
 
 void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &name)
@@ -586,13 +585,14 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &name)
 	// be filtered out by the proxy filter, as it does not contain
 	// the user entered text.
 	QString i1_name;
-	if (struct dive_site *ds = get_dive_site_name_start_which_str(name)) {
-		const QString orig_name = QString::fromStdString(ds->name).toLower();
-		const QString new_name = name.toLower();
-		if (new_name != orig_name)
-			i1_name = QString::fromStdString(ds->name);
+	const QString trimmed = name.trimmed();
+	if (struct dive_site *ds = get_dive_site_name_start_which_str(trimmed)) {
+		const QString closestName = QString::fromStdString(ds->name);
+		const bool exactMatch = !trimmed.isEmpty() &&
+					QString::compare(trimmed, closestName, Qt::CaseInsensitive) == 0;
+		if (!exactMatch)
+			i1_name = closestName;
 	}
-
 	model->setData(i1, i1_name);
 	proxy->setFilter(name);
 	fixPopupPosition();
@@ -616,7 +616,7 @@ void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 	} else if (key == Qt::Key_Up || key == Qt::Key_Down) {
 		showPopup();
 	} else if (textChanged) {
-		currDs = RECENTLY_ADDED_DIVESITE;
+		currDs = nullptr;
 	}
 }
 
