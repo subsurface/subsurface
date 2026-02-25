@@ -237,24 +237,19 @@ Kirigami.Page {
 		}
 		Item {
 			Layout.column: wide ? 0 : 2
-			Layout.row: wide ? 6 : 2
-			Layout.preferredHeight: wide ? parent.height - Kirigami.Units.gridUnit * 16 : Kirigami.Units.gridUnit
-			Layout.fillWidth: wide ? false : true
+			Layout.row: wide ? 7 : 2
+			Layout.fillHeight: wide ? true : false
 			// just used for spacing
 		}
 		StatsView {
 			Layout.column: wide ? 1 : 0
 			Layout.row: wide ? 0 : 4
 			Layout.columnSpan: wide ? 1 : 3
-			Layout.rowSpan: wide ? 7 : 1
+			Layout.rowSpan: wide ? 8 : 1
 			id: statsView
 			Layout.margins: Kirigami.Units.smallSpacing
 			Layout.fillWidth: true
 			Layout.fillHeight: true
-			Layout.maximumHeight: wide ? statisticsPage.height - 2 * Kirigami.Units.gridUnit :
-						     statisticsPage.height - 2 * Kirigami.Units.gridUnit - i4.height
-			Layout.maximumWidth: wide ? statisticsPage.width - 2 * Kirigami.Units.gridUnit - i4.width :
-						     statisticsPage.width - 2 * Kirigami.Units.smallSpacing
 		}
 	}
 	Component.onCompleted: {
