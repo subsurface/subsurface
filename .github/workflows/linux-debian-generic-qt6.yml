@@ -6,10 +6,20 @@ on:
       container-image:
         type: string
         required: true
+      runner:
+        type: string
+        required: false
+        default: 'ubuntu-latest'
+        description: 'GitHub runner to use (e.g., ubuntu-latest, ubuntu-24.04-arm64)'
+      arch:
+        type: string
+        required: false
+        default: 'x86-64'
+        description: 'Architecture name for artifacts (e.g., x86-64, arm64)'
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     container:
       image: ${{ inputs.container-image }}
 
@@ -79,7 +89,7 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v6
       with:
-        name: test-output-${{ steps.version_number.outputs.version }}
+        name: test-output-${{ inputs.arch }}-${{ steps.version_number.outputs.version }}
         path: |
           build/tests/
           !build/tests/CMakeFiles/
@@ -111,7 +121,7 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v6
       with:
-        name: test-output-mobile-${{ steps.version_number.outputs.version }}
+        name: test-output-mobile-${{ inputs.arch }}-${{ steps.version_number.outputs.version }}
         path: |
           build-mobile/tests/
           !build-mobile/tests/CMakeFiles/
