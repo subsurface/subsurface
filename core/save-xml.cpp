@@ -493,7 +493,7 @@ void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anon
 		put_format(b, " sac='%d.%03d l/min'", FRACTION_TUPLE(dive.sac, 1000));
 	if (dive.otu)
 		put_format(b, " otu='%d'", dive.otu);
-	if (dive.maxcns)
+	if (dive.maxcns > 0)
 		put_format(b, " cns='%d%%'", dive.maxcns);
 
 	save_tags(b, dive.tags);
