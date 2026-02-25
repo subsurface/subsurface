@@ -116,13 +116,15 @@ Kirigami.Page {
 		onTriggered: manager.redo()
 	}
 	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, undoAction, redoAction ]
+	property var contextualActions: []
 
 	states: [
 		State {
 			name: "view"
 			PropertyChanges {
 				target: diveDetailsPage
-				actions: contextactions
+				actions: []
+				contextualActions: contextactions
 			}
 		},
 		State {
@@ -130,6 +132,7 @@ Kirigami.Page {
 			PropertyChanges {
 				target: diveDetailsPage
 				actions: [cancelAction]
+				contextualActions: []
 			}
 		},
 		State {
@@ -137,6 +140,7 @@ Kirigami.Page {
 			PropertyChanges {
 				target: diveDetailsPage
 				actions: [cancelAction]
+				contextualActions: []
 			}
 		}
 	]
