@@ -16,7 +16,6 @@ share/
 packaging/windows/subsurface.nsi
 *.kdev4
 callgrind.out.*
-.gitignore
 build*/
 .rcc
 .moc
@@ -27,6 +26,7 @@ subsurface.pro.user*
 Subsurface-mobile.pro.user*
 Subsurface.app
 .DS_Store
+.vscode
 !android/**/*.xml
 build*
 nightly-builds/
