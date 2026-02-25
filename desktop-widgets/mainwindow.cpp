@@ -16,7 +16,6 @@
 #include <QStatusBar>
 #include <QNetworkProxy>
 #include <QUndoStack>
-
 #include "core/color.h"
 #include "core/device.h"
 #include "core/divelog.h"
@@ -73,7 +72,10 @@
 #include "qt-models/yearlystatisticsmodel.h"
 #include "preferences/preferencesdialog.h"
 
-#ifndef NO_USERMANUAL
+#ifdef NO_USERMANUAL
+#include <QDesktopServices>
+#include <QUrl>
+#else
 #include "usermanual.h"
 #endif
 
@@ -205,9 +207,6 @@ MainWindow::MainWindow() :
 	diveList->setFocus();
 	diveList->expand(diveList->model()->index(0, 0));
 	diveList->scrollTo(diveList->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
-#ifdef NO_USERMANUAL
-	ui.menuHelp->removeAction(ui.actionUserManual);
-#endif
 
 	updateManager = new UpdateManager(this);
 	undoAction = Command::undoAction(this);
@@ -866,7 +865,9 @@ void MainWindow::on_action_Check_for_Updates_triggered()
 
 void MainWindow::on_actionUserManual_triggered()
 {
-#ifndef NO_USERMANUAL
+#ifdef NO_USERMANUAL
+	QDesktopServices::openUrl(QUrl("https://subsurface-divelog.org/subsurface-user-manual/"));
+#else
 	if (!helpView)
 		helpView = new UserManual(this);
 	helpView->show();
