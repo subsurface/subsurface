@@ -4,7 +4,7 @@ import QtQuick.Controls 2.2 as Controls
 import QtQuick.Layouts 6.0
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 6.0
-import org.kde.kirigami 2.4  as Kirigami
+import org.kde.kirigami as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.ScrollablePage {
@@ -12,6 +12,12 @@ Kirigami.ScrollablePage {
 	objectName: "DiveList"
 	title: qsTr("Dive list")
 	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+	// Hamburger menu button
+	globalToolBarStyle: Kirigami.ApplicationHeaderStyle.ToolBar
+
+	// Left action to open global drawer (hamburger menu)
+	Kirigami.ColumnView.preventStealing: true
 	property int dlHorizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property QtObject diveListModel: null
 	// we want to use our own colors for Kirigami, so let's define our colorset
@@ -336,10 +342,13 @@ Kirigami.ScrollablePage {
 		onTriggered: manager.redo()
 	}
 	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, mergeWithDiveAboveAction, mergeWithDiveBelowAction, toggleInvalidAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
+	property var contextualActions: (Backend.cloud_verification_status === Enums.CS_VERIFIED ||
+	                                  Backend.cloud_verification_status === Enums.CS_NOCLOUD)
+	                                 ? contextactions : []
 
 	function setupActions() {
 		if (Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD) {
-			page.actions = [page.downloadFromDCAction, page.addDiveAction, page.filterToggleAction].concat(contextactions)
+			page.actions = []
 			page.title = qsTr("Dive list")
 			if (diveListView.count === 0)
 				showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
@@ -429,6 +438,32 @@ Kirigami.ScrollablePage {
 			}
 		}
 	}
+
+	footer: Controls.ToolBar {
+		visible: Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD
+		RowLayout {
+			anchors.fill: parent
+			Controls.ToolButton {
+				icon.name: downloadFromDCAction.icon.name
+				text: downloadFromDCAction.text
+				onClicked: downloadFromDCAction.trigger()
+				Layout.fillWidth: true
+			}
+			Controls.ToolButton {
+				icon.name: addDiveAction.icon.name
+				text: addDiveAction.text
+				onClicked: addDiveAction.trigger()
+				Layout.fillWidth: true
+			}
+			Controls.ToolButton {
+				icon.name: filterToggleAction.icon.name
+				text: filterToggleAction.text
+				onClicked: filterToggleAction.trigger()
+				Layout.fillWidth: true
+			}
+		}
+	}
+
 	ListView {
 		id: diveListView
 		anchors.fill: parent
