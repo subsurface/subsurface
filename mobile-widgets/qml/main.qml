@@ -7,13 +7,16 @@ import QtQuick.Dialogs 6.0
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 import QtQuick.Templates 2.0 as QtQuickTemplates
 
 Kirigami.ApplicationWindow {
 	id: rootItem
 	title: qsTr("Subsurface-mobile")
 	wideScreen: false // workaround for probably Kirigami bug. See commits.
+
+	// Ensure drawer controls are visible in Kirigami 6.x
+	property bool showGlobalDrawer: true
 
 	// ensure we get all information on screen rotation
 	// This was removed and has to be replaced.
@@ -31,11 +34,12 @@ Kirigami.ApplicationWindow {
 	Kirigami.Theme.textColor: subsurfaceTheme.textColor
 
 	// next setup the tab bar on top
-	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
+	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.ToolBar
 	pageStack.globalToolBar.showNavigationButtons: (Kirigami.ApplicationHeaderStyle.ShowBackButton | Kirigami.ApplicationHeaderStyle.ShowForwardButton)
-	pageStack.globalToolBar.minimumHeight: 0
-	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
-	pageStack.globalToolBar.maximumHeight: Kirigami.Units.gridUnit * 2
+	pageStack.globalToolBar.canContainHandles: true
+	pageStack.globalToolBar.minimumHeight: Kirigami.Units.gridUnit * 1.6
+	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2.5 : 2))
+	pageStack.globalToolBar.maximumHeight: Kirigami.Units.gridUnit * 3
 
 	property alias notificationText: manager.notificationText
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
@@ -183,10 +187,21 @@ Kirigami.ApplicationWindow {
 	contextDrawer: Kirigami.ContextDrawer {
 		id: contextDrawer
 		closePolicy: QtQuickTemplates.Popup.CloseOnPressOutside
+		enabled: visibleActions().length > 0
+		handleClosedIcon.name: ""
+		handleClosedIcon.source: "qrc:/icons/overflow-menu.svg"
+		handleOpenIcon.name: "window-close-symbolic"
+		handleOpenIcon.source: ""
+		actions: pageStack.currentItem?.contextualActions ?? []
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
 		id: globalDrawer
+		handleVisible: true
+		handleClosedIcon.name: ""
+		handleClosedIcon.source: "qrc:/icons/application-menu.svg"
+		handleOpenIcon.name: "window-close-symbolic"
+		handleOpenIcon.source: ""
 		height: rootItem.height
 		rightPadding: 0
 		enabled: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
