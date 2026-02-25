@@ -361,17 +361,12 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	Rectangle {
+	header: Rectangle {
 		id: filterHeader
 		visible: filterBar.height > 0
 		implicitHeight: filterBar.implicitHeight
 		implicitWidth: filterBar.implicitWidth
 		height: filterBar.height
-		anchors {
-			top: parent.top
-			left: parent.left
-			right: parent.right
-		}
 		color: subsurfaceTheme.backgroundColor
 		enabled: rootItem.filterToggle
 		RowLayout {
@@ -436,7 +431,6 @@ Kirigami.ScrollablePage {
 	}
 	ListView {
 		id: diveListView
-		topMargin: filterHeader.height
 		anchors.fill: parent
 		model: diveListModel
 		currentIndex: -1
