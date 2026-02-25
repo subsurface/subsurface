@@ -39,6 +39,6 @@ done
 
 # finally, build and install Kirigami
 # any extra arguments (e.g. cross-compilation flags) are forwarded to cmake
-cmake -B build -DBUILD_SHARED_LIBS=OFF -DSHARE_INSTALL_DIR=.. -DCMAKE_INSTALL_PREFIX=../kirigami-install -DECM_DIR="$SRC"/subsurface/mobile-widgets/3rdparty/ECM/cmake -DUSE_DBUS=OFF "$@"
+cmake -B build -DBUILD_SHARED_LIBS=ON -DSHARE_INSTALL_DIR=.. -DCMAKE_INSTALL_PREFIX=../kirigami-install -DECM_DIR="$SRC"/subsurface/mobile-widgets/3rdparty/ECM/cmake -DUSE_DBUS=OFF "$@"
 cmake --build build/
 cmake --install build/
