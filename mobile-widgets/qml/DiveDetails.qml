@@ -121,34 +121,22 @@ Kirigami.Page {
 		State {
 			name: "view"
 			PropertyChanges {
-				target: diveDetailsPage;
-				actions {
-					right: null
-					left: currentItem ? (currentItem.modelData && currentItem.modelData.gps !== "" ? mapAction : null) : null
-				}
-				contextualActions: contextactions
+				target: diveDetailsPage
+				actions: contextactions
 			}
 		},
 		State {
 			name: "edit"
 			PropertyChanges {
-				target: diveDetailsPage;
-				actions {
-					right: cancelAction
-					left: null
-				}
-				contextualActions: []
+				target: diveDetailsPage
+				actions: [cancelAction]
 			}
 		},
 		State {
 			name: "add"
 			PropertyChanges {
-				target: diveDetailsPage;
-				actions {
-					right: cancelAction
-					left: null
-				}
-				contextualActions: []
+				target: diveDetailsPage
+				actions: [cancelAction]
 			}
 		}
 	]
