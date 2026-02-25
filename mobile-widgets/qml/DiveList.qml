@@ -339,18 +339,12 @@ Kirigami.ScrollablePage {
 
 	function setupActions() {
 		if (Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD) {
-			page.actions.main = page.downloadFromDCAction
-			page.actions.right = page.addDiveAction
-			page.actions.left = page.filterToggleAction
-			page.contextualActions = contextactions
+			page.actions = [page.downloadFromDCAction, page.addDiveAction, page.filterToggleAction].concat(contextactions)
 			page.title = qsTr("Dive list")
 			if (diveListView.count === 0)
 				showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
 		} else {
-			page.actions.main = null
-			page.actions.right = null
-			page.actions.left = null
-			page.contextualActions = null
+			page.actions = []
 			page.title = qsTr("Cloud credentials")
 		}
 	}
