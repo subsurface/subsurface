@@ -63,22 +63,24 @@ static QString profileText(const struct dive &dive)
 void exportOneProfile(ProfileScene &profile, const struct dive &dive, const QString &filename, bool diveinfo,
 		      int width, int height)
 {
-	QImage image = QImage(QSize(width, height), QImage::Format_RGB32);
+	int profileWidth = profileScale * width;
+	int profileHeight = profileScale * height;
+	QImage image = QImage(QSize(profileWidth, profileHeight), QImage::Format_RGB32);
 	QPainter paint;
 	paint.begin(&image);
-	profile.draw(&paint, QRect(0, 0, width, height), &dive, 0, nullptr, false);
+	profile.draw(&paint, QRect(0, 0, profileWidth, profileHeight), &dive, 0, nullptr, false);
 	if (diveinfo) {
 		// Scale overlay elements proportionally to image size
 		double scale = width / (double)profileWidth;
 		int logoSize = (int)(200 * scale);
 		QPixmap logo(":poster-icon");
-		paint.drawPixmap(width - logoSize - (int)(10 * scale), (int)(height * 0.9) - logoSize, logoSize, logoSize, logo);
+		paint.drawPixmap(profileWidth - logoSize - (int)(10 * scale), (int)(profileHeight * 0.9) - logoSize, logoSize, logoSize, logo);
 		QString text = profileText(dive);
 		QPen pen = QPen(Qt::darkBlue);
 		paint.setPen(pen);
 		QFont textfont("Courier", (int)(60 * scale), QFont::Bold);
 		paint.setFont(textfont);
-		paint.drawText(QRect((int)(0.05 * width), 0, width, (int)(height * 0.8)), text, Qt::AlignBottom | Qt::AlignLeft);
+		paint.drawText(QRect((int)(0.05 * profileWidth), 0, profileWidth, (int)(profileHeight * 0.8)), text, Qt::AlignBottom | Qt::AlignLeft);
 	}
 	image.save(filename);
 }
@@ -106,7 +108,7 @@ void exportProfile(QString filename, bool selected_only, ExportCallback &cb, boo
 		cb.setProgress(done++ * 1000 / todo);
 		QString fn = count ? fi.path() + QDir::separator() + fi.completeBaseName().append(QString("-%1.").arg(count)) + fi.suffix()
 				   : filename;
-		exportOneProfile(*profile, *dive, fn, diveinfo);
+		exportOneProfile(*profile, *dive, fn, diveinfo, width, height);
 		++count;
 	}
 }
@@ -171,7 +173,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		if (selected_only && !dive->selected)
 			continue;
 		cb.setProgress(done++ * 1000 / todo);
-		exportOneProfile(*profile, *dive, texdir.filePath(QString("profile%1.png").arg(dive->number)), false);
+		exportOneProfile(*profile, *dive, texdir.filePath(QString("profile%1.png").arg(dive->number)), false, 800, 600);
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 

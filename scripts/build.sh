@@ -216,7 +216,7 @@ fi
 # the user can explicitly pick the builds requested
 # for historic reasons, -both builds mobile and desktop, -all builds the downloader as well
 
-DEFAULT_PREFIX="$SRC_DIR/"
+DEFAULT_PREFIX="$SRC/$SRC_DIR/"
 
 if [ "$BUILD_CLI" = "1" ] ; then
 	# only build this, nothing else

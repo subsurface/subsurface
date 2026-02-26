@@ -292,7 +292,7 @@ QString Printer::generateContent()
 {
 	std::unique_ptr<ProfileScene> profile = getPrintProfile();
 	for (struct dive *dive : getDives())
-		exportProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false, 800, 600);
+		exportOneProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false, 800, 600);
 
 	TemplateLayout t(printOptions, templateOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
@@ -617,7 +617,7 @@ void Printer::print()
 #else
 	std::unique_ptr<ProfileScene> profile = getPrintProfile();
 	for (struct dive *dive : getDives())
-		exportProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false, 800, 600);
+		exportOneProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false, 800, 600);
 
 	TemplateLayout t(printOptions, templateOptions);
 	connect(&t, SIGNAL(progressUpdated(int)), this, SLOT(templateProgessUpdated(int)));
