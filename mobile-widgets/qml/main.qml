@@ -39,7 +39,7 @@ Kirigami.ApplicationWindow {
 	pageStack.globalToolBar.canContainHandles: true
 	pageStack.globalToolBar.minimumHeight: Kirigami.Units.gridUnit * 1.6
 	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2.5 : 2))
-	pageStack.globalToolBar.maximumHeight: Kirigami.Units.gridUnit * 3
+	pageStack.globalToolBar.maximumHeight: pageStack.globalToolBar.preferredHeight
 
 	property alias notificationText: manager.notificationText
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName

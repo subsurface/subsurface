@@ -1,0 +1,30 @@
+From f0b9871676223671a5bfa07fef17d4eac430dd75 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Wed, 25 Feb 2026 22:48:23 -0800
+Subject: [PATCH] ToolBarPageHeader: set topPadding/bottomPadding to 0
+
+The comment already says "pageRow.globalToolBar.*Height already include
+the paddings", so AbstractApplicationHeader should not subtract additional
+topPadding/bottomPadding from the content area. Setting them to 0 makes
+mainItem fill the full toolbar height, ensuring toolbar content is
+properly vertically centered.
+---
+ src/controls/private/globaltoolbar/ToolBarPageHeader.qml | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/controls/private/globaltoolbar/ToolBarPageHeader.qml b/src/controls/private/globaltoolbar/ToolBarPageHeader.qml
+index bb9f70d1..39445f68 100644
+--- a/src/controls/private/globaltoolbar/ToolBarPageHeader.qml
++++ b/src/controls/private/globaltoolbar/ToolBarPageHeader.qml
+@@ -34,6 +34,8 @@ Kirigami.AbstractApplicationHeader {
+ 
+     leftPadding: Kirigami.Units.mediumSpacing
+     rightPadding: Kirigami.Units.mediumSpacing
++    topPadding: 0
++    bottomPadding: 0
+ 
+     MouseArea {
+         anchors.fill: parent
+-- 
+2.51.0
+
