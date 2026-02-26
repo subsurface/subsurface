@@ -141,16 +141,14 @@ TemplatePage {
 		}
 	}
 	
-	actions: [
-		Kirigami.Action {
-			icon {
-				name: state = ":/icons/undo.svg"
-				color: subsurfaceTheme.primaryColor
+	footer: Kirigami.ActionToolBar {
+		alignment: Qt.AlignCenter
+		actions: [
+			Kirigami.Action {
+				icon.name: ":/icons/undo.svg"
+				text: qsTr("Return")
+				onTriggered: pageStack.pop()
 			}
-			text: "Return"
-			onTriggered: {
-				pageStack.pop()
-			}
-		}
-	]
+		]
+	}
 }
