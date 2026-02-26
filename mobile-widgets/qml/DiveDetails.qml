@@ -131,7 +131,7 @@ Kirigami.Page {
 			name: "edit"
 			PropertyChanges {
 				target: diveDetailsPage
-				actions: [cancelAction]
+				actions: []
 				contextualActions: []
 			}
 		},
@@ -139,7 +139,7 @@ Kirigami.Page {
 			name: "add"
 			PropertyChanges {
 				target: diveDetailsPage
-				actions: [cancelAction]
+				actions: []
 				contextualActions: []
 			}
 		}
@@ -224,8 +224,21 @@ Kirigami.Page {
 		onTriggered: manager.deleteDive(currentItem.modelData.id)
 	}
 
+	property QtObject editSaveAction: Kirigami.Action {
+		icon.name: diveDetailsPage.state !== "view" ? ":/icons/document-save.svg" : ":/icons/document-edit.svg"
+		text: diveDetailsPage.state !== "view" ? qsTr("Save edits") : qsTr("Edit dive")
+		onTriggered: {
+			manager.appendTextToLog("save/edit button triggered")
+			if (diveDetailsPage.state === "edit" || diveDetailsPage.state === "add") {
+				detailsEdit.saveData()
+			} else {
+				startEditMode()
+			}
+		}
+	}
 	property QtObject cancelAction: Kirigami.Action {
 		text: qsTr("Cancel edit")
+		visible: diveDetailsPage.state === "edit" || diveDetailsPage.state === "add"
 		icon {
 			name: ":/icons/dialog-cancel.svg"
 			color: subsurfaceTheme.textColor
@@ -247,24 +260,9 @@ Kirigami.Page {
 		}
 	}
 
-	actions: [
-		Kirigami.Action {
-			icon {
-				name: state !== "view" ? ":/icons/document-save.svg" :
-							 ":/icons/document-edit.svg"
-				color: subsurfaceTheme.primaryColor
-			}
-			text: state !== "view" ? qsTr("Save edits") : qsTr("Edit dive")
-			onTriggered: {
-				manager.appendTextToLog("save/edit button triggered")
-				if (state === "edit" || state === "add") {
-					detailsEdit.saveData()
-				} else {
-					startEditMode()
-				}
-			}
-		}
-	]
+	footer: Kirigami.ActionToolBar {
+		actions: [editSaveAction, cancelAction]
+	}
 
 	onBackRequested: {
 		// if one of the drawers/menus is open, the back button should close those
