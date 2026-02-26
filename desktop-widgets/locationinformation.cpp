@@ -282,8 +282,8 @@ void LocationInformationWidget::on_GPSbutton_clicked()
 		return;
 
 	ImportGPS GPSDialog(this, fileName, &ui); // Create a GPS import QDialog
-	GPSDialog.coords.start_dive = current_dive->when; // initialise
-	GPSDialog.coords.end_dive = current_dive->endtime();
+	GPSDialog.coords.start_dive = current_dive->get_time_local(); // initialise
+	GPSDialog.coords.end_dive = current_dive->endtime_local();
 	if (getCoordsFromGPXFile(&GPSDialog.coords, fileName) == 0) { // Get coordinates from GPS file
 		GPSDialog.updateUI();         // If successful, put results in Dialog
 		if (!GPSDialog.exec())        // and show QDialog

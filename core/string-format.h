@@ -37,6 +37,7 @@ QString formatTripTitle(const dive_trip &trip);
 QString formatTripTitleWithDives(const dive_trip &trip);
 
 // Functions that format arbitrary data
+QString get_utc_offset_string(std::optional<int> offset);
 QString get_depth_string(depth_t depth, bool showunit = false, bool showdecimal = true);
 QString get_depth_string(int mm, bool showunit = false, bool showdecimal = true);
 QString get_depth_unit(bool metric);
@@ -61,6 +62,7 @@ QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hour
 QString get_dive_date_string(timestamp_t when);
 QString get_duration_string_short(duration_t duration);
 std::string get_dive_date_c_string(timestamp_t when);
+QString get_dive_datetime_string(datetime_t when);
 QString distance_string(int distanceInMeters);
 QString printGPSCoords(const location_t *loc);
 std::string printGPSCoordsC(const location_t *loc);

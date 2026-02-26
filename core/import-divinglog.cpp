@@ -282,7 +282,7 @@ static int divinglog_dive(void *param, int, char **data, char **)
 	diveid = atoi(data[13]);
 	state->cur_dive->number = atoi(data[0]);
 
-	state->cur_dive->when = (time_t)(atol(data[1]));
+	state->cur_dive->set_time_local((time_t)(atol(data[1])));
 
 	if (data[2])
 		state->log->sites.find_or_create(std::string(data[2]))->add_dive(state->cur_dive.get());

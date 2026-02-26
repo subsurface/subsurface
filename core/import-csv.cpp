@@ -510,7 +510,7 @@ int try_to_open_csv(std::string &mem, enum csv_format type, struct divelog *log)
 		return 0;
 
 	auto dive = std::make_unique<struct dive>();
-	dive->when = date;
+	dive->set_time_local(date);
 	dive->number = atoi(header[1]);
 	dc = &dive->dcs[0];
 
@@ -603,7 +603,7 @@ int parse_txt_file(const char *filename, const char *csv, struct divelog *log)
 		cur_tm.tm_sec = ss;
 
 		auto dive = std::make_unique<struct dive>();
-		dive->when = utc_mktime(&cur_tm);;
+		dive->set_time_local(utc_mktime(&cur_tm));
 		dive->dcs[0].model = "Poseidon MkVI Discovery";
 		value = parse_mkvi_value(memtxt.data(), "Rig Serial number");
 		dive->dcs[0].deviceid = atoi(value.c_str());

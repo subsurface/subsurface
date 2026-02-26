@@ -651,11 +651,15 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		tm.tm_hour = dt.hour;
 		tm.tm_min = dt.minute;
 		tm.tm_sec = dt.second;
-		dive->when = dive->dcs[0].when = utc_mktime(&tm);
+		datetime_t t;
+		t.local_time = utc_mktime(&tm);
+		if (dt.timezone != DC_TIMEZONE_NONE)
+			t.offset_to_utc = dt.timezone;
+		dive->set_time_dc(t);
 	}
 
 	// Parse the divetime.
-	std::string date_string = get_dive_date_c_string(dive->when);
+	std::string date_string = get_dive_date_c_string(dive->get_time_local());
 	dev_info(translate("gettextFromC", "Dive %d: %s"), import_dive_number, date_string.c_str());
 
 	unsigned int divetime = 0;
@@ -852,7 +856,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	/* If we already saw this dive, abort. */
 	if (!devdata->force_download && find_dive(dive->dcs[0])) {
-		std::string date_string = get_dive_date_c_string(dive->when);
+		std::string date_string = get_dive_date_c_string(dive->get_time_local());
 		dev_info(translate("gettextFromC", "Already downloaded dive at %s"), date_string.c_str());
 		return false;
 	}

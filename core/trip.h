@@ -22,7 +22,7 @@ struct dive_trip
 
 	void sort_dives();
 	void add_dive(struct dive *);
-	timestamp_t date() const;
+	datetime_t date() const;
 	bool is_single_day() const;
 	int shown_dives() const;
 };

@@ -95,7 +95,26 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2" colspan="2">
+         <item row="0" column="2">
+          <widget class="QLabel" name="utcOffsetLabel">
+           <property name="text">
+            <string>GMT offset (±h:mm)</string>
+           </property>
+          <property name="isHeader" stdset="0">
+           <bool>true</bool>
+          </property>
+           <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+              <horstretch>1</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+           </property>
+           <property name="alignment">
+             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3" colspan="2">
           <widget class="QLabel" name="depthLabely">
            <property name="text">
             <string> </string>
@@ -108,7 +127,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="0" column="3">
           <widget class="QLabel" name="depthLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -124,7 +143,7 @@
           </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="0" column="4">
           <widget class="QLabel" name="durationLabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -163,7 +182,17 @@
            </property>
            </widget>
          </item>
-         <item row="1" column="2" colspan="2">
+         <item row="1" column="2">
+          <widget class="QLineEdit" name="utcOffsetEdit">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3" colspan="2">
           <widget class="QLabel" name="depthLabelx">
            <property name="text">
             <string> </string>
@@ -176,7 +205,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
+         <item row="1" column="3">
           <widget class="QLineEdit" name="depth">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -186,7 +215,7 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="3">
+         <item row="1" column="4">
           <widget class="QLineEdit" name="duration">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Maximum">

@@ -313,9 +313,10 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 		divesMoved.push_back({ entry.trip, entry.dive->divetrip, entry.dive });
 
 	// Sort lexicographically by from-trip, to-trip and by start-time.
-	// Use std::tie() for lexicographical sorting.
+	// Use std::tuple() for lexicographical sorting.
+	// (Not a fan, since get_time_local() is called even if the first two members are unequal.)
 	std::sort(divesMoved.begin(), divesMoved.end(), [] ( const DiveMoved &d1, const DiveMoved &d2)
-		  { return std::tie(d1.from, d1.to, d1.d->when) < std::tie(d2.from, d2.to, d2.d->when); });
+		  { return std::tuple(d1.from, d1.to, d1.d->get_time_local()) < std::tuple(d2.from, d2.to, d2.d->get_time_local()); });
 
 	// Now, process the dives in batches by trip
 	// TODO: this is a bit different from the cases above, so we don't use the processByTrip template,
@@ -385,6 +386,20 @@ void DiveListBase::redo()
 	initWork();
 	redoit();
 	finishWork();
+}
+
+// This function is used when the times of dives are edited and thus
+// the dive and trips may have to be resorted.
+void DiveListBase::updateDiveAndTripLists(const std::vector<dive *> &dives, const std::vector<dive_trip *> &trips)
+{
+	if (dives.empty())
+		return;
+
+	// Changing times may have unsorted the dive and trip tables
+	divelog.dives.sort();
+	divelog.trips.sort();
+	for (dive_trip *trip: trips)
+		trip->sort_dives();
 }
 
 AddDive::AddDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber)
@@ -597,7 +612,7 @@ void DeleteDive::redoit()
 	// Deselect all dives and select dive that was close to the first deleted dive
 	dive *newCurrent = nullptr;
 	if (!divesToAdd.dives.empty()) {
-		timestamp_t when = divesToAdd.dives[0].dive->when;
+		datetime_t when = divesToAdd.dives[0].dive->get_time();
 		newCurrent = divelog.dives.find_next_visible_dive(when);
 	}
 	select_single_dive(newCurrent);
@@ -614,22 +629,18 @@ void ShiftTime::redoit()
 {
 	std::vector<dive_trip *> trips;
 	for (dive *d: diveList) {
-		d->when += timeChanged;
+		d->shift_time(timeChanged);
 		if (d->divetrip && std::find(trips.begin(), trips.end(), d->divetrip) == trips.end())
 			trips.push_back(d->divetrip);
 
 		d->invalidate_cache();
 	}
 
-	// Changing times may have unsorted the dive and trip tables
-	divelog.dives.sort();
-	divelog.trips.sort();
-	for (dive_trip *trip: trips)
-		trip->sort_dives();
+	updateDiveAndTripLists(diveList, trips);
 
 	// Send signals
 	QVector<dive *> dives = stdToQt<dive *>(diveList);
-	emit diveListNotifier.divesTimeChanged(timeChanged, dives);
+	emit diveListNotifier.divesTimeChanged(dives);
 	emit diveListNotifier.divesChanged(dives, DiveField::DATETIME);
 
 	// Select the changed dives
@@ -650,6 +661,51 @@ void ShiftTime::undoit()
 	redoit();
 }
 
+SetUtcOffset::SetUtcOffset(const std::vector<dive *> &changedDives, std::optional<int32_t> offset)
+{
+	diveList.reserve(changedDives.size());
+	for (dive *d: changedDives) {
+		if (offset != d->get_offset_to_utc())
+			diveList.push_back({ d, offset });
+	}
+
+	setText(QStringLiteral("%1 [%2]").arg(Command::Base::tr("set gmt offset of %n dive(s)", "", changedDives.size())).arg(getListOfDives(changedDives)));
+}
+
+bool SetUtcOffset::workToBeDone()
+{
+	return !diveList.empty();
+}
+
+void SetUtcOffset::redoit()
+{
+	std::vector<dive_trip *> trips;
+	std::vector<dive *> dives;
+	dives.reserve(diveList.size());
+	for (auto &[d, offset]: diveList) {
+		auto new_offset = std::exchange(offset, d->get_offset_to_utc());
+		d->set_offset_to_utc(new_offset);
+		if (d->divetrip && std::find(trips.begin(), trips.end(), d->divetrip) == trips.end())
+			trips.push_back(d->divetrip);
+		dives.push_back(d);
+	}
+
+	updateDiveAndTripLists(dives, trips);
+
+	// Send signals
+	auto divesChanged = stdToQt<dive *>(dives);
+	emit diveListNotifier.divesTimeChanged(divesChanged);
+	emit diveListNotifier.divesChanged(divesChanged, DiveField::DATETIME);
+
+	// Select the changed dives
+	setSelection(dives, dives[0], -1);
+}
+
+void SetUtcOffset::undoit()
+{
+	// Same as redoit()
+	redoit();
+}
 
 RenumberDives::RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumberIn) : divesToRenumber(divesToRenumberIn)
 {

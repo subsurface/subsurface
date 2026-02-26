@@ -116,7 +116,7 @@ public slots:
 	void diveSiteChanged(dive_site *ds, int field);
 	void divesChanged(const QVector<dive *> &dives);
 	void diveChanged(dive *d);
-	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
+	void divesTimeChanged(const QVector<dive *> &dives);
 	void divesSelectedSlot(const QVector<dive *> &dives, dive *currentDive, int currentDC);
 	void tripSelected(dive_trip *trip, dive *currentDive);
 	void tripChanged(dive_trip *trip, TripField);
@@ -137,8 +137,9 @@ private:
 	void divesChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
 	void divesShown(dive_trip *trip, const QVector<dive *> &dives);
 	void divesHidden(dive_trip *trip, const QVector<dive *> &dives);
-	void divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
+	void divesTimeChangedTrip(dive_trip *trip, const QVector<dive *> &dives);
 	void divesDeletedInternal(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
+	void divesDeletedUnsorted(dive_trip *trip, QVector<dive *> dives);
 
 	// The tree model has two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
@@ -194,7 +195,7 @@ public slots:
 	void diveSiteChanged(dive_site *ds, int field);
 	void divesChanged(const QVector<dive *> &dives);
 	void diveChanged(dive *d);
-	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
+	void divesTimeChanged(const QVector<dive *> &dives);
 	// Does nothing in list view.
 	//void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesSelectedSlot(const QVector<dive *> &dives, dive *currentDive, int currentDC);
@@ -213,9 +214,10 @@ private:
 	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const override;
 	dive *diveOrNull(const QModelIndex &index) const override;
 	void addDives(QVector<dive *> &dives);
-	void removeDives(QVector<dive *> dives);
+	void removeDives(QVector<dive *> dives, bool unsorted = false);
 	QModelIndex diveToIdx(const dive *d) const;
 	void divesDeletedInternal(const QVector<dive *> &dives);
+	void divesDeletedUnsorted(const QVector<dive *> &dives);
 
 	std::vector<dive *> items;				// TODO: access core data directly
 };

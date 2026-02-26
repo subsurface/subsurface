@@ -590,7 +590,7 @@ void PlannerWidgets::planDive()
 
 	plannerWidget.setReplanButton(false);
 
-	plannerWidget.setupStartTime(timestampToDateTime(planned_dive->when));	// This will reload the profile!
+	plannerWidget.setupStartTime(timestampToDateTime(planned_dive->get_time_local()));	// This will reload the profile!
 }
 
 void PlannerWidgets::prepareReplanDive(const dive *currentDive, int currentDcNr)
@@ -607,7 +607,7 @@ void PlannerWidgets::replanDive()
 	DivePlannerPointsModel::instance()->loadFromDive(planned_dive.get(), dcNr);
 
 	plannerWidget.setReplanButton(true);
-	plannerWidget.setupStartTime(timestampToDateTime(planned_dive->when));
+	plannerWidget.setupStartTime(timestampToDateTime(planned_dive->get_time_local()));
 	if (planned_dive->surface_pressure.mbar)
 		plannerWidget.setSurfacePressure(planned_dive->surface_pressure.mbar);
 	if (planned_dive->salinity)

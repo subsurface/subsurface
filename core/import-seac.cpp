@@ -125,7 +125,7 @@ static int seac_dive(void *param, int, char **data, char **)
 
 	std::string isodatetime = format_string_std("%4i-%02i-%02iT%02i:%02i:%02i%6s", year, month, day, hour, min, sec, timezoneoffset[tz]);
 	divetime = get_dive_datetime_from_isostring(isodatetime.c_str());
-	state->cur_dive->when = divetime;
+	state->cur_dive->set_time_local(divetime);
 
 	// 6 = dive_type
 	// Dive type 2?

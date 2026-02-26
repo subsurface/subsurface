@@ -396,17 +396,20 @@ static void save_tank_sensor_mappings(struct membuffer *b, const struct dive &di
 	}
 }
 
-static void show_date(struct membuffer *b, timestamp_t when)
+static void show_date(struct membuffer *b, datetime_t when)
 {
 	struct tm tm;
 
-	utc_mkdate(when, &tm);
+	utc_mkdate(when.local_time, &tm);
 
 	put_format(b, " date='%04u-%02u-%02u'",
 		   tm.tm_year, tm.tm_mon + 1, tm.tm_mday);
 	if (tm.tm_hour || tm.tm_min || tm.tm_sec)
 		put_format(b, " time='%02u:%02u:%02u'",
 			   tm.tm_hour, tm.tm_min, tm.tm_sec);
+	if (when.offset_to_utc)
+		put_format(b, " offset_to_utc='%+d:%02d'", *when.offset_to_utc / 3600,
+							   (std::abs(*when.offset_to_utc) / 60) % 60);
 }
 
 static void save_samples(struct membuffer *b, const struct divecomputer &dc)
@@ -426,7 +429,7 @@ static void save_dc(struct membuffer *b, const struct dive &dive, const struct d
 		put_format(b, " deviceid='%08x'", dc.deviceid);
 	if (dc.diveid)
 		put_format(b, " diveid='%08x'", dc.diveid);
-	if (dc.when && dc.when != dive.when)
+	if (dc.when && dc.when != dive.get_time())
 		show_date(b, dc.when);
 	if (dc.duration.seconds && dc.duration.seconds != dive.dcs[0].duration.seconds)
 		put_duration(b, dc.duration, " duration='", " min'");
@@ -508,7 +511,7 @@ void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anon
 		put_format(b, " divesiteid='%8x'", dive.dive_site->uuid);
 	if (dive.user_salinity)
 		put_salinity(b, dive.user_salinity, " watersalinity='", " g/l'");
-	show_date(b, dive.when);
+	show_date(b, dive.get_time());
 	if (surface_pressure.mbar)
 		put_pressure(b, surface_pressure, " airpressure='", " bar'");
 	if (dive.dcs[0].duration.seconds > 0)

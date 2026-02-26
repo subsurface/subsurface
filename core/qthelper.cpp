@@ -660,13 +660,13 @@ static QString get_dive_only_date_string(timestamp_t when)
 QString get_first_dive_date_string()
 {
 	const dive_table &dives = divelog.dives;
-	return !dives.empty() ? get_dive_only_date_string(dives[0]->when) : gettextFromC::tr("no dives");
+	return !dives.empty() ? get_dive_only_date_string(dives[0]->get_time_local()) : gettextFromC::tr("no dives");
 }
 
 QString get_last_dive_date_string()
 {
 	const dive_table &dives = divelog.dives;
-	return !dives.empty() ? get_dive_only_date_string(dives.back()->when) : gettextFromC::tr("no dives");
+	return !dives.empty() ? get_dive_only_date_string(dives.back()->get_time_local()) : gettextFromC::tr("no dives");
 }
 
 std::string get_current_date()

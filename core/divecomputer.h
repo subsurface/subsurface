@@ -30,7 +30,7 @@ struct tank_sensor_mapping;
  * A deviceid or diveid of zero is assumed to be "no ID".
  */
 struct divecomputer {
-	timestamp_t when = 0;
+	datetime_t when;
 	duration_t duration, surfacetime, last_manual_time;
 	depth_t maxdepth, meandepth;
 	temperature_t airtemp, watertemp;

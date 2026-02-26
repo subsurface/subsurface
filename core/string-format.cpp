@@ -242,19 +242,19 @@ QString formatDiveGPS(const dive *d)
 
 QString formatDiveDate(const dive *d)
 {
-	QDateTime localTime = timestampToDateTime(d->when);
+	QDateTime localTime = timestampToDateTime(d->get_time_local());
 	return localTime.date().toString(QString::fromStdString(prefs.date_format_short));
 }
 
 QString formatDiveTime(const dive *d)
 {
-	QDateTime localTime = timestampToDateTime(d->when);
+	QDateTime localTime = timestampToDateTime(d->get_time_local());
 	return localTime.time().toString(QString::fromStdString(prefs.time_format));
 }
 
 QString formatDiveDateTime(const dive *d)
 {
-	QDateTime localTime = timestampToDateTime(d->when);
+	QDateTime localTime = timestampToDateTime(d->get_time_local());
 	return QStringLiteral("%1 %2").arg(localTime.date().toString(QString::fromStdString(prefs.date_format_short)),
 					   localTime.time().toString(QString::fromStdString(prefs.time_format)));
 }
@@ -319,6 +319,15 @@ QString formatTripTitleWithDives(const dive_trip &trip)
 	int nr = static_cast<int>(trip.dives.size());
 	return formatTripTitle(trip) + " " +
 	       gettextFromC::tr("(%n dive(s))", "", nr);
+}
+
+QString get_utc_offset_string(std::optional<int> offset)
+{
+	if (!offset)
+		return QString();
+	if (*offset == 0)
+		return QStringLiteral("0:00");
+	return qasprintf_loc("%+d:%02d", *offset / 3600, std::abs(*offset / 60) % 60);
 }
 
 QString get_depth_string(int mm, bool showunit, bool showdecimal)
@@ -558,6 +567,14 @@ QString get_dive_date_string(timestamp_t when)
 std::string get_dive_date_c_string(timestamp_t when)
 {
 	return get_short_dive_date_string(when).toStdString();
+}
+
+QString get_dive_datetime_string(datetime_t when)
+{
+	QString s = get_dive_date_string(when.local_time);
+	if (!when.offset_to_utc)
+		return s;
+	return QStringLiteral("%1 (%2)").arg(s, get_utc_offset_string(when.offset_to_utc));
 }
 
 QString distance_string(int distanceInMeters)
