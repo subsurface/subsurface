@@ -22,6 +22,7 @@ QHash<int, QByteArray> MobileListModelBase::roleNames() const
 	roles[NumberRole] = "number";
 	roles[LocationRole] = "location";
 	roles[DepthRole] = "depth";
+	roles[AverageDepthRole] = "averageDepth";
 	roles[DurationRole] = "duration";
 	roles[DepthDurationRole] = "depthDuration";
 	roles[RatingRole] = "rating";

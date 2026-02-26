@@ -189,7 +189,7 @@ public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
 	void saveCloudCredentials(const QString &email, const QString &password, const QString &pin);
 	void commitChanges(QString diveId, QString number, QString date, QString location, QString gps,
-			   QString duration, QString depth, QString airtemp,
+			   QString duration, QString depth, QString averageDepth, QString airtemp,
 			   QString watertemp, QString suit, QString buddy,
 			   QString diveGuide, QString tags, QString weight, QString notes, QStringList startpressure,
 			   QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state);
@@ -259,6 +259,7 @@ private:
 	bool checkLocation(DiveSiteChange &change, struct dive *d, QString location, QString gps);
 	bool checkDuration(struct dive *d, QString duration);
 	bool checkDepth(struct dive *d, QString depth);
+	bool checkMeanDepth(struct dive *d, QString averageDepth);
 	bool currentGitLocalOnly;
 	bool localChanges;
 	QString m_progressMessage;
