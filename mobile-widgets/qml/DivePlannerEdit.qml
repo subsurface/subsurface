@@ -3,7 +3,7 @@ import QtQuick 6.0
 import QtQuick.Controls 2.12 as Controls
 import QtQuick.Layouts 1.12
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 TemplatePage {
 	id: divePlannerEditWindow
