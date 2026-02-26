@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 6.0
-import QtQuick.Controls 2.2
-import QtGraphicalEffects 1.0
-import QtQuick.Layouts 1.2
+import QtQuick
+import QtQuick.Controls
+import Qt5Compat.GraphicalEffects
+import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
 TextField {
