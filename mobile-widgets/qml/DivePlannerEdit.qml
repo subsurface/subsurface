@@ -630,36 +630,23 @@ TemplatePage {
 			}
 		}
 	}
-	actions: [
-		Kirigami.Action {
-			icon {
-				name: state = ":/icons/ic_settings.svg"
-				color: subsurfaceTheme.primaryColor
+	footer: Kirigami.ActionToolBar {
+		actions: [
+			Kirigami.Action {
+				icon.name: ":/icons/ic_settings.svg"
+				text: qsTr("Settings")
+				onTriggered: showPage(divePlannerSetupWindow)
+			},
+			Kirigami.Action {
+				icon.name: ":/icons/media-playlist-repeat.svg"
+				text: qsTr("Refresh")
+				onTriggered: generatePlan()
+			},
+			Kirigami.Action {
+				icon.name: ":/icons/undo.svg"
+				text: qsTr("Back")
+				onTriggered: pageStack.pop()
 			}
-			text: "Settings"
-			onTriggered: {
-				showPage(divePlannerSetupWindow)
-			}
-		},
-		Kirigami.Action {
-			icon {
-				name: state = ":icons/media-playlist-repeat.svg"
-				color: subsurfaceTheme.primaryColor
-			}
-			text: "Refresh"
-			onTriggered: {
-				generatePlan()
-			}
-		},
-		Kirigami.Action {
-			icon {
-				name: state = ":/icons/undo.svg"
-				color: subsurfaceTheme.primaryColor
-			}
-			text: "Back"
-			onTriggered: {
-				pageStack.pop()
-			}
-		}
-	]
+		]
+	}
 }
