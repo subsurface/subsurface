@@ -15,7 +15,7 @@ SpinBox {
 		width: Kirigami.Units.gridUnit * 3
 		text: control.textFromValue(control.value, control.locale)
 		font: control.font
-		color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.disabledTextColor
+		color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.secondaryTextColor
 		horizontalAlignment: Qt.AlignHCenter
 		verticalAlignment: Qt.AlignVCenter
 
@@ -34,7 +34,7 @@ SpinBox {
 		Text {
 			text: "+"
 			font.pixelSize: control.font.pixelSize * 1.5
-			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
+			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.secondaryTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter
@@ -52,7 +52,7 @@ SpinBox {
 		Text {
 			text: "-"
 			font.pixelSize: control.font.pixelSize * 1.5
-			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
+			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.secondaryTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter
