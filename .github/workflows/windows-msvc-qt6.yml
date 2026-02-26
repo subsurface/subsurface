@@ -271,6 +271,8 @@ jobs:
       - name: set the version information
         id: version_number
         uses: ./.github/actions/manage-version
+        with:
+          no-increment: true
 
       # ---------------------------------------------------------------
       # Configure and build Subsurface
@@ -402,6 +404,9 @@ jobs:
 
       # only publish a 'release' on push events (those include merging a PR)
       # this is disabled for now with the '&& false' in the if: clause below
+      # when enabling, also remove the 'no-increment: true' option from the version management step above,
+      # so that we avoid overwriting existing release artifacts if this workflow runs this step first
+      # But version generation will need a fix first to run in this workflow.
       - name: upload binaries
         if: github.event_name == 'push' && false
         uses: softprops/action-gh-release@v2
