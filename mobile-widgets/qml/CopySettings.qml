@@ -38,7 +38,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteDiveSite
+				Component.onCompleted: checked = manager.pasteDiveSite
+				onToggled: manager.pasteDiveSite = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 			Controls.Label {
@@ -47,7 +48,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteNotes
+				Component.onCompleted: checked = manager.pasteNotes
+				onToggled: manager.pasteNotes = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 			Controls.Label {
@@ -56,7 +58,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteDiveGuide
+				Component.onCompleted: checked = manager.pasteDiveGuide
+				onToggled: manager.pasteDiveGuide = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 			Controls.Label {
@@ -65,7 +68,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteBuddy
+				Component.onCompleted: checked = manager.pasteBuddy
+				onToggled: manager.pasteBuddy = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 			Controls.Label {
@@ -74,7 +78,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteSuit
+				Component.onCompleted: checked = manager.pasteSuit
+				onToggled: manager.pasteSuit = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 			Controls.Label {
@@ -83,7 +88,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteRating
+				Component.onCompleted: checked = manager.pasteRating
+				onToggled: manager.pasteRating = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 			Controls.Label {
@@ -92,7 +98,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteVisibility
+				Component.onCompleted: checked = manager.pasteVisibility
+				onToggled: manager.pasteVisibility = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 			Controls.Label {
@@ -101,7 +108,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteTags
+				Component.onCompleted: checked = manager.pasteTags
+				onToggled: manager.pasteTags = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 			Controls.Label {
@@ -110,7 +118,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteCylinders
+				Component.onCompleted: checked = manager.pasteCylinders
+				onToggled: manager.pasteCylinders = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 			Controls.Label {
@@ -119,7 +128,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
-				checked: manager.pasteWeights
+				Component.onCompleted: checked = manager.pasteWeights
+				onToggled: manager.pasteWeights = checked
 				Layout.preferredWidth: gridWidth * 0.25
 			}
 		}
