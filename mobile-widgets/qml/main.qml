@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 6.0
-import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.1
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 6.0
-import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Window
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import QtQuick.Window
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami as Kirigami
-import QtQuick.Templates 2.0 as QtQuickTemplates
+import QtQuick.Templates as QtQuickTemplates
 
 Kirigami.ApplicationWindow {
 	id: rootItem

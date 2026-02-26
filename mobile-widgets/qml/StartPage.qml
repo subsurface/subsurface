@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 6.0
-import QtQuick.Layouts 1.2
-import QtQuick.Controls 2.2 as Controls
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls as Controls
 import org.kde.kirigami as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
