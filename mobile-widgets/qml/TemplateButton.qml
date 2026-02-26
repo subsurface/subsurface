@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 6.0
-import QtQuick.Controls 2.2
+import QtQuick
+import QtQuick.Controls
 import org.kde.kirigami as Kirigami
 
 Button {
