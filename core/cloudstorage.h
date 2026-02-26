@@ -28,4 +28,6 @@ private:
 };
 
 QNetworkAccessManager *manager();
+bool isValidEmail(const QString &email);
+bool isValidPassword(const QString &password);
 #endif

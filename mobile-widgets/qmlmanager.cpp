@@ -636,20 +636,10 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	// email address MUST be lower case or bad things happen
 	QString email = newEmail.toLower();
 
-	// make sure we only have letters, numbers, and +-_. in password and email address
-	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
 	if (!noCloud) {
 		// in case of NO_CLOUD, the email address + passwd do not care, so do not check it.
-		if (newPassword.isEmpty() ||
-			!regExp.match(newPassword).hasMatch() ||
-			!regExp.match(email).hasMatch()) {
+		if (!isValidPassword(newPassword) || !isValidEmail(email)) {
 			setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
-			return;
-		}
-		// use the same simplistic regex as the backend to check email addresses
-		regExp = QRegularExpression("^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\\.[a-zA-Z0-9]+");
-		if (!regExp.match(email).hasMatch()) {
-			setStartPageText(RED_FONT + tr("Invalid format for email address") + END_FONT);
 			return;
 		}
 	}

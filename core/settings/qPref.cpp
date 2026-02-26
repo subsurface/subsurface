@@ -17,8 +17,10 @@
 #include "qPrefMedia.h"
 #include "qPrefLog.h"
 
+#ifndef SUBSURFACE_CLI
 #include <QtQml>
 #include <QQmlContext>
+#endif
 
 void qPref::loadSync(bool doSync)
 {
@@ -41,6 +43,7 @@ void qPref::loadSync(bool doSync)
 	qPrefLog::loadSync(doSync);
 }
 
+#ifndef SUBSURFACE_CLI
 Q_DECLARE_METATYPE(deco_mode);
 Q_DECLARE_METATYPE(def_file_behavior);
 Q_DECLARE_METATYPE(taxonomy_category);
@@ -89,3 +92,4 @@ void qPref::registerQML(QQmlEngine *engine)
 	qRegisterMetaType<units::VOLUME>();
 	qRegisterMetaType<units::WEIGHT>();
 }
+#endif

@@ -5,7 +5,6 @@
 #include "core/cloudstorage.h"
 #include "core/errorhelper.h"
 #include "core/settings/qPrefCloudStorage.h"
-#include <QRegularExpression>
 #include <QMessageBox>
 #include <QDesktopServices>
 
@@ -50,12 +49,11 @@ void PreferencesCloud::syncSettings()
 		// deal with password change
 		if (!email.isEmpty() && !password.isEmpty()) {
 			// connect to backend server to check / create credentials
-			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
-			if (!reg.match(email).hasMatch() || (!password.isEmpty() && !reg.match(password).hasMatch())) {
+			if (!isValidEmail(email) || !isValidPassword(password)) {
 				QMessageBox::warning(this, tr("Warning"), emailpasswordformatwarning);
 				return;
 			}
-			if (!reg.match(email).hasMatch() || (!newpassword.isEmpty() && !reg.match(newpassword).hasMatch())) {
+			if (!isValidEmail(email) || (!newpassword.isEmpty() && !isValidPassword(newpassword))) {
 				QMessageBox::warning(this, tr("Warning"), emailpasswordformatwarning);
 				ui->cloud_storage_new_passwd->setText(QString());
 				return;
@@ -76,8 +74,7 @@ void PreferencesCloud::syncSettings()
 		cloud->set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
 		if (!email.isEmpty() && !password.isEmpty()) {
 			// connect to backend server to check / create credentials
-			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
-			if (!reg.match(email).hasMatch() || (!password.isEmpty() && !reg.match(password).hasMatch())) {
+			if (!isValidEmail(email) || !isValidPassword(password)) {
 				QMessageBox::warning(this, tr("Warning"), emailpasswordformatwarning);
 				cloud->set_cloud_verification_status(oldVerificationStatus);
 				return;
@@ -90,8 +87,7 @@ void PreferencesCloud::syncSettings()
 		QString pin = ui->cloud_storage_pin->text();
 		if (!pin.isEmpty()) {
 			// connect to backend server to check / create credentials
-			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
-			if (!reg.match(email).hasMatch() || !reg.match(password).hasMatch()) {
+			if (!isValidEmail(email) || !isValidPassword(password)) {
 				QMessageBox::warning(this, tr("Warning"), emailpasswordformatwarning);
 				return;
 			}
