@@ -119,6 +119,10 @@ if (BTSUPPORT)
 endif()
 TEST(TestParsePerformance testparseperformance.cpp)
 TEST(TestPlan testplan.cpp)
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
+TEST(TestDivePlannerModel testdiveplannermodel.cpp)
+set(TEST_DIVE_PLANNER_MODEL TestDivePlannerModel)
+endif()
 TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
 # this keeps randomly failing and I don't understand why
@@ -166,6 +170,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestGpsCoords
 	TestParse
 	TestPlan
+	${TEST_DIVE_PLANNER_MODEL}
 	TestAirPressure
 	TestDiveSiteDuplication
 	TestRenumber
