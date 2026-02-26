@@ -280,8 +280,7 @@ Kirigami.Page {
 				endEditMode()
 				event.accepted = true;
 			} else if (state === "add") {
-				endEditMode()
-				pageStack.pop()
+				endEditMode() // endEditMode() already calls pageStack.pop() for "add"
 				event.accepted = true;
 			}
 		}
@@ -305,12 +304,16 @@ Kirigami.Page {
 		// was an add, we need to undo the addDive action that created the empty dive
 		// and we should also go back to the DiveDetails where we came from...
 		manager.appendTextToLog("endEditMode called with state " + state)
-		if (state === "add") {
+		var wasAdd = (state === "add")
+		// set state to "view" before any pageStack.pop() to prevent re-entrant calls:
+		// onCurrentItemChanged in main.qml also calls endEditMode() when navigating
+		// away from DiveDetails while in edit/add state, and if state is still "add"
+		// when that fires during our own pop(), it would double-pop the stack
+		state = "view";
+		if (wasAdd) {
 			manager.undo()
 			pageStack.pop()
 		}
-		// now all that is left is to cancel the edit/add state
-		state = "view";
 		focus = false;
 		Qt.inputMethod.hide();
 		detailsEdit.clearDetailsEdit();
