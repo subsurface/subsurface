@@ -2205,7 +2205,7 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 		case EX_DIVE_SITES_XML:
 			{
 				auto sites = getDiveSitesToExport(false);
-				save_dive_sites_logic(qPrintable(fileName + ".xml"), sites.data(), (int)sites.size(), anonymize);
+				save_dive_sites_logic(qPrintable(fileName + ".xml"), sites.data(), (int)sites.size(), anonymize, false);
 				break;
 			}
 		default:
@@ -2253,7 +2253,7 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 		fileName.replace("subsurface.log", "subsurface_divesites.xml");
 		{ // need a block so the compiler doesn't complain about creating the sites variable here
 			auto sites = getDiveSitesToExport(false);
-			if (save_dive_sites_logic(qPrintable(fileName), sites.data(), (int)sites.size(), anonymize) == 0) {
+			if (save_dive_sites_logic(qPrintable(fileName), sites.data(), (int)sites.size(), anonymize, false) == 0) {
 				// ok, we have a file, let's send it
 				body = "Subsurface dive site data";
 			} else {
