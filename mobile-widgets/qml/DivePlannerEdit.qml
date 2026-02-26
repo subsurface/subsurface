@@ -312,8 +312,10 @@ TemplatePage {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					text: mix
 					onTextChanged: {
-						cylinderListModel.setProperty(index, "mix", text);
-						generatePlan();
+						if (text !== mix) {
+							cylinderListModel.setProperty(index, "mix", text);
+							generatePlan();
+						}
 					}
 					onEditingFinished: {
 						var parts = text.split('/');
@@ -353,8 +355,10 @@ TemplatePage {
 					text: pressure.toString()
 					validator: IntValidator { bottom: 0; top: 10000 }
 					onTextChanged: {
-						cylinderListModel.setProperty(index, "pressure", Number(text));
-						generatePlan();
+						if (Number(text) !== pressure) {
+							cylinderListModel.setProperty(index, "pressure", Number(text));
+							generatePlan();
+						}
 					}
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
@@ -450,8 +454,10 @@ TemplatePage {
 					text: depth.toString()
 					validator: IntValidator { bottom: 0; top: 900 }
 					onTextChanged: {
-						segmentListModel.setProperty(index, "depth", Number(text));
-						generatePlan();
+						if (Number(text) !== depth) {
+							segmentListModel.setProperty(index, "depth", Number(text));
+							generatePlan();
+						}
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
@@ -461,8 +467,10 @@ TemplatePage {
 					text: duration.toString()
 					validator: IntValidator { bottom: 1; top: 999 }
 					onTextChanged: {
-						segmentListModel.setProperty(index, "duration", Number(text));
-						generatePlan();
+						if (Number(text) !== duration) {
+							segmentListModel.setProperty(index, "duration", Number(text));
+							generatePlan();
+						}
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
@@ -491,8 +499,10 @@ TemplatePage {
 					enabled: cylinderListModel.get(gas) && cylinderListModel.get(gas).use == 1
 					onTextChanged: {
 						if (cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1) {
-							segmentListModel.setProperty(index, "setpoint", Number(text) * 1000);
-							generatePlan();
+							if (Math.round(Number(text) * 1000) !== setpoint) {
+								segmentListModel.setProperty(index, "setpoint", Math.round(Number(text) * 1000));
+								generatePlan();
+							}
 						}
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
