@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printer.h"
+#include "core/dive.h"
+#include "backend-shared/exportfuncs.h"
 #include "templatelayout.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
@@ -12,13 +14,22 @@
 #include <memory>
 #include <QPainter>
 #include <QPrinter>
+#include "qmath.h"
+#if defined(USE_QLITEHTML)
+# include <QUrl>
+# include <QFile>
+# include <qlitehtmlwidget.h>
+#else
 #include <QtWebKitWidgets>
 #include <QWebElementCollection>
 #include <QWebElement>
+#endif
 
 Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, const template_options &templateOptions, PrintMode printMode, dive *singleDive) :
 	paintDevice(paintDevice),
+#ifndef USE_QLITEHTML
 	webView(new QWebView),
+#endif
 	printOptions(printOptions),
 	templateOptions(templateOptions),
 	printMode(printMode),
@@ -29,7 +40,9 @@ Printer::Printer(QPaintDevice *paintDevice, const print_options &printOptions, c
 
 Printer::~Printer()
 {
+#ifndef USE_QLITEHTML
 	delete webView;
+#endif
 }
 
 void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &viewPort, QPainter *painter,
@@ -45,6 +58,7 @@ void Printer::putProfileImage(const QRect &profilePlaceholder, const QRect &view
 
 void Printer::flowRender()
 {
+#ifndef USE_QLITEHTML
 	// add extra padding at the bottom to pages with height not divisible by view port
 	int paddingBottom = pageSize.height() - (webView->page()->mainFrame()->contentsSize().height() % pageSize.height());
 	QString styleString = QString::fromUtf8("padding-bottom: ") + QString::number(paddingBottom) + "px;";
@@ -100,10 +114,12 @@ void Printer::flowRender()
 	webView->page()->mainFrame()->render(&painter, QWebFrame::ContentsLayer, reigon);
 
 	painter.end();
+#endif
 }
 
 void Printer::render(int pages)
 {
+#ifndef USE_QLITEHTML
 	// get all refereces to diveprofile class in the Html template
 	QWebElementCollection collection = webView->page()->mainFrame()->findAllElements(".diveprofile");
 
@@ -144,6 +160,7 @@ void Printer::render(int pages)
 			static_cast<QPrinter*>(paintDevice)->newPage();
 	}
 	painter.end();
+#endif
 }
 
 //value: ranges from 0 : 100 and shows the progress of the templating engine
@@ -189,6 +206,11 @@ void Printer::print()
 		return;
 	}
 
+	auto profile = getPrintProfile();
+	for(struct dive *dive: getDives())
+		exportProfile(*profile, *dive, printDir.filePath(QString("dive_%1.png").arg(dive->id)), false);
+
+
 	QPrinter *printerPtr;
 	printerPtr = static_cast<QPrinter*>(paintDevice);
 
@@ -198,6 +220,9 @@ void Printer::print()
 	//rendering resolution = selected paper size in inchs * printer dpi
 	pageSize.setHeight(qCeil(printerPtr->pageRect(QPrinter::Inch).height() * dpi));
 	pageSize.setWidth(qCeil(printerPtr->pageRect(QPrinter::Inch).width() * dpi));
+#ifdef USE_QLITEHTML
+	Preview(t.generate(getDives()), printerPtr);
+#else
 	webView->page()->setViewportSize(pageSize);
 	webView->page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 
@@ -225,6 +250,7 @@ void Printer::print()
 		flowRender();
 	else
 		render((t.numDives - 1) / divesPerPage + 1);
+#endif
 }
 
 void Printer::previewOnePage()
@@ -234,15 +260,25 @@ void Printer::previewOnePage()
 
 		pageSize.setHeight(paintDevice->height());
 		pageSize.setWidth(paintDevice->width());
+#ifndef USE_QLITEHTML
 		webView->page()->setViewportSize(pageSize);
+#endif
 		// initialize the border settings
 		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
+#ifndef USE_QLITEHTML
 		if (printOptions.type == print_options::DIVELIST)
 			webView->setHtml(t.generate(getDives()));
 		else if (printOptions.type == print_options::STATISTICS )
 			webView->setHtml(t.generateStatistics());
+#endif
 		bool ok;
-		int divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
+		int divesPerPage;
+#ifndef USE_QLITEHTML
+		divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
+#else
+		divesPerPage = 1;   // FIXME
+		ok = true;
+#endif
 		if (!ok) {
 			divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
 			//TODO: show warning
@@ -254,3 +290,53 @@ void Printer::previewOnePage()
 		}
 	}
 }
+
+#ifdef USE_QLITEHTML
+void Printer::Preview(QString content, QPrinter *printer)
+{
+	QDialog previewer;
+
+	previewer.setWindowTitle(tr("Print Preview"));
+	previewer.setWindowIcon(QIcon(":subsurface-icon"));
+
+	QLiteHtmlWidget previewWidget(&previewer);
+	//QLiteHtmlWidget previewWidget;
+	//= new QLiteHtmlWidget(this);
+	// Set up resource handler for loading images, CSS, etc.
+	previewWidget.setResourceHandler([](const QUrl &url) -> QByteArray {
+		if (url.isLocalFile()) {
+			QFile file(url.toLocalFile());
+			if (file.open(QIODevice::ReadOnly)) {
+				QByteArray data = file.readAll();
+				file.close();
+				return data;
+			}
+		}
+		return QByteArray();
+	});
+	previewWidget.setGeometry(QRect(0,0,1200,1000));
+	QString colorBack = previewer.palette().highlight().color().name(QColor::HexRgb);
+	QString colorText = previewer.palette().highlightedText().color().name(QColor::HexRgb);
+	previewWidget.setStyleSheet(QString(
+					  "QLiteHtmlWidget"
+					  " { selection-background-color: %1; selection-color: %2; }")
+					  .arg(colorBack).arg(colorText));
+
+	// QFile file("/Users/Helling_1/logbuch.html");
+	// if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	// 	return;
+
+	// QTextStream in(&file);
+	// previewWidget.setHtml(in.readAll());
+
+	QString repl = QString("<img height=\"30%\" width=\"30%\" src=\"file:///%1/dive_\\1.png\">").arg(printDir.path());
+	content.replace(QRegularExpression("<div\\s+class=\"diveProfile\"\\s+id=\"dive_([^\"]*)\"\\s*>\\s*</div>"), repl);
+
+	previewWidget.setUrl(QUrl("file:///", QUrl::TolerantMode));
+	previewWidget.setHtml(content);
+	previewWidget.print(printer);
+	//previewer.resize(700, 500);
+	previewer.exec();
+	//previewWidget.exec();
+}
+#endif

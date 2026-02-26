@@ -63,7 +63,7 @@ static QString profileText(const struct dive &dive)
 	return text;
 }
 
-static void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename, bool diveinfo)
+void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename, bool diveinfo)
 {
 	QImage image = QImage(QSize(profileWidth, profileHeight), QImage::Format_RGB32);
 	QPainter paint;
@@ -82,7 +82,7 @@ static void exportProfile(ProfileScene &profile, const struct dive &dive, const 
 	image.save(filename);
 }
 
-static std::unique_ptr<ProfileScene> getPrintProfile()
+std::unique_ptr<ProfileScene> getPrintProfile()
 {
 	return std::make_unique<ProfileScene>((double)profileScale, true, false);
 }
