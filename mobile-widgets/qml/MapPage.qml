@@ -2,7 +2,7 @@
 import QtQuick 6.0
 import QtPositioning 5.3
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Kirigami.Page {
 	id: mapPage
