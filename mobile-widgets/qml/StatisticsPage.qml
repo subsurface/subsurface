@@ -255,7 +255,7 @@ Kirigami.Page {
 	Component.onCompleted: {
 		statsManager.init(statsView, chartListModel)
 	}
-	onBackRequested: {
+	onBackRequested: function(event) {
 		// if the menu drawer is open, the back button should close it
 		if (globalDrawer.visible) {
 			globalDrawer.close()

@@ -264,7 +264,7 @@ Kirigami.Page {
 		actions: [editSaveAction, cancelAction]
 	}
 
-	onBackRequested: {
+	onBackRequested: function(event) {
 		// if one of the drawers/menus is open, the back button should close those
 		if (globalDrawer.visible) {
 			globalDrawer.close()

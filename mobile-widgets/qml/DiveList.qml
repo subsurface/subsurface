@@ -501,7 +501,8 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	onBackRequested: { 		if (startPage.visible && diveListView.count > 0 &&
+	onBackRequested: function(event) {
+		if (startPage.visible && diveListView.count > 0 &&
 		    Backend.cloud_verification_status !== Enums.CS_INCORRECT_USER_PASSWD) {
 			Backend.cloud_verification_status = oldStatus
 			event.accepted = true;
