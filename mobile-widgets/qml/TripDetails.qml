@@ -23,10 +23,9 @@ Kirigami.Page {
 	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
 	Kirigami.Theme.textColor: subsurfaceTheme.textColor
 
-	actions : [
-		saveAction,
-		cancelAction
-	]
+	footer: Kirigami.ActionToolBar {
+		actions: [saveAction, cancelAction]
+	}
 	onVisibleChanged: {
 		resetState()
 	}

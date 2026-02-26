@@ -439,29 +439,9 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	footer: Controls.ToolBar {
+	footer: Kirigami.ActionToolBar {
 		visible: Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD
-		RowLayout {
-			anchors.fill: parent
-			Controls.ToolButton {
-				icon.name: downloadFromDCAction.icon.name
-				text: downloadFromDCAction.text
-				onClicked: downloadFromDCAction.trigger()
-				Layout.fillWidth: true
-			}
-			Controls.ToolButton {
-				icon.name: addDiveAction.icon.name
-				text: addDiveAction.text
-				onClicked: addDiveAction.trigger()
-				Layout.fillWidth: true
-			}
-			Controls.ToolButton {
-				icon.name: filterToggleAction.icon.name
-				text: filterToggleAction.text
-				onClicked: filterToggleAction.trigger()
-				Layout.fillWidth: true
-			}
-		}
+		actions: [downloadFromDCAction, addDiveAction, filterToggleAction]
 	}
 
 	ListView {
