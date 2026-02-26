@@ -333,13 +333,6 @@ Kirigami.ApplicationWindow {
 				text: qsTr("Dive management")
 				Kirigami.Action {
 					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
-				Kirigami.Action {
-					icon {
 						name: ":/icons/ic_add.svg"
 					}
 					text: qsTr("Add dive manually")
@@ -423,13 +416,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				visible: true
 				Kirigami.Action {
 					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
-				Kirigami.Action {
-					icon {
 						name: ":/icons/map-globe.svg"
 					}
 					text: mapPage.title
@@ -453,13 +439,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					name: ":/icons/dashboard-show.svg"
 				}
 				text: qsTr("Technical Diving")
-				Kirigami.Action {
-					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
 				Kirigami.Action {
 					icon.name: ":/icons/document-edit-sign.svg" // Using an existing icon for now
 					text: qsTr("Dive Planner")
@@ -495,13 +474,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					name: ":/icons/ic_help_outline.svg"
 				}
 				text: qsTr("Help")
-				Kirigami.Action {
-					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
 				Kirigami.Action {
 					icon {
 						name: ":/icons/ic_info_outline.svg"
@@ -562,13 +534,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 				text: qsTr("Developer")
 				visible: PrefDisplay.show_developer
-				Kirigami.Action {
-					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
 				Kirigami.Action {
 					text: qsTr("App log")
 					onTriggered: {
