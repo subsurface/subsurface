@@ -326,7 +326,7 @@ QString Printer::generateContent()
 	// content height and page boundaries fall in the middle of dives.
 	if (divesPerPage > 0) {
 		int containerHeight = pageSize.height() / rows;
-		QString heightRule = QString("\n\t\t.mainContainer { height: %1px; overflow: hidden; }\n\t")
+		QString heightRule = QString(" .mainContainer { height: %1px; overflow: hidden; }\n")
 			.arg(containerHeight);
 		html.replace("</style>", heightRule + "</style>");
 	}
