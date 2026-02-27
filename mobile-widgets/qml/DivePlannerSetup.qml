@@ -17,7 +17,7 @@ TemplatePage {
 
 	Connections {
 		target: Backend
-		onLengthChanged: {
+		function onLengthChanged() {
 			spinAscrate75.value = Backend.ascrate75
 			spinAscrate50.value = Backend.ascrate50
 			spinAscratestops.value = Backend.ascratestops
@@ -25,11 +25,11 @@ TemplatePage {
 			spinDescrate.value = Backend.descrate
 			spinBestmixend.value = Backend.bestmixend
 		}
-		onVolumeChanged: {
+		function onVolumeChanged() {
 			spinBottomsac.value = Backend.bottomsac
 			spinDecosac.value = Backend.decosac
 		}
-		onPressureChanged: {
+		function onPressureChanged() {
 		}
 	}
 	Column {

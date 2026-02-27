@@ -148,11 +148,11 @@ TemplatePage {
 
 	Connections {
 		target: cylinderListModel
-		onRowsInserted: {
+		function onRowsInserted() {
 			updateGasNumberList();
 			generatePlan();
 		}
-		onRowsRemoved: {
+		function onRowsRemoved() {
 			updateGasNumberList();
 			generatePlan();
 		}
