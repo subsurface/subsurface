@@ -242,21 +242,7 @@ static QString adaptForLiteHtml(QString html, int pageWidth, int pageHeight)
 	html.replace(QRegularExpression("-webkit-filter\\s*:"), "filter:");
 	html.replace(QRegularExpression("-webkit-column-break-inside\\s*:[^;]*;"), "");
 
-	// 3. Inject CSS overrides before </style>:
-	//    - Remove float from h1/p (commonly floated in templates for
-	//      WebKit table cell layout, but causes overlap in litehtml).
-	//      Don't use !important so inline styles (e.g. float:right)
-	//      still take precedence.
-	//    - Reset diveProfile height (templates set percentage heights
-	//      for empty placeholder divs; with actual images, auto is correct).
-	html.replace("</style>",
-		"\n\t\th1 { float: none; }\n"
-		"\t\tp { float: none; }\n"
-		"\t\t.diveDetails { float: none; }\n"
-		"\t\t.diveProfile { height: auto; }\n"
-		"\t</style>");
-
-	// 4. Insert clearing divs to fix float clearing.
+	// 3. Insert clearing divs to fix float clearing.
 	//    litehtml doesn't support the overflow:hidden BFC trick that
 	//    WebKit templates use for float clearing. Instead, find CSS
 	//    classes that use float: and insert an explicit clearing div
