@@ -618,14 +618,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 		manager.appendTextToLog(numColumns + " columns with column width of " + rootItem.colWidth)
 		manager.appendTextToLog("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
-		if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
-			// change our global grid unit and prevent Kirigami from resizing our rootItem
-			var fixWidth = rootItem.width
-			var fixHeight = rootItem.height
-			Kirigami.Units.gridUnit = kirigamiGridUnit * 1.0
-			rootItem.width = fixWidth
-			rootItem.height = fixHeight
-		}
+
 
 		pageStack.defaultColumnWidth = rootItem.colWidth
 		manager.appendTextToLog("Done setting up sizes width " + rootItem.width + " gridUnit " + kirigamiGridUnit)
