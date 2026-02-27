@@ -6,8 +6,6 @@
 #if defined(USE_QLITEHTML)
 # include <QUrl>
 # include <QFile>
-#elif defined(USE_WEBENGINE)
-# include <QWebEngineFindTextResult>
 #endif
 
 #include "desktop-widgets/usermanual.h"
@@ -77,8 +75,6 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 		}
 		return QByteArray();
 	});
-#elif defined(USE_WEBENGINE)
-	userManual = new QWebEngineView(this);
 #else
 	userManual = new QWebView(this);
 #endif
@@ -87,14 +83,12 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	userManual->setStyleSheet(QString(
 #if defined(USE_QLITEHTML)
 				"QLiteHtmlWidget"
-#elif defined(USE_WEBENGINE)
-				"QWebEngineView"
 #else
 				"QWebView"
 #endif
 				" { selection-background-color: %1; selection-color: %2; }")
 		.arg(colorBack).arg(colorText));
-#if !defined(USE_WEBENGINE) && !defined(USE_QLITEHTML)
+#if !defined(USE_QLITEHTML)
 	userManual->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 #endif
 	QString searchPath = getSubsurfaceDataPath("Documentation");
@@ -124,10 +118,6 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 			} else {
 				report_info("failed to open HTML file: %s", manual.fileName().toUtf8().constData());
 			}
-#elif defined(USE_WEBENGINE)
-			UserManualPage* page = new UserManualPage(userManual);
-			page->setUrl(urlString);
-			userManual->setPage(page);
 #else
 			userManual->setUrl(QUrl(urlString, QUrl::TolerantMode));
 #endif
@@ -143,10 +133,7 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 	connect(searchBar, SIGNAL(searchTextChanged(QString)), this, SLOT(searchTextChanged(QString)));
 	connect(searchBar, SIGNAL(searchNext()), this, SLOT(searchNext()));
 	connect(searchBar, SIGNAL(searchPrev()), this, SLOT(searchPrev()));
-#if !defined(USE_WEBENGINE)
-	// WebEngine uses UserManualPage::acceptNavigationRequest instead
 	connect(userManual, SIGNAL(linkClicked(QUrl)), this, SLOT(linkClickedSlot(QUrl)));
-#endif
 
 	QVBoxLayout *vboxLayout = new QVBoxLayout();
 	userManual->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Expanding);
@@ -180,28 +167,6 @@ void UserManual::search(QString text, bool backward, bool incremental)
 		else
 			searchBar->setStyleSheet("");
 	}
-}
-#elif defined(USE_WEBENGINE)
-void UserManual::search(QString text, bool backward, bool incremental)
-{
-	QWebEnginePage::FindFlags flags = QFlag(0);
-	if (backward)
-		flags |= QWebEnginePage::FindBackward;
-	if (text.length() == 0)
-		searchBar->setStyleSheet("");
-	else
-		userManual->findText(text, flags,
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-			[this](const QWebEngineFindTextResult &result) {
-				if (result.numberOfMatches() == 0)
-#else
-			[this](bool found) {
-				if (!found)
-#endif
-					searchBar->setStyleSheet("QLineEdit{background: red;}");
-				else
-					searchBar->setStyleSheet("");
-			});
 }
 #else
 void UserManual::search(QString text, bool backward, bool incremental)
@@ -282,17 +247,5 @@ void UserManual::hideEvent(QHideEvent *e)
 	if (filterAction != NULL)
 		filterAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_F));
 	closeAction = filterAction = NULL;
-}
-#endif
-
-#if defined(USE_WEBENGINE)
-bool UserManualPage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
-{
-	if (type == QWebEnginePage::NavigationTypeLinkClicked
-			&& (url.scheme() == "http" || url.scheme() == "https")) {
-		QDesktopServices::openUrl(url);
-		return false;
-	}
-	return QWebEnginePage::acceptNavigationRequest(url, type, isMainFrame);
 }
 #endif

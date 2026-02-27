@@ -4,8 +4,6 @@
 
 #if defined(USE_QLITEHTML)
 # include <qlitehtmlwidget.h>
-#elif defined(USE_WEBENGINE)
-# include <QWebEngineView>
 #else
 # include <QWebView>
 #endif
@@ -53,23 +51,10 @@ private:
 	QString mLastText;
 #if defined(USE_QLITEHTML)
 	QLiteHtmlWidget *userManual;
-#elif defined(USE_WEBENGINE)
-	QWebEngineView *userManual;
 #else
 	QWebView *userManual;
 #endif
 	void search(QString, bool backward = false, bool incremental = false);
 };
 
-#if defined(USE_WEBENGINE)
-class UserManualPage : public QWebEnginePage {
-	Q_OBJECT
-
-public:
-	explicit UserManualPage(QObject* parent = 0) : QWebEnginePage(parent) {}
-
-protected:
-	bool acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame);
-};
-#endif
 #endif // USERMANUAL_H
