@@ -207,7 +207,7 @@ QString Printer::exportHtml()
 // 1vw = pageWidth/100, 1vh = pageHeight/100.
 static QString replaceViewportUnit(const QString &html, const QString &unit, int dimension)
 {
-	QRegularExpression re(QString("([\\d.]+)%1").arg(unit));
+	QRegularExpression re(QString("([\\d.]+)\\s*%1").arg(unit));
 	QString result;
 	int lastEnd = 0;
 	QRegularExpressionMatchIterator it = re.globalMatch(html);
