@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
+import QtCore
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami as Kirigami
 
@@ -13,7 +14,7 @@ TemplatePage {
 
 	FolderDialog {
 		id: saveAsDialog
-		currentFolder: shortcuts.documents
+		currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
 		onAccepted: {
 			manager.exportToFile(selectedExport, fileUrls, anonymize.checked)
 			pageStack.pop()
