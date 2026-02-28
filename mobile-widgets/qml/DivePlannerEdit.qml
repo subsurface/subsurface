@@ -640,23 +640,29 @@ TemplatePage {
 			}
 		}
 	}
-	footer: Kirigami.ActionToolBar {
-		actions: [
-			Kirigami.Action {
-				icon.name: ":/icons/ic_settings.svg"
-				text: qsTr("Settings")
-				onTriggered: showPage(divePlannerSetupWindow)
-			},
-			Kirigami.Action {
-				icon.name: ":/icons/media-playlist-repeat.svg"
-				text: qsTr("Refresh")
-				onTriggered: generatePlan()
-			},
-			Kirigami.Action {
-				icon.name: ":/icons/undo.svg"
-				text: qsTr("Back")
-				onTriggered: pageStack.pop()
+	Item {
+		parent: divePlannerEditWindow
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			spacing: Kirigami.Units.gridUnit
+			SsrfToolButton {
+				iconSource: "qrc:/icons/undo.svg"
+				onClicked: pageStack.pop()
 			}
-		]
+			SsrfToolButton {
+				iconSource: "qrc:/icons/media-playlist-repeat.svg"
+				highlighted: true
+				onClicked: generatePlan()
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/ic_settings.svg"
+				onClicked: showPage(divePlannerSetupWindow)
+			}
+		}
 	}
 }

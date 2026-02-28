@@ -439,9 +439,38 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	footer: Kirigami.ActionToolBar {
+	Item {
+		parent: page
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
 		visible: Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD
-		actions: [downloadFromDCAction, addDiveAction, filterToggleAction]
+		Row {
+			anchors.centerIn: parent
+			spacing: Kirigami.Units.gridUnit
+			SsrfToolButton {
+				iconSource: "qrc:/icons/ic_filter_list.svg"
+				onClicked: {
+					rootItem.filterToggle = !rootItem.filterToggle
+					manager.setFilter("", 0)
+					if (rootItem.filterToggle)
+						Qt.inputMethod.show()
+					else
+						Qt.inputMethod.hide()
+				}
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/downloadDC.svg"
+				highlighted: true
+				onClicked: rootItem.showDownloadPage()
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/list-add.svg"
+				onClicked: startAddDive()
+			}
+		}
 	}
 
 	ListView {
@@ -452,7 +481,7 @@ Kirigami.ScrollablePage {
 		delegate: diveOrTripDelegate
 		boundsBehavior: Flickable.DragOverBounds
 		maximumFlickVelocity: parent.height * 5
-		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
+		bottomMargin: Kirigami.Units.gridUnit * 4
 		cacheBuffer: 0
 		Component.onCompleted: {
 			manager.appendTextToLog("finished setting up the diveListView")

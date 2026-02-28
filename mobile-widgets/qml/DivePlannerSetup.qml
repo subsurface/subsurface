@@ -550,14 +550,20 @@ TemplatePage {
 			}
 		}
 	}
-	footer: Kirigami.ActionToolBar {
-		alignment: Qt.AlignCenter
-		actions: [
-			Kirigami.Action {
-				icon.name: ":/icons/undo.svg"
-				text: qsTr("Return")
-				onTriggered: pageStack.pop()
+	Item {
+		parent: divePlannerSetupWindow
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			SsrfToolButton {
+				iconSource: "qrc:/icons/undo.svg"
+				highlighted: true
+				onClicked: pageStack.pop()
 			}
-		]
+		}
 	}
 }

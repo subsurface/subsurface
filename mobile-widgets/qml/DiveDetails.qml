@@ -260,8 +260,32 @@ Kirigami.Page {
 		}
 	}
 
-	footer: Kirigami.ActionToolBar {
-		actions: [editSaveAction, cancelAction]
+	Item {
+		parent: diveDetailsPage
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			spacing: Kirigami.Units.gridUnit
+			SsrfToolButton {
+				iconSource: diveDetailsPage.state !== "view" ? "qrc:/icons/document-save.svg" : "qrc:/icons/document-edit.svg"
+				highlighted: true
+				onClicked: {
+					if (diveDetailsPage.state === "edit" || diveDetailsPage.state === "add")
+						detailsEdit.saveData()
+					else
+						startEditMode()
+				}
+			}
+			SsrfToolButton {
+				visible: diveDetailsPage.state === "edit" || diveDetailsPage.state === "add"
+				iconSource: "qrc:/icons/dialog-cancel.svg"
+				onClicked: endEditMode()
+			}
+		}
 	}
 
 	onBackRequested: function(event) {
