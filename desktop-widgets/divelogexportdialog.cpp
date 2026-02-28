@@ -224,7 +224,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			filename = QFileDialog::getSaveFileName(this, tr("Save profile image"), lastDir);
 			if (!filename.isEmpty()) {
 				ProgressDialogCallback cb;
-                exportProfile(qPrintable(filename), ui->exportSelected->isChecked(), cb, ui->diveinfo->isChecked());
+				exportProfile(qPrintable(filename), ui->exportSelected->isChecked(), cb, ui->diveinfo->isChecked(), ui->profileWidth->value(), ui->profileHeight->value());
 			}
 		} else if (ui->exportProfileData->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save profile data"), lastDir);
