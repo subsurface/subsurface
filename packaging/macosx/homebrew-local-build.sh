@@ -75,7 +75,7 @@ BUILDDIR="$(pwd)/subsurface/build/"
 if [[ -L subsurface && -d subsurface ]] ; then
     BUILDDIR="$(pwd)/build/"
 fi
-DATADIR="$BUILDDIR/Subsurface.app/Contents/Resources/share/Documentation"
+DATADIR="${BUILDDIR}Subsurface.app/Contents/Resources/share/Documentation"
 mkdir -p "$DATADIR"
 pushd subsurface/Documentation/output
 cp -a user-manual*.html images "$DATADIR"
@@ -87,8 +87,8 @@ pushd googlemaps/build
 make install
 popd
 
-cd subsurface/build
+cd "${BUILDDIR}"
 codesign --force --deep --sign - Subsurface.app
 
-echo "Run Subsurface with 'open subsurface/build/Subsurface.app'"
-echo "rebuild by simply calling 'make' in the subsurface/build directory. Do not run 'make install' in that directory"
+echo "Run Subsurface with 'open \"${BUILDDIR}Subsurface.app\"'"
+echo "rebuild by simply calling 'make' in the '${BUILDDIR}' directory. Do not run 'make install' in that directory"
