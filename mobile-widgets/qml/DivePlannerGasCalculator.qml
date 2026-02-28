@@ -15,7 +15,7 @@ TemplatePage {
 	}
 
 	ColumnLayout {
-		id: mainLayout 
+		id: mainLayout
 		width: parent.width
 		Layout.margins: Kirigami.Units.gridUnit
 		spacing: Kirigami.Units.largeSpacing
@@ -24,7 +24,7 @@ TemplatePage {
 			id: inputsGrid
 			columns: 2
 			Layout.fillWidth: true
-			
+
 			//TemplateLabel { text: qsTr("Cylinder Type") }
 			TemplateComboBox {
 				id: typeBox
@@ -56,7 +56,7 @@ TemplatePage {
 				onActiveFocusChanged: gasCalculatorPage.interactive = !activeFocus
 			}
 		}
-		
+
 		TemplateButton {
 			text: qsTr("Calculate")
 			Layout.alignment: Qt.AlignHCenter
@@ -67,7 +67,7 @@ TemplatePage {
 				}
 				var o2_permille = o2Box.value * 10;
 				var he_permille = heBox.value * 10;
-				
+
 				var results = Backend.divePlannerPointsModel.calculateGasInfo(cylinderType, o2_permille, he_permille);
 				resultsModel.clear();
 				for (var i = 0; i < results.length; i++) {
@@ -113,7 +113,7 @@ TemplatePage {
 			Repeater {
 				id: resultsRepeater
 				model: resultsModel
-				
+
 				delegate: GridLayout {
 					Layout.fillWidth: true
 					columns: 3
@@ -140,15 +140,21 @@ TemplatePage {
 			}
 		}
 	}
-	
-	footer: Kirigami.ActionToolBar {
-		alignment: Qt.AlignCenter
-		actions: [
-			Kirigami.Action {
-				icon.name: ":/icons/undo.svg"
-				text: qsTr("Return")
-				onTriggered: pageStack.pop()
+
+	Item {
+		parent: gasCalculatorPage
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			SsrfToolButton {
+				iconSource: "qrc:/icons/undo.svg"
+				highlighted: true
+				onClicked: pageStack.pop()
 			}
-		]
+		}
 	}
 }

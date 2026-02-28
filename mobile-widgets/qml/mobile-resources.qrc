@@ -45,6 +45,7 @@
 
 		<file>SsrfSwitch.qml</file>
 		<file>SsrfTextField.qml</file>
+		<file>SsrfToolButton.qml</file>
 
 		<!-- ********** pictures ********** -->
 		<file>icons/dive.jpg</file>

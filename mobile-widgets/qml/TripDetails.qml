@@ -23,8 +23,33 @@ Kirigami.Page {
 	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
 	Kirigami.Theme.textColor: subsurfaceTheme.textColor
 
-	footer: Kirigami.ActionToolBar {
-		actions: [saveAction, cancelAction]
+	Item {
+		parent: tripEditPage
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			spacing: Kirigami.Units.gridUnit
+			SsrfToolButton {
+				iconSource: "qrc:/icons/document-save.svg"
+				highlighted: true
+				onClicked: {
+					manager.updateTripDetails(tripId, tripLocationField.text, tripNotesField.text)
+					Qt.inputMethod.hide()
+					pageStack.pop()
+				}
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/dialog-cancel.svg"
+				onClicked: {
+					state = "view"
+					pageStack.pop()
+				}
+			}
+		}
 	}
 	onVisibleChanged: {
 		resetState()
