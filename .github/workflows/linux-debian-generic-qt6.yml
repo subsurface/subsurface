@@ -6,10 +6,20 @@ on:
       container-image:
         type: string
         required: true
+      runner:
+        type: string
+        required: false
+        default: 'ubuntu-latest'
+        description: 'GitHub runner to use (e.g., ubuntu-latest, ubuntu-24.04-arm64)'
+      arch:
+        type: string
+        required: false
+        default: 'x86-64'
+        description: 'Architecture name for artifacts (e.g., x86-64, arm64)'
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     container:
       image: ${{ inputs.container-image }}
 
@@ -21,15 +31,15 @@ jobs:
 
         apt-get update
         DEBIAN_FRONTEND=noninteractive apt-get install -y -q \
-        autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
+        autoconf automake bzip2 cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
         libgit2-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
         libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
         pkg-config xvfb libbluetooth-dev libmtp-dev libraw-dev mdbtools-dev \
         libqt6qml6 libqt6quick6 qt6-svg-dev libqt6svg6 qt6-5compat-dev \
         qml6-module-qtpositioning qml6-module-qtlocation \
-        qmake6 qt6-location-dev qt6-connectivity-dev \
+        qmake6 qt6-location-dev qt6-connectivity-dev qt6-base-private-dev \
         qml6-module-qtquick qt6-declarative-dev qt6-tools-dev qt6-tools-dev-tools \
-        qt6-positioning-dev qt6-declarative-private-dev
+        qt6-positioning-dev qt6-declarative-private-dev qt6-shadertools-dev
 
         git config --global user.email "ci@subsurface-divelog.org"
         git config --global user.name "Subsurface CI"
@@ -79,9 +89,41 @@ jobs:
       if: failure()
       uses: actions/upload-artifact@v6
       with:
-        name: test-output-${{ steps.version_number.outputs.version }}
+        name: test-output-${{ inputs.arch }}-${{ steps.version_number.outputs.version }}
         path: |
           build/tests/
           !build/tests/CMakeFiles/
           !build/tests/Test*
           build/tests/Testing/
+
+
+    - name: build subsurface-mobile
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building mobile"
+        cd ..
+        bash -e -x subsurface/scripts/build.sh -mobile -build-with-qt6 -build-tests
+
+    - name: test mobile build
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "running tests for mobile"
+
+        cd build-mobile/tests
+        # xvfb-run --auto-servernum ./TestGitStorage -v2
+        xvfb-run --auto-servernum make check
+        if [ $? -ne 0 ]; then
+          echo "Tests failed - adding the build output as artifacts"
+          exit 1
+        fi
+
+    - name: upload test artifacts
+      if: failure()
+      uses: actions/upload-artifact@v6
+      with:
+        name: test-output-mobile-${{ inputs.arch }}-${{ steps.version_number.outputs.version }}
+        path: |
+          build-mobile/tests/
+          !build-mobile/tests/CMakeFiles/
+          !build-mobile/tests/Test*
+          build-mobile/tests/Testing/

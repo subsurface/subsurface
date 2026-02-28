@@ -47,11 +47,6 @@ QObject *qqWindowObject = NULL;
 static void register_qml_types(QQmlEngine *);
 static void register_meta_types();
 
-#ifdef SUBSURFACE_MOBILE
-#include <QtPlugin>
-Q_IMPORT_PLUGIN(KirigamiPlugin)
-#endif
-
 void init_ui()
 {
 	init_qt_late();

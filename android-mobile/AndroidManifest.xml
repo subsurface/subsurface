@@ -6,7 +6,7 @@
     android:versionName="-- %%INSERT_VERSION_NAME%% --" >
 
     <application
-        android:name="org.qtproject.qt5.android.bindings.QtApplication"
+        android:name="org.qtproject.qt.android.bindings.QtApplication"
         android:hardwareAccelerated="true"
         android:label="@string/app_name"
         android:extractNativeLibs="true"
@@ -19,7 +19,8 @@
             android:theme="@style/AppTheme"
             android:launchMode="singleTop"
             android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="unspecified" >
+            android:screenOrientation="unspecified"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,41 +30,8 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="-- %%INSERT_APP_LIB_NAME%% --" />
-            <meta-data
-                android:name="android.app.qt_sources_resource_id"
-                android:resource="@array/qt_sources" />
-            <meta-data
-                android:name="android.app.repository"
-                android:value="default" />
-            <meta-data
-                android:name="android.app.qt_libs_resource_id"
-                android:resource="@array/qt_libs" />
-            <meta-data
-                android:name="android.app.bundled_libs_resource_id"
-                android:resource="@array/bundled_libs" />
-            <!-- Deploy Qt libs as part of package -->
-            <meta-data
-                android:name="android.app.bundle_local_qt_libs"
-                android:value="-- %%BUNDLE_LOCAL_QT_LIBS%% --" />
-            <!-- Run with local libs -->
-            <meta-data
-                android:name="android.app.use_local_qt_libs"
-                android:value="-- %%USE_LOCAL_QT_LIBS%% --" />
-            <meta-data
-                android:name="android.app.libs_prefix"
-                android:value="/data/local/tmp/qt/" />
-	    <meta-data
-                android:name="android.app.load_local_libs_resource_id"
-                android:resource="@array/load_local_libs"/>
-            <meta-data
-                android:name="android.app.load_local_jars"
-                android:value="-- %%INSERT_LOCAL_JARS%% --" />
-            <meta-data
-                android:name="android.app.static_init_classes"
-                android:value="-- %%INSERT_INIT_CLASSES%% --" />
 
             <!-- Splash screen -->
-<!--	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/subsurface_mobile_splash" /> -->
 	    <meta-data android:name="android.app.splash_screen_drawable" android:resource="@drawable/splash" />
             <!-- Splash screen -->
             <intent-filter>
@@ -78,7 +46,7 @@
 
         </activity>
 	<provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="org.subsurfacedivelog.mobile.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
@@ -88,8 +56,8 @@
         </provider>
     </application>
 
-    <uses-sdk android:minSdkVersion="21"
-	      android:targetSdkVersion="30" />
+    <uses-sdk android:minSdkVersion="28"
+	      android:targetSdkVersion="35" />
 
     <supports-screens
         android:anyDensity="true"

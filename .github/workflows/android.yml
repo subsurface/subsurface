@@ -17,9 +17,10 @@ jobs:
   build:
     env:
       KEYSTORE_FILE: ${{ github.workspace }}/../subsurface.keystore
-    runs-on: ubuntu-latest
-    container:
-      image: docker://subsurface/android-build:5.15.3
+      QT_VERSION: '6.8.3'
+      QT_ARCH: 'android_arm64_v8a'
+      ANDROID_BUILD_ABI: 'arm64-v8a'
+    runs-on: ubuntu-24.04
 
     steps:
     - name: checkout sources
@@ -34,6 +35,273 @@ jobs:
       with:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
+    - name: set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: install Android SDK/NDK
+      run: |
+        # On GitHub runners ANDROID_HOME is pre-set; set it ourselves if not
+        if [ -z "${ANDROID_HOME}" ]; then
+          export ANDROID_HOME=/opt/android-sdk
+          mkdir -p ${ANDROID_HOME}
+        fi
+        echo "ANDROID_SDK_ROOT=${ANDROID_HOME}" >> $GITHUB_ENV
+
+        # Install cmdline-tools if not already present
+        if [ ! -f "${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager" ]; then
+          mkdir -p ${ANDROID_HOME}/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdline-tools.zip
+          unzip -q /tmp/cmdline-tools.zip -d /tmp/cmdline-tools-tmp
+          mv /tmp/cmdline-tools-tmp/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
+          rm -f /tmp/cmdline-tools.zip
+        fi
+
+        # accept licenses and install required SDK components via sdkmanager
+        SDKMANAGER="${ANDROID_HOME}/cmdline-tools/latest/bin/sdkmanager"
+        yes | ${SDKMANAGER} --licenses > /dev/null 2>&1 || true
+        ${SDKMANAGER} "platforms;android-35" "build-tools;35.0.0" "platform-tools" "ndk;27.2.12479018"
+
+        echo "ANDROID_NDK_ROOT=${ANDROID_HOME}/ndk/27.2.12479018" >> $GITHUB_ENV
+
+    - name: install build dependencies
+      run: |
+        sudo apt-get update
+        DEBIAN_FRONTEND=noninteractive sudo apt-get install -y -q \
+          autoconf automake libtool pkg-config cmake p7zip-full
+
+    - name: install Qt for Android
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ env.QT_VERSION }}
+        target: 'android'
+        arch: ${{ env.QT_ARCH }}
+        modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtshadertools'
+        dir: '${{ github.workspace }}'
+
+    - name: install Qt for host tools
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ env.QT_VERSION }}
+        target: 'desktop'
+        arch: 'linux_gcc_64'
+        modules: 'qtlocation qtpositioning qtconnectivity qt5compat qtshadertools'
+        dir: '${{ github.workspace }}'
+        set-env: false
+        extra: '--external 7z'
+
+    - name: configure environment
+      run: |
+        git config --global user.email "ci@subsurface-divelog.org"
+        git config --global user.name "Subsurface CI"
+        git config --global --add safe.directory $GITHUB_WORKSPACE
+        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
+
+        # Qt host tools path (for moc, rcc, etc. during cross-compilation)
+        QT_HOST_PATH="${GITHUB_WORKSPACE}/Qt/${QT_VERSION}/gcc_64"
+        echo "QT_HOST_PATH=${QT_HOST_PATH}" >> $GITHUB_ENV
+
+        # Qt Android path
+        QT_ANDROID_PATH="${GITHUB_WORKSPACE}/Qt/${QT_VERSION}/${QT_ARCH}"
+        echo "QT_ANDROID_PATH=${QT_ANDROID_PATH}" >> $GITHUB_ENV
+
+        # install prefix for cross-compiled native dependencies
+        BUILDROOT="$(dirname "${GITHUB_WORKSPACE}")"
+        ANDROID_INSTALL_PREFIX="${BUILDROOT}/install-root-${ANDROID_BUILD_ABI}"
+        echo "ANDROID_INSTALL_PREFIX=${ANDROID_INSTALL_PREFIX}" >> $GITHUB_ENV
+        echo "PKG_CONFIG_LIBDIR=${ANDROID_INSTALL_PREFIX}/lib/pkgconfig" >> $GITHUB_ENV
+
+    # --- 3rdparty components (ECM, Kirigami) with caching ---
+
+    - name: restore 3rdparty cache
+      id: thirdparty_cache
+      uses: actions/cache/restore@v4
+      with:
+        path: |
+          mobile-widgets/3rdparty/ECM
+          mobile-widgets/3rdparty/kirigami-install
+          mobile-widgets/3rdparty/breeze-icons
+        key: android-3rdparty-qt${{ env.QT_VERSION }}-${{ hashFiles('scripts/get-dep-lib.sh', 'scripts/mobilecomponents.sh', 'mobile-widgets/3rdparty/00*.patch') }}
+
+    - name: build 3rdparty components (ECM, Kirigami)
+      if: steps.thirdparty_cache.outputs.cache-hit != 'true'
+      run: |
+        cd $GITHUB_WORKSPACE
+        bash ./scripts/mobilecomponents.sh \
+          -DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
+          -DQT_HOST_PATH="${QT_HOST_PATH}" \
+          -DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
+          -DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
+          -DANDROID_ABI="${ANDROID_BUILD_ABI}" \
+          -DANDROID_PLATFORM=24
+
+    - name: save 3rdparty cache
+      if: steps.thirdparty_cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: |
+          mobile-widgets/3rdparty/ECM
+          mobile-widgets/3rdparty/kirigami-install
+          mobile-widgets/3rdparty/breeze-icons
+        key: ${{ steps.thirdparty_cache.outputs.cache-primary-key }}
+
+    # --- native dependencies with caching ---
+
+    - name: restore native deps cache
+      id: native_deps_cache
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ env.ANDROID_INSTALL_PREFIX }}
+        key: android-native-deps-ndk27.2-${{ hashFiles('scripts/get-dep-lib.sh', '.github/workflows/android.yml') }}
+
+    - name: cross-compile native dependencies
+      if: steps.native_deps_cache.outputs.cache-hit != 'true'
+      run: |
+        BUILDROOT="$(dirname "${GITHUB_WORKSPACE}")"
+        SUBSURFACE_SOURCE="${GITHUB_WORKSPACE}"
+        TOOLCHAIN="${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64"
+        API_LEVEL=24
+
+        export PATH="${TOOLCHAIN}/bin:${PATH}"
+        export CC="${TOOLCHAIN}/bin/aarch64-linux-android${API_LEVEL}-clang"
+        export CXX="${TOOLCHAIN}/bin/aarch64-linux-android${API_LEVEL}-clang++"
+        export AR="${TOOLCHAIN}/bin/llvm-ar"
+        export RANLIB="${TOOLCHAIN}/bin/llvm-ranlib"
+        export STRIP="${TOOLCHAIN}/bin/llvm-strip"
+        export ANDROID_NDK_HOME="${ANDROID_NDK_ROOT}"
+        SYSROOT="${TOOLCHAIN}/sysroot"
+
+        PREFIX="${ANDROID_INSTALL_PREFIX}"
+        mkdir -p "${PREFIX}"/{include,lib/pkgconfig}
+        export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
+
+        TARGET="aarch64-linux-android"
+        cd "${BUILDROOT}"
+
+        # download all source dependencies
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . openssl
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . sqlite
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxml2
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxslt
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
+        "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libgit2
+
+        # --- OpenSSL (build before setting sysroot CFLAGS) ---
+        mkdir -p openssl-build
+        cp -r openssl/* openssl-build/
+        cd openssl-build
+        perl -pi -e 's/-mandroid//g' Configure
+        ./Configure no-shared android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm \
+          --prefix="${PREFIX}" -fPIC -DOPENSSL_NO_UI_CONSOLE \
+          -D__ANDROID_API__=${API_LEVEL}
+        make depend
+        make build_libs
+        cp -RL include/openssl "${PREFIX}"/include/openssl
+        cp libcrypto.a libssl.a "${PREFIX}"/lib/
+        cp *.pc "${PKG_CONFIG_PATH}"/
+        cd "${BUILDROOT}"
+
+        # sysroot flags for autotools-based builds
+        CFLAGS="--sysroot=${SYSROOT} -fPIC"
+        CPPFLAGS="--sysroot=${SYSROOT} -fPIC"
+        CXXFLAGS="--sysroot=${SYSROOT} -fPIC"
+
+        # --- SQLite ---
+        mkdir -p sqlite-build && cd sqlite-build
+        CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+          ../sqlite/configure --host="${TARGET}" --prefix="${PREFIX}" --enable-static --disable-shared
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
+
+        # --- libxml2 ---
+        if [ ! -f libxml2/configure ]; then
+          cd libxml2 && autoreconf --install && cd "${BUILDROOT}"
+        fi
+        mkdir -p libxml2-build && cd libxml2-build
+        CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+          ../libxml2/configure --host="${TARGET}" --prefix="${PREFIX}" \
+          --without-python --without-iconv --enable-static --disable-shared
+        perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
+        perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
+
+        # --- libxslt ---
+        if [ ! -f libxslt/configure ]; then
+          cd libxslt && autoreconf --install && cd "${BUILDROOT}"
+        fi
+        mkdir -p libxslt-build && cd libxslt-build
+        CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+          ../libxslt/configure --host="${TARGET}" --prefix="${PREFIX}" \
+          --with-libxml-prefix="${PREFIX}" --without-python --without-crypto \
+          --enable-static --disable-shared
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
+
+        # --- libzip ---
+        cd libzip
+        git reset --hard
+        sed -i 's/SIZEOF_SIZE_T/__SIZEOF_SIZE_T__/g' lib/compat.h
+        sed -i 's/ADD_SUBDIRECTORY(man)//' CMakeLists.txt
+        sed -i 's/^FIND_PACKAGE(ZLIB/#&/' CMakeLists.txt
+        cd "${BUILDROOT}"
+        mkdir -p libzip-build && cd libzip-build
+        cmake \
+          -DCMAKE_C_COMPILER="${CC}" \
+          -DCMAKE_LINKER="${CC}" \
+          -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
+          -DCMAKE_INSTALL_LIBDIR="lib" \
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
+          -DZLIB_VERSION_STRING=1.2.7 \
+          -DZLIB_LIBRARY=z \
+          ../libzip/
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
+
+        # --- libgit2 ---
+        mkdir -p libgit2-build && cd libgit2-build
+        cmake \
+          -DCMAKE_C_COMPILER="${CC}" \
+          -DCMAKE_LINKER="${CC}" \
+          -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+          -DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
+          -DCURL=OFF \
+          -DUSE_SSH=OFF \
+          -DOPENSSL_SSL_LIBRARY="${PREFIX}"/lib/libssl.a \
+          -DOPENSSL_CRYPTO_LIBRARY="${PREFIX}"/lib/libcrypto.a \
+          -DOPENSSL_INCLUDE_DIR="${PREFIX}"/include \
+          -DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
+          ../libgit2/
+        find ../libgit2 -name 'CMakeLists.txt' -exec sed -i 's|C_STANDARD 90|C_STANDARD 99|' {} \;
+        make -j$(nproc) && make install
+        perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' "${PKG_CONFIG_PATH}"/libgit2.pc
+        cd "${BUILDROOT}"
+
+        # --- libdivecomputer ---
+        cd "${SUBSURFACE_SOURCE}"
+        if [ ! -f libdivecomputer/configure ]; then
+          cd libdivecomputer && autoreconf -i && cd ..
+        fi
+        cd "${BUILDROOT}"
+        mkdir -p libdivecomputer-build && cd libdivecomputer-build
+        CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+          "${SUBSURFACE_SOURCE}"/libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
+          --enable-static --disable-shared --enable-examples=no
+        make -j$(nproc) && make install
+        cd "${BUILDROOT}"
+
+    - name: save native deps cache
+      if: steps.native_deps_cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ env.ANDROID_INSTALL_PREFIX }}
+        key: ${{ steps.native_deps_cache.outputs.cache-primary-key }}
+
     - name: set up the keystore
       if: github.event_name == 'push'
       env:
@@ -41,43 +309,83 @@ jobs:
       run: |
         echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > $KEYSTORE_FILE
 
-    - name: run build
-      id: build
+    - name: build Subsurface-mobile
       env:
-        KEYSTORE_PASSWORD: pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
         BUILDNR: ${{ steps.version_number.outputs.buildnr }}
         VERSION: ${{ steps.version_number.outputs.version }}
         VERSION_4: ${{ steps.version_number.outputs.version_4 }}
       run: |
-        BUILD_EXTRA_ARGS=""
+        BUILD_TYPE="Debug"
         if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
-          echo "Building a release version"
-          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} release"
+          BUILD_TYPE="Release"
         fi
 
-        # this is rather awkward, but it allows us to use the preinstalled
-        # Android and Qt versions with relative paths
-        cd ..
-        ln -s /android/5.15.* .
-        ln -s /android/build-tools .
-        ln -s /android/cmdline-tools .
-        ln -s /android/ndk .
-        ln -s /android/platform-tools .
-        ln -s /android/platforms .
-        ln -s /android/tools .
-        git config --global user.email "ci@subsurface-divelog.org"
-        git config --global user.name "Subsurface CI"
-        git config --global --add safe.directory $GITHUB_WORKSPACE
-        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
-        # get the build number via curl so this works both for a pull request as well as a push
-        export OUTPUT_DIR="$GITHUB_WORKSPACE"
-        bash -x ./subsurface/packaging/android/qmake-build.sh ${BUILD_EXTRA_ARGS} -buildnr $BUILDNR -canonicalversion $VERSION -canonicalversion_4 $VERSION_4
+        # write version header
+        mkdir -p build-android
+        cd build-android
+        cat > ssrf-version.h <<VEOF
+        #define CANONICAL_VERSION_STRING "${VERSION}"
+        #define CANONICAL_VERSION_STRING_4 "${VERSION_4}"
+        VEOF
+
+        # configure with Qt6 Android toolchain
+        cmake "${GITHUB_WORKSPACE}" \
+          -DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
+          -DQT_HOST_PATH="${QT_HOST_PATH}" \
+          -DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
+          -DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
+          -DANDROID_ABI="${ANDROID_BUILD_ABI}" \
+          -DANDROID_PLATFORM=24 \
+          -DCMAKE_FIND_ROOT_PATH="${ANDROID_INSTALL_PREFIX}" \
+          -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+          -DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable \
+          -DLIBGIT2_FROM_PKGCONFIG=ON \
+          -DFORCE_LIBSSH=OFF \
+          -DNO_DOCS=ON \
+          -DBUILD_TESTS=OFF \
+          -DQT_ANDROID_BUILD_ALL_ABIS=OFF \
+          -DBUILD_WITH_QT6=ON
+
+
+        # patch androiddeployqt to not emit enableUncompressedNativeLibs
+        # which was removed in AGP 8.1 (same length replacement keeps binary valid)
+        sed -i 's/enableUncompressedNativeLibs/disableUncompressedNativeLib/g' \
+          ${QT_HOST_PATH}/bin/androiddeployqt \
+          ${QT_HOST_PATH}/bin/androiddeployqt6
+
+        cmake --build . -j$(nproc)
+
+    - name: collect APK
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        APK=$(find build-android/android-build -name "*.apk" | head -1)
+        cp "${APK}" "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.apk"
+
+    - name: sign APK
+      if: github.event_name == 'push'
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        APK="${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.apk"
+        ALIGNED="${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}-aligned.apk"
+        SIGNED="${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}-signed.apk"
+
+        ${ANDROID_SDK_ROOT}/build-tools/35.0.0/zipalign -p 4 "${APK}" "${ALIGNED}"
+        ${ANDROID_SDK_ROOT}/build-tools/35.0.0/apksigner sign \
+          --ks "${KEYSTORE_FILE}" \
+          --ks-pass "pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          --ks-key-alias "${{ secrets.ANDROID_KEYSTORE_ALIAS }}" \
+          --in "${ALIGNED}" \
+          --out "${SIGNED}"
+
+        mv "${SIGNED}" "${APK}"
+        rm -f "${ALIGNED}"
 
     - name: delete the keystore
       if: github.event_name == 'push'
       run: |
-        rm $KEYSTORE_FILE
+        rm -f $KEYSTORE_FILE
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'

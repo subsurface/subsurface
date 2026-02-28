@@ -1,24 +1,26 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.1
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Window
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import QtQuick.Window
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
-import QtGraphicalEffects 1.0
-import QtQuick.Templates 2.0 as QtQuickTemplates
+import org.kde.kirigami as Kirigami
+import QtQuick.Templates as QtQuickTemplates
 
 Kirigami.ApplicationWindow {
 	id: rootItem
 	title: qsTr("Subsurface-mobile")
-	reachableModeEnabled: false // while it's a good idea, it seems to confuse more than help
 	wideScreen: false // workaround for probably Kirigami bug. See commits.
 
+	// Ensure drawer controls are visible in Kirigami 6.x
+	property bool showGlobalDrawer: true
+
 	// ensure we get all information on screen rotation
-	Screen.orientationUpdateMask: Qt.LandscapeOrientation | Qt.PortraitOrientation | Qt.InvertedLandscapeOrientation | Qt.InvertedPortraitOrientation
+	// This was removed and has to be replaced.
+	//Screen.orientationUpdateMask: Qt.LandscapeOrientation | Qt.PortraitOrientation | Qt.InvertedLandscapeOrientation | Qt.InvertedPortraitOrientation
 
 	// the documentation claims that the ApplicationWindow should pick up the font set on
 	// the C++ side. But as a matter of fact, it doesn't, unless you add this line:
@@ -32,11 +34,12 @@ Kirigami.ApplicationWindow {
 	Kirigami.Theme.textColor: subsurfaceTheme.textColor
 
 	// next setup the tab bar on top
-	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
+	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.ToolBar
 	pageStack.globalToolBar.showNavigationButtons: (Kirigami.ApplicationHeaderStyle.ShowBackButton | Kirigami.ApplicationHeaderStyle.ShowForwardButton)
-	pageStack.globalToolBar.minimumHeight: 0
-	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
-	pageStack.globalToolBar.maximumHeight: Kirigami.Units.gridUnit * 2
+	pageStack.globalToolBar.canContainHandles: true
+	pageStack.globalToolBar.minimumHeight: Kirigami.Units.gridUnit * 1.6
+	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2.5 : 2))
+	pageStack.globalToolBar.maximumHeight: pageStack.globalToolBar.preferredHeight
 
 	property alias notificationText: manager.notificationText
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
@@ -184,10 +187,21 @@ Kirigami.ApplicationWindow {
 	contextDrawer: Kirigami.ContextDrawer {
 		id: contextDrawer
 		closePolicy: QtQuickTemplates.Popup.CloseOnPressOutside
+		enabled: visibleActions().length > 0
+		handleClosedIcon.name: ""
+		handleClosedIcon.source: "qrc:/icons/overflow-menu.svg"
+		handleOpenIcon.name: "window-close-symbolic"
+		handleOpenIcon.source: ""
+		actions: pageStack.currentItem?.contextualActions ?? []
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
 		id: globalDrawer
+		handleVisible: true
+		handleClosedIcon.name: ""
+		handleClosedIcon.source: "qrc:/icons/application-menu.svg"
+		handleOpenIcon.name: "window-close-symbolic"
+		handleOpenIcon.source: ""
 		height: rootItem.height
 		rightPadding: 0
 		enabled: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
@@ -200,6 +214,8 @@ Kirigami.ApplicationWindow {
 			Layout.maximumHeight: myHeight
 			sourceSize.width: parent.width
 			fillMode: Image.PreserveAspectCrop
+			/* QtGraphicalEffects does not exist on Qt6.
+			 * Should be replaced by "mordern" methods.
 			LinearGradient {
 				anchors {
 					left: parent.left
@@ -220,6 +236,7 @@ Kirigami.ApplicationWindow {
 					}
 				}
 			}
+			*/
 			ColumnLayout {
 				id: textblock
 				anchors {
@@ -316,13 +333,6 @@ Kirigami.ApplicationWindow {
 				text: qsTr("Dive management")
 				Kirigami.Action {
 					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
-				Kirigami.Action {
-					icon {
 						name: ":/icons/ic_add.svg"
 					}
 					text: qsTr("Add dive manually")
@@ -406,13 +416,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				visible: true
 				Kirigami.Action {
 					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
-				Kirigami.Action {
-					icon {
 						name: ":/icons/map-globe.svg"
 					}
 					text: mapPage.title
@@ -436,13 +439,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					name: ":/icons/dashboard-show.svg"
 				}
 				text: qsTr("Technical Diving")
-				Kirigami.Action {
-					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
 				Kirigami.Action {
 					icon.name: ":/icons/document-edit-sign.svg" // Using an existing icon for now
 					text: qsTr("Dive Planner")
@@ -478,13 +474,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					name: ":/icons/ic_help_outline.svg"
 				}
 				text: qsTr("Help")
-				Kirigami.Action {
-					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
 				Kirigami.Action {
 					icon {
 						name: ":/icons/ic_info_outline.svg"
@@ -545,13 +534,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 				text: qsTr("Developer")
 				visible: PrefDisplay.show_developer
-				Kirigami.Action {
-					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
 				Kirigami.Action {
 					text: qsTr("App log")
 					onTriggered: {
@@ -636,14 +618,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 		manager.appendTextToLog(numColumns + " columns with column width of " + rootItem.colWidth)
 		manager.appendTextToLog("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
-		if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
-			// change our global grid unit and prevent Kirigami from resizing our rootItem
-			var fixWidth = rootItem.width
-			var fixHeight = rootItem.height
-			Kirigami.Units.gridUnit = kirigamiGridUnit * 1.0
-			rootItem.width = fixWidth
-			rootItem.height = fixHeight
-		}
+
 
 		pageStack.defaultColumnWidth = rootItem.colWidth
 		manager.appendTextToLog("Done setting up sizes width " + rootItem.width + " gridUnit " + kirigamiGridUnit)
@@ -963,7 +938,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			showDownloadForPluggedInDevice()
 		}
 	}
-	onClosing: {
+	onClosing: function(close) {
 		// this duplicates the check that is already in the onBackRequested signal handler of the DiveList
 		if (globalDrawer.visible) {
 			globalDrawer.close()

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.12
-import QtQuick.Dialogs 1.3
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Dialogs
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 TemplatePage {
 	title: qsTr("Dive planner setup")
@@ -18,7 +17,7 @@ TemplatePage {
 
 	Connections {
 		target: Backend
-		onLengthChanged: {
+		function onLengthChanged() {
 			spinAscrate75.value = Backend.ascrate75
 			spinAscrate50.value = Backend.ascrate50
 			spinAscratestops.value = Backend.ascratestops
@@ -26,11 +25,11 @@ TemplatePage {
 			spinDescrate.value = Backend.descrate
 			spinBestmixend.value = Backend.bestmixend
 		}
-		onVolumeChanged: {
+		function onVolumeChanged() {
 			spinBottomsac.value = Backend.bottomsac
 			spinDecosac.value = Backend.decosac
 		}
-		onPressureChanged: {
+		function onPressureChanged() {
 		}
 	}
 	Column {
@@ -551,14 +550,20 @@ TemplatePage {
 			}
 		}
 	}
-	actions.left: Kirigami.Action {
-		icon {
-			name: state = ":/icons/undo.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Return"
-		onTriggered: {
-			pageStack.pop()
+	Item {
+		parent: divePlannerSetupWindow
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			SsrfToolButton {
+				iconSource: "qrc:/icons/undo.svg"
+				highlighted: true
+				onClicked: pageStack.pop()
+			}
 		}
 	}
 }

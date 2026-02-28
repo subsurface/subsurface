@@ -45,6 +45,7 @@
 
 		<file>SsrfSwitch.qml</file>
 		<file>SsrfTextField.qml</file>
+		<file>SsrfToolButton.qml</file>
 
 		<!-- ********** pictures ********** -->
 		<file>icons/dive.jpg</file>
@@ -55,6 +56,8 @@
 	<qresource prefix="/">
 		<!-- ********** qtQuick.2 configuration ********** -->
 		<file>qtquickcontrols2.conf</file>
+		<!-- QML module declaration so the engine finds C++-registered types on Android -->
+		<file alias="org/subsurfacedivelog/mobile/qmldir">org.subsurfacedivelog.mobile.qmldir</file>
 	</qresource>
 
 	<qresource>

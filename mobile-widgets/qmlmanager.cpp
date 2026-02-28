@@ -56,7 +56,8 @@
 #include "commands/command.h"
 
 #if defined(Q_OS_ANDROID)
-#include <QtAndroid>
+#include <QJniObject>
+#include <QCoreApplication>
 #include "core/serial_usb_android.h"
 std::vector<android_usb_serial_device_descriptor> androidSerialDevices;
 #endif
@@ -496,10 +497,10 @@ bool QMLManager::createSupportEmail()
 	QString messageBody = "Please describe your issue here and keep the logs below:\n\n\n\n";
 #if defined(Q_OS_ANDROID)
 	// let's use our nifty Java shareFile function
-	QAndroidJniObject activity = QtAndroid::androidActivity();
+	QJniObject activity(QNativeInterface::QAndroidApplication::context());
 	if (activity.isValid()) {
-		QAndroidJniObject applogfilepath = QAndroidJniObject::fromString(appLogFileName);
-		QAndroidJniObject libdcfilepath = QAndroidJniObject::fromString(QString::fromStdString(logfile_name));
+		QJniObject applogfilepath = QJniObject::fromString(appLogFileName);
+		QJniObject libdcfilepath = QJniObject::fromString(QString::fromStdString(logfile_name));
 		bool success = activity.callMethod<jboolean>("supportEmail",
 					"(Ljava/lang/String;Ljava/lang/String;)Z", // two string arguments, return bool
 					applogfilepath.object<jstring>(), libdcfilepath.object<jstring>());
@@ -1912,7 +1913,7 @@ void QMLManager::writeToAppLogFile(const std::string &logText)
 #endif
 
 #if defined(Q_OS_ANDROID)
-//HACK to color the system bar on Android, use qtandroidextras and call the appropriate Java methods
+//HACK to color the system bar on Android, call the appropriate Java methods
 //this code is based on code in the Kirigami example app for Android (under LGPL-2) Copyright 2017 Marco Martin
 
 // there doesn't appear to be an include that defines these in an easily accessible way
@@ -1924,8 +1925,8 @@ void QMLManager::writeToAppLogFile(const std::string &logText)
 
 void QMLManager::setStatusbarColor(QColor color)
 {
-	QtAndroid::runOnAndroidThread([color]() {
-		QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
+	QNativeInterface::QAndroidApplication::runOnAndroidMainThread([color]() {
+		QJniObject window = QJniObject(QNativeInterface::QAndroidApplication::context()).callObjectMethod("getWindow", "()Landroid/view/Window;");
 		window.callMethod<void>("addFlags", "(I)V", FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 		window.callMethod<void>("clearFlags", "(I)V", FLAG_TRANSLUCENT_STATUS);
 		window.callMethod<void>("setStatusBarColor", "(I)V", color.rgba());
@@ -2105,7 +2106,7 @@ void QMLManager::androidUsbPopoulateConnections()
 	}
 }
 
-void QMLManager::showDownloadPage(QAndroidJniObject usbDevice)
+void QMLManager::showDownloadPage(QJniObject usbDevice)
 {
 	if (!usbDevice.isValid()) {
 		// this really shouldn't happen anymore, but just in case...
@@ -2123,7 +2124,7 @@ void QMLManager::showDownloadPage(QAndroidJniObject usbDevice)
 	emit pluggedInDeviceNameChanged();
 }
 
-void QMLManager::restartDownload(QAndroidJniObject usbDevice)
+void QMLManager::restartDownload(QJniObject usbDevice)
 {
 	// this gets called if we received a permission intent after
 	// already trying to download from USB
@@ -2267,12 +2268,12 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 	}
 #if defined(Q_OS_ANDROID)
 	// let's use our nifty Java shareViaEmail function
-	QAndroidJniObject activity = QtAndroid::androidActivity();
+	QJniObject activity(QNativeInterface::QAndroidApplication::context());
 	if (activity.isValid()) {
-		QAndroidJniObject attachmentPath = QAndroidJniObject::fromString(fileName);
-		QAndroidJniObject subject = QAndroidJniObject::fromString("Subsurface export");
-		QAndroidJniObject bodyString = QAndroidJniObject::fromString(body);
-		QAndroidJniObject emptyString = QAndroidJniObject::fromString("");
+		QJniObject attachmentPath = QJniObject::fromString(fileName);
+		QJniObject subject = QJniObject::fromString("Subsurface export");
+		QJniObject bodyString = QJniObject::fromString(body);
+		QJniObject emptyString = QJniObject::fromString("");
 		bool success = activity.callMethod<jboolean>("shareViaEmail",
 					"(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z", // five string arguments, return bool
 					subject.object<jstring>(), emptyString.object<jstring>(), bodyString.object<jstring>(),

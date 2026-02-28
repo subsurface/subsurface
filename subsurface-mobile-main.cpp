@@ -32,7 +32,10 @@
 
 int main(int argc, char **argv)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+	// no longer an option in Qt 6 - it's always enabled
 	QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 
 	// Start application

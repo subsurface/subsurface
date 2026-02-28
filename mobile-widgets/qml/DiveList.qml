@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
-import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
-import org.kde.kirigami 2.5 as Kirigami
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
+import QtQuick.Window
+import QtQuick.Dialogs
+import org.kde.kirigami as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.ScrollablePage {
@@ -12,6 +12,12 @@ Kirigami.ScrollablePage {
 	objectName: "DiveList"
 	title: qsTr("Dive list")
 	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
+
+	// Hamburger menu button
+	globalToolBarStyle: Kirigami.ApplicationHeaderStyle.ToolBar
+
+	// Left action to open global drawer (hamburger menu)
+	Kirigami.ColumnView.preventStealing: true
 	property int dlHorizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property QtObject diveListModel: null
 	// we want to use our own colors for Kirigami, so let's define our colorset
@@ -38,7 +44,7 @@ Kirigami.ScrollablePage {
 
 	Component {
 		id: diveOrTripDelegate
-		Kirigami.AbstractListItem {
+		Kirigami.SwipeListItem {
 			// this allows us to access properties of the currentItem from outside
 			property variant modelData: model
 			property var view: ListView.view
@@ -336,21 +342,18 @@ Kirigami.ScrollablePage {
 		onTriggered: manager.redo()
 	}
 	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, mergeWithDiveAboveAction, mergeWithDiveBelowAction, toggleInvalidAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
+	property var contextualActions: (Backend.cloud_verification_status === Enums.CS_VERIFIED ||
+	                                  Backend.cloud_verification_status === Enums.CS_NOCLOUD)
+	                                 ? contextactions : []
 
 	function setupActions() {
 		if (Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD) {
-			page.actions.main = page.downloadFromDCAction
-			page.actions.right = page.addDiveAction
-			page.actions.left = page.filterToggleAction
-			page.contextualActions = contextactions
+			page.actions = []
 			page.title = qsTr("Dive list")
 			if (diveListView.count === 0)
 				showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
 		} else {
-			page.actions.main = null
-			page.actions.right = null
-			page.actions.left = null
-			page.contextualActions = null
+			page.actions = []
 			page.title = qsTr("Cloud credentials")
 		}
 	}
@@ -367,17 +370,12 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	Rectangle {
+	header: Rectangle {
 		id: filterHeader
 		visible: filterBar.height > 0
 		implicitHeight: filterBar.implicitHeight
 		implicitWidth: filterBar.implicitWidth
 		height: filterBar.height
-		anchors {
-			top: parent.top
-			left: parent.left
-			right: parent.right
-		}
 		color: subsurfaceTheme.backgroundColor
 		enabled: rootItem.filterToggle
 		RowLayout {
@@ -440,16 +438,50 @@ Kirigami.ScrollablePage {
 			}
 		}
 	}
+
+	Item {
+		parent: page
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		visible: Backend.cloud_verification_status === Enums.CS_VERIFIED || Backend.cloud_verification_status === Enums.CS_NOCLOUD
+		Row {
+			anchors.centerIn: parent
+			spacing: Kirigami.Units.gridUnit
+			SsrfToolButton {
+				iconSource: "qrc:/icons/ic_filter_list.svg"
+				onClicked: {
+					rootItem.filterToggle = !rootItem.filterToggle
+					manager.setFilter("", 0)
+					if (rootItem.filterToggle)
+						Qt.inputMethod.show()
+					else
+						Qt.inputMethod.hide()
+				}
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/downloadDC.svg"
+				highlighted: true
+				onClicked: rootItem.showDownloadPage()
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/list-add.svg"
+				onClicked: startAddDive()
+			}
+		}
+	}
+
 	ListView {
 		id: diveListView
-		topMargin: filterHeader.height
 		anchors.fill: parent
 		model: diveListModel
 		currentIndex: -1
 		delegate: diveOrTripDelegate
 		boundsBehavior: Flickable.DragOverBounds
 		maximumFlickVelocity: parent.height * 5
-		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
+		bottomMargin: Kirigami.Units.gridUnit * 4
 		cacheBuffer: 0
 		Component.onCompleted: {
 			manager.appendTextToLog("finished setting up the diveListView")
@@ -474,8 +506,8 @@ Kirigami.ScrollablePage {
 	property QtObject addDiveAction: Kirigami.Action {
 		icon {
 			name: ":/icons/list-add"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		text: qsTr("Add dive")
 		onTriggered: {
 			startAddDive()
@@ -485,8 +517,8 @@ Kirigami.ScrollablePage {
 	property QtObject filterToggleAction: Kirigami.Action {
 		icon {
 			name: ":icons/ic_filter_list"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		text: qsTr("Filter dives")
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
@@ -498,7 +530,7 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	onBackRequested: {
+	onBackRequested: function(event) {
 		if (startPage.visible && diveListView.count > 0 &&
 		    Backend.cloud_verification_status !== Enums.CS_INCORRECT_USER_PASSWD) {
 			Backend.cloud_verification_status = oldStatus

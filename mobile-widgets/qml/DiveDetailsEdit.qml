@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Dialogs
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Item {
 	id: detailsEdit
@@ -183,7 +183,7 @@ Item {
 				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					id: txtDepth
-					validator: RegExpValidator { regExp: /[^-]*/ }
+					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 				}
 			}
@@ -196,7 +196,7 @@ Item {
 				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					id: txtDuration
-					validator: RegExpValidator { regExp: /[^-]*/ }
+					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 				}
 
@@ -367,7 +367,7 @@ Item {
 						id: txtGasMix0
 						text: usedGas[0] !== undefined ? usedGas[0] : null
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 				}
@@ -435,7 +435,7 @@ Item {
 						id: txtGasMix1
 						text: usedGas[1] !== undefined ? usedGas[1] : null
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 				}
@@ -504,7 +504,7 @@ Item {
 						id: txtGasMix2
 						text: usedGas[2] !== undefined ? usedGas[2] : null
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 				}
@@ -574,7 +574,7 @@ Item {
 						id: txtGasMix3
 						text: usedGas[3] !== undefined ? usedGas[3] : null
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 
@@ -647,7 +647,7 @@ Item {
 						id: txtGasMix4
 						text: usedGas[4] !== undefined ? usedGas[4] : null
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.11
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 SpinBox {
 	id: control
@@ -15,7 +15,7 @@ SpinBox {
 		width: Kirigami.Units.gridUnit * 3
 		text: control.textFromValue(control.value, control.locale)
 		font: control.font
-		color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.disabledTextColor
+		color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.secondaryTextColor
 		horizontalAlignment: Qt.AlignHCenter
 		verticalAlignment: Qt.AlignVCenter
 
@@ -34,7 +34,7 @@ SpinBox {
 		Text {
 			text: "+"
 			font.pixelSize: control.font.pixelSize * 1.5
-			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
+			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.secondaryTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter
@@ -52,7 +52,7 @@ SpinBox {
 		Text {
 			text: "-"
 			font.pixelSize: control.font.pixelSize * 1.5
-			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
+			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.secondaryTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter
