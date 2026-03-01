@@ -75,7 +75,7 @@ jobs:
       run: |
         sudo apt-get update
         DEBIAN_FRONTEND=noninteractive sudo apt-get install -y -q \
-          autoconf automake libtool pkg-config cmake p7zip-full
+          autoconf automake libtool pkg-config cmake ninja-build p7zip-full
 
     - name: install Qt for Android
       uses: jurplel/install-qt-action@v4
@@ -253,7 +253,7 @@ jobs:
         sed -i 's/^FIND_PACKAGE(ZLIB/#&/' CMakeLists.txt
         cd "${BUILDROOT}"
         mkdir -p libzip-build && cd libzip-build
-        cmake \
+        cmake -G Ninja \
           -DCMAKE_C_COMPILER="${CC}" \
           -DCMAKE_LINKER="${CC}" \
           -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
@@ -264,12 +264,12 @@ jobs:
           -DZLIB_VERSION_STRING=1.2.7 \
           -DZLIB_LIBRARY=z \
           ../libzip/
-        make -j$(nproc) && make install
+        ninja && ninja install
         cd "${BUILDROOT}"
 
         # --- libgit2 ---
         mkdir -p libgit2-build && cd libgit2-build
-        cmake \
+        cmake -G Ninja \
           -DCMAKE_C_COMPILER="${CC}" \
           -DCMAKE_LINKER="${CC}" \
           -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
@@ -283,7 +283,7 @@ jobs:
           -DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
           ../libgit2/
         find ../libgit2 -name 'CMakeLists.txt' -exec sed -i 's|C_STANDARD 90|C_STANDARD 99|' {} \;
-        make -j$(nproc) && make install
+        ninja && ninja install
         perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' "${PKG_CONFIG_PATH}"/libgit2.pc
         cd "${BUILDROOT}"
 
@@ -334,7 +334,7 @@ jobs:
         VEOF
 
         # configure with Qt6 Android toolchain
-        cmake "${GITHUB_WORKSPACE}" \
+        cmake -G Ninja "${GITHUB_WORKSPACE}" \
           -DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
           -DQT_HOST_PATH="${QT_HOST_PATH}" \
           -DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
@@ -358,7 +358,7 @@ jobs:
           ${QT_HOST_PATH}/bin/androiddeployqt \
           ${QT_HOST_PATH}/bin/androiddeployqt6
 
-        cmake --build . -j$(nproc)
+        cmake --build .
 
     - name: collect APK
       env:
