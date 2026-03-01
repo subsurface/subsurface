@@ -54,6 +54,7 @@
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/statswidget.h"
 #include "commands/command.h"
+#include "desktop-widgets/usermanualpath.h"
 
 #include "profilewidget.h"
 #include "profile-widget/profilewidget2.h"
@@ -74,7 +75,6 @@
 
 #ifdef NO_USERMANUAL
 #include <QDesktopServices>
-#include <QUrl>
 #else
 #include "usermanual.h"
 #endif
@@ -866,7 +866,7 @@ void MainWindow::on_action_Check_for_Updates_triggered()
 void MainWindow::on_actionUserManual_triggered()
 {
 #ifdef NO_USERMANUAL
-	QDesktopServices::openUrl(QUrl("https://subsurface-divelog.org/subsurface-user-manual/"));
+	QDesktopServices::openUrl(getUserManualUrl());
 #else
 	if (!helpView)
 		helpView = new UserManual(this);
