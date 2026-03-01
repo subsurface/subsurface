@@ -3262,7 +3262,11 @@ A dive log or part of it can be saved in several formats:
   profile toolbar options are activated. If several dives are
   selected, the images are written as separate graphics files. Selecting the
   _Dive profile_ option opens a window to name the file(s) to which the profile(s)
-  is written. Provide a filename and select _Save_ to create the graphics output.
+  is written. Provide a filename and select _Save_ to create the graphics output. Some dive info like date, dive time, location, maximal depth can 
+be included in the image by selecting the corresponding check box. You can
+choose the size of the resulting image in pixels. Note that the text in
+the profile is fixed size, so to obtain larger text and numbers you 
+should use a smaller image size.
 
 * _Worldmap_ format, an HTML file with a world map upon which each dive and
   some information about it are indicated. This map is not editable. If you select any
