@@ -1,0 +1,12 @@
+<html>
+<head>
+	<style>
+		body { margin: 0; padding: 0; background: #ffffff; }
+	</style>
+</head>
+<body data-numberofdives="1">
+{% for dive in dives %}
+	<div class="summary diveProfile compact" id="dive_{{ dive.id }}" style="width:1000px;height:500px;"></div>
+{% endfor %}
+</body>
+</html>
