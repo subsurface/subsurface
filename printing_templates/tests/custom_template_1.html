@@ -1,0 +1,192 @@
+<html>
+<head>
+	<style>
+		body {
+			{{ print_options.grayscale }};
+			padding: 0px;
+			margin: 0px;
+			font-size: {{ template_options.font_size }}vw;
+			line-height: {{ template_options.line_spacing }};
+			font-family: {{ template_options.font }};
+			color: {{ template_options.color4 }};
+		}
+
+		h1 {
+			font-size: {{ template_options.font_size }}vw;
+			float: left;
+			margin: 0px;
+		}
+
+		p {
+			font-size: {{ template_options.font_size }}vw;
+			float: left;
+			margin: 0px;
+		}
+
+		td {
+			margin:0px;
+		}
+
+		#footer {
+			height: 100%;
+			width: 100%;
+			float: left;
+		}
+
+		#body_div {
+			background-color: {{ template_options.color1 }};
+			float: left;
+		}
+
+		.mainContainer {
+			width: 50%;
+			height: 33.333%;
+			margin-left: 0%;
+			margin-right: 0%;
+			margin-top: 0%;
+			margin-bottom: 0%;
+			overflow: hidden;
+			page-break-inside: avoid;
+			float: left;
+		}
+
+		.innerContainer {
+			height: 99%;
+			width: 98%;
+			padding-left: 1%;
+			padding-right: 1%;
+			padding-top: 1%;
+			overflow: hidden;
+		}
+
+		.table_class {
+			overflow: hidden;
+			width: 100%;
+			margin: 0%;
+			float: left;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			border-width: {{ template_options.borderwidth }}px;
+			border-style:solid;
+			border-color: {{ template_options.color6 }};
+			font-size: {{ template_options.font_size }}vw;
+			background-color: {{ template_options.color3 }};
+			color: {{ template_options.color4 }};
+		}
+
+		.notes_table_class {
+			overflow: hidden;
+			max-width: 100%;
+			min-width: 100%;
+			margin: 0.5%;
+			float: left;
+		}
+
+		.diveProfile {
+			width: 100%;
+			height: 95%;
+			margin-left: 0%;
+			margin-right: 0%;
+			margin-bottom: 0%;
+			margin-top: 0%;
+			float: right;
+		}
+
+		.diveDetails {
+			width: 100%;
+			float: left;
+		}
+
+		.dataPart {
+			height: 45%;
+			max-height: 60%;
+		}
+
+		.dataSection{
+			width: 100%;
+		}
+
+		.textArea {
+			overflow: hidden !important;
+			text-overflow: ellipsis;
+			line-height: {{ template_options.line_spacing }};
+		}
+
+		#sixdivespack {
+			width: 100%;
+			height: 100%;
+		}
+	</style>
+</head>
+<body data-numberofdives = 6>
+<div id="body_div">
+{% block main_rows %}
+	{% for dive in dives %}
+		{% if forloop.counter|divisibleby:6 %}
+		<div id = "sixdivespack">
+		{% endif %}
+		<div class="mainContainer">
+			<div class="innerContainer">
+				<div class="diveDetails">
+					<div class="dataPart">
+						<div class="diveProfile" id="dive_{{ dive.id }}"/>
+						<div class="dataSection">
+							<table style="float:left;width:100%;">
+								<tr>
+									<td>
+										<h1> Dive # {{ dive.number }} - {{ dive.date }} {{ dive.time }}</h1>
+										<p style="float:right;"> Max. depth: {{ dive.depth }} </p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<p> {{ dive.location }} </p> 
+										<p  style="float:right;"> Duration: {{ dive.duration }} </p>
+									</td>
+								</tr>
+							</table>
+							<table class="table_class">
+								<tr>
+									<td> Gas used: {{ dive.gas }}</td>
+									<td> Tags: {{ dive.tags }}</td>
+									<td> SAC: {{ dive.sac }}</td>
+								</tr>
+								<tr>
+									<td> Dive guide: {{ dive.divemaster }}</td>
+									<td> Buddy: {{ dive.buddy }}</td>
+									<td> Rating: {{ dive.rating }}/5</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="notesPart">
+						<table class="notes_table_class">
+							<tbody>
+								<tr>
+									<td>
+										<p> Notes: </p>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="textArea">
+											<p> {{ dive.notes|safe }} </p>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% if forloop.counter|divisibleby:6 %}
+		</div>
+		{% endif %}
+	{% endfor %}
+{% endblock %}
+<div id="footer">
+</div>
+</div>
+</body>
+</html>

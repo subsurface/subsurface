@@ -1,0 +1,12 @@
+<html>
+<head>
+	<style>
+		body { margin: 0; padding: 0; background: #ffffff; }
+	</style>
+</head>
+<body data-numberofdives="1">
+{% for dive in dives %}
+	<div style="background: lightblue; width:1000px; height:500px;" data-custom="v" class="diveProfile" id="dive_{{ dive.id }}" data-other="x"></div>
+{% endfor %}
+</body>
+</html>
