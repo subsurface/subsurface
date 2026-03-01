@@ -11,8 +11,8 @@
 #endif
 
 #include "desktop-widgets/usermanual.h"
+#include "desktop-widgets/usermanualpath.h"
 #include "desktop-widgets/mainwindow.h"
-#include "core/qthelper.h"
 #include "core/errorhelper.h"
 
 SearchBar::SearchBar(QWidget *parent): QWidget(parent)
@@ -97,42 +97,29 @@ UserManual::UserManual(QWidget *parent) : QDialog(parent)
 #if !defined(USE_WEBENGINE) && !defined(USE_QLITEHTML)
 	userManual->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 #endif
-	QString searchPath = getSubsurfaceDataPath("Documentation");
-	if (searchPath.size()) {
-		// look for localized versions of the manual first
-		QString lang = getUiLanguage();
-		QString prefix = searchPath.append("/user-manual");
-		QFile manual(prefix + "_" + lang + ".html");
-		if (!manual.exists())
-			manual.setFileName(prefix + "_" + lang.left(2) + ".html");
-		if (!manual.exists())
-			manual.setFileName(prefix + ".html");
-		if (!manual.exists()) {
-			report_info("unable to find user manual in %s", searchPath.toUtf8().constData());
-			userManual->setHtml(tr("Cannot find the Subsurface manual"));
-		} else {
-			QString urlString = QString("file:///") + manual.fileName();
+	QUrl manualUrl = getPackagedUserManualUrl();
+	if (manualUrl.isValid()) {
 #if defined(USE_QLITEHTML)
 			// QLiteHtml requires reading the file and calling setHtml()
 			// setUrl() only sets the base URL for resolving relative paths
-			QFile htmlFile(manual.fileName());
+			QFile htmlFile(manualUrl.toLocalFile());
 			if (htmlFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 				QString htmlContent = QString::fromUtf8(htmlFile.readAll());
 				htmlFile.close();
-				userManual->setUrl(QUrl(urlString, QUrl::TolerantMode));
+				userManual->setUrl(manualUrl);
 				userManual->setHtml(htmlContent);
 			} else {
-				report_info("failed to open HTML file: %s", manual.fileName().toUtf8().constData());
+				report_info("failed to open HTML file: %s", manualUrl.toLocalFile().toUtf8().constData());
 			}
 #elif defined(USE_WEBENGINE)
 			UserManualPage* page = new UserManualPage(userManual);
-			page->setUrl(urlString);
+			page->setUrl(manualUrl);
 			userManual->setPage(page);
 #else
-			userManual->setUrl(QUrl(urlString, QUrl::TolerantMode));
+			userManual->setUrl(manualUrl);
 #endif
-		}
 	} else {
+		report_info("unable to find packaged user manual (resolved URL: %s)", manualUrl.toString().toUtf8().constData());
 		userManual->setHtml(tr("Cannot find the Subsurface manual"));
 	}
 

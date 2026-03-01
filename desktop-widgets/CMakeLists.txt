@@ -104,6 +104,8 @@ set(SUBSURFACE_INTERFACE
 	locationinformation.h
 	mainwindow.cpp
 	mainwindow.h
+	usermanualpath.cpp
+	usermanualpath.h
 	modeldelegates.cpp
 	modeldelegates.h
 	notificationwidget.cpp
