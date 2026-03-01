@@ -193,18 +193,21 @@ jobs:
         "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
         "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libgit2
 
-        # --- OpenSSL (build before setting sysroot CFLAGS) ---
+        # --- OpenSSL 3.x (build before setting sysroot CFLAGS) ---
+        # Qt 6.5+ requires OpenSSL 3.x; it loads libssl_3.so / libcrypto_3.so at runtime
         mkdir -p openssl-build
         cp -r openssl/* openssl-build/
         cd openssl-build
-        perl -pi -e 's/-mandroid//g' Configure
-        ./Configure no-shared android-arm64 no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm \
-          --prefix="${PREFIX}" -fPIC -DOPENSSL_NO_UI_CONSOLE \
-          -D__ANDROID_API__=${API_LEVEL}
-        make depend
+        ./Configure android-arm64 no-ssl3 no-comp no-engine no-asm no-ui-console \
+          --prefix="${PREFIX}" -fPIC
         make build_libs
         cp -RL include/openssl "${PREFIX}"/include/openssl
-        cp libcrypto.a libssl.a "${PREFIX}"/lib/
+        # Copy resolved shared libraries for linking (-L follows symlinks)
+        cp -L libssl.so "${PREFIX}"/lib/libssl.so
+        cp -L libcrypto.so "${PREFIX}"/lib/libcrypto.so
+        # Qt 6.5+ on Android dlopen's libssl_3.so / libcrypto_3.so (underscore naming)
+        cp -L libssl.so "${PREFIX}"/lib/libssl_3.so
+        cp -L libcrypto.so "${PREFIX}"/lib/libcrypto_3.so
         cp *.pc "${PKG_CONFIG_PATH}"/
         cd "${BUILDROOT}"
 
@@ -277,8 +280,8 @@ jobs:
           -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
           -DCURL=OFF \
           -DUSE_SSH=OFF \
-          -DOPENSSL_SSL_LIBRARY="${PREFIX}"/lib/libssl.a \
-          -DOPENSSL_CRYPTO_LIBRARY="${PREFIX}"/lib/libcrypto.a \
+          -DOPENSSL_SSL_LIBRARY="${PREFIX}"/lib/libssl.so \
+          -DOPENSSL_CRYPTO_LIBRARY="${PREFIX}"/lib/libcrypto.so \
           -DOPENSSL_INCLUDE_DIR="${PREFIX}"/include \
           -DCMAKE_DISABLE_FIND_PACKAGE_HTTP_Parser=TRUE \
           ../libgit2/

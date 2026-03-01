@@ -109,7 +109,7 @@ fi
 
 # FIX FOR ANDROID,
 if [ "$PLATFORM" == "singleAndroid" ] ; then
-	CURRENT_OPENSSL="OpenSSL_1_1_1m"
+	CURRENT_OPENSSL="openssl-3.4.4"
 # If changing the openSSL version here, make sure to change it in scripts/docker/android-build-container/variables.sh also.
 fi
 # no curl and old libs (never version breaks)
