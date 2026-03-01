@@ -225,7 +225,7 @@ static void parse_dive_location(char *, struct git_parser_state *state)
 			ds->name = name.c_str();
 		} else {
 			// and that dive site had a name. that's weird - if our name is different, add it to the notes
-			if (ds->name == name) {
+			if (ds->name != name) {
 				ds->notes += '\n';
 				ds->notes += format_string_std(translate("gettextFromC", "additional name for site: %s\n"), name.c_str());
 			}
