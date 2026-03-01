@@ -732,6 +732,13 @@ if(ANDROID)
 		endif()
 	endforeach()
 	set(_extra_libs "${ANDROID_LIBOMP}")
+	# Qt's QSslSocket needs OpenSSL 3.x shared libraries at runtime;
+	# they must be bundled into the APK via QT_ANDROID_EXTRA_LIBS.
+	# CMAKE_FIND_ROOT_PATH is a list; iterate so the glob works per-prefix.
+	foreach(_root ${CMAKE_FIND_ROOT_PATH})
+		file(GLOB _ssl_libs "${_root}/lib/libssl_*.so" "${_root}/lib/libcrypto_*.so")
+		list(APPEND _extra_libs ${_ssl_libs})
+	endforeach()
 	set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
 		QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/android-mobile"
 	)
