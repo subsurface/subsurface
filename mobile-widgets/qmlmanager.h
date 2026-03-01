@@ -263,6 +263,7 @@ private:
 	bool localChanges;
 	QString m_progressMessage;
 	bool m_btEnabled;
+	void initBluetooth();
 	void updateAllGlobalLists();
 	void updateHaveLocalChanges(bool status);
 
