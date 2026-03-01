@@ -18,6 +18,9 @@
 #include <QUndoStack>
 
 #include <QBluetoothLocalDevice>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#include <QPermissions>
+#endif
 
 #include "qt-models/completionmodels.h"
 #include "qt-models/messagehandlermodel.h"
@@ -150,6 +153,15 @@ QString QMLManager::consumeError()
 	QString ret;
 	ret.swap(m_lastError);
 	return ret;
+}
+
+void QMLManager::initBluetooth()
+{
+	BTDiscovery *btDiscovery = BTDiscovery::instance();
+	m_btEnabled = btDiscovery->btAvailable();
+	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
+		this, &QMLManager::btHostModeChange);
+	emit btEnabledChanged();
 }
 
 void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
@@ -288,12 +300,33 @@ QMLManager::QMLManager() :
 	if (ignore_bt) {
 		m_btEnabled = false;
 	} else {
-		// ensure that we start the BTDiscovery - this should be triggered by the export of the class
-		// to QML, but that doesn't seem to always work
-		BTDiscovery *btDiscovery = BTDiscovery::instance();
-		m_btEnabled = btDiscovery->btAvailable();
-		connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
-			this, &QMLManager::btHostModeChange);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+		QBluetoothPermission btPermission;
+		btPermission.setCommunicationModes(QBluetoothPermission::Access);
+		switch (qApp->checkPermission(btPermission)) {
+		case Qt::PermissionStatus::Undetermined:
+			qApp->requestPermission(btPermission, this, [this](const QPermission &permission) {
+				if (permission.status() == Qt::PermissionStatus::Granted) {
+					report_info("Bluetooth permission granted");
+					initBluetooth();
+				} else {
+					report_info("Bluetooth permission denied");
+					m_btEnabled = false;
+					emit btEnabledChanged();
+				}
+			});
+			break;
+		case Qt::PermissionStatus::Granted:
+			initBluetooth();
+			break;
+		case Qt::PermissionStatus::Denied:
+			report_info("Bluetooth permission denied");
+			m_btEnabled = false;
+			break;
+		}
+#else
+		initBluetooth();
+#endif
 	}
 	progress_callback = &progressCallback;
 	set_git_update_cb(&gitProgressCB);
