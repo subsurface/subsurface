@@ -333,13 +333,9 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 		report_info("%s", qPrintable(id.toByteArray()));
 	}
 
-#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_WIN)
-	// on Windows, macOS and iOS we need to scan in order to be able to access a device;
-	// let's remember the information we scanned on this run so we can at least
-	// refer back to it and don't need to open the separate scanning dialog every
-	// time we try to download from a BT/BLE dive computer.
+	// Qt 6 requires a QBluetoothDeviceInfo to create a QLowEnergyController;
+	// save discovered device info so qt_ble_open() can look it up later.
 	saveBtDeviceInfo(btDeviceAddress(&device, false), device);
-#endif
 
 	btDeviceDiscoveredMain(this_d, false);
 }
