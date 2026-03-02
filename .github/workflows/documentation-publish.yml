@@ -46,7 +46,7 @@ jobs:
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: Subsurface-Documentation-${{ steps.version_number.outputs.version }}
         path: |
