@@ -742,6 +742,27 @@ if(ANDROID)
 	set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
 		QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/android-mobile"
 	)
+	if(ANDROID_BUILDNR)
+		# the Google Play Store requires monotonous versionCode for any upload
+		# you cannot reuse that number
+		# so we pass in our buildnr (which increases on every push to master)
+		# but also allow for a -DVERSION_CODE_OFFSET=n (with 0 <= n <= 9) so we can do a handful more test .aab's if necessary
+		if(NOT DEFINED VERSION_CODE_OFFSET)
+			set(VERSION_CODE_OFFSET 0)
+		endif()
+		if(VERSION_CODE_OFFSET GREATER 9)
+			message(FATAL_ERROR "VERSION_CODE_OFFSET must be 0-9, got ${VERSION_CODE_OFFSET}")
+		endif()
+		math(EXPR _version_code "${ANDROID_BUILDNR} * 10 + ${VERSION_CODE_OFFSET}")
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			QT_ANDROID_VERSION_CODE "${_version_code}"
+		)
+	endif()
+	if(ANDROID_VERSION_NAME)
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			QT_ANDROID_VERSION_NAME "${ANDROID_VERSION_NAME}"
+		)
+	endif()
 	if(_extra_libs)
 		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
 			QT_ANDROID_EXTRA_LIBS "${_extra_libs}"
