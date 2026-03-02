@@ -352,7 +352,9 @@ jobs:
           -DNO_DOCS=ON \
           -DBUILD_TESTS=OFF \
           -DQT_ANDROID_BUILD_ALL_ABIS=OFF \
-          -DBUILD_WITH_QT6=ON
+          -DBUILD_WITH_QT6=ON \
+          -DANDROID_BUILDNR="${BUILDNR}" \
+          -DANDROID_VERSION_NAME="${VERSION}"
 
 
         # patch androiddeployqt to not emit enableUncompressedNativeLibs
