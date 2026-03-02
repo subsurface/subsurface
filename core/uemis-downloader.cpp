@@ -446,7 +446,7 @@ static std::string first_object_id_val(std::string_view buf)
 			return res;
 		}
 	}
-	return NULL;
+	return {};
 }
 
 /* ultra-simplistic; it doesn't deal with the case when the object_id is

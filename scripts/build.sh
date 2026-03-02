@@ -16,6 +16,7 @@
 # ./subsurface/build                  (desktop build)
 # ./subsurface/build-mobile           (mobile build)
 # ./subsurface/build-downloader       (headless downloader build)
+# ./subsurface/build-cli              (for the CLI used by the webUI)
 #
 # there is basic support for building from a shared directory, e.g., with
 # one subsurface source tree on a host computer, accessed from multiple
@@ -130,6 +131,10 @@ while [[ $# -gt 0 ]] ; do
 			# we are building Subsurface-downloader
 			BUILD_DOWNLOADER="1"
 			;;
+		-cli)
+			# we are building subsurface-cli
+			BUILD_CLI="1"
+			;;
 		-both)
 			# we are building Subsurface and Subsurface-mobile
 			BUILD_MOBILE="1"
@@ -137,6 +142,7 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		-all)
 			# we are building Subsurface, Subsurface-mobile, and Subsurface-downloader
+			# note that this does NOT build the CLI
 			BUILD_MOBILE="1"
 			BUILD_DESKTOP="1"
 			BUILD_DOWNLOADER="1"
@@ -167,12 +173,19 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: build.sh [-all] [-both] [-build-deps-only] [-build-with-homebrew] [-build-prefix <PREFIX>] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-make-package] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
+			echo "Usage: build.sh [-all] [-both] [-build-deps-only] [-build-with-homebrew] [-build-prefix <PREFIX>] [-build-with-qt6] [-build-with-webkit] [-create-appdir] [-desktop] [-downloader] [-cli] [-fat-build] [-ftdi] [-mobile] [-no-bt] [-make-package] [-quick] [-release] [-build-docs] [-build-tests] [-install-docs] [-src-dir <SUBSURFACE directory>] "
 			exit 1
 			;;
 	esac
 	shift
 done
+
+# we really don't need Bluetooth support for the CLI that only interacts with the
+# cloud storage... there's a lot more that we should figure out to make this a smaller binary
+if [[ "$BUILD_CLI" == "1" ]]; then
+	BTSUPPORT="OFF"
+	EXTRA_LIBDC="--without-libusb --without-libmtp --without-hidapi --without-bluez"
+fi
 
 # Use all cores, unless user set their own MAKEFLAGS
 if [[ -z "${MAKEFLAGS+x}" ]]; then
@@ -190,7 +203,7 @@ else
 fi
 
 # recreate the old default behavior - no flag set implies build desktop
-if [ "$BUILD_MOBILE$BUILD_DOWNLOADER" = "" ] ; then
+if [ "$BUILD_MOBILE$BUILD_DOWNLOADER$BUILD_CLI" = "" ] ; then
 	BUILD_DESKTOP="1"
 fi
 
@@ -203,8 +216,16 @@ fi
 # the user can explicitly pick the builds requested
 # for historic reasons, -both builds mobile and desktop, -all builds the downloader as well
 
-DEFAULT_PREFIX="$SRC_DIR/"
+DEFAULT_PREFIX="$SRC/$SRC_DIR/"
 
+if [ "$BUILD_CLI" = "1" ] ; then
+	# only build this, nothing else
+	BUILDS=( "CLI" )
+	BUILDDIRS=( "${BUILD_PREFIX:-$DEFAULT_PREFIX}build-cli" )
+	BUILD_MOBILE=""
+	BUILD_DESKTOP=""
+	BUILD_DOWNLOADER=""
+fi
 if [ "$BUILD_MOBILE" = "1" ] ; then
 	echo "building Subsurface-mobile in ${BUILD_PREFIX:-$DEFAULT_PREFIX}build-mobile"
 	BUILDS+=( "MobileExecutable" )
@@ -420,7 +441,7 @@ if [ ! -f "$SRC"/${SRC_DIR}/libdivecomputer/configure ] ; then
 	autoreconf --install "$SRC"/${SRC_DIR}/libdivecomputer
 fi
 
-CFLAGS="$MAC_OPTS -I$INSTALL_ROOT/include $LIBDC_CFLAGS" "$SRC"/${SRC_DIR}/libdivecomputer/configure --prefix="$INSTALL_ROOT" --disable-examples
+CFLAGS="$MAC_OPTS -I$INSTALL_ROOT/include $LIBDC_CFLAGS" "$SRC"/${SRC_DIR}/libdivecomputer/configure --prefix="$INSTALL_ROOT" --disable-examples $EXTRA_LIBDC
 
 if [ "$PLATFORM" = Darwin ] ; then
 	# remove some copmpiler options that aren't supported on Mac
@@ -502,6 +523,9 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		EXTRA_OPTS="-DNO_PRINTING=OFF"
 	else
 		EXTRA_OPTS="-DNO_PRINTING=ON"
+	fi
+	if [ "$SUBSURFACE_EXECUTABLE" = "CLI" ] ; then
+		EXTRA_OPTS="$EXTRA_OPTS -DNO_USERMANUAL=ON"
 	fi
 	if [ "$FTDI" = "1" ] ; then
 		EXTRA_OPTS="$EXTRA_OPTS -DFTDISUPPORT=ON"

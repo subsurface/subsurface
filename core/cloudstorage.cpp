@@ -4,7 +4,12 @@
 #include "qthelper.h"
 #include "errorhelper.h"
 #include "settings/qPrefCloudStorage.h"
+#include <QRegularExpression>
+#ifdef SUBSURFACE_CLI
+#include <QCoreApplication>
+#else
 #include <QApplication>
+#endif
 
 CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) :
 	QObject(parent),
@@ -152,4 +157,31 @@ QNetworkAccessManager *manager()
 {
 	static QNetworkAccessManager *manager = new QNetworkAccessManager(qApp);
 	return manager;
+}
+
+bool isValidPassword(const QString &password)
+{
+	if (password.isEmpty())
+		return false;
+	static const QRegularExpression passwordPattern("^[a-zA-Z0-9@.+_-]+$");
+	return passwordPattern.match(password).hasMatch();
+}
+
+bool isValidEmail(const QString &email)
+{
+	// Max overall length per RFC 5321
+	if (email.length() > 254)
+		return false;
+
+	// Local part (before @) max 64 characters per RFC 5321
+	int atIndex = email.indexOf('@');
+	if (atIndex > 64)
+		return false;
+
+	// Character set and structural validation: local@domain.tld
+	// TLD must be at least 2 characters
+	static const QRegularExpression emailPattern(
+		"^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\\.[a-zA-Z0-9+_-]{2,}$"
+	);
+	return emailPattern.match(email).hasMatch();
 }
