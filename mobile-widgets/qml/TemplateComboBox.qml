@@ -84,7 +84,7 @@ ComboBox {
 	popup: Popup {
 		y: cb.height - 1
 		width: cb.width
-		implicitHeight: contentItem.implicitHeight
+		implicitHeight: Math.min(contentItem.implicitHeight + 2, cb.Window.height * 0.4)
 		padding: 1
 
 		contentItem: ListView {
@@ -93,7 +93,7 @@ ComboBox {
 			model: cb.popup.visible ? cb.delegateModel : null
 			currentIndex: cb.highlightedIndex
 
-			ScrollIndicator.vertical: ScrollIndicator { }
+			ScrollBar.vertical: ScrollBar { }
 		}
 
 		background: Rectangle {
