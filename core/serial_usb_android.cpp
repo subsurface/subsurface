@@ -246,7 +246,7 @@ android_usb_serial_device_descriptor getDescriptor(QJniObject usbDevice)
 
 	// descriptor.product = UsbDevice.getProductName();
 	QJniObject usbProductName = usbDevice.callObjectMethod<jstring>("getProductName");
-	if (usbManufacturerName.isValid()) {
+	if (usbProductName.isValid()) {
 		const char *charArray = env->GetStringUTFChars(usbProductName.object<jstring>(), nullptr);
 		descriptor.usbProduct = std::string(charArray);
 		env->ReleaseStringUTFChars(usbProductName.object<jstring>(), charArray);
