@@ -84,11 +84,6 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 # MSVC requires C++20 for designated initializers;
 # Kirigami 6 requires C++20
-#if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-#	set(CMAKE_CXX_STANDARD 20)
-#else()
-#	set(CMAKE_CXX_STANDARD 17)
-#endif()
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
