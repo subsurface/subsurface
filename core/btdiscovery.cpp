@@ -457,7 +457,7 @@ void BTDiscovery::getBluetoothDevices()
 
 bool BTDiscovery::checkException(const char* method, const QJniObject *obj)
 {
-	static QJniEnvironment env;
+	QJniEnvironment env;
 	bool result = false;
 
 	if (env->ExceptionCheck()) {
