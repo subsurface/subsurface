@@ -7,8 +7,13 @@ on:
     branches:
     - master
 
+env:
+  RELEASE_PUBLISHER: "true"
+
 jobs:
   postRelease:
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
     runs-on: ubuntu-latest
     steps:
     - name: checkout sources
@@ -40,6 +45,15 @@ jobs:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
+        draft: true
         prerelease: false
         files: release_content_title.txt
         body_path: gh_release_notes.md
+
+  notify-release-coordinator:
+    if: always()
+    needs: postRelease
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.postRelease.outputs.release_tag }}
+      conclusion: ${{ needs.postRelease.result }}
