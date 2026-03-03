@@ -224,18 +224,6 @@ Kirigami.Page {
 		onTriggered: manager.deleteDive(currentItem.modelData.id)
 	}
 
-	property QtObject editSaveAction: Kirigami.Action {
-		icon.name: diveDetailsPage.state !== "view" ? ":/icons/document-save.svg" : ":/icons/document-edit.svg"
-		text: diveDetailsPage.state !== "view" ? qsTr("Save edits") : qsTr("Edit dive")
-		onTriggered: {
-			manager.appendTextToLog("save/edit button triggered")
-			if (diveDetailsPage.state === "edit" || diveDetailsPage.state === "add") {
-				detailsEdit.saveData()
-			} else {
-				startEditMode()
-			}
-		}
-	}
 	property QtObject cancelAction: Kirigami.Action {
 		text: qsTr("Cancel edit")
 		visible: diveDetailsPage.state === "edit" || diveDetailsPage.state === "add"
