@@ -5,7 +5,6 @@ import QtQuick.Controls.Material
 import QtQuick.Window
 import QtQuick.Dialogs
 import QtQuick.Layouts
-import QtQuick.Window
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami as Kirigami
 import QtQuick.Templates as QtQuickTemplates
@@ -14,13 +13,6 @@ Kirigami.ApplicationWindow {
 	id: rootItem
 	title: qsTr("Subsurface-mobile")
 	wideScreen: false // workaround for probably Kirigami bug. See commits.
-
-	// Ensure drawer controls are visible in Kirigami 6.x
-	property bool showGlobalDrawer: true
-
-	// ensure we get all information on screen rotation
-	// This was removed and has to be replaced.
-	//Screen.orientationUpdateMask: Qt.LandscapeOrientation | Qt.PortraitOrientation | Qt.InvertedLandscapeOrientation | Qt.InvertedPortraitOrientation
 
 	// the documentation claims that the ApplicationWindow should pick up the font set on
 	// the C++ side. But as a matter of fact, it doesn't, unless you add this line:
