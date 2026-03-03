@@ -13,6 +13,9 @@ on:
     - master
   workflow_dispatch:
 
+env:
+  RELEASE_PUBLISHER: "true"
+
 jobs:
   build-documentation:
     uses: ./.github/workflows/documentation-build.yml
@@ -21,6 +24,8 @@ jobs:
 
   build:
     needs: build-documentation
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
     runs-on: ubuntu-24.04
     container:
       image: ubuntu:20.04
@@ -144,7 +149,16 @@ jobs:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
+        draft: true
         prerelease: false
         fail_on_unmatched_files: true
         files: |
          ./Subsurface-*.AppImage
+
+  notify-release-coordinator:
+    if: always()
+    needs: build
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.build.outputs.release_tag }}
+      conclusion: ${{ needs.build.result }}
