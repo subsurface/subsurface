@@ -206,29 +206,18 @@ Kirigami.ApplicationWindow {
 			Layout.maximumHeight: myHeight
 			sourceSize.width: parent.width
 			fillMode: Image.PreserveAspectCrop
-			/* QtGraphicalEffects does not exist on Qt6.
-			 * Should be replaced by "mordern" methods.
-			LinearGradient {
+			Rectangle {
 				anchors {
 					left: parent.left
 					right: parent.right
 					top: parent.top
 				}
 				height: Math.min(textblock.height * 2, parent.myHeight)
-				start: Qt.point(0, 0)
-				end: Qt.point(0, height)
 				gradient: Gradient {
-					GradientStop {
-						position: 0.0
-						color: Qt.rgba(0, 0, 0, 0.8)
-					}
-					GradientStop {
-						position: 1.0
-						color: "transparent"
-					}
+					GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0.8) }
+					GradientStop { position: 1.0; color: "transparent" }
 				}
 			}
-			*/
 			ColumnLayout {
 				id: textblock
 				anchors {
