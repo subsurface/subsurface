@@ -56,9 +56,6 @@
         </provider>
     </application>
 
-    <uses-sdk android:minSdkVersion="28"
-	      android:targetSdkVersion="35" />
-
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
