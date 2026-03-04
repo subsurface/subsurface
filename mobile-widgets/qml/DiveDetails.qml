@@ -392,38 +392,105 @@ Kirigami.Page {
 			model: swipeModel
 			currentIndex: -1
 			boundsBehavior: Flickable.StopAtBounds
-			maximumFlickVelocity: parent.width * 5
 			orientation: ListView.Horizontal
 			highlightFollowsCurrentItem: false
 			focus: true
 			clip: true
-			snapMode: ListView.SnapOneItem
-			highlightRangeMode: ListView.StrictlyEnforceRange
-			onMovementEnded: {
-				currentIndex = indexAt(contentX+1, 1);
-				manager.selectSwipeRow(currentIndex)
+			interactive: false  // horizontal swiping handled by DragHandler
+			property bool swipeInProgress: false
+			onWidthChanged: {
+				// after orientation change, realign to current page
+				if (currentIndex >= 0) {
+					snapAnimation.stop()
+					positionViewAtIndex(currentIndex, ListView.Beginning)
+				}
 			}
-			delegate: Flickable {
-				id: internalScrollView
+			delegate: Item {
 				width: diveDetailsListView.width
 				height: diveDetailsListView.height
-				contentHeight: diveDetails.height
-				flickableDirection: Flickable.VerticalFlick
-				boundsBehavior: Flickable.StopAtBounds
 				property var modelData: model
-				DiveDetailsView {
-					id: diveDetails
-					width: internalScrollView.width
-					myId: model.id
+
+				Flickable {
+					id: internalScrollView
+					anchors.fill: parent
+					contentHeight: diveDetails.height
+					flickableDirection: Flickable.VerticalFlick
+					boundsBehavior: Flickable.StopAtBounds
+
+					DiveDetailsView {
+						id: diveDetails
+						width: internalScrollView.width
+						myId: model.id
+					}
+					ScrollBar.vertical: ScrollBar { }
 				}
-				ScrollBar.vertical: ScrollBar { }
 			}
-			ScrollIndicator.horizontal: ScrollIndicator { }
+
+			// smooth snap animation for horizontal page transitions
+			NumberAnimation {
+				id: snapAnimation
+				target: diveDetailsListView
+				property: "contentX"
+				duration: 250
+				easing.type: Easing.OutCubic
+			}
+
 			Connections {
 				target: swipeModel
 				function onCurrentDiveChanged(index) {
-					currentIndex = index.row
-					diveDetailsListView.positionViewAtIndex(currentIndex, ListView.End)
+					diveDetailsListView.currentIndex = index.row
+					// skip positioning during swipe - the snap animation handles it
+					if (!diveDetailsListView.swipeInProgress) {
+						diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning)
+					}
+				}
+			}
+		}
+
+		// Handle horizontal swipes to switch between dives.
+		// Placed on the fixed parent Item (not inside the delegate)
+		// to avoid feedback loops from coordinate system changes.
+		// DragHandler with yAxis disabled only activates for
+		// horizontal drags, letting delegate Flickables handle
+		// vertical scrolling without interference.
+		DragHandler {
+			id: horizontalSwipeHandler
+			yAxis.enabled: false
+			target: null
+
+			property real startContentX
+			property real startFingerX
+			property real lastTranslationX: 0
+
+			onActiveChanged: {
+				if (active) {
+					startContentX = diveDetailsListView.contentX
+					startFingerX = centroid.position.x
+					lastTranslationX = 0
+					diveDetailsListView.swipeInProgress = true
+				} else {
+					// finger released - snap to target page
+					// use saved translation since activeTranslation resets on deactivation
+					var dx = lastTranslationX
+					var pageWidth = diveDetailsListView.width
+					var targetIndex = diveDetailsListView.currentIndex
+					if (dx < -pageWidth / 4 && targetIndex < diveDetailsListView.count - 1)
+						targetIndex++
+					else if (dx > pageWidth / 4 && targetIndex > 0)
+						targetIndex--
+					snapAnimation.to = diveDetailsListView.originX + targetIndex * pageWidth
+					snapAnimation.start()
+					diveDetailsListView.currentIndex = targetIndex
+					manager.selectSwipeRow(targetIndex)
+					diveDetailsListView.swipeInProgress = false
+				}
+			}
+
+			onActiveTranslationChanged: {
+				if (active) {
+					var dx = centroid.position.x - startFingerX
+					lastTranslationX = dx
+					diveDetailsListView.contentX = startContentX - dx
 				}
 			}
 		}
