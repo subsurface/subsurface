@@ -185,6 +185,7 @@ Kirigami.ApplicationWindow {
 		handleOpenIcon.name: "window-close-symbolic"
 		handleOpenIcon.source: ""
 		actions: pageStack.currentItem?.contextualActions ?? []
+		background: Rectangle { color: subsurfaceTheme.drawerColor }
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
@@ -196,6 +197,7 @@ Kirigami.ApplicationWindow {
 		handleOpenIcon.source: ""
 		height: rootItem.height
 		rightPadding: 0
+		background: Rectangle { color: subsurfaceTheme.drawerColor }
 		enabled: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
 				  Backend.cloud_verification_status === Enums.CS_VERIFIED)
 		topContent: Image {
@@ -299,6 +301,7 @@ Kirigami.ApplicationWindow {
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_home.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Dive list")
 				onTriggered: {
@@ -310,11 +313,13 @@ Kirigami.ApplicationWindow {
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_sync.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Dive management")
 				Kirigami.Action {
 					icon {
 						name: ":/icons/ic_add.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Add dive manually")
 					onTriggered: {
@@ -324,9 +329,9 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
-					// this of course assumes a white background - theming means this needs to change again
 					icon {
 						name: ":/icons/downloadDC-black.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Download from DC")
 					enabled: true
@@ -339,6 +344,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					icon {
 						name: ":/icons/cloud_sync.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Manual sync with cloud")
 					visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD
@@ -353,6 +359,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					icon {
 						name: PrefCloudStorage.cloud_auto_sync ?  ":/icons/ic_cloud_done.svg" : ":/icons/ic_cloud_off.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: (PrefCloudStorage.cloud_auto_sync ? "\u2611 " : "\u2610 ") + qsTr("Auto cloud sync")
 					visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD
@@ -369,6 +376,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					icon {
 						name: ":/icons/sigma.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Dive summary")
 					onTriggered: {
@@ -380,6 +388,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					icon {
 						name: ":/icons/ic_cloud_upload.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Export")
 					onTriggered: {
@@ -392,12 +401,14 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				icon {
 					name: ":/icons/map-globe.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Location")
 				visible: true
 				Kirigami.Action {
 					icon {
 						name: ":/icons/map-globe.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: mapPage.title
 					onTriggered: {
@@ -408,6 +419,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				icon {
 					name: ":/icons/office-chart-bar-stacked.svg"
+					color: subsurfaceTheme.textColor
 				}
 
 				text: qsTr("Statistics")
@@ -418,10 +430,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				icon {
 					name: ":/icons/dashboard-show.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Technical Diving")
 				Kirigami.Action {
 					icon.name: ":/icons/document-edit-sign.svg" // Using an existing icon for now
+					icon.color: subsurfaceTheme.textColor
 					text: qsTr("Dive Planner")
 					onTriggered: {
 						globalDrawer.close()
@@ -430,6 +444,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 				Kirigami.Action {
 					icon.name: ":/icons/measure.svg" // Using an existing icon for now
+					icon.color: subsurfaceTheme.textColor
 					text: qsTr("Gas Calculator")
 					onTriggered: {
 						globalDrawer.close()
@@ -440,6 +455,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_settings.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Settings")
 				onTriggered: {
@@ -453,11 +469,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_help_outline.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Help")
 				Kirigami.Action {
 					icon {
 						name: ":/icons/ic_info_outline.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("About")
 					onTriggered: {
@@ -469,6 +487,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					icon {
 						name: ":/icons/ic_help_outline.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Show user manual")
 					onTriggered: {
@@ -478,6 +497,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					icon {
 						name: ":/icons/recycle.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Contribute to Subsurface")
 					onTriggered: {
@@ -487,6 +507,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					icon {
 						name: ":/icons/contact_support.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Ask for support")
 					onTriggered: {
@@ -501,6 +522,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action{
 					icon {
 						name: ":/icons/account_circle.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Reset forgotten Subsurface Cloud password")
 					onTriggered: {
@@ -512,6 +534,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_adb.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Developer")
 				visible: PrefDisplay.show_developer
