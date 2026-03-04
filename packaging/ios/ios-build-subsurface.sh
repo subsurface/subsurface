@@ -47,9 +47,12 @@ ARCH="${ARCH}" TARGET_SDK="${TARGET_SDK}" IOS_DEPLOYMENT_TARGET="${IOS_DEPLOYMEN
 # 2. Build mobile components (ECM, Kirigami) with iOS cross-compilation
 echo "=== Building mobile components (ECM, Kirigami) ==="
 cd "${SUBSURFACE_SOURCE}"
+# ECM needs qtpaths6 (host tool) in PATH and via cmake to query Qt install directories
+export PATH="${QT_HOST_PATH}/bin:${PATH}"
 bash ./scripts/mobilecomponents.sh \
 	-DCMAKE_TOOLCHAIN_FILE="${QT_IOS_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
 	-DQT_HOST_PATH="${QT_HOST_PATH}" \
+	-DQt6CoreTools_DIR="${QT_HOST_PATH}/lib/cmake/Qt6CoreTools" \
 	-DBUILD_SHARED_LIBS=OFF
 
 # 2b. Build googlemaps plugin (static, for iOS)
