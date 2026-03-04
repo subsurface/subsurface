@@ -408,6 +408,7 @@ Kirigami.Page {
 				width: diveDetailsListView.width
 				height: diveDetailsListView.height
 				contentHeight: diveDetails.height
+				flickableDirection: Flickable.VerticalFlick
 				boundsBehavior: Flickable.StopAtBounds
 				property var modelData: model
 				DiveDetailsView {
