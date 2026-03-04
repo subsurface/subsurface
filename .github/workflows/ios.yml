@@ -1,0 +1,102 @@
+name: iOS Qt 6
+
+on:
+  push:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+  pull_request:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
+    env:
+      QT_VERSION: '6.8.3'
+    runs-on: macos-15
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: setup Homebrew
+      run: brew install automake
+
+    - name: install Qt for iOS
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ env.QT_VERSION }}
+        target: ios
+        dir: ${{ github.workspace }}/..
+        cache: true
+
+    - name: install Qt for macOS (host tools)
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ env.QT_VERSION }}
+        target: desktop
+        dir: ${{ github.workspace }}/..
+        cache: true
+        set-env: false
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
+
+    - name: build Subsurface-mobile for iOS
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        git config --global --add safe.directory ${GITHUB_WORKSPACE}
+        git config --global --add safe.directory ${GITHUB_WORKSPACE}/libdivecomputer
+
+        export QT_VERSION=${{ env.QT_VERSION }}
+        export QT_ROOT="${GITHUB_WORKSPACE}/../Qt"
+        export QT_IOS_PATH="${QT_ROOT}/${QT_VERSION}/ios"
+        export QT_HOST_PATH="${QT_ROOT}/${QT_VERSION}/macos"
+
+        bash -x ${GITHUB_WORKSPACE}/packaging/ios/ios-build-subsurface.sh
+
+    - name: collect app bundle
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        APP_DIR=$(find ${GITHUB_WORKSPACE}/../build-ios -name "Subsurface-mobile.app" -type d | head -1)
+        cp -a "${APP_DIR}" "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.app"
+
+    - name: publish pull request artifacts
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@v7
+      with:
+        name: Subsurface-iOS-${{ steps.version_number.outputs.version }}
+        path: Subsurface-mobile-*.app
+
+    # only publish a 'release' on push events (those include merging a PR)
+    - name: upload binaries
+      if: github.event_name == 'push'
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: v${{ steps.version_number.outputs.version }}
+        repository: ${{ github.repository_owner }}/nightly-builds
+        token: ${{ secrets.NIGHTLY_BUILDS }}
+        prerelease: false
+        fail_on_unmatched_files: true
+        files: Subsurface-mobile-${{ steps.version_number.outputs.version }}.app
+
+  notify-release-coordinator:
+    if: always()
+    needs: build
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.build.outputs.release_tag }}
+      conclusion: ${{ needs.build.result }}
