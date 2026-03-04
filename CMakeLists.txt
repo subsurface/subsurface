@@ -169,6 +169,12 @@ include(cmake_variables_helper)
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	include_directories(${CMAKE_OSX_SYSROOT}/usr/include/libxml2)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lxml2 -lxslt -lsqlite3)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	# On iOS, libxml2 and libxslt come from our cross-compiled install prefix;
+	# sqlite3 is provided by the iOS SDK
+	pkg_config_library(LIBXML libxml-2.0 REQUIRED)
+	pkg_config_library(LIBXSLT libxslt REQUIRED)
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lsqlite3)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	# On Windows with MSVC/vcpkg, set paths directly
 	# Use SUBSURFACE_VCPKG_ROOT to avoid conflicts with vcpkg toolchain variables
@@ -208,7 +214,7 @@ else()
 	pkg_config_library(LIBZIP libzip REQUIRED)
 endif()
 
-if(NOT ANDROID)
+if(NOT ANDROID AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
 	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		pkg_config_library(BLUEZ bluez REQUIRED)
 	endif()
@@ -277,7 +283,7 @@ if(QT_VERSION_MAJOR STREQUAL "6")
 		# QML files with a weird error about Qml.WorkerScript missing
 		# linking Subsurface against that component appears enough to hack
 		# around that, but that feels... wrong
-		if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		if(APPLE)
 			find_package(Qt6 COMPONENTS QmlWorkerScript)
 			LIST(APPEND SUBSURFACE_LINK_LIBRARIES Qt6::QmlWorkerScript)
 		endif()
@@ -301,7 +307,7 @@ message(STATUS "building with Qt ${QT_VERSION}")
 # if the configuration is too big or would disrupt the normal code flux,
 # move it somewhere else (another file) and include it.
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
-	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	if(APPLE)
 		set(SUBSURFACE_TARGET Subsurface)
 	else()
 		set(SUBSURFACE_TARGET subsurface)
@@ -385,7 +391,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		endif()
 	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	if(APPLE)
 		set(SUBSURFACE_TARGET Subsurface-mobile)
 	else()
 		set(SUBSURFACE_TARGET subsurface-mobile)
@@ -400,7 +406,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	message(STATUS "Building Subsurface-mobile requires BT support")
 	set(BTSUPPORT ON)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
-	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	if(APPLE)
 		set(SUBSURFACE_TARGET Subsurface-downloader)
 	else()
 		set(SUBSURFACE_TARGET subsurface-downloader)
@@ -416,6 +422,36 @@ if(ANDROID)
 	set(NO_USERMANUAL ON)
 	set(BUILD_TESTS OFF)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -llog)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	set(NO_PRINTING ON)
+	set(NO_USERMANUAL ON)
+	set(BUILD_TESTS OFF)
+	execute_process(
+		COMMAND bash scripts/get-version.sh
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE SSRF_VERSION_STRING
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog.subsurface-mobile")
+	set(MACOSX_BUNDLE_BUNDLE_VERSION "${SSRF_VERSION_STRING}")
+	set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
+	find_library(MESSAGEUI_FRAMEWORK MessageUI)
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${MESSAGEUI_FRAMEWORK})
+	# libgit2 depends on iconv on iOS
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -liconv)
+	# googlemaps static plugin for iOS - search all paths in CMAKE_FIND_ROOT_PATH
+	set(GOOGLEMAPS_LIBRARY GOOGLEMAPS_LIBRARY-NOTFOUND)
+	foreach(_root ${CMAKE_FIND_ROOT_PATH})
+		if(EXISTS "${_root}/plugins/geoservices/libqtgeoservices_googlemaps.a")
+			set(GOOGLEMAPS_LIBRARY "${_root}/plugins/geoservices/libqtgeoservices_googlemaps.a")
+			break()
+		endif()
+	endforeach()
+	if(GOOGLEMAPS_LIBRARY)
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${GOOGLEMAPS_LIBRARY})
+	else()
+		message(WARNING "googlemaps plugin not found - build it with qmake first")
+	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# add pthread to the end of the library list on Linux
 	# this is only needed on Ubuntu
@@ -485,16 +521,16 @@ else()
 	message(STATUS "building without built-in libraw support")
 endif()
 
-if(ANDROID)
-	# when cross-compiling for Android, the toolchain file restricts find_package
-	# to the sysroot - this ensures system-root paths are also searched
+if(ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	# when cross-compiling for Android or iOS, the toolchain file restricts
+	# find_package to the sysroot - this ensures system-root paths are also searched
 	set(CMAKE_FIND_ROOT_PATH "/;${CMAKE_FIND_ROOT_PATH}")
 endif()
 set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick ${QT_EXTRA_COMPONENTS})
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-	if(ANDROID)
+	if(ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
 		find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools)
 	else()
 		find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
@@ -508,7 +544,7 @@ endif()
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
 	list(APPEND QT_LIBRARIES Qt${QT5OR6}::${_QT_COMPONENT})
 endforeach()
-if(NOT ANDROID)
+if(NOT ANDROID AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
 	LIST(APPEND QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt${QT5OR6}::Test Qt${QT5OR6}::QuickTest)
 endif()
 
@@ -557,7 +593,7 @@ endif()
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	# set up Kirigami using KDE ECM
 	# that's available as kde-extra-cmake-modules on Homebrew, on all Linux flavors
-	# Android and iOS are built via qmake, Windows build of Subsurface-mobile isn't supported
+	# Windows build of Subsurface-mobile isn't supported
 	find_package(ECM REQUIRED CONFIG PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/ECM)
 	# KF6KirigamiPlatform declares a dependency on Qt6::GuiPrivate, but some distros
 	# (e.g. Debian) don't ship the CMake config for private modules even when the
@@ -587,7 +623,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	qt_add_resources(MOBILE_RESOURCES profile.qrc)
 	qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
 
-	if(ANDROID)
+	if(ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
 		qt_add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
 	else()
 		add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
@@ -612,6 +648,25 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
 	qt_import_qml_plugins(${SUBSURFACE_TARGET})
+
+	# iOS-specific target properties and resources
+	if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+		target_sources(${SUBSURFACE_TARGET} PRIVATE
+			${CMAKE_SOURCE_DIR}/ios/ios-share.mm
+		)
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			MACOSX_BUNDLE TRUE
+			MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/packaging/ios/Info.plist.in"
+			XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"
+		)
+		target_sources(${SUBSURFACE_TARGET} PRIVATE
+			${CMAKE_SOURCE_DIR}/packaging/ios/storeIcon.xcassets
+		)
+		set_source_files_properties(
+			${CMAKE_SOURCE_DIR}/packaging/ios/storeIcon.xcassets
+			PROPERTIES MACOSX_PACKAGE_LOCATION Resources
+		)
+	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	set(SUBSURFACE_APP
 		subsurface-desktop-main.cpp
@@ -625,7 +680,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	endif()
 
 	# Import Qt6 Bluetooth permission plugin on macOS
-	if(USINGQT6 AND CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	if(USINGQT6 AND APPLE)
 		qt_import_plugins(${SUBSURFACE_TARGET}
 			INCLUDE Qt::QDarwinBluetoothPermissionPlugin
 		)
@@ -675,9 +730,11 @@ Prefix=.
 ")
 endif()
 
-# build an automated html exporter
-add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp ${SUBSURFACE_RESOURCES})
-target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES})
+# build an automated html exporter (not applicable for mobile cross-builds)
+if(NOT ANDROID AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp ${SUBSURFACE_RESOURCES})
+	target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES})
+endif()
 
 # install Subsurface
 # first some variables with files that need installing
@@ -840,6 +897,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/lib/QtQmlWorkerScript.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
 	endif()
 	install(CODE "execute_process(COMMAND codesign --force --deep --sign - ${APP_BUNDLE_DIR})")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	# iOS deployment is handled by Xcode signing and archiving
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
 		if(NOT DEFINED OBJCOPY)
