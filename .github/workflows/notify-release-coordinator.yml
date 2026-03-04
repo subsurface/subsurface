@@ -12,7 +12,7 @@ on:
 
 jobs:
   notify:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && always()
+    if: github.ref == 'refs/heads/master' && always()
     runs-on: ubuntu-latest
     permissions:
       contents: write
