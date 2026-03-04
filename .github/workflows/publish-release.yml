@@ -22,7 +22,7 @@ jobs:
     - name: checkout sources
       uses: actions/checkout@v6
       with:
-        fetch-depth: 1
+        fetch-depth: 2
 
     - name: Assess completion state of release publisher workflows
       id: assess
@@ -67,19 +67,26 @@ jobs:
         fi
 
         # Get list of changed files in the commit for path filter matching
+        # Prefer GitHub API compare (works with shallow checkout), then fall back to local git diff.
         echo "Getting changed files for commit $SHA..."
-        changed_files=$(git diff --name-only $SHA^..$SHA 2>/dev/null || echo "")
+        changed_files=""
+        parent_sha=$(gh api repos/${{ github.repository }}/commits/$SHA --jq '.parents[0].sha // ""' 2>/dev/null || echo "")
+        if [ -n "$parent_sha" ]; then
+          changed_files=$(gh api repos/${{ github.repository }}/compare/$parent_sha...$SHA --jq '.files[]?.filename' 2>/dev/null || echo "")
+        fi
+        if [ -z "$changed_files" ]; then
+          changed_files=$(git diff --name-only $SHA^..$SHA 2>/dev/null || echo "")
+        fi
         if [ -z "$changed_files" ]; then
           echo "Warning: Could not determine changed files. Will wait for all workflows."
         fi
 
-        all_runs_json=$(gh api repos/${{ github.repository }}/actions/runs \
-          -f head_sha="$SHA" -f event='push' -f branch='master' -f per_page=100 2>/dev/null || echo '{"workflow_runs":[]}')
+        all_runs_json=$(gh run list --repo ${{ github.repository }} --branch master --event push --commit "$SHA" \
+          --json workflowName,status,conclusion,databaseId --limit 200 2>/dev/null || echo '[]')
 
         pending=0
 
         while IFS= read -r row; do
-          id=$(jq -r '.id' <<< "$row")
           name=$(jq -r '.name' <<< "$row")
           path=$(jq -r '.path' <<< "$row")
 
@@ -88,15 +95,8 @@ jobs:
             continue
           fi
 
-          run_json=$(jq -c --arg id "$id" --arg path "$path" --arg name "$name" '
-            [
-              .workflow_runs[]?
-              | select(
-                  ((.workflow_id | tostring) == $id)
-                  or (((.path // "") | split("@")[0]) == $path)
-                  or (.name == $name)
-                )
-            ][0]
+          run_json=$(jq -c --arg name "$name" '
+            [.[] | select(.workflowName == $name)][0]
           ' <<< "$all_runs_json")
 
           status=$(jq -r '.status // "missing"' <<< "$run_json")
