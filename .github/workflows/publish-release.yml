@@ -55,7 +55,7 @@ jobs:
         workflows_json=$(gh api repos/${{ github.repository }}/actions/workflows --paginate)
 
         required_workflows=$(jq -c --argjson marked "$marked_json" '
-          [.workflows[] | select(.path != "" and (.path as $p | $marked | index($p))) | {id, name, path}]
+          [.workflows[] | select(.path != "" and (.path as $p | $marked | index($p))) | {id, name, path}] | unique_by(.path)
         ' <<< "$workflows_json")
 
         required_count=$(jq 'length' <<< "$required_workflows")
@@ -73,6 +73,9 @@ jobs:
           echo "Warning: Could not determine changed files. Will wait for all workflows."
         fi
 
+        all_runs_json=$(gh api repos/${{ github.repository }}/actions/runs \
+          -f head_sha="$SHA" -f event='push' -f branch='master' -f per_page=100 2>/dev/null || echo '{"workflow_runs":[]}')
+
         pending=0
 
         while IFS= read -r row; do
@@ -85,11 +88,19 @@ jobs:
             continue
           fi
 
-          runs_json=$(gh api repos/${{ github.repository }}/actions/workflows/$id/runs \
-            -f head_sha="$SHA" -f event='push' -f branch='master' -f per_page=1)
+          run_json=$(jq -c --arg id "$id" --arg path "$path" --arg name "$name" '
+            [
+              .workflow_runs[]?
+              | select(
+                  ((.workflow_id | tostring) == $id)
+                  or (((.path // "") | split("@")[0]) == $path)
+                  or (.name == $name)
+                )
+            ][0]
+          ' <<< "$all_runs_json")
 
-          status=$(jq -r '.workflow_runs[0].status // "missing"' <<< "$runs_json")
-          conclusion=$(jq -r '.workflow_runs[0].conclusion // "missing"' <<< "$runs_json")
+          status=$(jq -r '.status // "missing"' <<< "$run_json")
+          conclusion=$(jq -r '.conclusion // "missing"' <<< "$run_json")
 
           if [ "$status" = "missing" ]; then
             # Check if workflow has path filters that don't match changed files
