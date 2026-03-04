@@ -13,8 +13,13 @@ on:
     - master
   workflow_dispatch:
 
+env:
+  RELEASE_PUBLISHER: "true"
+
 jobs:
   build:
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
     env:
       KEYSTORE_FILE: ${{ github.workspace }}/../subsurface.keystore
     runs-on: ubuntu-latest
@@ -81,7 +86,7 @@ jobs:
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: Subsurface-Android-${{ steps.version_number.outputs.version }}
         path: Subsurface-mobile-*.apk
@@ -94,7 +99,16 @@ jobs:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository:  ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
+        draft: true
         prerelease: false
         fail_on_unmatched_files: true
         files: |
           Subsurface-mobile-${{ steps.version_number.outputs.version }}.apk
+
+  notify-release-coordinator:
+    if: always()
+    needs: build
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.build.outputs.release_tag }}
+      conclusion: ${{ needs.build.result }}

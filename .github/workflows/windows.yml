@@ -12,6 +12,9 @@ on:
     branches:
     - master
 
+env:
+  RELEASE_PUBLISHER: "true"
+
 jobs:
   build-documentation:
     uses: ./.github/workflows/documentation-build.yml
@@ -20,6 +23,8 @@ jobs:
 
   build:
     needs: build-documentation
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
     runs-on: ubuntu-24.04
     container:
       image: docker://subsurface/mxe-build:3.4.0
@@ -79,7 +84,7 @@ jobs:
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: Subsurface-Windows-${{ steps.version_number.outputs.version }}
         path: |
@@ -94,8 +99,17 @@ jobs:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
+        draft: true
         prerelease: false
         fail_on_unmatched_files: true
         files: |
          ./subsurface*.exe*
          ./smtk2ssrf*.exe
+
+  notify-release-coordinator:
+    if: always()
+    needs: build
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.build.outputs.release_tag }}
+      conclusion: ${{ needs.build.result }}

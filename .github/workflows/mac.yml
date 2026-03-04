@@ -13,12 +13,31 @@ on:
     - master
   workflow_dispatch:
 
+env:
+  RELEASE_PUBLISHER: "true"
+
 jobs:
   build-documentation:
     uses: ./.github/workflows/documentation-build.yml
 
+  compute-version:
+    runs-on: ubuntu-24.04
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
+
   build:
-    needs: build-documentation
+    needs: [build-documentation, compute-version]
     strategy:
       matrix:
         include:
@@ -179,7 +198,7 @@ jobs:
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: Subsurface-MacOS-${{ matrix.arch }}-qt-${{ matrix.qtversion }}-${{ steps.version_number.outputs.version }}
         path: ${{ steps.build.outputs.dmg }}
@@ -193,6 +212,15 @@ jobs:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
+        draft: true
         prerelease: false
         fail_on_unmatched_files: true
         files: ${{ steps.build.outputs.dmg }}
+
+  notify-release-coordinator:
+    if: always()
+    needs: [compute-version, build]
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.compute-version.outputs.release_tag }}
+      conclusion: ${{ needs.build.result }}

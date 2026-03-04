@@ -1,0 +1,195 @@
+name: Publish release
+
+on:
+  repository_dispatch:
+    types:
+      - release-artifact-finished
+
+concurrency:
+  group: publish-release-${{ github.event.client_payload.sha }}
+  cancel-in-progress: false
+
+jobs:
+  publish-draft-release:
+    if: github.event.client_payload.event_name == 'push' && github.event.client_payload.ref == 'refs/heads/master'
+    runs-on: ubuntu-24.04
+
+    permissions:
+      actions: read
+      contents: read
+
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 2
+
+    - name: Assess completion state of release publisher workflows
+      id: assess
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        set -eu
+
+        SHA="${{ github.event.client_payload.sha }}"
+        TAG="${{ github.event.client_payload.tag }}"
+        TRIGGER_WORKFLOW="${{ github.event.client_payload.workflow }}"
+        TRIGGER_RUN_ID="${{ github.event.client_payload.run_id }}"
+        TRIGGER_CONCLUSION="${{ github.event.client_payload.conclusion }}"
+
+        if [ -z "$SHA" ]; then
+          echo "Missing commit SHA in dispatch payload."
+          exit 1
+        fi
+
+        mapfile -t marked_paths < <(grep -lE 'RELEASE_PUBLISHER:[[:space:]]*"true"' .github/workflows/*.yml)
+
+        if [ ${#marked_paths[@]} -eq 0 ]; then
+          echo "No workflows marked with RELEASE_PUBLISHER: \"true\"."
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+          echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        marked_json=$(printf '%s\n' "${marked_paths[@]}" | jq -R . | jq -s .)
+        workflows_json=$(gh api repos/${{ github.repository }}/actions/workflows --paginate)
+
+        required_workflows=$(jq -c --argjson marked "$marked_json" '
+          [.workflows[] | select(.path != "" and (.path as $p | $marked | index($p))) | {id, name, path}] | unique_by(.path)
+        ' <<< "$workflows_json")
+
+        required_count=$(jq 'length' <<< "$required_workflows")
+        if [ "$required_count" -eq 0 ]; then
+          echo "No workflow IDs matched marked workflow files."
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+          echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
+          exit 0
+        fi
+
+        # Get list of changed files in the commit for path filter matching
+        # Prefer GitHub API compare (works with shallow checkout), then fall back to local git diff.
+        echo "Getting changed files for commit $SHA..."
+        changed_files=""
+        parent_sha=$(gh api repos/${{ github.repository }}/commits/$SHA --jq '.parents[0].sha // ""' 2>/dev/null || echo "")
+        if [ -n "$parent_sha" ]; then
+          changed_files=$(gh api repos/${{ github.repository }}/compare/$parent_sha...$SHA --jq '.files[]?.filename' 2>/dev/null || echo "")
+        fi
+        if [ -z "$changed_files" ]; then
+          changed_files=$(git diff --name-only $SHA^..$SHA 2>/dev/null || echo "")
+        fi
+        if [ -z "$changed_files" ]; then
+          echo "Warning: Could not determine changed files. Will wait for all workflows."
+        fi
+
+        all_runs_json=$(gh run list --repo ${{ github.repository }} --branch master --event push --commit "$SHA" \
+          --json workflowName,status,conclusion,databaseId --limit 200 2>/dev/null || echo '[]')
+
+        run_count=$(jq 'length' <<< "$all_runs_json")
+        echo "Detected workflow runs for $SHA: $run_count"
+        if [ "$run_count" -gt 0 ]; then
+          echo "Detected workflow names:"
+          jq -r '.[].workflowName' <<< "$all_runs_json" | sed '/^$/d' | sort -u | sed 's/^/- /'
+        fi
+
+        pending=0
+
+        while IFS= read -r row; do
+          name=$(jq -r '.name' <<< "$row")
+          path=$(jq -r '.path' <<< "$row")
+
+          if [ -n "$TRIGGER_WORKFLOW" ] && [ "$name" = "$TRIGGER_WORKFLOW" ] && [ -n "$TRIGGER_CONCLUSION" ] && [ "$TRIGGER_CONCLUSION" != "missing" ]; then
+            echo "Completed (dispatch): $name ($TRIGGER_CONCLUSION)."
+            continue
+          fi
+
+          run_json=$(jq -c --arg name "$name" '
+            [.[] | select(.workflowName == $name)][0]
+          ' <<< "$all_runs_json")
+
+          status=$(jq -r '.status // "missing"' <<< "$run_json")
+          conclusion=$(jq -r '.conclusion // "missing"' <<< "$run_json")
+
+          if [ "$status" = "missing" ]; then
+            # Check if workflow has path filters that don't match changed files
+            if [ -n "$changed_files" ] && [ -f "$path" ]; then
+              # Extract path filters from workflow file (simplified check for 'paths:' section)
+              has_path_filter=$(grep -A 20 "^on:" "$path" | grep -E "^\s+paths:" | head -1)
+              
+              if [ -n "$has_path_filter" ]; then
+                # Get the path patterns (this is a simplified extraction)
+                path_patterns=$(grep -A 20 "^on:" "$path" | sed -n '/^\s\+paths:/,/^\s\+[a-z]/p' | grep '^\s\+-' | sed 's/^\s*-\s*//')
+                
+                matched=false
+                while IFS= read -r pattern; do
+                  [ -z "$pattern" ] && continue
+                  # Convert glob pattern to grep pattern (simplified: ** -> .*, * -> [^/]*)
+                  grep_pattern=$(echo "$pattern" | sed 's|\*\*|.*|g' | sed 's|\*|[^/]*|g' | sed 's|^|^|' | sed 's|$|$|')
+                  
+                  if echo "$changed_files" | grep -qE "$grep_pattern"; then
+                    matched=true
+                    break
+                  fi
+                done <<< "$path_patterns"
+                
+                if [ "$matched" = false ]; then
+                  echo "Skipped: $name (path filters don't match changed files)."
+                  continue
+                fi
+              fi
+            fi
+            
+            echo "Waiting: $name has not started for $SHA yet."
+            pending=1
+            continue
+          fi
+
+          if [ "$status" != "completed" ]; then
+            echo "Waiting: $name is $status for $SHA."
+            pending=1
+            continue
+          fi
+
+          echo "Completed: $name ($conclusion)."
+        done < <(jq -c '.[]' <<< "$required_workflows")
+
+        if [ "$pending" -eq 1 ]; then
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+        fi
+        echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
+
+    - name: Publish draft release in nightly-builds
+      if: steps.assess.outputs.ready == 'true'
+      env:
+        GH_TOKEN: ${{ secrets.NIGHTLY_BUILDS }}
+      run: |
+        set -eu
+
+        OWNER="${{ github.repository_owner }}"
+        TARGET_REPO="$OWNER/nightly-builds"
+        TAG="${{ steps.assess.outputs.release_tag }}"
+
+        if [ -z "$TAG" ]; then
+          echo "No release tag provided in event payload; refusing to guess a draft release to publish."
+          exit 1
+        fi
+
+        releases_json=$(gh api repos/$TARGET_REPO/releases)
+
+        published_id=$(jq -r --arg tag "$TAG" '.[] | select(.tag_name == $tag and .draft == false) | .id' <<< "$releases_json" | head -n1)
+        if [ -n "$published_id" ]; then
+          echo "Release $TAG is already published."
+          exit 0
+        fi
+
+        draft_id=$(jq -r --arg tag "$TAG" '.[] | select(.tag_name == $tag and .draft == true) | .id' <<< "$releases_json" | head -n1)
+        if [ -z "$draft_id" ]; then
+          echo "No draft release found for tag $TAG."
+          exit 0
+        fi
+
+        gh api --method PATCH repos/$TARGET_REPO/releases/$draft_id \
+          -f draft=false -f prerelease=false >/dev/null
+
+        echo "Published release $TAG in $TARGET_REPO."

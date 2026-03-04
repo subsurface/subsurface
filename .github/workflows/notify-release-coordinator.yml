@@ -1,0 +1,33 @@
+name: Notify release coordinator
+
+on:
+  workflow_call:
+    inputs:
+      release_tag:
+        required: true
+        type: string
+      conclusion:
+        required: true
+        type: string
+
+jobs:
+  notify:
+    if: github.ref == 'refs/heads/master' && always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: Notify release coordinator
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        jq -nc \
+          --arg sha "${{ github.sha }}" \
+          --arg ref "${{ github.ref }}" \
+          --arg event_name "${{ github.event_name }}" \
+          --arg workflow "${{ github.workflow }}" \
+          --arg run_id "${{ github.run_id }}" \
+          --arg conclusion "${{ inputs.conclusion }}" \
+          --arg tag "${{ inputs.release_tag }}" \
+          '{event_type:"release-artifact-finished", client_payload:{sha:$sha, ref:$ref, event_name:$event_name, workflow:$workflow, run_id:$run_id, conclusion:$conclusion, tag:$tag}}' \
+          | gh api --method POST repos/${{ github.repository }}/dispatches --input -

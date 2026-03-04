@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           submodules: recursive
           fetch-depth: 0
@@ -71,7 +71,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\vcpkg-cache"
 
       - name: Restore vcpkg cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: ${{ github.workspace }}/vcpkg-cache
           key: windows-vcpkg-${{ hashFiles('.github/workflows/windows-msvc-qt6.yml') }}
@@ -98,7 +98,7 @@ jobs:
           C:\vcpkg\vcpkg.exe list
 
       - name: Save vcpkg cache
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         if: always()
         with:
           path: ${{ github.workspace }}/vcpkg-cache
@@ -396,7 +396,7 @@ jobs:
 
       - name: publish pull request artifacts
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: Subsurface-Windows-MSVC-qt-6-${{ steps.version_number.outputs.version }}
           path: ${{ github.workspace }}/build/${{ steps.installer-name.outputs.installer }}

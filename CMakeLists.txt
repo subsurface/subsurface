@@ -94,7 +94,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 # TODO: This Compilation part should go on the Target specific CMake.
 #
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override -Wno-unused-command-line-argument")
 	if ((CMAKE_SYSTEM_NAME MATCHES "Darwin") AND
 	   ((CMAKE_SYSTEM_VERSION MATCHES "11.4.") OR
 	    (CMAKE_OSX_DEPLOYMENT_TARGET MATCHES "10.7") OR
@@ -102,7 +102,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 	endif()
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override -Wno-unused-command-line-argument")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	# Warn about possible float conversion errors
 	# Use NOT VERSION_LESS since VERSION_GREATER_EQUAL is not available

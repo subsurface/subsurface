@@ -1,0 +1,26 @@
+# .github/workflows/claude-review.yml
+name: Claude PR Review
+on:
+  #pull_request:
+  #types: [opened, synchronize]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  review:
+    if: |
+      (github.event_name == 'pull_request') ||
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@claude'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: anthropics/claude-code-action@v1
