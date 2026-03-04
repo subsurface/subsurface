@@ -55,7 +55,7 @@ jobs:
         workflows_json=$(gh api repos/${{ github.repository }}/actions/workflows --paginate)
 
         required_workflows=$(jq -c --argjson marked "$marked_json" '
-          [.workflows[] | select(.path as $p | $marked | index($p)) | {id, name, path}]
+          [.workflows[] | select(.path != "" and (.path as $p | $marked | index($p))) | {id, name, path}]
         ' <<< "$workflows_json")
 
         required_count=$(jq 'length' <<< "$required_workflows")
