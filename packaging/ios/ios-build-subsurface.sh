@@ -69,6 +69,7 @@ cp libqtgeoservices_googlemaps.a "${IOS_INSTALL_PREFIX}/plugins/geoservices/"
 # 3. Build libdivecomputer
 echo "=== Building libdivecomputer ==="
 cd "${SUBSURFACE_SOURCE}"
+git submodule update --init --recursive libdivecomputer
 if [ ! -f libdivecomputer/configure ]; then
 	cd libdivecomputer && autoreconf -i && cd ..
 fi
