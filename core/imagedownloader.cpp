@@ -20,12 +20,20 @@
 
 #include <QtConcurrent>
 
-// Note: this is a global instead of a function-local variable on purpose.
+// This is a global instead of a function-local variable on purpose.
 // We don't want this to be generated in a different thread context if
 // ImageDownloader::instance() is called from a worker thread.
+// On iOS, constructing QNetworkAccessManager before QCoreApplication
+// exists causes a crash (QNetworkAccessFileBackendFactory uses
+// Q_APPLICATION_STATIC), so we use a function-local static there.
+#ifndef Q_OS_IOS
 static ImageDownloader imageDownloader;
+#endif
 ImageDownloader *ImageDownloader::instance()
 {
+#ifdef Q_OS_IOS
+	static ImageDownloader imageDownloader;
+#endif
 	return &imageDownloader;
 }
 

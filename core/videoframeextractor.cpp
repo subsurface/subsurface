@@ -9,12 +9,20 @@
 #include <QProcess>
 #endif
 
-// Note: this is a global instead of a function-local variable on purpose.
+// This is a global instead of a function-local variable on purpose.
 // We don't want this to be generated in a different thread context if
 // VideoFrameExtractor::instance() is called from a worker thread.
+// On iOS, constructing a QObject before QCoreApplication exists causes
+// a crash, so we use a function-local static there instead (video
+// thumbnail extraction is not supported on iOS anyway).
+#ifndef Q_OS_IOS
 static VideoFrameExtractor frameExtractor;
+#endif
 VideoFrameExtractor *VideoFrameExtractor::instance()
 {
+#ifdef Q_OS_IOS
+	static VideoFrameExtractor frameExtractor;
+#endif
 	return &frameExtractor;
 }
 
