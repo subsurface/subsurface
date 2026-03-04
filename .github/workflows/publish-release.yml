@@ -84,6 +84,13 @@ jobs:
         all_runs_json=$(gh run list --repo ${{ github.repository }} --branch master --event push --commit "$SHA" \
           --json workflowName,status,conclusion,databaseId --limit 200 2>/dev/null || echo '[]')
 
+        run_count=$(jq 'length' <<< "$all_runs_json")
+        echo "Detected workflow runs for $SHA: $run_count"
+        if [ "$run_count" -gt 0 ]; then
+          echo "Detected workflow names:"
+          jq -r '.[].workflowName' <<< "$all_runs_json" | sed '/^$/d' | sort -u | sed 's/^/- /'
+        fi
+
         pending=0
 
         while IFS= read -r row; do
