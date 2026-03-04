@@ -48,6 +48,7 @@ SYSROOT="${TOOLCHAIN}/sysroot"
 CFLAGS="--sysroot=${SYSROOT} -fPIC"
 CPPFLAGS="--sysroot=${SYSROOT} -fPIC"
 CXXFLAGS="--sysroot=${SYSROOT} -fPIC"
+LDFLAGS="-Wl,-z,max-page-size=16384"
 
 
 PREFIX="${ANDROID_INSTALL_PREFIX}"
@@ -73,7 +74,7 @@ if [ ! -f libdivecomputer/configure ]; then
 fi
 cd "${BUILDROOT}"
 mkdir -p libdivecomputer-build && cd libdivecomputer-build
-CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" "${SUBSURFACE_SOURCE}"/libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
+CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}" "${SUBSURFACE_SOURCE}"/libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
 	--enable-static --disable-shared --enable-examples=no
 make -j$(nproc) && make install
 
@@ -106,7 +107,8 @@ cmake -G Ninja "${BUILDROOT}/src/subsurface" \
 	-DQT_ANDROID_BUILD_ALL_ABIS=OFF \
 	-DBUILD_WITH_QT6=ON \
 	-DANDROID_BUILDNR="${BUILDNR}" \
-	-DANDROID_VERSION_NAME="${VERSION}"
+	-DANDROID_VERSION_NAME="${VERSION}" \
+	-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
 
 
 # patch androiddeployqt to not emit enableUncompressedNativeLibs
