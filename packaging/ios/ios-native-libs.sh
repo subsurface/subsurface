@@ -116,7 +116,8 @@ if [ ! -f "${PKG_CONFIG_PATH}/libzip.pc" ]; then
 		-DCMAKE_PREFIX_PATH="${PREFIX}" \
 		-DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
 		-DENABLE_OPENSSL=FALSE \
-		-DENABLE_GNUTLS=FALSE
+		-DENABLE_GNUTLS=FALSE \
+		-DCMAKE_POLICY_VERSION_MINIMUM=3.5
 	make && make install
 	cd "${PARENT_DIR}"
 	# restore the original CMakeLists.txt
