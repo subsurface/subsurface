@@ -42,7 +42,7 @@ FROM base AS lib-base
 
 WORKDIR ${BUILDROOT}
 
-ADD android-native-libs.sh android-build-setup.sh variables.sh get-dep-lib.sh ${BUILDROOT}/src
+ADD android-native-libs.sh get-dep-lib.sh ${BUILDROOT}/src
 
 # build the native libraries that we need
 RUN bash -x ${BUILDROOT}/src/android-native-libs.sh 2>&1 | tee ${BUILDROOT}/native-libs.log
