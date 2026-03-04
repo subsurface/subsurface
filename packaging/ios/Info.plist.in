@@ -28,10 +28,11 @@
 	<string>Subsurface is open source software released under the GPLv2 -- and includes many other open source components like Qt, Kirigami, libdivecomputer, and others.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright 2011-2026 Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and the Subsurface developer team</string>
-	<key>NSMainNibFile</key>
-	<string>SubsurfaceMobileLaunch</string>
-	<key>UILaunchStoryboardName</key>
-	<string>SubsurfaceMobileLaunch</string>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>AppIcon</string>
+	</dict>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
