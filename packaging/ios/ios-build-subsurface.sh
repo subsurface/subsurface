@@ -53,6 +53,7 @@ bash ./scripts/mobilecomponents.sh \
 	-DCMAKE_TOOLCHAIN_FILE="${QT_IOS_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
 	-DQT_HOST_PATH="${QT_HOST_PATH}" \
 	-DQt6CoreTools_DIR="${QT_HOST_PATH}/lib/cmake/Qt6CoreTools" \
+	-DQt6LinguistTools_DIR="${QT_HOST_PATH}/lib/cmake/Qt6LinguistTools" \
 	-DBUILD_SHARED_LIBS=OFF
 
 # 2b. Build googlemaps plugin (static, for iOS)

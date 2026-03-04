@@ -28,24 +28,16 @@ jobs:
         submodules: recursive
 
     - name: setup Homebrew
-      run: brew install automake
+      run: brew install automake libtool
 
     - name: install Qt for iOS
       uses: jurplel/install-qt-action@v4
       with:
         version: ${{ env.QT_VERSION }}
         target: ios
+        modules: qtshadertools qtlocation qtpositioning qtconnectivity qt5compat
         dir: ${{ github.workspace }}/..
         cache: true
-
-    - name: install Qt for macOS (host tools)
-      uses: jurplel/install-qt-action@v4
-      with:
-        version: ${{ env.QT_VERSION }}
-        target: desktop
-        dir: ${{ github.workspace }}/..
-        cache: true
-        set-env: false
 
     - name: set the version information
       id: version_number
