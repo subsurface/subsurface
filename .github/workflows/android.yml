@@ -78,14 +78,7 @@ jobs:
         VERSION: ${{ steps.version_number.outputs.version }}
       run: |
         cd build-android/android-build
-        BUNDLE_ARGS=""
-        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
-          BUNDLE_ARGS="-Pandroid.injected.signing.store.file=${KEYSTORE_FILE}"
-          BUNDLE_ARGS="${BUNDLE_ARGS} -Pandroid.injected.signing.store.password=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}"
-          BUNDLE_ARGS="${BUNDLE_ARGS} -Pandroid.injected.signing.key.alias=${{ secrets.ANDROID_KEYSTORE_ALIAS }}"
-          BUNDLE_ARGS="${BUNDLE_ARGS} -Pandroid.injected.signing.key.password=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}"
-        fi
-        ./gradlew bundleRelease ${BUNDLE_ARGS}
+        ./gradlew bundleRelease
 
         AAB=$(find . -name "*.aab" | head -1)
         cp "${AAB}" "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.aab"
@@ -109,6 +102,17 @@ jobs:
 
         mv "${SIGNED}" "${APK}"
         rm -f "${ALIGNED}"
+
+    - name: sign AAB
+      if: github.event_name == 'push'
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+          -keystore "${KEYSTORE_FILE}" \
+          -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.aab" \
+          "${{ secrets.ANDROID_KEYSTORE_ALIAS }}"
 
     - name: delete the keystore
       if: github.event_name == 'push'
