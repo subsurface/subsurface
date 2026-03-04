@@ -658,13 +658,15 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 			MACOSX_BUNDLE TRUE
 			MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/packaging/ios/Info.plist.in"
 			XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"
+			XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon"
 		)
-		target_sources(${SUBSURFACE_TARGET} PRIVATE
-			${CMAKE_SOURCE_DIR}/packaging/ios/storeIcon.xcassets
+		set(IOS_ASSET_CATALOG "${CMAKE_SOURCE_DIR}/packaging/ios/storeIcon.xcassets")
+		target_sources(${SUBSURFACE_TARGET} PRIVATE ${IOS_ASSET_CATALOG})
+		set_source_files_properties(${IOS_ASSET_CATALOG} PROPERTIES
+			HEADER_FILE_ONLY OFF
 		)
-		set_source_files_properties(
-			${CMAKE_SOURCE_DIR}/packaging/ios/storeIcon.xcassets
-			PROPERTIES MACOSX_PACKAGE_LOCATION Resources
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			RESOURCE "${IOS_ASSET_CATALOG}"
 		)
 	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
