@@ -33,6 +33,11 @@ Kirigami.ApplicationWindow {
 	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2.5 : 2))
 	pageStack.globalToolBar.maximumHeight: pageStack.globalToolBar.preferredHeight
 
+	// expose header colors so Kirigami's AbstractApplicationHeader can read them
+	// (on iOS, items with inherit:false get system palette colors instead of app theme)
+	property color headerBackgroundColor: subsurfaceTheme.primaryColor
+	property color headerTextColor: subsurfaceTheme.primaryTextColor
+
 	property alias notificationText: manager.notificationText
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
 	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
@@ -185,7 +190,16 @@ Kirigami.ApplicationWindow {
 		handleOpenIcon.name: "window-close-symbolic"
 		handleOpenIcon.source: ""
 		actions: pageStack.currentItem?.contextualActions ?? []
+		Kirigami.Theme.textColor: subsurfaceTheme.textColor
+		Kirigami.Theme.backgroundColor: subsurfaceTheme.drawerColor
 		background: Rectangle { color: subsurfaceTheme.drawerColor }
+		// Override theme on contentItem too - OverlayDrawer propagates colorSet
+		// to contentItem, creating a separate PlatformThemeData that gets iOS
+		// system palette colors instead of our app theme colors
+		Component.onCompleted: {
+			contentItem.Kirigami.Theme.textColor = Qt.binding(function() { return subsurfaceTheme.textColor; });
+			contentItem.Kirigami.Theme.backgroundColor = Qt.binding(function() { return subsurfaceTheme.drawerColor; });
+		}
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
@@ -197,7 +211,16 @@ Kirigami.ApplicationWindow {
 		handleOpenIcon.source: ""
 		height: rootItem.height
 		rightPadding: 0
+		Kirigami.Theme.textColor: subsurfaceTheme.textColor
+		Kirigami.Theme.backgroundColor: subsurfaceTheme.drawerColor
 		background: Rectangle { color: subsurfaceTheme.drawerColor }
+		// Override theme on contentItem too - OverlayDrawer propagates colorSet
+		// to contentItem, creating a separate PlatformThemeData that gets iOS
+		// system palette colors instead of our app theme colors
+		Component.onCompleted: {
+			contentItem.Kirigami.Theme.textColor = Qt.binding(function() { return subsurfaceTheme.textColor; });
+			contentItem.Kirigami.Theme.backgroundColor = Qt.binding(function() { return subsurfaceTheme.drawerColor; });
+		}
 		enabled: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
 				  Backend.cloud_verification_status === Enums.CS_VERIFIED)
 		topContent: Image {
