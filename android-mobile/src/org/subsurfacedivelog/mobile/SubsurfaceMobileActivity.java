@@ -123,7 +123,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 
 		// Register the usb permission intent filter.
 		IntentFilter filter = new IntentFilter("org.subsurfacedivelog.mobile.USB_PERMISSION");
-		registerReceiver(usbReceiver, filter);
+		registerReceiver(usbReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
 
 	} // onCreate
 
