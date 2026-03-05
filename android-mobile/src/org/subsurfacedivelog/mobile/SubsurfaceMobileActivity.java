@@ -109,6 +109,11 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Log.i(TAG + " onCreate", "onCreate SubsurfaceMobileActivity");
 		super.onCreate(savedInstanceState);
 
+		// Ensure app content does not draw behind system bars.
+		// The theme sets windowOptOutEdgeToEdgeEnforcement for Android 15+;
+		// this call handles pre-Android 15 devices.
+		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+
 		appContext = getApplicationContext();
 
 		// now we're checking if the App was started from another Android App via Intent
