@@ -87,5 +87,10 @@ android {
     packaging {
         /* Exclude this as it is included in more than one dependency. */
         resources.excludes += 'META-INF/androidx/annotation/annotation/LICENSE.txt'
+        /* Force native lib extraction to disk on install. AGP 8.x defaults to
+           loading libs directly from the APK (useLegacyPackaging=false), but
+           Qt 6's QtLoader cannot find native libraries on older Android versions
+           (e.g. Android 11) when they are not extracted. */
+        jniLibs.useLegacyPackaging = true
     }
 }
