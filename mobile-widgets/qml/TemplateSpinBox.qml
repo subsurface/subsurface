@@ -10,9 +10,14 @@ SpinBox {
 	editable: true
 	font.pointSize: subsurfaceTheme.regularPointSize
 
+	FontMetrics {
+		id: spinFontMetrics
+		font: control.font
+	}
+
 	contentItem: TextInput {
 		z: 2
-		width: Kirigami.Units.gridUnit * 3
+		width: Math.max(Kirigami.Units.gridUnit * 3, Math.ceil(spinFontMetrics.height * 2))
 		text: control.textFromValue(control.value, control.locale)
 		font: control.font
 		color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.secondaryTextColor
@@ -26,9 +31,9 @@ SpinBox {
 
 	up.indicator: Rectangle {
 		x: control.mirrored ? 0 : parent.width - width
-		height: Kirigami.Units.gridUnit * 1.5
-		implicitWidth: Kirigami.Units.gridUnit
-		implicitHeight: Kirigami.Units.gridUnit
+		height: Math.max(Kirigami.Units.gridUnit * 1.5, Math.ceil(spinFontMetrics.height))
+		implicitWidth: Math.max(Kirigami.Units.gridUnit, Math.ceil(spinFontMetrics.height))
+		implicitHeight: Math.max(Kirigami.Units.gridUnit, Math.ceil(spinFontMetrics.height))
 		color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		border.color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		Text {
@@ -44,9 +49,9 @@ SpinBox {
 
 	down.indicator: Rectangle {
 		x: control.mirrored ? parent.width - width : 0
-		height: Kirigami.Units.gridUnit * 1.5
-		implicitWidth: Kirigami.Units.gridUnit
-		implicitHeight: Kirigami.Units.gridUnit
+		height: Math.max(Kirigami.Units.gridUnit * 1.5, Math.ceil(spinFontMetrics.height))
+		implicitWidth: Math.max(Kirigami.Units.gridUnit, Math.ceil(spinFontMetrics.height))
+		implicitHeight: Math.max(Kirigami.Units.gridUnit, Math.ceil(spinFontMetrics.height))
 		color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		border.color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		Text {
