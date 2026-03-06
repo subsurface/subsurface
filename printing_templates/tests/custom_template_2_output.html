@@ -1,0 +1,255 @@
+<html>
+<head>
+	<style>
+		body {
+			;
+			padding: 0;
+			margin: 0 0 0 6%; <!-- Provide LH margin for binding the page -->
+			font-size: 1vw;
+			line-height: 1;
+			font-family: Arial, Helvetica, sans-serif;
+		}
+
+		h1 {
+			font-size: 1vw;
+		}
+
+		p {
+			font-size: 1vw;
+		}
+
+		table {
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+			border-width: 1px;
+			border-style:solid;
+			border-color: #173764;
+			border-collapse: separate;
+		}
+
+		tr {
+			height: 4vh;
+		}
+
+		td {
+			padding: 0;
+			margin: 0;
+			padding-left: 1%;
+		}
+
+		#body_div {
+			background-color: #ffffff;
+		}
+
+		.mainContainer {
+			width: 97%;
+			height: 100%;
+			margin-left: 0%;
+			margin-right: 1%;
+			margin-top: 0%;
+			margin-bottom: 0%;
+			border-width: 1px;
+			page-break-inside: avoid;
+		}
+
+		.innerContainer {
+			width: 99%;
+			height: 99%;
+			padding-top: 0%;
+		}
+
+		.diveDetails {
+			width: 100%;
+			margin: 0.0%;
+		}
+		
+		.dataSection {
+			width: 100%;
+			margin: 0.0% 0% 0% 0%;
+		}
+
+		.diveProfile {
+			width: 99.5%;
+			height: 45%;
+			margin: 0.2% 0% 0.5% 0.5%;
+		}
+
+		.notesSection {
+			width: 100%;
+			margin: 0.0%;
+			min-height: 35%;
+		}
+
+		.fieldTitle {
+			background-color: #a6bcd7;
+			overflow: hidden;
+			color: #3465a4;
+			width: 7%;
+			padding-left:5px;
+		}
+
+		.fieldData {
+			background-color: #eff7ff;
+			color: #204a87;
+			width: 13%;
+			padding: o$ 1% 0% 1%;
+		}
+
+		.table_class {
+			margin: 0%;
+			width: 100%;
+		}
+
+		td.insert_column_inner {
+			border-left-style:solid;
+			border-left-color: #173764;
+			background-color: #a6bcd7;
+			color: #3465a4;
+			border: 5px solid black;
+		}
+
+		td.insert_column_outer {
+			background-color: #a6bcd7;
+			color: #3465a4;
+		}
+		
+		.notes_table_class {
+			overflow: hidden;
+			width: 100%;
+			margin: 0.0% 0% 0% 0%;
+			max-height: 35%;
+		}
+
+		.notes_table_class  td.fieldTitle {
+			max-height: 0.15vh;
+		}
+		
+		.textArea {
+			line-height: 1;
+			color: #204a87;
+			font-size:  1vw;
+			padding: 1%;
+		}
+		
+		td.fieldTitle b {
+			font-size: 1vw;
+		}
+
+		.hidden_div {
+			display: none;
+		}
+
+		.red {
+			background-color: red;
+		}
+	</style>
+</head>
+<body data-numberofdives = 1>
+<div id="body_div">
+
+	
+		<div class="mainContainer">
+			<div class="innerContainer">
+				<div class="dataSection">
+						<table class="table_class">
+							<tr>
+								<td class="fieldTitle">
+									<b> Date </b>
+								</td>
+								<td class="fieldData">
+									<p> 4/2/14 </p>
+								</td>
+								<td class="fieldTitle">
+									<b> Dive No. </b>
+								</td>
+								<td class="fieldData">
+									<p> 1 </p>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<b> Time </b>
+								</td>
+								<td class="fieldData">
+									<p> 10:00 AM </p>
+								</td>
+								<td class="fieldTitle">
+									<b> Gases </b>
+								</td>
+								<td class="fieldData">
+									<p> Dil2 (16/45) / Oxy2 oxygen / AL80 air </p>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<b> Location </b>
+								</td>
+								<td class="fieldData">
+									<p> Lake Coleridge </p>
+								</td>
+								<td class="fieldTitle">
+									<b> Water Temp. </b>
+								</td>
+								<td class="fieldData">
+									<p> 39.7°F </p>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									<b> Max Depth </b>
+								</td>
+								<td class="fieldData">
+									<p> 128ft </p>
+								</td>
+								<td class="fieldTitle">
+									<b> Buddy </b>
+								</td>
+								<td class="fieldData">
+									<p> Michael </p>
+								</td>
+							</tr>
+							<tr>
+								<td class="fieldTitle">
+									 <b> Duration </b>
+								</td>
+								<td class="fieldData">
+									<p> 1:18h </p>
+								</td>
+								<td class="fieldTitle">
+									<b> Dive Guide </b>
+								</td>
+								<td class="fieldData">
+									<p> Taylor </p>
+								</td>
+							</tr>
+						</table>
+				</div>
+
+				<div class="diveProfile red" id="dive_83790">
+				</div>
+
+				<div class="notesSection">
+					<table class="notes_table_class">
+						<tbody>
+						<tr>
+							<td class="fieldTitle">
+								<b> Notes </b>
+							</td>
+						</tr>
+						<tr>
+							<td class="fieldData">
+								<p> CCR dive<br/>Lake<br/>"small waves" </p>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div> <!-- notesSection -->
+
+			</div> <!-- innerContainer -->
+		</div> <!-- mainContainer -->
+
+	
+
+</div>
+</body>
+</html>

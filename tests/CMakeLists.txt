@@ -92,6 +92,9 @@ function(TEST NAME FILE)
 		endif()
 	else()
 		add_test(NAME ${NAME} ${CFGARG} COMMAND  $<TARGET_FILE:${NAME}>)
+		if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+			set_tests_properties(${NAME} PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+		endif()
 	endif()
 endfunction()
 
@@ -130,6 +133,25 @@ set(TEST_PICTURE TestPicture)
 endif()
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable" AND NOT NO_PRINTING)
+	add_executable(TestPrinting
+		testprinting.cpp
+		testprinting.h
+		../desktop-widgets/printer.cpp
+		../desktop-widgets/templatelayout.cpp
+	)
+	target_link_libraries(
+		TestPrinting
+		subsurface_backend_shared
+		${TEST_SPECIFIC_LIBRARIES}
+		subsurface_corelib
+		RESOURCE_LIBRARY
+		${QT_TEST_LIBRARIES}
+		${SUBSURFACE_LINK_LIBRARIES}
+	)
+	add_test(NAME TestPrinting COMMAND $<TARGET_FILE:TestPrinting>)
+	set(TEST_PRINTING TestPrinting)
+endif()
 
 #if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 #TEST(TestPlannerShared testplannershared.cpp)
@@ -173,6 +195,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestMerge
 	TestTagList
 	${TEST_PLANNER_SHARED}
+	${TEST_PRINTING}
 	TestQPrefCloudStorage
 	TestQPrefDisplay
 	TestQPrefDiveComputer
