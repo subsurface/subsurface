@@ -88,8 +88,19 @@ void ThemeInterface::set_currentScale(double newScale)
 	}
 	if (m_needSignals) {
 		// adjust all used font sizes
-		m_regularPointSize = m_basePointSize * newScale;
-		defaultModelFont().setPointSizeF(m_regularPointSize);
+		double baseScaled = m_basePointSize * newScale;
+		// Set the default model font at the unmodified size; Kirigami
+		// derives gridUnit/spacing from this, so it must stay unchanged.
+		defaultModelFont().setPointSizeF(baseScaled);
+
+#if defined(Q_OS_ANDROID)
+		// On Android, Qt's default font is disproportionately small
+		// compared to Kirigami's DPI-scaled spacing. Boost the theme
+		// text sizes so they fill the row space properly. This only
+		// affects the subsurfaceTheme point sizes, not Kirigami units.
+		baseScaled *= 1.3;
+#endif
+		m_regularPointSize = baseScaled;
 		emit regularPointSizeChanged();
 
 		m_headingPointSize = m_regularPointSize * 1.2;
