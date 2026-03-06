@@ -1,86 +1,71 @@
-# Instructions for building the Android package from source
+# Building Subsurface-mobile for Android
 
-## In a Container
+## Using the Docker container (recommended)
 
-The easiest way to build a .apk package for Android is to use
-our own docker image that has all of the build components
-pre-assembled.
+The easiest way to build is to use the pre-built Docker image that contains the
+NDK, SDK, Qt, and all pre-compiled native dependencies.
 
-All it takes is this:
-
-```.sh
-export GIT_AUTHOR_NAME=<your name>
-export GIT_AUTHOR_EMAIL=<email to be used with github>
-
+```sh
 cd /some/path
 git clone https://github.com/subsurface/subsurface
 cd subsurface
 git submodule init
-git submodule update
-./packaging/android/docker-build.sh
+git submodule update --recursive
+
+docker run --rm -v "$PWD:/android/src/subsurface" \
+    subsurface/android-build:6.8.1 \
+    bash -x /android/src/subsurface/scripts/docker/android-build-container/android-build-subsurface.sh
 ```
 
-_Caveat:_ With this build script `libdivecomputer` is pulled from git in the version specified in the submodule, so if you have changed `libdivecomputer` make sure to commit any changes and update the git submodule version before building.
+You need to export `BUILDNR`, `VERSION`, and `VERSION_4` before the build
+(the CI workflow computes these from the git history).
 
-This will result in Subsurface-mobile-VERSION.apk to be created in /some/path/subsurface/output/android/.
+The build produces `libsubsurface-mobile.so` and the Gradle project under
+`/android/src/subsurface/build-android/android-build/`. To create an APK:
 
-## On a Linux host
-
-alternatively you can build locally without the help of our container.
-
-Setup your build environment on a Ubuntu 20.04 Linux box
-
-I think these packages should be enough:
-
-```.sh
-sudo apt-get update
-sudo apt-get install -y \
-    autoconf \
-    automake \
-    cmake \
-    git \
-    libtool-bin \
-    make \
-    wget \
-    unzip \
-    python \
-    python3-pip \
-    bzip2 \
-    pkg-config \
-    libx11-xcb1 \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    openjdk-8-jdk \
-    curl \
-    coreutils \
-    p7zip-full
-
-sudo mkdir /android
-sudo chown `id -un` /android
-cd /android
-wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
-unzip commandlinetools-linux-*.zip
-
-git clone https://github.com/subsurface/subsurface
-
-# now get the SDK, NDK, Qt, everything that's needed
-bash /android/subsurface/scripts/docker/android-build-container/android-build-setup.sh
+```sh
+cd build-android/android-build
+./gradlew assembleDebug
 ```
 
-Once this has completed, you should have a working build environment.
+The resulting APK is in `build/outputs/apk/debug/` and can be installed with:
 
-```.sh
-bash -x subsurface/packaging/android/qmake-build.sh
+```sh
+adb install build/outputs/apk/debug/android-build-debug.apk
 ```
 
-should build a working .aab as well as a .apk that can be installed on
-your attached device:
+Note: since you do not have the release signing key, you need to uninstall
+any official Subsurface-mobile build before installing your own, and vice
+versa.
 
-```.sh
-./platform-tools/adb  install ./subsurface-mobile-build/android-build/build/outputs/apk/debug/android-build-debug.apk
-```
+## CI workflow
 
-Note that since you don't have the same signing key that I have,
-you'll have to uninstall the 'official' Subsurface-mobile binary in
-order for this to work. And likewise you have to uninstall yours
-before you'll be able to install an official binary again.
+The GitHub Actions workflow (`.github/workflows/android.yml`) runs the same
+Docker-based build, signs the APK/AAB with the project keystore, and uploads
+the artifacts. On pushes to `master` it also publishes to the Google Play
+Store and creates a nightly release.
+
+## Docker image
+
+The container image is defined in
+`scripts/docker/android-build-container/Dockerfile`. It is a multi-stage
+build:
+
+1. **base** -- Ubuntu 24.04 with NDK 27.2, SDK 35, JDK 17, cmake, ninja
+2. **lib-base** -- builds native libraries (OpenSSL, libxml2, libxslt,
+   libzip, libgit2, SQLite) into `install-root-arm64-v8a`
+3. **final** -- copies the pre-built libraries and installs Qt 6.8.3
+   (Android arm64-v8a + host tools)
+
+The image is rebuilt via `.github/workflows/android-dockerimage.yml` and
+pushed to Docker Hub as `subsurface/android-build:<tag>`.
+
+## Build script overview
+
+`scripts/docker/android-build-container/android-build-subsurface.sh` runs
+inside the container and performs these steps:
+
+1. Build Kirigami and ECM (via `scripts/mobilecomponents.sh`)
+2. Cross-compile libdivecomputer
+3. Configure and build Subsurface with cmake + Ninja
+4. The caller (CI or you) then runs Gradle to produce the APK/AAB
