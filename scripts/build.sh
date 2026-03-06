@@ -12,7 +12,7 @@
 # in subsurface/build)
 #
 # by default it puts the build folders in
-# ./subsurface/libdivecomputer/build (libdivecomputer build)
+# ./libdivecomputer-build             (libdivecomputer build)
 # ./subsurface/build                  (desktop build)
 # ./subsurface/build-mobile           (mobile build)
 # ./subsurface/build-downloader       (headless downloader build)
@@ -409,8 +409,13 @@ if [ ! -d libdivecomputer/src ] ; then
 	git submodule update --recursive
 fi
 
-mkdir -p "${BUILD_PREFIX}libdivecomputer/build"
-cd "${BUILD_PREFIX}libdivecomputer/build"
+if [ -z "$BUILD_PREFIX" ] ; then
+	LIBDC_BUILDDIR="$SRC/libdivecomputer-build"
+else
+	LIBDC_BUILDDIR="${BUILD_PREFIX}libdivecomputer/build"
+fi
+mkdir -p "$LIBDC_BUILDDIR"
+cd "$LIBDC_BUILDDIR"
 
 if [ ! -f "$SRC"/${SRC_DIR}/libdivecomputer/configure ] ; then
 	# this is not a typo
