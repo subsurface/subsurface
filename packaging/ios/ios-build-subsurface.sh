@@ -49,6 +49,8 @@ echo "=== Building mobile components (ECM, Kirigami) ==="
 cd "${SUBSURFACE_SOURCE}"
 # ECM needs qtpaths6 (host tool) in PATH and via cmake to query Qt install directories
 export PATH="${QT_HOST_PATH}/bin:${PATH}"
+KIRIGAMI_BUILDDIR="${PARENT_DIR}/kirigami-build" \
+KIRIGAMI_INSTALL_PREFIX="${IOS_INSTALL_PREFIX}" \
 bash ./scripts/mobilecomponents.sh \
 	-DCMAKE_TOOLCHAIN_FILE="${QT_IOS_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
 	-DQT_HOST_PATH="${QT_HOST_PATH}" \

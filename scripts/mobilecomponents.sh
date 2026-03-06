@@ -14,9 +14,14 @@ if [ ! -d "$SRC/subsurface" ] || [ ! -d "mobile-widgets" ] || [ ! -d "core" ] ; 
 	exit 1
 fi
 
-# completely changing the Kirigami build, going down the path that the
-# Kirigami developers favor, which is to install Kirigami and Breeze in
-# a 3rdparty folder within our sources
+# Callers can set KIRIGAMI_BUILDDIR and KIRIGAMI_INSTALL_PREFIX to control
+# where the Kirigami build artifacts and installed files end up. This keeps
+# platform-specific output out of the source tree and allows building for
+# multiple targets without cleaning.
+KIRIGAMI_BUILDDIR="${KIRIGAMI_BUILDDIR:-$SRC/kirigami-build}"
+KIRIGAMI_INSTALL_PREFIX="${KIRIGAMI_INSTALL_PREFIX:-$SRC/install-root}"
+
+# fetch/update the source checkouts
 ./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty kirigami
 ./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty breeze-icons
 ./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty extra-cmake-modules
@@ -39,6 +44,9 @@ done
 
 # finally, build and install Kirigami
 # any extra arguments (e.g. cross-compilation flags) are forwarded to cmake
-cmake -B build -DBUILD_SHARED_LIBS=ON -DSHARE_INSTALL_DIR=.. -DCMAKE_INSTALL_PREFIX=../kirigami-install -DECM_DIR="$SRC"/subsurface/mobile-widgets/3rdparty/ECM/cmake -DUSE_DBUS=OFF "$@"
-cmake --build build/
-cmake --install build/
+cmake -B "$KIRIGAMI_BUILDDIR" -DBUILD_SHARED_LIBS=ON \
+	-DCMAKE_INSTALL_PREFIX="$KIRIGAMI_INSTALL_PREFIX" \
+	-DECM_DIR="$SRC"/subsurface/mobile-widgets/3rdparty/ECM/cmake \
+	-DUSE_DBUS=OFF "$@"
+cmake --build "$KIRIGAMI_BUILDDIR"
+cmake --install "$KIRIGAMI_BUILDDIR"

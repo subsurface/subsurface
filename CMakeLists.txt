@@ -614,8 +614,8 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 			)
 		endif()
 	endif()
-	find_package(KF6KirigamiPlatform REQUIRED PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami-install)
-	find_package(KF6Kirigami REQUIRED PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami-install)
+	find_package(KF6KirigamiPlatform REQUIRED)
+	find_package(KF6Kirigami REQUIRED)
 	set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
 	set(BREEZEICONS_DIR mobile-widgets/3rdparty/breeze-icons/)
 
@@ -637,7 +637,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	target_sources(${SUBSURFACE_TARGET} PUBLIC ${MOBILE_SRC} ${MOBILE_RESOURCES})
 	# tell qmlimportscanner where to find Kirigami's QML modules
 	set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
-		QT_QML_IMPORT_PATH "${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami-install/lib/qml"
+		QT_QML_IMPORT_PATH "${Kirigami_INSTALL_PREFIX}/lib/qml"
 	)
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
