@@ -106,6 +106,21 @@ Kirigami.ApplicationWindow {
 		diveList.scrollToTop()
 	}
 
+	// Navigate to a page from the global drawer menu. Cleans the page
+	// stack back to the dive list first so the target page always opens
+	// from a known-good state.
+	function showPageFromDrawer(page) {
+		detailsWindow.endEditMode()
+		for (var i = pageStack.depth; i > 1; i--)
+			pageStack.pop()
+		if (pageStack.depth === 0 || pageStack.currentItem !== diveList) {
+			pageStack.clear()
+			pageStack.push(diveList)
+		}
+		if (page !== diveList)
+			showPage(page)
+	}
+
 	function showPage(page) {
 		if (page === statistics) {
 			manager.appendTextToLog("switching to statistics page, clearing out stack")
@@ -329,8 +344,8 @@ Kirigami.ApplicationWindow {
 				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + Backend.cloud_verification_status)
-					returnTopPage()
 					globalDrawer.close()
+					showPageFromDrawer(diveList)
 				}
 			},
 			Kirigami.Action {
@@ -347,7 +362,7 @@ Kirigami.ApplicationWindow {
 					text: qsTr("Add dive manually")
 					onTriggered: {
 						globalDrawer.close()
-						returnTopPage()  // otherwise odd things happen with the page stack
+						showPageFromDrawer(diveList)
 						startAddDive()
 					}
 				}
@@ -361,7 +376,7 @@ Kirigami.ApplicationWindow {
 					onTriggered: {
 						globalDrawer.close()
 						downloadFromDc.dcImportModel.clearTable()
-						showPage(downloadFromDc)
+						showPageFromDrawer(downloadFromDc)
 					}
 				}
 				Kirigami.Action {
@@ -404,8 +419,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Dive summary")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(diveSummaryWindow)
-						detailsWindow.endEditMode()
+						showPageFromDrawer(diveSummaryWindow)
 					}
 				}
 				Kirigami.Action {
@@ -416,8 +430,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Export")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(exportWindow)
-						detailsWindow.endEditMode()
+						showPageFromDrawer(exportWindow)
 					}
 				}
 			},
@@ -435,7 +448,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					}
 					text: mapPage.title
 					onTriggered: {
-						showMap()
+						globalDrawer.close()
+						showPageFromDrawer(mapPage)
 					}
 				}
 			},
@@ -447,7 +461,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 				text: qsTr("Statistics")
 				onTriggered: {
-					showPage(statistics)
+					globalDrawer.close()
+					showPageFromDrawer(statistics)
 				}
 			},
 			Kirigami.Action {
@@ -462,7 +477,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Dive Planner")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(divePlannerEditWindow)
+						showPageFromDrawer(divePlannerEditWindow)
 					}
 				}
 				Kirigami.Action {
@@ -471,7 +486,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Gas Calculator")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(divePlannerCalculatorWindow)
+						showPageFromDrawer(divePlannerCalculatorWindow)
 					}
 				}
 			},
@@ -485,8 +500,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					globalDrawer.close()
 					settingsWindow.defaultCylinderModel = manager.defaultCylinderListInit
 					PrefEquipment.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(PrefEquipment.default_cylinder)
-					showPage(settingsWindow)
-					detailsWindow.endEditMode()
+					showPageFromDrawer(settingsWindow)
 				}
 			},
 			Kirigami.Action {
@@ -503,8 +517,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("About")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(aboutWindow)
-						detailsWindow.endEditMode()
+						showPageFromDrawer(aboutWindow)
 					}
 				}
 				Kirigami.Action {
@@ -565,7 +578,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("App log")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(logWindow)
+						showPageFromDrawer(logWindow)
 					}
 				}
 				Kirigami.Action {
@@ -588,7 +601,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Theme information")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(themetest)
+						showPageFromDrawer(themetest)
 					}
 				}
 
@@ -605,7 +618,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Access local cloud cache dirs")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(recoverCache)
+						showPageFromDrawer(recoverCache)
 					}
 				}
 			}
