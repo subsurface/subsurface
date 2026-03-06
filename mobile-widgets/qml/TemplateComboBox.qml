@@ -8,9 +8,15 @@ ComboBox {
 	id: cb
 	editable: false
 	Layout.fillWidth: true
-	Layout.preferredHeight: Kirigami.Units.gridUnit * 2.0
 	inputMethodHints: Qt.ImhNoPredictiveText
 	font.pointSize: subsurfaceTheme.regularPointSize
+
+	FontMetrics {
+		id: comboFontMetrics
+		font: cb.font
+	}
+	Layout.preferredHeight: Math.max(Kirigami.Units.gridUnit * 2.0,
+		Math.ceil(comboFontMetrics.height) + topPadding + bottomPadding)
 	rightPadding: Kirigami.Units.smallSpacing
 	property var flickable // used to ensure the combobox is visible on screen
 	delegate: ItemDelegate {
