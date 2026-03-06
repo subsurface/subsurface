@@ -523,6 +523,8 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 
 	# pull the plasma-mobile components from upstream if building Subsurface-mobile
 	if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
+		KIRIGAMI_BUILDDIR="$SRC/kirigami-build" \
+		KIRIGAMI_INSTALL_PREFIX="$INSTALL_ROOT" \
 		bash ./scripts/mobilecomponents.sh
 		EXTRA_OPTS="$EXTRA_OPTS -DECM_DIR=$SRC/$SRC_DIR/mobile-widgets/3rdparty/ECM"
 	fi

@@ -59,6 +59,8 @@ export TARGET="aarch64-linux-android"
 
 # first set up the 3rd party components
 cd "${SUBSURFACE_SOURCE}"
+KIRIGAMI_BUILDDIR="${BUILDROOT}/src/kirigami-build" \
+KIRIGAMI_INSTALL_PREFIX="${ANDROID_INSTALL_PREFIX}" \
 bash ./scripts/mobilecomponents.sh \
 	-DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
 	-DQT_HOST_PATH="${QT_HOST_PATH}" \
