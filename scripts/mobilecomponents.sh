@@ -28,6 +28,9 @@ KIRIGAMI_INSTALL_PREFIX="${KIRIGAMI_INSTALL_PREFIX:-$SRC/install-root}"
 
 # now install the ECM to keep things more contained, install into 3rdparty/ECM
 # clear CMAKE_PREFIX_PATH so ECM doesn't pick up a cross-compiled Qt
+# always start clean to avoid stale CMakeCache.txt when the source tree is
+# mounted at a different path (e.g. inside a Docker container)
+rm -rf "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
 mkdir -p "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
 cd "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
 CMAKE_PREFIX_PATH="" cmake -DSHARE_INSTALL_DIR=.. ../extra-cmake-modules
