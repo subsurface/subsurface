@@ -3,9 +3,14 @@ if(LIBGIT2_FROM_PKGCONFIG)
 	pkg_config_library(LIBGIT2 libgit2 REQUIRED)
 	set(LIBGIT2_LIBRARIES "")
 	if(ANDROID)
-		# for Android we need to force a static link against ssl and crypto
-		# this is a bit hacky, but it seems to work
-		set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} ${LIBGIT2_LIBRARY_DIRS}/libssl.a ${LIBGIT2_LIBRARY_DIRS}/libcrypto.a)
+		# libgit2 depends on OpenSSL; link against the shared libraries
+		# which are also bundled into the APK for Qt's QSslSocket
+		set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} ${LIBGIT2_LIBRARY_DIRS}/libssl.so ${LIBGIT2_LIBRARY_DIRS}/libcrypto.so)
+	elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+		# libgit2 on iOS uses SecureTransport; link Apple frameworks
+		find_library(SECURITY_FRAMEWORK Security)
+		find_library(COREFOUNDATION_FRAMEWORK CoreFoundation)
+		set(LIBGIT2_LIBRARIES ${LIBGIT2_LIBRARIES} ${SECURITY_FRAMEWORK} ${COREFOUNDATION_FRAMEWORK})
 	endif()
 	if(FORCE_LIBSSH)
 		pkg_config_library(LIBSSH2 libssh2 REQUIRED)

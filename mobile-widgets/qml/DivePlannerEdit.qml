@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
-import QtQuick.Controls 2.12 as Controls
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 TemplatePage {
 	id: divePlannerEditWindow
@@ -148,11 +148,11 @@ TemplatePage {
 
 	Connections {
 		target: cylinderListModel
-		onRowsInserted: {
+		function onRowsInserted() {
 			updateGasNumberList();
 			generatePlan();
 		}
-		onRowsRemoved: {
+		function onRowsRemoved() {
 			updateGasNumberList();
 			generatePlan();
 		}
@@ -312,8 +312,10 @@ TemplatePage {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					text: mix
 					onTextChanged: {
-						cylinderListModel.setProperty(index, "mix", text);
-						generatePlan();
+						if (text !== mix) {
+							cylinderListModel.setProperty(index, "mix", text);
+							generatePlan();
+						}
 					}
 					onEditingFinished: {
 						var parts = text.split('/');
@@ -333,7 +335,7 @@ TemplatePage {
 							}
 						}
 					}
-					validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
+					validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
 				TemplateCheckBox {
@@ -353,8 +355,10 @@ TemplatePage {
 					text: pressure.toString()
 					validator: IntValidator { bottom: 0; top: 10000 }
 					onTextChanged: {
-						cylinderListModel.setProperty(index, "pressure", Number(text));
-						generatePlan();
+						if (Number(text) !== pressure) {
+							cylinderListModel.setProperty(index, "pressure", Number(text));
+							generatePlan();
+						}
 					}
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
@@ -450,8 +454,10 @@ TemplatePage {
 					text: depth.toString()
 					validator: IntValidator { bottom: 0; top: 900 }
 					onTextChanged: {
-						segmentListModel.setProperty(index, "depth", Number(text));
-						generatePlan();
+						if (Number(text) !== depth) {
+							segmentListModel.setProperty(index, "depth", Number(text));
+							generatePlan();
+						}
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
@@ -461,8 +467,10 @@ TemplatePage {
 					text: duration.toString()
 					validator: IntValidator { bottom: 1; top: 999 }
 					onTextChanged: {
-						segmentListModel.setProperty(index, "duration", Number(text));
-						generatePlan();
+						if (Number(text) !== duration) {
+							segmentListModel.setProperty(index, "duration", Number(text));
+							generatePlan();
+						}
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
@@ -491,8 +499,10 @@ TemplatePage {
 					enabled: cylinderListModel.get(gas) && cylinderListModel.get(gas).use == 1
 					onTextChanged: {
 						if (cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1) {
-							segmentListModel.setProperty(index, "setpoint", Number(text) * 1000);
-							generatePlan();
+							if (Math.round(Number(text) * 1000) !== setpoint) {
+								segmentListModel.setProperty(index, "setpoint", Math.round(Number(text) * 1000));
+								generatePlan();
+							}
 						}
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
@@ -630,35 +640,29 @@ TemplatePage {
 			}
 		}
 	}
-	actions.right: Kirigami.Action {
-		icon {
-			name: state = ":/icons/ic_settings.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Settings"
-		onTriggered: {
-			showPage(divePlannerSetupWindow)
-		}
-	}
-	actions.main: Kirigami.Action {
-		icon {
-			name: state = ":icons/media-playlist-repeat.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Refresh"
-		onTriggered: {
-			generatePlan()
-		}
-	}
-	actions.left: Kirigami.Action {
-		icon {
-			name: state = ":/icons/undo.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Back"
-		onTriggered: {
-			pageStack.pop()
+	Item {
+		parent: divePlannerEditWindow
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			spacing: Kirigami.Units.gridUnit
+			SsrfToolButton {
+				iconSource: "qrc:/icons/undo.svg"
+				onClicked: pageStack.pop()
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/media-playlist-repeat.svg"
+				highlighted: true
+				onClicked: generatePlan()
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/ic_settings.svg"
+				onClicked: showPage(divePlannerSetupWindow)
+			}
 		}
 	}
-
 }

@@ -1,18 +1,20 @@
 name: Android Docker Image CI
 
 on:
+  workflow_dispatch:
   push:
     branches:
     - master
     paths:
     - scripts/docker/android-build-container/**
+    - scripts/get-dep-lib.sh
     - .github/workflows/android-dockerimage.yml
 
 jobs:
   android-build-container:
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ '5.15.3' }} # the version numbers here is based on the Qt version, the third digit is the rev of the docker image
+      VERSION: 6.8.1 # the version numbers here is based on the Qt version, the third digit is the rev of the docker image
 
     steps:
     - uses: actions/checkout@v6
@@ -26,6 +28,11 @@ jobs:
         b=${b,,} # the name needs to be all lower case
         if [ $b = "master" ] ; then b="" ; else b="-$b" ; fi
         echo "NAME=$GITHUB_REPOSITORY_OWNER/android-build${b}:${v}" >> $GITHUB_OUTPUT
+
+    - name: Copy content into place
+      run: |
+        # all files used by the docker build below need to be inside the workdir
+        cp ./scripts/get-dep-lib.sh ./scripts/docker/android-build-container/
 
     - name: Build and Publish Linux Docker image to Dockerhub
       uses: elgohr/Publish-Docker-Github-Action@v5

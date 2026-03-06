@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
-import org.kde.kirigami 2.4 as Kirigami
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import org.kde.kirigami as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 TemplatePage {
@@ -645,7 +645,7 @@ TemplatePage {
 					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gflow
-					validator: RegExpValidator { regExp: /1?\d{0,2}%?/ }
+					validator: RegularExpressionValidator { regularExpression: /1?\d{0,2}%?/ }
 					textFromValue: function (value, locale) {
 						return value + "%"
 					}
@@ -679,7 +679,7 @@ TemplatePage {
 					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gfhigh
-					validator: RegExpValidator { regExp: /1?\d{0,2}%?/ }
+					validator: RegularExpressionValidator { regularExpression: /1?\d{0,2}%?/ }
 					textFromValue: function (value, locale) {
 						return value + "%"
 					}

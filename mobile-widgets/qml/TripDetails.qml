@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
-import QtQuick.Layouts 1.2
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Kirigami.Page {
 	id: tripEditPage
@@ -23,8 +23,34 @@ Kirigami.Page {
 	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
 	Kirigami.Theme.textColor: subsurfaceTheme.textColor
 
-	actions.main: saveAction
-	actions.right: cancelAction
+	Item {
+		parent: tripEditPage
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			spacing: Kirigami.Units.gridUnit
+			SsrfToolButton {
+				iconSource: "qrc:/icons/document-save.svg"
+				highlighted: true
+				onClicked: {
+					manager.updateTripDetails(tripId, tripLocationField.text, tripNotesField.text)
+					Qt.inputMethod.hide()
+					pageStack.pop()
+				}
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/dialog-cancel.svg"
+				onClicked: {
+					state = "view"
+					pageStack.pop()
+				}
+			}
+		}
+	}
 	onVisibleChanged: {
 		resetState()
 	}
@@ -55,7 +81,7 @@ Kirigami.Page {
 		}
 	]
 
-	property QtObject saveAction: Kirigami.Action {
+	property Kirigami.Action saveAction: Kirigami.Action {
 		icon {
 			name: ":/icons/document-save.svg"
 			color: enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
@@ -68,7 +94,7 @@ Kirigami.Page {
 			pageStack.pop()
 		}
 	}
-	property QtObject cancelAction: Kirigami.Action {
+	property Kirigami.Action cancelAction: Kirigami.Action {
 		text: qsTr("Cancel edit")
 		icon {
 			name: ":/icons/dialog-cancel.svg"

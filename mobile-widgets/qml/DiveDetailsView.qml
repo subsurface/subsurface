@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.10
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
-import QtQuick.Controls 2.2 as Controls
+import QtQuick
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import QtQuick.Controls as Controls
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Item {
 	id: detailsView
@@ -305,11 +305,11 @@ Item {
 						drag.target: qmlProfile
 						drag.axis: Drag.XAndYAxis
 						drag.smoothed: true
-						onPressed: {
+						function onPressed(mouse) {
 							if (!isZoomed)
 								mouse.accepted = false
 						}
-						onPressAndHold: {
+						function onPressAndHold(mouse) {
 							dragging = true;
 							oldXOffset = qmlProfile.xOffset
 							oldYOffset = qmlProfile.yOffset
@@ -320,7 +320,7 @@ Item {
 							// give visual feedback to the user that they now can drag
 							qmlProfile.opacity = 0.5
 						}
-						onPositionChanged: {
+						function onPositionChanged(mouse) {
 							if (dragging) {
 								var x = (mouse.x - initialX) / qmlProfile.scale
 								var y = (mouse.y - initialY) / qmlProfile.scale
@@ -333,7 +333,7 @@ Item {
 								mouse.accepted = false
 							}
 						}
-						onReleased: {
+						function onReleased(mouse) {
 							if (dragging) {
 								// reset things
 								dragging = false
@@ -341,7 +341,7 @@ Item {
 							}
 							mouse.accepted = false
 						}
-						onClicked: {
+						function onClicked(mouse) {
 							// reset the position if not zoomed in
 							if (!isZoomed) {
 								qmlProfile.xOffset = qmlProfile.yOffset = oldXOffset = oldYOffset = 0

@@ -3,10 +3,11 @@
 
 #include <string>
 #include <vector>
+#include <QJniObject>
 
 /* USB Device Information */
 struct android_usb_serial_device_descriptor {
-	QAndroidJniObject usbDevice; /* the UsbDevice */
+	QJniObject usbDevice; /* the UsbDevice */
 	std::string className; /* the driver class name. If empty, then "autodetect" */
 	std::string uiRepresentation; /* The string that can be used for the user interface. */
 
@@ -20,6 +21,6 @@ struct android_usb_serial_device_descriptor {
 };
 
 std::vector<android_usb_serial_device_descriptor> serial_usb_android_get_devices();
-android_usb_serial_device_descriptor getDescriptor(QAndroidJniObject usbDevice);
+android_usb_serial_device_descriptor getDescriptor(QJniObject usbDevice);
 
 #endif

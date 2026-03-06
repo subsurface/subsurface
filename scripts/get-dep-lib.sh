@@ -13,7 +13,7 @@ CURRENT_XSLT="v1.1.45"
 CURRENT_SQLITE="3190200"
 CURRENT_LIBXML2="v2.15.1"
 CURRENT_LIBFTDI="abd19b721f7e9b4d514ed319ece173ebc7b1ea72"
-CURRENT_KIRIGAMI="v5.76.0"
+CURRENT_KIRIGAMI="v6.23.0"
 CURRENT_BREEZE_ICONS="4daac191fb33c8c03bba8356db9767816cb8ee02"
 CURRENT_MDBTOOLS="v1.0.0"
 CURRENT_QT_ANDROID_CMAKE="master"
@@ -109,7 +109,7 @@ fi
 
 # FIX FOR ANDROID,
 if [ "$PLATFORM" == "singleAndroid" ] ; then
-	CURRENT_OPENSSL="OpenSSL_1_1_1m"
+	CURRENT_OPENSSL="openssl-3.4.4"
 # If changing the openSSL version here, make sure to change it in scripts/docker/android-build-container/variables.sh also.
 fi
 # no curl and old libs (never version breaks)

@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Dialogs
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Item {
 	id: detailsEdit
@@ -163,6 +163,7 @@ Item {
 				}
 				SsrfTextField {
 					id: txtNumber;
+					sampleText: "0000"
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					flickable: detailsEditFlickable
 				}
@@ -182,8 +183,9 @@ Item {
 				}
 				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "200.0ft"
 					id: txtDepth
-					validator: RegExpValidator { regExp: /[^-]*/ }
+					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 				}
 			}
@@ -195,8 +197,9 @@ Item {
 				}
 				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "00:00min"
 					id: txtDuration
-					validator: RegExpValidator { regExp: /[^-]*/ }
+					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 				}
 
@@ -209,6 +212,7 @@ Item {
 				}
 				SsrfTextField {
 					id: txtAirTemp
+					sampleText: "-10.0\u00B0F"
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					flickable: detailsEditFlickable
 				}
@@ -222,6 +226,7 @@ Item {
 				}
 				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "-10.0\u00B0F"
 					id: txtWaterTemp
 					flickable: detailsEditFlickable
 				}
@@ -366,8 +371,9 @@ Item {
 					SsrfTextField {
 						id: txtGasMix0
 						text: usedGas[0] !== undefined ? usedGas[0] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 				}
@@ -382,6 +388,7 @@ Item {
 					SsrfTextField {
 						id: txtStartPressure0
 						text: startpressure[0] !== undefined ? startpressure[0] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -397,6 +404,7 @@ Item {
 					SsrfTextField {
 						id: txtEndPressure0
 						text: endpressure[0] !== undefined ? endpressure[0] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -434,8 +442,9 @@ Item {
 					SsrfTextField {
 						id: txtGasMix1
 						text: usedGas[1] !== undefined ? usedGas[1] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 				}
@@ -450,6 +459,7 @@ Item {
 					SsrfTextField {
 						id: txtStartPressure1
 						text: startpressure[1] !== undefined ? startpressure[1] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -465,6 +475,7 @@ Item {
 					SsrfTextField {
 						id: txtEndPressure1
 						text: endpressure[1] !== undefined ? endpressure[1] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -503,8 +514,9 @@ Item {
 					SsrfTextField {
 						id: txtGasMix2
 						text: usedGas[2] !== undefined ? usedGas[2] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 				}
@@ -519,6 +531,7 @@ Item {
 					SsrfTextField {
 						id: txtStartPressure2
 						text: startpressure[2] !== undefined ? startpressure[2] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -534,6 +547,7 @@ Item {
 					SsrfTextField {
 						id: txtEndPressure2
 						text: endpressure[2] !== undefined ? endpressure[2] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -573,8 +587,9 @@ Item {
 					SsrfTextField {
 						id: txtGasMix3
 						text: usedGas[3] !== undefined ? usedGas[3] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 
@@ -590,6 +605,7 @@ Item {
 					SsrfTextField {
 						id: txtStartPressure3
 						text: startpressure[3] !== undefined ? startpressure[3] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -606,6 +622,7 @@ Item {
 					SsrfTextField {
 						id: txtEndPressure3
 						text: endpressure[3] !== undefined ? endpressure[3] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -646,8 +663,9 @@ Item {
 					SsrfTextField {
 						id: txtGasMix4
 						text: usedGas[4] !== undefined ? usedGas[4] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 
@@ -663,6 +681,7 @@ Item {
 					SsrfTextField {
 						id: txtStartPressure4
 						text: startpressure[4] !== undefined ? startpressure[4] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -679,6 +698,7 @@ Item {
 					SsrfTextField {
 						id: txtEndPressure4
 						text: endpressure[4] !== undefined ? endpressure[4] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}

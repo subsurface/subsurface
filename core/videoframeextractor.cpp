@@ -5,14 +5,24 @@
 #include "core/errorhelper.h"
 
 #include <QtConcurrent>
+#ifndef Q_OS_IOS
 #include <QProcess>
+#endif
 
-// Note: this is a global instead of a function-local variable on purpose.
+// This is a global instead of a function-local variable on purpose.
 // We don't want this to be generated in a different thread context if
 // VideoFrameExtractor::instance() is called from a worker thread.
+// On iOS, constructing a QObject before QCoreApplication exists causes
+// a crash, so we use a function-local static there instead (video
+// thumbnail extraction is not supported on iOS anyway).
+#ifndef Q_OS_IOS
 static VideoFrameExtractor frameExtractor;
+#endif
 VideoFrameExtractor *VideoFrameExtractor::instance()
 {
+#ifdef Q_OS_IOS
+	static VideoFrameExtractor frameExtractor;
+#endif
 	return &frameExtractor;
 }
 
@@ -78,6 +88,10 @@ void VideoFrameExtractor::processItem(QString originalFilename, QString filename
 		position.seconds = clamp(duration.seconds * prefs.extract_video_thumbnails_position / 100,
 					 0, duration.seconds);
 	}
+#ifdef Q_OS_IOS
+	// QProcess is not available on iOS; video thumbnail extraction is not supported
+	return fail(originalFilename, duration, false);
+#else
 	QString posString = QString("%1:%2:%3").arg(position.seconds / 3600, 2, 10, QChar('0'))
 					       .arg((position.seconds % 3600) / 60, 2, 10, QChar('0'))
 					       .arg(position.seconds % 60, 2, 10, QChar('0'));
@@ -115,4 +129,5 @@ void VideoFrameExtractor::processItem(QString originalFilename, QString filename
 	emit extracted(originalFilename, std::move(img), duration, position);
 	QMutexLocker l(&lock);
 	workingOn.remove(originalFilename);
+#endif
 }

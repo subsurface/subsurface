@@ -1,10 +1,10 @@
 // GasCalculator.qml
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
-import QtQuick.Controls 2.12 as Controls
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 TemplatePage {
 	id: gasCalculatorPage
@@ -15,7 +15,7 @@ TemplatePage {
 	}
 
 	ColumnLayout {
-		id: mainLayout 
+		id: mainLayout
 		width: parent.width
 		Layout.margins: Kirigami.Units.gridUnit
 		spacing: Kirigami.Units.largeSpacing
@@ -24,7 +24,7 @@ TemplatePage {
 			id: inputsGrid
 			columns: 2
 			Layout.fillWidth: true
-			
+
 			//TemplateLabel { text: qsTr("Cylinder Type") }
 			TemplateComboBox {
 				id: typeBox
@@ -56,7 +56,7 @@ TemplatePage {
 				onActiveFocusChanged: gasCalculatorPage.interactive = !activeFocus
 			}
 		}
-		
+
 		TemplateButton {
 			text: qsTr("Calculate")
 			Layout.alignment: Qt.AlignHCenter
@@ -67,7 +67,7 @@ TemplatePage {
 				}
 				var o2_permille = o2Box.value * 10;
 				var he_permille = heBox.value * 10;
-				
+
 				var results = Backend.divePlannerPointsModel.calculateGasInfo(cylinderType, o2_permille, he_permille);
 				resultsModel.clear();
 				for (var i = 0; i < results.length; i++) {
@@ -113,7 +113,7 @@ TemplatePage {
 			Repeater {
 				id: resultsRepeater
 				model: resultsModel
-				
+
 				delegate: GridLayout {
 					Layout.fillWidth: true
 					columns: 3
@@ -140,15 +140,21 @@ TemplatePage {
 			}
 		}
 	}
-	
-	actions.left: Kirigami.Action {
-		icon {
-			name: state = ":/icons/undo.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Return"
-		onTriggered: {
-			pageStack.pop()
+
+	Item {
+		parent: gasCalculatorPage
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			SsrfToolButton {
+				iconSource: "qrc:/icons/undo.svg"
+				highlighted: true
+				onClicked: pageStack.pop()
+			}
 		}
 	}
 }
