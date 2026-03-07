@@ -306,7 +306,7 @@ TemplatePage {
 					onActivated: {
 						if (currentIndex !== -1) {
 							// Update the 'type' property in the model with the selected cylinder text
-							cylinderListModel.setProperty(parent.index, "type", currentText);
+							cylinderListModel.setProperty(index, "type", currentText);
 
 							// This updates the dive plan summary in real-time
 							generatePlan();
