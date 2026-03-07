@@ -259,29 +259,37 @@ TemplatePage {
 					}
 			}
 		}
-		RowLayout {
-			Layout.fillWidth: true
-			spacing: Kirigami.Units.smallSpacing
-
-			TemplateLabel { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5; font.bold: true }
-			TemplateLabel { text: qsTr("Type"); Layout.fillWidth: true; font.bold: true }
-			TemplateLabel { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5; font.bold: true }
-			TemplateLabel {
-				text: qsTr("Dil");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5;
-				visible: overallDivemode.currentIndex == 1
-				font.bold: true
-			}
-			TemplateLabel { text: qsTr("[%1]").arg(pressureUnit); Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5; font.bold: true }
-			Item { Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5 }
-		}
-
 		ListView {
 			id: cylinderListView
 			Layout.fillWidth: true
-			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
+			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 10)
 			clip: true
 			model: cylinderListModel
+
+			header: RowLayout {
+				width: cylinderListView.width
+				spacing: Kirigami.Units.smallSpacing
+
+				TemplateLabel { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5; font.bold: true }
+				TemplateLabel { text: qsTr("Type"); Layout.fillWidth: true; font.bold: true }
+				TemplateLabel {
+					text: qsTr("Mix");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5;
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("Dil");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5;
+					visible: overallDivemode.currentIndex == 1
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("[%1]").arg(pressureUnit);
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5;
+					font.bold: true
+				}
+				TemplateButton { text: "X"; font.bold: true; opacity: 0 }
+			}
 
 			delegate: RowLayout {
 				width: cylinderListView.width
@@ -403,47 +411,48 @@ TemplatePage {
 			}
 		}
 
-		RowLayout {
-			Layout.fillWidth: true
-			spacing: Kirigami.Units.smallSpacing
-
-			TemplateLabel {
-				text: qsTr("Depth [%1]").arg(depthUnit);
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 3
-				font.bold: true
-			}
-			TemplateLabel {
-				text: qsTr("Time [min]");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 3
-				font.bold: true
-			}
-			TemplateLabel {
-				text: qsTr("Gas");
-				Layout.fillWidth: true
-				font.bold: true;
-			}
-			TemplateLabel {
-				text: qsTr("Setpoint [bar]");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 5
-				font.bold: true;
-				visible: overallDivemode.currentIndex == 1;
-			}
-			TemplateLabel {
-				text: qsTr("Dive Mode");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 6
-				font.bold: true;
-				visible: overallDivemode.currentIndex == 2;
-			}
-			Item { Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5 }
-		}
-
 		ListView {
 			id: segmentListView
 			Layout.fillWidth: true
-			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
+			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 10)
 			clip: true
 
 			model: segmentListModel
+
+			header: RowLayout {
+				width: segmentListView.width
+				spacing: Kirigami.Units.smallSpacing
+
+				TemplateLabel {
+					text: qsTr("Depth [%1]").arg(depthUnit);
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("Time [min]");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("Gas");
+					Layout.fillWidth: true
+					font.bold: true;
+				}
+				TemplateLabel {
+					text: qsTr("Setpoint [bar]");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
+					font.bold: true;
+					visible: overallDivemode.currentIndex == 1;
+				}
+				TemplateLabel {
+					text: qsTr("Dive Mode");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+					font.bold: true;
+					visible: overallDivemode.currentIndex == 2;
+				}
+				TemplateButton { text: "X"; font.bold: true; opacity: 0 }
+			}
+
 			delegate: RowLayout {
 				width: segmentListView.width
 				spacing: Kirigami.Units.smallSpacing
