@@ -61,6 +61,8 @@ Controls.TextField {
 	font.pointSize: subsurfaceTheme.regularPointSize
 	topPadding: 0
 	bottomPadding: 0
+	leftPadding: Kirigami.Units.smallSpacing
+	rightPadding: Kirigami.Units.smallSpacing
 	color: subsurfaceTheme.textColor
 	onEditingFinished: {
 		focus = false
