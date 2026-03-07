@@ -52,7 +52,7 @@ Item {
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
-		TemplateTextField {
+		SsrfTextField {
 			id: login
 			text: PrefCloudStorage.cloud_storage_email
 			visible: !showPin
@@ -67,7 +67,7 @@ Item {
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
-		TemplateTextField {
+		SsrfTextField {
 			id: password
 			text: PrefCloudStorage.cloud_storage_password
 			visible: !showPin
@@ -82,7 +82,7 @@ Item {
 			text: qsTr("PIN")
 			visible: showPin
 		}
-		TemplateTextField {
+		SsrfTextField {
 			id: pin
 			text: ""
 			Layout.fillWidth: true

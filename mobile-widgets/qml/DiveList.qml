@@ -413,7 +413,7 @@ Kirigami.ScrollablePage {
 					manager.setFilter(sitefilter.text, currentIndex)
 				}
 			}
-			TemplateTextField  {
+			SsrfTextField  {
 				id: sitefilter
 				verticalAlignment: TextInput.AlignVCenter
 				Layout.fillWidth: true

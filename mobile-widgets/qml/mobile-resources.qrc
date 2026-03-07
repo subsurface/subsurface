@@ -13,7 +13,6 @@
 		<file>TemplatePage.qml</file>
 		<file>TemplateSection.qml</file>
 		<file>TemplateSpinBox.qml</file>
-		<file>TemplateTextField.qml</file>
 		<file>TemplateTitle.qml</file>
 
 		<!-- ********** qml ********** -->

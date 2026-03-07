@@ -46,7 +46,7 @@ TemplatePage {
 			id: textUserID
 			text: qsTr("User ID")
 		}
-		TemplateTextField {
+		SsrfTextField {
 			id: fieldUserID
 			Layout.columnSpan: 2
 			Layout.fillWidth: true
@@ -56,7 +56,7 @@ TemplatePage {
 			id: textPassword
 			text: qsTr("Password:")
 		}
-		TemplateTextField {
+		SsrfTextField {
 			id: fieldPassword
 			Layout.columnSpan: 2
 			Layout.fillWidth: true
