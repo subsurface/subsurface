@@ -40,6 +40,7 @@ make install
 cd "$SRC"/subsurface/mobile-widgets/3rdparty
 PATCHES=$(echo 00*.patch)
 cd kirigami
+git am --abort 2>/dev/null || true
 for i in $PATCHES
 do
 	git am ../$i
