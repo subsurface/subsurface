@@ -19,13 +19,19 @@ ComboBox {
 		Math.ceil(comboFontMetrics.height) + topPadding + bottomPadding)
 	rightPadding: Kirigami.Units.smallSpacing
 	property var flickable // used to ensure the combobox is visible on screen
+
+	// measure popup item widths to auto-size the dropdown
+	TextMetrics {
+		id: _popupMetrics
+		font.pointSize: subsurfaceTheme.smallPointSize
+	}
+
 	delegate: ItemDelegate {
-		width: cb.width
+		width: cb.popup.width - 2
 		contentItem: Text {
 			text: modelData
 			color: subsurfaceTheme.textColor
-			font: cb.font
-			elide: Text.ElideRight
+			font.pointSize: subsurfaceTheme.smallPointSize
 			verticalAlignment: Text.AlignVCenter
 		}
 		highlighted: cb.highlightedIndex === index
@@ -89,7 +95,17 @@ ComboBox {
 
 	popup: Popup {
 		y: cb.height - 1
-		width: cb.width
+		width: _calculatedWidth
+		property real _calculatedWidth: cb.width
+		onAboutToShow: {
+			var maxW = cb.width;
+			for (var i = 0; i < cb.count; i++) {
+				_popupMetrics.text = cb.textAt(i);
+				var w = Math.ceil(_popupMetrics.advanceWidth);
+				if (w > maxW) maxW = w;
+			}
+			_calculatedWidth = maxW + Kirigami.Units.gridUnit * 3;
+		}
 		implicitHeight: Math.min(contentItem.implicitHeight + 2, cb.Window.height * 0.4)
 		padding: 1
 
