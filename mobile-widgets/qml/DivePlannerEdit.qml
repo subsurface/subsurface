@@ -246,13 +246,8 @@ TemplatePage {
 				font.pixelSize: Kirigami.Units.gridUnit * 1.2
 			}
 			TemplateButton {
-					contentItem: Text {
-						text: "+"
-						horizontalAlignment: Text.AlignHCenter
-						color: subsurfaceTheme.primaryTextColor
-					}
+					text: "+"
 					font.bold: true
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					onClicked: {
 						cylinderListModel.append({
 							"type": PrefEquipment.default_cylinder ? PrefEquipment.default_cylinder : "AL80",
@@ -373,7 +368,6 @@ TemplatePage {
 				TemplateButton {
 					text: "X"
 					font.bold: true
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
 					enabled: cylinderListModel.count > 1
 					onClicked: {
 						cylinderListModel.remove(index);
@@ -391,13 +385,8 @@ TemplatePage {
 				font.pixelSize: Kirigami.Units.gridUnit * 1.2
 			}
 			TemplateButton {
-				contentItem: Text {
-					text: "+"
-					horizontalAlignment: Text.AlignHCenter
-					color: subsurfaceTheme.primaryTextColor
-				}
+				text: "+"
 				font.bold: true
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 				onClicked: {
 					if (segmentListModel.count > 0) {
 						var lastSegment = segmentListModel.get(segmentListModel.count - 1);
@@ -538,7 +527,6 @@ TemplatePage {
 					text: "X"
 					font.bold: true
 					enabled: segmentListModel.count > 1
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
 					onClicked: {
 						segmentListModel.remove(index);
 						generatePlan();
@@ -641,11 +629,7 @@ TemplatePage {
 		}
 
 		TemplateButton {
-			contentItem: Text {
-				text: "Save plan"
-				horizontalAlignment: Text.AlignHCenter
-				color: subsurfaceTheme.primaryTextColor
-			}
+			text: qsTr("Save plan")
 			font.bold: true
 			Layout.fillWidth: true
 			onClicked: {

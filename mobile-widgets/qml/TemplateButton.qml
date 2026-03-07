@@ -12,6 +12,7 @@ Button {
 		antialiasing: true
 		radius: Kirigami.Units.smallSpacing * 2
 		height: buttonText.height * 2
+		width: buttonText.width + buttonText.height
 	}
 	contentItem: Text {
 		id: buttonText
