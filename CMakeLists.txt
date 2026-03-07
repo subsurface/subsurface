@@ -678,13 +678,8 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		# Update the bundle's Info.plist version at every build so it stays
 		# in sync with git (the cmake configure-time values go stale)
 		add_custom_command(TARGET ${SUBSURFACE_TARGET} POST_BUILD
-			COMMAND bash -c "\
-				V3=\"$$(bash '${CMAKE_SOURCE_DIR}/scripts/get-version.sh' 3)\" && \
-				V4=\"$$(bash '${CMAKE_SOURCE_DIR}/scripts/get-version.sh' 4)\" && \
-				/usr/libexec/PlistBuddy \
-					-c \"Set :CFBundleShortVersionString $$V3\" \
-					-c \"Set :CFBundleVersion $$V4\" \
-					\"$<TARGET_BUNDLE_DIR:${SUBSURFACE_TARGET}>/Info.plist\""
+			COMMAND ${CMAKE_SOURCE_DIR}/scripts/update-bundle-version.sh
+				"$<TARGET_BUNDLE_DIR:${SUBSURFACE_TARGET}>/Info.plist"
 			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 			COMMENT "Updating bundle version from git"
 		)
