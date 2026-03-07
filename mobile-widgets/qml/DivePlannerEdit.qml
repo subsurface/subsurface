@@ -180,14 +180,14 @@ TemplatePage {
 			Layout.fillWidth: true
 			columns: 2
 
-			TemplateTextField {
+			SsrfTextField {
 				id: planDate
 				Layout.fillWidth: true
 				placeholderText: qsTr("Date")
 				// Use a standard, unambiguous format
 				text: Qt.formatDate(new Date(), "yyyy-MM-dd")
 			}
-			TemplateTextField {
+			SsrfTextField {
 				id: planTime
 				Layout.fillWidth: true
 				placeholderText: qsTr("Time")
@@ -307,9 +307,10 @@ TemplatePage {
 						}
 					}
 				}
-				TemplateTextField {
+				SsrfTextField {
 					id: mixField
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "100/00"
 					text: mix
 					onTextChanged: {
 						if (text !== mix) {
@@ -349,9 +350,10 @@ TemplatePage {
 						generatePlan();
 					}
 				}
-				TemplateTextField {
+				SsrfTextField {
 					id: pressureField
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					sampleText: "30000"
 					text: pressure.toString()
 					validator: IntValidator { bottom: 0; top: 10000 }
 					onTextChanged: {
@@ -449,8 +451,9 @@ TemplatePage {
 			delegate: RowLayout {
 				spacing: Kirigami.Units.gridUnit
 
-				TemplateTextField {
+				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					sampleText: "9000"
 					text: depth.toString()
 					validator: IntValidator { bottom: 0; top: 900 }
 					onTextChanged: {
@@ -462,8 +465,9 @@ TemplatePage {
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
 
-				TemplateTextField {
+				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					sampleText: "9990"
 					text: duration.toString()
 					validator: IntValidator { bottom: 1; top: 999 }
 					onTextChanged: {
@@ -486,8 +490,9 @@ TemplatePage {
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
 
-				TemplateTextField {
+				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
+					sampleText: "00.00"
 					text: cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1 ? (setpoint / 1000.0).toFixed(2) : ""
 					validator: DoubleValidator {
 						bottom: 0.16;
