@@ -180,18 +180,24 @@ TemplatePage {
 			Layout.fillWidth: true
 			columns: 2
 
+			TemplateLabel {
+				text: qsTr("Date")
+				verticalAlignment: Text.AlignVCenter
+			}
+			TemplateLabel {
+				text: qsTr("Time")
+				verticalAlignment: Text.AlignVCenter
+			}
 			SsrfTextField {
 				id: planDate
 				Layout.fillWidth: true
-				placeholderText: qsTr("Date")
-				// Use a standard, unambiguous format
+				sampleText: "0000-00-00"
 				text: Qt.formatDate(new Date(), "yyyy-MM-dd")
 			}
 			SsrfTextField {
 				id: planTime
 				Layout.fillWidth: true
-				placeholderText: qsTr("Time")
-				// Use a standard, unambiguous format
+				sampleText: "00:00:00"
 				text: Qt.formatTime(new Date(), "hh:mm:ss")
 			}
 			TemplateLabel {
@@ -259,20 +265,20 @@ TemplatePage {
 			}
 		}
 		RowLayout {
-			spacing: Kirigami.Units.smallSpacing // Reduced spacing
+			Layout.fillWidth: true
+			spacing: Kirigami.Units.smallSpacing
 
-			// Header labels updated for new layout
-			TemplateLabel { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 2; font.bold: true }
-			TemplateLabel { text: qsTr("Type"); Layout.minimumWidth: Kirigami.Units.gridUnit * 8; Layout.maximumWidth: Kirigami.Units.gridUnit * 8; font.bold: true }
-			TemplateLabel { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 3; font.bold: true }
+			TemplateLabel { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5; font.bold: true }
+			TemplateLabel { text: qsTr("Type"); Layout.fillWidth: true; font.bold: true }
+			TemplateLabel { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5; font.bold: true }
 			TemplateLabel {
 				text: qsTr("Dil");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 3;
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5;
 				visible: overallDivemode.currentIndex == 1
 				font.bold: true
 			}
-			TemplateLabel { text: qsTr("[%1]").arg(pressureUnit); Layout.preferredWidth: Kirigami.Units.gridUnit * 4; font.bold: true }
-			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium }
+			TemplateLabel { text: qsTr("[%1]").arg(pressureUnit); Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5; font.bold: true }
+			Item { Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5 }
 		}
 
 		ListView {
@@ -283,18 +289,18 @@ TemplatePage {
 			model: cylinderListModel
 
 			delegate: RowLayout {
-				spacing: Kirigami.Units.smallSpacing // Reduced spacing
+				width: cylinderListView.width
+				spacing: Kirigami.Units.smallSpacing
 
 				TemplateLabel {
 					text: index + 1
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
 					horizontalAlignment: Text.AlignHCenter
 					verticalAlignment: Text.AlignVCenter
 				}
 				TemplateComboBox {
 					id: typeBox
-					Layout.minimumWidth: Kirigami.Units.gridUnit * 8
-					Layout.maximumWidth: Kirigami.Units.gridUnit * 8
+					Layout.fillWidth: true
 					model: cylinderTypesModel
 					currentIndex: model.indexOf(type)
 					onActivated: {
@@ -309,8 +315,8 @@ TemplatePage {
 				}
 				SsrfTextField {
 					id: mixField
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
-					sampleText: "100/00"
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5
+					sampleText: "32/68"
 					text: mix
 					onTextChanged: {
 						if (text !== mix) {
@@ -340,7 +346,7 @@ TemplatePage {
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
 				TemplateCheckBox {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
 					// Map the model's 'use' property (0 or 1) to the checkbox state (false or true)
 					checked: use === 1
 					visible: overallDivemode.currentIndex == 1
@@ -352,8 +358,8 @@ TemplatePage {
 				}
 				SsrfTextField {
 					id: pressureField
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-					sampleText: "30000"
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5
+					sampleText: "3000"
 					text: pressure.toString()
 					validator: IntValidator { bottom: 0; top: 10000 }
 					onTextChanged: {
@@ -367,7 +373,7 @@ TemplatePage {
 				TemplateButton {
 					text: "X"
 					font.bold: true
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
 					enabled: cylinderListModel.count > 1
 					onClicked: {
 						cylinderListModel.remove(index);
@@ -409,21 +415,22 @@ TemplatePage {
 		}
 
 		RowLayout {
-			spacing: Kirigami.Units.gridUnit
+			Layout.fillWidth: true
+			spacing: Kirigami.Units.smallSpacing
 
 			TemplateLabel {
 				text: qsTr("Depth [%1]").arg(depthUnit);
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 				font.bold: true
 			}
 			TemplateLabel {
 				text: qsTr("Time [min]");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+				Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 				font.bold: true
 			}
 			TemplateLabel {
 				text: qsTr("Gas");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 5
+				Layout.fillWidth: true
 				font.bold: true;
 			}
 			TemplateLabel {
@@ -438,7 +445,7 @@ TemplatePage {
 				font.bold: true;
 				visible: overallDivemode.currentIndex == 2;
 			}
-			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium } // Spacer
+			Item { Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5 }
 		}
 
 		ListView {
@@ -449,11 +456,12 @@ TemplatePage {
 
 			model: segmentListModel
 			delegate: RowLayout {
-				spacing: Kirigami.Units.gridUnit
+				width: segmentListView.width
+				spacing: Kirigami.Units.smallSpacing
 
 				SsrfTextField {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-					sampleText: "9000"
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "900"
 					text: depth.toString()
 					validator: IntValidator { bottom: 0; top: 900 }
 					onTextChanged: {
@@ -466,8 +474,8 @@ TemplatePage {
 				}
 
 				SsrfTextField {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-					sampleText: "9990"
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "999"
 					text: duration.toString()
 					validator: IntValidator { bottom: 1; top: 999 }
 					onTextChanged: {
@@ -480,7 +488,7 @@ TemplatePage {
 				}
 
 				TemplateComboBox {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
+					Layout.fillWidth: true
 					model: gasNumberModel
 					currentIndex: gas
 					onCurrentIndexChanged: {
@@ -530,7 +538,7 @@ TemplatePage {
 					text: "X"
 					font.bold: true
 					enabled: segmentListModel.count > 1
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
 					onClicked: {
 						segmentListModel.remove(index);
 						generatePlan();
