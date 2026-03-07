@@ -49,7 +49,7 @@ git_checkout_library() {
 	pushd "$name" || croak "can't cd into $name"
 
 	local current_sha=$(git rev-parse HEAD)
-	local target_sha=$(git rev-parse "$version")
+	local target_sha=$(git rev-parse "$version^{commit}" 2>/dev/null || git rev-parse "$version")
 
 	if [ ! "$current_sha" = "$target_sha" ] ; then
 		git fetch origin
