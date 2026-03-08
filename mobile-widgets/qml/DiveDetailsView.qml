@@ -13,6 +13,7 @@ Item {
 	property real col2Width: gridWidth * 0.30
 	property real col3Width: gridWidth * 0.30
 	property int myId: -1
+	property bool panningProfile: false
 
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
 	height: divePlate.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
@@ -302,30 +303,31 @@ Item {
 						}
 
 						anchors.fill: parent
-						drag.target: qmlProfile
-						drag.axis: Drag.XAndYAxis
-						drag.smoothed: true
-						function onPressed(mouse) {
+						onPressed: function(mouse) {
 							if (!isZoomed)
 								mouse.accepted = false
 						}
-						function onPressAndHold(mouse) {
-							dragging = true;
+						onPressAndHold: function(mouse) {
+							dragging = true
+							detailsView.panningProfile = true
 							oldXOffset = qmlProfile.xOffset
 							oldYOffset = qmlProfile.yOffset
 							initialX = mouse.x
 							initialY = mouse.y
 							if (manager.verboseEnabled)
-								manager.appendTextToLog("press and hold at mouse" + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10)
+								manager.appendTextToLog("press and hold at mouse " + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10)
 							// give visual feedback to the user that they now can drag
 							qmlProfile.opacity = 0.5
 						}
-						function onPositionChanged(mouse) {
+						onPositionChanged: function(mouse) {
 							if (dragging) {
-								var x = (mouse.x - initialX) / qmlProfile.scale
-								var y = (mouse.y - initialY) / qmlProfile.scale
+								// mouse coordinates are already in the scaled-down coordinate
+								// space (MouseArea is a child of the scaled qmlProfile), so
+								// no additional division by scale is needed
+								var x = mouse.x - initialX
+								var y = mouse.y - initialY
 								if (manager.verboseEnabled)
-									manager.appendTextToLog("drag mouse "  + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10 + " delta " + Math.round(x) + " / " + Math.round(y))
+									manager.appendTextToLog("drag mouse " + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10 + " delta " + Math.round(x) + " / " + Math.round(y))
 								qmlProfile.xOffset = oldXOffset + x
 								qmlProfile.yOffset = oldYOffset + y
 								qmlProfile.update()
@@ -333,15 +335,16 @@ Item {
 								mouse.accepted = false
 							}
 						}
-						function onReleased(mouse) {
+						onReleased: function(mouse) {
 							if (dragging) {
 								// reset things
 								dragging = false
+								detailsView.panningProfile = false
 								qmlProfile.opacity = 1.0
 							}
 							mouse.accepted = false
 						}
-						function onClicked(mouse) {
+						onClicked: function(mouse) {
 							// reset the position if not zoomed in
 							if (!isZoomed) {
 								qmlProfile.xOffset = qmlProfile.yOffset = oldXOffset = oldYOffset = 0
