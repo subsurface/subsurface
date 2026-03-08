@@ -33,8 +33,8 @@ KIRIGAMI_INSTALL_PREFIX="${KIRIGAMI_INSTALL_PREFIX:-$SRC/install-root}"
 rm -rf "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
 mkdir -p "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
 cd "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
-CMAKE_PREFIX_PATH="" cmake -DSHARE_INSTALL_DIR=.. ../extra-cmake-modules
-make install
+CMAKE_PREFIX_PATH="" cmake -G Ninja -DSHARE_INSTALL_DIR=.. ../extra-cmake-modules
+cmake --build . --target install
 
 # add our patches to Kirigami
 cd "$SRC"/subsurface/mobile-widgets/3rdparty
@@ -48,9 +48,9 @@ done
 
 # finally, build and install Kirigami
 # any extra arguments (e.g. cross-compilation flags) are forwarded to cmake
-cmake -B "$KIRIGAMI_BUILDDIR" -DBUILD_SHARED_LIBS=ON \
+cmake -G Ninja -B "$KIRIGAMI_BUILDDIR" -DBUILD_SHARED_LIBS=ON \
 	-DCMAKE_INSTALL_PREFIX="$KIRIGAMI_INSTALL_PREFIX" \
 	-DECM_DIR="$SRC"/subsurface/mobile-widgets/3rdparty/ECM/cmake \
 	-DUSE_DBUS=OFF "$@"
-cmake --build "$KIRIGAMI_BUILDDIR"
+cmake --build "$KIRIGAMI_BUILDDIR" -j"$(nproc)"
 cmake --install "$KIRIGAMI_BUILDDIR"
