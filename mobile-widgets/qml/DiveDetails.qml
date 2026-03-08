@@ -409,6 +409,7 @@ Kirigami.Page {
 				width: diveDetailsListView.width
 				height: diveDetailsListView.height
 				property var modelData: model
+				property alias panningProfile: diveDetails.panningProfile
 
 				Flickable {
 					id: internalScrollView
@@ -455,6 +456,7 @@ Kirigami.Page {
 		// vertical scrolling without interference.
 		DragHandler {
 			id: horizontalSwipeHandler
+			enabled: !diveDetailsListView.currentItem || !diveDetailsListView.currentItem.panningProfile
 			yAxis.enabled: false
 			target: null
 
