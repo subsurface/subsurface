@@ -18,9 +18,15 @@
 #include <zip.h>
 #include <string>
 
+static std::string fix_fucking_stupid(char * whatever)
+{
+	// std::string is FUCKING STUPID - initialization from NULL crashes at runtime
+	return std::string(whatever != NULL ? whatever : "");
+}
+
 static std::string system_default_path()
 {
-	std::string home(getenv("HOME"));
+	std::string home = fix_fucking_stupid(getenv("HOME"));
 	if (home.empty())
 		home = "~";
 	return home + "/.subsurface";
@@ -28,7 +34,7 @@ static std::string system_default_path()
 
 static std::string make_default_filename()
 {
-	std::string user = getenv("LOGNAME");
+	std::string user = fix_fucking_stupid(getenv("LOGNAME"));
 	if (user.empty())
 		user = "username";
 	return system_default_path() + "/" + user + ".xml";
