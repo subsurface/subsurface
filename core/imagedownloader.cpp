@@ -23,17 +23,14 @@
 // This is a global instead of a function-local variable on purpose.
 // We don't want this to be generated in a different thread context if
 // ImageDownloader::instance() is called from a worker thread.
-// On iOS, constructing QNetworkAccessManager before QCoreApplication
-// exists causes a crash (QNetworkAccessFileBackendFactory uses
-// Q_APPLICATION_STATIC), so we use a function-local static there.
-#ifndef Q_OS_IOS
-static ImageDownloader imageDownloader;
-#endif
+// Constructing QNetworkAccessManager before QCoreApplication exists
+// causes issues: a crash on iOS (QNetworkAccessFileBackendFactory uses
+// Q_APPLICATION_STATIC) and warnings on Linux (QObject::connect with
+// nullptr). Use a function-local static to defer construction until
+// first use.
 ImageDownloader *ImageDownloader::instance()
 {
-#ifdef Q_OS_IOS
 	static ImageDownloader imageDownloader;
-#endif
 	return &imageDownloader;
 }
 
