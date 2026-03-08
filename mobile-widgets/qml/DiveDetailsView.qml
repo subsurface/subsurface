@@ -293,7 +293,7 @@ Item {
 
 						// for testing / debugging on a desktop
 						scrollGestureEnabled: true
-						onWheel: {
+						onWheel: function (wheel) {
 							manager.appendTextToLog("wheel " + wheel.angleDelta)
 							if (wheel.angleDelta.y > 0)
 								qmlProfile.scale += 0.2
