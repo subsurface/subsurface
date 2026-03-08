@@ -4,7 +4,7 @@
 # This is the local equivalent of the GitHub Actions workflow in .github/workflows/android.yml.
 #
 # Prerequisites:
-#   - Docker
+#   - Docker or Podman
 #   - A .secrets file in the repository root containing:
 #       ANDROID_KEYSTORE_BASE64=<base64-encoded keystore>
 #       ANDROID_KEYSTORE_PASSWORD=<keystore password>
@@ -47,7 +47,18 @@ BUILDNR=$(scripts/get-version.sh 1)
 
 echo "=== Building Subsurface-mobile ${VERSION} ==="
 
-CONTAINER_IMAGE="subsurface/android-build:6.8.1"
+# detect container runtime: prefer podman if available, fall back to docker
+if command -v podman &>/dev/null; then
+	CONTAINER_RT=podman
+elif command -v docker &>/dev/null; then
+	CONTAINER_RT=docker
+else
+	echo "Error: neither podman nor docker found in PATH"
+	exit 1
+fi
+echo "Using container runtime: ${CONTAINER_RT}"
+
+CONTAINER_IMAGE="docker.io/subsurface/android-build:6.8.1"
 
 # these come from the container environment
 SDK_VERSION="35.0.0"
@@ -66,7 +77,7 @@ OUTPUT_DIR="${SUBSURFACE_SOURCE}/output/android"
 mkdir -p "${BUILD_ANDROID}" "${KIRIGAMI_BUILD}" "${OUTPUT_DIR}"
 
 # build, package, and sign everything in a single container
-docker run --rm \
+${CONTAINER_RT} run --rm \
 	-v "${SUBSURFACE_SOURCE}:${BUILDROOT}/src/subsurface" \
 	-v "${BUILD_ANDROID}:${BUILDROOT}/build-android" \
 	-v "${KIRIGAMI_BUILD}:${BUILDROOT}/src/kirigami-build" \
