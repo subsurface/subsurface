@@ -140,12 +140,9 @@ static std::vector<QString> getWords(const dive *d)
 
 void FullText::populate()
 {
-	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("Create full text index"));
-	uiNotification(QObject::tr("start processing"));
 	for (auto &d: divelog.dives)
 		registerDive(d.get());
-	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives.size()));
 }
 
 void FullText::registerDive(struct dive *d)
