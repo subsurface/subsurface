@@ -24,6 +24,8 @@ Kirigami.ApplicationWindow {
 	Kirigami.Theme.colorSet: Kirigami.Theme.Button
 	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
 	Kirigami.Theme.textColor: subsurfaceTheme.textColor
+	Kirigami.Theme.highlightColor: subsurfaceTheme.darkerPrimaryColor
+	Kirigami.Theme.highlightedTextColor: subsurfaceTheme.primaryTextColor
 
 	// next setup the tab bar on top
 	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.ToolBar
@@ -48,6 +50,15 @@ Kirigami.ApplicationWindow {
 	// signal that the profile (and possibly other code) listens to so they
 	// can redraw if settings are changed
 	signal settingsChanged()
+
+	// Force Kirigami's Material theme sync after QML initialization.
+	// The ThemeInterface constructor fires color signals before QML is loaded,
+	// so the Material style onSync handler never sees the initial values.
+	// Re-setting the theme triggers all color change signals when QML is
+	// listening, which makes onSync push our colors into Material properties.
+	Component.onCompleted: {
+		subsurfaceTheme.currentTheme = subsurfaceTheme.currentTheme
+	}
 
 	onNotificationTextChanged: {
 		// once the app is fully initialized and the UI is running, we use passive
@@ -207,6 +218,8 @@ Kirigami.ApplicationWindow {
 		actions: pageStack.currentItem?.contextualActions ?? []
 		Kirigami.Theme.textColor: subsurfaceTheme.textColor
 		Kirigami.Theme.backgroundColor: subsurfaceTheme.drawerColor
+		Kirigami.Theme.highlightColor: subsurfaceTheme.darkerPrimaryColor
+		Kirigami.Theme.highlightedTextColor: subsurfaceTheme.primaryTextColor
 		background: Rectangle { color: subsurfaceTheme.drawerColor }
 		// Override theme on contentItem too - OverlayDrawer propagates colorSet
 		// to contentItem, creating a separate PlatformThemeData that gets iOS
@@ -214,6 +227,8 @@ Kirigami.ApplicationWindow {
 		Component.onCompleted: {
 			contentItem.Kirigami.Theme.textColor = Qt.binding(function() { return subsurfaceTheme.textColor; });
 			contentItem.Kirigami.Theme.backgroundColor = Qt.binding(function() { return subsurfaceTheme.drawerColor; });
+			contentItem.Kirigami.Theme.highlightColor = Qt.binding(function() { return subsurfaceTheme.darkerPrimaryColor; });
+			contentItem.Kirigami.Theme.highlightedTextColor = Qt.binding(function() { return subsurfaceTheme.primaryTextColor; });
 		}
 	}
 
@@ -228,6 +243,8 @@ Kirigami.ApplicationWindow {
 		rightPadding: 0
 		Kirigami.Theme.textColor: subsurfaceTheme.textColor
 		Kirigami.Theme.backgroundColor: subsurfaceTheme.drawerColor
+		Kirigami.Theme.highlightColor: subsurfaceTheme.darkerPrimaryColor
+		Kirigami.Theme.highlightedTextColor: subsurfaceTheme.primaryTextColor
 		background: Rectangle { color: subsurfaceTheme.drawerColor }
 		// Override theme on contentItem too - OverlayDrawer propagates colorSet
 		// to contentItem, creating a separate PlatformThemeData that gets iOS
@@ -235,6 +252,8 @@ Kirigami.ApplicationWindow {
 		Component.onCompleted: {
 			contentItem.Kirigami.Theme.textColor = Qt.binding(function() { return subsurfaceTheme.textColor; });
 			contentItem.Kirigami.Theme.backgroundColor = Qt.binding(function() { return subsurfaceTheme.drawerColor; });
+			contentItem.Kirigami.Theme.highlightColor = Qt.binding(function() { return subsurfaceTheme.darkerPrimaryColor; });
+			contentItem.Kirigami.Theme.highlightedTextColor = Qt.binding(function() { return subsurfaceTheme.primaryTextColor; });
 		}
 		enabled: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
 				  Backend.cloud_verification_status === Enums.CS_VERIFIED)
@@ -575,6 +594,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				text: qsTr("Developer")
 				visible: PrefDisplay.show_developer
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_info_outline.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("App log")
 					onTriggered: {
 						globalDrawer.close()
@@ -582,6 +605,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					}
 				}
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_sync.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Test busy indicator (toggle)")
 					onTriggered: {
 						if (busy.running) {
@@ -592,20 +619,31 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					}
 				}
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_help_outline.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Test notification text")
 					onTriggered: {
 						showPassiveNotification(qsTr("Test notification text"), 5000)
 					}
 				}
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_settings.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Theme information")
 					onTriggered: {
 						globalDrawer.close()
 						showPageFromDrawer(themetest)
 					}
 				}
-
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_adb.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Enable verbose logging (currently: %1)").arg(manager.verboseEnabled)
 					onTriggered: {
 						showPassiveNotification(qsTr("Not persistent"), 3000)
@@ -613,8 +651,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						manager.verboseEnabled = true
 					}
 				}
-
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_cloud_download.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Access local cloud cache dirs")
 					onTriggered: {
 						globalDrawer.close()
