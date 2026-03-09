@@ -48,9 +48,17 @@ done
 
 # finally, build and install Kirigami
 # any extra arguments (e.g. cross-compilation flags) are forwarded to cmake
+if [[ ${PLATFORM} == "Linux" ]]; then
+	NUM_CORES="$(nproc)"
+elif [[ ${PLATFORM} == "Darwin" ]]; then
+	NUM_CORES="$(sysctl -n hw.logicalcpu)"
+else
+	NUM_CORES="4"
+fi
+
 cmake -G Ninja -B "$KIRIGAMI_BUILDDIR" -DBUILD_SHARED_LIBS=ON \
 	-DCMAKE_INSTALL_PREFIX="$KIRIGAMI_INSTALL_PREFIX" \
 	-DECM_DIR="$SRC"/subsurface/mobile-widgets/3rdparty/ECM/cmake \
 	-DUSE_DBUS=OFF "$@"
-cmake --build "$KIRIGAMI_BUILDDIR" -j"$(nproc)"
+cmake --build "$KIRIGAMI_BUILDDIR" -j"${NUM_CORES}"
 cmake --install "$KIRIGAMI_BUILDDIR"
