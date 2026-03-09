@@ -629,12 +629,25 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	qt_add_resources(MOBILE_RESOURCES profile.qrc)
 	qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
 
+	# Embed translation .qm files as Qt resources for Android/iOS
+	# (these platforms load translations from ":/")
+	set(_trans_qrc "${CMAKE_BINARY_DIR}/translations.qrc")
+	file(WRITE ${_trans_qrc} "<RCC>\n  <qresource prefix=\"/\">\n")
+	foreach(_qm ${TRANSLATIONS})
+		get_filename_component(_qm_name "${_qm}" NAME)
+		file(APPEND ${_trans_qrc} "    <file alias=\"${_qm_name}\">${_qm}</file>\n")
+	endforeach()
+	file(APPEND ${_trans_qrc} "  </qresource>\n</RCC>\n")
+	qt_add_resources(MOBILE_RESOURCES ${_trans_qrc})
+
 	if(ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
 		qt_add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
 	else()
 		add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
 	endif()
 	target_sources(${SUBSURFACE_TARGET} PUBLIC ${MOBILE_SRC} ${MOBILE_RESOURCES})
+	# ensure .qm files are built before the resource compiler runs
+	add_dependencies(${SUBSURFACE_TARGET} translations)
 	# tell qmlimportscanner where to find Kirigami's QML modules
 	set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
 		QT_QML_IMPORT_PATH "${Kirigami_INSTALL_PREFIX}/lib/qml"
