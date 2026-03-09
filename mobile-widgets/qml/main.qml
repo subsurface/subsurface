@@ -262,6 +262,7 @@ Kirigami.ApplicationWindow {
 				id: textblock
 				anchors {
 					left: parent.left
+					right: parent.right
 					top: parent.top
 				}
 				RowLayout {
@@ -294,8 +295,7 @@ Kirigami.ApplicationWindow {
 						level: 3
 						color: "white"
 						text: PrefCloudStorage.cloud_storage_email
-						wrapMode: Text.NoWrap
-						elide: Text.ElideRight
+						wrapMode: Text.WrapAnywhere
 						font.weight: Font.Normal
 					}
 				}
