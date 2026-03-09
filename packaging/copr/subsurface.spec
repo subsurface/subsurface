@@ -1,7 +1,7 @@
 #
 # Fedora COPR spec file for package subsurface
 #
-# Copyright (c) 2014-2022 Dirk Hohndel
+# Copyright (c) 2014-2026 Dirk Hohndel
 #
 
 %define latestVersion 0.0.0.0
