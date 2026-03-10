@@ -55,6 +55,7 @@
 #include "core/worldmap-save.h"
 #include "core/uploadDiveLogsDE.h"
 #include "core/uploadDiveShare.h"
+#include "core/version.h"
 #include "commands/command_base.h"
 #include "commands/command.h"
 
@@ -1819,12 +1820,7 @@ QString QMLManager::getDate(const QString& diveId)
 
 QString QMLManager::getVersion() const
 {
-	QRegularExpression versionRe(":([()\\.,\\d]+)");
-	QRegularExpressionMatch match = versionRe.match(getUserAgent());
-	if (!match.hasMatch())
-		return QString();
-
-	return match.captured(1);
+	return QString(subsurface_git_version());
 }
 
 QString QMLManager::getGpsFromSiteName(const QString &siteName)
