@@ -116,7 +116,7 @@ Kirigami.Page {
 		onTriggered: manager.redo()
 	}
 	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, undoAction, redoAction ]
-	property var contextualActions: []
+	property var contextualActions: contextactions
 
 	states: [
 		State {
