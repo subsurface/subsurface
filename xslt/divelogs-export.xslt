@@ -135,7 +135,7 @@
               <xsl:value-of select="$double - 1" />
             </dbltank>
             <vol>
-              <xsl:value-of select="substring-before(@size, ' ') div $double" />
+              <xsl:value-of select="format-number(substring-before(@size, ' ') div $double, '#.##')" />
             </vol>
             <start_pressure>
               <xsl:choose>
