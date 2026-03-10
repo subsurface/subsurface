@@ -402,7 +402,7 @@ Kirigami.Page {
 				// after orientation change, realign to current page
 				if (currentIndex >= 0) {
 					snapAnimation.stop()
-					positionViewAtIndex(currentIndex, ListView.Beginning)
+					contentX = originX + currentIndex * width
 				}
 			}
 			delegate: Item {
@@ -442,7 +442,7 @@ Kirigami.Page {
 					diveDetailsListView.currentIndex = index.row
 					// skip positioning during swipe - the snap animation handles it
 					if (!diveDetailsListView.swipeInProgress) {
-						diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning)
+						diveDetailsListView.contentX = diveDetailsListView.originX + diveDetailsListView.currentIndex * diveDetailsListView.width
 					}
 				}
 			}
