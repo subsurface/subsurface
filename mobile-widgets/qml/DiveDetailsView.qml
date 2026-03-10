@@ -21,6 +21,8 @@ Item {
 		qmlProfile.xOffset = 0
 		qmlProfile.yOffset = 0
 		qmlProfile.opacity = 1.0
+		profileMouseArea.dragging = false
+		panningProfile = false
 	}
 
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
@@ -279,6 +281,7 @@ Item {
 					}
 
 					MouseArea {
+						id: profileMouseArea
 						// we want to pan the profile if we are zoomed in, but we want to immediately
 						// pass the mouse events through to the ListView if we are not. That way you
 						// can swipe through the dive list, even if you happen to swipe the profile
@@ -351,6 +354,14 @@ Item {
 								qmlProfile.opacity = 1.0
 							}
 							mouse.accepted = false
+						}
+						onCanceled: {
+							// touch was stolen (e.g. by PinchArea) - clean up panning state
+							if (dragging) {
+								dragging = false
+								detailsView.panningProfile = false
+								qmlProfile.opacity = 1.0
+							}
 						}
 						onClicked: function(mouse) {
 							// reset the position if not zoomed in
