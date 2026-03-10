@@ -312,7 +312,8 @@ QQuickWindow *StatsView::w() const
 void StatsView::setTheme(bool dark)
 {
 	currentTheme = &getStatsTheme(dark);
-	rootNode->backgroundNode->setColor(currentTheme->backgroundColor);
+	if (rootNode)
+		rootNode->backgroundNode->setColor(currentTheme->backgroundColor);
 }
 
 const StatsTheme &StatsView::getCurrentTheme() const
