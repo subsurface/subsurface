@@ -405,6 +405,12 @@ Kirigami.Page {
 					contentX = originX + currentIndex * width
 				}
 			}
+			onOriginXChanged: {
+				// originX can shift after width settles during orientation
+				// changes as ListView repositions delegates internally
+				if (currentIndex >= 0 && !swipeInProgress)
+					contentX = originX + currentIndex * width
+			}
 			delegate: Item {
 				width: diveDetailsListView.width
 				height: diveDetailsListView.height
