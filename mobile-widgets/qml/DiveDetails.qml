@@ -411,6 +411,12 @@ Kirigami.Page {
 				property var modelData: model
 				property alias panningProfile: diveDetails.panningProfile
 
+				// reset zoom/pan when this delegate is no longer the current page
+				ListView.onIsCurrentItemChanged: {
+					if (!ListView.isCurrentItem)
+						diveDetails.resetZoom()
+				}
+
 				Flickable {
 					id: internalScrollView
 					anchors.fill: parent
