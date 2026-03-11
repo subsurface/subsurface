@@ -15,6 +15,14 @@ Item {
 	property int myId: -1
 	property bool panningProfile: false
 
+	function resetZoom() {
+		qmlProfile.scale = 1.0
+		qmlProfile.lastScale = 1.0
+		qmlProfile.xOffset = 0
+		qmlProfile.yOffset = 0
+		qmlProfile.opacity = 1.0
+	}
+
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
 	height: divePlate.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
 
