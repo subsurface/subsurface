@@ -53,9 +53,11 @@ Kirigami.Page {
 		       currentItem.modelData.location : qsTr("Dive details")
 
 	// AI-generated (Claude)
-	// Custom title delegate that shows breadcrumb-style "Dive list > Location"
+	// Custom title delegate: breadcrumb-style "Dive list > Location" in single column mode,
+	// plain title otherwise (when both pages are visible side by side)
 	titleDelegate: Component {
 		Item {
+			property bool singleColumn: pageStack.columnView.columnResizeMode === Kirigami.ColumnView.SingleColumn
 			Layout.fillWidth: true
 			Layout.minimumWidth: 0
 			Layout.maximumWidth: implicitWidth
@@ -66,6 +68,7 @@ Kirigami.Page {
 				anchors.fill: parent
 				spacing: Kirigami.Units.smallSpacing
 				Kirigami.Heading {
+					visible: singleColumn
 					text: qsTr("Dive list")
 					maximumLineCount: 1
 					elide: Text.ElideRight
@@ -81,6 +84,7 @@ Kirigami.Page {
 					}
 				}
 				Kirigami.Icon {
+					visible: singleColumn
 					source: "go-next-symbolic"
 					implicitHeight: Kirigami.Units.iconSizes.small
 					implicitWidth: Kirigami.Units.iconSizes.small
