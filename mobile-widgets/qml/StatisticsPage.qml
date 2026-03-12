@@ -65,8 +65,10 @@ Kirigami.Page {
 				spacing: Kirigami.Units.smallSpacing
 				Kirigami.Icon {
 					id: chartIcon
-					source: icon
-					width: iconSize !== undefined ? iconSize.width : 0
+					source: model.icon
+					visible: model.iconSize !== undefined
+					width: model.iconSize !== undefined ? model.iconSize.width : 0
+					height: model.iconSize !== undefined ? model.iconSize.height : 0
 				}
 				Label {
 					text: chartName
