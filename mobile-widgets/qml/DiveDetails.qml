@@ -51,6 +51,56 @@ Kirigami.Page {
 
 	title: currentItem && currentItem.modelData && currentItem.modelData.location && "" !== currentItem.modelData.location ?
 		       currentItem.modelData.location : qsTr("Dive details")
+
+	// AI-generated (Claude)
+	// Custom title delegate that shows breadcrumb-style "Dive list > Location"
+	titleDelegate: Component {
+		Item {
+			Layout.fillWidth: true
+			Layout.minimumWidth: 0
+			Layout.maximumWidth: implicitWidth
+			implicitWidth: breadcrumbRow.implicitWidth
+			implicitHeight: breadcrumbRow.implicitHeight
+			Row {
+				id: breadcrumbRow
+				anchors.fill: parent
+				spacing: Kirigami.Units.smallSpacing
+				Kirigami.Heading {
+					text: qsTr("Dive list")
+					maximumLineCount: 1
+					elide: Text.ElideRight
+					textFormat: Text.PlainText
+					font: Kirigami.Theme.defaultFont
+					color: Kirigami.Theme.textColor
+					opacity: 0.6
+					verticalAlignment: Text.AlignVCenter
+					height: parent.height
+					MouseArea {
+						anchors.fill: parent
+						onClicked: pageStack.goBack()
+					}
+				}
+				Kirigami.Icon {
+					source: "go-next-symbolic"
+					implicitHeight: Kirigami.Units.iconSizes.small
+					implicitWidth: Kirigami.Units.iconSizes.small
+					isMask: true
+					color: Kirigami.Theme.textColor
+					anchors.verticalCenter: parent.verticalCenter
+				}
+				Kirigami.Heading {
+					text: diveDetailsPage.title
+					maximumLineCount: 1
+					elide: Text.ElideRight
+					textFormat: Text.PlainText
+					color: Kirigami.Theme.textColor
+					verticalAlignment: Text.AlignVCenter
+					height: parent.height
+				}
+			}
+		}
+	}
+
 	state: "view"
 	leftPadding: 0
 	topPadding: Kirigami.Units.gridUnit / 2
