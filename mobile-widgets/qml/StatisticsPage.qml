@@ -47,30 +47,31 @@ Kirigami.Page {
 
 	Component {
 		id: chartListDelegate
-		Kirigami.SwipeListItem {
+		ItemDelegate {
 			id: chartListDelegateItem
-			height: isHeader ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing // delegateInnerItem.height
+			width: ListView.view ? ListView.view.width : implicitWidth
+			height: isHeader ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing
+			background: Rectangle {
+				color: chartListDelegateItem.pressed ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.backgroundColor
+			}
 			onClicked: {
 				if (!isHeader) {
 					chartTypePopup.close()
 					statsManager.setChart(id)
 				}
 			}
-			Item {
-				id: chartListDelegateInnerItem
-				Row {
-					height: childrenRect.height
-					spacing: Kirigami.Units.smallSpacing
-					Kirigami.Icon {
-						id: chartIcon
-						source: icon
-						width: iconSize !== undefined ? iconSize.width : 0
-					}
-					Label {
-						text: chartName
-						font.bold: isHeader
-						color: subsurfaceTheme.textColor
-					}
+			contentItem: Row {
+				height: childrenRect.height
+				spacing: Kirigami.Units.smallSpacing
+				Kirigami.Icon {
+					id: chartIcon
+					source: icon
+					width: iconSize !== undefined ? iconSize.width : 0
+				}
+				Label {
+					text: chartName
+					font.bold: isHeader
+					color: subsurfaceTheme.textColor
 				}
 			}
 		}
@@ -85,6 +86,12 @@ Kirigami.Page {
 		focus: true
 		clip: true
 		closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+		background: Rectangle {
+			color: subsurfaceTheme.backgroundColor
+			border.color: subsurfaceTheme.darkerPrimaryColor
+			border.width: 1
+			radius: Kirigami.Units.smallSpacing
+		}
 		ListView {
 			id: chartTypes
 			model: chartListModel
