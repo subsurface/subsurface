@@ -86,8 +86,14 @@ QVariant ChartListModel::data(const QModelIndex &index, int role) const
 		return items[row].warning ? QVariant::fromValue(QIcon(warningPixmap))
 					  : QVariant();
 	case IconRole:
+#if defined(SUBSURFACE_MOBILE)
+		// QML's Kirigami.Icon needs a QIcon; raw QPixmap isn't rendered by QML
+		return items[row].isHeader ? QVariant()
+					   : QVariant::fromValue(QIcon(getIcon(items[row].subtype, items[row].warning)));
+#else
 		return items[row].isHeader ? QVariant()
 					   : QVariant::fromValue(getIcon(items[row].subtype, items[row].warning));
+#endif
 	case IconSizeRole:
 		return items[row].isHeader ? QVariant()
 					   : QVariant::fromValue(getIcon(items[row].subtype, items[row].warning).size());
