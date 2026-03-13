@@ -29,7 +29,7 @@ Kirigami.ApplicationWindow {
 
 	// next setup the tab bar on top
 	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.ToolBar
-	pageStack.globalToolBar.showNavigationButtons: (Kirigami.ApplicationHeaderStyle.ShowBackButton | Kirigami.ApplicationHeaderStyle.ShowForwardButton)
+	pageStack.globalToolBar.showNavigationButtons: Kirigami.ApplicationHeaderStyle.NoNavigationButtons
 	pageStack.globalToolBar.canContainHandles: true
 	pageStack.globalToolBar.minimumHeight: Kirigami.Units.gridUnit * 1.6
 	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2.5 : 2))
@@ -763,6 +763,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		} else {
 			manager.appendTextToLog("[screensetup] remembering new orientation")
 			screenSizeObject.lastOrientation = Screen.orientation
+			setupUnits()
 		}
 	}
 
