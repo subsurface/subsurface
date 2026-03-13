@@ -69,6 +69,32 @@ bash ./scripts/mobilecomponents.sh \
 	-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
 	-DANDROID_PLATFORM=24
 
+# build googlemaps geoservices plugin (shared library for Android)
+# Qt6 Android doesn't ship qmake mkspecs, so we use cmake
+echo "=== Building googlemaps plugin ==="
+cd "${BUILDROOT}/src"
+"${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" single . googlemaps
+cd googlemaps
+git fetch --quiet
+git checkout qt6-upstream --quiet 2>/dev/null || git switch qt6-upstream --quiet
+# use our CMakeLists.txt if the repo doesn't have one
+if [ ! -f CMakeLists.txt ]; then
+	cp "${SUBSURFACE_SOURCE}/scripts/android-googlemaps-CMakeLists.txt" CMakeLists.txt
+fi
+mkdir -p android-build
+cd android-build
+cmake -G Ninja .. \
+	-DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
+	-DQT_HOST_PATH="${QT_HOST_PATH}" \
+	-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
+	-DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
+	-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
+	-DANDROID_PLATFORM=24 \
+	-DCMAKE_INSTALL_PREFIX="${ANDROID_INSTALL_PREFIX}" \
+	-DCMAKE_BUILD_TYPE=Release
+cmake --build .
+cmake --install .
+
 # next, libdivecomputer
 cd "${SUBSURFACE_SOURCE}"
 if [ ! -f libdivecomputer/configure ]; then

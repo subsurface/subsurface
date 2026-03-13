@@ -58,7 +58,7 @@ cp -r openssl/* openssl-build/
 cd openssl-build
 ./Configure android-arm64 no-ssl3 no-comp no-engine no-asm no-ui-console \
   --prefix="${PREFIX}" -fPIC -Wl,-z,max-page-size=16384
-make build_libs
+make -j"$(nproc)" build_libs
 cp -RL include/openssl "${PREFIX}"/include/openssl
 # Copy resolved shared libraries for linking (-L follows symlinks)
 cp -L libssl.so "${PREFIX}"/lib/libssl.so
