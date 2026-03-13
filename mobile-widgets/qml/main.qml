@@ -683,9 +683,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		// changed, so recalculate the gridUnit
 		var kirigamiGridUnit = fontMetrics.height
 
-		// some screens are too narrow for Subsurface-mobile to render well
-		// things don't look greate with fewer than 21 gridUnits in a row
-		var numColumns = Math.max(Math.floor(rootItem.width / (21 * kirigamiGridUnit)), 1)
+		// some screens are too narrow for Subsurface-mobile to render well;
+		// pages like Settings and DiveDetailsEdit need at least ~24 gridUnits
+		// to avoid clipping content in two-column mode
+		var numColumns = Math.max(Math.floor(rootItem.width / (24 * kirigamiGridUnit)), 1)
 		if (Screen.primaryOrientation === Qt.PortraitOrientation && PrefDisplay.singleColumnPortrait) {
 			manager.appendTextToLog("show only one column in portrait mode");
 			numColumns = 1;
