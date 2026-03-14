@@ -93,6 +93,8 @@ static struct namePattern name[] = {
 	// Mares dive computers
 	{ "Mares Genius", "Mares", "Genius" },
 	{ "Sirius", "Mares", "Sirius" },
+	{ "Quad Ci", "Mares", "Quad Ci" },
+	{ "Quad", "Mares", "Quad" },
 	{ "Mares", "Mares", "Quad" }, // we actually don't know and just pick a common one - user needs to fix in UI
 	// Cress dive computers
 	{ "CARESIO_", "Cressi", "Cartesio" },
