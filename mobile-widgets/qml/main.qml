@@ -54,10 +54,12 @@ Kirigami.ApplicationWindow {
 	// Force Kirigami's Material theme sync after QML initialization.
 	// The ThemeInterface constructor fires color signals before QML is loaded,
 	// so the Material style onSync handler never sees the initial values.
-	// Re-setting the theme triggers all color change signals when QML is
-	// listening, which makes onSync push our colors into Material properties.
+	// Use Qt.callLater so the re-trigger runs after all components (including
+	// the toolbar header) have finished construction and are listening.
 	Component.onCompleted: {
-		subsurfaceTheme.currentTheme = subsurfaceTheme.currentTheme
+		Qt.callLater(function() {
+			subsurfaceTheme.currentTheme = subsurfaceTheme.currentTheme
+		})
 	}
 
 	onNotificationTextChanged: {
