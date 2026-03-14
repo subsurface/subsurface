@@ -58,6 +58,7 @@ android {
     namespace "org.subsurfacedivelog.mobile"
 
     defaultConfig {
+        applicationId project.findProperty("subsurfaceApplicationId") ?: "org.subsurfacedivelog.mobile"
         minSdkVersion 28
         targetSdkVersion 35
     }

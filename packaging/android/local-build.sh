@@ -13,16 +13,20 @@
 # The build-android and kirigami-build directories are mounted from the host
 # (as siblings of the source tree) so that incremental rebuilds are fast.
 #
+# Optionally, set ANDROID_APPLICATION_ID in .secrets to override the
+# default applicationId (org.subsurfacedivelog.mobile), e.g. for a
+# sponsor build.
+#
 # Usage:
 #   cd <repo>
-#   packaging/android/local-build.sh
+#   packaging/android/local-build.sh [path/to/.secrets]
 
 set -e
 
 SUBSURFACE_SOURCE="$(cd "$(dirname "$0")/../../" && pwd)"
 cd "${SUBSURFACE_SOURCE}"
 
-SECRETS_FILE="${SUBSURFACE_SOURCE}/.secrets"
+SECRETS_FILE="${1:-${SUBSURFACE_SOURCE}/.secrets}"
 if [ ! -f "${SECRETS_FILE}" ]; then
 	echo "Error: ${SECRETS_FILE} not found."
 	echo "Create it with ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, and ANDROID_KEYSTORE_ALIAS."
@@ -92,6 +96,7 @@ ${CONTAINER_RT} run --rm \
 	-e HOST_GID="$(id -g)" \
 	-e KS_PASS="${ANDROID_KEYSTORE_PASSWORD}" \
 	-e KS_ALIAS="${ANDROID_KEYSTORE_ALIAS}" \
+	-e APP_ID="${ANDROID_APPLICATION_ID:-}" \
 	"${CONTAINER_IMAGE}" \
 	bash -c "
 		set -e
@@ -99,7 +104,11 @@ ${CONTAINER_RT} run --rm \
 
 		echo '=== Building AAB ==='
 		cd ${BUILDROOT}/build-android/android-build
-		./gradlew bundleRelease
+		GRADLE_PROPS=\"\"
+		if [ -n \"\${APP_ID}\" ]; then
+			GRADLE_PROPS=\"-PsubsurfaceApplicationId=\${APP_ID}\"
+		fi
+		./gradlew bundleRelease \${GRADLE_PROPS}
 
 		echo '=== Collecting artifacts ==='
 		APK=\$(find ${BUILDROOT}/build-android/android-build -name '*.apk' | head -1)
