@@ -62,7 +62,7 @@ else
 fi
 echo "Using container runtime: ${CONTAINER_RT}"
 
-CONTAINER_IMAGE="docker.io/subsurface/android-build:6.8.1"
+CONTAINER_IMAGE="docker.io/subsurface/android-build:6.10.0"
 
 # these come from the container environment
 SDK_VERSION="35.0.0"

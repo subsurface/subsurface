@@ -9,7 +9,7 @@
 # ENV SDK_VERSION=35.0.0
 # ENV ANDROID_PLATFORM=24
 # ENV ANDROID_BUILD_ABI=arm64-v8a
-# ENV QT_VERSION=6.8.3
+# ENV QT_VERSION=6.10.2
 # ENV BUILDROOT=/android
 # ENV ANDROID_SDK_ROOT=/opt/android-sdk
 
@@ -67,7 +67,8 @@ bash ./scripts/mobilecomponents.sh \
 	-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
 	-DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
 	-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
-	-DANDROID_PLATFORM=24
+	-DANDROID_PLATFORM=24 \
+	-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
 
 # build googlemaps geoservices plugin (shared library for Android)
 # Qt6 Android doesn't ship qmake mkspecs, so we use cmake

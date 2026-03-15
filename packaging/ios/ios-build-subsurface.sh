@@ -4,7 +4,7 @@
 # Build Subsurface-mobile for iOS using cmake + Qt's iOS toolchain
 #
 # Configurable environment variables:
-#   QT_VERSION    - Qt version (default: 6.10.1)
+#   QT_VERSION    - Qt version (default: 6.10.2)
 #   QT_ROOT       - Qt installation root (default: ~/Qt)
 #   ARCH          - target architecture (default: arm64)
 #   TARGET_SDK    - iphoneos or iphonesimulator (default: iphoneos)
@@ -19,7 +19,7 @@ popd
 PARENT_DIR="$(cd "${SUBSURFACE_SOURCE}/.."; pwd)"
 
 # configurable paths
-QT_VERSION="${QT_VERSION:-6.10.1}"
+QT_VERSION="${QT_VERSION:-6.10.2}"
 QT_ROOT="${QT_ROOT:-${HOME}/Qt}"
 QT_IOS_PATH="${QT_IOS_PATH:-${QT_ROOT}/${QT_VERSION}/ios}"
 QT_HOST_PATH="${QT_HOST_PATH:-${QT_ROOT}/${QT_VERSION}/macos}"
