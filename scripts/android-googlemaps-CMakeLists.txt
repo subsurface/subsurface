@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Core Network Location Positioning)
+find_package(Qt6 QUIET COMPONENTS LocationPrivate PositioningPrivate)
 
 set(PLUGIN_SOURCES
     qgeocodereplygooglemaps.cpp

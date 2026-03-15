@@ -21,7 +21,7 @@ The script accepts several environment variables to override defaults:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `QT_VERSION` | `6.10.1` | Qt version to use |
+| `QT_VERSION` | `6.10.2` | Qt version to use |
 | `QT_ROOT` | `~/Qt` | Qt installation root |
 | `ARCH` | `arm64` | Target architecture |
 | `TARGET_SDK` | `iphoneos` | `iphoneos` or `iphonesimulator` |

@@ -13,7 +13,7 @@ git submodule init
 git submodule update --recursive
 
 docker run --rm -v "$PWD:/android/src/subsurface" \
-    subsurface/android-build:6.8.1 \
+    subsurface/android-build:6.10.0 \
     bash -x /android/src/subsurface/scripts/docker/android-build-container/android-build-subsurface.sh
 ```
 
@@ -54,7 +54,7 @@ build:
 1. **base** -- Ubuntu 24.04 with NDK 27.2, SDK 35, JDK 17, cmake, ninja
 2. **lib-base** -- builds native libraries (OpenSSL, libxml2, libxslt,
    libzip, libgit2, SQLite) into `install-root-arm64-v8a`
-3. **final** -- copies the pre-built libraries and installs Qt 6.8.3
+3. **final** -- copies the pre-built libraries and installs Qt 6.10.2
    (Android arm64-v8a + host tools)
 
 The image is rebuilt via `.github/workflows/android-dockerimage.yml` and

@@ -39,7 +39,7 @@ All version pins and paths are defined as `ENV` variables at the top of the Dock
 | `SDK_VERSION` | Android build-tools version | `35.0.0` |
 | `ANDROID_PLATFORM` | Minimum API level to target | `24` |
 | `ANDROID_BUILD_ABI` | Target ABI | `arm64-v8a` |
-| `QT_VERSION` | Qt version | `6.8.3` |
+| `QT_VERSION` | Qt version | `6.10.2` |
 | `BUILDROOT` | Working directory inside container | `/android` |
 | `ANDROID_SDK_ROOT` | Android SDK install path | `/opt/android-sdk` |
 
