@@ -73,14 +73,16 @@ echo "${ANDROID_KEYSTORE_BASE64}" | base64 -d > "${KEYSTORE_FILE}"
 # persistent build directories on the host for incremental rebuilds
 BUILD_ANDROID="${SUBSURFACE_SOURCE}/../build-android"
 KIRIGAMI_BUILD="${SUBSURFACE_SOURCE}/../kirigami-build-android"
+GOOGLEMAPS_BUILD="${SUBSURFACE_SOURCE}/../googlemaps-build-android"
 OUTPUT_DIR="${SUBSURFACE_SOURCE}/output/android"
-mkdir -p "${BUILD_ANDROID}" "${KIRIGAMI_BUILD}" "${OUTPUT_DIR}"
+mkdir -p "${BUILD_ANDROID}" "${KIRIGAMI_BUILD}" "${GOOGLEMAPS_BUILD}" "${OUTPUT_DIR}"
 
 # build, package, and sign everything in a single container
 ${CONTAINER_RT} run --rm \
 	-v "${SUBSURFACE_SOURCE}:${BUILDROOT}/src/subsurface" \
 	-v "${BUILD_ANDROID}:${BUILDROOT}/build-android" \
 	-v "${KIRIGAMI_BUILD}:${BUILDROOT}/src/kirigami-build" \
+	-v "${GOOGLEMAPS_BUILD}:${BUILDROOT}/src/googlemaps-build" \
 	-v "${OUTPUT_DIR}:${BUILDROOT}/output" \
 	-v "${KEYSTORE_FILE}:/tmp/keystore:ro" \
 	-e BUILDNR="${BUILDNR}" \
