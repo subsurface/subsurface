@@ -81,9 +81,9 @@ git checkout qt6-upstream --quiet 2>/dev/null || git switch qt6-upstream --quiet
 if [ ! -f CMakeLists.txt ]; then
 	cp "${SUBSURFACE_SOURCE}/scripts/android-googlemaps-CMakeLists.txt" CMakeLists.txt
 fi
-mkdir -p android-build
-cd android-build
-cmake -G Ninja .. \
+mkdir -p "${BUILDROOT}/src/googlemaps-build"
+cd "${BUILDROOT}/src/googlemaps-build"
+cmake -G Ninja ../googlemaps \
 	-DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
 	-DQT_HOST_PATH="${QT_HOST_PATH}" \
 	-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
