@@ -9,12 +9,15 @@
 #include <QRegularExpression>
 #include <QElapsedTimer>
 #include <QCoreApplication>
+#include <QSet>
 
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
 namespace {
 	QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
+	QSet<QString> btMessages;
 }
+
 BTDiscovery *BTDiscovery::m_instance = NULL;
 
 struct modelPattern {
@@ -196,6 +199,14 @@ bool matchesKnownDiveComputerNames(QString btName)
 	return getDeviceType(btName) != nullptr;
 }
 
+static bool dedupBtMessages(const QString &msg)
+{
+	if (btMessages.contains(msg))
+		return false;
+	btMessages.insert(msg);
+	return true;
+}
+
 BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
 	m_showNonDiveComputers(false),
 	discoveryAgent(nullptr)
@@ -261,8 +272,11 @@ void BTDiscovery::BTDiscoveryReDiscover()
 #else
 		report_info("starting BT/BLE discovery");
 		discoveryAgent->start();
-		for (int i = 0; i < btPairedDevices.length(); i++)
-			report_info("Paired = %s %s", qPrintable( btPairedDevices[i].name), qPrintable(btPairedDevices[i].address));
+		if (verbose)
+			for (int i = 0; i < btPairedDevices.length(); i++)
+				report_info("Paired = %s %s",
+					qPrintable(btPairedDevices[i].name),
+					qPrintable(btPairedDevices[i].address));
 #endif
 
 #if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
@@ -275,6 +289,7 @@ void BTDiscovery::BTDiscoveryReDiscover()
 		report_info("localBtDevice isn't valid or not connectable");
 		m_btValid = false;
 	}
+	btMessages.clear(); // reset our dedup cache
 }
 
 BTDiscovery::~BTDiscovery()
@@ -376,7 +391,8 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device, bool from
 			newDevice += " ";
 		connectionListModel.addAddress(newDevice + device.address);
 	}
-	report_info("%s not recognized as dive computer", qPrintable(msg));
+	if (dedupBtMessages(msg))
+		report_info("%s not recognized as dive computer", qPrintable(msg));
 }
 
 QList<BTDiscovery::btVendorProduct> BTDiscovery::getBtDcs()
