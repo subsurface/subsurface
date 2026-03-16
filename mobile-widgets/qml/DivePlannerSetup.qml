@@ -9,6 +9,7 @@ import org.kde.kirigami as Kirigami
 TemplatePage {
 	title: qsTr("Dive planner setup")
 	id: divePlannerSetupWindow
+	bottomPadding: Kirigami.Units.gridUnit * 4
 
 	property string speedUnit: (Backend.length === Enums.METERS) ? qsTr("m/min") : qsTr("ft/min")
 	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr("L/min") : qsTr("cuft/min")

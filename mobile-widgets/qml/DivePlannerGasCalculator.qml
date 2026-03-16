@@ -9,6 +9,7 @@ import org.kde.kirigami as Kirigami
 TemplatePage {
 	id: gasCalculatorPage
 	title: qsTr("Gas Calculator")
+	bottomPadding: Kirigami.Units.gridUnit * 4
 
 	ListModel {
 		id: resultsModel

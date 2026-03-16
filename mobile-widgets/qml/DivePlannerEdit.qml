@@ -8,6 +8,7 @@ import org.kde.kirigami as Kirigami
 TemplatePage {
 	id: divePlannerEditWindow
 	title: qsTr("New Dive Plan")
+	bottomPadding: Kirigami.Units.gridUnit * 4
 
 	property string pressureUnit: (Backend.pressure === Enums.BAR) ? qsTr("bar") : qsTr("psi")
 	property string depthUnit: (Backend.length === Enums.METERS) ? qsTr("m") : qsTr("ft")
