@@ -209,7 +209,7 @@ TemplatePage {
 				Layout.fillWidth: true
 				model: [ qsTr("Open circuit"), qsTr("CCR"), qsTr("pSCR") ]
 				currentIndex: 0 // Default to OC
-				onCurrentIndexChanged: {
+				onActivated: {
 					generatePlan();
 				}
 			}
@@ -232,7 +232,7 @@ TemplatePage {
 				Layout.fillWidth: true
 				model: [ qsTr("Sea Water"), qsTr("Fresh Water"), qsTr("EN13319") ]
 				currentIndex: 0 // Default to Sea water
-				onCurrentIndexChanged: {
+				onActivated: {
 					generatePlan();
 				}
 			}
@@ -489,7 +489,7 @@ TemplatePage {
 					Layout.fillWidth: true
 					model: gasNumberModel
 					currentIndex: gas
-					onCurrentIndexChanged: {
+					onActivated: {
 						segmentListModel.setProperty(index, "gas", currentIndex)
 						generatePlan();
 					}
@@ -525,7 +525,7 @@ TemplatePage {
 					// Skip CCR (value === 1) as it's not applicable for pSCR mode
 					currentIndex: divemode === 2 ? 1 : divemode
 					visible: overallDivemode.currentIndex == 2
-					onCurrentIndexChanged: {
+					onActivated: {
 						segmentListModel.setProperty(index, "divemode", currentIndex === 1 ? 2 : currentIndex);
 						generatePlan();
 					}
