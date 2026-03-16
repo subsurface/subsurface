@@ -140,11 +140,5 @@ cmake -G Ninja "${BUILDROOT}/src/subsurface" \
 	-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
 
 
-# patch androiddeployqt to not emit enableUncompressedNativeLibs
-# which was removed in AGP 8.1 (same length replacement keeps binary valid)
-sed -i 's/enableUncompressedNativeLibs/disableUncompressedNativeLib/g' \
-	${QT_HOST_PATH}/bin/androiddeployqt \
-	${QT_HOST_PATH}/bin/androiddeployqt6
-
 cmake --build .
 
