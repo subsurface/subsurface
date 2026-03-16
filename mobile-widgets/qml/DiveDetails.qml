@@ -499,6 +499,10 @@ Kirigami.Page {
 				property: "contentX"
 				duration: 250
 				easing.type: Easing.OutCubic
+				onRunningChanged: {
+					if (!running)
+						diveDetailsListView.swipeInProgress = false
+				}
 			}
 
 			Connections {
@@ -549,7 +553,6 @@ Kirigami.Page {
 					snapAnimation.start()
 					diveDetailsListView.currentIndex = targetIndex
 					manager.selectSwipeRow(targetIndex)
-					diveDetailsListView.swipeInProgress = false
 				}
 			}
 
