@@ -9,21 +9,14 @@
 #include <QProcess>
 #endif
 
-// This is a global instead of a function-local variable on purpose.
-// We don't want this to be generated in a different thread context if
-// VideoFrameExtractor::instance() is called from a worker thread.
-// On iOS, constructing a QObject before QCoreApplication exists causes
-// a crash, so we use a function-local static there instead (video
-// thumbnail extraction is not supported on iOS anyway).
-#ifndef Q_OS_IOS
-static VideoFrameExtractor frameExtractor;
-#endif
+// AI-generated (Claude)
+// Use Q_APPLICATION_STATIC for the same reasons as ImageDownloader:
+// lazy init, correct thread affinity, and no pre-QCoreApplication crash.
+Q_APPLICATION_STATIC(VideoFrameExtractor, s_videoFrameExtractor)
+
 VideoFrameExtractor *VideoFrameExtractor::instance()
 {
-#ifdef Q_OS_IOS
-	static VideoFrameExtractor frameExtractor;
-#endif
-	return &frameExtractor;
+	return s_videoFrameExtractor();
 }
 
 VideoFrameExtractor::VideoFrameExtractor()
