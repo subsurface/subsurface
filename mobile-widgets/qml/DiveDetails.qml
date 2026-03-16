@@ -483,6 +483,7 @@ Kirigami.Page {
 					contentHeight: diveDetails.height
 					flickableDirection: Flickable.VerticalFlick
 					boundsBehavior: Flickable.StopAtBounds
+					bottomMargin: Kirigami.Units.gridUnit * 4
 
 					DiveDetailsView {
 						id: diveDetails
@@ -568,6 +569,7 @@ Kirigami.Page {
 		anchors.fill: parent
 		leftMargin: Kirigami.Units.smallSpacing
 		rightMargin: Kirigami.Units.smallSpacing
+		bottomMargin: Kirigami.Units.gridUnit * 4
 		contentHeight: detailsEdit.height
 		// start invisible and scaled down, to get the transition
 		// off to the right start

@@ -109,6 +109,7 @@ Kirigami.Page {
 	Flickable {
 		id: tripEditFlickable
 		anchors.fill: parent
+		bottomMargin: Kirigami.Units.gridUnit * 4
 		GridLayout {
 			columns: 2
 			width: tripEditFlickable.width
