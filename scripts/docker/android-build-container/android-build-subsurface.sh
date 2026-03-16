@@ -38,8 +38,18 @@ ANDROID_NDK_ROOT="${ANDROID_SDK_ROOT}/ndk/${NDK_VERSION}"
 export TOOLCHAIN="${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64"
 
 export PATH="${TOOLCHAIN}/bin:${PATH}"
-export CC="${TOOLCHAIN}/bin/aarch64-linux-android${ANDROID_PLATFORM}-clang"
-export CXX="${TOOLCHAIN}/bin/aarch64-linux-android${ANDROID_PLATFORM}-clang++"
+
+# derive compiler triple from ANDROID_BUILD_ABI
+case "${ANDROID_BUILD_ABI}" in
+	arm64-v8a)   TRIPLE="aarch64-linux-android" ;;
+	armeabi-v7a) TRIPLE="armv7a-linux-androideabi" ;;
+	x86_64)      TRIPLE="x86_64-linux-android" ;;
+	x86)         TRIPLE="i686-linux-android" ;;
+	*) echo "Unsupported ABI: ${ANDROID_BUILD_ABI}"; exit 1 ;;
+esac
+
+export CC="${TOOLCHAIN}/bin/${TRIPLE}${ANDROID_PLATFORM}-clang"
+export CXX="${TOOLCHAIN}/bin/${TRIPLE}${ANDROID_PLATFORM}-clang++"
 export AR="${TOOLCHAIN}/bin/llvm-ar"
 export RANLIB="${TOOLCHAIN}/bin/llvm-ranlib"
 export STRIP="${TOOLCHAIN}/bin/llvm-strip"
@@ -55,7 +65,7 @@ PREFIX="${ANDROID_INSTALL_PREFIX}"
 mkdir -p "${PREFIX}"/{include,lib/pkgconfig}
 export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
 
-export TARGET="aarch64-linux-android"
+export TARGET="${TRIPLE}"
 
 # first set up the 3rd party components
 cd "${SUBSURFACE_SOURCE}"
@@ -67,7 +77,7 @@ bash ./scripts/mobilecomponents.sh \
 	-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
 	-DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
 	-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
-	-DANDROID_PLATFORM=24 \
+	-DANDROID_PLATFORM="${ANDROID_PLATFORM}" \
 	-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
 
 # build googlemaps geoservices plugin (shared library for Android)
@@ -90,7 +100,7 @@ cmake -G Ninja ../googlemaps \
 	-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
 	-DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
 	-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
-	-DANDROID_PLATFORM=24 \
+	-DANDROID_PLATFORM="${ANDROID_PLATFORM}" \
 	-DCMAKE_INSTALL_PREFIX="${ANDROID_INSTALL_PREFIX}" \
 	-DCMAKE_BUILD_TYPE=Release
 cmake --build .
@@ -125,7 +135,7 @@ cmake -G Ninja "${BUILDROOT}/src/subsurface" \
 	-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
 	-DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
 	-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
-	-DANDROID_PLATFORM=24 \
+	-DANDROID_PLATFORM="${ANDROID_PLATFORM}" \
 	-DCMAKE_FIND_ROOT_PATH="${ANDROID_INSTALL_PREFIX}" \
 	-DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
 	-DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable \

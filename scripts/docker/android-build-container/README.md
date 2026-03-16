@@ -37,7 +37,7 @@ All version pins and paths are defined as `ENV` variables at the top of the Dock
 | `NDK_VERSION` | Android NDK version | `27.2.12479018` |
 | `SDK_LEVEL` | Android SDK platform level | `35` |
 | `SDK_VERSION` | Android build-tools version | `35.0.0` |
-| `ANDROID_PLATFORM` | Minimum API level to target | `24` |
+| `ANDROID_PLATFORM` | Minimum API level to target | `28` |
 | `ANDROID_BUILD_ABI` | Target ABI | `arm64-v8a` |
 | `QT_VERSION` | Qt version | `6.10.2` |
 | `BUILDROOT` | Working directory inside container | `/android` |

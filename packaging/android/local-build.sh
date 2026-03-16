@@ -64,7 +64,8 @@ echo "Using container runtime: ${CONTAINER_RT}"
 
 CONTAINER_IMAGE="docker.io/subsurface/android-build:6.10.0"
 
-# these come from the container environment
+# These must match the values in
+# scripts/docker/android-build-container/Dockerfile
 SDK_VERSION="35.0.0"
 ANDROID_SDK_ROOT="/opt/android-sdk"
 BUILDROOT="/android"
