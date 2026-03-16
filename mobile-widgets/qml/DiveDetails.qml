@@ -55,52 +55,50 @@ Kirigami.Page {
 	// AI-generated (Claude)
 	// Custom title delegate: breadcrumb-style "Dive list > Location" in single column mode,
 	// plain title otherwise (when both pages are visible side by side)
-	titleDelegate: Component {
-		Item {
-			property bool singleColumn: pageStack.columnView.columnResizeMode === Kirigami.ColumnView.SingleColumn
-			Layout.fillWidth: true
-			Layout.minimumWidth: 0
-			Layout.maximumWidth: implicitWidth
-			implicitWidth: breadcrumbRow.implicitWidth
-			implicitHeight: breadcrumbRow.implicitHeight
-			Row {
-				id: breadcrumbRow
-				anchors.fill: parent
-				spacing: Kirigami.Units.smallSpacing
-				Kirigami.Heading {
-					visible: singleColumn
-					text: qsTr("Dive list")
-					maximumLineCount: 1
-					elide: Text.ElideRight
-					textFormat: Text.PlainText
-					font: Kirigami.Theme.defaultFont
-					color: Kirigami.Theme.textColor
-					opacity: 0.6
-					verticalAlignment: Text.AlignVCenter
-					height: parent.height
-					MouseArea {
-						anchors.fill: parent
-						onClicked: pageStack.goBack()
-					}
+	titleDelegate: Item {
+		property bool singleColumn: pageStack.columnView.columnResizeMode === Kirigami.ColumnView.SingleColumn
+		Layout.fillWidth: true
+		Layout.minimumWidth: 0
+		Layout.maximumWidth: implicitWidth
+		implicitWidth: breadcrumbRow.implicitWidth
+		implicitHeight: breadcrumbRow.implicitHeight
+		Row {
+			id: breadcrumbRow
+			anchors.fill: parent
+			spacing: Kirigami.Units.smallSpacing
+			Kirigami.Heading {
+				visible: singleColumn
+				text: qsTr("Dive list")
+				maximumLineCount: 1
+				elide: Text.ElideRight
+				textFormat: Text.PlainText
+				font: Kirigami.Theme.defaultFont
+				color: Kirigami.Theme.textColor
+				opacity: 0.6
+				verticalAlignment: Text.AlignVCenter
+				height: parent.height
+				MouseArea {
+					anchors.fill: parent
+					onClicked: pageStack.goBack()
 				}
-				Kirigami.Icon {
-					visible: singleColumn
-					source: "go-next-symbolic"
-					implicitHeight: Kirigami.Units.iconSizes.small
-					implicitWidth: Kirigami.Units.iconSizes.small
-					isMask: true
-					color: Kirigami.Theme.textColor
-					anchors.verticalCenter: parent.verticalCenter
-				}
-				Kirigami.Heading {
-					text: diveDetailsPage.title
-					maximumLineCount: 1
-					elide: Text.ElideRight
-					textFormat: Text.PlainText
-					color: Kirigami.Theme.textColor
-					verticalAlignment: Text.AlignVCenter
-					height: parent.height
-				}
+			}
+			Kirigami.Icon {
+				visible: singleColumn
+				source: "go-next-symbolic"
+				implicitHeight: Kirigami.Units.iconSizes.small
+				implicitWidth: Kirigami.Units.iconSizes.small
+				isMask: true
+				color: Kirigami.Theme.textColor
+				anchors.verticalCenter: parent.verticalCenter
+			}
+			Kirigami.Heading {
+				text: diveDetailsPage.title
+				maximumLineCount: 1
+				elide: Text.ElideRight
+				textFormat: Text.PlainText
+				color: Kirigami.Theme.textColor
+				verticalAlignment: Text.AlignVCenter
+				height: parent.height
 			}
 		}
 	}
@@ -169,7 +167,7 @@ Kirigami.Page {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, undoAction, redoAction ]
+	property var contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, undoAction, redoAction ]
 	property var contextualActions: contextactions
 
 	states: [

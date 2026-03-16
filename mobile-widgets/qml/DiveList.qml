@@ -46,7 +46,7 @@ Kirigami.ScrollablePage {
 		id: diveOrTripDelegate
 		Kirigami.SwipeListItem {
 			// this allows us to access properties of the currentItem from outside
-			property variant modelData: model
+			property var modelData: model
 			property var view: ListView.view
 			property bool selected: !isTrip && current // don't use 'checked' for this as that confuses QML as it tries
 			property bool invalid: isInvalid === true
@@ -341,7 +341,7 @@ Kirigami.ScrollablePage {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, mergeWithDiveAboveAction, mergeWithDiveBelowAction, toggleInvalidAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
+	property var contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, mergeWithDiveAboveAction, mergeWithDiveBelowAction, toggleInvalidAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
 	property var contextualActions: (Backend.cloud_verification_status === Enums.CS_VERIFIED ||
 	                                  Backend.cloud_verification_status === Enums.CS_NOCLOUD)
 	                                 ? contextactions : []
