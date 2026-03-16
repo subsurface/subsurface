@@ -16,7 +16,7 @@ TemplatePage {
 		id: saveAsDialog
 		currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
 		onAccepted: {
-			manager.exportToFile(selectedExport, fileUrls, anonymize.checked)
+			manager.exportToFile(selectedExport, selectedFolder, anonymize.checked)
 			pageStack.pop()
 			close()
 		}
