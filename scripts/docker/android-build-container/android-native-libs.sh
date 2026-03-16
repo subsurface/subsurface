@@ -17,8 +17,18 @@ export ANDROID_NDK_ROOT="${ANDROID_HOME}/ndk/${NDK_VERSION}"
 export TOOLCHAIN="${ANDROID_NDK_ROOT}/toolchains/llvm/prebuilt/linux-x86_64"
 
 export PATH="${TOOLCHAIN}/bin:${PATH}"
-export CC="${TOOLCHAIN}/bin/aarch64-linux-android${ANDROID_PLATFORM}-clang"
-export CXX="${TOOLCHAIN}/bin/aarch64-linux-android${ANDROID_PLATFORM}-clang++"
+
+# derive compiler triple and OpenSSL target from ANDROID_BUILD_ABI
+case "${ANDROID_BUILD_ABI}" in
+	arm64-v8a)   TRIPLE="aarch64-linux-android"; OPENSSL_TARGET="android-arm64" ;;
+	armeabi-v7a) TRIPLE="armv7a-linux-androideabi"; OPENSSL_TARGET="android-arm" ;;
+	x86_64)      TRIPLE="x86_64-linux-android"; OPENSSL_TARGET="android-x86_64" ;;
+	x86)         TRIPLE="i686-linux-android"; OPENSSL_TARGET="android-x86" ;;
+	*) echo "Unsupported ABI: ${ANDROID_BUILD_ABI}"; exit 1 ;;
+esac
+
+export CC="${TOOLCHAIN}/bin/${TRIPLE}${ANDROID_PLATFORM}-clang"
+export CXX="${TOOLCHAIN}/bin/${TRIPLE}${ANDROID_PLATFORM}-clang++"
 export AR="${TOOLCHAIN}/bin/llvm-ar"
 export RANLIB="${TOOLCHAIN}/bin/llvm-ranlib"
 export STRIP="${TOOLCHAIN}/bin/llvm-strip"
@@ -29,7 +39,7 @@ PREFIX="${ANDROID_INSTALL_PREFIX}"
 mkdir -p "${PREFIX}"/{include,lib/pkgconfig}
 export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
 
-export TARGET="aarch64-linux-android"
+export TARGET="${TRIPLE}"
 
 # show the environment in the log
 env
@@ -56,7 +66,7 @@ cd "${BUILDROOT}"
 mkdir -p openssl-build
 cp -r openssl/* openssl-build/
 cd openssl-build
-./Configure android-arm64 no-ssl3 no-comp no-engine no-asm no-ui-console \
+./Configure "${OPENSSL_TARGET}" no-ssl3 no-comp no-engine no-ui-console \
   --prefix="${PREFIX}" -fPIC -Wl,-z,max-page-size=16384
 make -j"$(nproc)" build_libs
 cp -RL include/openssl "${PREFIX}"/include/openssl
