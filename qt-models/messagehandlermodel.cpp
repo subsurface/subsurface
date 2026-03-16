@@ -37,7 +37,11 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 			return;
 	}
 	// filter extremely noisy and unhelpful messages
-	if (message.contains("Updating RSSI for") || (message.contains(QRegularExpression(".*kirigami.*onFoo properties in Connections"))))
+	if (message.contains("Updating RSSI for") ||
+	    message.contains("Updating manufacturer data for") ||
+	    message.contains("Almost Duplicate") ||
+	    (message.contains("Device found:") && message.contains("isLeScanResult")) ||
+	    (message.contains("kirigami") && message.contains("onFoo properties in Connections")))
 		return;
 
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
