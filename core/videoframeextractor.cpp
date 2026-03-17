@@ -12,12 +12,20 @@
 // AI-generated (Claude)
 // Use Q_APPLICATION_STATIC for the same reasons as ImageDownloader:
 // lazy init, correct thread affinity, and no pre-QCoreApplication crash.
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
 Q_APPLICATION_STATIC(VideoFrameExtractor, s_videoFrameExtractor)
 
 VideoFrameExtractor *VideoFrameExtractor::instance()
 {
 	return s_videoFrameExtractor();
 }
+#else
+static VideoFrameExtractor frameExtractor;
+VideoFrameExtractor *VideoFrameExtractor::instance()
+{
+	return &frameExtractor;
+}
+#endif
 
 VideoFrameExtractor::VideoFrameExtractor()
 {

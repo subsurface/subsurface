@@ -28,12 +28,20 @@
 //   instance() is first called from a worker thread)
 // - Thread-safe construction
 // - Automatic cleanup when QCoreApplication is destroyed
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
 Q_APPLICATION_STATIC(ImageDownloader, s_imageDownloader)
 
 ImageDownloader *ImageDownloader::instance()
 {
 	return s_imageDownloader();
 }
+#else
+ImageDownloader *ImageDownloader::instance()
+{
+	static ImageDownloader self;
+	return &self;
+}
+#endif
 
 ImageDownloader::ImageDownloader()
 {
