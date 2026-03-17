@@ -744,6 +744,20 @@ int sync_with_remote(struct git_info *info)
 		git_local_only = true;
 		error = 0;
 	} else {
+		// Free the fetch remote and get a fresh one for the push.
+		// libgit2 reuses the HTTP connection across fetch and push; if the
+		// server closes the keep-alive connection (Apache's KeepAliveTimeout)
+		// between the two operations, libgit2 writes the push request into a
+		// half-closed socket and gets RST back, reported as "unexpected EOF".
+		// A fresh remote object forces a new TCP connection for the push.
+		git_remote_free(origin);
+		origin = nullptr;
+		if (git_remote_lookup(&origin, info->repo, "origin")) {
+			report_info("git storage: repo %s origin re-lookup failed (%s)", info->url.c_str(),
+				    giterr_last() ? giterr_last()->message : "(unspecified)");
+			git_storage_update_progress(translate("gettextFromC", "Done syncing with cloud storage"));
+			return report_error("Repository '%s' origin re-lookup failed", info->url.c_str());
+		}
 		error = check_remote_status(info, origin);
 	}
 	git_remote_free(origin);
