@@ -412,7 +412,7 @@ fi
 if [ -z "$BUILD_PREFIX" ] ; then
 	LIBDC_BUILDDIR="$SRC/libdivecomputer-build"
 else
-	LIBDC_BUILDDIR="${BUILD_PREFIX}libdivecomputer/build"
+	LIBDC_BUILDDIR="${BUILD_PREFIX}libdivecomputer-build"
 fi
 mkdir -p "$LIBDC_BUILDDIR"
 cd "$LIBDC_BUILDDIR"
@@ -467,9 +467,15 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 
 		git switch qt6-upstream
 	fi
-	mkdir -p build
-	cd build
-	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" ../googlemaps.pro
+
+	if [ -z "$BUILD_PREFIX" ] ; then
+		GOOGLEMAPS_BUILDDIR="$SRC/googlemaps-build"
+	else
+		GOOGLEMAPS_BUILDDIR="${BUILD_PREFIX}googlemaps-build"
+	fi
+	mkdir -p "$GOOGLEMAPS_BUILDDIR"
+	cd "$GOOGLEMAPS_BUILDDIR"
+	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" "$SRC/googlemaps/googlemaps.pro"
 	make
 	make install
 	popd
