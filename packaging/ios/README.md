@@ -4,7 +4,8 @@
 
 - macOS with Xcode and the iOS SDK installed
 - Qt 6.8 or later (installed via the Qt online installer, with both the `ios`
-  and `macos` kits)
+  and `macos` kits and the following additional libraries: Qt 5 Compatibility module,
+  Qt Connectivity, Qt Location (TP), Qt Positioning, and Qt Shader Tools)
 - cmake, autoconf, automake, libtool, pkg-config (e.g. from Homebrew)
 
 ## Build

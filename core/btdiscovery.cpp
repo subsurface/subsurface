@@ -402,7 +402,7 @@ bool BTDiscovery::btAvailable() const
 
 }
 
-// Android: As Qt is not able to pull the pairing data from a device, i
+// Android: As Qt is not able to pull the pairing data from a device,
 // a lengthy discovery process is needed to see what devices are paired. On
 // https://forum.qt.io/topic/46075/solved-bluetooth-list-paired-devices
 // user s.frings74 does, however, present a solution to this using JNI.

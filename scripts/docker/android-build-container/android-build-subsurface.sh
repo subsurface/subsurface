@@ -90,7 +90,7 @@ git fetch --quiet
 git checkout qt6-upstream --quiet 2>/dev/null || git switch qt6-upstream --quiet
 # use our CMakeLists.txt if the repo doesn't have one
 if [ ! -f CMakeLists.txt ]; then
-	cp "${SUBSURFACE_SOURCE}/scripts/android-googlemaps-CMakeLists.txt" CMakeLists.txt
+	cp "${SUBSURFACE_SOURCE}/scripts/docker/android-build-container/android-googlemaps-CMakeLists.txt" CMakeLists.txt
 fi
 mkdir -p "${BUILDROOT}/src/googlemaps-build"
 cd "${BUILDROOT}/src/googlemaps-build"
