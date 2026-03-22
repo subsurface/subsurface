@@ -11,28 +11,26 @@ git clone https://github.com/subsurface/subsurface
 cd subsurface
 git submodule init
 git submodule update --recursive
-
-docker run --rm -v "$PWD:/android/src/subsurface" \
-    subsurface/android-build:6.10.0 \
-    bash -x /android/src/subsurface/scripts/docker/android-build-container/android-build-subsurface.sh
 ```
 
-You need to export `BUILDNR`, `VERSION`, and `VERSION_4` before the build
-(the CI workflow computes these from the git history).
+Now use `android-build-subsurface.sh` inside the container. Mount the Subsurface source tree as a volume:
 
-The build produces `libsubsurface-mobile.so` and the Gradle project under
-`/android/src/subsurface/build-android/android-build/`. To create an APK:
-
-```sh
-cd build-android/android-build
-./gradlew assembleDebug
+```bash
+docker run --rm \
+    -v /path/to/subsurface:/android/src/subsurface \
+    -e BUILDNR=1234 \
+    -e VERSION="6.0.5000" \
+    -e VERSION_4="6.0.5000.3" \
+    android-build-container \
+    bash /android/src/subsurface/scripts/docker/android-build-container/android-build-subsurface.sh
 ```
 
-The resulting APK is in `build/outputs/apk/debug/` and can be installed with:
-
-```sh
-adb install build/outputs/apk/debug/android-build-debug.apk
+After a successful build, the APK is at:
 ```
+/android/build-android/android-build/build/outputs/apk/release/android-build-release-unsigned.apk
+```
+
+To extract it from the container, either mount an output directory or use `docker cp`.
 
 Note: since you do not have the release signing key, you need to uninstall
 any official Subsurface-mobile build before installing your own, and vice

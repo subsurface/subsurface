@@ -22,7 +22,7 @@ ComboBox {
 
 	// measure popup item widths to auto-size the dropdown
 	TextMetrics {
-		id: _popupMetrics
+		id: popupMetrics
 		font.pointSize: subsurfaceTheme.smallPointSize
 	}
 
@@ -95,16 +95,16 @@ ComboBox {
 
 	popup: Popup {
 		y: cb.height - 1
-		width: _calculatedWidth
-		property real _calculatedWidth: cb.width
+		width: calculatedWidth
+		property real calculatedWidth: cb.width
 		onAboutToShow: {
 			var maxW = cb.width;
 			for (var i = 0; i < cb.count; i++) {
-				_popupMetrics.text = cb.textAt(i);
-				var w = Math.ceil(_popupMetrics.advanceWidth);
+				popupMetrics.text = cb.textAt(i);
+				var w = Math.ceil(popupMetrics.advanceWidth);
 				if (w > maxW) maxW = w;
 			}
-			_calculatedWidth = maxW + Kirigami.Units.gridUnit * 3;
+			calculatedWidth = maxW + Kirigami.Units.gridUnit * 3;
 		}
 		implicitHeight: Math.min(contentItem.implicitHeight + 2, cb.Window.height * 0.4)
 		padding: 1

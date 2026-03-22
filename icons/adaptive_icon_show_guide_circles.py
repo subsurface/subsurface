@@ -1,5 +1,10 @@
 """create a visual overlay of the adaptive icon with the guide circles"""
 
+# truly a tool only useful if either (a) we ever change the Subsurface-mobile icon
+# or (more likely) (b) the next time Google makes random changes to how icons are shown
+# on the launcher screen. It basically helps you make choices how to mangle our icon so
+# that it doesn't look ridiculous on the Android launcher screen
+
 import re
 import sys
 import subprocess

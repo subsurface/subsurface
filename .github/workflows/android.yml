@@ -73,7 +73,7 @@ jobs:
         APK=$(find build-android/android-build -name "*.apk" | head -1)
         cp "${APK}" "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.apk"
 
-    - name: build AAB
+    - name: build AAB  # just to validate that that build isn't broken
       env:
         VERSION: ${{ steps.version_number.outputs.version }}
       run: |
@@ -103,17 +103,6 @@ jobs:
         mv "${SIGNED}" "${APK}"
         rm -f "${ALIGNED}"
 
-    - name: sign AAB
-      if: github.event_name == 'push'
-      env:
-        VERSION: ${{ steps.version_number.outputs.version }}
-      run: |
-        jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
-          -keystore "${KEYSTORE_FILE}" \
-          -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
-          "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.aab" \
-          "${{ secrets.ANDROID_KEYSTORE_ALIAS }}"
-
     - name: delete the keystore
       if: github.event_name == 'push'
       run: |
@@ -126,7 +115,6 @@ jobs:
         name: Subsurface-Android-${{ steps.version_number.outputs.version }}
         path: |
           Subsurface-mobile-*.apk
-          Subsurface-mobile-*.aab
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
@@ -141,7 +129,6 @@ jobs:
         fail_on_unmatched_files: true
         files: |
           Subsurface-mobile-${{ steps.version_number.outputs.version }}.apk
-          Subsurface-mobile-${{ steps.version_number.outputs.version }}.aab
 
   notify-release-coordinator:
     if: always()
