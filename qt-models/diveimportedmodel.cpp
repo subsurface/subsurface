@@ -62,7 +62,7 @@ QVariant DiveImportedModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::DisplayRole) {
 		switch (column) {
 		case 0:
-			return QVariant(get_short_dive_date_string(d.when));
+			return QVariant(get_short_dive_date_string(d.get_time_local()));
 		case 1:
 			return QVariant(get_dive_duration_string(d.duration.seconds, tr("h"), tr("min")));
 		case 2:

@@ -194,7 +194,7 @@ bool ScatterSeries::hover(QPointF pos)
 			if (!text.empty())
 				text.push_back(QString(" ")); // Argh. Empty strings are filtered away.
 			text.push_back(StatsTranslations::tr("Dive #%1").arg(d->number));
-			text.push_back(get_dive_date_string(d->when));
+			text.push_back(get_dive_datetime_string(d->get_time()));
 			text.push_back(dataInfo(varX, d));
 			text.push_back(dataInfo(varY, d));
 			if (++shown >= show && shown < (int)highlighted.size()) {
