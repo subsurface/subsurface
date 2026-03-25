@@ -1,24 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.0
-import QtQuick.Controls.Material 2.1
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.Material
+import QtQuick.Window
+import QtQuick.Dialogs
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
-import QtGraphicalEffects 1.0
-import QtQuick.Templates 2.0 as QtQuickTemplates
+import org.kde.kirigami as Kirigami
+import QtQuick.Templates as QtQuickTemplates
 
 Kirigami.ApplicationWindow {
 	id: rootItem
 	title: qsTr("Subsurface-mobile")
-	reachableModeEnabled: false // while it's a good idea, it seems to confuse more than help
 	wideScreen: false // workaround for probably Kirigami bug. See commits.
-
-	// ensure we get all information on screen rotation
-	Screen.orientationUpdateMask: Qt.LandscapeOrientation | Qt.PortraitOrientation | Qt.InvertedLandscapeOrientation | Qt.InvertedPortraitOrientation
 
 	// the documentation claims that the ApplicationWindow should pick up the font set on
 	// the C++ side. But as a matter of fact, it doesn't, unless you add this line:
@@ -30,13 +24,21 @@ Kirigami.ApplicationWindow {
 	Kirigami.Theme.colorSet: Kirigami.Theme.Button
 	Kirigami.Theme.backgroundColor: subsurfaceTheme.backgroundColor
 	Kirigami.Theme.textColor: subsurfaceTheme.textColor
+	Kirigami.Theme.highlightColor: subsurfaceTheme.darkerPrimaryColor
+	Kirigami.Theme.highlightedTextColor: subsurfaceTheme.primaryTextColor
 
 	// next setup the tab bar on top
-	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.Breadcrumb
-	pageStack.globalToolBar.showNavigationButtons: (Kirigami.ApplicationHeaderStyle.ShowBackButton | Kirigami.ApplicationHeaderStyle.ShowForwardButton)
-	pageStack.globalToolBar.minimumHeight: 0
-	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
-	pageStack.globalToolBar.maximumHeight: Kirigami.Units.gridUnit * 2
+	pageStack.globalToolBar.style: Kirigami.ApplicationHeaderStyle.ToolBar
+	pageStack.globalToolBar.showNavigationButtons: Kirigami.ApplicationHeaderStyle.NoNavigationButtons
+	pageStack.globalToolBar.canContainHandles: true
+	pageStack.globalToolBar.minimumHeight: Kirigami.Units.gridUnit * 1.6
+	pageStack.globalToolBar.preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2.5 : 2))
+	pageStack.globalToolBar.maximumHeight: pageStack.globalToolBar.preferredHeight
+
+	// expose header colors so Kirigami's AbstractApplicationHeader can read them
+	// (on iOS, items with inherit:false get system palette colors instead of app theme)
+	property color headerBackgroundColor: subsurfaceTheme.primaryColor
+	property color headerTextColor: subsurfaceTheme.primaryTextColor
 
 	property alias notificationText: manager.notificationText
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
@@ -48,6 +50,17 @@ Kirigami.ApplicationWindow {
 	// signal that the profile (and possibly other code) listens to so they
 	// can redraw if settings are changed
 	signal settingsChanged()
+
+	// Force Kirigami's Material theme sync after QML initialization.
+	// The ThemeInterface constructor fires color signals before QML is loaded,
+	// so the Material style onSync handler never sees the initial values.
+	// Use Qt.callLater so the re-trigger runs after all components (including
+	// the toolbar header) have finished construction and are listening.
+	Component.onCompleted: {
+		Qt.callLater(function() {
+			subsurfaceTheme.currentTheme = subsurfaceTheme.currentTheme
+		})
+	}
 
 	onNotificationTextChanged: {
 		// once the app is fully initialized and the UI is running, we use passive
@@ -104,6 +117,21 @@ Kirigami.ApplicationWindow {
 
 	function scrollToTop() {
 		diveList.scrollToTop()
+	}
+
+	// Navigate to a page from the global drawer menu. Cleans the page
+	// stack back to the dive list first so the target page always opens
+	// from a known-good state.
+	function showPageFromDrawer(page) {
+		detailsWindow.endEditMode()
+		for (var i = pageStack.depth; i > 1; i--)
+			pageStack.pop()
+		if (pageStack.depth === 0 || pageStack.currentItem !== diveList) {
+			pageStack.clear()
+			pageStack.push(diveList)
+		}
+		if (page !== diveList)
+			showPage(page)
 	}
 
 	function showPage(page) {
@@ -184,12 +212,51 @@ Kirigami.ApplicationWindow {
 	contextDrawer: Kirigami.ContextDrawer {
 		id: contextDrawer
 		closePolicy: QtQuickTemplates.Popup.CloseOnPressOutside
+		enabled: visibleActions().length > 0
+		handleClosedIcon.name: ""
+		handleClosedIcon.source: "qrc:/icons/overflow-menu.svg"
+		handleOpenIcon.name: "window-close-symbolic"
+		handleOpenIcon.source: ""
+		actions: pageStack.currentItem?.contextualActions ?? []
+		Kirigami.Theme.textColor: subsurfaceTheme.textColor
+		Kirigami.Theme.backgroundColor: subsurfaceTheme.drawerColor
+		Kirigami.Theme.highlightColor: subsurfaceTheme.darkerPrimaryColor
+		Kirigami.Theme.highlightedTextColor: subsurfaceTheme.primaryTextColor
+		background: Rectangle { color: subsurfaceTheme.drawerColor }
+		// Override theme on contentItem too - OverlayDrawer propagates colorSet
+		// to contentItem, creating a separate PlatformThemeData that gets iOS
+		// system palette colors instead of our app theme colors
+		Component.onCompleted: {
+			contentItem.Kirigami.Theme.textColor = Qt.binding(function() { return subsurfaceTheme.textColor; });
+			contentItem.Kirigami.Theme.backgroundColor = Qt.binding(function() { return subsurfaceTheme.drawerColor; });
+			contentItem.Kirigami.Theme.highlightColor = Qt.binding(function() { return subsurfaceTheme.darkerPrimaryColor; });
+			contentItem.Kirigami.Theme.highlightedTextColor = Qt.binding(function() { return subsurfaceTheme.primaryTextColor; });
+		}
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
 		id: globalDrawer
+		handleVisible: true
+		handleClosedIcon.name: ""
+		handleClosedIcon.source: "qrc:/icons/application-menu.svg"
+		handleOpenIcon.name: "window-close-symbolic"
+		handleOpenIcon.source: ""
 		height: rootItem.height
 		rightPadding: 0
+		Kirigami.Theme.textColor: subsurfaceTheme.textColor
+		Kirigami.Theme.backgroundColor: subsurfaceTheme.drawerColor
+		Kirigami.Theme.highlightColor: subsurfaceTheme.darkerPrimaryColor
+		Kirigami.Theme.highlightedTextColor: subsurfaceTheme.primaryTextColor
+		background: Rectangle { color: subsurfaceTheme.drawerColor }
+		// Override theme on contentItem too - OverlayDrawer propagates colorSet
+		// to contentItem, creating a separate PlatformThemeData that gets iOS
+		// system palette colors instead of our app theme colors
+		Component.onCompleted: {
+			contentItem.Kirigami.Theme.textColor = Qt.binding(function() { return subsurfaceTheme.textColor; });
+			contentItem.Kirigami.Theme.backgroundColor = Qt.binding(function() { return subsurfaceTheme.drawerColor; });
+			contentItem.Kirigami.Theme.highlightColor = Qt.binding(function() { return subsurfaceTheme.darkerPrimaryColor; });
+			contentItem.Kirigami.Theme.highlightedTextColor = Qt.binding(function() { return subsurfaceTheme.primaryTextColor; });
+		}
 		enabled: (Backend.cloud_verification_status === Enums.CS_NOCLOUD ||
 				  Backend.cloud_verification_status === Enums.CS_VERIFIED)
 		topContent: Image {
@@ -200,30 +267,23 @@ Kirigami.ApplicationWindow {
 			Layout.maximumHeight: myHeight
 			sourceSize.width: parent.width
 			fillMode: Image.PreserveAspectCrop
-			LinearGradient {
+			Rectangle {
 				anchors {
 					left: parent.left
 					right: parent.right
 					top: parent.top
 				}
 				height: Math.min(textblock.height * 2, parent.myHeight)
-				start: Qt.point(0, 0)
-				end: Qt.point(0, height)
 				gradient: Gradient {
-					GradientStop {
-						position: 0.0
-						color: Qt.rgba(0, 0, 0, 0.8)
-					}
-					GradientStop {
-						position: 1.0
-						color: "transparent"
-					}
+					GradientStop { position: 0.0; color: Qt.rgba(0, 0, 0, 0.8) }
+					GradientStop { position: 1.0; color: "transparent" }
 				}
 			}
 			ColumnLayout {
 				id: textblock
 				anchors {
 					left: parent.left
+					right: parent.right
 					top: parent.top
 				}
 				RowLayout {
@@ -256,8 +316,7 @@ Kirigami.ApplicationWindow {
 						level: 3
 						color: "white"
 						text: PrefCloudStorage.cloud_storage_email
-						wrapMode: Text.NoWrap
-						elide: Text.ElideRight
+						wrapMode: Text.WrapAnywhere
 						font.weight: Font.Normal
 					}
 				}
@@ -301,53 +360,50 @@ Kirigami.ApplicationWindow {
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_home.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + Backend.cloud_verification_status)
-					returnTopPage()
 					globalDrawer.close()
+					showPageFromDrawer(diveList)
 				}
 			},
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_sync.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Dive management")
 				Kirigami.Action {
 					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
-				Kirigami.Action {
-					icon {
 						name: ":/icons/ic_add.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Add dive manually")
 					onTriggered: {
 						globalDrawer.close()
-						returnTopPage()  // otherwise odd things happen with the page stack
+						showPageFromDrawer(diveList)
 						startAddDive()
 					}
 				}
 				Kirigami.Action {
-					// this of course assumes a white background - theming means this needs to change again
 					icon {
 						name: ":/icons/downloadDC-black.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Download from DC")
 					enabled: true
 					onTriggered: {
 						globalDrawer.close()
 						downloadFromDc.dcImportModel.clearTable()
-						showPage(downloadFromDc)
+						showPageFromDrawer(downloadFromDc)
 					}
 				}
 				Kirigami.Action {
 					icon {
 						name: ":/icons/cloud_sync.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Manual sync with cloud")
 					visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD
@@ -362,6 +418,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					icon {
 						name: PrefCloudStorage.cloud_auto_sync ?  ":/icons/ic_cloud_done.svg" : ":/icons/ic_cloud_off.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: (PrefCloudStorage.cloud_auto_sync ? "\u2611 " : "\u2610 ") + qsTr("Auto cloud sync")
 					visible: Backend.cloud_verification_status !== Enums.CS_NOCLOUD
@@ -378,127 +435,116 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					icon {
 						name: ":/icons/sigma.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Dive summary")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(diveSummaryWindow)
-						detailsWindow.endEditMode()
+						showPageFromDrawer(diveSummaryWindow)
 					}
 				}
 				Kirigami.Action {
 					icon {
 						name: ":/icons/ic_cloud_upload.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Export")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(exportWindow)
-						detailsWindow.endEditMode()
+						showPageFromDrawer(exportWindow)
 					}
 				}
 			},
 			Kirigami.Action {
 				icon {
 					name: ":/icons/map-globe.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Location")
 				visible: true
 				Kirigami.Action {
 					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
-				Kirigami.Action {
-					icon {
 						name: ":/icons/map-globe.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: mapPage.title
 					onTriggered: {
-						showMap()
+						globalDrawer.close()
+						showPageFromDrawer(mapPage)
 					}
 				}
 			},
 			Kirigami.Action {
 				icon {
 					name: ":/icons/office-chart-bar-stacked.svg"
+					color: subsurfaceTheme.textColor
 				}
 
 				text: qsTr("Statistics")
 				onTriggered: {
-					showPage(statistics)
+					globalDrawer.close()
+					showPageFromDrawer(statistics)
 				}
 			},
 			Kirigami.Action {
 				icon {
 					name: ":/icons/dashboard-show.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Technical Diving")
 				Kirigami.Action {
-					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
-				Kirigami.Action {
 					icon.name: ":/icons/document-edit-sign.svg" // Using an existing icon for now
+					icon.color: subsurfaceTheme.textColor
 					text: qsTr("Dive Planner")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(divePlannerEditWindow)
+						showPageFromDrawer(divePlannerEditWindow)
 					}
 				}
 				Kirigami.Action {
 					icon.name: ":/icons/measure.svg" // Using an existing icon for now
+					icon.color: subsurfaceTheme.textColor
 					text: qsTr("Gas Calculator")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(divePlannerCalculatorWindow)
+						showPageFromDrawer(divePlannerCalculatorWindow)
 					}
 				}
 			},
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_settings.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Settings")
 				onTriggered: {
 					globalDrawer.close()
 					settingsWindow.defaultCylinderModel = manager.defaultCylinderListInit
 					PrefEquipment.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(PrefEquipment.default_cylinder)
-					showPage(settingsWindow)
-					detailsWindow.endEditMode()
+					showPageFromDrawer(settingsWindow)
 				}
 			},
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_help_outline.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Help")
 				Kirigami.Action {
 					icon {
-						name: ":/go-previous-symbolic"
-					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
-				Kirigami.Action {
-					icon {
 						name: ":/icons/ic_info_outline.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("About")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(aboutWindow)
-						detailsWindow.endEditMode()
+						showPageFromDrawer(aboutWindow)
 					}
 				}
 				Kirigami.Action {
 					icon {
 						name: ":/icons/ic_help_outline.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Show user manual")
 					onTriggered: {
@@ -508,6 +554,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					icon {
 						name: ":/icons/recycle.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Contribute to Subsurface")
 					onTriggered: {
@@ -517,6 +564,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					icon {
 						name: ":/icons/contact_support.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Ask for support")
 					onTriggered: {
@@ -531,6 +579,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action{
 					icon {
 						name: ":/icons/account_circle.svg"
+						color: subsurfaceTheme.textColor
 					}
 					text: qsTr("Reset forgotten Subsurface Cloud password")
 					onTriggered: {
@@ -542,24 +591,26 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				icon {
 					name: ":/icons/ic_adb.svg"
+					color: subsurfaceTheme.textColor
 				}
 				text: qsTr("Developer")
 				visible: PrefDisplay.show_developer
 				Kirigami.Action {
 					icon {
-						name: ":/go-previous-symbolic"
+						name: ":/icons/ic_info_outline.svg"
+						color: subsurfaceTheme.textColor
 					}
-					text: qsTr("Back")
-					onTriggered: globalDrawer.pop()
-				}
-				Kirigami.Action {
 					text: qsTr("App log")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(logWindow)
+						showPageFromDrawer(logWindow)
 					}
 				}
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_sync.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Test busy indicator (toggle)")
 					onTriggered: {
 						if (busy.running) {
@@ -570,20 +621,31 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					}
 				}
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_help_outline.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Test notification text")
 					onTriggered: {
 						showPassiveNotification(qsTr("Test notification text"), 5000)
 					}
 				}
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_settings.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Theme information")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(themetest)
+						showPageFromDrawer(themetest)
 					}
 				}
-
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_adb.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Enable verbose logging (currently: %1)").arg(manager.verboseEnabled)
 					onTriggered: {
 						showPassiveNotification(qsTr("Not persistent"), 3000)
@@ -591,12 +653,15 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						manager.verboseEnabled = true
 					}
 				}
-
 				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_cloud_download.svg"
+						color: subsurfaceTheme.textColor
+					}
 					text: qsTr("Access local cloud cache dirs")
 					onTriggered: {
 						globalDrawer.close()
-						showPage(recoverCache)
+						showPageFromDrawer(recoverCache)
 					}
 				}
 			}
@@ -620,9 +685,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		// changed, so recalculate the gridUnit
 		var kirigamiGridUnit = fontMetrics.height
 
-		// some screens are too narrow for Subsurface-mobile to render well
-		// things don't look greate with fewer than 21 gridUnits in a row
-		var numColumns = Math.max(Math.floor(rootItem.width / (21 * kirigamiGridUnit)), 1)
+		// some screens are too narrow for Subsurface-mobile to render well;
+		// pages like Settings and DiveDetailsEdit need at least ~24 gridUnits
+		// to avoid clipping content in two-column mode
+		var numColumns = Math.max(Math.floor(rootItem.width / (24 * kirigamiGridUnit)), 1)
 		if (Screen.primaryOrientation === Qt.PortraitOrientation && PrefDisplay.singleColumnPortrait) {
 			manager.appendTextToLog("show only one column in portrait mode");
 			numColumns = 1;
@@ -636,14 +702,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 		manager.appendTextToLog(numColumns + " columns with column width of " + rootItem.colWidth)
 		manager.appendTextToLog("width in Grid Units " + widthInGridUnits + " original gridUnit " + Kirigami.Units.gridUnit + " now " + kirigamiGridUnit)
-		if (Kirigami.Units.gridUnit !== kirigamiGridUnit) {
-			// change our global grid unit and prevent Kirigami from resizing our rootItem
-			var fixWidth = rootItem.width
-			var fixHeight = rootItem.height
-			Kirigami.Units.gridUnit = kirigamiGridUnit * 1.0
-			rootItem.width = fixWidth
-			rootItem.height = fixHeight
-		}
+
 
 		pageStack.defaultColumnWidth = rootItem.colWidth
 		manager.appendTextToLog("Done setting up sizes width " + rootItem.width + " gridUnit " + kirigamiGridUnit)
@@ -706,6 +765,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		} else {
 			manager.appendTextToLog("[screensetup] remembering new orientation")
 			screenSizeObject.lastOrientation = Screen.orientation
+			setupUnits()
 		}
 	}
 
@@ -963,7 +1023,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			showDownloadForPluggedInDevice()
 		}
 	}
-	onClosing: {
+	onClosing: function(close) {
 		// this duplicates the check that is already in the onBackRequested signal handler of the DiveList
 		if (globalDrawer.visible) {
 			globalDrawer.close()

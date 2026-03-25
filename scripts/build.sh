@@ -12,7 +12,7 @@
 # in subsurface/build)
 #
 # by default it puts the build folders in
-# ./subsurface/libdivecomputer/build (libdivecomputer build)
+# ./libdivecomputer-build             (libdivecomputer build)
 # ./subsurface/build                  (desktop build)
 # ./subsurface/build-mobile           (mobile build)
 # ./subsurface/build-downloader       (headless downloader build)
@@ -409,8 +409,13 @@ if [ ! -d libdivecomputer/src ] ; then
 	git submodule update --recursive
 fi
 
-mkdir -p "${BUILD_PREFIX}libdivecomputer/build"
-cd "${BUILD_PREFIX}libdivecomputer/build"
+if [ -z "$BUILD_PREFIX" ] ; then
+	LIBDC_BUILDDIR="$SRC/libdivecomputer-build"
+else
+	LIBDC_BUILDDIR="${BUILD_PREFIX}libdivecomputer-build"
+fi
+mkdir -p "$LIBDC_BUILDDIR"
+cd "$LIBDC_BUILDDIR"
 
 if [ ! -f "$SRC"/${SRC_DIR}/libdivecomputer/configure ] ; then
 	# this is not a typo
@@ -462,9 +467,15 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 
 		git switch qt6-upstream
 	fi
-	mkdir -p build
-	cd build
-	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" ../googlemaps.pro
+
+	if [ -z "$BUILD_PREFIX" ] ; then
+		GOOGLEMAPS_BUILDDIR="$SRC/googlemaps-build"
+	else
+		GOOGLEMAPS_BUILDDIR="${BUILD_PREFIX}googlemaps-build"
+	fi
+	mkdir -p "$GOOGLEMAPS_BUILDDIR"
+	cd "$GOOGLEMAPS_BUILDDIR"
+	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" "$SRC/googlemaps/googlemaps.pro"
 	make
 	make install
 	popd
@@ -523,6 +534,8 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 
 	# pull the plasma-mobile components from upstream if building Subsurface-mobile
 	if [ "$SUBSURFACE_EXECUTABLE" = "MobileExecutable" ] ; then
+		KIRIGAMI_BUILDDIR="$SRC/kirigami-build" \
+		KIRIGAMI_INSTALL_PREFIX="$INSTALL_ROOT" \
 		bash ./scripts/mobilecomponents.sh
 		EXTRA_OPTS="$EXTRA_OPTS -DECM_DIR=$SRC/$SRC_DIR/mobile-widgets/3rdparty/ECM"
 	fi

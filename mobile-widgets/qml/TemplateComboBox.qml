@@ -1,25 +1,37 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.11
-import org.kde.kirigami 2.4 as Kirigami
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
 
 ComboBox {
 	id: cb
 	editable: false
 	Layout.fillWidth: true
-	Layout.preferredHeight: Kirigami.Units.gridUnit * 2.0
 	inputMethodHints: Qt.ImhNoPredictiveText
 	font.pointSize: subsurfaceTheme.regularPointSize
+
+	FontMetrics {
+		id: comboFontMetrics
+		font: cb.font
+	}
+	Layout.preferredHeight: Math.max(Kirigami.Units.gridUnit * 2.0,
+		Math.ceil(comboFontMetrics.height) + topPadding + bottomPadding)
 	rightPadding: Kirigami.Units.smallSpacing
 	property var flickable // used to ensure the combobox is visible on screen
+
+	// measure popup item widths to auto-size the dropdown
+	TextMetrics {
+		id: popupMetrics
+		font.pointSize: subsurfaceTheme.smallPointSize
+	}
+
 	delegate: ItemDelegate {
-		width: cb.width
+		width: cb.popup.width - 2
 		contentItem: Text {
 			text: modelData
 			color: subsurfaceTheme.textColor
-			font: cb.font
-			elide: Text.ElideRight
+			font.pointSize: subsurfaceTheme.smallPointSize
 			verticalAlignment: Text.AlignVCenter
 		}
 		highlighted: cb.highlightedIndex === index
@@ -83,8 +95,18 @@ ComboBox {
 
 	popup: Popup {
 		y: cb.height - 1
-		width: cb.width
-		implicitHeight: contentItem.implicitHeight
+		width: calculatedWidth
+		property real calculatedWidth: cb.width
+		onAboutToShow: {
+			var maxW = cb.width;
+			for (var i = 0; i < cb.count; i++) {
+				popupMetrics.text = cb.textAt(i);
+				var w = Math.ceil(popupMetrics.advanceWidth);
+				if (w > maxW) maxW = w;
+			}
+			calculatedWidth = maxW + Kirigami.Units.gridUnit * 3;
+		}
+		implicitHeight: Math.min(contentItem.implicitHeight + 2, cb.Window.height * 0.4)
 		padding: 1
 
 		contentItem: ListView {
@@ -93,7 +115,7 @@ ComboBox {
 			model: cb.popup.visible ? cb.delegateModel : null
 			currentIndex: cb.highlightedIndex
 
-			ScrollIndicator.vertical: ScrollIndicator { }
+			ScrollBar.vertical: ScrollBar { }
 		}
 
 		background: Rectangle {

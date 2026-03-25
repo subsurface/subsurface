@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Dialogs
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Item {
 	id: detailsEdit
@@ -128,13 +128,19 @@ Item {
 		clearDetailsEdit()
 	}
 
-	height: editArea.height + Kirigami.Units.gridUnit * 3
+	// Kirigami.Units.gridUnit may not reflect the actual font size (e.g., XL fonts),
+	// so use FontMetrics to get the real effective grid unit for layout decisions
+	FontMetrics { id: localFontMetrics }
+	property real effectiveGridUnit: localFontMetrics.height
+	// adapt layout when, given the font, the editArea is too narrow for our default layout
+	property bool narrow: editArea.width < effectiveGridUnit * 28
+	height: editArea.height + effectiveGridUnit * 3
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding - Kirigami.Units.smallSpacing * 2
 	Item {
 		// there is a maximum width above which this becomes less pleasant to use. 42 gridUnits
 		// allows for two of the large drop downs or four of the text fields or all of a cylinder
 		// to be in one row. More just doesn't look good
-		width: Math.min(parent.width - Kirigami.Units.smallSpacing, Kirigami.Units.gridUnit * 42)
+		width: Math.min(parent.width - Kirigami.Units.smallSpacing, effectiveGridUnit * 42)
 		// weird way to create a little space from the left edge - but I can't do a margin here
 		x: Kirigami.Units.smallSpacing
 		Flow {
@@ -145,91 +151,96 @@ Item {
 			flow: GridLayout.LeftToRight
 			RowLayout {
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Date/Time:")
 				}
 				SsrfTextField {
 					id: txtDate;
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 10
+					Layout.preferredWidth: effectiveGridUnit * 10
 					flickable: detailsEditFlickable
 				}
 			}
 			RowLayout {
 				TemplateLabelSmall {
 					horizontalAlignment: Text.AlignRight
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					text: qsTr("Dive number:")
 				}
 				SsrfTextField {
 					id: txtNumber;
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "0000"
+					Layout.preferredWidth: effectiveGridUnit * 3
 					flickable: detailsEditFlickable
 				}
 				Item {
 					// if date and dive number are on the same line, don't have the Depth behind them
 					// to ensure that we add an element that fills enough of the line that the flow
 					// will not pull the next element up
-					visible: editArea.width > Kirigami.Units.gridUnit * 27
-					Layout.preferredWidth: editArea.width - Kirigami.Units.gridUnit * 26
+					visible: editArea.width > effectiveGridUnit * 27
+					Layout.preferredWidth: editArea.width - effectiveGridUnit * 26
 				}
 			}
 			RowLayout {
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Depth:")
 				}
 				SsrfTextField {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					Layout.preferredWidth: effectiveGridUnit * 3
+					sampleText: "200.0ft"
 					id: txtDepth
-					validator: RegExpValidator { regExp: /[^-]*/ }
+					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 				}
 			}
 			RowLayout {
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Duration:")
 				}
 				SsrfTextField {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					Layout.preferredWidth: effectiveGridUnit * 3
+					sampleText: "00:00min"
 					id: txtDuration
-					validator: RegExpValidator { regExp: /[^-]*/ }
+					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 				}
 
 			}
 			RowLayout {
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Air Temp:")
 				}
 				SsrfTextField {
 					id: txtAirTemp
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "-10.0\u00B0F"
+					Layout.preferredWidth: effectiveGridUnit * 3
 					flickable: detailsEditFlickable
 				}
 
 			}
 			RowLayout {
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Water Temp:")
 				}
 				SsrfTextField {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					Layout.preferredWidth: effectiveGridUnit * 3
+					sampleText: "-10.0\u00B0F"
 					id: txtWaterTemp
 					flickable: detailsEditFlickable
 				}
 			}
 			RowLayout {
-				width: Kirigami.Units.gridUnit * 20
+				width: Math.min(editArea.width, effectiveGridUnit * 20)
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Location:")
 				}
@@ -251,22 +262,22 @@ Item {
 			}
 			RowLayout {
 				spacing: Kirigami.Units.smallSpacing
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 20
+				Layout.preferredWidth: Math.min(editArea.width, effectiveGridUnit * 20)
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Coordinates:")
 				}
 				SsrfTextField {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 16
+					Layout.preferredWidth: effectiveGridUnit * 16
 					id: txtGps
 					flickable: detailsEditFlickable
 				}
 			}
 			RowLayout {
-				width: Kirigami.Units.gridUnit * 20
+				width: Math.min(editArea.width, effectiveGridUnit * 20)
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Suit:")
 				}
@@ -278,9 +289,9 @@ Item {
 				}
 			}
 			RowLayout {
-				width: Kirigami.Units.gridUnit * 20
+				width: Math.min(editArea.width, effectiveGridUnit * 20)
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Buddy:")
 				}
@@ -292,9 +303,9 @@ Item {
 				}
 			}
 			RowLayout {
-				width: Kirigami.Units.gridUnit * 20
+				width: Math.min(editArea.width, effectiveGridUnit * 20)
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Dive guide:")
 				}
@@ -306,29 +317,29 @@ Item {
 				}
 			}
 			RowLayout {
-				width: Kirigami.Units.gridUnit * 20
+				width: Math.min(editArea.width, effectiveGridUnit * 20)
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Tags:")
 				}
 				SsrfTextField {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 16
+					Layout.preferredWidth: effectiveGridUnit * 16
 					id: txtTag
 					flickable: detailsEditFlickable
 				}
 			}
 
 			RowLayout {
-				width: Kirigami.Units.gridUnit * 16
+				width: Math.min(editArea.width, effectiveGridUnit * 16)
 				TemplateLabelSmall {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: effectiveGridUnit * 4
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Weight:")
 				}
 				SsrfTextField {
 					id: txtWeight
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 12
+					Layout.preferredWidth: effectiveGridUnit * 12
 					readOnly: text === "cannot edit multiple weight systems"
 					flickable: detailsEditFlickable
 				}
@@ -339,10 +350,10 @@ Item {
 			Flow {
 				width: parent.width
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 12
+					width: effectiveGridUnit * 12
 					id: cb1
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Cylinder1:")
 					}
@@ -357,46 +368,49 @@ Item {
 				}
 				RowLayout {
 					height: cb1.height
-					width: Kirigami.Units.gridUnit * 8
+					width: effectiveGridUnit * 8
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Gas mix:")
 					}
 					SsrfTextField {
 						id: txtGasMix0
 						text: usedGas[0] !== undefined ? usedGas[0] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 				}
 				RowLayout {
 					height: cb1.height
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("Start Pressure:")
+						text: narrow ? qsTr("Start P:") : qsTr("Start Pressure:")
 					}
 					SsrfTextField {
 						id: txtStartPressure0
 						text: startpressure[0] !== undefined ? startpressure[0] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
 				}
 				RowLayout {
 					height: cb1.height
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("End Pressure:")
+						text: narrow ? qsTr("End P:") : qsTr("End Pressure:")
 					}
 					SsrfTextField {
 						id: txtEndPressure0
 						text: endpressure[0] !== undefined ? endpressure[0] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -408,9 +422,9 @@ Item {
 				visible: usedCyl[1] !== undefined ? true : false
 				RowLayout {
 					id: cb2
-					width: Kirigami.Units.gridUnit * 12
+					width: effectiveGridUnit * 12
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Cylinder2:")
 					}
@@ -424,47 +438,50 @@ Item {
 					}
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 8
+					width: effectiveGridUnit * 8
 					height: cb2.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Gas mix:")
 					}
 					SsrfTextField {
 						id: txtGasMix1
 						text: usedGas[1] !== undefined ? usedGas[1] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					height: cb2.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("Start Pressure:")
+						text: narrow ? qsTr("Start P:") : qsTr("Start Pressure:")
 					}
 					SsrfTextField {
 						id: txtStartPressure1
 						text: startpressure[1] !== undefined ? startpressure[1] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					height: cb2.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("End Pressure:")
+						text: narrow ? qsTr("End P:") : qsTr("End Pressure:")
 					}
 					SsrfTextField {
 						id: txtEndPressure1
 						text: endpressure[1] !== undefined ? endpressure[1] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -476,9 +493,9 @@ Item {
 				visible: usedCyl[2] !== undefined ? true : false
 				RowLayout {
 					id: cb3
-					width: Kirigami.Units.gridUnit * 12
+					width: effectiveGridUnit * 12
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Cylinder3:")
 					}
@@ -493,47 +510,50 @@ Item {
 					}
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 8
+					width: effectiveGridUnit * 8
 					height: cb3.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Gas mix:")
 					}
 					SsrfTextField {
 						id: txtGasMix2
 						text: usedGas[2] !== undefined ? usedGas[2] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					height: cb3.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("Start Pressure:")
+						text: narrow ? qsTr("Start P:") : qsTr("Start Pressure:")
 					}
 					SsrfTextField {
 						id: txtStartPressure2
 						text: startpressure[2] !== undefined ? startpressure[2] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					height: cb3.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("End Pressure:")
+						text: narrow ? qsTr("End P:") : qsTr("End Pressure:")
 					}
 					SsrfTextField {
 						id: txtEndPressure2
 						text: endpressure[2] !== undefined ? endpressure[2] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -545,9 +565,9 @@ Item {
 				visible: usedCyl[3] !== undefined ? true : false
 				RowLayout {
 					id: cb4
-					width: Kirigami.Units.gridUnit * 12
+					width: effectiveGridUnit * 12
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Cylinder4:")
 					}
@@ -563,49 +583,52 @@ Item {
 
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 8
+					width: effectiveGridUnit * 8
 					height: cb4.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Gas mix:")
 					}
 					SsrfTextField {
 						id: txtGasMix3
 						text: usedGas[3] !== undefined ? usedGas[3] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					height: cb4.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("Start Pressure:")
+						text: narrow ? qsTr("Start P:") : qsTr("Start Pressure:")
 					}
 					SsrfTextField {
 						id: txtStartPressure3
 						text: startpressure[3] !== undefined ? startpressure[3] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
 
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					height: cb4.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("End Pressure:")
+						text: narrow ? qsTr("End P:") : qsTr("End Pressure:")
 					}
 					SsrfTextField {
 						id: txtEndPressure3
 						text: endpressure[3] !== undefined ? endpressure[3] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -617,9 +640,9 @@ Item {
 				visible: usedCyl[4] !== undefined ? true : false
 				RowLayout {
 					id: cb5
-					width: Kirigami.Units.gridUnit * 12
+					width: effectiveGridUnit * 12
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Cylinder5:")
 					}
@@ -636,49 +659,52 @@ Item {
 
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 8
+					width: effectiveGridUnit * 8
 					height: cb5.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Gas mix:")
 					}
 					SsrfTextField {
 						id: txtGasMix4
 						text: usedGas[4] !== undefined ? usedGas[4] : null
+						sampleText: "EAN100"
 						Layout.fillWidth: true
-						validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
 
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					height: cb5.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("Start Pressure:")
+						text: narrow ? qsTr("Start P:") : qsTr("Start Pressure:")
 					}
 					SsrfTextField {
 						id: txtStartPressure4
 						text: startpressure[4] !== undefined ? startpressure[4] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
 
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: narrow ? Math.floor(editArea.width / 2) : effectiveGridUnit * 10
 					height: cb5.height
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: narrow ? effectiveGridUnit * 4 : effectiveGridUnit * 6
 						horizontalAlignment: Text.AlignRight
-						text: qsTr("End Pressure:")
+						text: narrow ? qsTr("End P:") : qsTr("End Pressure:")
 					}
 					SsrfTextField {
 						id: txtEndPressure4
 						text: endpressure[4] !== undefined ? endpressure[4] : null
+						sampleText: "3000psi"
 						Layout.fillWidth: true
 						flickable: detailsEditFlickable
 					}
@@ -689,15 +715,15 @@ Item {
 				width: parent.width
 
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: effectiveGridUnit * 10
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Rating:")
 					}
 					TemplateSpinBox {
 						id: ratingPicker
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: effectiveGridUnit * 6
 						from: 0
 						to: 5
 						value: rating
@@ -706,15 +732,15 @@ Item {
 
 				}
 				RowLayout {
-					width: Kirigami.Units.gridUnit * 10
+					width: effectiveGridUnit * 10
 					TemplateLabelSmall {
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+						Layout.preferredWidth: effectiveGridUnit * 4
 						horizontalAlignment: Text.AlignRight
 						text: qsTr("Visibility:")
 					}
 					TemplateSpinBox {
 						id: visibilityPicker
-						Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+						Layout.preferredWidth: effectiveGridUnit * 6
 						from: 0
 						to: 5
 						value: visibility
@@ -738,7 +764,7 @@ Item {
 					color: subsurfaceTheme.textColor
 					Layout.fillWidth: true
 					Layout.fillHeight: true
-					Layout.minimumHeight: Kirigami.Units.gridUnit * 6
+					Layout.minimumHeight: effectiveGridUnit * 6
 					selectByMouse: true
 					wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 					property bool firstTime: true
@@ -757,10 +783,10 @@ Item {
 							manager.appendTextToLog("position check: lower edge of view is " +
 										    (0 + flickable.contentY + flickable.height) +
 										    " and text area is at " + taY)
-						if (taY > flickable.contentY + flickable.height - 4 * Kirigami.Units.gridUnit)
-							flickable.contentY = Math.max(0, 4 * Kirigami.Units.gridUnit + taY - flickable.height)
+						if (taY > flickable.contentY + flickable.height - 4 * effectiveGridUnit)
+							flickable.contentY = Math.max(0, 4 * effectiveGridUnit + taY - flickable.height)
 						while (taY < flickable.contentY)
-							flickable.contentY -= 2 * Kirigami.Units.gridUnit
+							flickable.contentY -= 2 * effectiveGridUnit
 					}
 					// give the OS enough time to actually resize the flickable
 					Timer {
@@ -783,7 +809,7 @@ Item {
 		}
 		Item {
 			anchors.top: editArea.bottom
-			height: Kirigami.Units.gridUnit * 3
+			height: effectiveGridUnit * 3
 			width: height // just to make sure the spacer doesn't produce scrollbars, but also isn't null
 		}
 	}

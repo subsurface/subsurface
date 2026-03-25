@@ -20,14 +20,28 @@
 
 #include <QtConcurrent>
 
-// Note: this is a global instead of a function-local variable on purpose.
-// We don't want this to be generated in a different thread context if
-// ImageDownloader::instance() is called from a worker thread.
-static ImageDownloader imageDownloader;
+// AI-generated (Claude)
+// Use Q_APPLICATION_STATIC to create the singleton. This guarantees:
+// - Lazy initialization (no construction before QCoreApplication exists,
+//   avoiding the iOS crash from QNetworkAccessFileBackendFactory)
+// - Correct thread affinity (QObject always on main thread, even if
+//   instance() is first called from a worker thread)
+// - Thread-safe construction
+// - Automatic cleanup when QCoreApplication is destroyed
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+Q_APPLICATION_STATIC(ImageDownloader, s_imageDownloader)
+
 ImageDownloader *ImageDownloader::instance()
 {
-	return &imageDownloader;
+	return s_imageDownloader();
 }
+#else
+ImageDownloader *ImageDownloader::instance()
+{
+	static ImageDownloader self;
+	return &self;
+}
+#endif
 
 ImageDownloader::ImageDownloader()
 {

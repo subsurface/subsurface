@@ -1,0 +1,60 @@
+# AI-generated (Claude)
+# CMakeLists.txt for the googlemaps Qt geoservices plugin
+# Needed for Android where Qt6 qmake doesn't support cross-compilation
+cmake_minimum_required(VERSION 3.16)
+project(qtgeoservices_googlemaps LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_AUTOMOC ON)
+
+find_package(Qt6 REQUIRED COMPONENTS Core Network Location Positioning)
+find_package(Qt6 QUIET COMPONENTS LocationPrivate PositioningPrivate)
+
+set(PLUGIN_SOURCES
+    qgeocodereplygooglemaps.cpp
+    qgeocodingmanagerenginegooglemaps.cpp
+    qgeoerror_messages.cpp
+    qgeomapreplygooglemaps.cpp
+    qgeoroutereplygooglemaps.cpp
+    qgeoroutingmanagerenginegooglemaps.cpp
+    qgeoserviceproviderplugingooglemaps.cpp
+    qgeotiledmapgooglemaps.cpp
+    qgeotiledmappingmanagerenginegooglemaps.cpp
+    qgeotilefetchergooglemaps.cpp
+    qplacecategoriesreplygooglemaps.cpp
+    qplacemanagerenginegooglemaps.cpp
+    qplacesearchreplygooglemaps.cpp
+    qplacesearchsuggestionreplyimpl.cpp
+)
+
+# Build as static library on Android and iOS so we can use Q_IMPORT_PLUGIN;
+# dynamic plugin discovery on Android is unreliable for third-party plugins.
+if(ANDROID OR IOS)
+    add_library(qtgeoservices_googlemaps STATIC ${PLUGIN_SOURCES})
+    # QT_STATICPLUGIN makes Q_PLUGIN_METADATA generate the
+    # qt_static_plugin_*() registration function needed by Q_IMPORT_PLUGIN
+    target_compile_definitions(qtgeoservices_googlemaps PRIVATE QT_STATICPLUGIN)
+else()
+    add_library(qtgeoservices_googlemaps MODULE ${PLUGIN_SOURCES})
+endif()
+
+target_link_libraries(qtgeoservices_googlemaps PRIVATE
+    Qt6::Core
+    Qt6::Network
+    Qt6::Location
+    Qt6::Positioning
+)
+
+# Try to link against private modules if available
+if(TARGET Qt6::LocationPrivate)
+    target_link_libraries(qtgeoservices_googlemaps PRIVATE Qt6::LocationPrivate)
+endif()
+if(TARGET Qt6::PositioningPrivate)
+    target_link_libraries(qtgeoservices_googlemaps PRIVATE Qt6::PositioningPrivate)
+endif()
+
+# Install to the geoservices plugin directory
+install(TARGETS qtgeoservices_googlemaps
+    LIBRARY DESTINATION plugins/geoservices
+    ARCHIVE DESTINATION plugins/geoservices
+)

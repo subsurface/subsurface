@@ -2,5 +2,12 @@
 <resources>
     <style name="AppTheme" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
+        <!-- Opaque system bars so app content is not visible behind them -->
+        <item name="android:statusBarColor">#ff303F9f</item>
+        <item name="android:navigationBarColor">#ff000000</item>
+        <!-- Android 15 (API 35) enforces edge-to-edge when targetSdk >= 35.
+             Opt out so the app content stays within the safe area.
+             Ignored on pre-35 devices. -->
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>

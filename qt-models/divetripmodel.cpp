@@ -481,11 +481,9 @@ void DiveTripModelBase::reset()
 	oldCurrent = nullptr;
 	clearData();
 	populate();
-	uiNotification(tr("finish populating data store"));
 	endResetModel();
-	uiNotification(tr("setting up internal data structures"));
 	emit diveListNotifier.numShownChanged();
-	uiNotification(tr("done setting up internal data structures"));
+	uiNotification(tr("finish populating data store"));
 }
 
 DiveTripModelBase::DiveTripModelBase(QObject *parent) : QAbstractItemModel(parent),
@@ -704,9 +702,7 @@ void DiveTripModelTree::populate()
 {
 	DiveFilter::instance()->reset(); // The data was reset - update filter status. TODO: should this really be done here?
 
-	// we want this to be two calls as the second text is overwritten below by the lines starting with "\r"
 	uiNotification(QObject::tr("populate data model"));
-	uiNotification(QObject::tr("start processing"));
 	for (auto &d: divelog.dives) {
 		divelog.dives.update_cylinder_related_info(*d);
 		if (d->hidden_by_filter)
@@ -734,7 +730,6 @@ void DiveTripModelTree::populate()
 
 	// Remember the index of the current dive
 	oldCurrent = current_dive;
-	uiNotification(QObject::tr("%1 dives processed").arg(divelog.dives.size()));
 }
 
 int DiveTripModelTree::rowCount(const QModelIndex &parent) const

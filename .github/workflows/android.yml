@@ -1,4 +1,4 @@
-name: Android
+name: Android Qt 6
 
 on:
   push:
@@ -22,9 +22,15 @@ jobs:
       release_tag: v${{ steps.version_number.outputs.version }}
     env:
       KEYSTORE_FILE: ${{ github.workspace }}/../subsurface.keystore
-    runs-on: ubuntu-latest
+      QT_VERSION: '6.10.2'
+      QT_ARCH: 'android_arm64_v8a'
+      ANDROID_BUILD_ABI: 'arm64-v8a'
+      BUILDROOT: '/android'
+    runs-on: ubuntu-24.04
+    # the container version is created in android-dockerimage.yml and is based
+    # on the Qt version (maj/min) plus a running count of container builds for that version
     container:
-      image: docker://subsurface/android-build:5.15.3
+      image: subsurface/android-build:6.10.0
 
     steps:
     - name: checkout sources
@@ -32,6 +38,10 @@ jobs:
       with:
         fetch-depth: 0
         submodules: recursive
+
+    - name: create links to sync standalone and GitHub filesystem
+      run: |
+        ln -s "$GITHUB_WORKSPACE" ${BUILDROOT}/src/subsurface
 
     - name: set the version information
       id: version_number
@@ -46,50 +56,65 @@ jobs:
       run: |
         echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > $KEYSTORE_FILE
 
-    - name: run build
-      id: build
+    - name: build Subsurface-mobile
       env:
-        KEYSTORE_PASSWORD: pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-        KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
         BUILDNR: ${{ steps.version_number.outputs.buildnr }}
         VERSION: ${{ steps.version_number.outputs.version }}
         VERSION_4: ${{ steps.version_number.outputs.version_4 }}
       run: |
-        BUILD_EXTRA_ARGS=""
-        if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
-          echo "Building a release version"
-          BUILD_EXTRA_ARGS="${BUILD_EXTRA_ARGS} release"
-        fi
+        mkdir -p build-android
+        ln -s $(pwd)/build-android ${BUILDROOT}/build-android
+        bash -x ${GITHUB_WORKSPACE}/scripts/docker/android-build-container/android-build-subsurface.sh
 
-        # this is rather awkward, but it allows us to use the preinstalled
-        # Android and Qt versions with relative paths
-        cd ..
-        ln -s /android/5.15.* .
-        ln -s /android/build-tools .
-        ln -s /android/cmdline-tools .
-        ln -s /android/ndk .
-        ln -s /android/platform-tools .
-        ln -s /android/platforms .
-        ln -s /android/tools .
-        git config --global user.email "ci@subsurface-divelog.org"
-        git config --global user.name "Subsurface CI"
-        git config --global --add safe.directory $GITHUB_WORKSPACE
-        git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
-        # get the build number via curl so this works both for a pull request as well as a push
-        export OUTPUT_DIR="$GITHUB_WORKSPACE"
-        bash -x ./subsurface/packaging/android/qmake-build.sh ${BUILD_EXTRA_ARGS} -buildnr $BUILDNR -canonicalversion $VERSION -canonicalversion_4 $VERSION_4
+    - name: collect APK
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        APK=$(find build-android/android-build -name "*.apk" | head -1)
+        cp "${APK}" "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.apk"
+
+    - name: build AAB  # just to validate that that build isn't broken
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        cd build-android/android-build
+        ./gradlew bundleRelease
+
+        AAB=$(find . -name "*.aab" | head -1)
+        cp "${AAB}" "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.aab"
+
+    - name: sign APK
+      if: github.event_name == 'push'
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        APK="${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.apk"
+        ALIGNED="${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}-aligned.apk"
+        SIGNED="${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}-signed.apk"
+
+        ${ANDROID_SDK_ROOT}/build-tools/${SDK_VERSION}/zipalign -P 16 4 "${APK}" "${ALIGNED}"
+        ${ANDROID_SDK_ROOT}/build-tools/${SDK_VERSION}/apksigner sign \
+          --ks "${KEYSTORE_FILE}" \
+          --ks-pass "pass:${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" \
+          --ks-key-alias "${{ secrets.ANDROID_KEYSTORE_ALIAS }}" \
+          --in "${ALIGNED}" \
+          --out "${SIGNED}"
+
+        mv "${SIGNED}" "${APK}"
+        rm -f "${ALIGNED}"
 
     - name: delete the keystore
       if: github.event_name == 'push'
       run: |
-        rm $KEYSTORE_FILE
+        rm -f $KEYSTORE_FILE
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
       uses: actions/upload-artifact@v7
       with:
         name: Subsurface-Android-${{ steps.version_number.outputs.version }}
-        path: Subsurface-mobile-*.apk
+        path: |
+          Subsurface-mobile-*.apk
 
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries

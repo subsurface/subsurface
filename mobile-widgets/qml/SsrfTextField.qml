@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.2
-import QtQuick.Controls 2.2 as Controls
-import org.kde.kirigami 2.4 as Kirigami
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
 
 Controls.TextField {
 	/**
@@ -18,7 +19,32 @@ Controls.TextField {
 	 */
 	property bool inComboBox: false
 
+	/**
+	 * set sampleText to a representative string for this field's content type
+	 * (e.g., "200.0ft" for a depth field) to ensure the field is wide enough
+	 * to display typical values without clipping
+	 */
+	property string sampleText: ""
+
 	id: stf
+
+	FontMetrics {
+		id: fieldFontMetrics
+		font: stf.font
+	}
+
+	TextMetrics {
+		id: fieldTextMetrics
+		font: stf.font
+		text: stf.sampleText !== "" ? stf.sampleText : "M"
+	}
+
+	// ensure the field is tall enough for the actual rendered font
+	Layout.minimumHeight: Math.ceil(fieldFontMetrics.height) + topPadding + bottomPadding
+
+	// if sampleText is set, ensure the field is wide enough for that content
+	Layout.minimumWidth: stf.sampleText !== "" ?
+		Math.ceil(fieldTextMetrics.advanceWidth) + leftPadding + rightPadding + Kirigami.Units.smallSpacing : 0
 	background: Item {
 		Rectangle {
 			width: parent.width - Kirigami.Units.smallSpacing
@@ -35,6 +61,8 @@ Controls.TextField {
 	font.pointSize: subsurfaceTheme.regularPointSize
 	topPadding: 0
 	bottomPadding: 0
+	leftPadding: Kirigami.Units.smallSpacing
+	rightPadding: Kirigami.Units.smallSpacing
 	color: subsurfaceTheme.textColor
 	onEditingFinished: {
 		focus = false

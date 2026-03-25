@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.10
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
-import QtQuick.Controls 2.2 as Controls
+import QtQuick
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import QtQuick.Controls as Controls
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Item {
 	id: detailsView
@@ -13,6 +13,17 @@ Item {
 	property real col2Width: gridWidth * 0.30
 	property real col3Width: gridWidth * 0.30
 	property int myId: -1
+	property bool panningProfile: false
+
+	function resetZoom() {
+		qmlProfile.scale = 1.0
+		qmlProfile.lastScale = 1.0
+		qmlProfile.xOffset = 0
+		qmlProfile.yOffset = 0
+		qmlProfile.opacity = 1.0
+		profileMouseArea.dragging = false
+		panningProfile = false
+	}
 
 	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
 	height: divePlate.implicitHeight + bottomLayout.implicitHeight + Kirigami.Units.iconSizes.large
@@ -270,6 +281,7 @@ Item {
 					}
 
 					MouseArea {
+						id: profileMouseArea
 						// we want to pan the profile if we are zoomed in, but we want to immediately
 						// pass the mouse events through to the ListView if we are not. That way you
 						// can swipe through the dive list, even if you happen to swipe the profile
@@ -293,7 +305,7 @@ Item {
 
 						// for testing / debugging on a desktop
 						scrollGestureEnabled: true
-						onWheel: {
+						onWheel: function (wheel) {
 							manager.appendTextToLog("wheel " + wheel.angleDelta)
 							if (wheel.angleDelta.y > 0)
 								qmlProfile.scale += 0.2
@@ -302,30 +314,31 @@ Item {
 						}
 
 						anchors.fill: parent
-						drag.target: qmlProfile
-						drag.axis: Drag.XAndYAxis
-						drag.smoothed: true
-						onPressed: {
+						onPressed: function(mouse) {
 							if (!isZoomed)
 								mouse.accepted = false
 						}
-						onPressAndHold: {
-							dragging = true;
+						onPressAndHold: function(mouse) {
+							dragging = true
+							detailsView.panningProfile = true
 							oldXOffset = qmlProfile.xOffset
 							oldYOffset = qmlProfile.yOffset
 							initialX = mouse.x
 							initialY = mouse.y
 							if (manager.verboseEnabled)
-								manager.appendTextToLog("press and hold at mouse" + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10)
+								manager.appendTextToLog("press and hold at mouse " + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10)
 							// give visual feedback to the user that they now can drag
 							qmlProfile.opacity = 0.5
 						}
-						onPositionChanged: {
+						onPositionChanged: function(mouse) {
 							if (dragging) {
-								var x = (mouse.x - initialX) / qmlProfile.scale
-								var y = (mouse.y - initialY) / qmlProfile.scale
+								// mouse coordinates are already in the scaled-down coordinate
+								// space (MouseArea is a child of the scaled qmlProfile), so
+								// no additional division by scale is needed
+								var x = mouse.x - initialX
+								var y = mouse.y - initialY
 								if (manager.verboseEnabled)
-									manager.appendTextToLog("drag mouse "  + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10 + " delta " + Math.round(x) + " / " + Math.round(y))
+									manager.appendTextToLog("drag mouse " + Math.round(10 * mouse.x) / 10 + " / " + Math.round(10 * mouse.y) / 10 + " delta " + Math.round(x) + " / " + Math.round(y))
 								qmlProfile.xOffset = oldXOffset + x
 								qmlProfile.yOffset = oldYOffset + y
 								qmlProfile.update()
@@ -333,15 +346,24 @@ Item {
 								mouse.accepted = false
 							}
 						}
-						onReleased: {
+						onReleased: function(mouse) {
 							if (dragging) {
 								// reset things
 								dragging = false
+								detailsView.panningProfile = false
 								qmlProfile.opacity = 1.0
 							}
 							mouse.accepted = false
 						}
-						onClicked: {
+						onCanceled: {
+							// touch was stolen (e.g. by PinchArea) - clean up panning state
+							if (dragging) {
+								dragging = false
+								detailsView.panningProfile = false
+								qmlProfile.opacity = 1.0
+							}
+						}
+						onClicked: function(mouse) {
 							// reset the position if not zoomed in
 							if (!isZoomed) {
 								qmlProfile.xOffset = qmlProfile.yOffset = oldXOffset = oldYOffset = 0

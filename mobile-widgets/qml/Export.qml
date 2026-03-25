@@ -1,23 +1,22 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.12
-import QtQuick.Dialogs 1.3
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Dialogs
+import QtCore
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 TemplatePage {
 	title: qsTr("Export Divelog information")
 
 	property int selectedExport: ExportType.EX_DIVES_XML
 
-	FileDialog {
+	FolderDialog {
 		id: saveAsDialog
-		folder: shortcuts.documents
-		selectFolder: true
+		currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
 		onAccepted: {
-			manager.exportToFile(selectedExport, fileUrls, anonymize.checked)
+			manager.exportToFile(selectedExport, selectedFolder, anonymize.checked)
 			pageStack.pop()
 			close()
 		}
@@ -47,7 +46,7 @@ TemplatePage {
 			id: textUserID
 			text: qsTr("User ID")
 		}
-		TemplateTextField {
+		SsrfTextField {
 			id: fieldUserID
 			Layout.columnSpan: 2
 			Layout.fillWidth: true
@@ -57,7 +56,7 @@ TemplatePage {
 			id: textPassword
 			text: qsTr("Password:")
 		}
-		TemplateTextField {
+		SsrfTextField {
 			id: fieldPassword
 			Layout.columnSpan: 2
 			Layout.fillWidth: true

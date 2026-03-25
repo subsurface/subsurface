@@ -64,6 +64,14 @@ void QMLProfile::paint(QPainter *painter)
 	struct dive *d = divelog.dives.get_by_uniq_id(m_diveId);
 	if (!d)
 		return;
+
+	// Apply pan offset for zoomed profile.
+	// QML scale is applied at the Item level, so paint() still renders into
+	// the original rect. Translating the painter shifts which portion of
+	// the profile is visible in the scaled view.
+	if (!nearly_0(m_xOffset) || !nearly_0(m_yOffset))
+		painter->translate(m_xOffset, m_yOffset);
+
 	m_profileWidget->draw(painter, painterRect, d, m_dc, nullptr, false);
 }
 

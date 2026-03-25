@@ -5,33 +5,34 @@
 	<key>CFBundleDisplayName</key>
 	<string>Subsurface-mobile</string>
 	<key>CFBundleExecutable</key>
-	<string>Subsurface-mobile</string>
+	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleGetInfoString</key>
-	<string>Created by Qt/QMake</string>
+	<string>Built with CMake</string>
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>@PRODUCT_BUNDLE_IDENTIFIER@</string>
+	<string>${MACOSX_BUNDLE_GUI_IDENTIFIER}</string>
 	<key>CFBundleName</key>
 	<string>Subsurface-mobile</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>@SHORT_VERSION@</string>
+	<string>${MACOSX_BUNDLE_SHORT_VERSION_STRING}</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>@FULL_VERSION@</string>
+	<string>${MACOSX_BUNDLE_BUNDLE_VERSION}</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NOTE</key>
 	<string>Subsurface is open source software released under the GPLv2 -- and includes many other open source components like Qt, Kirigami, libdivecomputer, and others.</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2011-2024 Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and the Subsurface developer team</string>
-	<key>NSMainNibFile</key>
-	<string>SubsurfaceMobileLaunch</string>
-	<key>UILaunchStoryboardName</key>
-	<string>SubsurfaceMobileLaunch</string>
+	<string>Copyright 2011-2026 Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and the Subsurface developer team</string>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIImageName</key>
+		<string>AppIcon</string>
+	</dict>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -59,5 +60,7 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

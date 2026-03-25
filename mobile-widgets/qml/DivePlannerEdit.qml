@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
-import QtQuick.Controls 2.12 as Controls
-import QtQuick.Layouts 1.12
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 TemplatePage {
 	id: divePlannerEditWindow
 	title: qsTr("New Dive Plan")
+	bottomPadding: Kirigami.Units.gridUnit * 4
 
 	property string pressureUnit: (Backend.pressure === Enums.BAR) ? qsTr("bar") : qsTr("psi")
 	property string depthUnit: (Backend.length === Enums.METERS) ? qsTr("m") : qsTr("ft")
@@ -148,11 +149,11 @@ TemplatePage {
 
 	Connections {
 		target: cylinderListModel
-		onRowsInserted: {
+		function onRowsInserted() {
 			updateGasNumberList();
 			generatePlan();
 		}
-		onRowsRemoved: {
+		function onRowsRemoved() {
 			updateGasNumberList();
 			generatePlan();
 		}
@@ -180,18 +181,24 @@ TemplatePage {
 			Layout.fillWidth: true
 			columns: 2
 
-			TemplateTextField {
+			TemplateLabel {
+				text: qsTr("Date")
+				verticalAlignment: Text.AlignVCenter
+			}
+			TemplateLabel {
+				text: qsTr("Time")
+				verticalAlignment: Text.AlignVCenter
+			}
+			SsrfTextField {
 				id: planDate
 				Layout.fillWidth: true
-				placeholderText: qsTr("Date")
-				// Use a standard, unambiguous format
+				sampleText: "0000-00-00"
 				text: Qt.formatDate(new Date(), "yyyy-MM-dd")
 			}
-			TemplateTextField {
+			SsrfTextField {
 				id: planTime
 				Layout.fillWidth: true
-				placeholderText: qsTr("Time")
-				// Use a standard, unambiguous format
+				sampleText: "00:00:00"
 				text: Qt.formatTime(new Date(), "hh:mm:ss")
 			}
 			TemplateLabel {
@@ -203,7 +210,7 @@ TemplatePage {
 				Layout.fillWidth: true
 				model: [ qsTr("Open circuit"), qsTr("CCR"), qsTr("pSCR") ]
 				currentIndex: 0 // Default to OC
-				onCurrentIndexChanged: {
+				onActivated: {
 					generatePlan();
 				}
 			}
@@ -226,7 +233,7 @@ TemplatePage {
 				Layout.fillWidth: true
 				model: [ qsTr("Sea Water"), qsTr("Fresh Water"), qsTr("EN13319") ]
 				currentIndex: 0 // Default to Sea water
-				onCurrentIndexChanged: {
+				onActivated: {
 					generatePlan();
 				}
 			}
@@ -240,13 +247,8 @@ TemplatePage {
 				font.pixelSize: Kirigami.Units.gridUnit * 1.2
 			}
 			TemplateButton {
-					contentItem: Text {
-						text: "+"
-						horizontalAlignment: Text.AlignHCenter
-						color: subsurfaceTheme.primaryTextColor
-					}
+					text: "+"
 					font.bold: true
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					onClicked: {
 						cylinderListModel.append({
 							"type": PrefEquipment.default_cylinder ? PrefEquipment.default_cylinder : "AL80",
@@ -258,62 +260,73 @@ TemplatePage {
 					}
 			}
 		}
-		RowLayout {
-			spacing: Kirigami.Units.smallSpacing // Reduced spacing
-
-			// Header labels updated for new layout
-			TemplateLabel { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 2; font.bold: true }
-			TemplateLabel { text: qsTr("Type"); Layout.minimumWidth: Kirigami.Units.gridUnit * 8; Layout.maximumWidth: Kirigami.Units.gridUnit * 8; font.bold: true }
-			TemplateLabel { text: qsTr("Mix"); Layout.preferredWidth: Kirigami.Units.gridUnit * 3; font.bold: true }
-			TemplateLabel {
-				text: qsTr("Dil");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 3;
-				visible: overallDivemode.currentIndex == 1
-				font.bold: true
-			}
-			TemplateLabel { text: qsTr("[%1]").arg(pressureUnit); Layout.preferredWidth: Kirigami.Units.gridUnit * 4; font.bold: true }
-			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium }
-		}
-
 		ListView {
 			id: cylinderListView
 			Layout.fillWidth: true
-			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
+			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 10)
 			clip: true
 			model: cylinderListModel
 
+			header: RowLayout {
+				width: cylinderListView.width
+				spacing: Kirigami.Units.smallSpacing
+
+				TemplateLabel { text: qsTr("#"); Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5; font.bold: true }
+				TemplateLabel { text: qsTr("Type"); Layout.fillWidth: true; font.bold: true }
+				TemplateLabel {
+					text: qsTr("Mix");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5;
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("Dil");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5;
+					visible: overallDivemode.currentIndex == 1
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("[%1]").arg(pressureUnit);
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5;
+					font.bold: true
+				}
+				TemplateButton { text: "X"; font.bold: true; opacity: 0 }
+			}
+
 			delegate: RowLayout {
-				spacing: Kirigami.Units.smallSpacing // Reduced spacing
+				width: cylinderListView.width
+				spacing: Kirigami.Units.smallSpacing
 
 				TemplateLabel {
 					text: index + 1
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
 					horizontalAlignment: Text.AlignHCenter
 					verticalAlignment: Text.AlignVCenter
 				}
 				TemplateComboBox {
 					id: typeBox
-					Layout.minimumWidth: Kirigami.Units.gridUnit * 8
-					Layout.maximumWidth: Kirigami.Units.gridUnit * 8
+					Layout.fillWidth: true
 					model: cylinderTypesModel
 					currentIndex: model.indexOf(type)
 					onActivated: {
 						if (currentIndex !== -1) {
 							// Update the 'type' property in the model with the selected cylinder text
-							cylinderListModel.setProperty(parent.index, "type", currentText);
+							cylinderListModel.setProperty(index, "type", currentText);
 
 							// This updates the dive plan summary in real-time
 							generatePlan();
 						}
 					}
 				}
-				TemplateTextField {
+				SsrfTextField {
 					id: mixField
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5
+					sampleText: "32/68"
 					text: mix
 					onTextChanged: {
-						cylinderListModel.setProperty(index, "mix", text);
-						generatePlan();
+						if (text !== mix) {
+							cylinderListModel.setProperty(index, "mix", text);
+							generatePlan();
+						}
 					}
 					onEditingFinished: {
 						var parts = text.split('/');
@@ -333,11 +346,11 @@ TemplatePage {
 							}
 						}
 					}
-					validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
+					validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
 				TemplateCheckBox {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
 					// Map the model's 'use' property (0 or 1) to the checkbox state (false or true)
 					checked: use === 1
 					visible: overallDivemode.currentIndex == 1
@@ -347,21 +360,23 @@ TemplatePage {
 						generatePlan();
 					}
 				}
-				TemplateTextField {
+				SsrfTextField {
 					id: pressureField
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5
+					sampleText: "3000"
 					text: pressure.toString()
 					validator: IntValidator { bottom: 0; top: 10000 }
 					onTextChanged: {
-						cylinderListModel.setProperty(index, "pressure", Number(text));
-						generatePlan();
+						if (Number(text) !== pressure) {
+							cylinderListModel.setProperty(index, "pressure", Number(text));
+							generatePlan();
+						}
 					}
 					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
 				}
 				TemplateButton {
 					text: "X"
 					font.bold: true
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					enabled: cylinderListModel.count > 1
 					onClicked: {
 						cylinderListModel.remove(index);
@@ -379,13 +394,8 @@ TemplatePage {
 				font.pixelSize: Kirigami.Units.gridUnit * 1.2
 			}
 			TemplateButton {
-				contentItem: Text {
-					text: "+"
-					horizontalAlignment: Text.AlignHCenter
-					color: subsurfaceTheme.primaryTextColor
-				}
+				text: "+"
 				font.bold: true
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 				onClicked: {
 					if (segmentListModel.count > 0) {
 						var lastSegment = segmentListModel.get(segmentListModel.count - 1);
@@ -402,84 +412,94 @@ TemplatePage {
 			}
 		}
 
-		RowLayout {
-			spacing: Kirigami.Units.gridUnit
-
-			TemplateLabel {
-				text: qsTr("Depth [%1]").arg(depthUnit);
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-				font.bold: true
-			}
-			TemplateLabel {
-				text: qsTr("Time [min]");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 4
-				font.bold: true
-			}
-			TemplateLabel {
-				text: qsTr("Gas");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 5
-				font.bold: true;
-			}
-			TemplateLabel {
-				text: qsTr("Setpoint [bar]");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 5
-				font.bold: true;
-				visible: overallDivemode.currentIndex == 1;
-			}
-			TemplateLabel {
-				text: qsTr("Dive Mode");
-				Layout.preferredWidth: Kirigami.Units.gridUnit * 6
-				font.bold: true;
-				visible: overallDivemode.currentIndex == 2;
-			}
-			Item { Layout.preferredWidth: Kirigami.Units.iconSizes.medium } // Spacer
-		}
-
 		ListView {
 			id: segmentListView
 			Layout.fillWidth: true
-			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 8)
+			Layout.preferredHeight: Math.min(contentHeight, Kirigami.Units.gridUnit * 10)
 			clip: true
 
 			model: segmentListModel
-			delegate: RowLayout {
-				spacing: Kirigami.Units.gridUnit
 
-				TemplateTextField {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+			header: RowLayout {
+				width: segmentListView.width
+				spacing: Kirigami.Units.smallSpacing
+
+				TemplateLabel {
+					text: qsTr("Depth [%1]").arg(depthUnit);
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("Time [min]");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					font.bold: true
+				}
+				TemplateLabel {
+					text: qsTr("Gas");
+					Layout.fillWidth: true
+					font.bold: true;
+				}
+				TemplateLabel {
+					text: qsTr("Setpoint [bar]");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
+					font.bold: true;
+					visible: overallDivemode.currentIndex == 1;
+				}
+				TemplateLabel {
+					text: qsTr("Dive Mode");
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 6
+					font.bold: true;
+					visible: overallDivemode.currentIndex == 2;
+				}
+				TemplateButton { text: "X"; font.bold: true; opacity: 0 }
+			}
+
+			delegate: RowLayout {
+				width: segmentListView.width
+				spacing: Kirigami.Units.smallSpacing
+
+				SsrfTextField {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "900"
 					text: depth.toString()
 					validator: IntValidator { bottom: 0; top: 900 }
 					onTextChanged: {
-						segmentListModel.setProperty(index, "depth", Number(text));
-						generatePlan();
+						if (Number(text) !== depth) {
+							segmentListModel.setProperty(index, "depth", Number(text));
+							generatePlan();
+						}
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
 
-				TemplateTextField {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 4
+				SsrfTextField {
+					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
+					sampleText: "999"
 					text: duration.toString()
 					validator: IntValidator { bottom: 1; top: 999 }
 					onTextChanged: {
-						segmentListModel.setProperty(index, "duration", Number(text));
-						generatePlan();
+						if (Number(text) !== duration) {
+							segmentListModel.setProperty(index, "duration", Number(text));
+							generatePlan();
+						}
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
 
 				TemplateComboBox {
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
+					Layout.fillWidth: true
 					model: gasNumberModel
 					currentIndex: gas
-					onCurrentIndexChanged: {
+					onActivated: {
 						segmentListModel.setProperty(index, "gas", currentIndex)
 						generatePlan();
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
 				}
 
-				TemplateTextField {
+				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
+					sampleText: "00.00"
 					text: cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1 ? (setpoint / 1000.0).toFixed(2) : ""
 					validator: DoubleValidator {
 						bottom: 0.16;
@@ -491,8 +511,10 @@ TemplatePage {
 					enabled: cylinderListModel.get(gas) && cylinderListModel.get(gas).use == 1
 					onTextChanged: {
 						if (cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1) {
-							segmentListModel.setProperty(index, "setpoint", Number(text) * 1000);
-							generatePlan();
+							if (Math.round(Number(text) * 1000) !== setpoint) {
+								segmentListModel.setProperty(index, "setpoint", Math.round(Number(text) * 1000));
+								generatePlan();
+							}
 						}
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
@@ -504,7 +526,7 @@ TemplatePage {
 					// Skip CCR (value === 1) as it's not applicable for pSCR mode
 					currentIndex: divemode === 2 ? 1 : divemode
 					visible: overallDivemode.currentIndex == 2
-					onCurrentIndexChanged: {
+					onActivated: {
 						segmentListModel.setProperty(index, "divemode", currentIndex === 1 ? 2 : currentIndex);
 						generatePlan();
 					}
@@ -515,7 +537,6 @@ TemplatePage {
 					text: "X"
 					font.bold: true
 					enabled: segmentListModel.count > 1
-					Layout.preferredWidth: Kirigami.Units.gridUnit * 2
 					onClicked: {
 						segmentListModel.remove(index);
 						generatePlan();
@@ -618,11 +639,7 @@ TemplatePage {
 		}
 
 		TemplateButton {
-			contentItem: Text {
-				text: "Save plan"
-				horizontalAlignment: Text.AlignHCenter
-				color: subsurfaceTheme.primaryTextColor
-			}
+			text: qsTr("Save plan")
 			font.bold: true
 			Layout.fillWidth: true
 			onClicked: {
@@ -630,35 +647,29 @@ TemplatePage {
 			}
 		}
 	}
-	actions.right: Kirigami.Action {
-		icon {
-			name: state = ":/icons/ic_settings.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Settings"
-		onTriggered: {
-			showPage(divePlannerSetupWindow)
-		}
-	}
-	actions.main: Kirigami.Action {
-		icon {
-			name: state = ":icons/media-playlist-repeat.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Refresh"
-		onTriggered: {
-			generatePlan()
-		}
-	}
-	actions.left: Kirigami.Action {
-		icon {
-			name: state = ":/icons/undo.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: "Back"
-		onTriggered: {
-			pageStack.pop()
+	Item {
+		parent: divePlannerEditWindow
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			spacing: Kirigami.Units.gridUnit
+			SsrfToolButton {
+				iconSource: "qrc:/icons/undo.svg"
+				onClicked: pageStack.pop()
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/media-playlist-repeat.svg"
+				highlighted: true
+				onClicked: generatePlan()
+			}
+			SsrfToolButton {
+				iconSource: "qrc:/icons/ic_settings.svg"
+				onClicked: showPage(divePlannerSetupWindow)
+			}
 		}
 	}
-
 }

@@ -1,46 +1,50 @@
-# Tool repo to crosscompile subsurface for iOS
+# Building Subsurface-mobile for iOS
 
-Dependencies:
+## Prerequisites
 
-- This only works on a Mac
-- XCode with iOS SDK and Qt5.13 or later
-- cmake
+- macOS with Xcode and the iOS SDK installed
+- Qt 6.8 or later (installed via the Qt online installer, with both the `ios`
+  and `macos` kits and the following additional libraries: Qt 5 Compatibility module,
+  Qt Connectivity, Qt Location (TP), Qt Positioning, and Qt Shader Tools)
+- cmake, autoconf, automake, libtool, pkg-config (e.g. from Homebrew)
 
-Follow [these instructions](/INSTALL.md#cross-building-subsurface-on-macosx-for-ios)
-and then continue here:
+## Build
 
-1. `cd <repo>/packaging/ios`
-2. `export IOS_BUNDLE_PRODUCT_IDENTIFIER="<your apple id>.subsurface-divelog.subsurface-mobile"`
-3. `./build.sh`
-note: this builds all dependencies and is only needed first time
-      it currently build for armv7 arm64 and x86_64 (simulator)
+The `ios-build-subsurface.sh` script handles the entire build: native
+dependencies, Kirigami, libdivecomputer, and Subsurface itself.
 
-1. `cd <repo>/..`
-2. Launch QtCreator and open `subsurface/packaging/ios/Subsurface-mobile.pro`
-3. Build Subsurface-mobile in QtCreator - you can build for the simulator and for
-a device and even deploy to a connected device.
-
-Everything up to here you can do without paying for an Apple Developer account.
-
-In order to create a bundle that can be distributed things get even more
-complex and an Apple Developer account definitely is necessary in order for you
-to be able to sign the bundle.
-
-The easiest way to do that appears to be to open the Subsurface-mobile.xcodeproj
-in the build directory that QtCreator used in Xcode and to create an archive there.
-
-
-**WARNING:**
-
-The version number used in the Subsurface-mobile app is created in step 3.
-So whenever you pull the latest git or commit a change, you need to re-run the
-`build.sh` script so that the `Info.plist` used by QtCreator (well, by Xcode under
-the hood) gets updated. Otherwise you will continue to see the old version
-number, even though the sources have been recompiled which can be very
-confusing.
-
-Do a simply version update by running:
 ```
-build.sh -version
+cd <repo>/packaging/ios
+./ios-build-subsurface.sh
 ```
-and then rebuilding in Qt Creator (or Xcode).
+
+The script accepts several environment variables to override defaults:
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `QT_VERSION` | `6.10.2` | Qt version to use |
+| `QT_ROOT` | `~/Qt` | Qt installation root |
+| `ARCH` | `arm64` | Target architecture |
+| `TARGET_SDK` | `iphoneos` | `iphoneos` or `iphonesimulator` |
+| `BUILD_TYPE` | `Release` | `Release` or `Debug` |
+
+Example for a simulator build:
+
+```
+TARGET_SDK=iphonesimulator ARCH=arm64 ./ios-build-subsurface.sh
+```
+
+The build output (an Xcode project and app bundle) ends up in
+`<repo>/../build-ios/`.
+
+## Signing and distribution
+
+The build script disables code signing (`CODE_SIGNING_ALLOWED=NO`) so that it
+works without an Apple Developer account. To sign and distribute:
+
+1. Open `<repo>/../build-ios/subsurface-mobile.xcodeproj` in Xcode.
+2. Select the Subsurface-mobile target and configure your signing team and
+   bundle identifier.
+3. Build an archive from Xcode for distribution.
+
+An Apple Developer account is required for distribution.

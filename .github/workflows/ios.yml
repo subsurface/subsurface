@@ -1,0 +1,60 @@
+name: iOS Qt 6
+
+on:
+  push:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+  pull_request:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
+    env:
+      QT_VERSION: '6.10.2'
+    runs-on: macos-15
+    steps:
+    - name: checkout sources
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    - name: setup Homebrew
+      run: brew install automake libtool
+
+    - name: install Qt for iOS
+      uses: jurplel/install-qt-action@v4
+      with:
+        version: ${{ env.QT_VERSION }}
+        target: ios
+        modules: qtshadertools qtlocation qtpositioning qtconnectivity qt5compat
+        dir: ${{ github.workspace }}/..
+        cache: true
+
+    - name: set the version information
+      id: version_number
+      uses: ./.github/actions/manage-version
+      with:
+        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
+
+    - name: build Subsurface-mobile for iOS
+      env:
+        VERSION: ${{ steps.version_number.outputs.version }}
+      run: |
+        git config --global --add safe.directory ${GITHUB_WORKSPACE}
+        git config --global --add safe.directory ${GITHUB_WORKSPACE}/libdivecomputer
+
+        export QT_VERSION=${{ env.QT_VERSION }}
+        export QT_ROOT="${GITHUB_WORKSPACE}/../Qt"
+        export QT_IOS_PATH="${QT_ROOT}/${QT_VERSION}/ios"
+        export QT_HOST_PATH="${QT_ROOT}/${QT_VERSION}/macos"
+
+        bash -x ${GITHUB_WORKSPACE}/packaging/ios/ios-build-subsurface.sh

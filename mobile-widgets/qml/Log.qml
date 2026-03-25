@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
-import QtQuick.Window 2.2
-import QtQuick.Controls 2.2
+import QtQuick
+import QtQuick.Window
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import QtQuick.Window
+import QtQuick.Controls
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Kirigami.ScrollablePage {
 	id: logWindow

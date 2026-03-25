@@ -350,13 +350,9 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 		report_info("%s", qPrintable(id.toByteArray()));
 	}
 
-#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_WIN)
-	// on Windows, macOS and iOS we need to scan in order to be able to access a device;
-	// let's remember the information we scanned on this run so we can at least
-	// refer back to it and don't need to open the separate scanning dialog every
-	// time we try to download from a BT/BLE dive computer.
+	// Qt 6 requires a QBluetoothDeviceInfo to create a QLowEnergyController;
+	// save discovered device info so qt_ble_open() can look it up later.
 	saveBtDeviceInfo(btDeviceAddress(&device, false), device);
-#endif
 
 	btDeviceDiscoveredMain(this_d, false);
 }
@@ -406,7 +402,7 @@ bool BTDiscovery::btAvailable() const
 
 }
 
-// Android: As Qt is not able to pull the pairing data from a device, i
+// Android: As Qt is not able to pull the pairing data from a device,
 // a lengthy discovery process is needed to see what devices are paired. On
 // https://forum.qt.io/topic/46075/solved-bluetooth-list-paired-devices
 // user s.frings74 does, however, present a solution to this using JNI.
@@ -419,12 +415,12 @@ void BTDiscovery::getBluetoothDevices()
 	// Query via Android Java API.
 
 	// returns a BluetoothAdapter
-	QAndroidJniObject adapter=QAndroidJniObject::callStaticObjectMethod("android/bluetooth/BluetoothAdapter","getDefaultAdapter","()Landroid/bluetooth/BluetoothAdapter;");
+	QJniObject adapter=QJniObject::callStaticObjectMethod("android/bluetooth/BluetoothAdapter","getDefaultAdapter","()Landroid/bluetooth/BluetoothAdapter;");
 	if (checkException("BluetoothAdapter.getDefaultAdapter()", &adapter)) {
 		return;
 	}
 	// returns a Set<BluetoothDevice>
-	QAndroidJniObject pairedDevicesSet=adapter.callObjectMethod("getBondedDevices","()Ljava/util/Set;");
+	QJniObject pairedDevicesSet=adapter.callObjectMethod("getBondedDevices","()Ljava/util/Set;");
 	if (checkException("BluetoothAdapter.getBondedDevices()", &pairedDevicesSet)) {
 		return;
 	}
@@ -432,13 +428,13 @@ void BTDiscovery::getBluetoothDevices()
 	checkException("Set<BluetoothDevice>.size()", &pairedDevicesSet);
 	if (size > 0) {
 		// returns an Iterator<BluetoothDevice>
-		QAndroidJniObject iterator=pairedDevicesSet.callObjectMethod("iterator","()Ljava/util/Iterator;");
+		QJniObject iterator=pairedDevicesSet.callObjectMethod("iterator","()Ljava/util/Iterator;");
 		if (checkException("Set<BluetoothDevice>.iterator()", &iterator)) {
 			return;
 		}
 		for (int i = 0; i < size; i++) {
 			// returns a BluetoothDevice
-			QAndroidJniObject dev=iterator.callObjectMethod("next","()Ljava/lang/Object;");
+			QJniObject dev=iterator.callObjectMethod("next","()Ljava/lang/Object;");
 			if (checkException("Iterator<BluetoothDevice>.next()", &dev)) {
 				continue;
 			}
@@ -459,9 +455,9 @@ void BTDiscovery::getBluetoothDevices()
 	}
 }
 
-bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *obj)
+bool BTDiscovery::checkException(const char* method, const QJniObject *obj)
 {
-	static QAndroidJniEnvironment env;
+	QJniEnvironment env;
 	bool result = false;
 
 	if (env->ExceptionCheck()) {
