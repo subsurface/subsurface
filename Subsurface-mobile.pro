@@ -76,6 +76,7 @@ SOURCES += subsurface-mobile-main.cpp \
 	core/planner.cpp \
 	core/save-xml.cpp \
 	core/deco.cpp \
+	core/gasblending.cpp \
 	core/divesite.cpp \
 	core/equipment.cpp \
 	core/gas.cpp \
