@@ -63,6 +63,7 @@ preferences::preferences() :
 	reserve_gas(40000),
 	sacfactor(400),
 	safetystop(true),
+	ascent_procedure(false),
 	switch_at_req_stop(false),
 	verbatim_plan(false),
 	calcalltissues(false),

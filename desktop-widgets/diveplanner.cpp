@@ -283,6 +283,10 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(true);
 		ui.safetystop->setDisabled(false);
+		ui.ascent_procedure->setDisabled(true);
+		ui.ascent_procedure->blockSignals(true);
+		ui.ascent_procedure->setChecked(false);
+		ui.ascent_procedure->blockSignals(false);
 		ui.label_reserve_gas->setDisabled(false);
 		ui.reserve_gas->setDisabled(false);
 		ui.label_vpmb_conservatism->setDisabled(true);
@@ -310,6 +314,10 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
+		ui.ascent_procedure->setDisabled(true);
+		ui.ascent_procedure->blockSignals(true);
+		ui.ascent_procedure->setChecked(false);
+		ui.ascent_procedure->blockSignals(false);
 		ui.label_reserve_gas->setDisabled(true);
 		ui.reserve_gas->setDisabled(true);
 		ui.label_vpmb_conservatism->setDisabled(false);
@@ -333,6 +341,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
+		ui.ascent_procedure->setDisabled(false);
 		ui.label_reserve_gas->setDisabled(true);
 		ui.reserve_gas->setDisabled(true);
 		ui.label_vpmb_conservatism->setDisabled(true);
@@ -373,6 +382,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(PlannerWidgets *parent)
 	ui.o2narcotic->setChecked(prefs.o2narcotic);
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
+	ui.ascent_procedure->setChecked(prefs.ascent_procedure);
 	ui.min_switch_duration->setValue(PlannerShared::min_switch_duration());
 	ui.surface_segment->setValue(PlannerShared::surface_segment());
 	ui.recreational_deco->setChecked(prefs.planner_deco_mode == RECREATIONAL);
@@ -391,6 +401,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(PlannerWidgets *parent)
 	connect(ui.display_transitions, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayTransitions);
 	connect(ui.display_variations, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setDisplayVariations);
 	connect(ui.safetystop, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setSafetyStop);
+	connect(ui.ascent_procedure, &QAbstractButton::toggled, plannerModel, &DivePlannerPointsModel::setAscentProcedure);
 	connect(ui.reserve_gas, QOverload<int>::of(&QSpinBox::valueChanged), &PlannerShared::set_reserve_gas);
 	connect(ui.ascRate75, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate75Display);
 	connect(ui.ascRate50, QOverload<int>::of(&QSpinBox::valueChanged), plannerModel, &DivePlannerPointsModel::setAscrate50Display);

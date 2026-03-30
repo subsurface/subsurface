@@ -169,6 +169,7 @@ struct preferences {
 	int             reserve_gas;
 	int             sacfactor;
 	bool            safetystop;
+	bool            ascent_procedure;
 	bool            switch_at_req_stop;
 	bool            verbatim_plan;
 

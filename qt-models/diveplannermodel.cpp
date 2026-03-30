@@ -740,6 +740,12 @@ void DivePlannerPointsModel::setSafetyStop(bool value)
 	emitDataChanged();
 }
 
+void DivePlannerPointsModel::setAscentProcedure(bool value)
+{
+	qPrefDivePlanner::set_ascent_procedure(value);
+	emitDataChanged();
+}
+
 void DivePlannerPointsModel::setReserveGas(int reserve)
 {
 	if (prefs.units.pressure == units::BAR)

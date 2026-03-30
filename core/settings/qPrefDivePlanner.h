@@ -32,6 +32,7 @@ class qPrefDivePlanner : public QObject {
 	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gasChanged)
 	Q_PROPERTY(int sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactorChanged)
 	Q_PROPERTY(bool safetystop READ safetystop WRITE set_safetystop NOTIFY safetystopChanged)
+	Q_PROPERTY(bool ascent_procedure READ ascent_procedure WRITE set_ascent_procedure NOTIFY ascent_procedureChanged)
 	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged)
 	Q_PROPERTY(bool verbatim_plan READ verbatim_plan WRITE set_verbatim_plan NOTIFY verbatim_planChanged)
 
@@ -70,6 +71,7 @@ public:
 	static int reserve_gas() { return prefs.reserve_gas; }
 	static int sacfactor() { return prefs.sacfactor; }
 	static bool safetystop() { return prefs.safetystop; }
+	static bool ascent_procedure() { return prefs.ascent_procedure; }
 	static bool switch_at_req_stop() { return prefs.switch_at_req_stop; }
 	static bool verbatim_plan() { return prefs.verbatim_plan; }
 
@@ -100,6 +102,7 @@ public slots:
 	static void set_reserve_gas(int value);
 	static void set_sacfactor(int value);
 	static void set_safetystop(bool value);
+	static void set_ascent_procedure(bool value);
 	static void set_switch_at_req_stop(bool value);
 	static void set_verbatim_plan(bool value);
 
@@ -130,6 +133,7 @@ signals:
 	void reserve_gasChanged(int value);
 	void sacfactorChanged(int value);
 	void safetystopChanged(bool value);
+	void ascent_procedureChanged(bool value);
 	void switch_at_req_stopChanged(bool value);
 	void verbatim_planChanged(bool value);
 
@@ -163,6 +167,7 @@ private:
 	static void disk_reserve_gas(bool doSync);
 	static void disk_sacfactor(bool doSync);
 	static void disk_safetystop(bool doSync);
+	static void disk_ascent_procedure(bool doSync);
 	static void disk_switch_at_req_stop(bool doSync);
 	static void disk_verbatim_plan(bool doSync);
 };

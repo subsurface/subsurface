@@ -953,4 +953,93 @@ void TestPlan::testCcrBailoutGasSelection()
 
 }
 
+static void setupAscentProcedureDive(diveplan &dp)
+{
+	// 30m/20min on air, switch to EAN50 at 21m.
+	// The gas change at 21m triggers the ascent procedure. With GF 30/85,
+	// deco stops are at 6-9m, so staged stops fit at 18m, 15m, 12m.
+	struct gasmix air = { 21_percent, 0_percent };
+	struct gasmix ean50 = { 50_percent, 0_percent };
+	dive = {};
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cyl0->gasmix = air;
+	cyl0->type.size = 12_l;
+	cyl0->type.workingpressure = 232_bar;
+	cyl1->gasmix = ean50;
+	reset_cylinders(&dive, true);
+
+	int droptime = 30000 * 60 / prefs.descrate;
+	dp = diveplan();
+	dp.salinity = 10300;
+	dp.surface_pressure = 1_atm;
+	dp.gfhigh = 85;
+	dp.gflow = 30;
+	dp.bottomsac = prefs.bottomsac;
+	dp.decosac = prefs.decosac;
+	plan_add_segment(dp, 0, 21_m, 1, 0, 1, OC); // register EAN50 at 21m
+	plan_add_segment(dp, droptime, 30_m, 0, 0, 1, OC);
+	plan_add_segment(dp, 20 * 60 - droptime, 30_m, 0, 0, 1, OC);
+}
+
+void TestPlan::testAscentProcedure()
+{
+	deco_state_cache cache;
+
+	// Use a moderate dive (30m/25min on air with GF 30/85) where deco stops
+	// are confined to shallow depths, leaving room for staged stops in the 9-21m range.
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.ascrate50 = 10000 / 60;  // 10 m/min
+	prefs.ascrate75 = prefs.ascrate50;
+	prefs.ascratestops = 10000 / 60;
+	prefs.ascratelast6m = 3000 / 60; // 3 m/min
+	prefs.descrate = 18000 / 60;
+	prefs.last_stop = true;
+
+	// Run WITHOUT staged ascent
+	prefs.ascent_procedure = false;
+	diveplan dp;
+	setupAscentProcedureDive(dp);
+	std::vector<decostop> baselineStops;
+	plan(&test_deco_state, dp, &dive, 0, 60, cache, 1, 0, &baselineStops);
+	unsigned int baselineRuntime = dive.dcs[0].duration.seconds;
+
+	// Run WITH staged ascent (starts from configured depth or first deco stop / gas change)
+	prefs.ascent_procedure = true;
+	diveplan dp2;
+	setupAscentProcedureDive(dp2);
+	std::vector<decostop> stagedStops;
+	plan(&test_deco_state, dp2, &dive, 0, 60, cache, 1, 0, &stagedStops);
+	unsigned int stagedRuntime = dive.dcs[0].duration.seconds;
+
+	QVERIFY(baselineRuntime > 0);
+	QVERIFY(stagedRuntime > 0);
+	QVERIFY2(stagedRuntime > baselineRuntime,
+		 "Staged ascent should increase total run time");
+
+	// Find staged stops: depths that had 0 time in baseline but have time in staged plan.
+	// Staged ascent starts after the first deco stop, so staged stops should appear
+	// at depths shallower than the first deco stop.
+	bool found_staged_stop = false;
+	for (size_t i = 0; i < std::min(baselineStops.size(), stagedStops.size()); i++) {
+		if (baselineStops[i].depth == stagedStops[i].depth
+		    && stagedStops[i].depth > 0
+		    && baselineStops[i].time == 0
+		    && stagedStops[i].time > 0) {
+			found_staged_stop = true;
+			// With last_stop=true, no staged stop should be at 6m or below
+			QVERIFY2(stagedStops[i].depth > 6000,
+				 "Staged stop should not exist at 6m or below when last_stop is enabled");
+			// Stop time should be 60s minus transit (roughly 20s for 3m at 10m/min),
+			// so expect between 20s and 60s
+			QVERIFY2(stagedStops[i].time >= 20 && stagedStops[i].time <= 60,
+				 "Staged stop duration should be between 20s and 60s");
+		}
+	}
+	QVERIFY2(found_staged_stop, "Expected at least one staged stop in the plan");
+}
+
 QTEST_GUILESS_MAIN(TestPlan)

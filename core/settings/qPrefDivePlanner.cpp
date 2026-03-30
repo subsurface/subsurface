@@ -40,6 +40,7 @@ void qPrefDivePlanner::loadSync(bool doSync)
 	disk_reserve_gas(doSync);
 	disk_sacfactor(doSync);
 	disk_safetystop(doSync);
+	disk_ascent_procedure(doSync);
 	disk_switch_at_req_stop(doSync);
 	disk_verbatim_plan(doSync);
 }
@@ -92,6 +93,8 @@ HANDLE_PREFERENCE_INT(DivePlanner, "reserve_gas", reserve_gas);
 HANDLE_PREFERENCE_INT(DivePlanner, "sacfactor", sacfactor);
 
 HANDLE_PREFERENCE_BOOL(DivePlanner, "safetystop", safetystop);
+
+HANDLE_PREFERENCE_BOOL(DivePlanner, "ascent_procedure", ascent_procedure);
 
 HANDLE_PREFERENCE_BOOL(DivePlanner, "switch_at_req_stop", switch_at_req_stop);
 

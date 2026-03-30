@@ -89,6 +89,7 @@ slots:
 	void setDisplayVariations(bool value);
 	void setDecoMode(int mode);
 	void setSafetyStop(bool value);
+	void setAscentProcedure(bool value);
 	void savePlan();
 	void saveDuplicatePlan();
 	void remove(const QModelIndex &index);

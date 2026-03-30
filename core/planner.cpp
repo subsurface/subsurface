@@ -34,6 +34,8 @@ static constexpr int base_timestep = 2; // seconds
 
 static constexpr int BACKGAS_BREAK_O2_DURATION_SECONDS = 12 * 60;
 static constexpr int BACKGAS_BREAK_DURATION_SECONDS = 6 * 60;
+static constexpr int ASCENT_PROCEDURE_DURATION_SECONDS = 60;
+static constexpr int ASCENT_PROCEDURE_START_DEPTH_MM = 21000;
 
 static std::vector<depth_t> decostoplevels_metric = { 0_m, 3_m, 6_m, 9_m, 12_m, 15_m, 18_m, 21_m, 24_m, 27_m,
 					30_m, 33_m, 36_m, 39_m, 42_m, 45_m, 48_m, 51_m, 54_m, 57_m,
@@ -840,6 +842,7 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 		gas = bottom_gas;
 		stopping = false;
 		bool decodive = false;
+		int ascent_procedure_start_depth = ASCENT_PROCEDURE_START_DEPTH_MM;
 		first_stop_depth = 0_m;
 		stopidx = bottom_stopidx;
 		ds->first_ceiling_pressure.mbar = dive->depth_to_mbar(
@@ -862,6 +865,7 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 		reset_regression(ds);
 		while (error == PLAN_OK) {
 			/* We will break out when we hit the surface */
+			int ascent_start_clock = clock;
 			do {
 				/* Ascend to next stop depth */
 				depth_t deltad { .mm = ascent_velocity(depth, avg_depth, bottom_time) * base_timestep };
@@ -906,6 +910,10 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 							plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 						stopping = true;
 						previous_point_time = clock;
+						if (prefs.ascent_procedure
+						    && !same_gasmix(gas, dive->get_cylinder(gaschanges[gi].gasidx)->gasmix)
+						    && depth.mm > ascent_procedure_start_depth)
+							ascent_procedure_start_depth = depth.mm;
 						current_cylinder = gaschanges[gi].gasidx;
 						if (divemode == CCR)
 							po2 = setpoint_change(dive, current_cylinder);
@@ -938,8 +946,36 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 				/* Check if ascending to next stop is clear, go back and wait if we hit the ceiling on the way */
 				if (trial_ascent(ds, 0, depth, stoplevels[stopidx], avg_depth, bottom_time,
 						dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode)) {
-					if (decostoptable)
-						decostoptable->push_back( decostop { depth.mm, 0 });
+					/* No deco obligation at this depth. Insert a staged ascent
+					 * stop if within range. ascent_procedure_start_depth is 21m
+					 * by default, extended by significant deco stops and real
+					 * gas mix changes. */
+					if (prefs.ascent_procedure && pref_deco_mode(true) == BUEHLMANN
+					    && depth.mm <= ascent_procedure_start_depth
+					    && depth.mm > 0
+					    && !(prefs.last_stop && depth.mm <= 6000)
+					    && !last_segment_min_switch) {
+						int transit_time = clock - ascent_start_clock;
+						int stoptime = ASCENT_PROCEDURE_DURATION_SECONDS - transit_time;
+						if (stoptime > 0) {
+							if (!stopping) {
+								if (is_final_plan)
+									plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
+								previous_point_time = clock;
+								stopping = true;
+							}
+							add_segment(ds, dive->depth_to_bar(depth),
+								    dive->get_cylinder(current_cylinder)->gasmix,
+								    stoptime, po2, divemode, prefs.decosac, true);
+							clock += stoptime;
+							last_segment_min_switch = false;
+						}
+						if (decostoptable)
+							decostoptable->push_back(decostop { depth.mm, std::max(stoptime, 0) });
+					} else {
+						if (decostoptable)
+							decostoptable->push_back(decostop { depth.mm, 0 });
+					}
 					break; /* We did not hit the ceiling */
 				}
 
@@ -982,6 +1018,8 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 				int new_clock = wait_until(ds, dive, clock, clock, laststoptime * 2 + 1, timestep, depth, stoplevels[stopidx], avg_depth,
 					bottom_time, dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure.mbar / 1000.0, divemode);
 				laststoptime = new_clock - clock;
+				if (laststoptime >= ASCENT_PROCEDURE_DURATION_SECONDS && depth.mm > ascent_procedure_start_depth)
+					ascent_procedure_start_depth = depth.mm;
 				/* Finish infinite deco */
 				if (laststoptime >= 48 * 3600 && depth.mm >= 6000 && !o2breaking) {
 					error = PLAN_ERROR_TIMEOUT;
