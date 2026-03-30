@@ -943,35 +943,35 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 
 			/* Save the current state and try to ascend to the next stopdepth */
 			while (1) {
-				/* Check if ascending to next stop is clear, go back and wait if we hit the ceiling on the way */
-				if (trial_ascent(ds, 0, depth, stoplevels[stopidx], avg_depth, bottom_time,
+				/* Check if ascending to next stop is clear, go back and wait if we hit the ceiling on the way.
+				 * If the ascent procedure is active and this depth is within staging range,
+				 * include the staged stop time in the trial so off-gassing is accounted for. */
+				int staged_wait = 0;
+				if (prefs.ascent_procedure
+				    && depth.mm <= ascent_procedure_start_depth
+				    && depth.mm > 0
+				    && !(prefs.last_stop && depth.mm <= 6000)
+				    && !last_segment_min_switch) {
+					int transit_time = clock - ascent_start_clock;
+					staged_wait = std::max(ASCENT_PROCEDURE_DURATION_SECONDS - transit_time, 0);
+				}
+				if (trial_ascent(ds, staged_wait, depth, stoplevels[stopidx], avg_depth, bottom_time,
 						dive->get_cylinder(current_cylinder)->gasmix, po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode)) {
-					/* No deco obligation at this depth. Insert a staged ascent
-					 * stop if within range. ascent_procedure_start_depth is 21m
-					 * by default, extended by significant deco stops and real
-					 * gas mix changes. */
-					if (prefs.ascent_procedure && pref_deco_mode(true) == BUEHLMANN
-					    && depth.mm <= ascent_procedure_start_depth
-					    && depth.mm > 0
-					    && !(prefs.last_stop && depth.mm <= 6000)
-					    && !last_segment_min_switch) {
-						int transit_time = clock - ascent_start_clock;
-						int stoptime = ASCENT_PROCEDURE_DURATION_SECONDS - transit_time;
-						if (stoptime > 0) {
-							if (!stopping) {
-								if (is_final_plan)
-									plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
-								previous_point_time = clock;
-								stopping = true;
-							}
-							add_segment(ds, dive->depth_to_bar(depth),
-								    dive->get_cylinder(current_cylinder)->gasmix,
-								    stoptime, po2, divemode, prefs.decosac, true);
-							clock += stoptime;
-							last_segment_min_switch = false;
+					/* No deco obligation — insert staged stop if within range. */
+					if (staged_wait > 0) {
+						if (!stopping) {
+							if (is_final_plan)
+								plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
+							previous_point_time = clock;
+							stopping = true;
 						}
+						add_segment(ds, dive->depth_to_bar(depth),
+							    dive->get_cylinder(current_cylinder)->gasmix,
+							    staged_wait, po2, divemode, prefs.decosac, true);
+						clock += staged_wait;
+						last_segment_min_switch = false;
 						if (decostoptable)
-							decostoptable->push_back(decostop { depth.mm, std::max(stoptime, 0) });
+							decostoptable->push_back(decostop { depth.mm, staged_wait });
 					} else {
 						if (decostoptable)
 							decostoptable->push_back(decostop { depth.mm, 0 });

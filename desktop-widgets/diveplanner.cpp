@@ -314,10 +314,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
-		ui.ascent_procedure->setDisabled(true);
-		ui.ascent_procedure->blockSignals(true);
-		ui.ascent_procedure->setChecked(false);
-		ui.ascent_procedure->blockSignals(false);
+		ui.ascent_procedure->setDisabled(false);
 		ui.label_reserve_gas->setDisabled(true);
 		ui.reserve_gas->setDisabled(true);
 		ui.label_vpmb_conservatism->setDisabled(false);

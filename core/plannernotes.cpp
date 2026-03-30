@@ -445,7 +445,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 		buf += casprintf_loc(translate("gettextFromC", "Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%"),
 			     gflow, gfhigh);
 	}
-	if (prefs.ascent_procedure && pref_deco_mode(true) == BUEHLMANN)
+	if (prefs.ascent_procedure && pref_deco_mode(true) != RECREATIONAL)
 		buf += translate("gettextFromC", ", ascent procedure");
 
 	buf += "<br/>\n";
