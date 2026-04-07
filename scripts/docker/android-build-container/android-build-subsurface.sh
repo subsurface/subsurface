@@ -123,10 +123,15 @@ BUILD_TYPE="Release"
 # write version header
 mkdir -p build-android
 cd build-android
-cat > ssrf-version.h <<VEOF
+cat > ssrf-version.h.new <<VEOF
 #define CANONICAL_VERSION_STRING "${VERSION}"
 #define CANONICAL_VERSION_STRING_4 "${VERSION_4}"
 VEOF
+if ! cmp -s ssrf-version.h.new ssrf-version.h 2>/dev/null; then
+    mv ssrf-version.h.new ssrf-version.h
+else
+    rm ssrf-version.h.new
+fi
 
 # configure with Qt6 Android toolchain
 cmake -G Ninja "${BUILDROOT}/src/subsurface" \
