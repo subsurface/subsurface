@@ -7,9 +7,8 @@ on:
       - Ubuntu 20.04 / Qt 5 for AppImage
       - Windows
       - Windows MSVC
-      - Android
+      - Android Qt 6
       - Mac
-      - iOS
     types:
       - completed
 
