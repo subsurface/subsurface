@@ -16,10 +16,44 @@ Now use `local-build.sh` in order to run builds inside the container. This
 mounts the Subsurface source tree as well as the build output trees as
 volumes, ensuring that builds are fully incremental and build artifacts are
 easy to analyze.
-The build artifacts will be in `/some/path/build-android`,
-`/some/path/kirigami-build-android`, `/some/path/googlemaps-build-android`
-and the  output (.apk and if requested, .aab) will be in
+
+The following directories are created as siblings of the source tree and
+persist between runs so that ninja, cmake and the autotools-based subbuilds
+can do incremental work:
+
+- `/some/path/build-android` -- main Subsurface cmake/ninja build tree
+- `/some/path/kirigami-build-android` -- Kirigami build tree
+- `/some/path/googlemaps-android` -- googlemaps source checkout
+- `/some/path/googlemaps-build-android` -- googlemaps Qt plugin build tree
+- `/some/path/libdivecomputer-build-android` -- libdivecomputer build tree
+- `/some/path/install-root-arm64-v8a-android` -- install prefix for the
+  cross-compiled native libraries (OpenSSL, SQLite, libxml2, libxslt, libzip,
+  libgit2, libdivecomputer, Kirigami, googlemaps); seeded on first run from
+  the contents baked into the container image
+
+The signed output (.apk and if requested, .aab) ends up in
 `/some/path/subsurface/output/android`.
+
+### Container image changes and clean rebuilds
+
+When the container image is upgraded -- e.g. because a new Qt or NDK version
+ships -- the existing build trees and install root would be pinned to
+toolchain paths from the old image and would fail in confusing ways. To
+avoid this, `local-build.sh` records the content-addressed ID of the image
+it last used in `install-root-arm64-v8a-android/.image-id`. On every run it
+compares the stamp against the ID of the current image and, if they differ,
+wipes all six directories above and re-seeds the install root from the new
+image before building. The wipe is done inside a throwaway container so it
+works regardless of which user owns the files on the host.
+
+If you ever want to force a full clean rebuild without changing the image,
+just delete the stamp file:
+
+```bash
+rm /some/path/install-root-arm64-v8a-android/.image-id
+```
+
+The next `local-build.sh` invocation will treat it as a fresh start.
 
 If you provide a `.secrets` file in the Subsurface source directory (or a
 location specified in the -secrets argument) with the encoded signing key,
