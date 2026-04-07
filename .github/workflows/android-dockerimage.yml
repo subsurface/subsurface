@@ -14,7 +14,7 @@ jobs:
   android-build-container:
     runs-on: ubuntu-latest
     env:
-      VERSION: 6.10.0 # the version numbers here is based on the Qt version, the third digit is the rev of the docker image
+      VERSION: 6.10.3-1 # the version number is based on the Qt version
 
     steps:
     - uses: actions/checkout@v6
