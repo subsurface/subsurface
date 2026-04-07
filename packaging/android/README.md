@@ -1,11 +1,10 @@
 # Building Subsurface-mobile for Android
 
-## Using the Docker container (recommended)
+Use the pre-built Docker image that contains the NDK, SDK, Qt, and all pre-compiled native dependencies.
 
-The easiest way to build is to use the pre-built Docker image that contains the
-NDK, SDK, Qt, and all pre-compiled native dependencies.
+Initial setup:
 
-```sh
+```bash
 cd /some/path
 git clone https://github.com/subsurface/subsurface
 cd subsurface
@@ -13,35 +12,37 @@ git submodule init
 git submodule update --recursive
 ```
 
-Now use `android-build-subsurface.sh` inside the container. Mount the Subsurface source tree as a volume:
+Now use `local-build.sh` in order to run builds inside the container. This
+mounts the Subsurface source tree as well as the build output trees as
+volumes, ensuring that builds are fully incremental and build artifacts are
+easy to analyze.
+The build artifacts will be in `/some/path/build-android`,
+`/some/path/kirigami-build-android`, `/some/path/googlemaps-build-android`
+and the  output (.apk and if requested, .aab) will be in
+`/some/path/subsurface/output/android`.
+
+If you provide a `.secrets` file in the Subsurface source directory (or a
+location specified in the -secrets argument) with the encoded signing key,
+the outputs will be signed. The format of this file is
+```
+ANDROID_KEYSTORE_BASE64=<base64 encoded key>
+ANDROID_KEYSTORE_PASSWORD=<password>
+ANDROID_KEYSTORE_ALIAS=<keystore alias used>
+```
 
 ```bash
-docker run --rm \
-    -v /path/to/subsurface:/android/src/subsurface \
-    -e BUILDNR=1234 \
-    -e VERSION="6.0.5000" \
-    -e VERSION_4="6.0.5000.3" \
-    android-build-container \
-    bash /android/src/subsurface/scripts/docker/android-build-container/android-build-subsurface.sh
+bash packaging/android/local-build.sh [-secrets <path to secrets file>] [-build-aab]
 ```
 
-After a successful build, the APK is at:
-```
-/android/build-android/android-build/build/outputs/apk/release/android-build-release-unsigned.apk
-```
-
-To extract it from the container, either mount an output directory or use `docker cp`.
-
-Note: since you do not have the release signing key, you need to uninstall
-any official Subsurface-mobile build before installing your own, and vice
-versa.
+Note: if you test your own build on a device, since you do not have the
+release  signing key, you need to uninstall any official Subsurface-mobile
+build before  installing your own, and vice versa.
 
 ## CI workflow
 
 The GitHub Actions workflow (`.github/workflows/android.yml`) runs the same
 Docker-based build, signs the APK/AAB with the project keystore, and uploads
-the artifacts. On pushes to `master` it also publishes to the Google Play
-Store and creates a nightly release.
+the artifacts. On pushes to `master` it also creates a nightly release.
 
 ## Docker image
 
@@ -66,4 +67,5 @@ inside the container and performs these steps:
 1. Build Kirigami and ECM (via `scripts/mobilecomponents.sh`)
 2. Cross-compile libdivecomputer
 3. Configure and build Subsurface with cmake + Ninja
-4. The caller (CI or you) then runs Gradle to produce the APK/AAB
+4. `local-build.sh` (and the CI workflow) then run Gradle to produce the
+APK/AAB and sign them with the keystore.
