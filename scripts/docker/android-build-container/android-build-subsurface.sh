@@ -9,7 +9,7 @@
 # ENV SDK_VERSION=35.0.0
 # ENV ANDROID_PLATFORM=24
 # ENV ANDROID_BUILD_ABI=arm64-v8a
-# ENV QT_VERSION=6.10.2
+# ENV QT_VERSION=<matches the version of the container image>
 # ENV BUILDROOT=/android
 # ENV ANDROID_SDK_ROOT=/opt/android-sdk
 
