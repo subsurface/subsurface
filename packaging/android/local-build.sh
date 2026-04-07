@@ -26,23 +26,48 @@ set -e
 SUBSURFACE_SOURCE="$(cd "$(dirname "$0")/../../" && pwd)"
 cd "${SUBSURFACE_SOURCE}"
 
-SECRETS_FILE="${1:-${SUBSURFACE_SOURCE}/.secrets}"
-if [ ! -f "${SECRETS_FILE}" ]; then
-	echo "Error: ${SECRETS_FILE} not found."
-	echo "Create it with ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, and ANDROID_KEYSTORE_ALIAS."
-	exit 1
-fi
+SECRETS_FILE="${SUBSURFACE_SOURCE}/.secrets"
+BUILD_AAB="0"
 
-# load secrets
-# shellcheck disable=SC1090
-source "${SECRETS_FILE}"
-
-for var in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD ANDROID_KEYSTORE_ALIAS; do
-	if [ -z "${!var}" ]; then
-		echo "Error: ${var} not set in ${SECRETS_FILE}"
-		exit 1
-	fi
+while [ $# -gt 0 ]; do
+	arg="$1"
+	case $arg in
+		-secrets)
+			shift
+			SECRETS_FILE="$1"
+			;;
+		-build-aab)
+			BUILD_AAB="1"
+			;;
+		*)
+			echo "Unknown command line argument $arg"
+			echo "Usage: ${BASH_SOURCE[0]} [-secrets <secrets filename>] [-build-aab]"
+	esac
+	shift
 done
+
+if [ ! -f "${SECRETS_FILE}" ]; then
+	echo "No ${SECRETS_FILE} found, not signing output."
+	ANDROID_KEYSTORE_BASE64=""
+	ANDROID_KEYSTORE_PASSWORD=""
+	ANDROID_KEYSTORE_ALIAS=""
+	KEYSTORE_FILE="/dev/null"
+else
+	# load secrets -- if we have a secrets file, it needs to provide all values
+	# shellcheck disable=SC1090
+	source "${SECRETS_FILE}"
+
+	for var in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD ANDROID_KEYSTORE_ALIAS; do
+		if [ -z "${!var}" ]; then
+			echo "Error: ${var} not set in ${SECRETS_FILE}"
+			exit 1
+		fi
+	done
+	# decode the keystore to a temporary file
+	KEYSTORE_FILE=$(mktemp)
+	trap 'rm -f "${KEYSTORE_FILE}"' EXIT
+	echo "${ANDROID_KEYSTORE_BASE64}" | base64 -d > "${KEYSTORE_FILE}"
+fi
 
 # compute version information
 VERSION=$(scripts/get-version.sh)
@@ -62,18 +87,13 @@ else
 fi
 echo "Using container runtime: ${CONTAINER_RT}"
 
-CONTAINER_IMAGE="docker.io/subsurface/android-build:6.10.0"
+CONTAINER_IMAGE="docker.io/subsurface/android-build:6.10.3-2"
 
 # These must match the values in
 # scripts/docker/android-build-container/Dockerfile
 SDK_VERSION="35.0.0"
 ANDROID_SDK_ROOT="/opt/android-sdk"
 BUILDROOT="/android"
-
-# decode the keystore to a temporary file
-KEYSTORE_FILE=$(mktemp)
-trap 'rm -f "${KEYSTORE_FILE}"' EXIT
-echo "${ANDROID_KEYSTORE_BASE64}" | base64 -d > "${KEYSTORE_FILE}"
 
 # persistent build directories on the host for incremental rebuilds
 BUILD_ANDROID="${SUBSURFACE_SOURCE}/../build-android"
@@ -83,6 +103,10 @@ OUTPUT_DIR="${SUBSURFACE_SOURCE}/output/android"
 mkdir -p "${BUILD_ANDROID}" "${KIRIGAMI_BUILD}" "${GOOGLEMAPS_BUILD}" "${OUTPUT_DIR}"
 
 # build, package, and sign everything in a single container
+#
+# NOTE: this says 'run --rm', but all the state is in the mounted volumes
+#       so this works perfectly for incremental builds and the typical developer
+#       workflows
 ${CONTAINER_RT} run --rm \
 	-v "${SUBSURFACE_SOURCE}:${BUILDROOT}/src/subsurface" \
 	-v "${BUILD_ANDROID}:${BUILDROOT}/build-android" \
@@ -98,47 +122,53 @@ ${CONTAINER_RT} run --rm \
 	-e KS_PASS="${ANDROID_KEYSTORE_PASSWORD}" \
 	-e KS_ALIAS="${ANDROID_KEYSTORE_ALIAS}" \
 	-e APP_ID="${ANDROID_APPLICATION_ID:-}" \
+	-e BUILD_AAB="${BUILD_AAB}" \
 	"${CONTAINER_IMAGE}" \
 	bash -c "
 		set -e
 		bash -x ${BUILDROOT}/src/subsurface/scripts/docker/android-build-container/android-build-subsurface.sh
-
-		echo '=== Building AAB ==='
-		cd ${BUILDROOT}/build-android/android-build
-		GRADLE_PROPS=\"\"
-		if [ -n \"\${APP_ID}\" ]; then
-			GRADLE_PROPS=\"-PsubsurfaceApplicationId=\${APP_ID}\"
+		if [ $BUILD_AAB = 1 ]; then
+			echo '=== Building AAB ==='
+			cd ${BUILDROOT}/build-android/android-build
+			GRADLE_PROPS=\"\"
+			if [ -n \"\${APP_ID}\" ]; then
+				GRADLE_PROPS=\"-PsubsurfaceApplicationId=\${APP_ID}\"
+			fi
+			./gradlew bundleRelease \${GRADLE_PROPS}
+			AAB=\$(find ${BUILDROOT}/build-android/android-build -name '*.aab' | head -1)
+			cp \"\${AAB}\" ${BUILDROOT}/output/Subsurface-mobile-${VERSION}.aab
+			AAB=${BUILDROOT}/output/Subsurface-mobile-${VERSION}.aab
 		fi
-		./gradlew bundleRelease \${GRADLE_PROPS}
-
 		echo '=== Collecting artifacts ==='
 		APK=\$(find ${BUILDROOT}/build-android/android-build -name '*.apk' | head -1)
-		AAB=\$(find ${BUILDROOT}/build-android/android-build -name '*.aab' | head -1)
 		cp \"\${APK}\" ${BUILDROOT}/output/Subsurface-mobile-${VERSION}.apk
-		cp \"\${AAB}\" ${BUILDROOT}/output/Subsurface-mobile-${VERSION}.aab
-
-		echo '=== Signing ==='
-		BT=${ANDROID_SDK_ROOT}/build-tools/${SDK_VERSION}
 		APK=${BUILDROOT}/output/Subsurface-mobile-${VERSION}.apk
-		AAB=${BUILDROOT}/output/Subsurface-mobile-${VERSION}.aab
+		if [ -n \"\${KS_ALIAS}\" ]; then
+			echo '=== Signing ==='
+			BT=${ANDROID_SDK_ROOT}/build-tools/${SDK_VERSION}
 
-		\${BT}/zipalign -P 16 4 \${APK} /tmp/aligned.apk
-		\${BT}/apksigner sign \
-			--ks /tmp/keystore \
-			--ks-pass \"pass:\${KS_PASS}\" \
-			--ks-key-alias \"\${KS_ALIAS}\" \
-			--in /tmp/aligned.apk \
-			--out \${APK}
-
-		jarsigner -sigalg SHA256withRSA -digestalg SHA-256 \
-			-keystore /tmp/keystore \
-			-storepass \"\${KS_PASS}\" \
-			\${AAB} \
-			\"\${KS_ALIAS}\"
-
+			\${BT}/zipalign -P 16 4 \${APK} /tmp/aligned.apk
+			\${BT}/apksigner sign \
+				--ks /tmp/keystore \
+				--ks-pass \"pass:\${KS_PASS}\" \
+				--ks-key-alias \"\${KS_ALIAS}\" \
+				--in /tmp/aligned.apk \
+				--out \${APK}
+			if [ $BUILD_AAB = 1 ]; then
+				jarsigner -sigalg SHA256withRSA -digestalg SHA-256 \
+					-keystore /tmp/keystore \
+					-storepass \"\${KS_PASS}\" \
+					\${AAB} \
+					\"\${KS_ALIAS}\"
+			fi
+		fi
 		chown \${HOST_UID}:\${HOST_GID} ${BUILDROOT}/output/*
 	"
 
 echo "=== Done ==="
-echo "Signed APK: ${OUTPUT_DIR}/Subsurface-mobile-${VERSION}.apk"
-echo "Signed AAB: ${OUTPUT_DIR}/Subsurface-mobile-${VERSION}.aab"
+if [ -n "$ANDROID_KEYSTORE_ALIAS" ]; then
+	echo "Signed APK: ${OUTPUT_DIR}/Subsurface-mobile-${VERSION}.apk"
+	if [ "$BUILD_AAB" = "1" ]; then
+		echo "Signed AAB: ${OUTPUT_DIR}/Subsurface-mobile-${VERSION}.aab"
+	fi
+fi
