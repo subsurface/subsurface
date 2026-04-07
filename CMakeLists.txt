@@ -767,7 +767,9 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	)
 endif()
 
-add_dependencies(subsurface_corelib version)
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
+	add_dependencies(subsurface_corelib version)
+endif()
 
 # add platform specific actions
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")

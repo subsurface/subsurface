@@ -13,13 +13,19 @@ else()
 	set(USING_MSVC FALSE)
 endif()
 
-add_custom_target(
-	version ALL COMMAND ${CMAKE_COMMAND}
-	-D SRC=${CMAKE_BINARY_DIR}/version.h.in
-	-D DST=${CMAKE_BINARY_DIR}/ssrf-version.h
-	-D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
-	-D CMAKE_TOP_SRC_DIR=${CMAKE_SOURCE_DIR}
-	-D CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}
-	-D USING_MSVC=${USING_MSVC}
-	-P ${CMAKE_BINARY_DIR}/version.cmake
-)
+# On Android, ssrf-version.h is generated before cmake runs by
+# scripts/docker/android-build-container/android-build-subsurface.sh, so we
+# don't need (or want) the unconditional custom target — it would re-run on
+# every ninja invocation and risks invalidating the incremental build.
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
+	add_custom_target(
+		version ALL COMMAND ${CMAKE_COMMAND}
+		-D SRC=${CMAKE_BINARY_DIR}/version.h.in
+		-D DST=${CMAKE_BINARY_DIR}/ssrf-version.h
+		-D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
+		-D CMAKE_TOP_SRC_DIR=${CMAKE_SOURCE_DIR}
+		-D CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}
+		-D USING_MSVC=${USING_MSVC}
+		-P ${CMAKE_BINARY_DIR}/version.cmake
+	)
+endif()
