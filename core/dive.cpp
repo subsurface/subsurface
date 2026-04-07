@@ -1081,6 +1081,24 @@ void dive::fixup_dive_dc(struct divecomputer &dc)
 		fake_dc(&dc);
 }
 
+/* CCR dives always have an O2 supply cylinder. If the dive computer
+ * didn't report one (e.g., Shearwater does not include the O2 supply
+ * in its gas list), add a default 100% O2 cylinder. */
+void dive::ensure_o2_cylinder()
+{
+	if (dcs.empty() || dcs[0].divemode != CCR)
+		return;
+	bool has_o2_cyl = std::any_of(cylinders.begin(), cylinders.end(),
+		[](const cylinder_t &cyl) { return cyl.cylinder_use == OXYGEN; });
+	if (!has_o2_cyl) {
+		cylinder_t o2_cyl;
+		o2_cyl.gasmix.o2 = 1000_permille;
+		o2_cyl.cylinder_use = OXYGEN;
+		o2_cyl.type.description = "oxygen";
+		cylinders.push_back(std::move(o2_cyl));
+	}
+}
+
 void dive::fixup_dive()
 {
 	sanitize_cylinder_info(*this);
