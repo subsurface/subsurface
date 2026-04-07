@@ -43,7 +43,11 @@ git_checkout_library() {
 	local version=$2
 	local url=$3
 
-	if [ ! -d "$name" ]; then
+	if [ ! -d "$name" ] || [ -z "$(ls -A "$name" 2>/dev/null)" ]; then
+		# either the directory doesn't exist, or it exists but is empty
+		# (e.g. created by a bind mount on first use); git clone is happy
+		# to clone into an existing empty directory
+		mkdir -p "$name"
 		git clone "$url" "$name" || croak "git clone $url failed"
 	fi
 	pushd "$name" || croak "can't cd into $name"
@@ -175,7 +179,12 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library breeze-icons $CURRENT_BREEZE_ICONS https://github.com/kde/breeze-icons.git
 			;;
 		googlemaps)
-			git_checkout_library googlemaps master https://github.com/Subsurface/googlemaps.git
+			if [[ "$QT_VERSION" =~ ^6 ]] ; then
+				CURRENT_GOOGLEMAPS=qt6-upstream
+			else
+				CURRENT_GOOGLEMAPS=master
+			fi
+			git_checkout_library googlemaps $CURRENT_GOOGLEMAPS https://github.com/Subsurface/googlemaps.git
 			;;
 		hidapi)
 			git_checkout_library hidapi master https://github.com/libusb/hidapi.git
