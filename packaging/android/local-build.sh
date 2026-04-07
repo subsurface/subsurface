@@ -95,12 +95,74 @@ SDK_VERSION="35.0.0"
 ANDROID_SDK_ROOT="/opt/android-sdk"
 BUILDROOT="/android"
 
-# persistent build directories on the host for incremental rebuilds
-BUILD_ANDROID="${SUBSURFACE_SOURCE}/../build-android"
-KIRIGAMI_BUILD="${SUBSURFACE_SOURCE}/../kirigami-build-android"
-GOOGLEMAPS_BUILD="${SUBSURFACE_SOURCE}/../googlemaps-build-android"
+# persistent build directories on the host for incremental rebuilds.
+# Resolve to canonical absolute paths (no '..') -- podman with some storage
+# drivers walks each path component and statfs()es siblings during bind-mount
+# setup, which can fail in confusing ways if ".." appears in the path.
+PARENT_DIR="$(cd "${SUBSURFACE_SOURCE}/.." && pwd)"
+BUILD_ANDROID="${PARENT_DIR}/build-android"
+KIRIGAMI_BUILD="${PARENT_DIR}/kirigami-build-android"
+GOOGLEMAPS_BUILD="${PARENT_DIR}/googlemaps-build-android"
+GOOGLEMAPS_SRC="${PARENT_DIR}/googlemaps-android"
+LIBDC_BUILD="${PARENT_DIR}/libdivecomputer-build-android"
+INSTALL_ROOT="${PARENT_DIR}/install-root-arm64-v8a-android"
 OUTPUT_DIR="${SUBSURFACE_SOURCE}/output/android"
-mkdir -p "${BUILD_ANDROID}" "${KIRIGAMI_BUILD}" "${GOOGLEMAPS_BUILD}" "${OUTPUT_DIR}"
+
+mkdir -p "${BUILD_ANDROID}" "${KIRIGAMI_BUILD}" "${GOOGLEMAPS_BUILD}" \
+	"${GOOGLEMAPS_SRC}" "${LIBDC_BUILD}" "${INSTALL_ROOT}" "${OUTPUT_DIR}"
+
+# Stamp file recording which container image (by content-addressed ID) the
+# persistent build directories were last populated from. If the image changes
+# we throw all of them away and start clean -- a new image may ship a new Qt
+# or NDK, and stale build trees pinned to the old toolchain paths would fail
+# in confusing ways.
+STAMP="${INSTALL_ROOT}/.image-id"
+
+# Make sure the image is present locally so we can read its ID.
+IMAGE_ID=$(${CONTAINER_RT} image inspect --format '{{.Id}}' "${CONTAINER_IMAGE}" 2>/dev/null || true)
+if [ -z "${IMAGE_ID}" ]; then
+	echo "Pulling ${CONTAINER_IMAGE}..."
+	${CONTAINER_RT} pull "${CONTAINER_IMAGE}"
+	IMAGE_ID=$(${CONTAINER_RT} image inspect --format '{{.Id}}' "${CONTAINER_IMAGE}")
+fi
+
+if [ ! -f "${STAMP}" ] || [ "$(cat "${STAMP}" 2>/dev/null)" != "${IMAGE_ID}" ]; then
+	if [ -f "${STAMP}" ]; then
+		echo "Container image changed -- discarding stale build trees for a clean rebuild"
+	else
+		echo "First run -- seeding install-root from container image"
+	fi
+	# The wipe runs *inside* a container rather than on the host because the
+	# files in these directories were created by previous container runs and
+	# may be owned by root (under rootful docker on Linux). Removing them as
+	# the host user would fail with EPERM. Inside a container we are root (or,
+	# under rootless podman, the user-namespace mapping makes us effectively
+	# the owner) and can clean up unconditionally. We mount the parent of the
+	# source tree so a single rm -rf can reach all six directories.
+	${CONTAINER_RT} run --rm \
+		-v "${PARENT_DIR}:/parent" \
+		"${CONTAINER_IMAGE}" \
+		bash -c '
+			rm -rf /parent/build-android \
+			       /parent/kirigami-build-android \
+			       /parent/googlemaps-build-android \
+			       /parent/googlemaps-android \
+			       /parent/libdivecomputer-build-android \
+			       /parent/install-root-arm64-v8a-android
+		'
+	mkdir -p "${INSTALL_ROOT}"
+	${CONTAINER_RT} run --rm \
+		-v "${INSTALL_ROOT}:/host-install-root" \
+		"${CONTAINER_IMAGE}" \
+		bash -c 'cp -a /android/src/install-root-arm64-v8a/. /host-install-root/'
+	echo "${IMAGE_ID}" > "${STAMP}"
+	# The wipe container removed every directory we'll bind-mount into the
+	# main build container below. Recreate the empty ones now -- if we don't,
+	# podman fails to start the build container with a "statfs: no such file
+	# or directory" on the first missing bind source.
+	mkdir -p "${BUILD_ANDROID}" "${KIRIGAMI_BUILD}" "${GOOGLEMAPS_BUILD}" \
+		"${GOOGLEMAPS_SRC}" "${LIBDC_BUILD}"
+fi
 
 # build, package, and sign everything in a single container
 #
@@ -112,6 +174,9 @@ ${CONTAINER_RT} run --rm \
 	-v "${BUILD_ANDROID}:${BUILDROOT}/build-android" \
 	-v "${KIRIGAMI_BUILD}:${BUILDROOT}/src/kirigami-build" \
 	-v "${GOOGLEMAPS_BUILD}:${BUILDROOT}/src/googlemaps-build" \
+	-v "${GOOGLEMAPS_SRC}:${BUILDROOT}/src/googlemaps" \
+	-v "${LIBDC_BUILD}:${BUILDROOT}/libdivecomputer-build" \
+	-v "${INSTALL_ROOT}:${BUILDROOT}/src/install-root-arm64-v8a" \
 	-v "${OUTPUT_DIR}:${BUILDROOT}/output" \
 	-v "${KEYSTORE_FILE}:/tmp/keystore:ro" \
 	-e BUILDNR="${BUILDNR}" \
