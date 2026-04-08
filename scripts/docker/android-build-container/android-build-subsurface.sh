@@ -137,15 +137,45 @@ cmake --build .
 cmake --install .
 
 # next, libdivecomputer
-cd "${SUBSURFACE_SOURCE}"
-if [ ! -f libdivecomputer/configure ]; then
-	cd libdivecomputer && autoreconf -i && cd ..
+#
+# Like mobilecomponents, libdivecomputer rarely needs to re-run. Skip the
+# whole configure/make/make-install dance unless the libdivecomputer source
+# has actually changed -- because `make install` of autotools projects
+# unconditionally rewrites headers and the static lib into ${PREFIX}, which
+# bumps their mtimes and forces ninja to rebuild every subsurface translation
+# unit that includes a libdivecomputer header.
+#
+# We hash the libdivecomputer submodule HEAD (the git SHA captured by the
+# submodule pointer) plus this script itself (so changes to configure flags
+# also force a rebuild). The stamp lives in INSTALL_ROOT, alongside
+# .mobilecomponents-hash, so it gets wiped on container image upgrades.
+LIBDC_STAMP="${ANDROID_INSTALL_PREFIX}/.libdivecomputer-hash"
+LIBDC_HASH=$( ( cd "${SUBSURFACE_SOURCE}/libdivecomputer" && git rev-parse HEAD 2>/dev/null || echo "no-git" ; \
+                cat "${SUBSURFACE_SOURCE}/scripts/docker/android-build-container/android-build-subsurface.sh" \
+              ) | sha256sum | awk '{print $1}')
+
+if [ ! -f "${LIBDC_STAMP}" ] || [ "$(cat "${LIBDC_STAMP}" 2>/dev/null)" != "${LIBDC_HASH}" ]; then
+	echo "=== Building libdivecomputer ==="
+	cd "${SUBSURFACE_SOURCE}"
+	if [ ! -f libdivecomputer/configure ]; then
+		cd libdivecomputer && autoreconf -i && cd ..
+	fi
+	cd "${BUILDROOT}"
+	mkdir -p libdivecomputer-build && cd libdivecomputer-build
+	CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}" "${SUBSURFACE_SOURCE}"/libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
+		--enable-static --disable-shared --enable-examples=no
+	make -j$(nproc) && make install
+	echo "${LIBDC_HASH}" > "${LIBDC_STAMP}"
+	# libdivecomputer's `make install` rewrote headers and the static lib
+	# into ${PREFIX}; subsurface's build.ninja records dependencies on
+	# those, so force a clean reconfigure of the subsurface tree to avoid
+	# spurious rebuild cascades from the bumped mtimes.
+	echo "=== Wiping subsurface build tree to flush stale libdivecomputer mtimes ==="
+	rm -rf "${BUILDROOT}/build-android"
+	mkdir -p "${BUILDROOT}/build-android"
+else
+	echo "=== Skipping libdivecomputer (source unchanged) ==="
 fi
-cd "${BUILDROOT}"
-mkdir -p libdivecomputer-build && cd libdivecomputer-build
-CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}" "${SUBSURFACE_SOURCE}"/libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
-	--enable-static --disable-shared --enable-examples=no
-make -j$(nproc) && make install
 
 cd "${BUILDROOT}"
 
