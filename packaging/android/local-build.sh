@@ -151,11 +151,20 @@ if [ ! -f "${STAMP}" ] || [ "$(cat "${STAMP}" 2>/dev/null)" != "${IMAGE_ID}" ]; 
 			       /parent/install-root-arm64-v8a-android
 		'
 	mkdir -p "${INSTALL_ROOT}"
+	# Seed install-root and write the stamp from inside the container, so the
+	# stamp file ends up with the same (root-owned, under rootful docker)
+	# ownership as everything else in install-root. Writing the stamp from the
+	# host would fail with EACCES under rootful docker because the host user
+	# can't create files inside a directory whose contents the container just
+	# populated as root.
 	${CONTAINER_RT} run --rm \
+		-e IMAGE_ID="${IMAGE_ID}" \
 		-v "${INSTALL_ROOT}:/host-install-root" \
 		"${CONTAINER_IMAGE}" \
-		bash -c 'cp -a /android/src/install-root-arm64-v8a/. /host-install-root/'
-	echo "${IMAGE_ID}" > "${STAMP}"
+		bash -c "
+			cp -a /android/src/install-root-arm64-v8a/. /host-install-root/
+			printf '%s\n' \"\${IMAGE_ID}\" > /host-install-root/.image-id
+		"
 	# The wipe container removed every directory we'll bind-mount into the
 	# main build container below. Recreate the empty ones now -- if we don't,
 	# podman fails to start the build container with a "statfs: no such file
