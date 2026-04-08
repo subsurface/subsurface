@@ -64,19 +64,20 @@ jobs:
         mkdir -p build-android
         ln -s $(pwd)/build-android ${BUILDROOT}/build-android
         bash -x ${GITHUB_WORKSPACE}/scripts/docker/android-build-container/android-build-subsurface.sh
+        find /android/build-android/android-build/ -name "*.apk"
 
     - name: collect APK
       env:
         VERSION: ${{ steps.version_number.outputs.version }}
       run: |
-        APK=$(find build-android/android-build -name "*.apk" | head -1)
+        APK=$(find /android/build-android/android-build -name "*.apk" | head -1)
         cp "${APK}" "${GITHUB_WORKSPACE}/Subsurface-mobile-${VERSION}.apk"
 
     - name: build AAB  # just to validate that that build isn't broken
       env:
         VERSION: ${{ steps.version_number.outputs.version }}
       run: |
-        cd build-android/android-build
+        cd /android/build-android/android-build
         ./gradlew bundleRelease
 
         AAB=$(find . -name "*.aab" | head -1)
