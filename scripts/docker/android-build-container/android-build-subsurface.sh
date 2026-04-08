@@ -163,27 +163,36 @@ else
     rm ssrf-version.h.new
 fi
 
-# configure with Qt6 Android toolchain
-cmake -G Ninja "${BUILDROOT}/src/subsurface" \
-	-DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
-	-DQT_HOST_PATH="${QT_HOST_PATH}" \
-	-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
-	-DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
-	-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
-	-DANDROID_PLATFORM="${ANDROID_PLATFORM}" \
-	-DCMAKE_FIND_ROOT_PATH="${ANDROID_INSTALL_PREFIX}" \
-	-DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
-	-DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable \
-	-DLIBGIT2_FROM_PKGCONFIG=ON \
-	-DFORCE_LIBSSH=OFF \
-	-DNO_DOCS=ON \
-	-DBUILD_TESTS=OFF \
-	-DQT_ANDROID_BUILD_ALL_ABIS=OFF \
-	-DBUILD_WITH_QT6=ON \
-	-DANDROID_BUILDNR="${BUILDNR}" \
-	-DANDROID_VERSION_NAME="${VERSION}" \
-	-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
-
+# configure with Qt6 Android toolchain.
+#
+# Only run cmake explicitly when there is no existing build configured;
+# `cmake --build .` below will trigger a reconfigure on its own (via the
+# RERUN_CMAKE rule that ninja embeds in build.ninja) if and only if cmake's
+# own dependency tracking decides one is needed. Re-invoking cmake here
+# unconditionally would re-run the configure step every build, which writes
+# out build files with fresh mtimes and forces ninja to rebuild a large
+# number of targets even when nothing has actually changed.
+if [ ! -f CMakeCache.txt ]; then
+	cmake -G Ninja "${BUILDROOT}/src/subsurface" \
+		-DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
+		-DQT_HOST_PATH="${QT_HOST_PATH}" \
+		-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
+		-DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
+		-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
+		-DANDROID_PLATFORM="${ANDROID_PLATFORM}" \
+		-DCMAKE_FIND_ROOT_PATH="${ANDROID_INSTALL_PREFIX}" \
+		-DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+		-DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable \
+		-DLIBGIT2_FROM_PKGCONFIG=ON \
+		-DFORCE_LIBSSH=OFF \
+		-DNO_DOCS=ON \
+		-DBUILD_TESTS=OFF \
+		-DQT_ANDROID_BUILD_ALL_ABIS=OFF \
+		-DBUILD_WITH_QT6=ON \
+		-DANDROID_BUILDNR="${BUILDNR}" \
+		-DANDROID_VERSION_NAME="${VERSION}" \
+		-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
+fi
 
 cmake --build .
 
