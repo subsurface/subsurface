@@ -68,17 +68,47 @@ export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
 export TARGET="${TRIPLE}"
 
 # first set up the 3rd party components
+#
+# mobilecomponents.sh clones Kirigami / breeze-icons / extra-cmake-modules,
+# applies our local patches, and builds and installs everything into
+# ANDROID_INSTALL_PREFIX. This is slow and rarely needs to re-run -- only
+# when one of its inputs actually changes. We compute a hash over those
+# inputs and skip the call if the hash matches what we recorded last time.
+#
+# Inputs that affect the result:
+#   - scripts/get-dep-lib.sh (controls which versions are checked out)
+#   - scripts/mobilecomponents.sh itself (build flags, patch loop)
+#   - mobile-widgets/3rdparty/00*.patch (the patches that get git am'd)
+#   - this script itself (the cmake flags we forward to mobilecomponents.sh)
+#
+# Container image / Qt / NDK changes are already covered by the .image-id
+# stamp managed by local-build.sh -- on an image change INSTALL_ROOT is
+# wiped, the stamp file below disappears with it, and we naturally rebuild.
 cd "${SUBSURFACE_SOURCE}"
-KIRIGAMI_BUILDDIR="${BUILDROOT}/src/kirigami-build" \
-KIRIGAMI_INSTALL_PREFIX="${ANDROID_INSTALL_PREFIX}" \
-bash ./scripts/mobilecomponents.sh \
-	-DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
-	-DQT_HOST_PATH="${QT_HOST_PATH}" \
-	-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
-	-DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
-	-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
-	-DANDROID_PLATFORM="${ANDROID_PLATFORM}" \
-	-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
+MC_STAMP="${ANDROID_INSTALL_PREFIX}/.mobilecomponents-hash"
+MC_HASH=$(cat \
+	scripts/get-dep-lib.sh \
+	scripts/mobilecomponents.sh \
+	scripts/docker/android-build-container/android-build-subsurface.sh \
+	mobile-widgets/3rdparty/00*.patch \
+	| sha256sum | awk '{print $1}')
+
+if [ ! -f "${MC_STAMP}" ] || [ "$(cat "${MC_STAMP}" 2>/dev/null)" != "${MC_HASH}" ]; then
+	echo "=== Building Kirigami / ECM (mobilecomponents.sh) ==="
+	KIRIGAMI_BUILDDIR="${BUILDROOT}/src/kirigami-build" \
+	KIRIGAMI_INSTALL_PREFIX="${ANDROID_INSTALL_PREFIX}" \
+	bash ./scripts/mobilecomponents.sh \
+		-DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
+		-DQT_HOST_PATH="${QT_HOST_PATH}" \
+		-DANDROID_SDK_ROOT="${ANDROID_SDK_ROOT}" \
+		-DANDROID_NDK_ROOT="${ANDROID_NDK_ROOT}" \
+		-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
+		-DANDROID_PLATFORM="${ANDROID_PLATFORM}" \
+		-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
+	echo "${MC_HASH}" > "${MC_STAMP}"
+else
+	echo "=== Skipping mobilecomponents.sh (inputs unchanged) ==="
+fi
 
 # build googlemaps geoservices plugin (shared library for Android)
 # Qt6 Android doesn't ship qmake mkspecs, so we use cmake
