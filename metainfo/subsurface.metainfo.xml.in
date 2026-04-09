@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2014 Pedro Neves <nevesdiver@gmail.com> -->
+<!-- Copyright 2014,2026 Pedro Neves <nevesdiver@gmail.com>, Dirk Hohndel <dirk@subsurface-divelog.org> -->
 <component type="desktop-application">
   <id>org.subsurface_divelog.Subsurface</id>
   <metadata_license>CC-BY-SA-3.0</metadata_license>
   <project_license>GPL-2.0-only</project_license>
   <name>Subsurface</name>
-  <summary>Manage and display dive computer data</summary>
+  <summary>Dive logbook application</summary>
   <description>
-    <p>Subsurface is an opensource diving logbook that runs on Linux, Windows and Mac.
-   With this program, users can keep track of their dives by logging dive locations (with GPS coordinates),
-   weights and exposure protection used, divemasters and dive buddies, etc.
-   Subsurface also enables the users to rate their dives and provide additional dive notes.</p>
-    <p>Dives can be downloaded from a variety of dive computers, inserted manually or imported from other programs.
-   A wide array of diving statistics and information is calculated and displayed, like the user's SAC rate,
-   partial pressures of O2, N2 and He, calculated deco information, and many more.</p>
-    <p>The dive profiles (and the tank pressure curves) can be visualized in a comprehensive and clean way, that
-   provides the user with additional information on relative velocity (and momentary air consumption) during the dive.
-   Subsurface also allows the user to print out a detailed log book that includes dive profiles and other relevant information.
-   The program is localized in about 20 languages and well supported by an active developer community.</p>
+    <p>Subsurface is an open source dive logbook for scuba, rebreather, and free divers.
+   Track your dives by logging locations (with GPS coordinates), gear,
+   exposure protection used, divemasters and dive buddies, plus your own notes and ratings for each dive.
+   Subsurface also allows you to plan your dives, by providing a comprehensive dive planner that includes
+   support for multiple gases, deco planning, and more.</p>
+    <p>Dives can be downloaded from a variety of dive computers, entered manually, or imported from other
+    dive log applications.</p>
+    <p>Features:</p>
+    <ul>
+     <li>Detailed dive profiles with tank pressure curves and gas analysis</li>
+    <li>Calculated SAC rate, partial pressures of O2, N2 and He, and decompression information</li>
+    <li>Built-in dive planner</li>
+    <li>Printable detailed log books with profiles and notes</li>
+    <li>Localized in about 20 languages</li>
+    </ul>
   </description>
+  <categories>
+    <category>Education</category>
+    <category>Sports</category>
+  </categories>
   <screenshots>
     <screenshot type="default">
       <caption>The main interface</caption>
@@ -34,7 +42,7 @@
   <url type="faq">https://subsurface-divelog.org/faq/</url>
   <url type="help">https://subsurface-divelog.org/documentation/</url>
   <url type="donation">https://github.com/sponsors/subsurface</url>
-  <url type="translate">https://www.transifex.com/subsurface/subsurface/</url>
+  <url type="translate">https://app.transifex.com/subsurface/subsurface/</url>
   <url type="vcs-browser">https://github.com/subsurface/subsurface</url>
   <url type="contribute">https://github.com/subsurface/subsurface/blob/master/CONTRIBUTING.md</url>
   <launchable type="desktop-id">subsurface.desktop</launchable>
@@ -44,9 +52,12 @@
   <developer id="subsurface-divelog.org">
     <name>The Subsurface development team</name>
   </developer>
-  <update_contact>subsurface@subsurface-divelog.org</update_contact>
   <content_rating type="oars-1.1" />
   <provides>
     <binary>subsurface</binary>
   </provides>
+  <branding>
+    <color type="primary" scheme_preference="light">#ccd8e8</color>
+    <color type="primary" scheme_preference="dark">#21416a</color>
+  </branding>
 </component>
