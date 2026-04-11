@@ -20,7 +20,7 @@ NO_FETCH=false
 while [[ $# -gt 0 ]] ; do
 	case "$1" in
 		--no-fetch) NO_FETCH=true ; shift ;;
-		1|3|4) DIGITS="$1" ; shift ;;
+		1|3|4) [[ -n $DIGITS ]] && croak_usage ; DIGITS="$1" ; shift ;;
 		*) croak_usage ;;
 	esac
 done
