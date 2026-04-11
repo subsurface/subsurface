@@ -13,14 +13,17 @@ croak() {
 	exit 1
 }
 croak_usage() {
-	croak "Usage: $0 [1|3|4]"
+	croak "Usage: $0 [--no-fetch] [1|3|4]"
 }
 
-if [[ $# -gt 1 ]] ; then croak_usage ; fi
-if [[ $# -eq 1 ]] ; then
-	if [[ $1 != "1" && $1 != "3" && $1 != "4" ]] ; then croak_usage ; fi
-	DIGITS="$1"
-fi
+NO_FETCH=false
+while [[ $# -gt 0 ]] ; do
+	case "$1" in
+		--no-fetch) NO_FETCH=true ; shift ;;
+		1|3|4) DIGITS="$1" ; shift ;;
+		*) croak_usage ;;
+	esac
+done
 
 # figure out where we are in the file system
 pushd "$(dirname "$0")/../" &> /dev/null
@@ -38,15 +41,21 @@ if [ ! -f latest-subsurface-buildnumber ] ; then
 	# (b) we have the ability to check out another git repo
 	# in situations where either of these isn't true, it's the caller's
 	# responsibility to ensure that the latest-subsurface-buildnumber file exists
-	if [ ! -d "nightly-builds" ] ; then
-		git clone https://github.com/subsurface/nightly-builds &> /dev/null || croak "failed to clone nightly-builds repo"
+	if [ "$NO_FETCH" != true ] ; then
+		if [ ! -d "nightly-builds" ] ; then
+			git clone https://github.com/subsurface/nightly-builds &> /dev/null || croak "failed to clone nightly-builds repo"
+		fi
+		git -C nightly-builds fetch &> /dev/null
+	fi
+	if ! git -C nightly-builds for-each-ref --format='%(refname)' 'refs/heads/branch-for-*' 'refs/remotes/origin/branch-for-*' 2>/dev/null | grep -q . ; then
+		croak "nightly-builds is not set up correctly (not a git repo or no branch-for-* refs found)"
 	fi
 	pushd nightly-builds &> /dev/null
-	git fetch &> /dev/null
-	LAST_BUILD_BRANCHES=$(git branch -a --sort=-committerdate --list | grep remotes/origin/branch-for | cut -d/ -f3)
+	# scan all branch-for-* refs (works for both local branches and remote-tracking refs)
+	LAST_BUILD_BRANCHES=$(git for-each-ref --sort=-committerdate --format='%(refname:short)' 'refs/heads/branch-for-*' 'refs/remotes/origin/branch-for-*' | sed 's@origin/@@')
 	for LAST_BUILD_BRANCH in $LAST_BUILD_BRANCHES "not-found" ; do
 		LAST_BUILD_SHA=$(cut -d- -f 3 <<< "$LAST_BUILD_BRANCH")
-		git -C "$SUBSURFACE_SOURCE" merge-base --is-ancestor "$LAST_BUILD_SHA" HEAD 2> /dev/null&& break
+		git -C "$SUBSURFACE_SOURCE" merge-base --is-ancestor "$LAST_BUILD_SHA" HEAD 2> /dev/null && break
 	done
 	[ "not-found" = "$LAST_BUILD_BRANCH" ] && croak "can't find a build number for the current working tree"
 	git checkout "$LAST_BUILD_BRANCH" &> /dev/null || croak "failed to check out $LAST_BUILD_BRANCH in nightly-builds"
