@@ -5,8 +5,17 @@
 # this will, however, fail for plain tar balls create via git archive
 
 SCRIPT_DIR="$( cd "${BASH_SOURCE%/*}" ; pwd )"
-VERSION=$(git describe --match "v[0-9]*" --abbrev=12) || VERSION=$(cat "$SCRIPT_DIR"/../.gitversion)
-DATE=$(git log -1 --format="%ct" | xargs -I{} date -d @{} +%Y-%m-%d)
+if [ -f "$SCRIPT_DIR"/../.gitversion ] ; then
+	VERSION=$(cat "$SCRIPT_DIR"/../.gitversion)
+else
+	sha=$(git log -1 --format="%H" 2>/dev/null)
+	if [ "$sha" != "" ] ; then
+		VERSION=$("$SCRIPT_DIR"/get-version-for-changeset.sh "$sha")
+	else
+		VERSION="unknown"
+	fi
+fi
+DATE=$(git log -1 --format="%ct" | xargs -I{} date -d @{} +%Y-%m-%d 2>/dev/null)
 if [ "$DATE" = "" ] ; then
 	DATE=$(cat "$SCRIPT_DIR"/../.gitdate)
 fi
