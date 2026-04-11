@@ -20,7 +20,8 @@ git submodule init
 git submodule update
 cd -
 
-GITVERSION=$(cd subsurface ; git describe --match "v[0-9]*" --abbrev=12 | sed -e 's/-g.*$// ; s/^v//')
+BUILDNUMBER=$(bash subsurface/scripts/get-version.sh 1)
+GITVERSION=$(bash subsurface/scripts/get-version.sh 4)
 GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 GITDATE=$(cd subsurface ; git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
@@ -49,7 +50,7 @@ if [[ ! -d $FOLDER ]]; then
 	cp -a ../../googlemaps .
 
 	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
-	echo $GITVERSION > .gitversion
+	echo "$BUILDNUMBER" > latest-subsurface-buildnumber
 	echo $GITDATE > .gitdate
 	echo $LIBDCREVISION > libdivecomputer/revision
 
