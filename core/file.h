@@ -45,6 +45,7 @@ extern int divesoft_import(const std::string &buffer, struct divelog *log);
 extern int logtrak_import(const std::string &mem, struct divelog *log);
 extern int scubapro_asd_import(const std::string &mem, struct divelog *log);
 extern int fit_file_import(const std::string &buffer, struct divelog *log);
+extern int suunto_json_import(const std::string &buffer, struct divelog *log);
 
 extern int try_to_open_cochran(const char *filename, std::string &mem, struct divelog *log);
 extern int try_to_open_liquivision(const char *filename, std::string &mem, struct divelog *log);

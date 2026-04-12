@@ -572,4 +572,42 @@ void TestParse::importDlfFreedomMix2V2FactoryTest()
 			SUBSURFACE_TEST_DATA "/dives/Freedom_MIX2_header_v2_factory_test_00000001.dlf.xml");
 }
 
+void TestParse::importSuuntoJsonNautic()
+{
+	/* Suunto Nautic, sidemount, two cylinders air, two transmitters.
+	 * Tests the Nautic/Ocean JSON variant (DiveEvents, 0-based GasNumber). */
+	std::string path = std::string(SUBSURFACE_TEST_DATA)
+		+ "/dives/suunto_nautic_sidemount.json";
+
+	QCOMPARE(parse_file(path.c_str(), &divelog), 0);
+	QCOMPARE(save_dives("./test_suunto_nautic_sidemount.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_nautic_sidemount.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_nautic_sidemount.xml");
+}
+
+void TestParse::importSuuntoJsonEonCore()
+{
+	/* Suunto EON Core, single cylinder EAN32, 12 L tank, transmitter.
+	 * Tests the EON JSON variant (Events array, 1-based GasNumber). */
+	std::string path = std::string(SUBSURFACE_TEST_DATA)
+		+ "/dives/suunto_eon_core_nitrox.json";
+
+	QCOMPARE(parse_file(path.c_str(), &divelog), 0);
+	QCOMPARE(save_dives("./test_suunto_eon_core_nitrox.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_eon_core_nitrox.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_eon_core_nitrox.xml");
+}
+
+void TestParse::importSuuntoJsonOcean()
+{
+	/* Suunto Ocean (codename Porvoo), air dive with tank transmitter on gas 0. */
+	std::string path = std::string(SUBSURFACE_TEST_DATA)
+		+ "/dives/suunto_ocean_air.json";
+
+	QCOMPARE(parse_file(path.c_str(), &divelog), 0);
+	QCOMPARE(save_dives("./test_suunto_ocean_air.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_ocean_air.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_air.xml");
+}
+
 QTEST_GUILESS_MAIN(TestParse)

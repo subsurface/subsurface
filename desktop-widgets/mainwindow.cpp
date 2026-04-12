@@ -949,15 +949,19 @@ QString MainWindow::filter_import()
 		    " *.zxu *.zxl"
 		    " *.script"
 		    " *.asd"
+		    " *.fit"
+		    " *.json"
 		    ");;";
 
 	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
 	f += tr("Cochran") + " (*.can);;";
 	f += tr("CSV") + " (*.csv *.CSV);;";
 	f += tr("DiveLogs.de") + " (*.dld);;";
+	f += tr("FIT") + " (*.fit);;";
 	f += tr("JDiveLog") + " (*.jlb);;";
 	f += tr("Liquivision") + " (*.lvd);;";
 	f += tr("Suunto") + " (*.sde *.db);;";
+	f += tr("Suunto JSON") + " (*.json);;";
 	f += tr("UDCF") + " (*.udcf);;";
 	f += tr("UDDF") + " (*.uddf);;";
 	f += tr("XML") + " (*.xml);;";

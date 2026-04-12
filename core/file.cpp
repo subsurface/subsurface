@@ -356,6 +356,11 @@ int parse_file(const char *filename, struct divelog *log)
 	if (fmt && (!strcasecmp(fmt + 1, "asd"))) {
 		return scubapro_asd_import(mem, log);
 	}
+
+	/* Suunto JSON device log (from Suunto app export) */
+	if (fmt && (!strcasecmp(fmt + 1, "json")))
+		if (suunto_json_import(mem, log) > 0)
+			return 0;
 #endif
 
 	return parse_file_buffer(filename, mem, log);
