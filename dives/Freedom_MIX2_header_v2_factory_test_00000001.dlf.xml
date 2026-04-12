@@ -11,6 +11,7 @@
   <temperature water='23.1 C' />
   <surface pressure='0.98 bar' />
   <water salinity='1000 g/l' />
+  <extradata key='Time offset from UTC [s]' value='+3600' />
   <sample time='0:00 min' depth='2.06 m' temp='23.3 C' ndl='1000:00 min' dc_supplied_ppo2='0.2 bar' po2='0.5 bar' bearing='312' />
   <sample time='0:01 min' depth='6.64 m' />
   <sample time='0:02 min' depth='11.72 m' />
