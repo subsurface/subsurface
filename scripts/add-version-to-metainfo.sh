@@ -2,7 +2,7 @@
 #
 # work either when building from git or when building from our hand
 # crafted tar balls for OBS
-# this will, however, fail for plain tar balls create via git archive
+# this will, however, fail for plain tar balls created via git archive
 
 SCRIPT_DIR="$( cd "${BASH_SOURCE%/*}" ; pwd )"
 
