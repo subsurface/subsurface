@@ -48,6 +48,10 @@ private slots:
 	void importDlfFreedomMixV2();
 	void importDlfFreedomMix2V2();
 	void importDlfFreedomMix2V2FactoryTest();
+
+	void importSuuntoJsonNautic();
+	void importSuuntoJsonEonCore();
+	void importSuuntoJsonOcean();
 private:
 	sqlite3 *_sqlite3_handle = NULL;
 };
