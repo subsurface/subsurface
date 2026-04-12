@@ -1024,14 +1024,15 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 	}
 	onClosing: function(close) {
-		// this duplicates the check that is already in the onBackRequested signal handler of the DiveList
 		if (globalDrawer.visible) {
 			globalDrawer.close()
 			close.accepted = false
-		}
-		if (contextDrawer.visible) {
+		} else if (contextDrawer.visible) {
 			contextDrawer.close()
 			close.accepted = false
+		} else {
+			manager.appendTextToLog("DEBUG: onClosing calling manager.quit()")
+			manager.quit()
 		}
 	}
 }
