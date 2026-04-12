@@ -128,6 +128,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	import-shearwater.cpp
 	import-suunto.cpp
 	import-seac.cpp
+	import-suunto-json.cpp
 	interpolate.h
 	libdivecomputer.cpp
 	libdivecomputer.h
