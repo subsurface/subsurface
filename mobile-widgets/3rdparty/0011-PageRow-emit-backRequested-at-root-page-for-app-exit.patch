@@ -1,0 +1,55 @@
+From 940f4f59483ea823ed4555e7286c807eec0e54c4 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Sun, 12 Apr 2026 13:43:39 -0700
+Subject: [PATCH] PageRow: emit backRequested at root page for app exit
+
+This used to work with Kirigami for Qt 5, but now goBack is skipped if
+currentIndex == 0 which prevents us from handling that behavior in an
+app.
+
+If the app doesn't handle the event, un-accept it so it can propagate
+to the window's onClosing handler.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/PageRow.qml | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+
+diff --git a/src/controls/PageRow.qml b/src/controls/PageRow.qml
+index b1befa81..7268cfc7 100644
+--- a/src/controls/PageRow.qml
++++ b/src/controls/PageRow.qml
+@@ -584,6 +586,22 @@ QT.Control {
+                 }
+             }
+         }
++
++        // Root page handling: emit backRequested so the application can
++        // handle "back at root" (e.g. exit the app on Android).  Without
++        // this, the back key is silently consumed when currentIndex is 0.
++        if (currentIndex === 0 && !backEvent.accepted) {
++            try {
++                currentItem.backRequested(backEvent)
++            } catch (error) {}
++
++            if (backEvent.accepted) {
++                if (event) {
++                    event.accepted = true
++                }
++                return
++            }
++        }
+     }
+ 
+     /*!
+@@ -631,6 +649,7 @@ QT.Control {
+ 
+     Keys.onReleased: event => {
+         if (event.key === Qt.Key_Back) {
++            event.accepted = false
+             this.goBack(event)
+         }
+     }
+-- 
+2.43.0
+
