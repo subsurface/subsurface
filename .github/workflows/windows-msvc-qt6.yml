@@ -409,7 +409,7 @@ jobs:
       # But version generation will need a fix first to run in this workflow.
       - name: upload binaries
         if: github.event_name == 'push' && false
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: v${{ steps.version_number.outputs.version }}
           repository: ${{ github.repository_owner }}/nightly-builds
