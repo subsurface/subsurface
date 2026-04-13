@@ -40,7 +40,7 @@ jobs:
     # add a file containing the release title so it can be picked up and listed on the release page on our web server
     - name: publish release
       if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
