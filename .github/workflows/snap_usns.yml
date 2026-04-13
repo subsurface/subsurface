@@ -19,7 +19,7 @@ jobs:
         python-version: '3.11'
 
     - name: Install Python dependencies
-      uses: insightsengineering/pip-action@v2.0.1
+      uses: insightsengineering/pip-action@v2.0.2
       with:
         requirements: .github/workflows/scripts/requirements.txt
 
