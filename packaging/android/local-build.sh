@@ -199,6 +199,7 @@ ${CONTAINER_RT} exec \
 				--ks-key-alias \"\${KS_ALIAS}\" \
 				--in /tmp/aligned.apk \
 				--out \${APK}
+			rm -f /tmp/aligned.apk
 			if [ \${BUILD_AAB} = 1 ]; then
 				jarsigner -sigalg SHA256withRSA -digestalg SHA-256 \
 					-keystore /tmp/keystore \
