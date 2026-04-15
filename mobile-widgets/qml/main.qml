@@ -1023,6 +1023,20 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			showDownloadForPluggedInDevice()
 		}
 	}
+	// Android 13+ predictive back navigates the page stack (changing
+	// currentIndex) BEFORE delivering the Key_Back / close event to QML.
+	// This means onClosing cannot distinguish "user was at root and wants
+	// to exit" from "user was deeper and just navigated back" by looking
+	// at currentIndex alone. Track the timestamp of the last navigation
+	// so onClosing can tell the two apart.
+	property real lastPageNavigationTime: 0
+	Connections {
+		target: pageStack
+		function onCurrentIndexChanged() {
+			lastPageNavigationTime = Date.now()
+		}
+	}
+
 	onClosing: function(close) {
 		if (globalDrawer.visible) {
 			globalDrawer.close()
@@ -1030,8 +1044,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		} else if (contextDrawer.visible) {
 			contextDrawer.close()
 			close.accepted = false
+		} else if (Date.now() - lastPageNavigationTime < 500) {
+			// The page stack just changed — this close event is a
+			// side-effect of Android's predictive back animation
+			// navigating away from a deeper page, not a "quit from
+			// root" gesture. Reject it.
+			close.accepted = false
 		} else {
-			manager.appendTextToLog("DEBUG: onClosing calling manager.quit()")
 			manager.quit()
 		}
 	}

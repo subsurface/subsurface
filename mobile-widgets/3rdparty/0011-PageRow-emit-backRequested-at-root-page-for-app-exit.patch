@@ -1,55 +1,45 @@
 From 940f4f59483ea823ed4555e7286c807eec0e54c4 Mon Sep 17 00:00:00 2001
 From: Dirk Hohndel <dirk@hohndel.org>
 Date: Sun, 12 Apr 2026 13:43:39 -0700
-Subject: [PATCH] PageRow: emit backRequested at root page for app exit
+Subject: [PATCH] PageRow: close window when back has nowhere to navigate
 
-This used to work with Kirigami for Qt 5, but now goBack is skipped if
-currentIndex == 0 which prevents us from handling that behavior in an
-app.
+On Android 13+, the system back gesture is intercepted by Qt's
+OnBackInvokedCallback, which converts it to a Key_Back event. If no
+QML handler accepts the event, it is simply dropped -- it does NOT
+trigger the window's onClosing handler or Activity.finish(), because
+the callback already consumed the gesture at the OS level.
 
-If the app doesn't handle the event, un-accept it so it can propagate
-to the window's onClosing handler.
+Previously, Keys.onReleased always auto-accepted Key_Back, so goBack()
+silently swallowed the event even when it had nowhere to navigate
+(currentIndex already 0, no layers to pop). This made it impossible to
+exit the app via the back button.
+
+Fix by un-accepting the event before calling goBack(). If goBack()
+navigates, it sets event.accepted = true. If it doesn't (root page,
+nothing to do), explicitly close the window so the application's
+onClosing handler can decide whether to quit.
 
 Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
 ---
- src/controls/PageRow.qml | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ src/controls/PageRow.qml | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/src/controls/PageRow.qml b/src/controls/PageRow.qml
 index b1befa81..7268cfc7 100644
 --- a/src/controls/PageRow.qml
 +++ b/src/controls/PageRow.qml
-@@ -584,6 +586,22 @@ QT.Control {
-                 }
-             }
-         }
-+
-+        // Root page handling: emit backRequested so the application can
-+        // handle "back at root" (e.g. exit the app on Android).  Without
-+        // this, the back key is silently consumed when currentIndex is 0.
-+        if (currentIndex === 0 && !backEvent.accepted) {
-+            try {
-+                currentItem.backRequested(backEvent)
-+            } catch (error) {}
-+
-+            if (backEvent.accepted) {
-+                if (event) {
-+                    event.accepted = true
-+                }
-+                return
-+            }
-+        }
-     }
- 
-     /*!
-@@ -631,6 +649,7 @@ QT.Control {
- 
+@@ -631,7 +631,11 @@ QT.Control {
+
      Keys.onReleased: event => {
          if (event.key === Qt.Key_Back) {
 +            event.accepted = false
              this.goBack(event)
++            if (!event.accepted) {
++                this.Window.window?.close()
++            }
          }
      }
--- 
+
+--
 2.43.0
 
