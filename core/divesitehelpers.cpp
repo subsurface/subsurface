@@ -78,6 +78,8 @@ static QJsonObject doAsyncRESTGetRequest(const QString& url, int msTimeout)
 /// Performs a reverse-geo-lookup of the coordinates and returns the taxonomy data.
 taxonomy_data reverseGeoLookup(degrees_t latitude, degrees_t longitude)
 {
+	// If this fails again, check https://geonames.org/export/web-services.html for the correct
+	// way to do this, this provider is also running a number of faulty endpoints.
 	const QString geonamesNearbyURL = QStringLiteral("https://secure.geonames.org/findNearbyJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
 	const QString geonamesNearbyPlaceNameURL = QStringLiteral("https://secure.geonames.org/findNearbyPlaceNameJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
 	const QString geonamesOceanURL = QStringLiteral("https://secure.geonames.org/oceanJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
