@@ -5,17 +5,18 @@
 #
 
 %define latestVersion 0.0.0.0
+%define packageRevision 1
 
 Name:           subsurface
 Version:	%latestVersion
-Release:        1%{?dist}
+Release:        %packageRevision%{?dist}
 
 Summary:        SUMMARY
 
 License:        GPL v2
 Url:            http://subsurface-divelog.org
 
-Source:		subsurface-%latestVersion.orig.tar.xz
+Source:		subsurface-%latestVersion.orig-%packageRevision.tar.xz
 
 Group:          Productivity/Other
 
