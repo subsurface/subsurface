@@ -94,4 +94,13 @@ android {
            (e.g. Android 11) when they are not extracted. */
         jniLibs.useLegacyPackaging = true
     }
+
+    buildTypes {
+        release {
+            // The subsurfaceDebuggable property controls the android:debuggable
+            // manifest flag WITHOUT switching to gradle's debug build variant
+            // (which uses less aggressive ZIP compression, inflating the APK).
+            debuggable project.findProperty("subsurfaceDebuggable")?.toBoolean() ?: false
+        }
+    }
 }

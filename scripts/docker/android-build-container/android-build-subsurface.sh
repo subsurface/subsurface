@@ -179,7 +179,10 @@ fi
 
 cd "${BUILDROOT}"
 
-BUILD_TYPE="Release"
+# Keep native builds optimized; Android install/downgrade behavior depends on
+# the Gradle APK variant (debug/release), not on CMake build type.
+APK_BUILD_TYPE="${BUILD_TYPE:-release}"
+CMAKE_BUILD_TYPE="Release"
 # write version header
 mkdir -p build-android
 cd build-android
@@ -211,7 +214,7 @@ if [ ! -f CMakeCache.txt ]; then
 		-DANDROID_ABI="${ANDROID_BUILD_ABI}" \
 		-DANDROID_PLATFORM="${ANDROID_PLATFORM}" \
 		-DCMAKE_FIND_ROOT_PATH="${ANDROID_INSTALL_PREFIX}" \
-		-DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
+		-DCMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}" \
 		-DSUBSURFACE_TARGET_EXECUTABLE=MobileExecutable \
 		-DLIBGIT2_FROM_PKGCONFIG=ON \
 		-DFORCE_LIBSSH=OFF \
@@ -225,4 +228,21 @@ if [ ! -f CMakeCache.txt ]; then
 fi
 
 cmake --build .
+
+# Strip debug symbols from native libraries to minimize APK size.
+# This must happen after cmake (which copies .so files into android-build/)
+# but before gradle (which packages them into the APK).
+echo "=== Stripping debug symbols from native libraries ==="
+find "${BUILDROOT}/build-android/android-build" -name '*.so' -type f -exec "${STRIP}" --strip-debug {} \;
+
+# Build APK with the appropriate gradle variant
+# The build type (debug/release) affects the APK's debuggable flag and whether version downgrades are allowed
+cd "${BUILDROOT}/build-android/android-build"
+if [ "${APK_BUILD_TYPE}" = "debug" ] || [ "${APK_BUILD_TYPE}" = "Debug" ]; then
+	echo "=== Building Debug APK ==="
+	./gradlew assembleDebug
+else
+	echo "=== Building Release APK ==="
+	./gradlew assembleRelease
+fi
 
