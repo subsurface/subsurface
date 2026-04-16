@@ -64,6 +64,8 @@ while [ $# -gt 0 ]; do
 		*)
 			echo "Unknown command line argument $arg"
 			echo "Usage: ${BASH_SOURCE[0]} [-secrets <secrets filename>] [-build-aab] [-debug | -release]"
+			exit 1
+			;;
 	esac
 	shift
 done
@@ -112,10 +114,8 @@ echo "Using container runtime: ${CONTAINER_RT}"
 CONTAINER_IMAGE="docker.io/subsurface/android-build:6.10.3-2"
 CONTAINER_NAME="subsurface-android-build"
 
-# These must match the values in
+# Must match the BUILDROOT value in
 # scripts/docker/android-build-container/Dockerfile
-SDK_VERSION="35.0.0"
-ANDROID_SDK_ROOT="/opt/android-sdk"
 BUILDROOT="/android"
 
 OUTPUT_DIR="${SUBSURFACE_SOURCE}/output/android"
@@ -171,6 +171,9 @@ ${CONTAINER_RT} start "${CONTAINER_NAME}" >/dev/null
 ${CONTAINER_RT} cp "${KEYSTORE_FILE}" "${CONTAINER_NAME}:/tmp/keystore"
 
 # --- Run the build ---
+# All build logic (compile, strip, gradle, collect artifacts, sign, chown)
+# lives in android-build-subsurface.sh. Running it directly avoids fragile
+# nested quoting that bash -c "..." requires.
 ${CONTAINER_RT} exec \
 	-e BUILDNR="${BUILDNR}" \
 	-e VERSION="${VERSION}" \
@@ -183,59 +186,7 @@ ${CONTAINER_RT} exec \
 	-e BUILD_AAB="${BUILD_AAB}" \
 	-e BUILD_TYPE="${BUILD_TYPE}" \
 	"${CONTAINER_NAME}" \
-	bash -c "
-		set -e
-		bash -x ${BUILDROOT}/src/subsurface/scripts/docker/android-build-container/android-build-subsurface.sh
-		APK_PATTERN='*-release.apk'
-		if [ \"\${BUILD_TYPE}\" = \"debug\" ]; then
-			APK_PATTERN='*-debug.apk'
-		fi
-		if [ \${BUILD_AAB} = 1 ]; then
-			echo '=== Building AAB ==='
-			cd ${BUILDROOT}/build-android/android-build
-			GRADLE_PROPS=\"\"
-			if [ -n \"\${APP_ID}\" ]; then
-				GRADLE_PROPS=\"-PsubsurfaceApplicationId=\${APP_ID}\"
-			fi
-			if [ \"\${BUILD_TYPE}\" = \"debug\" ]; then
-				./gradlew bundleDebug \${GRADLE_PROPS}
-			else
-				./gradlew bundleRelease \${GRADLE_PROPS}
-			fi
-			AAB=\$(find ${BUILDROOT}/build-android/android-build -name '*.aab' | head -1)
-			cp \"\${AAB}\" ${BUILDROOT}/output/Subsurface-mobile-${VERSION}.aab
-			AAB=${BUILDROOT}/output/Subsurface-mobile-${VERSION}.aab
-		fi
-		echo '=== Collecting artifacts ==='
-		APK=\$(find ${BUILDROOT}/build-android/android-build -name \"\${APK_PATTERN}\" ! -name '*-unsigned.apk' | head -1)
-		if [ -z \"\${APK}\" ]; then
-			echo \"Error: Unable to locate APK matching pattern \${APK_PATTERN}\"
-			exit 1
-		fi
-		cp \"\${APK}\" ${BUILDROOT}/output/Subsurface-mobile-${VERSION}.apk
-		APK=${BUILDROOT}/output/Subsurface-mobile-${VERSION}.apk
-		if [ -n \"\${KS_ALIAS}\" ]; then
-			echo '=== Signing ==='
-			BT=${ANDROID_SDK_ROOT}/build-tools/${SDK_VERSION}
-
-			\${BT}/zipalign -P 16 4 \${APK} /tmp/aligned.apk
-			\${BT}/apksigner sign \
-				--ks /tmp/keystore \
-				--ks-pass \"pass:\${KS_PASS}\" \
-				--ks-key-alias \"\${KS_ALIAS}\" \
-				--in /tmp/aligned.apk \
-				--out \${APK}
-			rm -f /tmp/aligned.apk
-			if [ \${BUILD_AAB} = 1 ]; then
-				jarsigner -sigalg SHA256withRSA -digestalg SHA-256 \
-					-keystore /tmp/keystore \
-					-storepass \"\${KS_PASS}\" \
-					\${AAB} \
-					\"\${KS_ALIAS}\"
-			fi
-		fi
-		chown \${HOST_UID}:\${HOST_GID} ${BUILDROOT}/output/*
-	"
+	bash -ex "${BUILDROOT}/src/subsurface/scripts/docker/android-build-container/android-build-subsurface.sh"
 
 # Stop the container (keeps it around for the next incremental build).
 ${CONTAINER_RT} stop "${CONTAINER_NAME}" >/dev/null
