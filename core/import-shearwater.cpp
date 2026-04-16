@@ -229,7 +229,7 @@ static int shearwater_dive(void *param, int, char **data, char **)
 	dive_start(state);
 	state->cur_dive->number = atoi(data[0]);
 
-	state->cur_dive->when = (time_t)(atol(data[1]));
+	state->cur_dive->set_time_local((time_t)(atol(data[1])));
 
 	long int dive_id = atol(data[11]);
 
@@ -355,7 +355,7 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	dive_start(state);
 	state->cur_dive->number = atoi(data[0]);
 
-	state->cur_dive->when = (time_t)(atol(data[1]));
+	state->cur_dive->set_time_local((time_t)(atol(data[1])));
 
 	long int dive_id = atol(data[11]);
 	if (data[12])

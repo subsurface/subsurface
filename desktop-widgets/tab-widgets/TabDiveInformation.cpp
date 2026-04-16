@@ -167,7 +167,7 @@ void TabDiveInformation::updateProfile()
 // Update fields that depend on start of dive
 void TabDiveInformation::updateWhen()
 {
-	timestamp_t surface_interval = divelog.dives.get_surface_interval(parent.currentDive->when);
+	timestamp_t surface_interval = divelog.dives.get_surface_interval(parent.currentDive->get_time());
 	if (surface_interval >= 0)
 		ui->surfaceIntervalText->setText(get_dive_surfint_string(surface_interval, tr("d"), tr("h"), tr("min")));
 	else
