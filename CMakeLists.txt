@@ -61,6 +61,9 @@ option(BUILD_TESTS "Build the tests" OFF)
 # Option whether we should try to build against Qt6, if it is available
 option(BUILD_WITH_QT6 "try to build against Qt6 (incomplete)" OFF)
 
+# Option to indicate whether this is a build run on Flathub
+option(FLATHUB_BUILD "customize build for Flathub)" OFF)
+
 SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable, MobileExecutable, or DownloaderExecutable")
 LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable" "DownloaderExecutable")
 SET_PROPERTY(CACHE SUBSURFACE_TARGET_EXECUTABLE PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_EXECUTABLES})
@@ -1232,7 +1235,9 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(CODE "execute_process(COMMAND sh ${CMAKE_SOURCE_DIR}/scripts/add-version-to-metainfo.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})")
 	install(FILES metainfo/subsurface.metainfo.xml DESTINATION share/metainfo)
 	install(FILES icons/subsurface-icon.svg DESTINATION share/icons/hicolor/scalable/apps)
-	install(FILES icons/org.subsurface_divelog.Subsurface.svg DESTINATION share/icons/hicolor/scalable/apps)
+	if (FLATHUB_BUILD)
+		install(FILES icons/org.subsurface_divelog.Subsurface.svg DESTINATION share/icons/hicolor/scalable/apps)
+	endif()
 	if(BUILD_DOCS OR INSTALL_DOCS)
 		install(DIRECTORY Documentation/images DESTINATION share/subsurface/Documentation)
 		install(FILES ${DOCFILES} DESTINATION share/subsurface/Documentation)
