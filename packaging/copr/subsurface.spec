@@ -16,7 +16,7 @@ Summary:        SUMMARY
 License:        GPL v2
 Url:            http://subsurface-divelog.org
 
-Source:		subsurface-%latestVersion.orig-%packageRevision.tar.xz
+Source:		subsurface-%latestVersion-%packageRevision.orig.tar.xz
 
 Group:          Productivity/Other
 

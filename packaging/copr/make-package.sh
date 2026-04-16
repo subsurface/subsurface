@@ -89,6 +89,6 @@ cd "$HOME"/rpmbuild
 # shellcheck disable=SC2002
 cat "$TOPDIR"/subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $GITVERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/;s/%define packageRevision.*/%define packageRevision $PACKAGEREVISION/" > SPECS/subsurface.spec
 echo "* $CHANGELOGDATE Subsurface CI <subsurface@subsurface-divelog.org> - $GITVERSION" >> SPECS/subsurface.spec
-echo "- new upstream release $GITVERSION" >> SPECS/subsurface.specrpmbuild --verbose -bs "$(pwd)/SPECS/subsurface.spec"
+echo "- new upstream release $GITVERSION" >> SPECS/subsurface.spec
 rpmbuild --verbose -bs "$(pwd)/SPECS/subsurface.spec"
 copr build --nowait $REPO "$(pwd)/SRPMS/subsurface-$GITVERSION-$PACKAGEREVISION".fc*.src.rpm
