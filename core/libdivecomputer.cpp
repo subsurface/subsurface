@@ -894,6 +894,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		return false;
 	}
 
+	dive->ensure_o2_cylinder();
+
 	/* Various libdivecomputer interface fixups */
 	if (dive->dcs[0].airtemp.mkelvin == 0 && first_temp_is_air && !dive->dcs[0].samples.empty()) {
 		dive->dcs[0].airtemp = dive->dcs[0].samples[0].temperature;
