@@ -189,7 +189,9 @@ jobs:
           exit 0
         fi
 
+        # With immutable releases enabled, request GitHub to recompute the
+        # repository 'latest' release when publishing this draft.
         gh api --method PATCH repos/$TARGET_REPO/releases/$draft_id \
-          -f draft=false -f prerelease=false >/dev/null
+          -f draft=false -f prerelease=false -f make_latest=legacy >/dev/null
 
         echo "Published release $TAG in $TARGET_REPO."
