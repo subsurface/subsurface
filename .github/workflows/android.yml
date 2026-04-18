@@ -60,6 +60,7 @@ jobs:
         BUILDNR: ${{ steps.version_number.outputs.buildnr }}
         VERSION: ${{ steps.version_number.outputs.version }}
         VERSION_4: ${{ steps.version_number.outputs.version_4 }}
+        BUILD_TYPE: ${{ github.event_name == 'pull_request' && 'debug' || 'release' }}
       run: |
         mkdir -p build-android
         ln -s $(pwd)/build-android ${BUILDROOT}/build-android
