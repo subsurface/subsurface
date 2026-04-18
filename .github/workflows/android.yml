@@ -60,10 +60,11 @@ jobs:
         BUILDNR: ${{ steps.version_number.outputs.buildnr }}
         VERSION: ${{ steps.version_number.outputs.version }}
         VERSION_4: ${{ steps.version_number.outputs.version_4 }}
+        BUILD_TYPE: ${{ github.event_name == 'pull_request' && 'debug' || 'release' }}
       run: |
         mkdir -p build-android
         ln -s $(pwd)/build-android ${BUILDROOT}/build-android
-        bash -x ${GITHUB_WORKSPACE}/scripts/docker/android-build-container/android-build-subsurface.sh
+        bash -x ${GITHUB_WORKSPACE}/packaging/android/in-container-build.sh
         find /android/build-android/android-build/ -name "*.apk"
 
     - name: collect APK

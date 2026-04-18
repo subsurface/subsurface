@@ -95,7 +95,7 @@ pushed to Docker Hub as `subsurface/android-build:<tag>`.
 
 ## Build script overview
 
-`scripts/docker/android-build-container/android-build-subsurface.sh` runs
+`packaging/android/in-container-build.sh` runs
 inside the container and performs these steps:
 
 1. Build Kirigami and ECM (via `scripts/mobilecomponents.sh`)
