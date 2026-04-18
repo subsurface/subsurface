@@ -14,7 +14,7 @@ else()
 endif()
 
 # On Android, ssrf-version.h is generated before cmake runs by
-# scripts/docker/android-build-container/android-build-subsurface.sh, so we
+# packaging/android/in-container-build.sh, so we
 # don't need (or want) the unconditional custom target — it would re-run on
 # every ninja invocation and risks invalidating the incremental build.
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
