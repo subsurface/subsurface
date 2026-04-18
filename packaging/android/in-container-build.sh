@@ -90,7 +90,7 @@ MC_STAMP="${ANDROID_INSTALL_PREFIX}/.mobilecomponents-hash"
 MC_HASH=$(cat \
 	scripts/get-dep-lib.sh \
 	scripts/mobilecomponents.sh \
-	scripts/docker/android-build-container/android-build-subsurface.sh \
+	packaging/android/in-container-build.sh \
 	mobile-widgets/3rdparty/00*.patch \
 	| sha256sum | awk '{print $1}')
 
@@ -152,7 +152,7 @@ cmake --install .
 # .mobilecomponents-hash, so it gets wiped on container image upgrades.
 LIBDC_STAMP="${ANDROID_INSTALL_PREFIX}/.libdivecomputer-hash"
 LIBDC_HASH=$( ( cd "${SUBSURFACE_SOURCE}/libdivecomputer" && git rev-parse HEAD 2>/dev/null || echo "no-git" ; \
-                cat "${SUBSURFACE_SOURCE}/scripts/docker/android-build-container/android-build-subsurface.sh" \
+                cat "${SUBSURFACE_SOURCE}/packaging/android/in-container-build.sh" \
               ) | sha256sum | awk '{print $1}')
 
 if [ ! -f "${LIBDC_STAMP}" ] || [ "$(cat "${LIBDC_STAMP}" 2>/dev/null)" != "${LIBDC_HASH}" ]; then

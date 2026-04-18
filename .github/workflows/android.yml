@@ -63,7 +63,7 @@ jobs:
       run: |
         mkdir -p build-android
         ln -s $(pwd)/build-android ${BUILDROOT}/build-android
-        bash -x ${GITHUB_WORKSPACE}/scripts/docker/android-build-container/android-build-subsurface.sh
+        bash -x ${GITHUB_WORKSPACE}/packaging/android/in-container-build.sh
         find /android/build-android/android-build/ -name "*.apk"
 
     - name: collect APK
