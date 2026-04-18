@@ -172,7 +172,7 @@ ${CONTAINER_RT} cp "${KEYSTORE_FILE}" "${CONTAINER_NAME}:/tmp/keystore"
 
 # --- Run the build ---
 # All build logic (compile, strip, gradle, collect artifacts, sign, chown)
-# lives in android-build-subsurface.sh. Running it directly avoids fragile
+# lives in in-container-build.sh. Running it directly avoids fragile
 # nested quoting that bash -c "..." requires.
 ${CONTAINER_RT} exec \
 	-e BUILDNR="${BUILDNR}" \
@@ -186,7 +186,7 @@ ${CONTAINER_RT} exec \
 	-e BUILD_AAB="${BUILD_AAB}" \
 	-e BUILD_TYPE="${BUILD_TYPE}" \
 	"${CONTAINER_NAME}" \
-	bash -ex "${BUILDROOT}/src/subsurface/scripts/docker/android-build-container/android-build-subsurface.sh"
+	bash -ex "${BUILDROOT}/src/subsurface/packaging/android/in-container-build.sh"
 
 # Stop the container (keeps it around for the next incremental build).
 ${CONTAINER_RT} stop "${CONTAINER_NAME}" >/dev/null
