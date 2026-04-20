@@ -38,7 +38,14 @@ static int debugCounter;
 	timer.start();							\
 									\
 	do {								\
-		QCoreApplication::processEvents(QEventLoop::AllEvents, ms); \
+		/* Process events to receive BLE signals.		\
+		 * ExcludeUserInputEvents avoids dispatching		\
+		 * unrelated UI events on this worker thread, which	\
+		 * can crash when deleteLater'd objects get their	\
+		 * deferred deletes processed with wrong thread		\
+		 * affinity. */						\
+		QCoreApplication::processEvents(			\
+			QEventLoop::ExcludeUserInputEvents, ms);	\
 		if (expression)						\
 			break;						\
 		QThread::msleep(10);					\
