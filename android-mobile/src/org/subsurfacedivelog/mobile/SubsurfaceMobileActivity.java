@@ -180,7 +180,16 @@ public class SubsurfaceMobileActivity extends QtActivity
 			return;
 		}
 		Log.i(TAG + " processIntent device name", device.getDeviceName());
-		setUsbDevice(device);
+		try {
+			setUsbDevice(device);
+		} catch (UnsatisfiedLinkError e) {
+			// The native library may not be fully loaded yet (observed on
+			// Android 16 Beta). Defer the intent and let checkPendingIntents()
+			// process it once the native side is ready.
+			Log.w(TAG + " processIntent", "native not ready, deferring intent", e);
+			isIntentPending = true;
+			isInitialized = false;
+		}
 	} // processIntent
 
 
