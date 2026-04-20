@@ -10,6 +10,19 @@ DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o)
 	connect(&thread, &QThread::finished, this, &DiveImportedModel::downloadThreadFinished);
 }
 
+DiveImportedModel::~DiveImportedModel()
+{
+	// Qt 6 calls qFatal() in the QThread destructor if the thread is still running.
+	// So wait until the download is finished (and on BLE that can take a REALLY long
+	// time... we might want to add a way to actually cleanly shut down the thread
+	// instead).
+	// This should prevent some of the Android reports of "crash on exit"
+	if (thread.isRunning()) {
+		thread.requestInterruption();
+		thread.wait();
+	}
+}
+
 int DiveImportedModel::columnCount(const QModelIndex&) const
 {
 	return 3;
