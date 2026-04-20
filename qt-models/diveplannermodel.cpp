@@ -752,6 +752,8 @@ void DivePlannerPointsModel::setReserveGas(int reserve)
 void DivePlannerPointsModel::setDropStoneMode(bool value)
 {
 	qPrefDivePlanner::set_drop_stone_mode(value);
+	if (divepoints.isEmpty())
+		return;
 	if (prefs.drop_stone_mode) {
 	/* Remove the first entry if we enable drop_stone_mode */
 		if (rowCount() >= 2) {
