@@ -872,6 +872,18 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dc_parser_destroy(parser);
 
 	/*
+	 * If the dive parser didn't give us serial/firmware as string fields,
+	 * fall back to the numeric devinfo values from DC_EVENT_DEVINFO.
+	 * These are available for virtually all dive computers.
+	 */
+	if (dive->dcs[0].serial.empty() && devdata->devinfo.serial) {
+		dive->dcs[0].serial = std::to_string(devdata->devinfo.serial);
+		dive->dcs[0].deviceid = calculate_string_hash(dive->dcs[0].serial.c_str());
+	}
+	if (dive->dcs[0].fw_version.empty() && devdata->devinfo.firmware)
+		dive->dcs[0].fw_version = std::to_string(devdata->devinfo.firmware);
+
+	/*
 	 * Save off fingerprint data.
 	 *
 	 * NOTE! We do this after parsing the dive fully, so that
