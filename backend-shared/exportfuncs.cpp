@@ -47,7 +47,7 @@ static QString profileText(const struct dive &dive)
 
 	if (dive.dive_site && dive.dive_site->name.length() > 0)
 		text += "🗺 " + QString::fromStdString(dive.dive_site->name) + " \n";
-	if (dive.when) {
+	if (dive.get_time_local()) {
 		text += "🗓 " + formatDiveDateTime(&dive) + "\n";
 	}
 	text += "⏱: " + formatDiveDuration(&dive) + "\n";
@@ -172,7 +172,7 @@ void export_TeX(const char *filename, bool selected_only, bool plain, ExportCall
 		cb.setProgress(done++ * 1000 / todo);
 		exportProfile(*profile, *dive, texdir.filePath(QString("profile%1.png").arg(dive->number)), false, 800, 600);
 		struct tm tm;
-		utc_mkdate(dive->when, &tm);
+		utc_mkdate(dive->get_time_local(), &tm);
 
 		std::string country;
 		dive_site *site = dive->dive_site;
