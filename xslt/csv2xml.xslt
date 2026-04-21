@@ -194,16 +194,16 @@
             </xsl:if>
 
             <xsl:if test="string-length($Firmware) &gt; 0">
-              <extradata key="Firmware version">
-                <xsl:attribute name="Value">
+              <extradata key="FW Version">
+                <xsl:attribute name="value">
                   <xsl:value-of select="$Firmware"/>
                 </xsl:attribute>
               </extradata>
             </xsl:if>
 
             <xsl:if test="string-length($Serial) &gt; 0">
-              <extradata key="Serial number">
-                <xsl:attribute name="Value">
+              <extradata key="Serial">
+                <xsl:attribute name="value">
                   <xsl:value-of select="$Serial"/>
                 </xsl:attribute>
               </extradata>
@@ -211,7 +211,7 @@
 
             <xsl:if test="string-length($GF) &gt; 0">
               <extradata key="Gradient factors">
-                <xsl:attribute name="Value">
+                <xsl:attribute name="value">
                   <xsl:value-of select="$GF"/>
                 </xsl:attribute>
               </extradata>
