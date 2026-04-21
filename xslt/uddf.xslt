@@ -470,14 +470,14 @@
           </extradata>
         </xsl:if>
         <xsl:if test="/uddf/diver/owner/equipment/divecomputer/serialnumber">
-          <extradata key="Serial Number">
+          <extradata key="Serial">
             <xsl:attribute name="value">
               <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/serialnumber"/>
             </xsl:attribute>
           </extradata>
         </xsl:if>
         <xsl:if test="/uddf/diver/owner/equipment/divecomputer/softwareupdate/softwareversion">
-          <extradata key="Software Version">
+          <extradata key="FW Version">
             <xsl:attribute name="value">
               <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/softwareupdate/softwareversion"/>
             </xsl:attribute>
