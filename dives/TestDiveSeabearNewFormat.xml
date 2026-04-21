@@ -7,11 +7,11 @@
 <dive number='1' otu='15' cns='5%' date='2012-10-01' time='06:02:00' duration='16:25 min'>
   <cylinder description='oxygen' o2='100.0%' use='oxygen' />
   <cylinder description='diluent' use='diluent' />
-  <divecomputer model='Seabear T1' dctype='CCR' no_o2sensors='3'>
+  <divecomputer model='Seabear T1' deviceid='c69f58b6' dctype='CCR' no_o2sensors='3'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
-  <extradata key='Firmware version' value='1.31' />
-  <extradata key='Serial number' value='0' />
+  <extradata key='FW Version' value='1.31' />
+  <extradata key='Serial' value='0' />
   <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='26.0 C' sensor1='0.96 bar' sensor2='0.99 bar' sensor3='0.96 bar' />
   <sample time='0:10 min' depth='2.5 m' />
@@ -216,11 +216,11 @@
 <dive number='2' date='2012-10-01' time='06:22:00' duration='16:25 min'>
   <cylinder description='oxygen' o2='100.0%' use='oxygen' />
   <cylinder description='diluent' use='diluent' />
-  <divecomputer model='Seabear H3' dctype='CCR'>
+  <divecomputer model='Seabear H3' deviceid='c69f58b6' dctype='CCR'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
-  <extradata key='Firmware version' value='1.31' />
-  <extradata key='Serial number' value='0' />
+  <extradata key='FW Version' value='1.31' />
+  <extradata key='Serial' value='0' />
   <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='29.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
@@ -425,11 +425,11 @@
 <dive number='2' cns='5%' date='2012-10-01' time='06:22:00' duration='16:25 min'>
   <cylinder description='oxygen' o2='100.0%' use='oxygen' />
   <cylinder description='diluent' use='diluent' />
-  <divecomputer model='Seabear T1' dctype='CCR'>
+  <divecomputer model='Seabear T1' deviceid='c69f58b6' dctype='CCR'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
-  <extradata key='Firmware version' value='1.31' />
-  <extradata key='Serial number' value='0' />
+  <extradata key='FW Version' value='1.31' />
+  <extradata key='Serial' value='0' />
   <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='29.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
@@ -632,11 +632,11 @@
   </divecomputer>
 </dive>
 <dive number='3' otu='14' cns='8%' date='2012-10-01' time='06:49:00' duration='16:25 min'>
-  <divecomputer model='Seabear H3'>
+  <divecomputer model='Seabear H3' deviceid='c69f58b6'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
-  <extradata key='Firmware version' value='1.31' />
-  <extradata key='Serial number' value='0' />
+  <extradata key='FW Version' value='1.31' />
+  <extradata key='Serial' value='0' />
   <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='26.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
@@ -839,11 +839,11 @@
   </divecomputer>
 </dive>
 <dive number='3' otu='14' cns='13%' date='2012-10-01' time='06:49:00' duration='16:25 min'>
-  <divecomputer model='Seabear T1'>
+  <divecomputer model='Seabear T1' deviceid='c69f58b6'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
-  <extradata key='Firmware version' value='1.31' />
-  <extradata key='Serial number' value='0' />
+  <extradata key='FW Version' value='1.31' />
+  <extradata key='Serial' value='0' />
   <extradata key='Gradient factors' value='30/70' />
   <sample time='0:05 min' depth='1.0 m' temp='26.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
@@ -1046,11 +1046,11 @@
   </divecomputer>
 </dive>
 <dive number='4' otu='14' cns='16%' date='2012-10-01' time='07:07:00' duration='16:17 min'>
-  <divecomputer model='Seabear H3' dctype='Freedive'>
+  <divecomputer model='Seabear H3' deviceid='c69f58b6' dctype='Freedive'>
   <depth max='70.1 m' mean='33.191 m' />
   <temperature water='25.0 C' />
-  <extradata key='Firmware version' value='1.31' />
-  <extradata key='Serial number' value='0' />
+  <extradata key='FW Version' value='1.31' />
+  <extradata key='Serial' value='0' />
   <sample time='0:01 min' depth='1.2 m' temp='25.0 C' />
   <sample time='0:02 min' depth='1.5 m' />
   <sample time='0:03 min' depth='1.8 m' />
@@ -1979,11 +1979,11 @@
   </divecomputer>
 </dive>
 <dive number='4' otu='14' cns='30%' date='2012-10-01' time='07:07:00' duration='16:17 min'>
-  <divecomputer model='Seabear T1' dctype='Freedive'>
+  <divecomputer model='Seabear T1' deviceid='c69f58b6' dctype='Freedive'>
   <depth max='70.1 m' mean='33.191 m' />
   <temperature water='24.0 C' />
-  <extradata key='Firmware version' value='1.31' />
-  <extradata key='Serial number' value='0' />
+  <extradata key='FW Version' value='1.31' />
+  <extradata key='Serial' value='0' />
   <sample time='0:01 min' depth='1.2 m' temp='25.0 C' />
   <sample time='0:02 min' depth='1.5 m' />
   <sample time='0:03 min' depth='1.8 m' />
@@ -2912,11 +2912,11 @@
   </divecomputer>
 </dive>
 <dive number='5' otu='14' cns='24%' date='2012-10-01' time='07:24:00' duration='16:25 min'>
-  <divecomputer model='Seabear H3'>
+  <divecomputer model='Seabear H3' deviceid='c69f58b6'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
-  <extradata key='Firmware version' value='1.31' />
-  <extradata key='Serial number' value='0' />
+  <extradata key='FW Version' value='1.31' />
+  <extradata key='Serial' value='0' />
   <sample time='0:05 min' depth='1.0 m' temp='25.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
   <sample time='0:15 min' depth='4.0 m' />
@@ -3118,11 +3118,11 @@
   </divecomputer>
 </dive>
 <dive number='5' otu='14' cns='50%' date='2012-10-01' time='07:24:00' duration='16:25 min'>
-  <divecomputer model='Seabear T1'>
+  <divecomputer model='Seabear T1' deviceid='c69f58b6'>
   <depth max='69.9 m' mean='32.928 m' />
   <temperature water='25.0 C' />
-  <extradata key='Firmware version' value='1.31' />
-  <extradata key='Serial number' value='0' />
+  <extradata key='FW Version' value='1.31' />
+  <extradata key='Serial' value='0' />
   <sample time='0:05 min' depth='1.0 m' temp='25.0 C' />
   <sample time='0:10 min' depth='2.5 m' />
   <sample time='0:15 min' depth='4.0 m' />

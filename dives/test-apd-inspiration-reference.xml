@@ -17,13 +17,13 @@
   <cylinder description='oxygen' o2='100.0%' use='diluent' />
   <cylinder description='16/48 (bailout)' o2='16.0%' he='48.0%' />
   <cylinder description='48% nx (bailout)' o2='48.0%' />
-  <divecomputer model='AP DiveSight' dctype='CCR' no_o2sensors='3'>
+  <divecomputer model='AP DiveSight' deviceid='0e66aa21' dctype='CCR' no_o2sensors='3'>
   <depth max='60.4 m' mean='21.111 m' />
   <temperature air='16.9 C' water='16.9 C' />
   <extradata key='Generator' value='AP DiveSight' />
   <extradata key='Generator Version' value='2.0.0.5' />
-  <extradata key='Serial Number' value='06H480000' />
-  <extradata key='Software Version' value='DC.00.06.00.36' />
+  <extradata key='Serial' value='06H480000' />
+  <extradata key='FW Version' value='DC.00.06.00.36' />
   <extradata key='Battery 1 at Begin [V]' value='5.6' />
   <extradata key='Battery 1 at End [V]' value='5.4' />
   <extradata key='Battery 2 at Begin [V]' value='5.7' />
