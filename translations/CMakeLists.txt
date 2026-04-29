@@ -54,20 +54,15 @@ set(US_EN_PLURALS subsurface_en_US.ts)
 #	subsurface_vi.ts
 #	subsurface_zh_CN.ts
 
-if(NOT USINGQT6)
-	qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES} ${US_EN_PLURALS})
+if(USINGQT6)
+	file(GLOB MOBILE_SOURCES ${CMAKE_SOURCE_DIR}/mobile-widgets/*.cpp ${CMAKE_SOURCE_DIR}/mobile-widgets/qml/*.qml)
+	qt_add_translations(${SUBSURFACE_TARGET} TS_FILES ${TRANSLATION_FILES} PLURALS_TS_FILE ${US_EN_PLURALS} SOURCES ${MOBILE_SOURCES} QM_FILES_OUTPUT_VARIABLE TRANSLATIONS)
+	add_custom_target(translations ALL)
+	# use add_dependencies (not DEPENDS) so the name is treated as a target, not a file
+	add_dependencies(translations ${PROJECT_NAME}_lrelease)
 else()
-	qt_add_translation(TRANSLATIONS ${TRANSLATION_FILES} ${US_EN_PLURALS})
+	qt5_add_translation(TRANSLATIONS ${TRANSLATION_FILES} ${US_EN_PLURALS})
+	add_custom_target(translations ALL DEPENDS ${TRANSLATIONS})
 endif()
 
 set(TRANSLATIONS ${TRANSLATIONS} PARENT_SCOPE)
-add_custom_target (translations ALL DEPENDS ${TRANSLATIONS})
-
-# enable the following two lines to recreate the .ts files
-#
-#
-#  DO NOT DO THIS MANUALLY -- USE THE SCRIPT IN ORDER TO FIX NUMERUSFORM
-#  =====================================================================
-# qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${TRANSLATION_FILES})
-# qt5_create_translation(TRANSLATION_MESSAGES ${CMAKE_SOURCE_DIR} ${US_EN_PLURALS} OPTIONS -pluralonly)
-# add_custom_target(translations_update DEPENDS ${TRANSLATION_MESSAGES})
