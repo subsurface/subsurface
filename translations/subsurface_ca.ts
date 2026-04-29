@@ -1,4 +1,6 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ca">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ca">
 <context>
     <name>About</name>
     <message>
@@ -24,8 +26,15 @@
         <source>Version: %1
 
 © Subsurface developer team
+2011-2026</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version: %1
+
+© Subsurface developer team
 2011-2024</source>
-        <translation>Versió: %1
+        <translation type="vanished">Versió: %1
 
 © Equip de desenvolupadors del Subsurface
 2011-2024</translation>
@@ -48,6 +57,14 @@
         <location filename="../desktop-widgets/addfilterpreset.ui" line="64"/>
         <source>Warning: this will overwrite an existing filter set.</source>
         <translation>Avís: això sobreescriurà un conjunt de filtres existent.</translation>
+    </message>
+</context>
+<context>
+    <name>Base</name>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="360"/>
+        <source>dive site</source>
+        <translation type="unfinished">Punt de la immersió</translation>
     </message>
 </context>
 <context>
@@ -341,7 +358,10 @@
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="67"/>
         <source>Waiting for cloud connection (%n second(s) passed)</source>
-        <translation><numerusform>S&apos;està esperant la connexió amb el núvol (ha passat %n segon)</numerusform><numerusform>S&apos;està esperant la connexió amb el núvol (han passat %n segons)</numerusform></translation>
+        <translation>
+            <numerusform>S&apos;està esperant la connexió amb el núvol (ha passat %n segon)</numerusform>
+            <numerusform>S&apos;està esperant la connexió amb el núvol (han passat %n segons)</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="81"/>
@@ -349,7 +369,7 @@
         <translation>Ha fallat la connexió amb el núvol</translation>
     </message>
     <message>
-        <location filename="../core/checkcloudconnection.cpp" line="124"/>
+        <location filename="../core/checkcloudconnection.cpp" line="121"/>
         <source>Trying different cloud server...</source>
         <translation>S&apos;està provant amb un servei al núvol diferent...</translation>
     </message>
@@ -410,7 +430,7 @@
 <context>
     <name>CloudStorageAuthenticate</name>
     <message>
-        <location filename="../core/cloudstorage.cpp" line="100"/>
+        <location filename="../core/cloudstorage.cpp" line="118"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
         <translation>Cal verificació del compte en el núvol, introduïu el PIN a les preferències</translation>
     </message>
@@ -418,192 +438,192 @@
 <context>
     <name>ColumnNameProvider</name>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Dive #</source>
         <translation>Immersió núm.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Mode</source>
         <translation>Mode</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Location</source>
         <translation>Ubicació</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Weight</source>
         <translation>Llast</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Cyl. size</source>
         <translation>Capacitat de l&apos;ampolla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Start pressure</source>
         <translation>Pressió inicial</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>End pressure</source>
         <translation>Pressió final</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Max. depth</source>
         <translation>Profunditat màx.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Avg. depth</source>
         <translation>Profunditat mitj.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Divemaster</source>
         <translation>Líder de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Buddy</source>
         <translation>Company</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Suit</source>
         <translation>Vestit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Tags</source>
         <translation>Etiquetes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Air temp.</source>
         <translation>Temp. de l&apos;aire</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Water temp.</source>
         <translation>Temp. de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>O₂</source>
         <translation>O₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>He</source>
         <translation>He</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample time</source>
         <translation>Hora de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample depth</source>
         <translation>Profunditat de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample temperature</source>
         <translation>Temperatura de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample pO₂</source>
         <translation>pO₂ de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample CNS</source>
         <translation>SNC de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample NDL</source>
         <translation>SLD de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Sample TTS</source>
         <translation>TTS de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Sample stopdepth</source>
         <translation>Profunditat de parada de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Sample pressure</source>
         <translation>Pressió de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
         <source>Sample sensor1 pO₂</source>
         <translation>pO₂ del sensor 1 de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
         <source>Sample sensor2 pO₂</source>
         <translation>pO₂ del sensor 2 de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
         <source>Sample sensor3 pO₂</source>
         <translation>pO₂ del sensor 3 de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="81"/>
         <source>Sample setpoint</source>
         <translation>Punt d&apos;ajust de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="81"/>
         <source>Visibility</source>
         <translation>Visibilitat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="81"/>
         <source>Rating</source>
         <translation>Valoració</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="81"/>
         <source>Sample heartrate</source>
         <translation>Mostra el ritme cardíac</translation>
     </message>
@@ -611,17 +631,17 @@
 <context>
     <name>Command</name>
     <message>
-        <location filename="../commands/command_base.cpp" line="50"/>
+        <location filename="../commands/command_base.cpp" line="46"/>
         <source>&amp;Undo</source>
         <translation>&amp;Desfés</translation>
     </message>
     <message>
-        <location filename="../commands/command_base.cpp" line="55"/>
+        <location filename="../commands/command_base.cpp" line="51"/>
         <source>&amp;Redo</source>
         <translation>&amp;Refés</translation>
     </message>
     <message>
-        <location filename="../commands/command_base.cpp" line="70"/>
+        <location filename="../commands/command_base.cpp" line="66"/>
         <source>all dives</source>
         <translation>Totes les immersions</translation>
     </message>
@@ -631,450 +651,512 @@
         <translation>Estableix el sobrenom del dispositiu %1 (sèrie %2) a %3</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="404"/>
+        <location filename="../commands/command_divelist.cpp" line="392"/>
         <source>add dive</source>
         <translation>s&apos;afegeix la immersió</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="473"/>
+        <location filename="../commands/command_divelist.cpp" line="457"/>
         <source>import %n dive(s) from %1</source>
-        <translation><numerusform>s&apos;importa %n inmersió des de %1</numerusform><numerusform>s&apos;importen %n inmersions des de %1</numerusform></translation>
+        <translation>
+            <numerusform>s&apos;importa %n inmersió des de %1</numerusform>
+            <numerusform>s&apos;importen %n inmersions des de %1</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="596"/>
+        <location filename="../commands/command_divelist.cpp" line="574"/>
         <source>delete %n dive(s)</source>
-        <translation><numerusform>se suprimeix %n inmersió</numerusform><numerusform>se suprimeixen %n inmersions</numerusform></translation>
+        <translation>
+            <numerusform>se suprimeix %n inmersió</numerusform>
+            <numerusform>se suprimeixen %n inmersions</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="632"/>
+        <location filename="../commands/command_divelist.cpp" line="610"/>
         <source>shift time of %n dives</source>
-        <translation><numerusform>es canvia el temps d&apos;%n immersió</numerusform><numerusform>es canvia el temps de %n immersions</numerusform></translation>
+        <translation>
+            <numerusform>es canvia el temps d&apos;%n immersió</numerusform>
+            <numerusform>es canvia el temps de %n immersions</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="680"/>
+        <location filename="../commands/command_divelist.cpp" line="660"/>
         <source>renumber %n dive(s)</source>
-        <translation><numerusform>es torna a numerar %n immersió</numerusform><numerusform>es tornen a numerar %n immersions</numerusform></translation>
+        <translation>
+            <numerusform>es torna a numerar %n immersió</numerusform>
+            <numerusform>es tornen a numerar %n immersions</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="738"/>
+        <location filename="../commands/command_divelist.cpp" line="718"/>
         <source>remove %n dive(s) from trip</source>
-        <translation><numerusform>s&apos;elimina %n inmersió del viatge</numerusform><numerusform>s&apos;eliminen %n inmersions del viatge</numerusform></translation>
+        <translation>
+            <numerusform>s&apos;elimina %n inmersió del viatge</numerusform>
+            <numerusform>s&apos;eliminen %n inmersions del viatge</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="750"/>
+        <location filename="../commands/command_divelist.cpp" line="730"/>
         <source>remove autogenerated trips</source>
         <translation>s&apos;eliminen els viatges generats automàticament</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="762"/>
+        <location filename="../commands/command_divelist.cpp" line="740"/>
         <source>add %n dives to trip</source>
-        <translation><numerusform>s&apos;afegeix %n immersió al viatge</numerusform><numerusform>s&apos;afegeixen %n immersions al viatge</numerusform></translation>
+        <translation>
+            <numerusform>s&apos;afegeix %n immersió al viatge</numerusform>
+            <numerusform>s&apos;afegeixen %n immersions al viatge</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="769"/>
+        <location filename="../commands/command_divelist.cpp" line="747"/>
         <source>create trip</source>
         <translation>es crea el viatge</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="782"/>
+        <location filename="../commands/command_divelist.cpp" line="760"/>
         <source>autogroup dives</source>
         <translation>immersions en autogrup</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="877"/>
+        <location filename="../commands/command_divelist.cpp" line="846"/>
         <source>split dive</source>
         <translation>es divideix la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="895"/>
+        <location filename="../commands/command_divelist.cpp" line="852"/>
         <source>split dive computer</source>
         <translation>Divideix l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="950"/>
+        <location filename="../commands/command_divelist.cpp" line="907"/>
         <source>move dive computer to front</source>
         <translation>Mou l&apos;ordinador de busseig al davant</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="956"/>
+        <location filename="../commands/command_divelist.cpp" line="914"/>
         <source>delete dive computer</source>
         <translation>Suprimeix l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="961"/>
+        <location filename="../commands/command_divelist.cpp" line="919"/>
         <source>merge dive</source>
         <translation>es fusionen les inmersions</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="79"/>
+        <location filename="../commands/command_divesite.cpp" line="77"/>
         <source>add dive site</source>
         <translation>s&apos;afegeix el punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="101"/>
+        <location filename="../commands/command_divesite.cpp" line="99"/>
         <source>import dive sites from %1</source>
         <translation>s&apos;importen punts d&apos;immersió des de %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divesite.cpp" line="137"/>
+        <location filename="../commands/command_divesite.cpp" line="127"/>
         <source>delete %n dive site(s)</source>
-        <translation><numerusform>se suprimeix %n punt d&apos;immersió</numerusform><numerusform>se suprimeixen %n punts d&apos;immersió</numerusform></translation>
+        <translation>
+            <numerusform>se suprimeix %n punt d&apos;immersió</numerusform>
+            <numerusform>se suprimeixen %n punts d&apos;immersió</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="157"/>
+        <location filename="../commands/command_divesite.cpp" line="147"/>
         <source>purge unused dive sites</source>
         <translation>es purguen els llocs d&apos;immersió no emprats</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="192"/>
+        <location filename="../commands/command_divesite.cpp" line="172"/>
         <source>Edit dive site name</source>
         <translation>Edita el nom del punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="215"/>
+        <location filename="../commands/command_divesite.cpp" line="195"/>
         <source>Edit dive site description</source>
         <translation>Edita la descripció del punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="238"/>
+        <location filename="../commands/command_divesite.cpp" line="218"/>
         <source>Edit dive site notes</source>
         <translation>Edita les notes del punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="261"/>
+        <location filename="../commands/command_divesite.cpp" line="241"/>
         <source>Edit dive site country</source>
         <translation>Edita el país del punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="286"/>
+        <location filename="../commands/command_divesite.cpp" line="266"/>
         <source>Edit dive site location</source>
         <translation>Edita la ubicació del punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="315"/>
+        <location filename="../commands/command_divesite.cpp" line="293"/>
         <source>Edit dive site taxonomy</source>
         <translation>Editeu la taxonomia del punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="343"/>
+        <location filename="../commands/command_divesite.cpp" line="320"/>
         <source>merge dive sites</source>
         <translation>es fusionen els punts d&apos;immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="397"/>
+        <location filename="../commands/command_divesite.cpp" line="374"/>
         <source>apply GPS fixes</source>
         <translation>Aplica les correccions del GPS</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="135"/>
-        <location filename="../commands/command_edit.cpp" line="523"/>
+        <location filename="../commands/command_edit.cpp" line="136"/>
+        <location filename="../commands/command_edit.cpp" line="519"/>
         <location filename="../commands/command_edit_trip.cpp" line="19"/>
         <source>Edit %1</source>
         <translation>Edita %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="137"/>
-        <location filename="../commands/command_edit.cpp" line="525"/>
+        <location filename="../commands/command_edit.cpp" line="138"/>
+        <location filename="../commands/command_edit.cpp" line="521"/>
         <source>Edit %1 (%n dive(s))</source>
-        <translation><numerusform>Edita %1 (%n immersió)</numerusform><numerusform>Edita %1 (%n immersions)</numerusform></translation>
+        <translation>
+            <numerusform>Edita %1 (%n immersió)</numerusform>
+            <numerusform>Edita %1 (%n immersions)</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="193"/>
+        <location filename="../commands/command_edit.cpp" line="194"/>
         <source>notes</source>
         <translation>notes</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="199"/>
+        <location filename="../commands/command_edit.cpp" line="200"/>
         <source>suit</source>
         <translation>vestit</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="205"/>
+        <location filename="../commands/command_edit.cpp" line="206"/>
         <source>rating</source>
         <translation>valoració</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="211"/>
+        <location filename="../commands/command_edit.cpp" line="212"/>
         <source>visibility</source>
         <translation>visibilitat</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="217"/>
+        <location filename="../commands/command_edit.cpp" line="218"/>
         <source>wavesize</source>
         <translation>Grandària de l&apos;onada</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="223"/>
+        <location filename="../commands/command_edit.cpp" line="224"/>
         <source>current</source>
         <translation>Actual</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="229"/>
+        <location filename="../commands/command_edit.cpp" line="230"/>
         <source>surge</source>
         <translation>Onatge</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="235"/>
+        <location filename="../commands/command_edit.cpp" line="236"/>
         <source>chill</source>
         <translation>Fred</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="251"/>
+        <location filename="../commands/command_edit.cpp" line="252"/>
         <source>air temperature</source>
         <translation>temperatura de l&apos;aire</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="270"/>
+        <location filename="../commands/command_edit.cpp" line="271"/>
         <source>water temperature</source>
         <translation>temperatura de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="286"/>
+        <location filename="../commands/command_edit.cpp" line="287"/>
         <source>salinity</source>
         <translation>Salinitat</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="302"/>
+        <location filename="../commands/command_edit.cpp" line="303"/>
         <source>Atm. pressure</source>
         <translation>Pressió atm.</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="322"/>
+        <location filename="../commands/command_edit.cpp" line="323"/>
         <source>duration</source>
         <translation>durada</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="342"/>
+        <location filename="../commands/command_edit.cpp" line="343"/>
         <source>depth</source>
         <translation>profunditat</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="359"/>
         <source>dive site</source>
-        <translation>Punt de la immersió</translation>
+        <translation type="vanished">Punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="452"/>
+        <location filename="../commands/command_edit.cpp" line="448"/>
         <source>dive mode</source>
         <translation>mode de busseig</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="458"/>
+        <location filename="../commands/command_edit.cpp" line="454"/>
         <source>invalid</source>
         <translation>No vàlida</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="584"/>
+        <location filename="../commands/command_edit.cpp" line="579"/>
         <source>tags</source>
         <translation>etiquetes</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="602"/>
+        <location filename="../commands/command_edit.cpp" line="596"/>
         <source>buddies</source>
         <translation>companys</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="620"/>
+        <location filename="../commands/command_edit.cpp" line="613"/>
         <source>dive guide</source>
         <translation>guia de busseig</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="751"/>
+        <location filename="../commands/command_edit.cpp" line="740"/>
         <source>Paste onto %n dive(s)</source>
-        <translation><numerusform>Enganxa a %n immersió</numerusform><numerusform>Enganxa a %n immersions</numerusform></translation>
+        <translation>
+            <numerusform>Enganxa a %n immersió</numerusform>
+            <numerusform>Enganxa a %n immersions</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="829"/>
+        <location filename="../commands/command_edit.cpp" line="814"/>
         <source>Replan dive</source>
         <translation>Torna a planificar la immersió</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="879"/>
+        <location filename="../commands/command_edit.cpp" line="861"/>
         <source>Add stop</source>
         <translation>Afegeix una parada</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="880"/>
+        <location filename="../commands/command_edit.cpp" line="862"/>
         <source>Remove %n stop(s)</source>
-        <translation><numerusform>elimina %n parades</numerusform><numerusform>elimina %n parada</numerusform></translation>
+        <translation>
+            <numerusform>elimina %n parades</numerusform>
+            <numerusform>elimina %n parada</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="881"/>
+        <location filename="../commands/command_edit.cpp" line="863"/>
         <source>Move %n stop(s)</source>
-        <translation><numerusform>Mou %n parades</numerusform><numerusform>Mou %n parada</numerusform></translation>
+        <translation>
+            <numerusform>Mou %n parades</numerusform>
+            <numerusform>Mou %n parada</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="952"/>
+        <location filename="../commands/command_edit.cpp" line="864"/>
+        <source>Edit stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../commands/command_edit.cpp" line="928"/>
         <source>Add weight</source>
         <translation>Afegeix llast</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="954"/>
+        <location filename="../commands/command_edit.cpp" line="930"/>
         <source>Add weight (%n dive(s))</source>
-        <translation><numerusform>Afegeix llast (%n immersió)</numerusform><numerusform>Afegeix llast (%n immersions)</numerusform></translation>
+        <translation>
+            <numerusform>Afegeix llast (%n immersió)</numerusform>
+            <numerusform>Afegeix llast (%n immersions)</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1040"/>
+        <location filename="../commands/command_edit.cpp" line="1010"/>
         <source>Remove weight</source>
         <translation>Elimina llast</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1042"/>
+        <location filename="../commands/command_edit.cpp" line="1012"/>
         <source>Remove weight (%n dive(s))</source>
-        <translation><numerusform>Elimina el llast (%n immersió)</numerusform><numerusform>Elimina el llast (%n immersions)</numerusform></translation>
+        <translation>
+            <numerusform>Elimina el llast (%n immersió)</numerusform>
+            <numerusform>Elimina el llast (%n immersions)</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1073"/>
+        <location filename="../commands/command_edit.cpp" line="1042"/>
         <source>Edit weight</source>
         <translation>Edita el llast</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1075"/>
+        <location filename="../commands/command_edit.cpp" line="1044"/>
         <source>Edit weight (%n dive(s))</source>
-        <translation><numerusform>Edita el llast (%n immersió)</numerusform><numerusform>Edita el llast (%n immersions)</numerusform></translation>
+        <translation>
+            <numerusform>Edita el llast (%n immersió)</numerusform>
+            <numerusform>Edita el llast (%n immersions)</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1129"/>
+        <location filename="../commands/command_edit.cpp" line="1090"/>
         <source>Add cylinder</source>
         <translation>Afegeix una ampolla</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1131"/>
+        <location filename="../commands/command_edit.cpp" line="1092"/>
         <source>Add cylinder (%n dive(s))</source>
-        <translation><numerusform>Afegeix una ampolla (%n immersió)</numerusform><numerusform>Afegeix una ampolla (%n immersions)</numerusform></translation>
+        <translation>
+            <numerusform>Afegeix una ampolla (%n immersió)</numerusform>
+            <numerusform>Afegeix una ampolla (%n immersions)</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1241"/>
+        <location filename="../commands/command_edit.cpp" line="1199"/>
         <source>Remove cylinder</source>
         <translation>Suprimeix l&apos;ampolla</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1243"/>
+        <location filename="../commands/command_edit.cpp" line="1201"/>
         <source>Remove cylinder (%n dive(s))</source>
-        <translation><numerusform>Suprimeix l&apos;ampolla (%n immersió)</numerusform><numerusform>Suprimeix l&apos;ampolla (%n immersions)</numerusform></translation>
+        <translation>
+            <numerusform>Suprimeix l&apos;ampolla (%n immersió)</numerusform>
+            <numerusform>Suprimeix l&apos;ampolla (%n immersions)</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1292"/>
+        <location filename="../commands/command_edit.cpp" line="1250"/>
         <source>Edit cylinder</source>
         <translation>Edita l&apos;ampolla</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1294"/>
+        <location filename="../commands/command_edit.cpp" line="1252"/>
         <source>Edit cylinder (%n dive(s))</source>
-        <translation><numerusform>Edita l&apos;ampolla (%n immersió)</numerusform><numerusform>Edita l&apos;ampolla (%n immersions)</numerusform></translation>
+        <translation>
+            <numerusform>Edita l&apos;ampolla (%n immersió)</numerusform>
+            <numerusform>Edita l&apos;ampolla (%n immersions)</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1360"/>
+        <location filename="../commands/command_edit.cpp" line="1300"/>
         <source>Edit sensors</source>
         <translation>Edita els sensors</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1409"/>
+        <location filename="../commands/command_edit.cpp" line="1384"/>
         <source>Edit dive [%1]</source>
         <translation>Edita la immersió [%1]</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit_trip.cpp" line="55"/>
+        <location filename="../commands/command_edit_trip.cpp" line="54"/>
         <source>trip location</source>
         <translation>ubicació del viatge</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit_trip.cpp" line="77"/>
+        <location filename="../commands/command_edit_trip.cpp" line="75"/>
         <source>trip notes</source>
         <translation>notes del viatge</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="66"/>
+        <location filename="../commands/command_event.cpp" line="64"/>
         <source>Add bookmark</source>
         <translation>Afegeix una adreça d&apos;interès</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="72"/>
+        <location filename="../commands/command_event.cpp" line="70"/>
         <source>Add dive mode switch to %1</source>
         <translation>Afegeix un canvi del mode de busseig a %1</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="79"/>
+        <location filename="../commands/command_event.cpp" line="77"/>
         <source>Add set point change</source>
         <translation>Afegeix un canvi de punt d&apos;ajust</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="98"/>
+        <location filename="../commands/command_event.cpp" line="96"/>
         <source>Rename bookmark to %1</source>
         <translation>Reanomena l&apos;adreça d&apos;interès a %1</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="126"/>
+        <location filename="../commands/command_event.cpp" line="129"/>
         <source>Remove %1 event</source>
         <translation>Elimina l&apos;esdeveniment %1</translation>
     </message>
     <message>
-        <location filename="../commands/command_filter.cpp" line="28"/>
+        <location filename="../commands/command_filter.cpp" line="31"/>
         <source>Create filter preset %1</source>
         <translation>Crea el filtre preestablert %1</translation>
     </message>
     <message>
-        <location filename="../commands/command_filter.cpp" line="49"/>
+        <location filename="../commands/command_filter.cpp" line="53"/>
         <source>Delete filter preset %1</source>
         <translation>Suprimeix el filtre preestablert %1</translation>
     </message>
     <message>
-        <location filename="../commands/command_filter.cpp" line="71"/>
+        <location filename="../commands/command_filter.cpp" line="76"/>
         <source>Edit filter preset %1</source>
         <translation>Edita el filtre preestablert %1</translation>
     </message>
     <message>
-        <location filename="../commands/command_pictures.cpp" line="20"/>
+        <location filename="../commands/command_pictures.cpp" line="22"/>
         <source>Change media time</source>
         <translation>Canvia el temps del suport</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_pictures.cpp" line="139"/>
+        <location filename="../commands/command_pictures.cpp" line="140"/>
         <source>remove %n pictures(s)</source>
-        <translation><numerusform>elimina %n imatge</numerusform><numerusform>elimina %n imatges</numerusform></translation>
+        <translation>
+            <numerusform>elimina %n imatge</numerusform>
+            <numerusform>elimina %n imatges</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../commands/command_pictures.cpp" line="172"/>
+        <location filename="../commands/command_pictures.cpp" line="173"/>
         <source>unnamed dive site</source>
         <translation>Punt de la immersió sense nom</translation>
     </message>
     <message numerus="yes">
         <location filename="../commands/command_pictures.cpp" line="187"/>
         <source>add %n pictures(s)</source>
-        <translation><numerusform>afegeix %n imatge</numerusform><numerusform>afegeix %n imatges</numerusform></translation>
+        <translation>
+            <numerusform>afegeix %n imatge</numerusform>
+            <numerusform>afegeix %n imatges</numerusform>
+        </translation>
     </message>
 </context>
 <context>
     <name>ConfigureDiveComputer</name>
     <message>
-        <location filename="../core/configuredivecomputer.cpp" line="183"/>
+        <location filename="../core/configuredivecomputer.cpp" line="191"/>
         <source>Could not save the backup file %1. Error Message: %2</source>
         <translation>No s&apos;ha pogut desar el fitxer de la còpia de seguretat %1. Missatge d&apos;error: %2</translation>
     </message>
     <message>
-        <location filename="../core/configuredivecomputer.cpp" line="199"/>
+        <location filename="../core/configuredivecomputer.cpp" line="207"/>
         <source>Could not open backup file: %1</source>
         <translation>No s&apos;ha pogut obrir el fitxer de la còpia de seguretat: %1</translation>
     </message>
     <message>
-        <location filename="../core/configuredivecomputer.cpp" line="541"/>
+        <location filename="../core/configuredivecomputer.cpp" line="569"/>
+        <source>The operation completed successfully</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Dive computer details read successfully</source>
-        <translation>S&apos;han llegit correctament els detalls des de l&apos;ordinador de busseig</translation>
+        <translation type="vanished">S&apos;han llegit correctament els detalls des de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../core/configuredivecomputer.cpp" line="550"/>
         <source>Setting successfully written to device</source>
-        <translation>Els paràmetres s&apos;han escrit correctament al dispositiu</translation>
+        <translation type="vanished">Els paràmetres s&apos;han escrit correctament al dispositiu</translation>
     </message>
     <message>
-        <location filename="../core/configuredivecomputer.cpp" line="559"/>
         <source>Device firmware successfully updated</source>
-        <translation>El microprogramari del dispositiu s&apos;ha actualitzat amb èxit</translation>
+        <translation type="vanished">El microprogramari del dispositiu s&apos;ha actualitzat amb èxit</translation>
     </message>
     <message>
-        <location filename="../core/configuredivecomputer.cpp" line="568"/>
         <source>Device settings successfully reset</source>
-        <translation>Els paràmetres del dispositiu s&apos;han restablert amb èxit</translation>
+        <translation type="vanished">Els paràmetres del dispositiu s&apos;han restablert amb èxit</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="584"/>
@@ -1082,7 +1164,7 @@
         <translation>No s&apos;ha pogut crear un context de «libdivecomputer»</translation>
     </message>
     <message>
-        <location filename="../core/configuredivecomputer.cpp" line="603"/>
+        <location filename="../core/configuredivecomputer.cpp" line="605"/>
         <source>Could not a establish connection to the dive computer.</source>
         <translation>No s&apos;ha pogut establir una connexió amb l&apos;ordinador de busseig.</translation>
     </message>
@@ -1155,1075 +1237,1102 @@
         <translation>Força el tornar a instal·lar el microprogramari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="173"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="183"/>
         <source>Save libdivecomputer logfile</source>
         <translation>Desa el registre de «libdivecomputer»</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="180"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="190"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="187"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="197"/>
         <source>Close</source>
         <translation>Tanca</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="224"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="234"/>
         <source>OSTC Mk2/2N/2C</source>
         <translation>OSTC Mk2/2N/2C</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="233"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="243"/>
         <source>OSTC 2/3/Sport/Plus/cR</source>
         <translation>OSTC 2/3/Sport/Plus/cR</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="242"/>
         <source>OSTC 4</source>
-        <translation>OSTC 4</translation>
+        <translation type="vanished">OSTC 4</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="251"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="261"/>
         <source>Suunto Vyper family</source>
         <translation>Família Suunto Vyper</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="272"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1204"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2507"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3587"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="282"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1207"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2503"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3583"/>
         <source>Basic settings</source>
         <translation>Arranjament bàsic</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="278"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1277"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2585"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3682"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="288"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1280"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3678"/>
         <source>Serial No.</source>
         <translation>Núm. de sèrie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="288"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1638"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2855"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="298"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1634"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2854"/>
         <source>Length</source>
         <translation>Llargada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="315"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1300"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2608"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3705"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="325"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1303"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2611"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3701"/>
         <source>Firmware version</source>
         <translation>Versió del microprogramari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="325"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1489"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2737"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3739"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="335"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1492"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2740"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3735"/>
         <source>Custom text</source>
         <translation>Text personalitzat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="348"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3662"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="358"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3658"/>
         <source>Number of dives</source>
         <translation>Nombre d&apos;immersions</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="355"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1605"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2829"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="365"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1601"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2828"/>
         <source>Show safety stop</source>
         <translation>Mostra la parada de seguretat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="369"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1554"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="379"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1557"/>
         <source>Sampling rate</source>
         <translation>Freqüència de mostratge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="398"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1346"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2654"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="408"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1349"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2657"/>
         <source>Date format</source>
         <translation>Format de la data</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="409"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="419"/>
         <source>MM/DD/YY</source>
         <translation>MM/DD/YY</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="414"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="424"/>
         <source>DD/MM/YY</source>
         <translation>DD/MM/YY</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="419"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="429"/>
         <source>YY/MM/DD</source>
         <translation>YY/MM/DD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="427"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1588"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2812"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="163"/>
         <source>Sync dive computer time with PC</source>
         <translation>Sincronitza l&apos;hora de l&apos;ordinador de busseig amb la del PC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="434"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="252"/>
+        <source>OSTC 4/5</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="437"/>
         <source>Salinity</source>
         <translation>Salinitat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="444"/>
         <source>kg/ℓ</source>
-        <translation> kg/ℓ</translation>
+        <translation type="vanished"> kg/ℓ</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="473"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1645"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2862"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="476"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1641"/>
         <source>Start Depth</source>
         <translation>Profunditat d&apos;inici</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="480"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1612"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="483"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1608"/>
         <source>End Depth</source>
         <translation>Profunditat final</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="487"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1652"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="490"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1648"/>
         <source>Reset Depth</source>
         <translation>Reinicia la profunditat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="497"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1622"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2839"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3900"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="500"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1618"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2838"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3896"/>
         <source>s</source>
         <translation> s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="516"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="541"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="563"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="642"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1662"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1687"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1709"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1855"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2872"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2991"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="519"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="544"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="566"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="645"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1658"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1683"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1705"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1851"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2871"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2990"/>
         <source>m</source>
         <translation> m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="583"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1729"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2895"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="586"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1725"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2894"/>
         <source>Advanced settings</source>
         <translation>Arranjament avançat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="589"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1749"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="592"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1745"/>
         <source>Alt GF can be selected underwater</source>
         <translation>Alt GF es pot seleccionar sota l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="596"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1816"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="599"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1812"/>
         <source>Desaturation</source>
         <translation>Dessaturació</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="606"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1756"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2931"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="609"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1752"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2923"/>
         <source>Future TTS</source>
         <translation>TTS futur</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="613"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="717"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="743"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="769"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="809"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="832"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1229"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1777"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1800"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1826"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1878"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1944"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1970"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2052"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2068"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2401"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2537"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2908"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2952"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2975"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3011"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3089"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="616"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="720"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="746"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="772"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="812"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="835"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1232"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1773"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1796"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1822"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1874"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1940"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1966"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2048"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2064"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2397"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2533"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2900"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2951"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2974"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3010"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3101"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="655"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1868"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3004"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="658"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1864"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3003"/>
         <source>Decotype</source>
         <translation>Tipus de descomp.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="666"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1911"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3044"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="669"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1907"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3056"/>
         <source>ZH-L16</source>
         <translation>ZH-L16</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1517"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2765"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="674"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1520"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2771"/>
         <source>Gauge</source>
         <translation>Indicador</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="676"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="679"/>
         <source>ZH-L16 CC</source>
         <translation>ZH-L16 CC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="681"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1522"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2770"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="684"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1525"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2776"/>
         <source>Apnea</source>
         <translation>Apnea</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="686"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="689"/>
         <source>L16-GF OC</source>
         <translation>L16-GF OC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="691"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
         <source>L16-GF CC</source>
         <translation>L16-GF CC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="696"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="699"/>
         <source>PSCR-GF</source>
         <translation>PSCR-GF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="704"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1924"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3062"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3842"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3934"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="707"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1920"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3074"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3838"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3930"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="733"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1934"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3072"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="736"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1930"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3084"/>
         <source>Last deco</source>
         <translation>Última descomp.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="759"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1960"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3082"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="762"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1956"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3094"/>
         <source>Alt GFLow</source>
         <translation>Alt GFBaix</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="785"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1986"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3105"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="788"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1982"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3117"/>
         <source>Alt GFHigh</source>
         <translation>Alt GFAlt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="792"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1993"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="795"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1989"/>
         <source>Saturation</source>
         <translation>Saturació</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="802"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1793"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2968"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="805"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1789"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2967"/>
         <source>GFHigh</source>
         <translation>GFAlt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="825"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1770"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2945"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="828"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1766"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2944"/>
         <source>GFLow</source>
         <translation>GFBaix</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="848"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2024"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="851"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2020"/>
         <source>Graphical speed indicator</source>
         <translation>Indicador gràfic de la velocitat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="855"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="871"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2084"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2100"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3126"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3142"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3158"/>
         <source>ℓ/min</source>
-        <translation> ℓ/min</translation>
+        <translation type="vanished"> ℓ/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="887"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2038"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3112"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="447"/>
+        <source>kg/L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="858"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="874"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2080"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2096"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3138"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3154"/>
+        <source>L/min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="890"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2034"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3124"/>
         <source>Bottom gas consumption</source>
         <translation>Consum de gas al fons</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="894"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2045"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3119"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="897"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2041"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3131"/>
         <source>Deco gas consumption</source>
         <translation>Consum de gas en la descompressió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="902"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2143"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3241"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="905"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2139"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3237"/>
         <source>Gas settings</source>
         <translation>Arranjament del gas</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="945"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1030"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2186"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2271"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3284"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3369"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="948"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1033"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2182"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2267"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3280"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3365"/>
         <source>%O₂</source>
         <translation>%O₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="950"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1035"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2191"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2276"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3289"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3374"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="953"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1038"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2187"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2272"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3285"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3370"/>
         <source>%He</source>
         <translation>%He</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="955"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1040"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2196"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2281"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3294"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3379"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="958"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1043"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2192"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2277"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3290"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3375"/>
         <source>Type</source>
         <translation>Tipus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="960"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1045"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1110"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2201"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2286"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2361"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3299"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3384"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3459"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="963"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1048"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1113"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2197"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2282"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2357"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3295"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3380"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3455"/>
         <source>Change depth</source>
         <translation>Canvia la profunditat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="965"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2206"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3304"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="968"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2202"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3300"/>
         <source>Gas 1</source>
         <translation>Gas 1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="970"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2211"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3309"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="973"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2207"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3305"/>
         <source>Gas 2</source>
         <translation>Gas 2</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="975"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2216"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3314"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="978"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2212"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3310"/>
         <source>Gas 3</source>
         <translation>Gas 3</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="980"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2221"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3319"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="983"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2217"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3315"/>
         <source>Gas 4</source>
         <translation>Gas 4</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="985"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2226"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3324"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="988"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2222"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3320"/>
         <source>Gas 5</source>
         <translation>Gas 5</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1050"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2291"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3389"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1053"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2287"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3385"/>
         <source>Dil 1</source>
         <translation>Dil 1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1055"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2296"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3394"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1058"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2292"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3390"/>
         <source>Dil 2</source>
         <translation>Dil 2</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1060"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2301"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3399"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1063"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2297"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3395"/>
         <source>Dil 3</source>
         <translation>Dil 3</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1065"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2306"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3404"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1068"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2302"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3400"/>
         <source>Dil 4</source>
         <translation>Dil 4</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1070"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2311"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3409"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1073"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2307"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3405"/>
         <source>Dil 5</source>
         <translation>Dil 5</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1105"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2356"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3454"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1108"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2352"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3450"/>
         <source>Setpoint</source>
         <translation>Punt d&apos;ajust</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1115"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2366"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3464"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1118"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2362"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3460"/>
         <source>SP 1</source>
         <translation>PA 1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1120"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2371"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3469"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1123"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2367"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3465"/>
         <source>SP 2</source>
         <translation>PA 2</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1125"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2376"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3474"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1128"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2372"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3470"/>
         <source>SP 3</source>
         <translation>PA 3</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1146"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1162"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2449"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2465"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3529"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3545"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1149"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1165"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2445"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2461"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3525"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3541"/>
         <source>cbar</source>
         <translation> cbar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1178"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2481"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3561"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1181"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2477"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3557"/>
         <source>pO₂ max</source>
         <translation>Màx. de pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1185"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2488"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3568"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1188"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2484"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3564"/>
         <source>pO₂ min</source>
         <translation>Mín. de pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1211"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2519"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1214"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2515"/>
         <source>Eco</source>
         <translation>Eco</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1216"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2524"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1219"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2520"/>
         <source>Medium</source>
         <translation>Mitja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1221"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2529"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1224"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2525"/>
         <source>High</source>
         <translation>Alta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1240"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2548"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1243"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2551"/>
         <source>English</source>
         <translation>Anglès</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1245"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2553"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1248"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2556"/>
         <source>German</source>
         <translation>Alemany</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1250"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2558"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1253"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2561"/>
         <source>French</source>
         <translation>Francès</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1255"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2563"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1258"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2566"/>
         <source>Italian</source>
         <translation>Italià</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1264"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2572"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1267"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2575"/>
         <source>m/°C</source>
         <translation>m/°C</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1269"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2577"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1272"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2580"/>
         <source>ft/°F</source>
         <translation>ft/°F</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1311"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2619"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1314"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2622"/>
         <source>MMDDYY</source>
         <translation>MMDDYY</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1316"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2624"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1319"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2627"/>
         <source>DDMMYY</source>
         <translation>DDMMYY</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1321"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2629"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1324"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2632"/>
         <source>YYMMDD</source>
         <translation>YYMMDD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1336"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2644"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1339"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2647"/>
         <source>Language</source>
         <translation>Idioma</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1356"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2664"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1359"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2667"/>
         <source>Brightness</source>
         <translation>Lluminositat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1366"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2674"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3876"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1369"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2677"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3872"/>
         <source>Units</source>
         <translation>Unitats</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1376"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2684"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1379"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2687"/>
         <source>Salinity (0-5%)</source>
         <translation>Salinitat (0-5%)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1389"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2697"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1392"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2700"/>
         <source>Reset device to default settings</source>
         <translation>Restableix el dispositiu a la configuració predeterminada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1403"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1406"/>
         <source>230LSB/Gauss</source>
         <translation>230 LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1408"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1411"/>
         <source>330LSB/Gauss</source>
         <translation>330 LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1413"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1416"/>
         <source>390LSB/Gauss</source>
         <translation>390 LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1418"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1421"/>
         <source>440LSB/Gauss</source>
         <translation>440 LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1423"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1426"/>
         <source>660LSB/Gauss</source>
         <translation>660 LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1428"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1431"/>
         <source>820LSB/Gauss</source>
         <translation>820 LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1433"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1436"/>
         <source>1090LSB/Gauss</source>
         <translation>1090 LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1438"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1441"/>
         <source>1370LSB/Gauss</source>
         <translation>1370 LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1472"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1475"/>
         <source>Compass gain</source>
         <translation>Guany de la brúixola</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1482"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2730"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3825"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1485"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2733"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3821"/>
         <source>Computer model</source>
         <translation>Model d&apos;ordinador</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1507"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2755"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1510"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2761"/>
         <source>OC</source>
         <translation>OC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1512"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2760"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1515"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2766"/>
         <source>CC</source>
         <translation>CC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1530"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2778"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1533"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2784"/>
         <source>Dive mode</source>
         <translation>Mode de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1541"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1544"/>
         <source>2s</source>
         <translation>2 s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1546"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3795"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1549"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3791"/>
         <source>10s</source>
         <translation>10 s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1565"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2789"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1568"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2795"/>
         <source>Standard</source>
         <translation>Estàndard</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1570"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2794"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1573"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2800"/>
         <source>Red</source>
         <translation>Vermell</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1575"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2799"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1578"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2805"/>
         <source>Green</source>
         <translation>Verd</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1580"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2804"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1583"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2810"/>
         <source>Blue</source>
         <translation>Blau</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1595"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2819"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1591"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2818"/>
         <source>Dive mode color</source>
         <translation>Color en el mode de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1735"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1731"/>
         <source>Left button sensitivity</source>
         <translation>Sensibilitat del botó esquerre</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1742"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3187"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1738"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3183"/>
         <source>Always show pO₂</source>
         <translation>Mostra sempre el pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1763"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2938"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1759"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2937"/>
         <source>Pressure sensor offset</source>
         <translation>Compensació del sensor de la pressió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1894"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3027"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1890"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3039"/>
         <source>mbar</source>
         <translation> mbar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1916"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3049"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1912"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3061"/>
         <source>ZH-L16+GF</source>
         <translation>ZH-L16+GF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2003"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1999"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2543"/>
         <source>Flip screen</source>
         <translation>Gira la pantalla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2010"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2006"/>
         <source>Right button sensitivity</source>
         <translation>Sensibilitat del botó dret</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2017"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2013"/>
         <source>MOD warning</source>
         <translation>Avís de PMO</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2031"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2027"/>
         <source>Dynamic ascent rate</source>
         <translation>Ritme d&apos;ascens dinàmic</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2116"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3214"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2112"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3210"/>
         <source>Temperature sensor offset</source>
         <translation>Compensació del sensor de la temperatura</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2123"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3221"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2119"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3217"/>
         <source>°C</source>
         <translation>°C</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2381"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3479"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2377"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3475"/>
         <source>SP 4</source>
         <translation>PA 4</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2386"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3484"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2382"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3480"/>
         <source>SP 5</source>
         <translation>PA 5</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2394"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2390"/>
         <source>O₂ in calibration gas</source>
         <translation>O₂ en el calibratge del gas</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2418"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3493"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2414"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3489"/>
         <source>Fixed setpoint</source>
         <translation>Punt d&apos;ajust fix</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2423"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3498"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2419"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3494"/>
         <source>Sensor</source>
         <translation>Sensor</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2428"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2424"/>
         <source>Auto SP</source>
         <translation>PA automàtic</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2514"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2510"/>
         <source>Cave</source>
         <translation>Cova</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2901"/>
-        <source>Travel gas consumption</source>
-        <translation>Consum de gas del viatge</translation>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2588"/>
+        <source>Serial no.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2924"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2861"/>
+        <source>Start depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Travel gas consumption</source>
+        <translation type="vanished">Consum de gas del viatge</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2916"/>
         <source>Button sensitivity</source>
         <translation>Sensibilitat del botó</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3054"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2930"/>
+        <source>Compass declination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3026"/>
+        <source>°</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3066"/>
         <source>VPM</source>
         <translation>VPM</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3194"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3190"/>
         <source>VPM conservatism</source>
         <translation>Conservadorisme del VPM</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3201"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3197"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3506"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3502"/>
         <source>Setpoint fallback</source>
         <translation>Punt d&apos;ajust al retorn</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3609"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3605"/>
         <source>Safety level</source>
         <translation>Nivell de seguretat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3635"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3631"/>
         <source>Altitude range</source>
         <translation>Interval de l&apos;altitud</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3642"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3638"/>
         <source>Model</source>
         <translation>Model</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3722"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3718"/>
         <source>Max. depth</source>
         <translation>Profunditat màx.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3769"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3765"/>
         <source>P0 (none)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation>P0 (res)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3774"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3770"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation>P1 (mig)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3779"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3775"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation>P2 (alt)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3787"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3783"/>
         <source>Sample rate</source>
         <translation>Freqüència de mostreig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3800"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3796"/>
         <source>20s</source>
         <translation>20 s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3805"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3801"/>
         <source>30s</source>
         <translation>30 s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3810"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3806"/>
         <source>60s</source>
         <translation>60 s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3818"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3814"/>
         <source>Total dive time</source>
         <translation>Temps total de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3856"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3852"/>
         <source>24h</source>
         <translation>24 h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3861"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3857"/>
         <source>12h</source>
         <translation>12 h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3869"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3865"/>
         <source>Time format</source>
         <translation>Format de l&apos;hora</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3884"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3880"/>
         <source>Imperial</source>
         <translation>Imperial</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3889"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3885"/>
         <source>Metric</source>
         <translation>Mètric</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3907"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3903"/>
         <source>Light</source>
         <translation>Llum</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3924"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3920"/>
         <source>Depth alarm</source>
         <translation>Alarma de profunditat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3944"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3940"/>
         <source>Time alarm</source>
         <translation>Alarma de temps</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="933"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="816"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1409"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1304"/>
         <source>Backup dive computer settings</source>
         <translation>Fes una còpia de seguretat de l&apos;arranjament</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1410"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1431"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1305"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1325"/>
         <source>Backup files</source>
         <translation>Fitxers de còpia de seguretat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1414"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1309"/>
         <source>XML backup error</source>
         <translation>Error en la còpia de seguretat de l&apos;XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1415"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1310"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation>S&apos;ha produït un error mentre es desava el fitxer de la còpia de seguretat.
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1418"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1313"/>
         <source>Backup succeeded</source>
         <translation>Còpia de seguretat correcta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1419"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1314"/>
         <source>Your settings have been saved to: %1</source>
         <translation>S&apos;ha desat el vostre arranjament a: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1430"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1324"/>
         <source>Restore dive computer settings</source>
         <translation>Restableix l&apos;arranjament de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1437"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1331"/>
         <source>XML restore error</source>
         <translation>Error en restaurar l&apos;XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1438"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1332"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation>S&apos;ha produït un error mentre es restaurava el fitxer de la còpia de seguretat.
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1442"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1336"/>
         <source>Restore succeeded</source>
         <translation>Restauració correcta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1443"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1337"/>
         <source>Your settings have been restored successfully.</source>
         <translation>El vostre arranjament s&apos;ha restaurat correctament.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1453"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1346"/>
         <source>Select firmware file</source>
         <translation>Selecciona un fitxer de microprogramari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1454"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1347"/>
         <source>All files</source>
         <translation>Tots els fitxers</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1490"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1391"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Tria un fitxer per a fer de registre de la baixada des de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1491"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
         <source>Log files</source>
         <translation>Fitxers de registre</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1514"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1413"/>
         <source>Connecting to device...</source>
         <translation>S&apos;està connectant amb el dispositiu...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1544"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1444"/>
         <source>Connected to device</source>
         <translation>Connectat amb el dispositiu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1569"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1470"/>
         <source>Disconnected from device</source>
         <translation>Desconnectat del dispositiu</translation>
     </message>
@@ -2246,47 +2355,47 @@
         <translation>Punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CopySettings.qml" line="48"/>
+        <location filename="../mobile-widgets/qml/CopySettings.qml" line="46"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CopySettings.qml" line="60"/>
+        <location filename="../mobile-widgets/qml/CopySettings.qml" line="56"/>
         <source>Dive guide</source>
         <translation>Guia de busseig</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CopySettings.qml" line="72"/>
+        <location filename="../mobile-widgets/qml/CopySettings.qml" line="66"/>
         <source>Buddy</source>
         <translation>Company</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CopySettings.qml" line="84"/>
+        <location filename="../mobile-widgets/qml/CopySettings.qml" line="76"/>
         <source>Suit</source>
         <translation>Vestit</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CopySettings.qml" line="96"/>
+        <location filename="../mobile-widgets/qml/CopySettings.qml" line="86"/>
         <source>Rating</source>
         <translation>Valoració</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CopySettings.qml" line="108"/>
+        <location filename="../mobile-widgets/qml/CopySettings.qml" line="96"/>
         <source>Visibility</source>
         <translation>Visibilitat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CopySettings.qml" line="120"/>
+        <location filename="../mobile-widgets/qml/CopySettings.qml" line="106"/>
         <source>Tags</source>
         <translation>Etiquetes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CopySettings.qml" line="132"/>
+        <location filename="../mobile-widgets/qml/CopySettings.qml" line="116"/>
         <source>Cylinders</source>
         <translation>Ampolles</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CopySettings.qml" line="144"/>
+        <location filename="../mobile-widgets/qml/CopySettings.qml" line="126"/>
         <source>Weights</source>
         <translation>Llast</translation>
     </message>
@@ -2294,105 +2403,117 @@
 <context>
     <name>CylindersModel</name>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Type</source>
         <translation>Tipus</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Size</source>
         <translation>Mida</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Work press.</source>
         <translation>Pres. de treball</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
-        <location filename="../qt-models/cylindermodel.cpp" line="38"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="39"/>
         <source>Start press.</source>
         <translation>Pres. a l&apos;inici</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>End press.</source>
         <translation>Pres. al final</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>O₂%</source>
         <translation>O₂%</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>He%</source>
         <translation>He%</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="27"/>
         <source>Deco switch at</source>
         <translation>Canvia a descompressió a</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="27"/>
         <source>Bot. MOD</source>
         <translation>MOD fons</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="27"/>
         <source>MND</source>
         <translation>MND</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="27"/>
         <source>Use</source>
         <translation>Usa</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="27"/>
-        <source>Sensors</source>
-        <translation>Sensors</translation>
+        <location filename="../qt-models/cylindermodel.cpp" line="28"/>
+        <source>Sensor</source>
+        <translation type="unfinished">Sensor</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="58"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="65"/>
+        <source>L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qt-models/cylindermodel.cpp" line="306"/>
+        <source>Select the tank pressure sensor id for this cylinder.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sensors</source>
+        <translation type="vanished">Sensors</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/cylindermodel.cpp" line="61"/>
         <source>cuft</source>
         <translation>peus</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="62"/>
         <source>ℓ</source>
-        <translation> ℓ</translation>
+        <translation type="vanished"> ℓ</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="275"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="287"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation>Aquest gas s&apos;està emprant. Només es poden eliminar les ampolles que no s&apos;empren durant la immersió.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="277"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="289"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation>Feu clic aquí per a eliminar aquesta ampolla.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="288"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="300"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
         <translation>Canviar la profunditat del gas de descompressió. Calculat emprant la preferència pO₂ per a la descompressió, llevat que s&apos;estableixi manualment.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="290"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="302"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max. depth.</source>
         <translation>Calculat emprant la preferència pO₂ inferior. Establint els ajustaments MOD del percentatge de O₂, ajustat a «*» per al millor percentatge de O₂ per a la profunditat màxima.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="292"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="304"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max. depth.</source>
         <translation>Calculat emprant la preferència final per a la millor barreja. Establint els ajustaments MND del percentatge d&apos;He, ajustat a «*» per al millor percentatge d&apos;He per a la profunditat màxima.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="294"/>
         <source>Index of cylinder that you want to move sensor data from.</source>
-        <translation>Índex d&apos;ampolles del qual voleu moure les dades del sensor.</translation>
+        <translation type="vanished">Índex d&apos;ampolles del qual voleu moure les dades del sensor.</translation>
     </message>
 </context>
 <context>
@@ -2429,68 +2550,88 @@
 <context>
     <name>DiveComponentSelection</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="328"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="71"/>
         <source>Dive site: </source>
         <translation>Punt de la immersió:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="330"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="73"/>
         <source>Dive guide: </source>
         <translation>Guia de busseig:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="332"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="75"/>
         <source>Buddy: </source>
         <translation>Company:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="334"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="77"/>
         <source>Rating: </source>
         <translation>Valoració:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="336"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="79"/>
         <source>Visibility: </source>
         <translation>Visibilitat:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="338"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="81"/>
+        <source>Wave size: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="83"/>
+        <source>Current: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="85"/>
+        <source>Surge: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="87"/>
+        <source>Chill: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="89"/>
         <source>Notes:
 </source>
         <translation>Notes:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="340"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="91"/>
         <source>Suit: </source>
         <translation>Vestit:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="342"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="93"/>
         <source>Tags: </source>
         <translation>Etiquetes: </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="352"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="95"/>
         <source>Cylinders:
 </source>
         <translation>Ampolles:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="360"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="97"/>
         <source>Weights:
 </source>
         <translation>Llast:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="367"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="99"/>
         <source>Dive number: </source>
         <translation>Número de la immersió: </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="369"/>
+        <location filename="../desktop-widgets/divecomponentselection.cpp" line="101"/>
         <source>Date / time: </source>
         <translation>Data i hora: </translation>
     </message>
@@ -2581,202 +2722,223 @@
         <translation>Detalls de la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="69"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="71"/>
+        <source>Dive list</source>
+        <translation type="unfinished">Llista d&apos;immersions</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="121"/>
         <source>Remove this dive from trip</source>
         <translation>Elimina aquesta immersió del viatge</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="78"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="130"/>
         <source>Add dive to trip above</source>
         <translation>Afegeix una immersió al viatge de sobre</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="87"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="139"/>
         <source>Add dive to trip below</source>
         <translation>Afegeix una immersió al viatge de sota</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="96"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="148"/>
         <source>Create trip with dive</source>
         <translation>Crea un viatge amb la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="102"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="154"/>
         <source>Mark dive as valid</source>
         <translation>Marca la immersió com a vàlida</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="102"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="154"/>
         <source>Mark dive as invalid</source>
         <translation>Marca la immersió com a no vàlida</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="107"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="159"/>
         <source>Undo</source>
         <translation>Desfés</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="113"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="165"/>
         <source>Redo</source>
         <translation>Refés</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="227"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="271"/>
         <source>Delete dive</source>
         <translation>Suprimeix la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="236"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="280"/>
         <source>Cancel edit</source>
         <translation>Cancel·la l&apos;edició</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="292"/>
         <source>Show on map</source>
         <translation>Mostra al mapa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="264"/>
         <source>Save edits</source>
-        <translation>Desa les edicions</translation>
+        <translation type="vanished">Desa les edicions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="264"/>
         <source>Edit dive</source>
-        <translation>Edita la immersió</translation>
+        <translation type="vanished">Edita la immersió</translation>
     </message>
 </context>
 <context>
     <name>DiveDetailsEdit</name>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="150"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
         <source>Date/Time:</source>
         <translation>Data i hora:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="162"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="168"/>
         <source>Dive number:</source>
         <translation>Número de la immersió:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="181"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="188"/>
         <source>Depth:</source>
         <translation>Profunditat:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="194"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="202"/>
         <source>Duration:</source>
         <translation>Durada:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="217"/>
         <source>Air Temp:</source>
         <translation>Temp. de l&apos;aire:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="221"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="231"/>
         <source>Water Temp:</source>
         <translation>Temp. de l&apos;aigua:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="234"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="245"/>
         <source>Location:</source>
         <translation>Ubicació:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="258"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="269"/>
         <source>Coordinates:</source>
         <translation>Coordenades:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="271"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="282"/>
         <source>Suit:</source>
         <translation>Vestit:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="285"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="296"/>
         <source>Buddy:</source>
         <translation>Company:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="299"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="310"/>
         <source>Dive guide:</source>
         <translation>Guia de busseig:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="313"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="324"/>
         <source>Tags:</source>
         <translation>Etiquetes:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="327"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="338"/>
         <source>Weight:</source>
         <translation>Llast:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="347"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="358"/>
         <source>Cylinder1:</source>
         <translation>Ampolla_1:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="364"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="432"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="501"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="571"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="644"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="375"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="446"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="518"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="591"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="667"/>
         <source>Gas mix:</source>
         <translation>Barreja de gas:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="380"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="448"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="517"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="588"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="661"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="392"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="463"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="535"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="609"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="685"/>
         <source>Start Pressure:</source>
         <translation>Pressió inicial:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="395"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="392"/>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="463"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="532"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="604"/>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="677"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="535"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="609"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="685"/>
+        <source>Start P:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="408"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="479"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="551"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="626"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="702"/>
         <source>End Pressure:</source>
         <translation>Pressió final:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="415"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="408"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="479"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="551"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="626"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="702"/>
+        <source>End P:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="429"/>
         <source>Cylinder2:</source>
         <translation>Ampolla_2:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="483"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="500"/>
         <source>Cylinder3:</source>
         <translation>Ampolla_3:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="552"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="572"/>
         <source>Cylinder4:</source>
         <translation>Ampolla_4:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="624"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="647"/>
         <source>Cylinder5:</source>
         <translation>Ampolla_5:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="696"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="722"/>
         <source>Rating:</source>
         <translation>Valoració:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="713"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="739"/>
         <source>Visibility:</source>
         <translation>Visibilitat:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="730"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="756"/>
         <source>Notes:</source>
         <translation>Notes:</translation>
     </message>
@@ -2784,82 +2946,82 @@
 <context>
     <name>DiveDetailsView</name>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="47"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="58"/>
         <source>&lt;unnamed dive site&gt;</source>
         <translation>&lt;unnamed dive site&gt;</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="115"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="126"/>
         <source>Rating:</source>
         <translation>Valoració:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="168"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="179"/>
         <source>Visibility:</source>
         <translation>Visibilitat:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="362"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="384"/>
         <source>No profile to show</source>
         <translation>No hi ha cap perfil a mostrar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="370"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="392"/>
         <source>prev.DC</source>
         <translation>OB anterior</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="384"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="406"/>
         <source>next DC</source>
         <translation>OB següent</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="405"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="427"/>
         <source>Suit:</source>
         <translation>Vestit:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="412"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="434"/>
         <source>Air Temp:</source>
         <translation>Temp. de l&apos;aire:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="419"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="441"/>
         <source>Water Temp:</source>
         <translation>Temp. de l&apos;aigua:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="461"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="483"/>
         <source>Cylinder:</source>
         <translation>Ampolla:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="469"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="491"/>
         <source>Weight:</source>
         <translation>Llast:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="477"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="499"/>
         <source>SAC:</source>
         <translation>CAS:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="520"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="542"/>
         <source>Dive guide:</source>
         <translation>Guia de busseig:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="528"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="550"/>
         <source>Buddy:</source>
         <translation>Company:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="566"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="588"/>
         <source>Tags:</source>
         <translation>Etiquetes:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="602"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="624"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
@@ -2867,38 +3029,38 @@
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="140"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="134"/>
         <source> (cyl. %1)</source>
         <translation> (amp. %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="144"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="138"/>
         <source>ICD</source>
         <translation>CIM</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="145"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="139"/>
         <source>ΔHe</source>
         <translation>ΔHe</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="146"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="140"/>
         <source>ΔN₂</source>
         <translation>ΔN₂</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="164"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="162"/>
         <source>Manual switch to OC</source>
         <translation>Canvi manual a OC</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="166"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="164"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation> començament</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="167"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="165"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation> final</translation>
@@ -2907,27 +3069,27 @@
 <context>
     <name>DiveImportedModel</name>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="37"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="51"/>
         <source>Date/time</source>
         <translation>Data i hora</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="39"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="53"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="41"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="55"/>
         <source>Depth</source>
         <translation>Profunditat</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="71"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="80"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="71"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="80"/>
         <source>min</source>
         <translation> min</translation>
     </message>
@@ -2936,124 +3098,134 @@
     <name>DiveList</name>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="13"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="329"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="352"/>
         <source>Dive list</source>
         <translation>Llista d&apos;immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="29"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="35"/>
         <source>Completed manual sync with cloud
 </source>
         <translation>S&apos;ha completat la sincronització manual amb el núvol
 </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="182"/>
         <source>&lt;unnamed dive site&gt;</source>
         <translation>&lt;unnamed dive site&gt;</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="244"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="250"/>
         <source>Remove dive %1 from trip</source>
         <translation>Elimina la immersió %1 del viatge</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="252"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="258"/>
         <source>Add dive %1 to trip above</source>
         <translation>Afegeix la immersió %1 al viatge de sobre</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="260"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="266"/>
         <source>Add dive %1 to trip below</source>
         <translation>Afegeix la immersió %1 al viatge de sota</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="268"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="274"/>
         <source>Create trip with dive %1</source>
         <translation>Crea un viatge amb la immersió %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="277"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="283"/>
+        <source>Merge dive %1 with dive above</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="291"/>
+        <source>Merge dive %1 with dive below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="300"/>
         <source>Mark dive as valid</source>
         <translation>Marca la immersió com a vàlida</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="277"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="300"/>
         <source>Mark dive as invalid</source>
         <translation>Marca la immersió com a no vàlida</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="283"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="306"/>
         <source>Delete dive</source>
         <translation>Suprimeix la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="289"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="312"/>
         <source>Show on map</source>
         <translation>Mostra al mapa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="298"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="321"/>
         <source>Edit trip details</source>
         <translation>Edita els detalls del viatge</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="310"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="333"/>
         <source>Undo</source>
         <translation>Desfés</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="316"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="339"/>
         <source>Redo</source>
         <translation>Refés</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="331"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="354"/>
         <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
         <translation>Toqueu el botó «+» per a afegir una immersió (o baixeu les immersions des d&apos;un ordinador de busseig admès)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="337"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="356"/>
         <source>Cloud credentials</source>
         <translation>Credencials del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="346"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="365"/>
         <source>No dives in dive list</source>
         <translation>No hi ha cap immersió a la llista</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="346"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="365"/>
         <source>Please wait, updating the dive list</source>
         <translation>Espereu, s&apos;està actualitzant la llista d&apos;inmersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="391"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="405"/>
         <source>Fulltext</source>
         <translation>Tot text</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="392"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="406"/>
         <source>People</source>
         <translation>Persones</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="393"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="407"/>
         <source>Tags</source>
         <translation>Etiquetes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="451"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="499"/>
         <source>Download dives</source>
         <translation>Baixa immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="462"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="510"/>
         <source>Add dive</source>
         <translation>Afegeix la inmersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="473"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="521"/>
         <source>Filter dives</source>
         <translation>Filtra les immersions</translation>
     </message>
@@ -3061,127 +3233,149 @@
 <context>
     <name>DiveListView</name>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="730"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="754"/>
         <source>Expand all</source>
         <translation>Expandeix-ho tot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="732"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="756"/>
         <source>Collapse all</source>
         <translation>Redueix-ho tot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="736"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="760"/>
         <source>Collapse others</source>
         <translation>Redueix les altres</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="741"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="765"/>
         <source>Remove dive(s) from trip</source>
-        <translation><numerusform>Elimina la immersió del viatge</numerusform><numerusform>Elimina les immersions del viatge</numerusform></translation>
+        <translation>
+            <numerusform>Elimina la immersió del viatge</numerusform>
+            <numerusform>Elimina les immersions del viatge</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="743"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="767"/>
         <source>Create new trip above</source>
         <translation>Crea un viatge nou per sobre</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="758"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="782"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation><numerusform>Afegeix una immersió al viatge de sobre</numerusform><numerusform>Afegeix immersions al viatge de sobre</numerusform></translation>
+        <translation>
+            <numerusform>Afegeix una immersió al viatge de sobre</numerusform>
+            <numerusform>Afegeix immersions al viatge de sobre</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="760"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="784"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation><numerusform>Afegeix una immersió al viatge de sota</numerusform><numerusform>Afegeix immersions al viatge de sota</numerusform></translation>
+        <translation>
+            <numerusform>Afegeix una immersió al viatge de sota</numerusform>
+            <numerusform>Afegeix immersions al viatge de sota</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="764"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="788"/>
         <source>Merge trip with trip above</source>
         <translation>Combina un viatge amb el viatge de sobre</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="765"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="789"/>
         <source>Merge trip with trip below</source>
         <translation>Combina un viatge amb el viatge de sota</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="769"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="793"/>
         <source>Delete dive(s)</source>
-        <translation><numerusform>Suprimeix la immersió</numerusform><numerusform>Suprimeix les immersions</numerusform></translation>
+        <translation>
+            <numerusform>Suprimeix la immersió</numerusform>
+            <numerusform>Suprimeix les immersions</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="771"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="795"/>
         <source>Mark dive(s) valid</source>
-        <translation><numerusform>Marca la immersió vàlida</numerusform><numerusform>Marca les immersions vàlides</numerusform></translation>
+        <translation>
+            <numerusform>Marca la immersió vàlida</numerusform>
+            <numerusform>Marca les immersions vàlides</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="773"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="797"/>
         <source>Mark dive(s) invalid</source>
-        <translation><numerusform>Marca la immersió no vàlida</numerusform><numerusform>Marca les immersions no vàlides</numerusform></translation>
+        <translation>
+            <numerusform>Marca la immersió no vàlida</numerusform>
+            <numerusform>Marca les immersions no vàlides</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="776"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="800"/>
         <source>Merge selected dives</source>
         <translation>Fusiona les immersions seleccionades</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="778"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="802"/>
         <source>Add dive(s) to arbitrary trip</source>
-        <translation><numerusform>Afegeix la immersió a un viatge arbitrari</numerusform><numerusform>Afegeix les immersions a un viatge arbitrari</numerusform></translation>
+        <translation>
+            <numerusform>Afegeix la immersió a un viatge arbitrari</numerusform>
+            <numerusform>Afegeix les immersions a un viatge arbitrari</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="779"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="803"/>
         <source>Renumber dive(s)</source>
-        <translation><numerusform>Torna a numerar la immersió</numerusform><numerusform>Torna a numerar les immersions</numerusform></translation>
+        <translation>
+            <numerusform>Torna a numerar la immersió</numerusform>
+            <numerusform>Torna a numerar les immersions</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="780"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="804"/>
         <source>Shift dive times</source>
         <translation>Desplaça l&apos;hora de la immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="781"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="805"/>
         <source>Split selected dives</source>
         <translation>Divideix les immersions seleccionades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="782"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="806"/>
         <source>Load media from file(s)</source>
         <translation>Carrega el/s suport/s des de fitxer/s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="783"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="807"/>
         <source>Load media from web</source>
         <translation>Carrega el suport des del web</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="812"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="834"/>
         <source>Open media files</source>
         <translation>Obre fitxers de suport</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="815"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="837"/>
         <source>Media files</source>
         <translation>Fitxers de suport</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="816"/>
         <source>Image files</source>
-        <translation>Fitxers d&apos;imatge</translation>
+        <translation type="vanished">Fitxers d&apos;imatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="817"/>
         <source>Video files</source>
-        <translation>Fitxers de vídeo</translation>
+        <translation type="vanished">Fitxers de vídeo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="838"/>
         <source>All files</source>
         <translation>Tots els fitxers</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="887"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="904"/>
         <source>%1 does not appear to be an image</source>
         <translation>%1 no aparenta ser una imatge</translation>
     </message>
@@ -3189,12 +3383,11 @@
 <context>
     <name>DiveLocationModel</name>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="424"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
-        <translation>Crea un nou punt d&apos;immersió, copiant la informació rellevant des de la immersió actual.</translation>
+        <translation type="vanished">Crea un nou punt d&apos;immersió, copiant la informació rellevant des de la immersió actual.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="425"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="424"/>
         <source>Create a new dive site with this name</source>
         <translation>Crea un nou punt d&apos;immersió amb aquest nom</translation>
     </message>
@@ -3218,7 +3411,7 @@
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="117"/>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="412"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="516"/>
         <source>Selected dives</source>
         <translation>Immersions seleccionades</translation>
     </message>
@@ -3248,173 +3441,192 @@
         <translation>Anònim</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="186"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="191"/>
+        <source>Dive info in profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="235"/>
+        <source>Width</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="251"/>
+        <source>Height</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
         <source>Export format</source>
         <translation>Format de l&apos;exportació</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="198"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="302"/>
         <source>Subsurface &amp;XML</source>
         <translation>&amp;XML del Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="211"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="315"/>
         <source>Subsurface dive sites XML</source>
         <translation>Punts d&apos;immersió del Subsurface en XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="227"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="331"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="240"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="344"/>
         <source>di&amp;velogs.de</source>
         <translation>di&amp;velogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="250"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="354"/>
         <source>DiveShare</source>
         <translation>DiveShare</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="260"/>
         <source>CSV summary dive details</source>
-        <translation>Detalls de la immersió amb un resum en CSV</translation>
+        <translation type="vanished">Detalls de la immersió amb un resum en CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="364"/>
+        <source>CSV dive list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="374"/>
         <source>CSV dive computer dive profile</source>
         <translation>Perfil de la immersió en CSV des d&apos;un ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="384"/>
         <source>CSV computed profile panel data</source>
         <translation>CSV: Dades calculades a partir del plafó del perfil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="394"/>
         <source>Dive profile</source>
         <translation>Perfil de la immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="300"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="404"/>
         <source>Worldmap</source>
         <translation>Mapamundi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="310"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="414"/>
         <source>TeX</source>
         <translation>TeX</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="320"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="424"/>
         <source>LaTeX</source>
         <translation>LaTeX</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="330"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="434"/>
         <source>I&amp;mage depths</source>
         <translation>Profunditat de les i&amp;matges</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="372"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="476"/>
         <source>HTML</source>
         <translation>HTML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="390"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="494"/>
         <source>General settings</source>
         <translation>Arranjament general</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="396"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="500"/>
         <source>Subsurface numbers</source>
         <translation>Numeració del Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="425"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="529"/>
         <source>Export yearly statistics</source>
         <translation>Exporta les estadístiques anuals</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="441"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="545"/>
         <source>All di&amp;ves</source>
         <translation>Totes les i&amp;mmersions</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="451"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="555"/>
         <source>Export list only</source>
         <translation>Exporta només la llista</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="458"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="562"/>
         <source>Export photos</source>
         <translation>Exporta les fotografies</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="474"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="578"/>
         <source>Style options</source>
         <translation>Opcions de l&apos;estil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="489"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="593"/>
         <source>Font</source>
         <translation>Lletra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="499"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="603"/>
         <source>Font size</source>
         <translation>Mida de la lletra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="510"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="614"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="515"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="619"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="520"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="624"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="525"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="629"/>
         <source>14</source>
         <translation>14</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="530"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="634"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="535"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="639"/>
         <source>18</source>
         <translation>18</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="540"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="644"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="548"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="652"/>
         <source>Theme</source>
         <translation>Tema</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="559"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="663"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="118"/>
         <source>Light</source>
         <translation>Llum</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="564"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="668"/>
         <source>Sand</source>
         <translation>Sorra</translation>
     </message>
@@ -3623,261 +3835,261 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
         <translation>Arrossega les etiquetes de dalt a les columnes corresponents</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="380"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="586"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="393"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="601"/>
         <source>Tab</source>
         <translation>Pestanya</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="694"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="815"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="914"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="709"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="830"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="930"/>
         <source>Sample time</source>
         <translation>Hora de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="696"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="816"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="711"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="831"/>
         <source>Sample depth</source>
         <translation>Profunditat de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="718"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="828"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="733"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="843"/>
         <source>Sample setpoint</source>
         <translation>Punt d&apos;ajust de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="702"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="819"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="717"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="834"/>
         <source>Sample sensor1 pO₂</source>
         <translation>pO₂ del sensor 1 de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="704"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="820"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="719"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="835"/>
         <source>Sample sensor2 pO₂</source>
         <translation>pO₂ del sensor 2 de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="706"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="821"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="721"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="836"/>
         <source>Sample sensor3 pO₂</source>
         <translation>pO₂ del sensor 3 de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="700"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="818"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="715"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="833"/>
         <source>Sample pO₂</source>
         <translation>pO₂ de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="698"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="817"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="713"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="832"/>
         <source>Sample temperature</source>
         <translation>Temperatura de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="708"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="822"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="723"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="837"/>
         <source>Sample CNS</source>
         <translation>SNC de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="714"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="825"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="593"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="729"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="840"/>
         <source>Sample stopdepth</source>
         <translation>Profunditat de parada de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="656"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="671"/>
         <source>Some column headers were pre-populated; please drag and drop the headers so they match the column they are in.</source>
         <translation>Les capçaleres d&apos;algunes columnes poden estar assignades amb anterioritat, si us plau, arrossegueu i deixeu-les perquè coincideixin amb les columnes correctes.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="710"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="823"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="725"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="838"/>
         <source>Sample NDL</source>
         <translation>LND de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="712"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="824"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="727"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="839"/>
         <source>Sample TTS</source>
         <translation>TTS de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="716"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="826"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="731"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="841"/>
         <source>Sample pressure</source>
         <translation>Pressió de la mostra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="722"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="814"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="916"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="737"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="829"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="932"/>
         <source>Dive #</source>
         <translation>Immersió núm.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="723"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="811"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="917"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="738"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="826"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="933"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="724"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="813"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="918"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="739"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="828"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="934"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="725"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="919"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="740"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="935"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="726"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="923"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="741"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="939"/>
         <source>Max. depth</source>
         <translation>Prof. màxima</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="727"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="924"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="742"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="940"/>
         <source>Avg. depth</source>
         <translation>Prof. mitja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="728"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="920"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="743"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="936"/>
         <source>Mode</source>
         <translation>Mode</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="729"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="940"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="744"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="956"/>
         <source>Air temp.</source>
         <translation>Temp. de l&apos;aire</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="730"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="941"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="745"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="957"/>
         <source>Water temp.</source>
         <translation>Temp. de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="731"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="935"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="746"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="951"/>
         <source>Cyl. size</source>
         <translation>Capacitat de l&apos;ampolla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="732"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="936"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="747"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="952"/>
         <source>Start pressure</source>
         <translation>Pressió inicial</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="733"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="937"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="748"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="953"/>
         <source>End pressure</source>
         <translation>Pressió final</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="734"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="938"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="749"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="954"/>
         <source>O₂</source>
         <translation>O₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="735"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="939"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="750"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="955"/>
         <source>He</source>
         <translation>He</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="736"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="921"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="751"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="937"/>
         <source>Location</source>
         <translation>Ubicació</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="737"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="922"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="752"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="938"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="738"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="925"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="753"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="941"/>
         <source>Divemaster</source>
         <translation>Líder de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="739"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="926"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="754"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="942"/>
         <source>Buddy</source>
         <translation>Company</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="740"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="927"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="755"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="943"/>
         <source>Suit</source>
         <translation>Vestit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="741"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="830"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="943"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="756"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="845"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="959"/>
         <source>Rating</source>
         <translation>Valoració</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="742"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="829"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="942"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="757"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="844"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="958"/>
         <source>Visibility</source>
         <translation>Visibilitat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="743"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="928"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="758"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="944"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="744"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="929"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="759"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="945"/>
         <source>Weight</source>
         <translation>Llast</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="745"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="930"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="760"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="946"/>
         <source>Tags</source>
         <translation>Etiquetes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="827"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="842"/>
         <source>Sample heartrate</source>
         <translation>Mostra el ritme cardíac</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="968"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="984"/>
         <source>multiple files</source>
         <translation>múltiples fitxers</translation>
     </message>
@@ -3890,131 +4102,350 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
         <translation>Data i hora de la immersió planejada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="117"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="147"/>
         <source>Altitude</source>
         <translation>Altitud</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="124"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="140"/>
         <source>ATM pressure</source>
         <translation>Pressió atmosfèrica</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="131"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="161"/>
         <source>Water type</source>
         <translation>Tipus d&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="144"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="193"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="166"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="174"/>
         <source>mbar</source>
         <translation> mbar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="180"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="110"/>
+        <source>Dive mode</source>
+        <translation type="unfinished">Mode de busseig</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/diveplanner.ui" line="154"/>
+        <source>Deco on OC bailout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/diveplanner.ui" line="210"/>
         <source>Fresh water</source>
         <translation>Aigua dolça</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="185"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="215"/>
         <source>Sea water</source>
         <translation>Aigua salada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="190"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="220"/>
         <source>EN13319</source>
         <translation>EN13319</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="195"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="225"/>
         <source>Custom</source>
         <translation>A mida</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.ui" line="221"/>
+        <location filename="../desktop-widgets/diveplanner.ui" line="251"/>
+        <source>kg/L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>kg/ℓ</source>
-        <translation> kg/ℓ</translation>
+        <translation type="vanished"> kg/ℓ</translation>
     </message>
 </context>
 <context>
     <name>DivePlannerEdit</name>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="11"/>
         <source>Dive planner edit</source>
-        <translation>Edita el planificador d&apos;immersions</translation>
+        <translation type="vanished">Edita el planificador d&apos;immersions</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="10"/>
+        <source>New Dive Plan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="13"/>
+        <source>bar</source>
+        <translation type="unfinished">bar</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="13"/>
+        <source>psi</source>
+        <translation type="unfinished">psi</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="14"/>
+        <source>m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="14"/>
+        <source>ft</source>
+        <translation type="unfinished">ft</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="30"/>
+        <source>Gas %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="175"/>
+        <source>Plan Details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="185"/>
+        <source>Date</source>
+        <translation type="unfinished">Data</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="189"/>
+        <source>Time</source>
+        <translation type="unfinished">Hora</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="205"/>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="449"/>
+        <source>Dive Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="211"/>
+        <source>Open circuit</source>
+        <translation type="unfinished">Circuit obert</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="211"/>
+        <source>CCR</source>
+        <translation type="unfinished">CCR</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="211"/>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="525"/>
+        <source>pSCR</source>
+        <translation type="unfinished">pSCR</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="218"/>
+        <source>Deco on OC bailout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="228"/>
+        <source>Water Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="234"/>
+        <source>Sea Water</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="234"/>
+        <source>Fresh Water</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="234"/>
+        <source>EN13319</source>
+        <translation type="unfinished">EN13319</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="245"/>
+        <source>Cylinders</source>
+        <translation type="unfinished">Ampolles</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="274"/>
+        <source>#</source>
+        <translation type="unfinished">Núm.</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="275"/>
+        <source>Type</source>
+        <translation type="unfinished">Tipus</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="277"/>
+        <source>Mix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="282"/>
+        <source>Dil</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="288"/>
+        <source>[%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="392"/>
+        <source>Dive Segments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="428"/>
+        <source>Depth [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="433"/>
+        <source>Time [min]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="438"/>
+        <source>Gas</source>
+        <translation type="unfinished">Gas</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="443"/>
+        <source>Setpoint [bar]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="525"/>
+        <source>OC</source>
+        <translation type="unfinished">OC</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="627"/>
+        <source>Dive Plan Summary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="642"/>
+        <source>Save plan</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DivePlannerGasCalculator</name>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="11"/>
+        <source>Gas Calculator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="38"/>
+        <source>Oxygen %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="49"/>
+        <source>Helium %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="62"/>
+        <source>Calculate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="91"/>
+        <source>pO₂</source>
+        <translation type="unfinished">pO₂</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="98"/>
+        <source>MOD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="105"/>
+        <source>END @ MOD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="105"/>
+        <source>EAD @ MOD</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DivePlannerManager</name>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerManager.qml" line="11"/>
         <source>Dive planner manager</source>
-        <translation>Gestor del planificador d&apos;immersions</translation>
+        <translation type="vanished">Gestor del planificador d&apos;immersions</translation>
     </message>
 </context>
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="210"/>
         <source>unknown</source>
-        <translation>Desconeguda</translation>
+        <translation type="vanished">Desconeguda</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="294"/>
         <source>cyl.</source>
-        <translation>cil.</translation>
+        <translation type="vanished">cil.</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="415"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="448"/>
         <source>Final depth</source>
         <translation>Profunditat final</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="417"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="450"/>
         <source>Run time</source>
         <translation>Temps acumulat</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="419"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="452"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="421"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="454"/>
         <source>Used gas</source>
         <translation>Gas emprat</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="423"/>
         <source>CC setpoint</source>
-        <translation>Punt d&apos;ajust amb CC</translation>
+        <translation type="vanished">Punt d&apos;ajust amb CC</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="425"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="456"/>
+        <source>Setpoint</source>
+        <translation type="unfinished">Punt d&apos;ajust</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/diveplannermodel.cpp" line="458"/>
         <source>Dive mode</source>
         <translation>Mode de busseig</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1208"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1247"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1214"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1253"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1217"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1256"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1264"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1303"/>
         <source>Stop times</source>
         <translation>Temps de parada</translation>
     </message>
@@ -4022,264 +4453,367 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
 <context>
     <name>DivePlannerSetup</name>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="11"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="10"/>
         <source>Dive planner setup</source>
         <translation>Configura el planificador d&apos;immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> m/min</source>
-        <translation> m/min</translation>
+        <translation type="vanished"> m/min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="13"/>
         <source> ft/min</source>
-        <translation> ft/min</translation>
+        <translation type="vanished"> ft/min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <source> l/min</source>
-        <translation> l/min</translation>
+        <translation type="vanished"> l/min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
         <source> cuft/min</source>
-        <translation> peus/min</translation>
+        <translation type="vanished"> peus/min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <source> BAR</source>
-        <translation> BAR</translation>
+        <translation type="vanished"> BAR</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <source> PSI</source>
-        <translation> PSI</translation>
+        <translation type="vanished"> PSI</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="40"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="43"/>
         <source>Rates</source>
         <translation>Velocitats</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="50"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="53"/>
         <source>Ascent</source>
         <translation>Ascens</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="54"/>
         <source>below 75% avg. depth</source>
-        <translation>Per sota del 75% de la prof. mitja</translation>
+        <translation type="vanished">Per sota del 75% de la prof. mitja</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="70"/>
         <source>75% to 50% avg. depth</source>
-        <translation>De 75% a 50% de la prof. mitja</translation>
+        <translation type="vanished">De 75% a 50% de la prof. mitja</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="86"/>
         <source>50% avg. depth to 6m</source>
-        <translation>De 50% de la prof. mitja a 6 m</translation>
+        <translation type="vanished">De 50% de la prof. mitja a 6 m</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="102"/>
         <source>6m to surface</source>
-        <translation>De 6 m a superfície</translation>
+        <translation type="vanished">De 6 m a superfície</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="119"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="114"/>
         <source>Descent</source>
         <translation>Descens</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="123"/>
         <source>Surface to the bottom</source>
-        <translation>De la superfície al fons</translation>
+        <translation type="vanished">De la superfície al fons</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="140"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="133"/>
         <source>Drop to first depth</source>
         <translation>Caure fins a la primera profunditat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="150"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="144"/>
         <source>Planning</source>
         <translation>Planificació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="159"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="153"/>
         <source>Dive mode</source>
         <translation>Mode de busseig</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="165"/>
         <source>Open circuit</source>
-        <translation>Circuit obert</translation>
+        <translation type="vanished">Circuit obert</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="166"/>
         <source>CCR</source>
-        <translation>CCR</translation>
+        <translation type="vanished">CCR</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="167"/>
         <source>pSCR</source>
-        <translation>pSCR</translation>
+        <translation type="vanished">pSCR</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="174"/>
         <source>Bailout: Deco on OC</source>
-        <translation>Canvi d&apos;emergència: Descompressió a OC</translation>
+        <translation type="vanished">Canvi d&apos;emergència: Descompressió a OC</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="180"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="157"/>
         <source>Recreational mode</source>
         <translation>Mode recreatiu</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="189"/>
         <source>Reserve gas</source>
-        <translation>Gas de reserva</translation>
+        <translation type="vanished">Gas de reserva</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="207"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="183"/>
         <source>Safety stop</source>
         <translation>Parada de seguretat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="217"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="194"/>
         <source>Bühlmann deco</source>
         <translation>Descompressió Bühlmann</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="226"/>
         <source>GFLow</source>
-        <translation>GFBaix</translation>
+        <translation type="vanished">GFBaix</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="243"/>
         <source>GFHigh</source>
-        <translation>GFAlt</translation>
+        <translation type="vanished">GFAlt</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="260"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="234"/>
         <source>VPM-B deco</source>
         <translation>Descompressió VPM-B</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="269"/>
         <source>Conservatism level</source>
-        <translation>Nivell de conservadurisme</translation>
+        <translation type="vanished">Nivell de conservadurisme</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="278"/>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="317"/>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="333"/>
         <source>+</source>
-        <translation>+</translation>
+        <translation type="vanished">+</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="286"/>
         <source>Last stop at ??</source>
-        <translation>Última parada a ??</translation>
+        <translation type="vanished">Última parada a ??</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="291"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="268"/>
         <source>Plan backgas breaks</source>
         <translation>Planeja pauses amb el gas de fons</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="300"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="277"/>
         <source>Only switch at required stops</source>
         <translation>Canvia només en les parades obligatòries</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="309"/>
         <source>Min switch time</source>
-        <translation>Mín. durada del canvi</translation>
+        <translation type="vanished">Mín. durada del canvi</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="325"/>
         <source>Surface segment</source>
-        <translation>Segment de la superfície</translation>
+        <translation type="vanished">Segment de la superfície</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="343"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="317"/>
         <source>Gas options</source>
         <translation>Opcions del gas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="352"/>
         <source>Bottom SAC</source>
-        <translation>CAS al fons</translation>
+        <translation type="vanished">CAS al fons</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="370"/>
         <source>Deco SAC</source>
-        <translation>CAS a la descompressió</translation>
+        <translation type="vanished">CAS a la descompressió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="388"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="380"/>
         <source>SAC factor</source>
         <translation>Factor del SAC</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="403"/>
         <source>Problem solving time</source>
-        <translation>Problema en resoldre el temps</translation>
+        <translation type="vanished">Problema en resoldre el temps</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="411"/>
         <source> min</source>
-        <translation> min</translation>
+        <translation type="vanished"> min</translation>
+    </message>
+    <message>
+        <source>Bottom pO2</source>
+        <translation type="vanished">pO₂ al fons</translation>
+    </message>
+    <message>
+        <source>Deco pO2</source>
+        <translation type="vanished">pO₂ a la descompressió</translation>
+    </message>
+    <message>
+        <source>Best mix END</source>
+        <translation type="vanished">Millor barreja final</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
+        <source>m/min</source>
+        <translation type="unfinished">m/min</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="14"/>
+        <source>ft/min</source>
+        <translation type="unfinished">ft/min</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
+        <source>L/min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
+        <source>cuft/min</source>
+        <translation type="unfinished">peus/min</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="16"/>
+        <source>bar</source>
+        <translation type="unfinished">bar</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="16"/>
+        <source>psi</source>
+        <translation type="unfinished">psi</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="17"/>
+        <source>m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="17"/>
+        <source>ft</source>
+        <translation type="unfinished">ft</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="57"/>
+        <source>below 75% avg. depth [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="71"/>
+        <source>75% to 50% avg. depth [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="85"/>
+        <source>50% avg. depth to 6m [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="99"/>
+        <source>6m / 20ft to surface [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="118"/>
+        <source>Surface to the bottom [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="167"/>
+        <source>Reserve gas [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="204"/>
+        <source>GFLow [%]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="219"/>
+        <source>GFHigh [%]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="244"/>
+        <source>Conservatism level [+]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="259"/>
+        <source>Last stop at 20&apos;/6m</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="287"/>
+        <source>Min switch time [min]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="301"/>
+        <source>Surface segment [min]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="326"/>
+        <source>Bottom SAC [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="353"/>
+        <source>Deco SAC [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="405"/>
+        <source>Problem solving time [min]</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="418"/>
-        <source>Bottom pO2</source>
-        <translation>pO₂ al fons</translation>
+        <source>Bottom pO₂ [bar]</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="433"/>
-        <source>Deco pO2</source>
-        <translation>pO₂ a la descompressió</translation>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="437"/>
+        <source>Deco pO₂ [bar]</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="448"/>
-        <source>Best mix END</source>
-        <translation>Millor barreja final</translation>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="456"/>
+        <source>CCR Default ppO₂ [bar]</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="464"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="481"/>
+        <source>Best mix END [%1]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="495"/>
         <source>O2 narcotic</source>
         <translation>O₂ narcòtic</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="474"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="506"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="480"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="512"/>
         <source>Display runtime</source>
         <translation>Mostra el temps acumulat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="487"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="520"/>
         <source>Display segment duration</source>
         <translation>Mostra la durada per segments</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="494"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="528"/>
         <source>Display transitions in deco</source>
         <translation>Mostra les transicions durant la descompressió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="501"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="536"/>
         <source>Verbatim dive plan</source>
         <translation>Pla de busseig detallat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="508"/>
+        <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="544"/>
         <source>Display plan variations</source>
         <translation>Mostra les variacions del pla</translation>
     </message>
@@ -4287,42 +4821,55 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
 <context>
     <name>DivePlannerView</name>
     <message>
-        <location filename="../mobile-widgets/qml/DivePlannerView.qml" line="11"/>
         <source>Dive planner view</source>
-        <translation>Vista del planificador d&apos;immersions</translation>
+        <translation type="vanished">Vista del planificador d&apos;immersions</translation>
     </message>
 </context>
 <context>
     <name>DivePlannerWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="32"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="39"/>
         <source>Dive planner points</source>
         <translation>Punts del planificador d&apos;immersions</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="37"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="49"/>
         <source>Available gases</source>
         <translation>Gasos disponibles</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="38"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="50"/>
         <source>Add cylinder</source>
         <translation>Afegeix una ampolla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="67"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="114"/>
+        <source>&amp;Planner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="116"/>
+        <source>Add &amp;reverse profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="221"/>
+        <source>kg/L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="40"/>
         <source>Add dive data point</source>
         <translation>Afegeix un punt de dades d&apos;immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="76"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="89"/>
         <source>Save new</source>
         <translation>Desa de nou</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="197"/>
         <source>kg/ℓ</source>
-        <translation> kg/ℓ</translation>
+        <translation type="vanished"> kg/ℓ</translation>
     </message>
 </context>
 <context>
@@ -4373,7 +4920,7 @@ relacionades» i només hi tindreu accés si coneixeu el seu URL.</translation>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Oxygen-Sans'; font-size:7pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Oxygen-Sans&apos;; font-size:7pt; font-weight:600; font-style:normal;&quot;&gt;
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -4419,7 +4966,10 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/divesitelistview.cpp" line="67"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
-        <translation><numerusform>Aquest lloc d&apos;immersió té %n immersió. De debò voleu suprimir-lo?</numerusform><numerusform>Aquest lloc d&apos;immersió té %n immersions. De debò voleu suprimir-lo?</numerusform></translation>
+        <translation>
+            <numerusform>Aquest lloc d&apos;immersió té %n immersió. De debò voleu suprimir-lo?</numerusform>
+            <numerusform>Aquest lloc d&apos;immersió té %n immersions. De debò voleu suprimir-lo?</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divesitelistview.cpp" line="84"/>
@@ -4430,47 +4980,47 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveSummary</name>
     <message>
-        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="18"/>
+        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="17"/>
         <source>Dive summary</source>
         <translation>Resum de la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="51"/>
+        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="50"/>
         <source>All</source>
         <translation>Totes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="52"/>
+        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="51"/>
         <source>1 month</source>
         <translation>1 mes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="53"/>
+        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="52"/>
         <source>3 months</source>
         <translation>3 mesos</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="54"/>
+        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="53"/>
         <source>6 months</source>
         <translation>6 mesos</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="55"/>
+        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="54"/>
         <source>1 year</source>
         <translation>1 any</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="59"/>
+        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="58"/>
         <source>last dive:</source>
         <translation>Darrera immersió:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="69"/>
+        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="68"/>
         <source>first dive:</source>
         <translation>Primera immersió:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="85"/>
+        <location filename="../mobile-widgets/qml/DiveSummary.qml" line="84"/>
         <source>Refresh</source>
         <translation>Refresca</translation>
     </message>
@@ -4478,84 +5028,68 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveSummaryModel</name>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="67"/>
         <source>Number of dives</source>
-        <translation>Nombre d&apos;immersions</translation>
+        <translation type="vanished">Nombre d&apos;immersions</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="68"/>
         <source>Time</source>
-        <translation>Hora</translation>
+        <translation type="vanished">Hora</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="69"/>
         <source>Depth</source>
-        <translation>Profunditat</translation>
+        <translation type="vanished">Profunditat</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="70"/>
         <source>SAC</source>
-        <translation>CAS</translation>
+        <translation type="vanished">CAS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="85"/>
         <source>Total</source>
-        <translation>Total</translation>
+        <translation type="vanished">Total</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="86"/>
         <source>EAN dives</source>
-        <translation>Immersions amb EAN</translation>
+        <translation type="vanished">Immersions amb EAN</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="87"/>
         <source>Deep dives (&gt; 39 m)</source>
-        <translation>Profunditat de les immersions (&gt; 39 m)</translation>
+        <translation type="vanished">Profunditat de les immersions (&gt; 39 m)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="88"/>
         <source>Dive plan(s)</source>
-        <translation>Pla/ns de busseig</translation>
+        <translation type="vanished">Pla/ns de busseig</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="89"/>
         <source>Total time</source>
-        <translation>Temps total</translation>
+        <translation type="vanished">Temps total</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="90"/>
         <source>Max Time</source>
-        <translation>Temps màx.</translation>
+        <translation type="vanished">Temps màx.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="91"/>
         <source>Avg time</source>
-        <translation>Mitjana del temps</translation>
+        <translation type="vanished">Mitjana del temps</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="92"/>
         <source>Max depth</source>
-        <translation>Profunditat màx.</translation>
+        <translation type="vanished">Profunditat màx.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="93"/>
         <source>Avg max depth</source>
-        <translation>Mitjana de la profunditat màx.</translation>
+        <translation type="vanished">Mitjana de la profunditat màx.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="94"/>
         <source>Min SAC</source>
-        <translation>CAS mínim</translation>
+        <translation type="vanished">CAS mínim</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="95"/>
         <source>Max SAC</source>
-        <translation>CAS màxim</translation>
+        <translation type="vanished">CAS màxim</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="96"/>
         <source>Avg SAC</source>
-        <translation>Mitjana del CAS</translation>
+        <translation type="vanished">Mitjana del CAS</translation>
     </message>
 </context>
 <context>
@@ -4563,7 +5097,10 @@ p, li { white-space: pre-wrap; }
     <message numerus="yes">
         <location filename="../qt-models/divetripmodel.cpp" line="81"/>
         <source>(%n dive(s))</source>
-        <translation><numerusform>(%n immersió)</numerusform><numerusform>(%n immersions)</numerusform></translation>
+        <translation>
+            <numerusform>(%n immersió)</numerusform>
+            <numerusform>(%n immersions)</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="83"/>
@@ -4577,19 +5114,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="223"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="418"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="414"/>
         <source>#</source>
         <translation>Núm.</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="225"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="420"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="416"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="227"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="418"/>
         <source>Rating</source>
         <translation>Valoració</translation>
     </message>
@@ -4610,7 +5147,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="231"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
@@ -4636,19 +5173,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="237"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="432"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
         <source>Suit</source>
         <translation>Vestit</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="239"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="434"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="430"/>
         <source>Cylinder</source>
         <translation>Ampolla</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="241"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="436"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="432"/>
         <source>Gas</source>
         <translation>Gas</translation>
     </message>
@@ -4664,7 +5201,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="247"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="440"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="436"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
@@ -4675,7 +5212,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="251"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="440"/>
         <source>Tags</source>
         <translation>Etiquetes</translation>
     </message>
@@ -4686,139 +5223,137 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="255"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
         <source>Country</source>
         <translation>País</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="257"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
         <source>Buddy</source>
         <translation>Company</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="259"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="452"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
         <source>Dive guide</source>
         <translation>Guia de busseig</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="261"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
         <source>Location</source>
         <translation>Ubicació</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="263"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="456"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="452"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="265"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="458"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
         <source>Divemode</source>
         <translation>Mode de busseig</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="420"/>
         <source>Depth</source>
         <translation>Profunditat</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
         <source>Temp.</source>
         <translation>Temp.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="430"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
         <source>Weight</source>
         <translation>Llast</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="434"/>
         <source>SAC</source>
         <translation>CAS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
         <source>Max CNS</source>
         <translation>SNC màx.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
         <source>Media</source>
         <translation>Suport</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="488"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="486"/>
         <source>finish populating data store</source>
         <translation>S&apos;està acabant d&apos;omplir l&apos;emmagatzematge de les dades</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="490"/>
         <source>setting up internal data structures</source>
-        <translation>S&apos;estan creant les estructures internes de les dades</translation>
+        <translation type="vanished">S&apos;estan creant les estructures internes de les dades</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="492"/>
         <source>done setting up internal data structures</source>
-        <translation>S&apos;ha acabat de crear les estructures internes de les dades</translation>
+        <translation type="vanished">S&apos;ha acabat de crear les estructures internes de les dades</translation>
     </message>
 </context>
 <context>
     <name>DivelogsDeWebServices</name>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="256"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="425"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="246"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="422"/>
         <source>Done</source>
         <translation>Fet</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="279"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="269"/>
         <source>Uploading dive list...</source>
         <translation>S&apos;està publicant la llista de les immersions…</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="299"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="289"/>
         <source>Downloading dive list...</source>
         <translation>S&apos;està baixant la llista de les immersions…</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="344"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="334"/>
         <source>Downloading %1 dives...</source>
         <translation>S&apos;estan baixant %1 immersions…</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="378"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="368"/>
         <source>Download finished - %1</source>
         <translation>Baixada finalitzada - %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="392"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="382"/>
         <source>Problem with download</source>
         <translation>Problema amb la baixada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="393"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="403"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="383"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="400"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>L&apos;arxiu no s&apos;ha pogut obrir:
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="402"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="399"/>
         <source>Corrupted download</source>
         <translation>Baixada corrompuda</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="436"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="433"/>
         <source>Error: %1</source>
         <translation>Error: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="445"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="442"/>
         <source>Transferring data...</source>
         <translation>S&apos;estan transferint les dades...</translation>
     </message>
@@ -4854,29 +5389,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DivesiteImportedModel</name>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="31"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="35"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="33"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="37"/>
         <source>Location</source>
         <translation>Ubicació</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="35"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="39"/>
         <source>Country</source>
         <translation>País</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="37"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="41"/>
         <source>Nearest
 Existing Site</source>
         <translation>Més proper
 Lloc existent</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="39"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="43"/>
         <source>Distance</source>
         <translation>Distància</translation>
     </message>
@@ -4894,64 +5429,109 @@ Lloc existent</translation>
         <translation>Tria el mode de baixada Bluetooth</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="213"/>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="216"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="232"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="235"/>
         <source>Connecting to dive computer</source>
         <translation>S&apos;està connectant amb l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="311"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="257"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="361"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="392"/>
         <source>Find Uemis dive computer</source>
         <translation>Troba l&apos;ordinador de busseig Uemis</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="361"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="394"/>
         <source>Find Garmin dive computer</source>
         <translation>Troba l&apos;ordinador de busseig Garmin</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="387"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="396"/>
+        <source>Select diretory to import .fit files from</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="422"/>
         <source>Cancel download</source>
         <translation>Cancel·la la baixada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="509"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Tria un fitxer per a fer de registre de la baixada des de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="468"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="510"/>
         <source>Log files</source>
         <translation>Fitxers de registre</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="481"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="606"/>
+        <source>A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2.
+Not using the latest available stable firmware version on your dive computer means that Subsurface may not work correctly with it.</source>
+        <translation type="unfinished">Hi ha disponible una actualització de microprogramari per a l&apos;ordinador de busseig: té la versió %1 però la darrera versió estable és %2.
+Si no utilitzeu l&apos;última versió estable disponible de microprogramari a l&apos;ordinador de busseig, és possible que el Subsurface no funcioni correctament.</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="609"/>
+        <source>
+
+If your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="610"/>
+        <source>Not now</source>
+        <translation type="unfinished">Ara no</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="611"/>
+        <source>Update firmware</source>
+        <translation type="unfinished">Actualitza el microprogramari</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="613"/>
+        <source>Firmware update notice</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="621"/>
+        <source>Save the downloaded firmware as</source>
+        <translation type="unfinished">Desa el microprogramari baixat com a</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="622"/>
+        <source>Firmware files</source>
+        <translation type="unfinished">Fitxers de microprogramari</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="255"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="521"/>
         <source>Warning</source>
         <translation>Avís</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="482"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="522"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation>S&apos;està desant el bolcat de «libdivecomputer», això NO baixarà les immersions 
 a la llista d&apos;immersions.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="493"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="532"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation>Tria un fitxer per al bolcat binari des de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="494"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="533"/>
         <source>Dump files</source>
         <translation>Fitxers de bolcat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="522"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="559"/>
         <source>Retry download</source>
         <translation>Reprèn la baixada</translation>
     </message>
@@ -5022,48 +5602,47 @@ a la llista d&apos;immersions.</translation>
         <translation>Desa el bolcat de «libdivecomputer»</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="191"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="442"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="323"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="505"/>
         <source>Sync dive computer time</source>
         <translation>Sincronitza l&apos;hora de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="194"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="326"/>
         <source>Adjust the time on the dive computer to match the time on the PC (if supported by the dive computer model).</source>
         <translation>Ajusta l&apos;hora de l&apos;ordinador de busseig perquè coincideixi amb l&apos;hora de l&apos;ordinador (si ho admet el model de l&apos;ordinador de busseig).</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="221"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="218"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="328"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="366"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="499"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="353"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="50"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="249"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="373"/>
         <source>Download</source>
         <translation>Baixa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="275"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="407"/>
         <source>Downloaded dives</source>
         <translation>Immersions baixades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="285"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="417"/>
         <source>Select all</source>
         <translation>Selecciona-ho tot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="292"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="424"/>
         <source>Unselect all</source>
         <translation>Desselecciona-ho tot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="333"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="465"/>
         <source>OK</source>
         <translation>D&apos;acord</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="340"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="359"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="472"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="413"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
@@ -5078,72 +5657,83 @@ a la llista d&apos;immersions.</translation>
         <translation>El bluetooth no està habilitat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="55"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="64"/>
+        <source>Update firmware</source>
+        <translation type="unfinished">Actualitza el microprogramari</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="86"/>
         <source> Vendor name: </source>
         <translation> Nom del venedor: </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="93"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="124"/>
         <source> Dive Computer:</source>
         <translation> Ordinador de busseig:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="134"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="165"/>
         <source> Connection:</source>
         <translation> Connexió:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="224"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="271"/>
         <source> Previously used dive computers: </source>
         <translation> Ordinadors de busseig emprats anteriorment: </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="331"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="377"/>
         <source>Retry</source>
         <translation>Torna a intentar-ho</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="359"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="413"/>
         <source>Quit</source>
         <translation>Surt</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="377"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="431"/>
         <source>Rescan</source>
         <translation>Torna a explorar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="393"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="447"/>
         <source> Downloaded dives</source>
         <translation> Immersions baixades</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="394"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="448"/>
         <source>Info:</source>
         <translation>Informació:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="417"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="459"/>
+        <source>&lt;br&gt;&lt;br&gt;A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2. &lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;If your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update.&lt;/font&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="481"/>
         <source>force downloading all dives</source>
         <translation>Força la baixada de totes les immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="471"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="533"/>
         <source>Please wait while we record these dives...</source>
         <translation>Espereu mentre s&apos;enregistren aquestes immersions...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="486"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="49"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="548"/>
         <source>Accept</source>
         <translation>Accepta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="512"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="576"/>
         <source>Select All</source>
         <translation>Selecciona-ho tot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="521"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="585"/>
         <source>Unselect All</source>
         <translation>Desselecciona-ho tot</translation>
     </message>
@@ -5151,7 +5741,7 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>DownloadThread</name>
     <message>
-        <location filename="../core/downloadfromdcthread.cpp" line="123"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="121"/>
         <source>No new dives downloaded from dive computer</source>
         <translation>No hi ha cap immersió nova baixada des de l&apos;ordinador de busseig</translation>
     </message>
@@ -5164,82 +5754,82 @@ a la llista d&apos;immersions.</translation>
         <translation>Exporta la informació del diari de busseig</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="43"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="42"/>
         <source>Export credentials</source>
         <translation>Exporta les credencials</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="48"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="47"/>
         <source>User ID</source>
         <translation>ID de l&apos;usuari</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="58"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="57"/>
         <source>Password:</source>
         <translation>Contrasenya:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="73"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="72"/>
         <source>Private</source>
         <translation>Privada</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="88"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="87"/>
         <source>Export</source>
         <translation>Exporta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="107"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="106"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="139"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="138"/>
         <source>Export Subsurface XML</source>
         <translation>Exporta a l&apos;XML del Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="143"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="142"/>
         <source>Subsurface native XML format.</source>
         <translation>Format en XML natiu del Subsurface.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="147"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="146"/>
         <source>Export Subsurface dive sites XML</source>
         <translation>Exporta a XML els punts d&apos;immersió del Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="150"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="149"/>
         <source>Subsurface dive sites native XML format.</source>
         <translation>Format en XML natiu del Subsurface per als punts d&apos;immersió.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="154"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="153"/>
         <source>Upload divelogs.de</source>
         <translation>Publica a «divelogs.de»</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="157"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="156"/>
         <source>Send the dive data to divelogs.de website.</source>
         <translation>Envia les dades de busseig al lloc web «divelogs.de».</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="161"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="160"/>
         <source>Upload DiveShare</source>
         <translation>Publica a DiveShare</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="164"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="163"/>
         <source>Send the dive data to dive-share.appspot.com website.</source>
         <translation>Envia les dades de busseig a la pàgina web dive-share.appspot.com.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="185"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="184"/>
         <source>Anonymize</source>
         <translation>Anònim</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Export.qml" line="188"/>
+        <location filename="../mobile-widgets/qml/Export.qml" line="187"/>
         <source>Next</source>
         <translation>Següent</translation>
     </message>
@@ -5247,12 +5837,12 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>ExtraDataModel</name>
     <message>
-        <location filename="../qt-models/divecomputerextradatamodel.cpp" line="10"/>
+        <location filename="../qt-models/divecomputerextradatamodel.cpp" line="9"/>
         <source>Key</source>
         <translation>Clau</translation>
     </message>
     <message>
-        <location filename="../qt-models/divecomputerextradatamodel.cpp" line="10"/>
+        <location filename="../qt-models/divecomputerextradatamodel.cpp" line="9"/>
         <source>Value</source>
         <translation>Valor</translation>
     </message>
@@ -5260,12 +5850,12 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>FilterConstraintWidget</name>
     <message>
-        <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="148"/>
+        <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="156"/>
         <source>Click to remove this constraint</source>
         <translation>Feu clic per a eliminar aquesta restricció</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="181"/>
+        <location filename="../desktop-widgets/filterconstraintwidget.cpp" line="189"/>
         <source>and</source>
         <translation>i</translation>
     </message>
@@ -5273,12 +5863,12 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>FilterPresetModel</name>
     <message>
-        <location filename="../qt-models/filterpresetmodel.cpp" line="10"/>
+        <location filename="../qt-models/filterpresetmodel.cpp" line="12"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../qt-models/filterpresetmodel.cpp" line="47"/>
+        <location filename="../qt-models/filterpresetmodel.cpp" line="50"/>
         <source>Clicking here will remove this filter set.</source>
         <translation>En fer clic aquí, s&apos;eliminarà aquest conjunt de filtres.</translation>
     </message>
@@ -5352,7 +5942,7 @@ a la llista d&apos;immersions.</translation>
         <translation>Filtra els conjunts</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/filterwidget.cpp" line="232"/>
+        <location filename="../desktop-widgets/filterwidget.cpp" line="233"/>
         <source>modified</source>
         <translation>modificat</translation>
     </message>
@@ -5381,37 +5971,37 @@ a la llista d&apos;immersions.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="121"/>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="242"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="244"/>
         <source>Select folder and scan</source>
         <translation>Selecciona la carpeta i explora</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="175"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="177"/>
         <source>Traverse media directories</source>
         <translation>Atravesa els directoris de suports</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="181"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="183"/>
         <source>Stop scanning</source>
         <translation>Atura l&apos;exploració</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="252"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="254"/>
         <source>Scanning cancelled - results may be incomplete</source>
         <translation>S&apos;ha cancel·lat l&apos;exploració -els resultats poden estar incomplets-</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="256"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="258"/>
         <source>No matching media files found</source>
         <translation>No s&apos;ha trobat cap fitxer de suport coincident</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="270"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at their current place.</source>
         <translation>S&apos;han trobat &lt;b&gt;%1&lt;/b&gt; fitxers de suport al lloc actual.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="270"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="272"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at new locations:</source>
         <translation>S&apos;han trobat &lt;b&gt;%1&lt;/b&gt; fitxers de suport als llocs nous:</translation>
     </message>
@@ -5419,12 +6009,12 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>FirmwareUpdateThread</name>
     <message>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2227"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2232"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation>Aquesta característica encara no està disponible per a l&apos;ordinador de busseig seleccionat.</translation>
     </message>
     <message>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2232"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2237"/>
         <source>Firmware update failed!</source>
         <translation>Ha fallat l&apos;actualització del microprogramari!</translation>
     </message>
@@ -5488,29 +6078,29 @@ a la llista d&apos;immersions.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/importgps.ui" line="374"/>
-        <location filename="../desktop-widgets/importgps.ui" line="499"/>
+        <location filename="../desktop-widgets/importgps.ui" line="496"/>
         <source>h:mm</source>
         <translation>h:mm</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/importgps.ui" line="385"/>
-        <location filename="../desktop-widgets/importgps.ui" line="510"/>
+        <location filename="../desktop-widgets/importgps.ui" line="382"/>
+        <location filename="../desktop-widgets/importgps.ui" line="504"/>
         <source>Earlier</source>
         <translation>Més aviat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/importgps.ui" line="393"/>
-        <location filename="../desktop-widgets/importgps.ui" line="518"/>
+        <location filename="../desktop-widgets/importgps.ui" line="390"/>
+        <location filename="../desktop-widgets/importgps.ui" line="512"/>
         <source>Later</source>
         <translation>Més tard</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/importgps.ui" line="408"/>
+        <location filename="../desktop-widgets/importgps.ui" line="405"/>
         <source>Equipment time settings correction</source>
         <translation>Correcció dels ajustos horaris de l&apos;equipament</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/importgps.ui" line="433"/>
+        <location filename="../desktop-widgets/importgps.ui" line="430"/>
         <source>This setting deals with differences in time settings between the GPS and the dive computer that recorded the dive. Ensure that the GPS equipment and your dive computer show the same local time. If not, adjust the time of the GPS earlier or later to coincide with that of the dive (h:min):</source>
         <translation>Aquest ajustament tracta les diferències en els ajustaments de temps entre el GPS i l&apos;ordinador de busseig que va registrar la immersió. Assegureu-vos que l&apos;equip GPS i l&apos;ordinador de busseig mostrin la mateixa hora local. Altrament, ajusteu el temps del GPS abans o després perquè coincideixi amb el de la immersió (h:min):</translation>
     </message>
@@ -5559,32 +6149,35 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>LocationFilterDelegate</name>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="478"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="467"/>
         <source> (same GPS fix)</source>
         <translation> (mateixa posició GPS)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="483"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="472"/>
         <source> (~%1 away</source>
         <translation> (~%1 de distància</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="484"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="473"/>
         <source>, %n dive(s) here)</source>
-        <translation><numerusform>, %n immersió aquí)</numerusform><numerusform>, %n immersions aquí)</numerusform></translation>
+        <translation>
+            <numerusform>, %n immersió aquí)</numerusform>
+            <numerusform>, %n immersions aquí)</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="489"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="478"/>
         <source>(no existing GPS data, add GPS fix from this dive)</source>
         <translation>(no hi ha dades GPS existents, s&apos;afegeix la posició GPS d&apos;aquesta immersió)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="491"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="480"/>
         <source>(no GPS data)</source>
         <translation>(sense dades GPS)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="493"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="482"/>
         <source>Pick site: </source>
         <translation>Tria un lloc:</translation>
     </message>
@@ -5675,12 +6268,12 @@ a la llista d&apos;immersions.</translation>
         <translation>Nombre d&apos;immersions</translation>
     </message>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="104"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="101"/>
         <source>Click here to edit the divesite.</source>
         <translation>Fent clic aquí editareu el punt de la immersió.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="105"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="102"/>
         <source>Clicking here will remove this divesite.</source>
         <translation>Fent clic aquí eliminareu aquest punt d&apos;immersió.</translation>
     </message>
@@ -5688,32 +6281,32 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>LocationInformationWidget</name>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="36"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="37"/>
         <source>Done</source>
         <translation>Fet</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="39"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="40"/>
         <source>Dive site management</source>
         <translation>Gestió dels punts d&apos;immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="66"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="67"/>
         <source>Merge into current site</source>
         <translation>Fusiona dins del lloc actual</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="69"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="70"/>
         <source>Merge current site into this site</source>
         <translation>Fusiona el lloc actual a dins d&apos;aquest lloc</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="277"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="278"/>
         <source>Select GPS file to open</source>
         <translation>Seleccioneu el fitxer de GPS a obrir</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="279"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="280"/>
         <source>GPS files (*.gpx *.GPX)</source>
         <translation>Fitxers de GPS (*.gpx *.GPX)</translation>
     </message>
@@ -5756,8 +6349,12 @@ a la llista d&apos;immersions.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="45"/>
+        <source>Dive Computer Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Extra Info</source>
-        <translation>Info. addicional</translation>
+        <translation type="vanished">Info. addicional</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="103"/>
@@ -5814,7 +6411,7 @@ a la llista d&apos;immersions.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="150"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="366"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="362"/>
         <source>Open</source>
         <translation>Obre</translation>
     </message>
@@ -5884,9 +6481,13 @@ a la llista d&apos;immersions.</translation>
         <translation>En&amp;ganxa els components</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="253"/>
         <source>&amp;Renumber</source>
-        <translation>To&amp;rna a numerar</translation>
+        <translation type="vanished">To&amp;rna a numerar</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.ui" line="253"/>
+        <source>&amp;Renumber all dives</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="264"/>
@@ -6064,26 +6665,26 @@ a la llista d&apos;immersions.</translation>
         <translation>Emma&amp;gatzematge al núvol en línia</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="553"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="466"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="499"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="631"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="657"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="577"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="467"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="500"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="641"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="669"/>
         <source>Warning</source>
         <translation>Avís</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="554"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="578"/>
         <source>Trying to merge dives with %1min interval in between</source>
         <translation>S&apos;estan intentant fusionar les immersions amb un interval d&apos;entre %1 min.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="231"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="227"/>
         <source>Template backup created</source>
         <translation>S&apos;ha creat una còpia de seguretat de la plantilla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="232"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="228"/>
         <source>The following backup printing templates were created:
 
 %1
@@ -6106,244 +6707,274 @@ plantilles predeterminades són de només lectura i no s&apos;han d&apos;editar
 directament, ja que l&apos;aplicació les pot sobreescriure quan s&apos;inicia.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="357"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="404"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1142"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="353"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="405"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1175"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Si us plau, deseu o cancel·leu l&apos;edició de la immersió actual abans d&apos;obrir un altre fitxer.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="363"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="359"/>
         <source>Open file</source>
         <translation>Obre un fitxer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="367"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1533"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="363"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1566"/>
         <source>Cancel</source>
         <translation>Cancel·la</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="466"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="467"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation>Si us plau, deseu o cancel·leu l&apos;edició de la immersió actual abans d&apos;estar en línia</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="478"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="988"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="479"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1000"/>
         <source>Save changes?</source>
         <translation>Deso els canvis?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="479"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="480"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation>Teniu canvis sense desar. Els voleu publicar a l&apos;emmagatzematge al núvol?
 Si responeu no, el núvol només se sincronitzarà en la següent crida a «Obre l&apos;emmagatzematge en el núvol» o «Desa a l&apos;emmagatzematge en el núvol».</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="489"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="490"/>
         <source>Failure taking cloud storage online</source>
         <translation>Ha fallat en posar l&apos;emmagatzematge al núvol en línia</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="537"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="540"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Si us plau, deseu o cancel·leu l&apos;edició de la immersió actual abans de tancar el fitxer.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="601"/>
         <source>Please save or cancel the current dive edit before quiting the application.</source>
-        <translation>Desa o cancel·la l&apos;edició de la immersió actual abans de sortir de l&apos;aplicació.</translation>
+        <translation type="vanished">Desa o cancel·la l&apos;edició de la immersió actual abans de sortir de l&apos;aplicació.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="631"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="641"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Si us plau, deseu o cancel·leu l&apos;edició de la immersió actual abans d&apos;intentar afegir-ne una altra.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="657"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
-        <translation>S&apos;està intentant tornar a planificar una immersió que encara havia estat planificada.</translation>
+        <translation type="vanished">S&apos;està intentant tornar a planificar una immersió que encara havia estat planificada.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="736"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="738"/>
         <source>Yearly statistics</source>
         <translation>Estadístiques anuals</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="882"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="923"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="886"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="931"/>
         <source>Dive log files</source>
         <translation>Fitxers del diari de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="944"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1170"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="908"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="956"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1203"/>
         <source>Subsurface files</source>
         <translation>Fitxers del Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="945"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="909"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="957"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="904"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="947"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="910"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="959"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="905"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="948"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="911"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="961"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="906"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="949"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="912"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="962"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="907"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="950"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="913"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="963"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="908"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="951"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="914"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="965"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="909"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="952"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="915"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="966"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="910"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="953"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="916"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="967"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="911"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="954"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="917"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="968"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="912"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="955"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="918"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="969"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="913"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="956"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="919"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="970"/>
         <source>MkVI files</source>
         <translation>Fitxers MkVI</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="914"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="957"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="920"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="971"/>
         <source>APD log viewer</source>
         <translation>Visor del registre de l&apos;APD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="915"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="958"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="921"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="972"/>
         <source>OSTCtools</source>
         <translation>OSTCtools</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="916"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="959"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="922"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="973"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="946"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="923"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="974"/>
+        <source>LogTrak/JTrak</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="924"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="975"/>
+        <source>Scubapro ASD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="958"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="960"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="972"/>
+        <source>FIT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="964"/>
+        <source>Suunto JSON</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="976"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="988"/>
         <source>All files</source>
         <translation>Tots els fitxers</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="967"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="983"/>
         <source>Dive site files</source>
         <translation>Fitxers amb punts d&apos;immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="982"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1011"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Voleu desar els canvis que heu fet en el fitxer %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="983"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1012"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Voleu desar els canvis que heu fet en el fitxer de dades?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="989"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1001"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Si sortiu sense desar, els canvis es perdran.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1169"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="610"/>
+        <source>Please save or cancel the current dive edit before quitting the application.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="669"/>
+        <source>Trying to replan a dive profile that has not been manually added.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1202"/>
         <source>Save file as</source>
         <translation>Desa el fitxer com a</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1251"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1283"/>
         <source>[local cache for] %1</source>
         <translation>[cau local per a] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1252"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1284"/>
         <source>[cloud storage for] %1</source>
         <translation>[emmagatzematge al núvol de] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1288"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1384"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1319"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
         <source>multiple files</source>
         <translation>múltiples fitxers</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1317"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1348"/>
         <source>Opening datafile from older version</source>
         <translation>S&apos;està obrint el fitxer de dades d&apos;una versió anterior</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1318"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1349"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Has obert un fitxer de dades d&apos;una versió anterior del Subsurface. Recomanem llegir el manual per a aprendre sobre els canvis en la nova versió, especialment la gestió dels punts d&apos;immersió que ha variat significativament.
 El Subsurface ja ha intentat omplir les dades, però potser valdrà la pena perdre un moment en donar una ullada al nou sistema per a la gestió dels punts d&apos;immersió, per a assegurar-vos que tot està correcte.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1342"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1373"/>
         <source>Open dive log file</source>
         <translation>Obre un fitxer de diari de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1399"/>
         <source>Open dive site file</source>
         <translation>Obre el fitxer amb punts d&apos;immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1533"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1566"/>
         <source>Contacting cloud service...</source>
         <translation>S&apos;està contactant amb el servei al núvol...</translation>
     </message>
@@ -6359,159 +6990,150 @@ El Subsurface ja ha intentat omplir les dades, però potser valdrà la pena perd
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../map-widget/qml/MapWidget.qml" line="255"/>
         <source>Drag the selected dive location</source>
-        <translation>Arrossegueu el lloc d&apos;immersió seleccionat</translation>
+        <translation type="vanished">Arrossegueu el lloc d&apos;immersió seleccionat</translation>
     </message>
 </context>
 <context>
     <name>MapWidgetContextMenu</name>
     <message>
-        <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="15"/>
         <source>Copy coordinates to clipboard (decimal)</source>
-        <translation>Copia les coordenades al porta-retalls (decimal)</translation>
+        <translation type="vanished">Copia les coordenades al porta-retalls (decimal)</translation>
     </message>
     <message>
-        <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="16"/>
         <source>Copy coordinates to clipboard (sexagesimal)</source>
-        <translation>Copia les coordenades al porta-retalls (sexagesimal)</translation>
+        <translation type="vanished">Copia les coordenades al porta-retalls (sexagesimal)</translation>
     </message>
     <message>
-        <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="17"/>
         <source>Select visible dive locations</source>
-        <translation>Selecciona els llocs d&apos;immersió visibles</translation>
+        <translation type="vanished">Selecciona els llocs d&apos;immersió visibles</translation>
     </message>
     <message>
-        <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="18"/>
         <source>Open in Google Maps</source>
-        <translation>Obre al Google Maps</translation>
+        <translation type="vanished">Obre al Google Maps</translation>
     </message>
 </context>
 <context>
     <name>MapWidgetError</name>
     <message>
-        <location filename="../map-widget/qml/MapWidgetError.qml" line="10"/>
         <source>MapWidget.qml failed to load!
 The QML modules QtPositioning and QtLocation could be missing!</source>
-        <translation>El MapWidget.qml ha fallat en carregar!
+        <translation type="vanished">El MapWidget.qml ha fallat en carregar!
 Podrien faltar els mòduls QtPositioning i QtLocation del QML!</translation>
     </message>
 </context>
 <context>
     <name>OstcFirmwareCheck</name>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="333"/>
         <source>A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2.
 Not using the latest available stable firmware version on your dive computer means that Subsurface may not work correctly with it.</source>
-        <translation>Hi ha disponible una actualització de microprogramari per a l&apos;ordinador de busseig: té la versió %1 però la darrera versió estable és %2.
+        <translation type="vanished">Hi ha disponible una actualització de microprogramari per a l&apos;ordinador de busseig: té la versió %1 però la darrera versió estable és %2.
 Si no utilitzeu l&apos;última versió estable disponible de microprogramari a l&apos;ordinador de busseig, és possible que el Subsurface no funcioni correctament.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="336"/>
         <source>
 
 If your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update</source>
-        <translation>
+        <translation type="vanished">
 
 Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a baixar un diari, abans de continuar amb l&apos;actualització</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="337"/>
         <source>Not now</source>
-        <translation>Ara no</translation>
+        <translation type="vanished">Ara no</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="338"/>
         <source>Update firmware</source>
-        <translation>Actualitza el microprogramari</translation>
+        <translation type="vanished">Actualitza el microprogramari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="340"/>
         <source>Firmware upgrade notice</source>
-        <translation>Avís d&apos;actualització del microprogramari</translation>
+        <translation type="vanished">Avís d&apos;actualització del microprogramari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="358"/>
         <source>Save the downloaded firmware as</source>
-        <translation>Desa el microprogramari baixat com a</translation>
+        <translation type="vanished">Desa el microprogramari baixat com a</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="359"/>
         <source>Firmware files</source>
-        <translation>Fitxers de microprogramari</translation>
+        <translation type="vanished">Fitxers de microprogramari</translation>
     </message>
 </context>
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="466"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="462"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="467"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="463"/>
         <source>Last stop at 20ft</source>
         <translation>Última parada a 20 peus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="468"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="464"/>
         <source>50% avg. depth to 20ft</source>
         <translation>50% de la prof. mitja a 20 peus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="469"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="465"/>
         <source>20ft to surface</source>
         <translation>De 20 peus a la superfície</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="470"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="466"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="472"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="468"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="473"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="469"/>
         <source>Last stop at 6m</source>
         <translation>Última parada a 6 m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="474"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="470"/>
         <source>50% avg. depth to 6m</source>
         <translation>50% de la prof. mitja a 6 m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="475"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="471"/>
         <source>6m to surface</source>
         <translation>De 6 m a la superfície</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="476"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="472"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="479"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="480"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="475"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="476"/>
         <source>cuft/min</source>
         <translation>peus/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="488"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="489"/>
-        <source>ℓ/min</source>
-        <translation> ℓ/min</translation>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="484"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="485"/>
+        <source>L/min</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="498"/>
+        <source>ℓ/min</source>
+        <translation type="vanished"> ℓ/min</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="494"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="503"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="499"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -6519,7 +7141,7 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
 <context>
     <name>PlannerWidgets</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="633"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="632"/>
         <source>Print runtime table</source>
         <translation>Imprimeix la taula del temps acumulat</translation>
     </message>
@@ -6629,34 +7251,28 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
 <context>
     <name>PreferencesDc</name>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="14"/>
         <source>Form</source>
-        <translation>Formulari</translation>
+        <translation type="vanished">Formulari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="24"/>
         <source>DIVE COMPUTER</source>
-        <translation>ORDINADOR DE BUSSEIG</translation>
+        <translation type="vanished">ORDINADOR DE BUSSEIG</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="39"/>
         <source>Delete connections</source>
-        <translation>Suprimeix les connexions</translation>
+        <translation type="vanished">Suprimeix les connexions</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="53"/>
         <source>When importing dives from a dive computer (DC), Subsurface remembers the connection(s), showing them as selectable buttons in the Download panel. This is useful for DCs using Bluetooth for communication. In order to clear all this information, click on the button below. After clearing the information the buttons on the Download panel disappear and it is necessary to establish new connection(s) with dive computer(s) before importing dives again.</source>
-        <translation>En importar immersions des d&apos;un ordinador de busseig (DC), el Subsurface recordarà les connexions, mostrant-les com a botons seleccionables en el plafó «Baixa». Això és útil per als DC que fan servir Bluetooth per a la comunicació. Per a esborrar tota aquesta informació, feu clic al botó a sota. Després d&apos;esborrar la informació, els botons en el plafó «Baixa» desapareixen i caldrà establir noves connexions amb els ordinadors de busseig abans de tornar a importar les immersions.</translation>
+        <translation type="vanished">En importar immersions des d&apos;un ordinador de busseig (DC), el Subsurface recordarà les connexions, mostrant-les com a botons seleccionables en el plafó «Baixa». Això és útil per als DC que fan servir Bluetooth per a la comunicació. Per a esborrar tota aquesta informació, feu clic al botó a sota. Després d&apos;esborrar la informació, els botons en el plafó «Baixa» desapareixen i caldrà establir noves connexions amb els ordinadors de busseig abans de tornar a importar les immersions.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.ui" line="61"/>
         <source>Delete all dive computer connections</source>
-        <translation>Suprimeix totes les connexions d&apos;ordinador de busseig</translation>
+        <translation type="vanished">Suprimeix totes les connexions d&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_dc.cpp" line="13"/>
         <source>Dive download</source>
-        <translation>Baixada de les immersions</translation>
+        <translation type="vanished">Baixada de les immersions</translation>
     </message>
 </context>
 <context>
@@ -6735,7 +7351,7 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
 <context>
     <name>PreferencesDialog</name>
     <message>
-        <location filename="../desktop-widgets/preferences/preferencesdialog.cpp" line="48"/>
+        <location filename="../desktop-widgets/preferences/preferencesdialog.cpp" line="41"/>
         <source>Preferences</source>
         <translation>Preferències</translation>
     </message>
@@ -6830,7 +7446,7 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="75"/>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="98"/>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="121"/>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="145"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="154"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
@@ -6850,108 +7466,132 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
         <translation>pO₂ en calcular el MOD (només màxim)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="131"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="134"/>
+        <source>Rebreather setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="140"/>
         <source>CCR options:</source>
         <translation>Opcions del CCR:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="138"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="147"/>
         <source>Dive planner default setpoint</source>
         <translation>Punt d&apos;ajust predeterminat per al planificador de les immersions</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="170"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
         <translation>Mostra els valors del O₂ en visualitzar el pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="177"/>
         <source>Show CCR setpoints when viewing pO₂</source>
         <translation>Mostra els punts d&apos;ajust del CCR en visualitzar el pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="175"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="184"/>
+        <source>Allow open circuit gas to be used as diluent for CCR</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="191"/>
         <source>pSCR options:</source>
         <translation>Opcions del pSCR:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="182"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="198"/>
         <source>pSCR metabolic rate O₂</source>
         <translation>Taxa metabòlica del O₂ del pSCR</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="192"/>
-        <source>ℓ/min</source>
-        <translation> ℓ/min</translation>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="205"/>
+        <source>L/min</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="202"/>
+        <source>ℓ/min</source>
+        <translation type="vanished"> ℓ/min</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="215"/>
         <source>Dilution ratio</source>
         <translation>Relació de dilució</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="215"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="228"/>
         <source>1:</source>
         <translation>1:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="235"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
         <translation>Mostra l&apos;equivalent de pO₂ de l&apos;OC amb el pO₂ del pSCR</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="258"/>
+        <source>Gasplot fraction</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="271"/>
+        <source>Planner setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="277"/>
         <source>Show warnings for isobaric counterdiffusion</source>
         <translation>Mostra els avisos per a la contra-difusió isobàrica</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="239"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
         <source>Ceiling display setup</source>
         <translation>Ajust de visualització del sostre</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="245"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="293"/>
         <source>GFHigh</source>
         <translation>GFAlt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="303"/>
         <source>B&amp;ühlmann</source>
         <translation>B&amp;ühlmann</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="268"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="316"/>
         <source>Algorithm for calculated ceiling:</source>
         <translation>Algorisme per al sostre calculat:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="275"/>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="328"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="323"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="376"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="288"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="336"/>
         <source>Conservatism level</source>
         <translation>Nivell de conservadurisme</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="298"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="346"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="314"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="362"/>
         <source>Draw dive computer reported ceiling red</source>
         <translation>Dibuixa en vermell el sostre informat per l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="321"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="369"/>
         <source>&amp;VPM-B</source>
         <translation>&amp;VPM-B</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="341"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="389"/>
         <source>GFLow</source>
         <translation>GFBaix</translation>
     </message>
@@ -7036,7 +7676,7 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="100"/>
-        <source>These will be used as is. This might not be what you intended. To avoid this warning wrap the literal parts in quotes (').
+        <source>These will be used as is. This might not be what you intended. To avoid this warning wrap the literal parts in quotes (&apos;).
 See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
         <translation>Aquests s&apos;usaran tal com estan. Potser no és el que preteníeu. Per a evitar aquest avís, embolcalleu les parts literals entre cometes (&apos;).
 Vegeu «https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString»</translation>
@@ -7206,6 +7846,186 @@ Vegeu «https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString»</translati
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="150"/>
         <source>Extract at position</source>
         <translation>Extreu a la posició</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="176"/>
+        <source>Dive data as subtitles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="192"/>
+        <source>Subtitle format string:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="213"/>
+        <source>Available tags:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="221"/>
+        <source>Dive time: [time]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="229"/>
+        <source>Depth: [depth]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="237"/>
+        <source>Temperature: [temperature]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="245"/>
+        <source>Ceiling: [ceiling]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="253"/>
+        <source>NDL: [ndl]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="261"/>
+        <source>TTS: [tts]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="269"/>
+        <source>RBT: [rbt]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="277"/>
+        <source>Stop time: [stoptime]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="285"/>
+        <source>Stop depth: [stopdepth]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="293"/>
+        <source>CNS: [cns]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="301"/>
+        <source>SAC: [sac]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="309"/>
+        <source>pO₂: [p_o2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="317"/>
+        <source>pN₂: [p_n2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="325"/>
+        <source>pHe: [p_he]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="333"/>
+        <source>O₂ pressure (rebreather): [o2_pressure]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="341"/>
+        <source>O₂ setpoint: [o2_setpoint]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="349"/>
+        <source>SCR ΔpO₂: [scr_oc_po2]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="357"/>
+        <source>MOD: [mod]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="365"/>
+        <source>EAD: [ead]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="373"/>
+        <source>END: [end]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="381"/>
+        <source>EADD: [eadd]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="389"/>
+        <source>Vertical speed: [speed]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="397"/>
+        <source>In deco (calculated): [in_deco]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="405"/>
+        <source>NDL (calculated): [ndl_calc]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="413"/>
+        <source>TTS (calculated): [tts_calc]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="421"/>
+        <source>Stop time (calculated): [stoptime_calc]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="429"/>
+        <source>Stop depth (calculated): [stopdepth_calc]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="437"/>
+        <source>Heartrate: [heartrate]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="445"/>
+        <source>Bearing: [bearing]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="453"/>
+        <source>Surface GF: [surface_gf]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="461"/>
+        <source>Current GF: [current_gf]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="469"/>
+        <source>Density: [density]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_media.ui" line="477"/>
+        <source>ICD Warning: [icd_warning]</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.cpp" line="14"/>
@@ -7515,34 +8335,28 @@ Vegeu «https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString»</translati
 <context>
     <name>PrintDialog</name>
     <message>
-        <location filename="../desktop-widgets/printdialog.cpp" line="110"/>
         <source>P&amp;rint</source>
-        <translation>Imp&amp;rimeix</translation>
+        <translation type="vanished">Imp&amp;rimeix</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printdialog.cpp" line="113"/>
         <source>&amp;Preview</source>
-        <translation>&amp;Vista prèvia</translation>
+        <translation type="vanished">&amp;Vista prèvia</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printdialog.cpp" line="116"/>
         <source>Export Html</source>
-        <translation>Exporta a HTML</translation>
+        <translation type="vanished">Exporta a HTML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printdialog.cpp" line="129"/>
         <source>Print</source>
-        <translation>Imprimeix</translation>
+        <translation type="vanished">Imprimeix</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printdialog.cpp" line="203"/>
         <source>Filename to export html to</source>
-        <translation>Nom de fitxer a exportar a HTML</translation>
+        <translation type="vanished">Nom de fitxer a exportar a HTML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printdialog.cpp" line="204"/>
         <source>Html file</source>
-        <translation>Fitxer HTML</translation>
+        <translation type="vanished">Fitxer HTML</translation>
     </message>
 </context>
 <context>
@@ -7613,77 +8427,63 @@ Vegeu «https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString»</translati
         <translation>Importa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="132"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="159"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="195"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="227"/>
         <source>Read-only template!</source>
-        <translation>Plantilla de només lectura!</translation>
+        <translation type="vanished">Plantilla de només lectura!</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="133"/>
-        <source>The template '%1' is read-only and cannot be edited.
+        <source>The template &apos;%1&apos; is read-only and cannot be edited.
 Please export this template to a different file.</source>
-        <translation>La plantilla «%1» és de només lectura i no es pot editar.
+        <translation type="vanished">La plantilla «%1» és de només lectura i no es pot editar.
 Exporteu aquesta plantilla a un fitxer diferent.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="149"/>
         <source>Import template file</source>
-        <translation>Importa un fitxer de plantilla</translation>
+        <translation type="vanished">Importa un fitxer de plantilla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="150"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="181"/>
         <source>HTML files</source>
-        <translation>Fitxers en HTML</translation>
+        <translation type="vanished">Fitxers en HTML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="160"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="196"/>
         <source>The destination template &apos;%1&apos; is read-only and cannot be overwritten.</source>
-        <translation>La plantilla de destinació «%1» és de només lectura i no es pot sobreescriure.</translation>
+        <translation type="vanished">La plantilla de destinació «%1» és de només lectura i no es pot sobreescriure.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="180"/>
         <source>Export template files as</source>
-        <translation>Exporta els fitxers de plantilla com a</translation>
+        <translation type="vanished">Exporta els fitxers de plantilla com a</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="220"/>
         <source>This action cannot be undone!</source>
-        <translation>Aquesta acció no es podrà desfer!</translation>
+        <translation type="vanished">Aquesta acció no es podrà desfer!</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="221"/>
         <source>Delete template &apos;%1&apos;?</source>
-        <translation>Suprimeixo la plantilla «%1»?</translation>
+        <translation type="vanished">Suprimeixo la plantilla «%1»?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="228"/>
         <source>The template &apos;%1&apos; is read-only and cannot be deleted.</source>
-        <translation>La plantilla «%1» és de només lectura i no es pot suprimir.</translation>
+        <translation type="vanished">La plantilla «%1» és de només lectura i no es pot suprimir.</translation>
     </message>
 </context>
 <context>
     <name>ProfileScene</name>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="583"/>
+        <location filename="../profile-widget/profilescene.cpp" line="609"/>
         <source>Planned dive</source>
         <translation>Immersió planificada</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="585"/>
+        <location filename="../profile-widget/profilescene.cpp" line="611"/>
         <source>Manually added dive</source>
         <translation>Immersió afegida manualment</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="587"/>
+        <location filename="../profile-widget/profilescene.cpp" line="613"/>
         <source>Unknown dive computer</source>
         <translation>Ordinador de busseig desconegut</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="590"/>
+        <location filename="../profile-widget/profilescene.cpp" line="616"/>
         <source> (#%1 of %2)</source>
         <translation> (núm. %1 de %2)</translation>
     </message>
@@ -7790,133 +8590,142 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="245"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="250"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Mostrar la LND / TTS ha estat inhabilitat per un temps de procés excessiu</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="556"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="581"/>
         <source>Make first dive computer</source>
         <translation>Crea el primer ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="558"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="583"/>
         <source>Delete this dive computer</source>
         <translation>Suprimeix aquest ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="559"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="584"/>
         <source>Split this dive computer into own dive</source>
         <translation>Divideix aquest ordinador de busseig dins la vostra immersió</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="562"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="587"/>
         <source>Rename this dive computer</source>
         <translation>Reanomena aquest ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="577"/>
         <source>Edit Gas Change</source>
-        <translation>Edita el canvi de gas</translation>
+        <translation type="vanished">Edita el canvi de gas</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="585"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="601"/>
+        <source>Edit gas change</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="605"/>
+        <source>Set initial gas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="607"/>
         <source>Add gas change</source>
         <translation>Afegeix un canvi de gas</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="592"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="609"/>
         <source>Add setpoint change</source>
         <translation>Afegeix un canvi de punt d&apos;ajust</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="593"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="610"/>
         <source>Add bookmark</source>
         <translation>Afegeix una adreça d&apos;interès</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="594"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="611"/>
         <source>Split dive into two</source>
         <translation>Divideix en dos la immersió</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="599"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="615"/>
         <source>Change divemode</source>
         <translation>Canvia el mode de busseig</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="612"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="630"/>
         <source>Remove event</source>
         <translation>Elimina l&apos;esdeveniment</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="613"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="631"/>
         <source>Hide event</source>
         <translation>Oculta l&apos;esdeveniment</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="614"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="632"/>
         <source>Hide events of type &apos;%1&apos;</source>
         <translation>Oculta els esdeveniments del tipus «%1»</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="617"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="635"/>
         <source>Edit name</source>
         <translation>Edita el nom</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="646"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="653"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="660"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="667"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Ajusta la pressió de l&apos;ampolla %1 (actualment interpolada com %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="661"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="675"/>
         <source>Unhide event type</source>
         <translation>Mostra els tipus d&apos;esdeveniment</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="668"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="682"/>
         <source>All event types</source>
         <translation>Tots els tipus d&apos;esdeveniment</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="672"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="686"/>
         <source>Unhide individually hidden events of this dive</source>
         <translation>Mostra individualment els esdeveniments ocults d&apos;aquesta immersió</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="700"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="714"/>
         <source>Edit nickname</source>
         <translation>Edita el sobrenom</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="701"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="715"/>
         <source>Set new nickname for %1 (serial %2):</source>
         <translation>Estableix el sobrenom nou per a %1 (sèrie %2):</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="767"/>
         <source>Remove the selected event?</source>
         <translation>Elimino l&apos;esdeveniment seleccionat?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="747"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="768"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="824"/>
         <source>Edit name of bookmark</source>
         <translation>Edita el nom de l&apos;adreça d&apos;interès</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="796"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="825"/>
         <source>Custom name:</source>
         <translation>Nom personalitzat:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="801"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="830"/>
         <source>Name is too long!</source>
         <translation>El nom és massa llarg!</translation>
     </message>
@@ -7924,203 +8733,203 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="373"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="411"/>
         <source>Open local dive data file</source>
         <translation>Obre un fitxer de dades de busseig local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="395"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="433"/>
         <source>Opening local data file failed</source>
         <translation>Ha fallat en obrir el fitxer de dades local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="416"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="454"/>
         <source>Processing %1 dives</source>
         <translation>S&apos;estan processant %1 immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="456"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>S&apos;han carregat %1 immersions des del fitxer de dades de busseig local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="425"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="463"/>
         <source>Incorrect cloud credentials</source>
         <translation>Credencials per al núvol incorrectes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="581"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="619"/>
         <source>working in no-cloud mode</source>
         <translation>Es treballa en el mode sense el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="585"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="623"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Error en analitzar l&apos;emmagatzematge local i s&apos;abandona</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="596"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="634"/>
         <source>no cloud credentials</source>
         <translation>Sense les credencials del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="678"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="635"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Introduïu unes credencials vàlides per al núvol.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="638"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="681"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>El correu i la contrasenya de l&apos;emmagatzematge en el núvol només pot contenir lletres, números i els caràcters «.», «-», «_» i «+».</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="644"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="687"/>
         <source>Invalid format for email address</source>
         <translation>Format no vàlid per a l&apos;adreça de correu electrònic</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="686"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="729"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>S&apos;està intentant obrir l&apos;emmagatzematge en el núvol amb les credencials noves</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="741"/>
         <source>Testing cloud credentials</source>
         <translation>S&apos;estan provant les credencials del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="715"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="758"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>No hi ha resposta del servidor al núvol per a validar les credencials</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="764"/>
         <source>Incorrect email / password combination</source>
         <translation>Combinació incorrecta de correu electrónic i contrasenya</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="726"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="769"/>
         <source>Cloud credentials require verification PIN</source>
         <translation>Les credencials en el núvol requereixen el PIN de verificació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="729"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="772"/>
         <source>Incorrect PIN, please try again</source>
         <translation>PIN incorrecte, torneu-ho a provar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="734"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="777"/>
         <source>PIN accepted, credentials verified</source>
         <translation>PIN acceptat s&apos;han verificat les credencials</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="746"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="789"/>
         <source>Deleting cloud account...</source>
         <translation>S&apos;està suprimint el compte en el núvol...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="760"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="803"/>
         <source>No response from cloud server to delete account</source>
         <translation>Cap resposta des del servidor en el núvol per a suprimir el compte</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="772"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="815"/>
         <source>Cloud storage account deleted.</source>
         <translation>S&apos;ha suprimit el compte d&apos;emmagatzematge en el núvol.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="780"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="823"/>
         <source>Cloud storage error: %1</source>
         <translation>Error amb l&apos;emmagatzematge al núvol: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="827"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="869"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>S&apos;estan carregant les immersions des de l&apos;emmagatzematge local («Mode sense el núvol»)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="876"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="916"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Ha fallat en connectar amb el servidor en el núvol, no s&apos;ha rebut l&apos;estat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="895"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="935"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>L&apos;emmagatzematge al núvol s&apos;ha obert amb èxit. No hi ha immersions a la llista de busseig.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1146"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1148"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1106"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1146"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1148"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1150"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1146"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1228"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1295"/>
         <source>weight</source>
         <translation>llast</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1521"/>
-        <source>[%1]Changes saved:'%2'.
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1569"/>
+        <source>[%1]Changes saved:&apos;%2&apos;.
 %1 possible via context menu</source>
         <translation>[%1]Canvis desats:«% 2»
 %1 possible mitjançant el menú contextual</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1571"/>
         <source>Redo</source>
         <translation>Refés</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1571"/>
         <source>Undo: %1</source>
         <translation>Desfés: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1525"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1573"/>
         <source>Undo</source>
         <translation>Desfés</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1545"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1651"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation>Error fatal: no s&apos;ha pogut desar el fitxer de dades. Copieu el fitxer de registre i informeu-ne.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1885"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1906"/>
         <source>no default cylinder</source>
         <translation>No hi ha cap ampolla predeterminada</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2390"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2412"/>
         <source>(unsaved changes in memory)</source>
         <translation>(hi ha canvis sense desar en la memòria)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2392"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2414"/>
         <source>(changes synced locally)</source>
         <translation>(hi ha canvis sincronitzats localment)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2393"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2415"/>
         <source>(synced with cloud)</source>
         <translation>(sincronitzat amb el núvol)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2401"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2423"/>
         <source>(incorrect cloud email or password)</source>
         <translation>(el correu electrònic o la contrasenya del núvol són incorrectes)</translation>
     </message>
@@ -8128,29 +8937,24 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../core/fulltext.cpp" line="153"/>
+        <location filename="../core/fulltext.cpp" line="143"/>
         <source>Create full text index</source>
         <translation>S&apos;està creant l&apos;índex de tot el text</translation>
     </message>
     <message>
-        <location filename="../core/fulltext.cpp" line="154"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="713"/>
         <source>start processing</source>
-        <translation>Es comença el processament</translation>
+        <translation type="vanished">Es comença el processament</translation>
     </message>
     <message>
-        <location filename="../core/fulltext.cpp" line="159"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="744"/>
         <source>%1 dives processed</source>
-        <translation>S&apos;han processat %1 immersions</translation>
+        <translation type="vanished">S&apos;han processat %1 immersions</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesummarymodel.cpp" line="201"/>
         <source>no dives in period</source>
-        <translation>No hi ha cap immersió en aquest període</translation>
+        <translation type="vanished">No hi ha cap immersió en aquest període</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="712"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="705"/>
         <source>populate data model</source>
         <translation>S&apos;està omplint el model de les dades</translation>
     </message>
@@ -8158,17 +8962,29 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
 <context>
     <name>ReadSettingsThread</name>
     <message>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2129"/>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2153"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2135"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2159"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation>Aquesta característica encara no està disponible per al vostre ordinador de busseig.</translation>
     </message>
     <message>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2131"/>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2139"/>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2150"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2137"/>
+        <source>Reading Vyper settings failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2145"/>
+        <source>Reading OSTC3 settings failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2156"/>
+        <source>Reading OSTC settings failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Failed!</source>
-        <translation>Ha fallat!</translation>
+        <translation type="vanished">Ha fallat!</translation>
     </message>
 </context>
 <context>
@@ -8199,22 +9015,22 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/renumber.ui" line="61"/>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="56"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="55"/>
         <source>New starting number</source>
         <translation>Número de partida nou</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="54"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="53"/>
         <source>New number</source>
         <translation>Número nou</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="59"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="58"/>
         <source>Renumber selected dives</source>
         <translation>Torna a numerar les immersions seleccionades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="61"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="60"/>
         <source>Renumber all dives</source>
         <translation>Torna a numerar totes les immersions</translation>
     </message>
@@ -8222,7 +9038,7 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
 <context>
     <name>ResetSettingsThread</name>
     <message>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2250"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2255"/>
         <source>Reset settings failed!</source>
         <translation>Ha fallat el restabliment dels ajustaments!</translation>
     </message>
@@ -8233,6 +9049,14 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
         <location filename="../desktop-widgets/searchbar.ui" line="14"/>
         <source>Form</source>
         <translation>Formulari</translation>
+    </message>
+</context>
+<context>
+    <name>SensorSelectionModel</name>
+    <message>
+        <location filename="../qt-models/models.cpp" line="101"/>
+        <source>none</source>
+        <translation type="unfinished">cap</translation>
     </message>
 </context>
 <context>
@@ -8356,212 +9180,212 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
         <translation>Tema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="150"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="153"/>
         <source>Color theme</source>
         <translation>Tema de color</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="163"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="166"/>
         <source>Blue</source>
         <translation>Blau</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="164"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="167"/>
         <source>Pink</source>
         <translation>Rosa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="165"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="168"/>
         <source>Dark</source>
         <translation>Fosc</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="180"/>
         <source>background</source>
         <translation>Fons</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="188"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="195"/>
         <source>text</source>
         <translation>Text</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="202"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="212"/>
         <source>primary</source>
         <translation>Primari</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="229"/>
         <source>primary text</source>
         <translation>Text primari</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="230"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="246"/>
         <source>darker primary</source>
         <translation>Primari fosc</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="244"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="263"/>
         <source>darker primary text</source>
         <translation>Text primari fosc</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="258"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="280"/>
         <source>light primary</source>
         <translation>Primari clar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="272"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="297"/>
         <source>light primary text</source>
         <translation>Text primari clar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="289"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="317"/>
         <source>secondary text</source>
         <translation>Text secundari</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="303"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="334"/>
         <source>drawer</source>
         <translation>Calaix</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="314"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="347"/>
         <source>Font size</source>
         <translation>Mida de la lletra</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="325"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="359"/>
         <source>very small</source>
         <translation>Molt petita</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="334"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="368"/>
         <source>small</source>
         <translation>Petita</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="344"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="377"/>
         <source>regular</source>
         <translation>Normal</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="354"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="386"/>
         <source>large</source>
         <translation>Gran</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="364"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="395"/>
         <source>very large</source>
         <translation>Molt gran</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="378"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="408"/>
         <source>Units</source>
         <translation>Unitats</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="384"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="414"/>
         <source>Metric</source>
         <translation>Mètric</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="394"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="424"/>
         <source>Imperial</source>
         <translation>Imperial</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="404"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="434"/>
         <source>Personalize</source>
         <translation>Personalitzat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="429"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="459"/>
         <source>Depth</source>
         <translation>Profunditat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="433"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="463"/>
         <source>meters</source>
         <translation>metres</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="441"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="471"/>
         <source>feet</source>
         <translation>peus</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="449"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="479"/>
         <source>Pressure</source>
         <translation>Pressió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="453"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="483"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="461"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="491"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="469"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="499"/>
         <source>Volume</source>
         <translation>Volum</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="473"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="503"/>
         <source>liter</source>
         <translation>Litre</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="481"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="511"/>
         <source>cuft</source>
         <translation>peus</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="489"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="519"/>
         <source>Temperature</source>
         <translation>Temperatura</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="493"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="523"/>
         <source>celsius</source>
         <translation>celsius</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="501"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="531"/>
         <source>fahrenheit</source>
         <translation>fahrenheit</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="509"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="539"/>
         <source>Weight</source>
         <translation>Llast</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="513"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="543"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="521"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="551"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="533"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="563"/>
         <source>Advanced</source>
         <translation>Avançat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="546"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="576"/>
         <source>Bluetooth</source>
         <translation>Bluetooth</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="554"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="584"/>
         <source>Temporarily show all bluetooth devices 
 even if not recognized as dive computers.
 Please report DCs that need this setting</source>
@@ -8570,52 +9394,56 @@ encara que no es reconeguin com a ordinadors de
 busseig. Informeu dels que necessitin aquest ajustament.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="571"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="601"/>
         <source>Display</source>
         <translation>Pantalla</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="579"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="609"/>
         <source>Show only one column in Portrait mode</source>
         <translation>Mostra només una columna en el mode Apaïsat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="591"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="621"/>
         <source>Depth line based on ×3 intervals</source>
         <translation>Línia de la profunditat basada en intervals x3</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="606"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="636"/>
         <source>Profile deco ceiling</source>
         <translation>Perfil del sostre de descompressió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="614"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="644"/>
         <source>Show DC reported ceiling</source>
         <translation>Mostra la descompressió calculada per l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="625"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="655"/>
         <source>Show calculated ceiling</source>
         <translation>Mostra la descompressió calculada</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="637"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="667"/>
         <source>GFLow (10 to 150)</source>
         <translation>GFBaix (de 10 fins a 150)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="671"/>
-        <source>GFHigh (10 to 150</source>
-        <translation>GFAlt (de 10 fins a 150</translation>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="701"/>
+        <source>GFHigh (10 to 150)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="708"/>
+        <source>GFHigh (10 to 150</source>
+        <translation type="vanished">GFAlt (de 10 fins a 150</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="738"/>
         <source>Developer</source>
         <translation>Desenvolupador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="716"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="746"/>
         <source>Display Developer menu</source>
         <translation>Mostra el menú del desenvolupador</translation>
     </message>
@@ -8682,39 +9510,39 @@ No tots els fitxers multimèdia tenen marques de temps a l&apos;interval entre
         <translation>Carrega els fitxers de suport fins i tot si el temps no coincideix amb el temps de la immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="125"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="130"/>
         <source>Open image file</source>
         <translation>Obre un fitxer d&apos;imatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="127"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="132"/>
         <source>Image files</source>
         <translation>Fitxers d&apos;imatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="215"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="233"/>
         <source>Selected dive date/time</source>
         <translation>Data/hora de la immersió seleccionada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="217"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="235"/>
         <source>First selected dive date/time</source>
         <translation>Primer la data/hora de la immersió seleccionada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="218"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="236"/>
         <source>Last selected dive date/time</source>
         <translation>Últim la data/hora de la immersió seleccionada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="220"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="238"/>
         <source>
 Files with inappropriate date/time</source>
         <translation>
 Fitxers amb una data/hora inapropiada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="230"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="248"/>
         <source>No Exif date/time found</source>
         <translation>No s&apos;ha trobat cap data/hora Exif</translation>
     </message>
@@ -8753,12 +9581,12 @@ Fitxers amb una data/hora inapropiada</translation>
         <translation>h:mm</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shifttimes.ui" line="136"/>
+        <location filename="../desktop-widgets/shifttimes.ui" line="133"/>
         <source>Earlier</source>
         <translation>Més aviat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/shifttimes.ui" line="143"/>
+        <location filename="../desktop-widgets/shifttimes.ui" line="140"/>
         <source>Later</source>
         <translation>Més tard</translation>
     </message>
@@ -8766,71 +9594,56 @@ Fitxers amb una data/hora inapropiada</translation>
 <context>
     <name>Smrtk2ssrfcWindow</name>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="20"/>
         <source>SmartTrak files importer</source>
-        <translation>Importador de fitxers del SmartTrak</translation>
+        <translation type="vanished">Importador de fitxers del SmartTrak</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="79"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Subsurface divelog&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Diari de busseig del Subsurface&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Diari de busseig del Subsurface&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="111"/>
-        <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="177"/>
         <source>Choose</source>
-        <translation>Trieu</translation>
+        <translation type="vanished">Trieu</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="133"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Smartrak divelog&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Diari de busseig del Smartrak&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#6ebeb9;&quot;&gt;Diari de busseig del Smartrak&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="242"/>
         <source>Exit</source>
-        <translation>Surt</translation>
+        <translation type="vanished">Surt</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="270"/>
         <source>Import</source>
-        <translation>Importa</translation>
+        <translation type="vanished">Importa</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="295"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#6ebeb9;&quot;&gt;Select the .slg file(s) you want to import to Subsurface format, and the exported .xml file. It&apos;s advisable to use a new output file, as its actual content will be erased.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#6ebeb9;&quot;&gt;Seleccioneu el/s fitxer/s .slg que voleu importar al format del Subsurface, i el fitxer XML on exportar. És aconsellable emprar un fitxer de sortida nou, ja que el seu contingut real serà esborrat.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#6ebeb9;&quot;&gt;Seleccioneu el/s fitxer/s .slg que voleu importar al format del Subsurface, i el fitxer XML on exportar. És aconsellable emprar un fitxer de sortida nou, ja que el seu contingut real serà esborrat.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="377"/>
         <source>Import messages (errors, warnings, etc)</source>
-        <translation>Importa els missatges (errors, avisos, etc.)</translation>
+        <translation type="vanished">Importa els missatges (errors, avisos, etc.)</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="56"/>
         <source>Open SmartTrak files</source>
-        <translation>Obre els fitxers del SmartTrak</translation>
+        <translation type="vanished">Obre els fitxers del SmartTrak</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="57"/>
         <source>SmartTrak files</source>
-        <translation>Fitxers del SmartTrak</translation>
+        <translation type="vanished">Fitxers del SmartTrak</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="57"/>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="68"/>
         <source>All files</source>
-        <translation>Tots els fitxers</translation>
+        <translation type="vanished">Tots els fitxers</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="67"/>
         <source>Open Subsurface files</source>
-        <translation>Obre fitxers del Subsurface</translation>
+        <translation type="vanished">Obre fitxers del Subsurface</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="68"/>
         <source>Subsurface files</source>
-        <translation>Fitxers del Subsurface</translation>
+        <translation type="vanished">Fitxers del Subsurface</translation>
     </message>
 </context>
 <context>
@@ -8854,33 +9667,33 @@ Fitxers amb una data/hora inapropiada</translation>
         <translation>Estadístiques</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="106"/>
+        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="115"/>
         <source>Base variable</source>
         <translation>Variable base</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="123"/>
-        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="158"/>
+        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="134"/>
+        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="173"/>
         <source>Binning</source>
         <translation>Agrupament</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="140"/>
+        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="153"/>
         <source>Data</source>
         <translation>Dades</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="193"/>
         <source>Operation</source>
         <translation>Operació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="194"/>
+        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="213"/>
         <source>SortMode</source>
         <translation>Mode ordenació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="224"/>
+        <location filename="../mobile-widgets/qml/StatisticsPage.qml" line="243"/>
         <source>Chart type</source>
         <translation>Tipus de gràfic</translation>
     </message>
@@ -8906,8 +9719,8 @@ Fitxers amb una data/hora inapropiada</translation>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="107"/>
-        <location filename="../stats/statsvariables.cpp" line="1059"/>
-        <location filename="../stats/statsvariables.cpp" line="1093"/>
+        <location filename="../stats/statsvariables.cpp" line="1054"/>
+        <location filename="../stats/statsvariables.cpp" line="1088"/>
         <source>min</source>
         <translation> min</translation>
     </message>
@@ -9123,8 +9936,8 @@ Fitxers amb una data/hora inapropiada</translation>
     </message>
     <message>
         <location filename="../stats/statsvariables.cpp" line="764"/>
-        <location filename="../stats/statsvariables.cpp" line="1145"/>
-        <location filename="../stats/statsvariables.cpp" line="1352"/>
+        <location filename="../stats/statsvariables.cpp" line="1140"/>
+        <location filename="../stats/statsvariables.cpp" line="1347"/>
         <source>%1–%2</source>
         <translation>%1–%2</translation>
     </message>
@@ -9149,222 +9962,232 @@ Fitxers amb una data/hora inapropiada</translation>
         <translation>Q%1</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="922"/>
+        <location filename="../stats/statsvariables.cpp" line="917"/>
         <source>Monthly</source>
         <translation>Mensual</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="960"/>
+        <location filename="../stats/statsvariables.cpp" line="955"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="986"/>
-        <location filename="../stats/statsvariables.cpp" line="1213"/>
-        <location filename="../stats/statsvariables.cpp" line="1293"/>
+        <location filename="../stats/statsvariables.cpp" line="981"/>
+        <location filename="../stats/statsvariables.cpp" line="1208"/>
+        <location filename="../stats/statsvariables.cpp" line="1288"/>
         <source>in %1 %2 steps</source>
         <translation>en blocs de %1 %2</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1032"/>
+        <location filename="../stats/statsvariables.cpp" line="1027"/>
         <source>Max. Depth</source>
         <translation>Profunditat màx.</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1044"/>
+        <location filename="../stats/statsvariables.cpp" line="1039"/>
         <source>Mean Depth</source>
         <translation>Mitjana de la profunditat</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1056"/>
+        <location filename="../stats/statsvariables.cpp" line="1051"/>
         <source>in %1 min steps</source>
         <translation>en blocs de %1 min</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1068"/>
+        <location filename="../stats/statsvariables.cpp" line="1063"/>
         <source>in hours</source>
         <translation>en hores</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1074"/>
+        <location filename="../stats/statsvariables.cpp" line="1069"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1090"/>
+        <location filename="../stats/statsvariables.cpp" line="1085"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1115"/>
-        <location filename="../stats/statsvariables.cpp" line="1139"/>
+        <location filename="../stats/statsvariables.cpp" line="1110"/>
+        <location filename="../stats/statsvariables.cpp" line="1134"/>
         <source>in %1 %2/min steps</source>
         <translation>en blocs de %1 %2/min</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1119"/>
-        <location filename="../stats/statsvariables.cpp" line="1149"/>
-        <location filename="../stats/statsvariables.cpp" line="1178"/>
+        <location filename="../stats/statsvariables.cpp" line="1114"/>
+        <location filename="../stats/statsvariables.cpp" line="1144"/>
+        <location filename="../stats/statsvariables.cpp" line="1173"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1175"/>
+        <location filename="../stats/statsvariables.cpp" line="1170"/>
         <source>SAC</source>
         <translation>CAS</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1265"/>
+        <location filename="../stats/statsvariables.cpp" line="1260"/>
         <source>Water temperature</source>
         <translation>Temperatura de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1277"/>
+        <location filename="../stats/statsvariables.cpp" line="1272"/>
         <source>Air temperature</source>
         <translation>Temperatura de l&apos;aire</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1316"/>
+        <location filename="../stats/statsvariables.cpp" line="1311"/>
         <source>Weight</source>
         <translation>Llast</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1363"/>
+        <location filename="../stats/statsvariables.cpp" line="1358"/>
         <source>in %L2 steps</source>
         <translation>en blocs de %L2</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1381"/>
+        <location filename="../stats/statsvariables.cpp" line="1376"/>
         <source>Dive #</source>
         <translation>Immersió núm.</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1413"/>
+        <location filename="../stats/statsvariables.cpp" line="1408"/>
         <source>Dive mode</source>
         <translation>Mode de busseig</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1441"/>
+        <location filename="../stats/statsvariables.cpp" line="1436"/>
         <source>People</source>
         <translation>Persones</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1467"/>
+        <location filename="../stats/statsvariables.cpp" line="1462"/>
         <source>Buddies</source>
         <translation>Companys</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1489"/>
+        <location filename="../stats/statsvariables.cpp" line="1484"/>
         <source>Dive guides</source>
         <translation>Guies de busseig</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1513"/>
+        <location filename="../stats/statsvariables.cpp" line="1508"/>
         <source>Tags</source>
         <translation>Etiquetes</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1552"/>
+        <location filename="../stats/statsvariables.cpp" line="1547"/>
         <source>in %1% steps</source>
         <translation>en blocs de %1%</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1572"/>
+        <location filename="../stats/statsvariables.cpp" line="1567"/>
         <source>Air</source>
         <translation>Aire</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1574"/>
+        <location filename="../stats/statsvariables.cpp" line="1569"/>
         <source>Oxygen</source>
         <translation>Oxigen</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1576"/>
+        <location filename="../stats/statsvariables.cpp" line="1571"/>
         <source>EAN%1–%2</source>
         <translation>EAN%d</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1579"/>
+        <location filename="../stats/statsvariables.cpp" line="1574"/>
         <source>%1/%2–%3/%4</source>
         <translation>%1/%2–%3/%4</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1590"/>
+        <location filename="../stats/statsvariables.cpp" line="1585"/>
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1617"/>
+        <location filename="../stats/statsvariables.cpp" line="1612"/>
         <source>Gas type</source>
         <translation>Nom del gas</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1673"/>
+        <location filename="../stats/statsvariables.cpp" line="1668"/>
         <source>In %L1% steps</source>
         <translation>En blocs de %L1%</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1723"/>
+        <location filename="../stats/statsvariables.cpp" line="1718"/>
         <source>O₂ (max)</source>
         <translation>O₂ (màx.)</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1732"/>
+        <location filename="../stats/statsvariables.cpp" line="1727"/>
         <source>O₂ (bottom gas)</source>
         <translation>O₂ (gas al fons)</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1741"/>
+        <location filename="../stats/statsvariables.cpp" line="1736"/>
         <source>He (max)</source>
         <translation>He (màx.)</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1756"/>
+        <location filename="../stats/statsvariables.cpp" line="1751"/>
         <source>Suit type</source>
         <translation>Tipus de vestimenta</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1786"/>
+        <location filename="../stats/statsvariables.cpp" line="1781"/>
         <source>Weightsystem</source>
         <translation>Sistema de pes</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1816"/>
+        <location filename="../stats/statsvariables.cpp" line="1811"/>
         <source>Cylinder type</source>
         <translation>Tipus d&apos;ampolla</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1842"/>
+        <location filename="../stats/statsvariables.cpp" line="1837"/>
         <source>Dive site</source>
         <translation>Punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1868"/>
+        <location filename="../stats/statsvariables.cpp" line="1863"/>
         <source>Dive trip</source>
         <translation>Viatge amb immersió</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1892"/>
+        <location filename="../stats/statsvariables.cpp" line="1887"/>
         <source>Day of week</source>
         <translation>Dia de la setmana</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1917"/>
+        <location filename="../stats/statsvariables.cpp" line="1910"/>
+        <source>Month of year</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../stats/statsvariables.cpp" line="1935"/>
         <source>Rating</source>
         <translation>Valoració</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1943"/>
+        <location filename="../stats/statsvariables.cpp" line="1961"/>
         <source>Visibility</source>
         <translation>Visibilitat</translation>
     </message>
     <message>
-        <location filename="../stats/statsview.cpp" line="644"/>
+        <location filename="../stats/statsvariables.cpp" line="1992"/>
+        <source>Dive computer</source>
+        <translation type="unfinished">Ordinador de busseig</translation>
+    </message>
+    <message>
+        <location filename="../stats/statsview.cpp" line="668"/>
         <source>No. dives</source>
         <translation>Cap immersió</translation>
     </message>
     <message>
-        <location filename="../stats/statsview.cpp" line="1341"/>
+        <location filename="../stats/statsview.cpp" line="1365"/>
         <source>%1 vs. %2</source>
         <translation>%1 vers %2</translation>
     </message>
@@ -9423,12 +10246,12 @@ Fitxers amb una data/hora inapropiada</translation>
         <translation>Restableix la restricció</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/statswidget.cpp" line="171"/>
+        <location filename="../desktop-widgets/statswidget.cpp" line="175"/>
         <source>Analyzing all dives</source>
         <translation>S&apos;estan analitzant totes les immersions</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/statswidget.cpp" line="173"/>
+        <location filename="../desktop-widgets/statswidget.cpp" line="177"/>
         <source>Analyzing subset (%L1) dives</source>
         <translation>S&apos;estan analitzant les immersions del subconjunt (%L1)</translation>
     </message>
@@ -9466,9 +10289,13 @@ Fitxers amb una data/hora inapropiada</translation>
         <translation>Tan&amp;ca</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2024&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1&lt;/span&gt;&lt;br&gt;&lt;br&gt;Programari de busseig multiplataforma&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger i altres, 2011-2024&lt;/span&gt;</translation>
+        <translation type="vanished">&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1&lt;/span&gt;&lt;br&gt;&lt;br&gt;Programari de busseig multiplataforma&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger i altres, 2011-2024&lt;/span&gt;</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/about.cpp" line="15"/>
+        <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2026&lt;/span&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -9484,49 +10311,47 @@ Fitxers amb una data/hora inapropiada</translation>
         <translation>Vestit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="65"/>
         <source>Cylinders</source>
         <translation>Ampolles</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="62"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="66"/>
         <source>Add cylinder</source>
         <translation>Afegeix una ampolla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="69"/>
         <source>Weights</source>
         <translation>Llast</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="66"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="70"/>
         <source>Add weight system</source>
         <translation>Afegeix un sistema de llast</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="69"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="75"/>
         <source>OK</source>
         <translation>D&apos;acord</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="73"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="79"/>
         <source>Undo</source>
         <translation>Desfés</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="179"/>
         <source>Remove cylinder?</source>
-        <translation>Elimino l&apos;ampolla?</translation>
+        <translation type="vanished">Elimino l&apos;ampolla?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="180"/>
         <source>The deleted cylinder has sensor readings, which will be lost.
 Do you want to continue?</source>
-        <translation>L&apos;ampolla suprimida té lectures del sensor, les quals es perdran.
+        <translation type="vanished">L&apos;ampolla suprimida té lectures del sensor, les quals es perdran.
 Voleu continuar?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="209"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="236"/>
         <source>Warning: edited %1 dives</source>
         <translation>Avís: s&apos;han editat %1 immersions</translation>
     </message>
@@ -9534,187 +10359,235 @@ Voleu continuar?</translation>
 <context>
     <name>TabDiveExtraInfo</name>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="14"/>
         <source>Extra Info</source>
-        <translation>Info. addicional</translation>
+        <translation type="vanished">Info. addicional</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="17"/>
+        <source>Model</source>
+        <translation type="unfinished">Model</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="42"/>
+        <source>Serial</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="67"/>
+        <source>Firmware</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="92"/>
+        <source>Date</source>
+        <translation type="unfinished">Data</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="117"/>
+        <source>Duration</source>
+        <translation type="unfinished">Durada</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="142"/>
+        <source>Dive Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="167"/>
+        <source>Extra Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.cpp" line="35"/>
+        <source>h</source>
+        <translation type="unfinished">h</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.cpp" line="35"/>
+        <source>min</source>
+        <translation type="unfinished"> min</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.cpp" line="35"/>
+        <source>sec</source>
+        <translation type="unfinished">seg</translation>
     </message>
 </context>
 <context>
     <name>TabDiveInformation</name>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="14"/>
         <source>Information</source>
-        <translation>Informació</translation>
+        <translation type="vanished">Informació</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="60"/>
         <source>DIVE</source>
         <translation>IMMERSIÓ</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="74"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="71"/>
         <source>Dive mode</source>
         <translation>Mode de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="98"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="95"/>
         <source>Interval</source>
         <translation>Interval</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="126"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="123"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="154"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="151"/>
         <source>Max. depth</source>
         <translation>Profunditat màx.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="183"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="180"/>
         <source>Avg. depth</source>
         <translation>Prof. mitja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="212"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="209"/>
         <source>GAS</source>
         <translation>GAS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="223"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="220"/>
         <source>Gas name</source>
         <translation>Nom del gas</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="251"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="248"/>
         <source>Gas consumed</source>
         <translation>Gas consumit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="279"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="276"/>
         <source>SAC</source>
         <translation>CAS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="307"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="304"/>
         <source>CNS</source>
         <translation>SNC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="335"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="332"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="370"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="367"/>
         <source>ENVIRONMENT</source>
         <translation>ENTORN</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="381"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="378"/>
         <source>Air temp.</source>
         <translation>Temp. de l&apos;aire</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="410"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="407"/>
         <source>Water temp.</source>
         <translation>Temp. de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="445"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="442"/>
         <source>Water type/Density</source>
         <translation>Tipus/Densitat de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="482"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="479"/>
         <source>Atm. pressure/Altitude</source>
         <translation>Pressió atm./Altitud</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="515"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="512"/>
         <source>Surface waves</source>
         <translation>Onades en superfície</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="546"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="543"/>
         <source>Large</source>
         <translation>Grans</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="553"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="550"/>
         <source>Small</source>
         <translation>Petites</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="564"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="561"/>
         <source>Visibility</source>
         <translation>Visibilitat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="595"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="592"/>
         <source>Bad</source>
         <translation>Dolenta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="602"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="599"/>
         <source>Good</source>
         <translation>Bona</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="613"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="610"/>
         <source>Current</source>
         <translation>Corrent</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="644"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="693"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="641"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="690"/>
         <source>Strong</source>
         <translation>Forta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="651"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="700"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="648"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="697"/>
         <source>Weak</source>
         <translation>Feble</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="662"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="659"/>
         <source>Surge</source>
         <translation>Onatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="711"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="708"/>
         <source>Chill</source>
         <translation>Fred</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="742"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="739"/>
         <source>Freezing</source>
         <translation>Molt freda</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="749"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="746"/>
         <source>Comfy</source>
         <translation>Confortable</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="37"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="40"/>
         <source>Use DC</source>
         <translation>Empra l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="50"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="53"/>
         <source>OK</source>
         <translation>D&apos;acord</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="53"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="56"/>
         <source>Undo</source>
         <translation>Desfés</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="96"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="99"/>
         <source>Warning: edited %1 dives</source>
         <translation>Avís: s&apos;han editat %1 immersions</translation>
     </message>
@@ -9724,29 +10597,29 @@ Voleu continuar?</translation>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="155"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="173"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="154"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="172"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="155"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="173"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="154"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="172"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="155"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="154"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="173"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="172"/>
         <source>d</source>
         <translation>d</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="235"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="231"/>
         <source>unknown</source>
         <translation>Desconegut</translation>
     </message>
@@ -9755,8 +10628,8 @@ Voleu continuar?</translation>
     <name>TabDiveNotes</name>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="6"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="433"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="254"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="427"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="264"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
@@ -9776,69 +10649,73 @@ Voleu continuar?</translation>
         <translation>Profunditat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="136"/>
         <source>Duration (h:mm)</source>
-        <translation>Durada (h:mm)</translation>
+        <translation type="vanished">Durada (h:mm)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="223"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="253"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="136"/>
+        <source>Duration (h:mm(:ss))</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="217"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="263"/>
         <source>Location</source>
         <translation>Ubicació</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="256"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="266"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="250"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="260"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="263"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="257"/>
         <source>Edit dive site</source>
         <translation>Edita el punt de la immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="298"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="292"/>
         <source>Diveguide</source>
         <translation>Guia de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="311"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="305"/>
         <source>Buddy</source>
         <translation>Company</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="350"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="344"/>
         <source>Tags</source>
         <translation>Etiquetes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="401"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="395"/>
         <source>Rating</source>
         <translation>Valoració</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="49"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="59"/>
         <source>OK</source>
         <translation>D&apos;acord</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="53"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="63"/>
         <source>Undo</source>
         <translation>Desfés</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="221"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="231"/>
         <source>Trip location</source>
         <translation>Ubicació del viatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="227"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="237"/>
         <source>Trip notes</source>
         <translation>Notes del viatge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="302"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="312"/>
         <source>Warning: edited %1 dives</source>
         <translation>Avís: s&apos;han editat %1 immersions</translation>
     </message>
@@ -9846,57 +10723,56 @@ Voleu continuar?</translation>
 <context>
     <name>TabDivePhotos</name>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.ui" line="14"/>
         <source>Photos</source>
-        <translation>Fotografies</translation>
+        <translation type="vanished">Fotografies</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.ui" line="29"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.ui" line="26"/>
         <source>Zoom level</source>
         <translation>Nivell de zoom</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="58"/>
         <source>Load media from file(s)</source>
         <translation>Carrega el/s suport/s des de fitxer/s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="60"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
         <source>Load media file(s) from web</source>
         <translation>Carrega el/s suport/s des del web</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="62"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="61"/>
         <source>Delete selected media files</source>
         <translation>Suprimeix els fitxers de suport seleccionats</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="62"/>
         <source>Delete all media files</source>
         <translation>Suprimeix tots els fitxers de suport</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="64"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="63"/>
         <source>Open folder of selected media files</source>
         <translation>Obre la carpeta dels fitxers de suport seleccionats</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="65"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="64"/>
         <source>Recalculate selected thumbnails</source>
         <translation>Torna a calcular les miniatures seleccionades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="66"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="65"/>
         <source>Save dive data as subtitles</source>
         <translation>Desa les dades de busseig com a subtítols</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="158"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="155"/>
         <source>Deleting media files</source>
         <translation>S&apos;estan suprimint els fitxers de suport</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="158"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="155"/>
         <source>Are you sure you want to delete all media files?</source>
         <translation>Segur que voleu suprimir tots els fitxers de suport?</translation>
     </message>
@@ -9904,133 +10780,132 @@ Voleu continuar?</translation>
 <context>
     <name>TabDiveStatistics</name>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="14"/>
         <source>Statistics</source>
-        <translation>Estadístiques</translation>
+        <translation type="vanished">Estadístiques</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="74"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="70"/>
         <source>Max. depth</source>
         <translation>Profunditat màx.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="93"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="120"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="116"/>
         <source>Temperature</source>
         <translation>Temperatura</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="139"/>
         <source>SAC</source>
         <translation>CAS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="177"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="173"/>
         <source>All selected dives</source>
         <translation>Totes les immersions seleccionades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="196"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="192"/>
         <source>Total number of dives selected :</source>
         <translation>Nombre total d&apos;immersions seleccionades:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="218"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="214"/>
         <source>Total duration of selected dives :</source>
         <translation>Durada total de les immersions seleccionades:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="258"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="254"/>
         <source>Gas consumption</source>
         <translation>Consum de gas</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="15"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="17"/>
         <source>Highest total SAC of a dive</source>
         <translation>Major CAS total d&apos;una immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="16"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="18"/>
         <source>Lowest total SAC of a dive</source>
         <translation>Menor CAS total d&apos;una immersió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="17"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="19"/>
         <source>Average total SAC of all selected dives</source>
         <translation>Mitjana de CAS total de totes les immersions seleccionades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="18"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="20"/>
         <source>Highest temperature</source>
         <translation>Temperatura més alta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="19"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="21"/>
         <source>Lowest temperature</source>
         <translation>Temperatura més baixa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="20"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="22"/>
         <source>Average temperature of all selected dives</source>
         <translation>Mitjana de temperatura de totes les immersions seleccionades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="21"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="23"/>
         <source>Deepest dive</source>
         <translation>Immersió més profunda</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="22"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="24"/>
         <source>Shallowest dive</source>
         <translation>Immersió més en superfície</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="23"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="25"/>
         <source>Longest dive</source>
         <translation>Immersió més llarga</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="24"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="26"/>
         <source>Shortest dive</source>
         <translation>Immersió més curta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="25"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="27"/>
         <source>Average length of all selected dives</source>
         <translation>Mitjana de la durada de totes les immersions seleccionades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="89"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="93"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="97"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="90"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="94"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="98"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="114"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="119"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="122"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="115"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="120"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="123"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="124"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="114"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="119"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="122"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="115"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="120"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="123"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="124"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="114"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="119"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="122"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="115"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="120"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="123"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="124"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
@@ -10070,17 +10945,17 @@ mixed from Air and using:
 <context>
     <name>TankInfoModel</name>
     <message>
-        <location filename="../qt-models/tankinfomodel.cpp" line="80"/>
+        <location filename="../qt-models/tankinfomodel.cpp" line="37"/>
         <source>Description</source>
         <translation>Descripció</translation>
     </message>
     <message>
-        <location filename="../qt-models/tankinfomodel.cpp" line="80"/>
+        <location filename="../qt-models/tankinfomodel.cpp" line="37"/>
         <source>ml</source>
         <translation>ml</translation>
     </message>
     <message>
-        <location filename="../qt-models/tankinfomodel.cpp" line="80"/>
+        <location filename="../qt-models/tankinfomodel.cpp" line="37"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
@@ -10253,15 +11128,14 @@ mixed from Air and using:
         <translation>Color_6</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/templateedit.cpp" line="143"/>
         <source>Do you want to save your changes?</source>
-        <translation>Voleu desar els canvis?</translation>
+        <translation type="vanished">Voleu desar els canvis?</translation>
     </message>
 </context>
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="480"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="404"/>
         <source>%1click to visit %2</source>
         <translation>%1feu clic per a visitar %2</translation>
     </message>
@@ -10282,27 +11156,27 @@ mixed from Air and using:
         <translation>Detalls del viatge</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="63"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="89"/>
         <source>Save edits</source>
         <translation>Desa les edicions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="72"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="98"/>
         <source>Cancel edit</source>
         <translation>Cancel·la l&apos;edició</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="92"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="119"/>
         <source>Edit trip details</source>
         <translation>Edita els detalls del viatge</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="105"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="132"/>
         <source>Trip location:</source>
         <translation>Ubicació del viatge:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/TripDetails.qml" line="119"/>
+        <location filename="../mobile-widgets/qml/TripDetails.qml" line="146"/>
         <source>Trip notes</source>
         <translation>Notes del viatge</translation>
     </message>
@@ -10406,13 +11280,12 @@ una nova versió. Si no voleu que continui fent-ho, feu clic a «Declina».</tra
 <context>
     <name>UserManual</name>
     <message>
-        <location filename="../desktop-widgets/usermanual.cpp" line="55"/>
+        <location filename="../desktop-widgets/usermanual.cpp" line="63"/>
         <source>User manual</source>
         <translation>Manual de l&apos;usuari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/usermanual.cpp" line="75"/>
-        <location filename="../desktop-widgets/usermanual.cpp" line="81"/>
+        <location filename="../desktop-widgets/usermanual.cpp" line="123"/>
         <source>Cannot find the Subsurface manual</source>
         <translation>No s&apos;ha pogut trobar el manual del Subsurface</translation>
     </message>
@@ -10420,12 +11293,12 @@ una nova versió. Si no voleu que continui fent-ho, feu clic a «Declina».</tra
 <context>
     <name>VideoFrameExtractor</name>
     <message>
-        <location filename="../core/videoframeextractor.cpp" line="93"/>
+        <location filename="../core/videoframeextractor.cpp" line="108"/>
         <source>ffmpeg failed to start - video thumbnail creation suspended. To enable video thumbnailing, set working executable in preferences.</source>
         <translation>L&apos;«ffmpeg» ha fallat en iniciar: s&apos;ha suspès la creació de les miniatures de vídeo. Per a habilitar les miniatures del vídeo, configureu l&apos;executable a les preferències.</translation>
     </message>
     <message>
-        <location filename="../core/videoframeextractor.cpp" line="97"/>
+        <location filename="../core/videoframeextractor.cpp" line="112"/>
         <source>Failed waiting for ffmpeg - video thumbnail creation suspended. To enable video thumbnailing, set working executable in preferences.</source>
         <translation>Ha fallat en esperar l&apos;«ffmpeg»: s&apos;ha suspès la creació de les miniatures de vídeo. Per a habilitar les miniatures del vídeo, configureu l&apos;executable a les preferències.</translation>
     </message>
@@ -10433,12 +11306,12 @@ una nova versió. Si no voleu que continui fent-ho, feu clic a «Declina».</tra
 <context>
     <name>WSInfoModel</name>
     <message>
-        <location filename="../qt-models/weightsysteminfomodel.cpp" line="77"/>
+        <location filename="../qt-models/weightsysteminfomodel.cpp" line="37"/>
         <source>Description</source>
         <translation>Descripció</translation>
     </message>
     <message>
-        <location filename="../qt-models/weightsysteminfomodel.cpp" line="77"/>
+        <location filename="../qt-models/weightsysteminfomodel.cpp" line="37"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -10486,12 +11359,12 @@ una nova versió. Si no voleu que continui fent-ho, feu clic a «Declina».</tra
         <translation>Publica</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="81"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="77"/>
         <source>Operation timed out</source>
         <translation>L&apos;operació ha excedit el temps</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="102"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="98"/>
         <source>Transferring data...</source>
         <translation>S&apos;estan transferint les dades...</translation>
     </message>
@@ -10517,15 +11390,15 @@ una nova versió. Si no voleu que continui fent-ho, feu clic a «Declina».</tra
 <context>
     <name>WriteSettingsThread</name>
     <message>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2177"/>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2200"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2182"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2205"/>
         <source>This feature is not yet available for the selected dive computer.</source>
         <translation>Aquesta característica encara no està disponible per al vostre ordinador de busseig.</translation>
     </message>
     <message>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2179"/>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2189"/>
-        <location filename="../core/configuredivecomputerthreads.cpp" line="2197"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2184"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2194"/>
+        <location filename="../core/configuredivecomputerthreads.cpp" line="2202"/>
         <source>Failed!</source>
         <translation>Ha fallat!</translation>
     </message>
@@ -10533,17 +11406,17 @@ una nova versió. Si no voleu que continui fent-ho, feu clic a «Declina».</tra
 <context>
     <name>YearStatisticsItem</name>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="66"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="66"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="66"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
@@ -10551,94 +11424,94 @@ una nova versió. Si no voleu que continui fent-ho, feu clic a «Declina».</tra
 <context>
     <name>YearlyStatisticsModel</name>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="133"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="119"/>
         <source>Year 
  &gt; Month / Trip</source>
         <translation>Any 
  &gt; Mes / Viatge</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="136"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="122"/>
         <source>#</source>
         <translation>Núm.</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="139"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="125"/>
         <source>Duration 
  Total</source>
         <translation>Durada 
  Total</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="142"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="128"/>
         <source>
 Average</source>
         <translation>
 Mitjana</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="145"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="131"/>
         <source>
 Shortest</source>
         <translation>
 Més curta</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="148"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="134"/>
         <source>
 Longest</source>
         <translation>
 Més llarga</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="151"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="137"/>
         <source>Depth (%1)
  Average</source>
         <translation>Profunditat (%1)
  Mitjana</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="154"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="140"/>
         <source>
 Average maximum</source>
         <translation>
 Màxim de la mitjana</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="157"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="166"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="175"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="143"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="152"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="161"/>
         <source>
 Minimum</source>
         <translation>
 Mínim</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="160"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="169"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="178"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="146"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="155"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="164"/>
         <source>
 Maximum</source>
         <translation>
 Màxim</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="163"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="149"/>
         <source>SAC (%1)
  Average</source>
         <translation>CAS (%1)
  Mitjana</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="172"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="158"/>
         <source>Temp. (%1)
  Average</source>
         <translation>Temp. (%1)
  Mitjana</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="238"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="256"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="223"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="244"/>
         <source>%1 - %2</source>
         <translation>%1 - %2</translation>
     </message>
@@ -10646,443 +11519,441 @@ Màxim</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="857"/>
         <source>Error parsing the header</source>
-        <translation>Error en analitzar la capçalera</translation>
+        <translation type="vanished">Error en analitzar la capçalera</translation>
+    </message>
+    <message>
+        <location filename="../core/libdivecomputer.cpp" line="861"/>
+        <source>Error parsing the header: %s</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>gettextFromC</name>
     <message>
-        <location filename="../backend-shared/exportfuncs.cpp" line="273"/>
-        <location filename="../backend-shared/exportfuncs.cpp" line="310"/>
-        <location filename="../core/save-html.c" line="491"/>
-        <location filename="../core/save-html.c" line="581"/>
-        <location filename="../core/worldmap-save.c" line="117"/>
+        <location filename="../core/save-html.cpp" line="477"/>
+        <location filename="../core/save-html.cpp" line="498"/>
+        <location filename="../core/save-html.cpp" line="586"/>
+        <location filename="../core/worldmap-save.cpp" line="116"/>
+        <location filename="../backend-shared/exportfuncs.cpp" line="289"/>
+        <location filename="../backend-shared/exportfuncs.cpp" line="322"/>
         <source>Can&apos;t open file %s</source>
         <translation>No s&apos;ha pogut obrir el fitxer %s</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="70"/>
+        <location filename="../commands/command_event.cpp" line="68"/>
         <source>modechange</source>
         <translation>Canvi de mode</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="76"/>
-        <location filename="../core/planner.c" line="273"/>
+        <location filename="../core/planner.cpp" line="261"/>
+        <location filename="../commands/command_event.cpp" line="74"/>
         <source>SP change</source>
         <translation>Canvi del PA</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="309"/>
-        <location filename="../core/cochran.c" line="315"/>
-        <location filename="../core/cochran.c" line="385"/>
-        <location filename="../core/libdivecomputer.c" line="315"/>
+        <location filename="../core/cochran.cpp" line="304"/>
+        <location filename="../core/cochran.cpp" line="310"/>
+        <location filename="../core/cochran.cpp" line="380"/>
+        <location filename="../core/libdivecomputer.cpp" line="330"/>
         <source>deco stop</source>
         <translation>parada descompressió</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="336"/>
-        <location filename="../core/cochran.c" line="390"/>
-        <location filename="../core/import-csv.c" line="689"/>
-        <location filename="../core/libdivecomputer.c" line="317"/>
+        <location filename="../core/cochran.cpp" line="331"/>
+        <location filename="../core/cochran.cpp" line="385"/>
+        <location filename="../core/import-csv.cpp" line="753"/>
+        <location filename="../core/import-suunto-json.cpp" line="484"/>
+        <location filename="../core/libdivecomputer.cpp" line="332"/>
         <source>ascent</source>
         <translation>ascens</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="342"/>
-        <location filename="../core/import-csv.c" line="667"/>
+        <location filename="../core/cochran.cpp" line="337"/>
+        <location filename="../core/import-csv.cpp" line="731"/>
         <source>battery</source>
         <translation>bateria</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="333"/>
+        <location filename="../core/cochran.cpp" line="343"/>
+        <location filename="../core/libdivecomputer.cpp" line="350"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="353"/>
-        <location filename="../core/libdivecomputer.c" line="332"/>
+        <location filename="../core/cochran.cpp" line="348"/>
+        <location filename="../core/libdivecomputer.cpp" line="349"/>
         <source>maxdepth</source>
         <translation>profunditat màx.</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="358"/>
-        <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="334"/>
+        <location filename="../core/cochran.cpp" line="353"/>
+        <location filename="../core/cochran.cpp" line="399"/>
+        <location filename="../core/libdivecomputer.cpp" line="351"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="365"/>
-        <location filename="../core/cochran.c" line="414"/>
-        <location filename="../core/cochran.c" line="421"/>
-        <location filename="../core/import-csv.c" line="770"/>
-        <location filename="../core/libdivecomputer.c" line="325"/>
-        <location filename="../core/libdivecomputer.c" line="339"/>
-        <location filename="../core/plannernotes.c" line="55"/>
+        <location filename="../core/cochran.cpp" line="360"/>
+        <location filename="../core/cochran.cpp" line="409"/>
+        <location filename="../core/cochran.cpp" line="416"/>
+        <location filename="../core/import-csv.cpp" line="834"/>
+        <location filename="../core/import-suunto-json.cpp" line="408"/>
+        <location filename="../core/import-suunto-json.cpp" line="458"/>
+        <location filename="../core/libdivecomputer.cpp" line="340"/>
+        <location filename="../core/libdivecomputer.cpp" line="356"/>
+        <location filename="../core/plannernotes.cpp" line="57"/>
         <source>gaschange</source>
         <translation>canvi de mescla</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="370"/>
-        <location filename="../core/cochran.c" line="409"/>
-        <location filename="../core/libdivecomputer.c" line="316"/>
+        <location filename="../core/cochran.cpp" line="365"/>
+        <location filename="../core/cochran.cpp" line="404"/>
+        <location filename="../core/libdivecomputer.cpp" line="331"/>
         <source>rbt</source>
         <translation>tfr</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="379"/>
-        <location filename="../core/cochran.c" line="426"/>
-        <location filename="../core/libdivecomputer.c" line="318"/>
+        <location filename="../core/cochran.cpp" line="374"/>
+        <location filename="../core/cochran.cpp" line="421"/>
+        <location filename="../core/libdivecomputer.cpp" line="333"/>
         <source>ceiling</source>
         <translation>sostre</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="395"/>
-        <location filename="../core/libdivecomputer.c" line="320"/>
+        <location filename="../core/cochran.cpp" line="390"/>
+        <location filename="../core/libdivecomputer.cpp" line="335"/>
         <source>transmitter</source>
         <translation>transmissor</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="274"/>
+        <location filename="../core/datatrak.cpp" line="272"/>
         <source>clear</source>
         <translation>clar</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="277"/>
+        <location filename="../core/datatrak.cpp" line="275"/>
         <source>misty</source>
         <translation>boirós</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="280"/>
+        <location filename="../core/datatrak.cpp" line="278"/>
         <source>fog</source>
         <translation>boira</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="283"/>
+        <location filename="../core/datatrak.cpp" line="281"/>
         <source>rain</source>
         <translation>pluja</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="286"/>
+        <location filename="../core/datatrak.cpp" line="284"/>
         <source>storm</source>
         <translation>tempesta</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="289"/>
+        <location filename="../core/datatrak.cpp" line="287"/>
         <source>snow</source>
         <translation>neu</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="309"/>
         <source>No suit</source>
-        <translation>Sense vestit</translation>
+        <translation type="vanished">Sense vestit</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="312"/>
         <source>Shorty</source>
-        <translation>Shorty (curt)</translation>
+        <translation type="vanished">Shorty (curt)</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="315"/>
         <source>Combi</source>
-        <translation>Combi</translation>
+        <translation type="vanished">Combi</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="318"/>
         <source>Wet suit</source>
-        <translation>Vestit humit</translation>
+        <translation type="vanished">Vestit humit</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="321"/>
         <source>Semidry suit</source>
-        <translation>Vestit semisec</translation>
+        <translation type="vanished">Vestit semisec</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="324"/>
         <source>Dry suit</source>
-        <translation>Vestit sec</translation>
+        <translation type="vanished">Vestit sec</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="385"/>
+        <location filename="../core/datatrak.cpp" line="383"/>
         <source>no stop</source>
         <translation>sense parades</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="387"/>
-        <location filename="../core/tag.c" line="20"/>
+        <location filename="../core/datatrak.cpp" line="385"/>
+        <location filename="../core/tag.cpp" line="21"/>
         <source>deco</source>
         <translation>Descompressió</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="389"/>
+        <location filename="../core/datatrak.cpp" line="387"/>
         <source>single ascent</source>
         <translation>ascens senzill</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="391"/>
+        <location filename="../core/datatrak.cpp" line="389"/>
         <source>multiple ascent</source>
         <translation>ascens múltiple</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="393"/>
+        <location filename="../core/datatrak.cpp" line="391"/>
         <source>fresh water</source>
         <translation>aigua dolça</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="395"/>
+        <location filename="../core/datatrak.cpp" line="393"/>
         <source>salt water</source>
         <translation>aigua salada</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="416"/>
+        <location filename="../core/datatrak.cpp" line="414"/>
         <source>sight seeing</source>
         <translation>paisatge</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="418"/>
+        <location filename="../core/datatrak.cpp" line="416"/>
         <source>club dive</source>
         <translation>immersió de club</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="420"/>
-        <location filename="../core/tag.c" line="19"/>
+        <location filename="../core/datatrak.cpp" line="418"/>
+        <location filename="../core/tag.cpp" line="20"/>
         <source>instructor</source>
         <translation>instructor</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="422"/>
+        <location filename="../core/datatrak.cpp" line="420"/>
         <source>instruction</source>
         <translation>instrucció</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="424"/>
-        <location filename="../core/tag.c" line="18"/>
+        <location filename="../core/datatrak.cpp" line="422"/>
+        <location filename="../core/tag.cpp" line="19"/>
         <source>night</source>
         <translation>nit</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="426"/>
-        <location filename="../core/tag.c" line="16"/>
+        <location filename="../core/datatrak.cpp" line="424"/>
+        <location filename="../core/tag.cpp" line="17"/>
         <source>cave</source>
         <translation>cova</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="428"/>
-        <location filename="../core/tag.c" line="15"/>
+        <location filename="../core/datatrak.cpp" line="426"/>
+        <location filename="../core/tag.cpp" line="16"/>
         <source>ice</source>
         <translation>gel</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="430"/>
+        <location filename="../core/datatrak.cpp" line="428"/>
         <source>search</source>
         <translation>cerca</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="437"/>
-        <location filename="../core/tag.c" line="16"/>
+        <location filename="../core/datatrak.cpp" line="435"/>
+        <location filename="../core/tag.cpp" line="17"/>
         <source>wreck</source>
         <translation>naufragi</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="439"/>
-        <location filename="../core/tag.c" line="17"/>
+        <location filename="../core/datatrak.cpp" line="437"/>
+        <location filename="../core/tag.cpp" line="18"/>
         <source>river</source>
         <translation>riu</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="441"/>
-        <location filename="../core/tag.c" line="14"/>
+        <location filename="../core/datatrak.cpp" line="439"/>
+        <location filename="../core/tag.cpp" line="15"/>
         <source>drift</source>
         <translation>a la deriva</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="443"/>
-        <location filename="../core/tag.c" line="19"/>
+        <location filename="../core/datatrak.cpp" line="441"/>
+        <location filename="../core/tag.cpp" line="20"/>
         <source>photo</source>
         <translation>fotografia</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="445"/>
+        <location filename="../core/datatrak.cpp" line="443"/>
         <source>other</source>
         <translation>altres</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="455"/>
+        <location filename="../core/datatrak.cpp" line="453"/>
         <source>Other activities</source>
         <translation>Altres activitats</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="479"/>
+        <location filename="../core/datatrak.cpp" line="476"/>
         <source>Datatrak/Wlog notes</source>
         <translation>Notes de Datatrak/Wlog</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="522"/>
+        <location filename="../core/datatrak.cpp" line="516"/>
         <source>[Warning] Manual dive # %d
 </source>
         <translation>[Avís] Immersió manual núm. %d
 </translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="548"/>
+        <location filename="../core/datatrak.cpp" line="542"/>
         <source>[Error] Out of memory for dive %d. Abort parsing.</source>
         <translation>[Error] S&apos;ha esgotat la memòria per a la immersió %d. S&apos;ha interromput l&apos;anàlisi.</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="638"/>
-        <location filename="../core/import-divinglog.c" line="309"/>
-        <location filename="../core/libdivecomputer.c" line="299"/>
+        <location filename="../core/datatrak.cpp" line="621"/>
+        <location filename="../core/equipment.cpp" line="408"/>
+        <location filename="../core/import-asd.cpp" line="560"/>
+        <location filename="../core/import-divinglog.cpp" line="312"/>
+        <location filename="../core/import-logtrak.cpp" line="601"/>
+        <location filename="../core/libdivecomputer.cpp" line="317"/>
         <location filename="../core/string-format.cpp" line="156"/>
-        <location filename="../core/uemis-downloader.c" line="203"/>
+        <location filename="../core/uemis-downloader.cpp" line="195"/>
         <source>unknown</source>
         <translation>Desconegut</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="691"/>
+        <location filename="../core/datatrak.cpp" line="674"/>
         <source>[Error] File is not a DataTrak file. Aborted</source>
         <translation>[Error] El fitxer no és un fitxer DataTrak. S&apos;ha interromput</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="716"/>
+        <location filename="../core/datatrak.cpp" line="697"/>
         <source>Error: no dive</source>
         <translation>Error: sense immersions</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="31"/>
+        <location filename="../core/dive.cpp" line="35"/>
         <source>Open circuit</source>
         <translation>Circuit obert</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="32"/>
+        <location filename="../core/dive.cpp" line="36"/>
         <source>CCR</source>
         <translation>CCR</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="33"/>
+        <location filename="../core/dive.cpp" line="37"/>
         <source>pSCR</source>
         <translation>pSCR</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="34"/>
+        <location filename="../core/dive.cpp" line="38"/>
         <source>Freedive</source>
         <translation>Immersió a pulmó</translation>
     </message>
     <message>
-        <location filename="../core/divefilter.cpp" line="208"/>
+        <location filename="../core/divefilter.cpp" line="205"/>
         <source>%L1/%L2 shown</source>
         <translation>%L1/%L2 visibles</translation>
     </message>
     <message>
-        <location filename="../core/divefilter.cpp" line="210"/>
+        <location filename="../core/divefilter.cpp" line="207"/>
         <source>%L1 dives</source>
         <translation>%L1 immersions</translation>
     </message>
     <message>
-        <location filename="../core/divelogexportlogic.cpp" line="56"/>
+        <location filename="../core/divelogexportlogic.cpp" line="58"/>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
-        <location filename="../core/string-format.cpp" line="239"/>
-        <location filename="../desktop-widgets/templatelayout.cpp" line="454"/>
+        <location filename="../core/string-format.cpp" line="235"/>
         <location filename="../qt-models/divetripmodel.cpp" line="165"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../core/divelogexportlogic.cpp" line="56"/>
+        <location filename="../core/divelogexportlogic.cpp" line="58"/>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
-        <location filename="../core/plannernotes.c" line="63"/>
-        <location filename="../core/plannernotes.c" line="524"/>
-        <location filename="../core/string-format.cpp" line="239"/>
-        <location filename="../core/worldmap-save.c" line="50"/>
-        <location filename="../desktop-widgets/templatelayout.cpp" line="455"/>
+        <location filename="../core/plannernotes.cpp" line="65"/>
+        <location filename="../core/plannernotes.cpp" line="541"/>
+        <location filename="../core/string-format.cpp" line="235"/>
+        <location filename="../core/worldmap-save.cpp" line="49"/>
         <location filename="../qt-models/divetripmodel.cpp" line="165"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../core/divelogexportlogic.cpp" line="56"/>
+        <location filename="../core/divelogexportlogic.cpp" line="58"/>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
-        <location filename="../core/qthelper.h" line="84"/>
-        <location filename="../desktop-widgets/templatelayout.cpp" line="455"/>
+        <location filename="../core/string-format.cpp" line="523"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../core/divelogexportlogic.cpp" line="152"/>
+        <location filename="../core/divelogexportlogic.cpp" line="153"/>
         <source>Cannot find a folder called &apos;theme&apos; in the standard locations</source>
         <translation>No s&apos;ha trobat una carpeta anomenada «tema» a les ubicacions estàndard</translation>
     </message>
     <message>
-        <location filename="../core/divesite-helper.cpp" line="21"/>
+        <location filename="../core/taxonomy.cpp" line="79"/>
         <source>No dive site layout categories set in preferences!</source>
         <translation>No hi ha cap disposició del punt d&apos;immersió establerta a les preferències!</translation>
     </message>
     <message>
-        <location filename="../core/divesite-helper.cpp" line="29"/>
-        <location filename="../core/save-html.c" line="536"/>
+        <location filename="../core/save-html.cpp" line="541"/>
+        <location filename="../core/taxonomy.cpp" line="87"/>
         <source>Tags</source>
         <translation>Etiquetes</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="86"/>
+        <location filename="../core/equipment.cpp" line="65"/>
         <source>OC-gas</source>
         <translation>Gas en OC</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="86"/>
+        <location filename="../core/equipment.cpp" line="65"/>
         <source>diluent</source>
         <translation>diluent</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="86"/>
-        <location filename="../core/equipment.c" line="205"/>
-        <location filename="../core/planner.c" line="1199"/>
-        <location filename="../core/planner.c" line="1202"/>
+        <location filename="../core/equipment.cpp" line="65"/>
+        <location filename="../core/gas.cpp" line="198"/>
         <source>oxygen</source>
         <translation>oxigen</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="86"/>
+        <location filename="../core/equipment.cpp" line="65"/>
         <source>not used</source>
         <translation>sense usar</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="201"/>
-        <location filename="../core/planner.c" line="1195"/>
-        <location filename="../core/planner.c" line="1198"/>
-        <location filename="../core/string-format.cpp" line="285"/>
+        <location filename="../core/gas.cpp" line="194"/>
+        <location filename="../core/string-format.cpp" line="280"/>
         <source>air</source>
         <translation>aire</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="203"/>
+        <location filename="../core/gas.cpp" line="196"/>
         <source>EAN%d</source>
         <translation>EAN%d</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="323"/>
+        <location filename="../core/equipment.cpp" line="281"/>
         <source>integrated</source>
         <translation>integrat</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="324"/>
+        <location filename="../core/equipment.cpp" line="282"/>
         <source>belt</source>
         <translation>cinturó</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="325"/>
+        <location filename="../core/equipment.cpp" line="283"/>
         <source>ankle</source>
         <translation>turmell</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="326"/>
+        <location filename="../core/equipment.cpp" line="284"/>
         <source>backplate</source>
         <translation>llast al darrere</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="327"/>
+        <location filename="../core/equipment.cpp" line="285"/>
         <source>clip-on</source>
         <translation>amb clips</translation>
     </message>
@@ -11102,665 +11973,730 @@ Màxim</translation>
         <translation>alarma</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="117"/>
+        <location filename="../core/file.cpp" line="115"/>
         <source>No dives in the input file &apos;%s&apos;</source>
         <translation>No hi ha immersions en el fitxer d&apos;entrada «%s»</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="230"/>
+        <location filename="../core/file.cpp" line="229"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
-        <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
+        <comment>&apos;Import log file&apos; should be the same text as corresponding label in Import menu</comment>
         <translation>No s&apos;ha pogut obrir el fitxer CSV %s; useu el diàleg «Importa fitxers de registre»</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="318"/>
-        <location filename="../core/import-csv.c" line="123"/>
-        <location filename="../core/import-csv.c" line="346"/>
-        <location filename="../core/import-csv.c" line="506"/>
-        <location filename="../core/import-csv.c" line="842"/>
-        <location filename="../core/ostctools.c" line="56"/>
+        <location filename="../core/file.cpp" line="314"/>
+        <location filename="../core/import-csv.cpp" line="309"/>
+        <location filename="../core/import-csv.cpp" line="429"/>
+        <location filename="../core/import-csv.cpp" line="577"/>
+        <location filename="../core/import-csv.cpp" line="905"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Ha fallat en llegir «%s»</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="320"/>
+        <location filename="../core/file.cpp" line="316"/>
         <source>Empty file &apos;%s&apos;</source>
         <translation>Fitxer buit «%s»</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="41"/>
+        <location filename="../core/filterconstraint.cpp" line="42"/>
         <source>date</source>
         <translation>data</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="42"/>
+        <location filename="../core/filterconstraint.cpp" line="43"/>
         <source>date time</source>
         <translation>data i hora</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="43"/>
+        <location filename="../core/filterconstraint.cpp" line="44"/>
         <source>time of day</source>
         <translation>hora del dia</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="44"/>
+        <location filename="../core/filterconstraint.cpp" line="45"/>
         <source>year</source>
         <translation>any</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="45"/>
+        <location filename="../core/filterconstraint.cpp" line="46"/>
         <source>week day</source>
         <translation>dia de la setmana</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="47"/>
+        <location filename="../core/filterconstraint.cpp" line="48"/>
         <source>rating</source>
         <translation>valoració</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="48"/>
+        <location filename="../core/filterconstraint.cpp" line="49"/>
         <source>wave size</source>
         <translation>grandària de l&apos;onada</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="49"/>
+        <location filename="../core/filterconstraint.cpp" line="50"/>
         <source>current</source>
         <translation>Actual</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="50"/>
+        <location filename="../core/filterconstraint.cpp" line="51"/>
         <source>visibility</source>
         <translation>visibilitat</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="51"/>
+        <location filename="../core/filterconstraint.cpp" line="52"/>
         <source>surge</source>
         <translation>Onatge</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="52"/>
+        <location filename="../core/filterconstraint.cpp" line="53"/>
         <source>chill</source>
         <translation>Fred</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="54"/>
+        <location filename="../core/filterconstraint.cpp" line="55"/>
         <source>max. depth</source>
         <translation>prof. màxima</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="55"/>
-        <location filename="../core/plannernotes.c" line="177"/>
+        <location filename="../core/filterconstraint.cpp" line="56"/>
+        <location filename="../core/plannernotes.cpp" line="192"/>
         <source>duration</source>
         <translation>durada</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="56"/>
+        <location filename="../core/filterconstraint.cpp" line="57"/>
         <source>weight</source>
         <translation>llast</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="57"/>
+        <location filename="../core/filterconstraint.cpp" line="58"/>
         <source>water temp.</source>
         <translation>temp. de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="58"/>
+        <location filename="../core/filterconstraint.cpp" line="59"/>
         <source>air temp.</source>
         <translation>temp. de l&apos;aire</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="59"/>
+        <location filename="../core/filterconstraint.cpp" line="60"/>
         <source>water density</source>
         <translation>Densitat de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="60"/>
-        <location filename="../core/plannernotes.c" line="522"/>
+        <location filename="../core/filterconstraint.cpp" line="61"/>
+        <location filename="../core/plannernotes.cpp" line="539"/>
         <source>SAC</source>
         <translation>CAS</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="62"/>
+        <location filename="../core/filterconstraint.cpp" line="63"/>
         <source>logged</source>
         <translation>s&apos;ha iniciat la sessió</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="63"/>
+        <location filename="../core/filterconstraint.cpp" line="64"/>
         <source>planned</source>
         <translation>està planificada</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="65"/>
+        <location filename="../core/filterconstraint.cpp" line="66"/>
         <source>dive mode</source>
         <translation>mode de busseig</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="67"/>
-        <source>tags</source>
-        <translation>etiquetes</translation>
-    </message>
-    <message>
         <location filename="../core/filterconstraint.cpp" line="68"/>
-        <source>people</source>
-        <translation>persones</translation>
+        <source>any tag</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="69"/>
-        <source>location</source>
-        <translation>ubicació</translation>
+        <source>any person</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="70"/>
-        <source>weight type</source>
-        <translation>tipus de llast</translation>
+        <source>any location</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="71"/>
-        <source>cylinder type</source>
-        <translation>tipus d&apos;ampolla</translation>
+        <source>any weight type</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="72"/>
+        <source>any cylinder type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tags</source>
+        <translation type="vanished">etiquetes</translation>
+    </message>
+    <message>
+        <source>people</source>
+        <translation type="vanished">persones</translation>
+    </message>
+    <message>
+        <source>location</source>
+        <translation type="vanished">ubicació</translation>
+    </message>
+    <message>
+        <source>weight type</source>
+        <translation type="vanished">tipus de llast</translation>
+    </message>
+    <message>
+        <source>cylinder type</source>
+        <translation type="vanished">tipus d&apos;ampolla</translation>
+    </message>
+    <message>
+        <location filename="../core/filterconstraint.cpp" line="73"/>
         <source>cylinder size</source>
         <translation>mida de l&apos;ampolla</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="73"/>
+        <location filename="../core/filterconstraint.cpp" line="74"/>
         <source>gas N₂ content</source>
         <translation>contingut de gas N₂</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="74"/>
+        <location filename="../core/filterconstraint.cpp" line="75"/>
         <source>gas O₂ content</source>
         <translation>contingut de gas O₂</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="75"/>
+        <location filename="../core/filterconstraint.cpp" line="76"/>
         <source>gas He content</source>
         <translation>contingut de gas He</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="76"/>
+        <location filename="../core/filterconstraint.cpp" line="77"/>
         <source>suit</source>
         <translation>vestit</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="77"/>
+        <location filename="../core/filterconstraint.cpp" line="78"/>
         <source>notes</source>
         <translation>notes</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="85"/>
+        <location filename="../core/filterconstraint.cpp" line="79"/>
+        <source>any dive computer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/filterconstraint.cpp" line="87"/>
         <source>starting with</source>
         <translation>comença amb</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="86"/>
+        <location filename="../core/filterconstraint.cpp" line="88"/>
         <source>with substring</source>
         <translation>amb una subcadena</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="87"/>
+        <location filename="../core/filterconstraint.cpp" line="89"/>
         <source>exactly</source>
         <translation>exactament</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="96"/>
+        <location filename="../core/filterconstraint.cpp" line="98"/>
         <source>equal to</source>
         <translation>igual que</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="96"/>
+        <location filename="../core/filterconstraint.cpp" line="98"/>
         <source>at</source>
         <translation>a</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="97"/>
+        <location filename="../core/filterconstraint.cpp" line="99"/>
         <source>at most</source>
         <translation>com a màxim</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="97"/>
+        <location filename="../core/filterconstraint.cpp" line="99"/>
         <source>before</source>
         <translation>abans</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="98"/>
+        <location filename="../core/filterconstraint.cpp" line="100"/>
         <source>at least</source>
         <translation>almenys</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="98"/>
+        <location filename="../core/filterconstraint.cpp" line="100"/>
         <source>after</source>
         <translation>després</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="99"/>
+        <location filename="../core/filterconstraint.cpp" line="101"/>
         <source>in range</source>
         <translation>en l&apos;interval</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="103"/>
+        <location filename="../core/filterconstraint.cpp" line="105"/>
         <source>is</source>
         <translation>és</translation>
     </message>
     <message>
-        <location filename="../core/filterconstraint.cpp" line="104"/>
+        <location filename="../core/filterconstraint.cpp" line="106"/>
         <source>is not</source>
         <translation>no és</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="169"/>
+        <location filename="../core/gas.cpp" line="174"/>
         <source>Air</source>
         <translation>Aire</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="170"/>
+        <location filename="../core/gas.cpp" line="175"/>
         <source>Nitrox</source>
         <translation>Nitrox</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="171"/>
+        <location filename="../core/gas.cpp" line="176"/>
         <source>Hypoxic Trimix</source>
         <translation>Trimix hipòxic</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="172"/>
+        <location filename="../core/gas.cpp" line="177"/>
         <source>Normoxic Trimix</source>
         <translation>Trimix normòxic</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="173"/>
+        <location filename="../core/gas.cpp" line="178"/>
         <source>Hyperoxic Trimix</source>
         <translation>Trimix hiperòxic</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="174"/>
+        <location filename="../core/gas.cpp" line="179"/>
         <source>Oxygen</source>
         <translation>Oxigen</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="84"/>
+        <location filename="../core/gas.cpp" line="192"/>
+        <source>invalid gas</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/git-access.cpp" line="91"/>
         <source>Checkout from storage (%lu/%lu)</source>
         <translation>Obtén des de l&apos;emmagatzematge (%lu/%lu)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="115"/>
+        <location filename="../core/git-access.cpp" line="120"/>
         <source>Transfer from storage (%d/%d)</source>
         <translation>Transfereix des de l&apos;emmagatzematge (%d/%d)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="127"/>
+        <location filename="../core/git-access.cpp" line="129"/>
         <source>Transfer to storage (%d/%d)</source>
         <translation>Transfereix a l&apos;emmagatzematge (%d/%d)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="175"/>
+        <location filename="../core/git-access.cpp" line="180"/>
         <source>Local cache directory %s corrupted - can&apos;t sync with Subsurface cloud storage</source>
         <translation>El directori del cau local %s està corrupte -no s&apos;ha pogut sincronitzar amb l&apos;emmagatzematge en el núvol de Subsurface-</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="199"/>
-        <location filename="../core/git-access.c" line="221"/>
+        <location filename="../core/git-access.cpp" line="204"/>
+        <location filename="../core/git-access.cpp" line="226"/>
         <source>Could not update local cache to newer remote data</source>
         <translation>No s&apos;ha pogut actualitzar el cau local amb les noves dades remotes</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="213"/>
+        <location filename="../core/git-access.cpp" line="218"/>
         <source>Subsurface cloud storage corrupted</source>
         <translation>L&apos;emmagatzematge en el núvol de Subsurface està corrupte</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="351"/>
+        <location filename="../core/git-access.cpp" line="341"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
         <translation>No s&apos;ha pogut actualitzar l&apos;emmagatzematge en el núvol de Subsurface, proveu-ho més tard</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="408"/>
+        <location filename="../core/git-access.cpp" line="397"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
         <translation>L&apos;emmagatzematge remot i local de les dades són diferents. Error: ha fallat en fusionar (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="438"/>
+        <location filename="../core/git-access.cpp" line="427"/>
         <source>Remote storage and local data diverged. Cannot combine local and remote changes</source>
         <translation>L&apos;emmagatzematge remot i local de les dades són diferents. No es poden combinar els canvis locals i remots</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="475"/>
+        <location filename="../core/git-access.cpp" line="464"/>
         <source>Remote storage and local data diverged</source>
         <translation>L&apos;emmagatzematge remot i local de les dades són diferents.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="479"/>
+        <location filename="../core/git-access.cpp" line="467"/>
         <source>Remote storage and local data diverged. Error: writing the data failed (%s)</source>
         <translation>L&apos;emmagatzematge remot i local de les dades són diferents. Error: ha fallat en escriure les dades (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="489"/>
+        <location filename="../core/git-access.cpp" line="477"/>
         <source>Problems with local cache of Subsurface cloud data</source>
         <translation>Problemes amb el cau local de les dades al núvol de Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="490"/>
+        <location filename="../core/git-access.cpp" line="478"/>
         <source>Moved cache data to %s. Please try the operation again.</source>
         <translation>S&apos;han mogut les dades de la memòria cau a %s. Si us plau, proveu de nou l&apos;operació.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="545"/>
+        <location filename="../core/git-access.cpp" line="532"/>
         <source>Update local storage to match cloud storage</source>
         <translation>Actualitza l&apos;emmagatzematge local per a fer-lo coincidir amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="553"/>
+        <location filename="../core/git-access.cpp" line="540"/>
         <source>Push local changes to cloud storage</source>
         <translation>Entrega els canvis locals a l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="573"/>
+        <location filename="../core/git-access.cpp" line="560"/>
         <source>Try to merge local changes into cloud storage</source>
         <translation>Intenta fussionar els canvis locals en l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="617"/>
+        <location filename="../core/git-access.cpp" line="604"/>
         <source>Store data into cloud storage</source>
         <translation>Emmagatzema les dades a l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="693"/>
+        <location filename="../core/git-access.cpp" line="687"/>
         <source>Sync with cloud storage</source>
         <translation>Sincronitza amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="725"/>
+        <location filename="../core/git-access.cpp" line="719"/>
         <source>Can&apos;t reach cloud server, working with local data</source>
         <translation>No s&apos;ha pogut abastar el servidor en el núvol, s&apos;està treballant amb les dades locals</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="739"/>
+        <location filename="../core/git-access.cpp" line="733"/>
         <source>Successful cloud connection, fetch remote</source>
         <translation>Connexió amb el núvol exitosa, s&apos;estan recuperant les dades remotes</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="756"/>
+        <location filename="../core/git-access.cpp" line="758"/>
+        <location filename="../core/git-access.cpp" line="764"/>
         <source>Done syncing with cloud storage</source>
         <translation>S&apos;ha realitzat la incronització amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="905"/>
+        <location filename="../core/git-access.cpp" line="906"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Error en connectar amb l&apos;emmagatzematge en el núvol de Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="908"/>
+        <location filename="../core/git-access.cpp" line="909"/>
         <source>git clone of %s failed (%s)</source>
         <translation>Ha fallat el «git clone» de %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="933"/>
+        <location filename="../core/git-access.cpp" line="933"/>
         <source>Synchronising data file</source>
         <translation>S&apos;està sincronitzant el fitxer de dades</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="227"/>
+        <location filename="../core/import-csv.cpp" line="277"/>
         <source>No dive profile found from &apos;%s&apos;</source>
         <translation>No s&apos;ha trobat cap perfil de la immersió a «%s»</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="606"/>
+        <location filename="../core/import-csv.cpp" line="671"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>La importació de Poseidon ha fallat: no s&apos;ha pogut llegir «%s»</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="642"/>
+        <location filename="../core/import-csv.cpp" line="706"/>
         <source>Mouth piece position OC</source>
         <translation>Posició del broquet (circuit obert)</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="646"/>
+        <location filename="../core/import-csv.cpp" line="710"/>
         <source>Mouth piece position CC</source>
         <translation>Posició del broquet (circuit tancat)</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="650"/>
+        <location filename="../core/import-csv.cpp" line="714"/>
         <source>Mouth piece position unknown</source>
         <translation>Posició del broquet desconeguda</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="654"/>
+        <location filename="../core/import-csv.cpp" line="718"/>
         <source>Mouth piece position not connected</source>
         <translation>Posició del broquet no connectat</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="661"/>
+        <location filename="../core/import-csv.cpp" line="725"/>
         <source>Power off</source>
         <translation>Apaga</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="711"/>
+        <location filename="../core/import-csv.cpp" line="775"/>
         <source>O₂ calibration failed</source>
         <translation>Ha fallat el calibratge del O₂</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="713"/>
-        <location filename="../core/import-csv.c" line="722"/>
+        <location filename="../core/import-csv.cpp" line="777"/>
+        <location filename="../core/import-csv.cpp" line="786"/>
         <source>O₂ calibration</source>
         <translation>Calibratge del O₂</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="314"/>
+        <location filename="../core/libdivecomputer.cpp" line="329"/>
         <source>none</source>
         <translation>cap</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="319"/>
+        <location filename="../core/libdivecomputer.cpp" line="334"/>
         <source>workload</source>
         <translation>esforç</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="321"/>
+        <location filename="../core/libdivecomputer.cpp" line="336"/>
         <source>violation</source>
         <translation>violació</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="322"/>
+        <location filename="../core/libdivecomputer.cpp" line="337"/>
         <source>bookmark</source>
         <translation>adreça d&apos;interès</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="323"/>
+        <location filename="../core/libdivecomputer.cpp" line="338"/>
         <source>surface</source>
         <translation>superfície</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="324"/>
+        <location filename="../core/import-suunto-json.cpp" line="263"/>
+        <source>dive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/import-suunto-json.cpp" line="417"/>
+        <location filename="../core/import-suunto-json.cpp" line="468"/>
+        <location filename="../core/import-suunto-json.cpp" line="495"/>
+        <location filename="../core/libdivecomputer.cpp" line="339"/>
         <source>safety stop</source>
         <translation>parada de seguretat</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="326"/>
+        <location filename="../core/import-suunto-json.cpp" line="428"/>
+        <source>low NDL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/import-suunto-json.cpp" line="439"/>
+        <location filename="../core/import-suunto-json.cpp" line="473"/>
+        <source>depth alarm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/libdivecomputer.cpp" line="341"/>
         <source>safety stop (voluntary)</source>
         <translation>parada de seguretat (voluntària)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="327"/>
+        <location filename="../core/libdivecomputer.cpp" line="342"/>
         <source>safety stop (mandatory)</source>
         <translation>parada de seguretat (obligatòria)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="328"/>
+        <location filename="../core/libdivecomputer.cpp" line="343"/>
         <source>deepstop</source>
         <translation>parada profunda</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="329"/>
+        <location filename="../core/libdivecomputer.cpp" line="344"/>
         <source>ceiling (safety stop)</source>
         <translation>sostre (parada de seguretat)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="330"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
-        <translation>per sota del sostre</translation>
+        <translation type="vanished">per sota del sostre</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="331"/>
+        <location filename="../core/libdivecomputer.cpp" line="347"/>
+        <source>below floor</source>
+        <translation type="unfinished">per sota del sostre</translation>
+    </message>
+    <message>
+        <location filename="../core/libdivecomputer.cpp" line="348"/>
         <source>divetime</source>
         <translation>durada de la immersió</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="335"/>
+        <location filename="../core/libdivecomputer.cpp" line="352"/>
         <source>airtime</source>
         <translation>temps d&apos;aire</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="336"/>
+        <location filename="../core/libdivecomputer.cpp" line="353"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="337"/>
+        <location filename="../core/libdivecomputer.cpp" line="354"/>
         <source>heading</source>
         <translation>encapçalament</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="338"/>
+        <location filename="../core/libdivecomputer.cpp" line="355"/>
         <source>tissue level warning</source>
         <translation>Avís del nivell dels teixits</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="348"/>
+        <location filename="../core/libdivecomputer.cpp" line="373"/>
         <source>invalid event number</source>
         <translation>el número de l&apos;esdeveniment no és vàlid</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="665"/>
+        <location filename="../core/libdivecomputer.cpp" line="654"/>
         <source>Error parsing the datetime</source>
         <translation>Error en analitzar la data</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="684"/>
+        <location filename="../core/libdivecomputer.cpp" line="673"/>
         <source>Dive %d: %s</source>
         <translation>Immersió %d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="690"/>
+        <location filename="../core/libdivecomputer.cpp" line="678"/>
         <source>Error parsing the divetime</source>
         <translation>Error en analitzar el temps de busseig</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="700"/>
+        <location filename="../core/libdivecomputer.cpp" line="688"/>
         <source>Error parsing the maxdepth</source>
         <translation>Error en analitzar la profunditat màxima</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="714"/>
+        <location filename="../core/libdivecomputer.cpp" line="702"/>
         <source>Error parsing temperature</source>
         <translation>Error en llegir la temperatura</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="733"/>
+        <location filename="../core/libdivecomputer.cpp" line="721"/>
         <source>Error parsing the gas mix count</source>
         <translation>Error en analitzar el contingut de la mescla de gas</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="744"/>
+        <location filename="../core/libdivecomputer.cpp" line="732"/>
         <source>Error obtaining water salinity</source>
         <translation>Error en obtenir la salinitat de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="766"/>
+        <location filename="../core/libdivecomputer.cpp" line="754"/>
         <source>Error obtaining surface pressure</source>
         <translation>Error en obtenir la pressió en superfície</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="788"/>
+        <location filename="../core/libdivecomputer.cpp" line="764"/>
+        <source>Error obtaining location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/libdivecomputer.cpp" line="799"/>
         <source>Error obtaining dive mode</source>
         <translation>Error en obtenir el mode de busseig</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="810"/>
+        <location filename="../core/libdivecomputer.cpp" line="821"/>
         <source>Error parsing the gas mix</source>
         <translation>Error en analitzar la mescla de gas</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="838"/>
+        <location filename="../core/libdivecomputer.cpp" line="848"/>
+        <source>Unable to create parser for %s %s: %d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/libdivecomputer.cpp" line="868"/>
+        <source>Error parsing the samples: %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Unable to create parser for %s %s</source>
-        <translation>No s&apos;ha pogut crear l&apos;analitzador per a %s %s</translation>
+        <translation type="vanished">No s&apos;ha pogut crear l&apos;analitzador per a %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="844"/>
         <source>Error registering the data</source>
-        <translation>Error en enregistrar les dades</translation>
+        <translation type="vanished">Error en enregistrar les dades</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="864"/>
         <source>Error parsing the samples</source>
-        <translation>Error en analitzar les mostres</translation>
+        <translation type="vanished">Error en analitzar les mostres</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="889"/>
+        <location filename="../core/libdivecomputer.cpp" line="893"/>
         <source>Already downloaded dive at %s</source>
         <translation>La immersió ja s&apos;ha baixat a %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1095"/>
+        <location filename="../core/libdivecomputer.cpp" line="1110"/>
         <source>Event: waiting for user action</source>
         <translation>Esdeveniment: s&apos;està a l&apos;espera d&apos;una acció de l&apos;usuari</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1107"/>
+        <location filename="../core/libdivecomputer.cpp" line="1122"/>
         <source>read %dkb</source>
         <translation>llegeix %dkb</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1127"/>
+        <location filename="../core/libdivecomputer.cpp" line="1144"/>
         <source>model=%s firmware=%u serial=%u</source>
         <translation>model=%s microprogramari=%u sèrie=%u</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1180"/>
+        <location filename="../core/libdivecomputer.cpp" line="1198"/>
         <source>Error registering the event handler.</source>
         <translation>Error en enregistrar el manegador d&apos;esdeveniments.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1185"/>
+        <location filename="../core/libdivecomputer.cpp" line="1206"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Error en enregistrar el manegador de cancel·lació.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1205"/>
+        <location filename="../core/libdivecomputer.cpp" line="1227"/>
         <source>Dumping not supported on this device</source>
         <translation>El bolcat no és compatible amb aquest dispositiu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1207"/>
+        <location filename="../core/libdivecomputer.cpp" line="1231"/>
         <source>Dive data dumping error</source>
         <translation>Error en bolcar les dades de les immersions</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1215"/>
+        <location filename="../core/libdivecomputer.cpp" line="1241"/>
         <source>Dive data import error</source>
         <translation>Error en importar les dades de les immersions</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1514"/>
+        <location filename="../core/libdivecomputer.cpp" line="1541"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>No s&apos;ha pogut crear un context de «libdivecomputer»</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1523"/>
+        <location filename="../core/libdivecomputer.cpp" line="1552"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>No s&apos;ha pogut obrir %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1535"/>
+        <location filename="../core/libdivecomputer.cpp" line="1565"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
         <translation>Error en obrir el dispositiu %s %s (%s).
 En la majoria dels casos, per a depurar aquest problema, és útil enviar els fitxers del registre als desenvolupadors. Els podeu copiar al porta-retalls des del diàleg «Quant a».</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1537"/>
+        <location filename="../core/libdivecomputer.cpp" line="1567"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
@@ -11769,278 +12705,319 @@ En la majoria dels casos, per a depurar aquest problema, serà útil un fitxer d
 Podeu crear aquest fitxer de registre seleccionant la casella de selecció corresponent al diàleg de baixada.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1568"/>
+        <location filename="../core/libdivecomputer.cpp" line="1598"/>
         <source>No new dives downloaded from dive computer</source>
         <translation>No hi ha cap immersió nova baixada des de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="185"/>
-        <location filename="../core/parse-xml.c" line="1229"/>
+        <location filename="../core/load-git.cpp" line="195"/>
+        <location filename="../core/parse-xml.cpp" line="1244"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
         <translation>múltiples posicions GPS per a aquest lloc d&apos;immersió; també %s</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="210"/>
-        <location filename="../core/parse.c" line="533"/>
+        <location filename="../core/load-git.cpp" line="230"/>
+        <location filename="../core/parse.cpp" line="452"/>
         <source>additional name for site: %s
 </source>
         <translation>nom addicional per a aquest lloc: %s</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1948"/>
+        <location filename="../core/load-git.cpp" line="1873"/>
         <source>Load dives from local cache</source>
         <translation>Carrega les immersions des del cau local</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1952"/>
+        <location filename="../core/load-git.cpp" line="1877"/>
         <source>Successfully opened dive data</source>
         <translation>S&apos;han obert amb èxit les dades de busseig</translation>
     </message>
     <message>
-        <location filename="../core/ostctools.c" line="122"/>
-        <location filename="../core/ostctools.c" line="153"/>
+        <location filename="../core/ostctools.cpp" line="25"/>
+        <source>Invalid OSTCTools file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/ostctools.cpp" line="67"/>
+        <location filename="../core/ostctools.cpp" line="99"/>
         <source>Unknown DC in dive %d</source>
         <translation>Ordinador de busseig desconegut en la immersió %d</translation>
     </message>
     <message>
-        <location filename="../core/ostctools.c" line="165"/>
+        <location filename="../core/divesoft.cpp" line="53"/>
+        <source>Unknown Divesoft model %s, using Freedom as default</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/divesoft.cpp" line="60"/>
+        <source>Not a known Divesoft log format.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/divesoft.cpp" line="67"/>
+        <location filename="../core/fit_file.cpp" line="24"/>
+        <source>Unknown DC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/divesoft.cpp" line="75"/>
+        <location filename="../core/fit_file.cpp" line="33"/>
+        <location filename="../core/ostctools.cpp" line="105"/>
         <source>Error - %s - parsing dive %d</source>
         <translation>Error - %s - en analitzar la immersió %d</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="407"/>
         <source>Strange percentage reading %s
 </source>
-        <translation>Percentatge estrany en llegir %s</translation>
+        <translation type="vanished">Percentatge estrany en llegir %s</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="1780"/>
+        <location filename="../core/parse-xml.cpp" line="421"/>
+        <source>Strange percentage reading %s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/parse-xml.cpp" line="1757"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Ha fallat en analitzar «%s»</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2381"/>
+        <location filename="../core/parse-xml.cpp" line="1843"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>No s&apos;ha pogut obrir el full d&apos;estil %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="907"/>
+        <location filename="../core/planner.cpp" line="858"/>
         <source>Can&apos;t find gas %s</source>
         <translation>No s&apos;ha trobat el gas %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1203"/>
         <source>ean</source>
-        <translation>ean</translation>
+        <translation type="vanished">ean</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="53"/>
+        <location filename="../core/plannernotes.cpp" line="55"/>
         <source>Isobaric counterdiffusion information</source>
         <translation>Informació contra la difusió isobàrica</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="54"/>
-        <location filename="../core/plannernotes.c" line="179"/>
+        <location filename="../core/plannernotes.cpp" line="56"/>
+        <location filename="../core/plannernotes.cpp" line="194"/>
         <source>runtime</source>
         <translation>temps acumulat</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="56"/>
+        <location filename="../core/plannernotes.cpp" line="58"/>
         <source>&amp;#916;He</source>
         <translation>&amp;#916;He</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="57"/>
+        <location filename="../core/plannernotes.cpp" line="59"/>
         <source>&amp;#916;N&amp;#8322;</source>
         <translation>&amp;#916;N&amp;#8322;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="58"/>
+        <location filename="../core/plannernotes.cpp" line="60"/>
         <source>max &amp;#916;N&amp;#8322;</source>
         <translation>màx. &amp;#916;N&amp;#8322;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="73"/>
-        <location filename="../core/plannernotes.c" line="74"/>
-        <location filename="../core/plannernotes.c" line="75"/>
-        <location filename="../core/qthelper.cpp" line="641"/>
-        <location filename="../core/qthelper.cpp" line="883"/>
-        <location filename="../core/qthelper.cpp" line="1311"/>
-        <location filename="../core/units.c" line="16"/>
+        <location filename="../core/plannernotes.cpp" line="75"/>
+        <location filename="../core/plannernotes.cpp" line="76"/>
+        <location filename="../core/plannernotes.cpp" line="77"/>
+        <location filename="../core/qthelper.cpp" line="586"/>
+        <location filename="../core/qthelper.cpp" line="988"/>
+        <location filename="../core/string-format.cpp" line="441"/>
+        <location filename="../core/units.cpp" line="22"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="80"/>
+        <location filename="../core/plannernotes.cpp" line="83"/>
         <source>DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
         <translation>DESCÀRREC DE RESPONSABILITAT / AVÍS: AQUESTA ÉS UNA IMPLEMENTACIÓ DE L&apos;ALGORISME %s I UNA IMPLEMENTACIÓ D&apos;UN PLANIFICADOR D&apos;IMMERSIONS BASAT EN AQUEST QUE NOMÉS HA ESTAT PROVADA DE FORMA LIMITADA. RECOMANEM FERMAMENT EL NO PLANIFICAR LES IMMERSIONS BASANT-VOS SIMPLEMENT EN ELS RESULTATS QUE S&apos;OBTINGUIN AQUÍ.</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="90"/>
+        <location filename="../core/plannernotes.cpp" line="92"/>
         <source>VPM-B</source>
         <translation>VPM-B</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="91"/>
+        <location filename="../core/plannernotes.cpp" line="93"/>
         <source>BUHLMANN</source>
         <translation>BUHLMANN</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="125"/>
-        <location filename="../core/plannernotes.c" line="487"/>
-        <location filename="../core/plannernotes.c" line="493"/>
-        <location filename="../core/plannernotes.c" line="532"/>
-        <location filename="../core/plannernotes.c" line="566"/>
-        <location filename="../core/plannernotes.c" line="600"/>
-        <location filename="../core/plannernotes.c" line="611"/>
+        <location filename="../core/plannernotes.cpp" line="143"/>
+        <location filename="../core/plannernotes.cpp" line="504"/>
+        <location filename="../core/plannernotes.cpp" line="508"/>
+        <location filename="../core/plannernotes.cpp" line="530"/>
+        <location filename="../core/plannernotes.cpp" line="577"/>
+        <location filename="../core/plannernotes.cpp" line="608"/>
+        <location filename="../core/plannernotes.cpp" line="618"/>
         <source>Warning:</source>
         <translation>Avís:</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="126"/>
+        <location filename="../core/plannernotes.cpp" line="123"/>
         <source>Decompression calculation aborted due to excessive time</source>
         <translation>El càlcul de la descompressió ha estat interromput per excés de temps</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="141"/>
-        <location filename="../core/plannernotes.c" line="148"/>
-        <location filename="../core/plannernotes.c" line="156"/>
+        <location filename="../core/plannernotes.cpp" line="127"/>
+        <source>One or more tanks with a tank use type inappropriate for the selected dive mode are included in the dive plan. Please change them to appropriate tanks to enable the generation of a dive plan.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.cpp" line="132"/>
+        <source>No suitable gas for OC bailout at the planned final depth found in the gaslist. Please add an OC-gas with an MOD suitable for the planned final depth to enable the generation of a dive plan.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.cpp" line="137"/>
+        <source>An error occurred during dive plan generation!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.cpp" line="159"/>
+        <location filename="../core/plannernotes.cpp" line="166"/>
+        <location filename="../core/plannernotes.cpp" line="172"/>
         <source>Subsurface</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="143"/>
+        <location filename="../core/plannernotes.cpp" line="161"/>
         <source>dive plan&lt;/b&gt; (overlapping dives detected)</source>
         <translation>pla d&apos;immersió&lt;/b&gt; (s&apos;han detectat immersions superposades)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="150"/>
+        <location filename="../core/plannernotes.cpp" line="168"/>
         <source>dive plan&lt;/b&gt; created on</source>
         <translation>Pla d&apos;immersió&lt;/b&gt; creat a</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="158"/>
+        <location filename="../core/plannernotes.cpp" line="174"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
         <translation>Pla d&apos;immersió&lt;/b&gt; (interval de superfície</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="160"/>
+        <location filename="../core/plannernotes.cpp" line="176"/>
         <source>created on</source>
         <translation>creat a</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="167"/>
-        <location filename="../core/plannernotes.c" line="170"/>
+        <location filename="../core/plannernotes.cpp" line="182"/>
+        <location filename="../core/plannernotes.cpp" line="185"/>
         <source>Runtime: %dmin%s</source>
         <translation>Temps acumulat: %dmin%s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="175"/>
+        <location filename="../core/plannernotes.cpp" line="190"/>
         <source>depth</source>
         <translation>profunditat</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="181"/>
+        <location filename="../core/plannernotes.cpp" line="196"/>
         <source>gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="235"/>
+        <location filename="../core/plannernotes.cpp" line="251"/>
         <source>%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>%s a %.*f %s en %d:%02d min - temps acumulat %d:%02u amb %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="236"/>
-        <location filename="../core/plannernotes.c" line="244"/>
+        <location filename="../core/plannernotes.cpp" line="252"/>
+        <location filename="../core/plannernotes.cpp" line="260"/>
         <source>Ascend</source>
         <translation>Ascens</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="236"/>
-        <location filename="../core/plannernotes.c" line="244"/>
+        <location filename="../core/plannernotes.cpp" line="252"/>
+        <location filename="../core/plannernotes.cpp" line="260"/>
         <source>Descend</source>
         <translation>Descens</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="243"/>
+        <location filename="../core/plannernotes.cpp" line="259"/>
         <source>%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>%s a %.*f %s en %d:%02d min - temps acumulat %d:%02u amb %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="258"/>
+        <location filename="../core/plannernotes.cpp" line="274"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
         <translation>Romandre a %.*f %s durant %d:%02d min. - temps acumulat %d:%02u amb %s (PA = %.1fbar amb CCR)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="265"/>
+        <location filename="../core/plannernotes.cpp" line="281"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
         <translation>Romandre a %.*f %s durant %d:%02d min. - temps acumulat %d:%02u amb %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="312"/>
+        <location filename="../core/plannernotes.cpp" line="328"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="316"/>
-        <location filename="../core/plannernotes.c" line="321"/>
+        <location filename="../core/plannernotes.cpp" line="331"/>
+        <location filename="../core/plannernotes.cpp" line="335"/>
         <source>%3dmin</source>
         <translation>%3d min</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="331"/>
-        <location filename="../core/plannernotes.c" line="354"/>
+        <location filename="../core/plannernotes.cpp" line="344"/>
+        <location filename="../core/plannernotes.cpp" line="366"/>
         <source>(SP = %.1fbar CCR)</source>
         <translation>(PA = %.1fbar amb CCR)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="388"/>
+        <location filename="../core/plannernotes.cpp" line="399"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation>Canvia el gas a %s (PA = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="390"/>
+        <location filename="../core/plannernotes.cpp" line="401"/>
         <source>Switch gas to %s</source>
         <translation>Canvia el gas a %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="419"/>
+        <location filename="../core/plannernotes.cpp" line="429"/>
         <source>CNS</source>
         <translation>SNC</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="420"/>
+        <location filename="../core/plannernotes.cpp" line="430"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="425"/>
+        <location filename="../core/plannernotes.cpp" line="435"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
         <translation>Model de descompressió Bühlmann ZHL-16C amb GFBaix = %d%% i GFAlt = %d%%</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="428"/>
+        <location filename="../core/plannernotes.cpp" line="438"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
         <translation>Model de descompressió: VPM-B sense conservadorisme</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="430"/>
+        <location filename="../core/plannernotes.cpp" line="440"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
         <translation>Model de descompressió: VPM-B amb +%d de conservadorisme</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="432"/>
+        <location filename="../core/plannernotes.cpp" line="442"/>
         <source>, effective GF=%d/%d</source>
         <translation>, GF=%d/%d efectiu</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="434"/>
+        <location filename="../core/plannernotes.cpp" line="444"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
         <translation>Model de descompressió: Mode recreatiu basat en Bühlmann ZHL-16B amb GFBaix = %d%% i GFAlt = %d%%</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="442"/>
+        <location filename="../core/plannernotes.cpp" line="453"/>
         <source>ATM pressure: %dmbar (%d%s)&lt;br/&gt;
 &lt;/div&gt;
 </source>
@@ -12049,1101 +13026,1350 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
 </translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="457"/>
+        <location filename="../core/plannernotes.cpp" line="471"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation>Consum de gas (exclosos els segments amb CCR):</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="459"/>
+        <location filename="../core/plannernotes.cpp" line="473"/>
         <source>Gas consumption (based on SAC</source>
         <translation>Consum de gas (basat en el CAS</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="488"/>
+        <location filename="../core/plannernotes.cpp" line="501"/>
+        <source>(end pressure &amp;lt;= %.0f%s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.cpp" line="505"/>
+        <source>this is more gas than available in the specified cylinder %s!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.cpp" line="509"/>
+        <source>not enough reserve for gas sharing on ascent %s!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.cpp" line="531"/>
+        <source>not enough gas for problem solving and ascent at end of dive %s!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.cpp" line="578"/>
+        <source>Isobaric counterdiffusion conditions exceeded!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.cpp" line="606"/>
+        <source>high pO₂ value %.3f bar at %d:%02u with gas %s at depth %.*f %s!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.cpp" line="616"/>
+        <source>low pO₂ value %.3f bar at %d:%02u with gas %s at depth %.*f %s!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>this is more gas than available in the specified cylinder!</source>
-        <translation>Això és més gas del disponible a l&apos;ampolla especificada!</translation>
+        <translation type="vanished">Això és més gas del disponible a l&apos;ampolla especificada!</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="494"/>
         <source>not enough reserve for gas sharing on ascent!</source>
-        <translation>Reserva insuficient per a compartir el gas durant l&apos;ascens!</translation>
+        <translation type="vanished">Reserva insuficient per a compartir el gas durant l&apos;ascens!</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="519"/>
+        <location filename="../core/plannernotes.cpp" line="536"/>
         <source>Minimum gas</source>
         <translation>Gas mínim</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="520"/>
+        <location filename="../core/plannernotes.cpp" line="537"/>
         <source>based on</source>
         <translation>creat a</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="533"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
-        <translation>el gas mínim requerit per a l&apos;ascens ja excedeix la pressió d&apos;inici de l&apos;ampolla</translation>
+        <translation type="vanished">el gas mínim requerit per a l&apos;ascens ja excedeix la pressió d&apos;inici de l&apos;ampolla</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="538"/>
+        <location filename="../core/plannernotes.cpp" line="551"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s en l&apos;ascens planificat)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="541"/>
+        <location filename="../core/plannernotes.cpp" line="554"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation>%.0f%s/%.0f%s de &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="546"/>
+        <location filename="../core/plannernotes.cpp" line="559"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s during planned ascent)</source>
         <translation>%.0f%s de &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s en l&apos;ascens planificat)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="549"/>
+        <location filename="../core/plannernotes.cpp" line="562"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation>%.0f%s de &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="567"/>
         <source>Isobaric counterdiffusion conditions exceeded</source>
-        <translation>S&apos;han superat les condicions contra la difusió isobàrica</translation>
+        <translation type="vanished">S&apos;han superat les condicions contra la difusió isobàrica</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="598"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation>Valor de pO₂ alt %.2f a %d:%02u amb gas %s a la profunditat de %.*f %s</translation>
+        <translation type="vanished">Valor de pO₂ alt %.2f a %d:%02u amb gas %s a la profunditat de %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="609"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
-        <translation>Valor de pO₂ baix %.2f a %d:%02u amb gas %s a la profunditat de %.*f %s</translation>
+        <translation type="vanished">Valor de pO₂ baix %.2f a %d:%02u amb gas %s a la profunditat de %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1060"/>
+        <location filename="../core/profile.cpp" line="988"/>
         <source>planned waypoint above ceiling</source>
         <translation>fita prevista per sobre del sostre</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1376"/>
+        <location filename="../core/profile.cpp" line="1292"/>
+        <source>@: %d:%02d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1293"/>
+        <source>D: %.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1300"/>
+        <source>P: %d%s (%s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1304"/>
+        <source>T: %.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1310"/>
+        <source>V: %.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1313"/>
+        <source>SAC: %.*f%s/min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1315"/>
+        <source>CNS: %u%%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1317"/>
+        <source>pO₂: %.2fbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1319"/>
+        <source>SCR ΔpO₂: %.2fbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1322"/>
+        <source>pN₂: %.2fbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1324"/>
+        <source>pHe: %.2fbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1327"/>
+        <source>MOD: %d%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1336"/>
+        <source>EAD: %d%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1337"/>
+        <location filename="../core/profile.cpp" line="1344"/>
+        <source>EADD: %d%s / %.1fg/L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1343"/>
+        <source>END: %d%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1349"/>
+        <source>Density: %.1fg/L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1361"/>
+        <source>Safety stop: %umin @ %.0f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1364"/>
+        <source>Safety stop: unknown time @ %.0f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1369"/>
+        <source>Deco: %umin @ %.0f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1372"/>
+        <source>Deco: unknown time @ %.0f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1376"/>
+        <location filename="../core/save-profiledata.cpp" line="334"/>
+        <source>In deco</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1378"/>
+        <source>NDL: %umin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1381"/>
+        <source>TTS: %umin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1384"/>
+        <source>Deco: %umin @ %.0f%s (calc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1392"/>
+        <source>In deco (calc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1395"/>
+        <source>NDL: %umin (calc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1397"/>
+        <source>NDL: &gt;2h (calc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1401"/>
+        <source>TTS: %umin (calc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1403"/>
+        <source>TTS: &gt;2h (calc)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1406"/>
+        <source>RBT: %umin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1409"/>
+        <source>GF %d%%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1411"/>
+        <source>Surface GF %.0f%%</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1414"/>
+        <source>Calculated ceiling %.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1420"/>
+        <source>Tissue %.0fmin: %.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1427"/>
+        <location filename="../core/save-profiledata.cpp" line="393"/>
+        <source>ICD in leading tissue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1429"/>
+        <source>heart rate: %d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1431"/>
+        <source>bearing: %d</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1434"/>
+        <source>mean depth to here %.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1552"/>
+        <source>ΔD:%.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1555"/>
+        <source>↓D:%.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1558"/>
+        <source>↑D:%.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1561"/>
+        <source>øD:%.1f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1565"/>
+        <source>↓V:%.2f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1568"/>
+        <source>↑V:%.2f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1571"/>
+        <source>øV:%.2f%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1598"/>
+        <source>ΔP:%d%s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/profile.cpp" line="1612"/>
+        <source>SAC:%.*f%s/min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
-        <translation>@: %d:%02d
+        <translation type="vanished">@: %d:%02d
 D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1383"/>
         <source>P: %d%s (%s)
 </source>
-        <translation>P: %d%s (%s)
+        <translation type="vanished">P: %d%s (%s)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1387"/>
         <source>T: %.1f%s
 </source>
-        <translation>T: %.1f%s
+        <translation type="vanished">T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1393"/>
         <source>V: %.1f%s
 </source>
-        <translation>V: %.1f%s
+        <translation type="vanished">V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1396"/>
         <source>SAC: %.*f%s/min
 </source>
-        <translation>CAS: %.*f%s/min.
+        <translation type="vanished">CAS: %.*f%s/min.
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1398"/>
         <source>CNS: %u%%
 </source>
-        <translation>SNC: %u%%
+        <translation type="vanished">SNC: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1400"/>
         <source>pO₂: %.2fbar
 </source>
-        <translation>pO₂: %.2fbar
+        <translation type="vanished">pO₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1402"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
-        <translation>SCR ΔpO₂: %.2fbar
+        <translation type="vanished">SCR ΔpO₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1405"/>
         <source>pN₂: %.2fbar
 </source>
-        <translation>pN₂: %.2fbar
+        <translation type="vanished">pN₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1407"/>
         <source>pHe: %.2fbar
 </source>
-        <translation>pHe: %.2fbar
+        <translation type="vanished">pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1410"/>
         <source>MOD: %d%s
 </source>
-        <translation>MOD: %d%s
+        <translation type="vanished">MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1419"/>
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
-        <translation>EAD: %d% s
+        <translation type="vanished">EAD: %d% s
 EADD: %d% s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1425"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
-        <translation>PNE: %d% s
+        <translation type="vanished">PNE: %d% s
 EADD: %d% s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1430"/>
         <source>Density: %.1fg/ℓ
 </source>
-        <translation>Densitat: %.1fg/ℓ
+        <translation type="vanished">Densitat: %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1442"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
-        <translation>Parada de seguretat: %u min. @ %.0f%s
+        <translation type="vanished">Parada de seguretat: %u min. @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1445"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
-        <translation>Parada de seguretat: temps desc. @ %.0f%s
+        <translation type="vanished">Parada de seguretat: temps desc. @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1450"/>
         <source>Deco: %umin @ %.0f%s
 </source>
-        <translation>Parada de desco: %u min. @ %.0f%s</translation>
+        <translation type="vanished">Parada de desco: %u min. @ %.0f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1453"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
-        <translation>Parada de desco: temps desc. @ %.0f%s
+        <translation type="vanished">Parada de desco: temps desc. @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1457"/>
         <source>In deco
 </source>
-        <translation>En descompressió</translation>
+        <translation type="vanished">En descompressió</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1459"/>
         <source>NDL: %umin
 </source>
-        <translation>NDL: %u min.
+        <translation type="vanished">NDL: %u min.
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1462"/>
         <source>TTS: %umin
 </source>
-        <translation>TTS: %u min.
+        <translation type="vanished">TTS: %u min.
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1465"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
-        <translation>Parada de desco: %u min. @ %.0f%s (calc)</translation>
+        <translation type="vanished">Parada de desco: %u min. @ %.0f%s (calc)</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1473"/>
         <source>In deco (calc)
 </source>
-        <translation>En descompressió (calc)</translation>
+        <translation type="vanished">En descompressió (calc)</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1476"/>
         <source>NDL: %umin (calc)
 </source>
-        <translation>NDL: %u min. (calc)
+        <translation type="vanished">NDL: %u min. (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1478"/>
         <source>NDL: &gt;2h (calc)
 </source>
-        <translation>LND: &gt;2 h (calc)
+        <translation type="vanished">LND: &gt;2 h (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1482"/>
         <source>TTS: %umin (calc)
 </source>
-        <translation>TTS: %u min. (calc)
+        <translation type="vanished">TTS: %u min. (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1484"/>
         <source>TTS: &gt;2h (calc)
 </source>
-        <translation>TTS: &gt;2 h (calc)
+        <translation type="vanished">TTS: &gt;2 h (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1487"/>
         <source>RBT: %umin
 </source>
-        <translation>TFR: %u min.
+        <translation type="vanished">TFR: %u min.
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1490"/>
         <source>GF %d%%
 </source>
-        <translation>GF %d%%
+        <translation type="vanished">GF %d%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1492"/>
         <source>Surface GF %.0f%%
 </source>
-        <translation>GF a la superfície %.0f%%
+        <translation type="vanished">GF a la superfície %.0f%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1495"/>
         <source>Calculated ceiling %.1f%s
 </source>
-        <translation>Sostre calculat %.1f%s
+        <translation type="vanished">Sostre calculat %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1501"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
-        <translation>Teixit %.0fmin: %.1f%s</translation>
+        <translation type="vanished">Teixit %.0fmin: %.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1508"/>
         <source>ICD in leading tissue
 </source>
-        <translation>CIM en el teixit principal
+        <translation type="vanished">CIM en el teixit principal
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1510"/>
         <source>heart rate: %d
 </source>
-        <translation>Ritme cardíac: %d
+        <translation type="vanished">Ritme cardíac: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1512"/>
         <source>bearing: %d
 </source>
-        <translation>Orientació: %d
+        <translation type="vanished">Orientació: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1515"/>
         <source>mean depth to here %.1f%s
 </source>
-        <translation>Prof. mitja fins aquí %.1f%s</translation>
+        <translation type="vanished">Prof. mitja fins aquí %.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1637"/>
+        <location filename="../core/profile.cpp" line="1549"/>
         <source>ΔT:%d:%02dmin</source>
         <translation>ΔT:%d:%02dmin</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1641"/>
         <source>%s ΔD:%.1f%s</source>
-        <translation>%s ΔD:%.1f%s</translation>
+        <translation type="vanished">%s ΔD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1645"/>
         <source>%s ↓D:%.1f%s</source>
-        <translation>%s ↓D:%.1f%s</translation>
+        <translation type="vanished">%s ↓D:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1649"/>
         <source>%s ↑D:%.1f%s</source>
-        <translation>%s ↑D:%.1f%s</translation>
+        <translation type="vanished">%s ↑D:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1653"/>
         <source>%s øD:%.1f%s
 </source>
-        <translation>%s øD:%.1f%s
+        <translation type="vanished">%s øD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1657"/>
         <source>%s ↓V:%.2f%s</source>
-        <translation>%s ↓V:%.2f%s</translation>
+        <translation type="vanished">%s ↓V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1661"/>
         <source>%s ↑V:%.2f%s</source>
-        <translation>%s ↑V:%.2f%s</translation>
+        <translation type="vanished">%s ↑V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1665"/>
         <source>%s øV:%.2f%s</source>
-        <translation>%s øV:%.2f%s</translation>
+        <translation type="vanished">%s øV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1695"/>
         <source>%s ΔP:%d%s</source>
-        <translation>%s ΔP:%d%s</translation>
+        <translation type="vanished">%s ΔP:%d%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1711"/>
         <source>%s SAC:%.*f%s/min</source>
-        <translation>%s CAS:%.*f%s/min</translation>
+        <translation type="vanished">%s CAS:%.*f%s/min</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="73"/>
+        <location filename="../core/string-format.cpp" line="568"/>
         <source>%1km</source>
         <translation>%1km</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="75"/>
+        <location filename="../core/string-format.cpp" line="570"/>
         <source>%1m</source>
         <translation>%1m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="79"/>
+        <location filename="../core/string-format.cpp" line="574"/>
         <source>%1mi</source>
         <translation>%1mi</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="81"/>
+        <location filename="../core/string-format.cpp" line="576"/>
         <source>%1yd</source>
         <translation>%1yd</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="99"/>
-        <location filename="../core/qthelper.cpp" line="244"/>
+        <location filename="../core/qthelper.cpp" line="177"/>
+        <location filename="../core/string-format.cpp" line="594"/>
         <source>N</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="99"/>
-        <location filename="../core/qthelper.cpp" line="245"/>
+        <location filename="../core/qthelper.cpp" line="178"/>
+        <location filename="../core/string-format.cpp" line="594"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="100"/>
-        <location filename="../core/qthelper.cpp" line="246"/>
+        <location filename="../core/qthelper.cpp" line="179"/>
+        <location filename="../core/string-format.cpp" line="595"/>
         <source>E</source>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="100"/>
-        <location filename="../core/qthelper.cpp" line="247"/>
+        <location filename="../core/qthelper.cpp" line="180"/>
+        <location filename="../core/string-format.cpp" line="595"/>
         <source>W</source>
         <translation>O</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="536"/>
-        <location filename="../core/qthelper.cpp" line="551"/>
-        <location filename="../core/qthelper.cpp" line="795"/>
-        <location filename="../core/qthelper.cpp" line="1286"/>
-        <location filename="../core/units.c" line="103"/>
+        <location filename="../core/qthelper.cpp" line="525"/>
+        <location filename="../core/qthelper.cpp" line="963"/>
+        <location filename="../core/string-format.cpp" line="328"/>
+        <location filename="../core/string-format.cpp" line="343"/>
+        <location filename="../core/units.cpp" line="109"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="539"/>
-        <location filename="../core/qthelper.cpp" line="553"/>
-        <location filename="../core/qthelper.cpp" line="797"/>
-        <location filename="../core/qthelper.cpp" line="1285"/>
-        <location filename="../core/units.c" line="108"/>
+        <location filename="../core/qthelper.cpp" line="527"/>
+        <location filename="../core/qthelper.cpp" line="962"/>
+        <location filename="../core/string-format.cpp" line="331"/>
+        <location filename="../core/string-format.cpp" line="345"/>
+        <location filename="../core/units.cpp" line="114"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="565"/>
-        <location filename="../core/qthelper.cpp" line="575"/>
-        <location filename="../core/qthelper.cpp" line="850"/>
-        <location filename="../core/qthelper.cpp" line="1261"/>
-        <location filename="../core/units.c" line="163"/>
+        <location filename="../core/qthelper.cpp" line="938"/>
+        <location filename="../core/string-format.cpp" line="375"/>
+        <location filename="../core/units.cpp" line="169"/>
         <location filename="../qt-models/divetripmodel.cpp" line="191"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1213"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="567"/>
-        <location filename="../core/qthelper.cpp" line="577"/>
-        <location filename="../core/qthelper.cpp" line="852"/>
-        <location filename="../core/qthelper.cpp" line="1262"/>
-        <location filename="../core/units.c" line="159"/>
+        <location filename="../core/qthelper.cpp" line="939"/>
+        <location filename="../core/string-format.cpp" line="377"/>
+        <location filename="../core/units.cpp" line="165"/>
         <location filename="../qt-models/divetripmodel.cpp" line="193"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1215"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="591"/>
-        <location filename="../core/qthelper.cpp" line="823"/>
+        <location filename="../core/qthelper.cpp" line="553"/>
+        <location filename="../core/string-format.cpp" line="391"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="594"/>
-        <location filename="../core/qthelper.cpp" line="825"/>
+        <location filename="../core/qthelper.cpp" line="555"/>
+        <location filename="../core/string-format.cpp" line="394"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="627"/>
-        <location filename="../core/units.c" line="57"/>
         <source>ℓ</source>
-        <translation> ℓ</translation>
+        <translation type="vanished"> ℓ</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="629"/>
-        <location filename="../core/qthelper.cpp" line="1334"/>
-        <location filename="../core/units.c" line="62"/>
+        <location filename="../core/qthelper.cpp" line="1011"/>
+        <location filename="../core/string-format.cpp" line="429"/>
+        <location filename="../core/units.cpp" line="68"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="644"/>
-        <location filename="../core/qthelper.cpp" line="885"/>
-        <location filename="../core/qthelper.cpp" line="1310"/>
-        <location filename="../core/units.c" line="20"/>
+        <location filename="../core/qthelper.cpp" line="588"/>
+        <location filename="../core/qthelper.cpp" line="987"/>
+        <location filename="../core/string-format.cpp" line="444"/>
+        <location filename="../core/units.cpp" line="26"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="650"/>
         <source>g/ℓ</source>
-        <translation>g/ℓ</translation>
+        <translation type="vanished">g/ℓ</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="655"/>
+        <location filename="../core/string-format.cpp" line="455"/>
         <source>Fresh</source>
         <translation>Dolça</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="656"/>
+        <location filename="../core/string-format.cpp" line="456"/>
         <source>Brackish</source>
         <translation>Salobre</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="657"/>
+        <location filename="../core/string-format.cpp" line="457"/>
         <source>EN13319</source>
         <translation>EN13319</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="658"/>
+        <location filename="../core/string-format.cpp" line="458"/>
         <source>Salt</source>
         <translation>Sal</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="659"/>
+        <location filename="../core/string-format.cpp" line="459"/>
         <source>Use DC</source>
         <translation>Empra l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="906"/>
-        <location filename="../core/qthelper.cpp" line="1219"/>
+        <location filename="../core/qthelper.cpp" line="609"/>
+        <location filename="../core/qthelper.cpp" line="842"/>
         <source>AIR</source>
         <translation>AIRE</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="908"/>
+        <location filename="../core/qthelper.cpp" line="611"/>
         <source>EAN</source>
         <translation>EAN</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="983"/>
+        <location filename="../core/string-format.cpp" line="542"/>
         <source>more than %1 days</source>
         <translation>més de %1 dies</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1028"/>
-        <location filename="../core/qthelper.cpp" line="1034"/>
+        <location filename="../core/qthelper.cpp" line="663"/>
+        <location filename="../core/qthelper.cpp" line="669"/>
         <source>no dives</source>
         <translation>Cap immersió</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1219"/>
+        <location filename="../core/qthelper.cpp" line="842"/>
         <source>OXYGEN</source>
         <translation>OXIGEN</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1234"/>
+        <location filename="../core/qthelper.cpp" line="859"/>
         <source>cyl.</source>
         <translation>cil.</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1333"/>
+        <location filename="../core/qthelper.cpp" line="1010"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1044"/>
+        <location filename="../core/save-git.cpp" line="944"/>
         <source>Start saving data</source>
         <translation>Comença a desar les dades</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1054"/>
+        <location filename="../core/save-git.cpp" line="954"/>
         <source>Start saving dives</source>
         <translation>Comença a desar les immersions</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1087"/>
+        <location filename="../core/save-git.cpp" line="986"/>
         <source>Done creating local cache</source>
         <translation>S&apos;ha realitzat la creació del cau local</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1345"/>
+        <location filename="../core/save-git.cpp" line="1230"/>
         <source>Preparing to save data</source>
         <translation>S&apos;està realitzant la preparació per a desar les dades</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1409"/>
+        <location filename="../core/save-git.cpp" line="1292"/>
         <source>Failed to save dives to %s[%s] (%s)</source>
         <translation>Ha fallat en desar les immersions a %s[%s] (%s)</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="510"/>
+        <location filename="../core/save-html.cpp" line="515"/>
         <source>Number</source>
         <translation>Número</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="511"/>
+        <location filename="../core/save-html.cpp" line="516"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="512"/>
+        <location filename="../core/save-html.cpp" line="517"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="513"/>
+        <location filename="../core/save-html.cpp" line="518"/>
         <source>Location</source>
         <translation>Ubicació</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="514"/>
+        <location filename="../core/save-html.cpp" line="519"/>
         <source>Air temp.</source>
         <translation>Temp. de l&apos;aire</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="515"/>
+        <location filename="../core/save-html.cpp" line="520"/>
         <source>Water temp.</source>
         <translation>Temp. de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="516"/>
+        <location filename="../core/save-html.cpp" line="521"/>
         <source>Dives</source>
         <translation>Immersions</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="517"/>
+        <location filename="../core/save-html.cpp" line="522"/>
         <source>Expand all</source>
         <translation>Expandeix-ho tot</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="518"/>
+        <location filename="../core/save-html.cpp" line="523"/>
         <source>Collapse all</source>
         <translation>Redueix-ho tot</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="519"/>
+        <location filename="../core/save-html.cpp" line="524"/>
         <source>Trips</source>
         <translation>Viatges</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="520"/>
+        <location filename="../core/save-html.cpp" line="525"/>
         <source>Statistics</source>
         <translation>Estadístiques</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="521"/>
+        <location filename="../core/save-html.cpp" line="526"/>
         <source>Advanced search</source>
         <translation>Cerca avançada</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="525"/>
+        <location filename="../core/save-html.cpp" line="530"/>
         <source>Rating</source>
         <translation>Valoració</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="526"/>
+        <location filename="../core/save-html.cpp" line="531"/>
         <source>WaveSize</source>
         <translation>Grandària de l&apos;onada</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="527"/>
+        <location filename="../core/save-html.cpp" line="532"/>
         <source>Visibility</source>
         <translation>Visibilitat</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="528"/>
+        <location filename="../core/save-html.cpp" line="533"/>
         <source>Current</source>
         <translation>Actual</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="529"/>
+        <location filename="../core/save-html.cpp" line="534"/>
         <source>Surge</source>
         <translation>Onatge</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="530"/>
+        <location filename="../core/save-html.cpp" line="535"/>
         <source>Chill</source>
         <translation>Fred</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="531"/>
+        <location filename="../core/save-html.cpp" line="536"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="532"/>
+        <location filename="../core/save-html.cpp" line="537"/>
         <source>Diveguide</source>
         <translation>Guia de busseig</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="533"/>
+        <location filename="../core/save-html.cpp" line="538"/>
         <source>Divemaster</source>
         <translation>Líder de busseig</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="534"/>
+        <location filename="../core/save-html.cpp" line="539"/>
         <source>Buddy</source>
         <translation>Company</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="535"/>
+        <location filename="../core/save-html.cpp" line="540"/>
         <source>Suit</source>
         <translation>Vestit</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="537"/>
-        <location filename="../smtk-import/smartrak.c" line="266"/>
-        <location filename="../smtk-import/smartrak.c" line="339"/>
+        <location filename="../core/save-html.cpp" line="542"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="538"/>
+        <location filename="../core/save-html.cpp" line="543"/>
         <source>Show more details</source>
         <translation>Mostra més detalls</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="541"/>
+        <location filename="../core/save-html.cpp" line="546"/>
         <source>Yearly statistics</source>
         <translation>Estadístiques anuals</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="542"/>
+        <location filename="../core/save-html.cpp" line="547"/>
         <source>Year</source>
         <translation>Any</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="543"/>
+        <location filename="../core/save-html.cpp" line="548"/>
         <source>Total time</source>
         <translation>Temps total</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="544"/>
+        <location filename="../core/save-html.cpp" line="549"/>
         <source>Average time</source>
         <translation>Durada mitjana</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="545"/>
+        <location filename="../core/save-html.cpp" line="550"/>
         <source>Shortest time</source>
         <translation>Durada més curta</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="546"/>
+        <location filename="../core/save-html.cpp" line="551"/>
         <source>Longest time</source>
         <translation>Durada més llarga</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="547"/>
+        <location filename="../core/save-html.cpp" line="552"/>
         <source>Average depth</source>
         <translation>Mitj. de la prof.</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="548"/>
+        <location filename="../core/save-html.cpp" line="553"/>
         <source>Min. depth</source>
         <translation>Prof. mínima</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="549"/>
+        <location filename="../core/save-html.cpp" line="554"/>
         <source>Max. depth</source>
         <translation>Prof. màxima</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="550"/>
+        <location filename="../core/save-html.cpp" line="555"/>
         <source>Average SAC</source>
         <translation>Mitjana del CAS</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="551"/>
+        <location filename="../core/save-html.cpp" line="556"/>
         <source>Min. SAC</source>
         <translation>CAS mínim</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="552"/>
+        <location filename="../core/save-html.cpp" line="557"/>
         <source>Max. SAC</source>
         <translation>CAS màxim</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="553"/>
+        <location filename="../core/save-html.cpp" line="558"/>
         <source>Average temp.</source>
         <translation>Temp. mitjana</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="554"/>
+        <location filename="../core/save-html.cpp" line="559"/>
         <source>Min. temp.</source>
         <translation>Temp. mínima</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="555"/>
+        <location filename="../core/save-html.cpp" line="560"/>
         <source>Max. temp.</source>
         <translation>Temp. màxima</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="556"/>
+        <location filename="../core/save-html.cpp" line="561"/>
         <source>Back to list</source>
         <translation>Torna a la llista</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="559"/>
+        <location filename="../core/save-html.cpp" line="564"/>
         <source>Dive #</source>
         <translation>Immersió núm.</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="560"/>
+        <location filename="../core/save-html.cpp" line="565"/>
         <source>Dive profile</source>
         <translation>Perfil de la immersió</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="561"/>
+        <location filename="../core/save-html.cpp" line="566"/>
         <source>Dive information</source>
         <translation>Informació de la immersió</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="562"/>
+        <location filename="../core/save-html.cpp" line="567"/>
         <source>Dive equipment</source>
         <translation>Equipament de busseig</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="563"/>
-        <location filename="../core/save-html.c" line="570"/>
+        <location filename="../core/save-html.cpp" line="568"/>
+        <location filename="../core/save-html.cpp" line="575"/>
         <source>Type</source>
         <translation>Tipus</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="564"/>
+        <location filename="../core/save-html.cpp" line="569"/>
         <source>Size</source>
         <translation>Mida</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="565"/>
+        <location filename="../core/save-html.cpp" line="570"/>
         <source>Work pressure</source>
         <translation>Pressió de treball</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="566"/>
+        <location filename="../core/save-html.cpp" line="571"/>
         <source>Start pressure</source>
         <translation>Pressió inicial</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="567"/>
+        <location filename="../core/save-html.cpp" line="572"/>
         <source>End pressure</source>
         <translation>Pressió final</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="568"/>
+        <location filename="../core/save-html.cpp" line="573"/>
         <source>Gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="569"/>
+        <location filename="../core/save-html.cpp" line="574"/>
         <source>Weight</source>
         <translation>Llast</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="571"/>
+        <location filename="../core/save-html.cpp" line="576"/>
         <source>Events</source>
         <translation>Esdeveniments</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="572"/>
+        <location filename="../core/save-html.cpp" line="577"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="573"/>
+        <location filename="../core/save-html.cpp" line="578"/>
         <source>Value</source>
         <translation>Valor</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="574"/>
+        <location filename="../core/save-html.cpp" line="579"/>
         <source>Coordinates</source>
         <translation>Coordenades</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="575"/>
+        <location filename="../core/save-html.cpp" line="580"/>
         <source>Dive status</source>
         <translation>Estat de la immersió</translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="864"/>
+        <location filename="../core/save-xml.cpp" line="772"/>
         <source>Failed to save dives to %s (%s)</source>
         <translation>Ha fallat en desar les immersions a %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="984"/>
+        <location filename="../core/save-xml.cpp" line="803"/>
+        <source>No filename for export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/save-xml.cpp" line="815"/>
+        <source>Failed to read XML memory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/save-xml.cpp" line="820"/>
+        <source>Failed to open export conversion stylesheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/save-xml.cpp" line="834"/>
+        <source>Failed to open %s for writing (%s)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/save-xml.cpp" line="890"/>
         <source>Failed to save divesites to %s (%s)</source>
         <translation>Ha fallat en desar els punts d&apos;immersió a %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="143"/>
+        <location filename="../core/statistics.cpp" line="108"/>
         <source>All (by type stats)</source>
         <translation>Tots (per a les estadístiques de tipus)</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="154"/>
+        <location filename="../core/statistics.cpp" line="120"/>
         <source>All (by max depth stats)</source>
         <translation>Tots (per a les estadístiques de la profunditat màxima)</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="157"/>
+        <location filename="../core/statistics.cpp" line="124"/>
         <source>All (by min. temp stats)</source>
         <translation>Tots (per a les estadístiques de la temperatura mínima)</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="225"/>
+        <location filename="../core/statistics.cpp" line="185"/>
         <source>All (by trip stats)</source>
         <translation>Tots (per a les estadístiques del viatge)</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="293"/>
+        <location filename="../core/string-format.cpp" line="288"/>
         <source>Sunday</source>
         <translation>Diumenge</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="294"/>
+        <location filename="../core/string-format.cpp" line="289"/>
         <source>Monday</source>
         <translation>Dilluns</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="295"/>
+        <location filename="../core/string-format.cpp" line="290"/>
         <source>Tuesday</source>
         <translation>Dimarts</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="296"/>
+        <location filename="../core/string-format.cpp" line="291"/>
         <source>Wednesday</source>
         <translation>Dimecres</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="297"/>
+        <location filename="../core/string-format.cpp" line="292"/>
         <source>Thursday</source>
         <translation>Dijous</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="298"/>
+        <location filename="../core/string-format.cpp" line="293"/>
         <source>Friday</source>
         <translation>Divendres</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="299"/>
+        <location filename="../core/string-format.cpp" line="294"/>
         <source>Saturday</source>
         <translation>Dissabte</translation>
     </message>
     <message numerus="yes">
-        <location filename="../core/string-format.cpp" line="329"/>
+        <location filename="../core/string-format.cpp" line="321"/>
         <source>(%n dive(s))</source>
-        <translation><numerusform>(%n immersió)</numerusform><numerusform>(%n immersions)</numerusform></translation>
+        <translation>
+            <numerusform>(%n immersió)</numerusform>
+            <numerusform>(%n immersions)</numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="14"/>
+        <location filename="../core/string-format.cpp" line="427"/>
+        <location filename="../core/units.cpp" line="63"/>
+        <source>L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/string-format.cpp" line="450"/>
+        <source>g/L</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/tag.cpp" line="15"/>
         <source>boat</source>
         <translation>barca</translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="14"/>
+        <location filename="../core/tag.cpp" line="15"/>
         <source>shore</source>
         <translation>riba</translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="15"/>
+        <location filename="../core/tag.cpp" line="16"/>
         <source>deep</source>
         <translation>profunda</translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="15"/>
+        <location filename="../core/tag.cpp" line="16"/>
         <source>cavern</source>
         <translation>caverna</translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="16"/>
+        <location filename="../core/tag.cpp" line="17"/>
         <source>altitude</source>
         <translation>altitud</translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="17"/>
+        <location filename="../core/tag.cpp" line="18"/>
         <source>pool</source>
         <translation>piscina</translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="17"/>
+        <location filename="../core/tag.cpp" line="18"/>
         <source>lake</source>
         <translation>llac</translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="18"/>
+        <location filename="../core/tag.cpp" line="19"/>
         <source>fresh</source>
         <translation>aigua dolça</translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="18"/>
+        <location filename="../core/tag.cpp" line="19"/>
         <source>student</source>
         <translation>estudiant</translation>
     </message>
     <message>
-        <location filename="../core/tag.c" line="19"/>
+        <location filename="../core/tag.cpp" line="20"/>
         <source>video</source>
         <translation>vídeo</translation>
     </message>
     <message>
-        <location filename="../core/taxonomy.c" line="9"/>
+        <location filename="../core/taxonomy.cpp" line="14"/>
         <source>None</source>
         <translation>Cap</translation>
     </message>
     <message>
-        <location filename="../core/taxonomy.c" line="10"/>
+        <location filename="../core/taxonomy.cpp" line="15"/>
         <source>Ocean</source>
         <translation>Oceà</translation>
     </message>
     <message>
-        <location filename="../core/taxonomy.c" line="11"/>
+        <location filename="../core/taxonomy.cpp" line="16"/>
         <source>Country</source>
         <translation>País</translation>
     </message>
     <message>
-        <location filename="../core/taxonomy.c" line="12"/>
+        <location filename="../core/taxonomy.cpp" line="17"/>
         <source>State</source>
         <translation>Estat</translation>
     </message>
     <message>
-        <location filename="../core/taxonomy.c" line="13"/>
+        <location filename="../core/taxonomy.cpp" line="18"/>
         <source>County</source>
         <translation>Comtat</translation>
     </message>
     <message>
-        <location filename="../core/taxonomy.c" line="14"/>
+        <location filename="../core/taxonomy.cpp" line="19"/>
         <source>Town</source>
         <translation>Població</translation>
     </message>
     <message>
-        <location filename="../core/taxonomy.c" line="15"/>
+        <location filename="../core/taxonomy.cpp" line="20"/>
         <source>City</source>
         <translation>Ciutat</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="222"/>
+        <location filename="../core/time.cpp" line="238"/>
         <source>Jan</source>
         <translation>Gen.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="222"/>
+        <location filename="../core/time.cpp" line="238"/>
         <source>Feb</source>
         <translation>Febr.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="222"/>
+        <location filename="../core/time.cpp" line="238"/>
         <source>Mar</source>
         <translation>Mar.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="222"/>
+        <location filename="../core/time.cpp" line="238"/>
         <source>Apr</source>
         <translation>Abr.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="222"/>
+        <location filename="../core/time.cpp" line="238"/>
         <source>May</source>
         <translation>Mai.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="222"/>
+        <location filename="../core/time.cpp" line="238"/>
         <source>Jun</source>
         <translation>Jun.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="223"/>
+        <location filename="../core/time.cpp" line="239"/>
         <source>Jul</source>
         <translation>Jul.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="223"/>
+        <location filename="../core/time.cpp" line="239"/>
         <source>Aug</source>
         <translation>Ago.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="223"/>
+        <location filename="../core/time.cpp" line="239"/>
         <source>Sep</source>
         <translation>Set.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="223"/>
+        <location filename="../core/time.cpp" line="239"/>
         <source>Oct</source>
         <translation>Oct.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="223"/>
+        <location filename="../core/time.cpp" line="239"/>
         <source>Nov</source>
         <translation>Nov.</translation>
     </message>
     <message>
-        <location filename="../core/time.c" line="223"/>
+        <location filename="../core/time.cpp" line="239"/>
         <source>Dec</source>
         <translation>Des.</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="37"/>
+        <location filename="../core/uemis-downloader.cpp" line="59"/>
         <source>Disconnect/reconnect the SDA</source>
         <translation>Desconnecta/torna a connectar la SDA</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="38"/>
+        <location filename="../core/uemis-downloader.cpp" line="60"/>
         <source>Uemis Zurich: the file system is almost full.
 Disconnect/reconnect the dive computer
 and click &apos;Retry&apos;</source>
@@ -13152,7 +14378,7 @@ Desconnecteu i connecteu l&apos;ordinador de busseig i
 feu clic a «Torna a intentar-ho».</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="39"/>
+        <location filename="../core/uemis-downloader.cpp" line="61"/>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and click Retry</source>
@@ -13161,260 +14387,260 @@ Desconnecteu i connecteu l&apos;ordinador de busseig i
 feu clic a «Torna a intentar-ho».</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="40"/>
+        <location filename="../core/uemis-downloader.cpp" line="62"/>
         <source>Short write to req.txt file.
 Is the Uemis Zurich plugged in correctly?</source>
         <translation>Una escriptura curta al fitxer «req.txt». 
 Està connectat correctament el Uemis Zurich?</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="41"/>
+        <location filename="../core/uemis-downloader.cpp" line="63"/>
         <source>No dives to download.</source>
         <translation>No hi ha immersions a baixar.</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="505"/>
+        <location filename="../core/uemis-downloader.cpp" line="463"/>
         <source>%s %s</source>
         <translation>%s %s</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="541"/>
+        <location filename="../core/uemis-downloader.cpp" line="494"/>
         <source>data</source>
         <translation>dades</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="569"/>
+        <location filename="../core/uemis-downloader.cpp" line="521"/>
         <source>dive log #</source>
         <translation>Immersió registrada núm.</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="571"/>
+        <location filename="../core/uemis-downloader.cpp" line="523"/>
         <source>dive spot #</source>
         <translation>Lloc d&apos;immersió núm.</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="573"/>
+        <location filename="../core/uemis-downloader.cpp" line="525"/>
         <source>details for #</source>
         <translation>Detalls per a #</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="802"/>
+        <location filename="../core/uemis-downloader.cpp" line="738"/>
         <source>wetsuit</source>
         <translation>humit</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="802"/>
+        <location filename="../core/uemis-downloader.cpp" line="738"/>
         <source>semidry</source>
         <translation>semisec</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="802"/>
+        <location filename="../core/uemis-downloader.cpp" line="738"/>
         <source>drysuit</source>
         <translation>sec</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="803"/>
+        <location filename="../core/uemis-downloader.cpp" line="739"/>
         <source>shorty</source>
         <translation>shorty (curt)</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="803"/>
+        <location filename="../core/uemis-downloader.cpp" line="739"/>
         <source>vest</source>
         <translation>samarreta</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="803"/>
+        <location filename="../core/uemis-downloader.cpp" line="739"/>
         <source>long john</source>
         <translation>roba interior</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="803"/>
+        <location filename="../core/uemis-downloader.cpp" line="739"/>
         <source>jacket</source>
         <translation>armilla</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="803"/>
+        <location filename="../core/uemis-downloader.cpp" line="739"/>
         <source>full suit</source>
         <translation>Vestit complet</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="803"/>
+        <location filename="../core/uemis-downloader.cpp" line="739"/>
         <source>2 pcs full suit</source>
         <translation>Vestit complet de 2 peces</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="804"/>
+        <location filename="../core/uemis-downloader.cpp" line="740"/>
         <source>membrane</source>
         <translation>membrana</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1343"/>
+        <location filename="../core/uemis-downloader.cpp" line="1256"/>
         <source>Initialise communication</source>
         <translation>Inicialitza la comunicació</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1346"/>
+        <location filename="../core/uemis-downloader.cpp" line="1258"/>
         <source>Uemis init failed</source>
         <translation>Ha fallat en intentar iniciar Uemis</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1358"/>
-        <location filename="../core/uemis-downloader.c" line="1461"/>
+        <location filename="../core/uemis-downloader.cpp" line="1270"/>
+        <location filename="../core/uemis-downloader.cpp" line="1383"/>
         <source>Start download</source>
         <translation>Inicia la baixada</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1523"/>
+        <location filename="../core/uemis-downloader.cpp" line="1444"/>
         <source>Time sync not supported by dive computer</source>
         <translation>La sincronització de l&apos;hora no és admès per l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="203"/>
+        <location filename="../core/uemis.cpp" line="201"/>
         <source>Safety stop violation</source>
         <translation>Violació de la parada de seguretat</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="205"/>
+        <location filename="../core/uemis.cpp" line="203"/>
         <source>Speed alarm</source>
         <translation>Alarma de velocitat</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="208"/>
+        <location filename="../core/uemis.cpp" line="206"/>
         <source>Speed warning</source>
         <translation>Avís de velocitat</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="210"/>
+        <location filename="../core/uemis.cpp" line="208"/>
         <source>pO₂ green warning</source>
         <translation>Avís verd pel pO₂</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="213"/>
+        <location filename="../core/uemis.cpp" line="211"/>
         <source>pO₂ ascend warning</source>
         <translation>Avís d&apos;ascens pel pO₂</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="215"/>
+        <location filename="../core/uemis.cpp" line="213"/>
         <source>pO₂ ascend alarm</source>
         <translation>Alarma d&apos;ascens pel pO₂</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="219"/>
+        <location filename="../core/uemis.cpp" line="217"/>
         <source>Tank pressure info</source>
         <translation>Info. de pressió de l&apos;ampolla</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="221"/>
+        <location filename="../core/uemis.cpp" line="219"/>
         <source>RGT warning</source>
         <translation>Avís de TGR</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="223"/>
+        <location filename="../core/uemis.cpp" line="221"/>
         <source>RGT alert</source>
         <translation>Alerta de TGR</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="225"/>
+        <location filename="../core/uemis.cpp" line="223"/>
         <source>Tank change suggested</source>
         <translation>Suggerit un canvi d&apos;ampolla</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="227"/>
+        <location filename="../core/uemis.cpp" line="225"/>
         <source>Depth limit exceeded</source>
         <translation>S&apos;ha excedit el límit de profunditat</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="229"/>
+        <location filename="../core/uemis.cpp" line="227"/>
         <source>Max deco time warning</source>
         <translation>Avís de temps màxim en descompressió</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="231"/>
+        <location filename="../core/uemis.cpp" line="229"/>
         <source>Dive time info</source>
         <translation>Avís de temps de la immersió</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="233"/>
+        <location filename="../core/uemis.cpp" line="231"/>
         <source>Dive time alert</source>
         <translation>Alerta de temps de la immersió</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="235"/>
+        <location filename="../core/uemis.cpp" line="233"/>
         <source>Marker</source>
         <translation>Marcador</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="237"/>
+        <location filename="../core/uemis.cpp" line="235"/>
         <source>No tank data</source>
         <translation>Sense dades de l&apos;ampolla</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="239"/>
+        <location filename="../core/uemis.cpp" line="237"/>
         <source>Low battery warning</source>
         <translation>Avís de bateria baixa</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="241"/>
+        <location filename="../core/uemis.cpp" line="239"/>
         <source>Low battery alert</source>
         <translation>Alerta de bateria baixa</translation>
     </message>
     <message>
-        <location filename="../core/units.c" line="131"/>
+        <location filename="../core/units.cpp" line="137"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../core/units.c" line="133"/>
+        <location filename="../core/units.cpp" line="139"/>
         <source>m/s</source>
         <translation>m/s</translation>
     </message>
     <message>
-        <location filename="../core/units.c" line="138"/>
+        <location filename="../core/units.cpp" line="144"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../core/units.c" line="140"/>
+        <location filename="../core/units.cpp" line="146"/>
         <source>ft/s</source>
         <translation>ft/s</translation>
     </message>
     <message>
-        <location filename="../core/worldmap-save.c" line="45"/>
+        <location filename="../core/worldmap-save.cpp" line="44"/>
         <source>Date:</source>
         <translation>Data:</translation>
     </message>
     <message>
-        <location filename="../core/worldmap-save.c" line="47"/>
+        <location filename="../core/worldmap-save.cpp" line="46"/>
         <source>Time:</source>
         <translation>Hora:</translation>
     </message>
     <message>
-        <location filename="../core/worldmap-save.c" line="49"/>
+        <location filename="../core/worldmap-save.cpp" line="48"/>
         <source>Duration:</source>
         <translation>Durada:</translation>
     </message>
     <message>
-        <location filename="../core/worldmap-save.c" line="53"/>
+        <location filename="../core/worldmap-save.cpp" line="52"/>
         <source>Max. depth:</source>
         <translation>Prof. màxima:</translation>
     </message>
     <message>
-        <location filename="../core/worldmap-save.c" line="56"/>
+        <location filename="../core/worldmap-save.cpp" line="55"/>
         <source>Air temp.:</source>
         <translation>Temp. de l&apos;aire:</translation>
     </message>
     <message>
-        <location filename="../core/worldmap-save.c" line="59"/>
+        <location filename="../core/worldmap-save.cpp" line="58"/>
         <source>Water temp.:</source>
         <translation>Temp. de l&apos;aigua:</translation>
     </message>
     <message>
-        <location filename="../core/worldmap-save.c" line="61"/>
+        <location filename="../core/worldmap-save.cpp" line="60"/>
         <source>Location:</source>
         <translation>Ubicació:</translation>
     </message>
     <message>
-        <location filename="../core/worldmap-save.c" line="65"/>
+        <location filename="../core/worldmap-save.cpp" line="64"/>
         <source>Notes:</source>
         <translation>Notes:</translation>
     </message>
@@ -13429,27 +14655,27 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>Cancel·la</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="430"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="431"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation>No desis un registre buit al núvol</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="161"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="157"/>
         <source>Invalid response from server</source>
         <translation>Resposta del servidor no vàlida</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="169"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="165"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>S&apos;esperava l&apos;etiqueta XML «DiveDateReader», s&apos;ha rebut %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="215"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="205"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>No s&apos;ha trobat l&apos;etiqueta XML esperada «DiveDates»</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="222"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="212"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Resposta en XML amb format incorrecte. Línia %1: %2</translation>
     </message>
@@ -13469,14 +14695,13 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>Màxim</translation>
     </message>
     <message>
-        <location filename="../profile-widget/divehandler.cpp" line="49"/>
+        <location filename="../profile-widget/divehandler.cpp" line="50"/>
         <source>Remove this point</source>
         <translation>Elimina aquest lloc</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="520"/>
         <source>Cyl</source>
-        <translation>Ampolla</translation>
+        <translation type="vanished">Ampolla</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="182"/>
@@ -13484,246 +14709,247 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="262"/>
         <source>Built</source>
-        <translation>Construït</translation>
+        <translation type="vanished">Construït</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="262"/>
         <source>Sank</source>
-        <translation>Enfonsat</translation>
+        <translation type="vanished">Enfonsat</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="262"/>
         <source>Sank Time</source>
-        <translation>Temps enfonsat</translation>
+        <translation type="vanished">Temps enfonsat</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="263"/>
         <source>Reason</source>
-        <translation>Raó</translation>
+        <translation type="vanished">Raó</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="263"/>
         <source>Nationality</source>
-        <translation>Nacionalitat</translation>
+        <translation type="vanished">Nacionalitat</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="263"/>
         <source>Shipyard</source>
-        <translation>Drassana</translation>
+        <translation type="vanished">Drassana</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="264"/>
         <source>ShipType</source>
-        <translation>Tipus d&apos;embarcació</translation>
+        <translation type="vanished">Tipus d&apos;embarcació</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="264"/>
         <source>Length</source>
-        <translation>Llargada</translation>
+        <translation type="vanished">Llargada</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="264"/>
         <source>Beam</source>
-        <translation>Mànega</translation>
+        <translation type="vanished">Mànega</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="265"/>
         <source>Draught</source>
-        <translation>Calat</translation>
+        <translation type="vanished">Calat</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="265"/>
         <source>Displacement</source>
-        <translation>Desplaçament</translation>
+        <translation type="vanished">Desplaçament</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="265"/>
         <source>Cargo</source>
-        <translation>Càrrega</translation>
+        <translation type="vanished">Càrrega</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="277"/>
         <source>Wreck Data</source>
-        <translation>Data de l&apos;enfonsament</translation>
+        <translation type="vanished">Data de l&apos;enfonsament</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="338"/>
         <source>Altitude</source>
-        <translation>Altitud</translation>
+        <translation type="vanished">Altitud</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="338"/>
         <source>Depth</source>
-        <translation>Profunditat</translation>
+        <translation type="vanished">Profunditat</translation>
+    </message>
+    <message>
+        <location filename="../core/import-asd.cpp" line="617"/>
+        <source>Equipment: </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>main</name>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="16"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="14"/>
         <source>Subsurface-mobile</source>
         <translation>Subsurface-mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="365"/>
         <source>Dive list</source>
         <translation>Llista d&apos;immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="316"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="377"/>
         <source>Dive management</source>
         <translation>Gestió de la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="411"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="456"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="523"/>
         <source>Back</source>
-        <translation>Enrere</translation>
+        <translation type="vanished">Enrere</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="383"/>
         <source>Add dive manually</source>
         <translation>Afegeix una immersió manualment</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="340"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="395"/>
         <source>Download from DC</source>
         <translation>Baixa des de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="352"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="408"/>
         <source>Manual sync with cloud</source>
         <translation>Sincronitza manualment amb el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="358"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="414"/>
         <source>Completed manual sync with cloud
 </source>
         <translation>S&apos;ha completat la sincronització manualment amb el núvol
 </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="423"/>
         <source>Auto cloud sync</source>
         <translation>Sincronitza automàticament amb el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="372"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="429"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Desactivar la sincronització automàtica amb el núvol fa que totes les dades només es puguin emmagatzemar localment. Això pot ser molt útil en situacions amb accés limitat o sense la xarxa. Si us plau, seleccioneu «Sincronitza manualment amb el núvol» si teniu connectivitat a la xarxa i voleu sincronitzar les vostres dades amb l&apos;emmagatzematge en el núvol.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="382"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="440"/>
         <source>Dive summary</source>
         <translation>Resum de la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="393"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="451"/>
         <source>Export</source>
         <translation>Exporta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="405"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="463"/>
         <source>Location</source>
         <translation>Ubicació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="429"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="483"/>
         <source>Statistics</source>
         <translation>Estadístiques</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="438"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="494"/>
+        <source>Technical Diving</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="498"/>
+        <source>Dive Planner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="507"/>
+        <source>Gas Calculator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="519"/>
         <source>Settings</source>
         <translation>Ajustaments</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="451"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="532"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="463"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="538"/>
         <source>About</source>
         <translation>Quant a</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="474"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="549"/>
         <source>Show user manual</source>
         <translation>Mostra el manual d&apos;usuari</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="483"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="559"/>
         <source>Contribute to Subsurface</source>
         <translation>Col·laboreu amb el Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="569"/>
         <source>Ask for support</source>
         <translation>Demana ajuda</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="496"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="573"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
         <translation>Ha fallat en obrir el client de correu electrònic, si us plau, cal remetre manualment un correu a support@subsurface-divelog.org -el registre s&apos;ha desat al porta-retalls i es pot enganxar en el correu-.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="506"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="584"/>
         <source>Reset forgotten Subsurface Cloud password</source>
         <translation>Reinicia la contrasenya oblidada de Subsurface Cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="517"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="596"/>
         <source>Developer</source>
         <translation>Desenvolupador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="527"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="603"/>
         <source>App log</source>
         <translation>Registre de l&apos;aplicació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="534"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="614"/>
         <source>Test busy indicator (toggle)</source>
         <translation>Prova l&apos;indicador d&apos;ocupat (s&apos;alterna).</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="544"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="546"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="628"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="630"/>
         <source>Test notification text</source>
         <translation>Prova el text de notificació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="550"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="638"/>
         <source>Theme information</source>
         <translation>Informació sobre el tema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="558"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="649"/>
         <source>Enable verbose logging (currently: %1)</source>
         <translation>Habilita el registre ampliat (actualment: %1)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="560"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="651"/>
         <source>Not persistent</source>
         <translation>No persistent</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="567"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="661"/>
         <source>Access local cloud cache dirs</source>
         <translation>Accedeix als directoris locals de memòria cau en el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="606"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="701"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
         <translation>La mida de la lletra probablement és massa gran per a la pantalla, se suggereix canviar-la a una més petita</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="766"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="855"/>
         <source>Subsurface-mobile starting up</source>
         <translation>S&apos;està iniciant el Subsurface-mobile</translation>
     </message>
@@ -13750,7 +14976,7 @@ Està connectat correctament el Uemis Zurich?</translation>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Courier'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Courier&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
       </source>
         <translation>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -13816,62 +15042,68 @@ p, li { white-space: pre-wrap; }
         <translation>De la superfície al fons</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="240"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="247"/>
         <source>Planning</source>
         <translation>Planificació</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="261"/>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="690"/>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="719"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="268"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="666"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="695"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="293"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="300"/>
         <source>Postpone gas change if a stop is not required</source>
         <translation>Posposa el canvi de gas si no es requereix una parada</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="296"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="303"/>
         <source>Only switch at required stops</source>
         <translation>Canvia només en les parades obligatòries</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="303"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="310"/>
         <source>Last stop at 6m</source>
         <translation>Última parada a 6 m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="310"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="317"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="320"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="327"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="386"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="333"/>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="536"/>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="821"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="340"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="512"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="797"/>
         <source>min</source>
         <translation> min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="352"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="359"/>
         <source>Plan backgas breaks</source>
         <translation>Planeja pauses amb el gas de fons</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="372"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="379"/>
         <source>Min. switch duration O₂% below 100%</source>
         <translation>Mín. durada del canvi O₂% per sota del 100%</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="379"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="620"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="682"/>
+        <source>L/min</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="219"/>
         <source>Drop to first depth</source>
         <translation>Caure fins a la primera profunditat</translation>
     </message>
@@ -13911,227 +15143,263 @@ p, li { white-space: pre-wrap; }
         <translation>Parada de seguretat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="495"/>
         <source>Dive mode</source>
-        <translation>Mode de busseig</translation>
+        <translation type="vanished">Mode de busseig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="502"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="485"/>
         <source>Bühlmann deco</source>
         <translation>Descompressió Bühlmann</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="512"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="495"/>
         <source>Reserve gas</source>
         <translation>Gas de reserva</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="522"/>
         <source>Bailout: Deco on OC</source>
-        <translation>Canvi d&apos;emergència: Descompressió a OC</translation>
+        <translation type="vanished">Canvi d&apos;emergència: Descompressió a OC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="529"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="505"/>
         <source>Surface segment</source>
         <translation>Segment de la superfície</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="546"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="522"/>
         <source>Gas options</source>
         <translation>Opcions del gas</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="567"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="543"/>
         <source>Notes</source>
         <translation>Notes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="588"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="564"/>
         <source>Verbatim dive plan</source>
         <translation>Pla de busseig detallat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="595"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="571"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
         <translation>En planificar, llista les transicions o considera-les implícites</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="598"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="574"/>
         <source>Display transitions in deco</source>
         <translation>Mostra les transicions durant la descompressió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="605"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="581"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
         <translation>En planificar, mostra el temps acumulat de parades (temps absolut)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="608"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="584"/>
         <source>Display runtime</source>
         <translation>Mostra el temps acumulat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="618"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="594"/>
         <source>In dive plan, show duration (relative time) of stops</source>
         <translation>En planificar, mostra la durada de les parades (temps relatiu)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="621"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="597"/>
         <source>Display segment duration</source>
         <translation>Mostra la durada per segments</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="631"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="607"/>
         <source>Compute variations of plan (performance cost)</source>
         <translation>Calcula les variacions del pla (a cost del rendiment)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="634"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="610"/>
         <source>Display plan variations</source>
         <translation>Mostra les variacions del pla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="644"/>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="706"/>
         <source>ℓ/min</source>
-        <translation> ℓ/min</translation>
+        <translation type="vanished"> ℓ/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="657"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="633"/>
         <source>Deco SAC</source>
         <translation>CAS a la descompressió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="735"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="711"/>
         <source>Used to calculate best mix. Select best mix depth in &apos;Available gases&apos; table by entering gas depth, followed by &quot;B&quot; (best trimix mix) or &quot;BN&quot; (best nitrox mix)</source>
         <translation>Es fa servir per a calcular la millor barreja. Seleccioneu la millor barreja de profunditat a la taula «Gasos disponibles» introduint la profunditat del gas, seguit de «B» (millor barreja Trimix) o «BN» (millor barreja Nitrox)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="738"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="714"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="754"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="730"/>
         <source>Bottom SAC</source>
         <translation>CAS al fons</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="761"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="737"/>
         <source>Bottom pO₂</source>
         <translation>pO₂ al fons</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="768"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="744"/>
         <source>Best mix END</source>
         <translation>Millor barreja final</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="775"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="751"/>
         <source>Deco pO₂</source>
         <translation>pO₂ a la descompressió</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="782"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="758"/>
         <source>SAC factor</source>
         <translation>Factor del SAC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="789"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="765"/>
         <source>Used to calculate minimum gas. Consider two divers with possibly increased SAC after OoG event.</source>
         <translation>Es fa servir per a calcular el gas mínim. Penseu en dos bussejadors amb un possible augment del CAS després de l&apos;esdeveniment OoG.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="811"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="787"/>
         <source>Problem solving time</source>
         <translation>Problema en resoldre el temps</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="818"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="794"/>
         <source>Used to calculate minimum gas. Additional time at max. depth after OoG event.</source>
         <translation>Es fa servir per a calcular el gas mínim. Temps addicional a la màxima profunditat després de l&apos;esdeveniment OoG.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="837"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="813"/>
         <source>Treat oxygen as narcotic when computing best mix</source>
         <translation>Tracta l&apos;oxigen com a narcòtic en calcular la millor barreja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="840"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="816"/>
         <source>O₂ narcotic</source>
         <translation>O₂ narcòtic</translation>
     </message>
 </context>
 <context>
+    <name>test</name>
+    <message>
+        <location filename="../mobile-widgets/qml/test.qml" line="15"/>
+        <source>Subsurface-mobile</source>
+        <translation type="unfinished">Subsurface-mobile</translation>
+    </message>
+</context>
+<context>
     <name>uploadDiveLogsDE</name>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="54"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="51"/>
         <source>Cannot prepare dives, none selected?</source>
         <translation>No es poden preparar les immersions, n&apos;hi ha cap de seleccionada?</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="71"/>
         <source>building zip file to upload</source>
-        <translation>S&apos;està creant el fitxer ZIP per a pujar-lo</translation>
+        <translation type="vanished">S&apos;està creant el fitxer ZIP per a pujar-lo</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="76"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="73"/>
         <source>Stylesheet to export to divelogs.de is not found</source>
         <translation>No s&apos;ha trobat el full d&apos;estils per a exportar a «divelogs.de»</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="86"/>
         <source>Failed to create zip file for upload: %s</source>
-        <translation>Ha fallat en crear el fitxer ZIP per a publicar: %s</translation>
+        <translation type="vanished">Ha fallat en crear el fitxer ZIP per a publicar: %s</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="147"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="68"/>
+        <source>building json to upload</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="80"/>
+        <source>Stylesheet to export to json is not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="140"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="163"/>
         <source>internal error</source>
         <translation>Error intern</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="160"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="152"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="171"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
         <translation>Ha fallat la conversió de la immersió %1 al format del «divelogs.de»</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="188"/>
-        <source>error writing zip file: %s zip error %d system error %d - %s</source>
-        <translation>Error en escriure el fitxer ZIP: error ZIP %s, error del sistema %d «%d - %s»</translation>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="214"/>
+        <source>Logging in to divelogs.de</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="221"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="264"/>
+        <source>Login successful</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="272"/>
+        <source>Invalid login response from divelogs.de</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="279"/>
+        <source>Login failed: no token received</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>error writing zip file: %s zip error %d system error %d - %s</source>
+        <translation type="vanished">Error en escriure el fitxer ZIP: error ZIP %s, error del sistema %d «%d - %s»</translation>
+    </message>
+    <message>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="287"/>
         <source>Uploading dives</source>
         <translation>S&apos;estan publicant les immersions</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="313"/>
         <source>Upload failed</source>
-        <translation>Ha fallat la publicació</translation>
+        <translation type="vanished">Ha fallat la publicació</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="317"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="379"/>
         <source>Upload successful</source>
         <translation>Publicació correcta</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="322"/>
         <source>Login failed</source>
-        <translation>Ha fallat l&apos;accés</translation>
+        <translation type="vanished">Ha fallat l&apos;accés</translation>
+    </message>
+    <message>
+        <source>Cannot parse response</source>
+        <translation type="vanished">No s&apos;ha pogut interpretar la resposta</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="328"/>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="329"/>
-        <source>Cannot parse response</source>
-        <translation>No s&apos;ha pogut interpretar la resposta</translation>
-    </message>
-    <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="343"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="392"/>
         <source>divelogs.de not responding</source>
         <translation>«divelogs.de» no respon</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveLogsDE.cpp" line="357"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="342"/>
+        <source>Login failed: invalid username or password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="347"/>
+        <location filename="../core/uploadDiveLogsDE.cpp" line="405"/>
         <source>network error %1</source>
         <translation>Error de xarxa: %1</translation>
     </message>
@@ -14139,17 +15407,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>uploadDiveShare</name>
     <message>
-        <location filename="../core/uploadDiveShare.cpp" line="90"/>
+        <location filename="../core/uploadDiveShare.cpp" line="95"/>
         <source>Upload successful</source>
         <translation>Publicació correcta</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveShare.cpp" line="102"/>
+        <location filename="../core/uploadDiveShare.cpp" line="107"/>
         <source>dive-share.com not responding</source>
         <translation>dive-share.com no respon</translation>
     </message>
     <message>
-        <location filename="../core/uploadDiveShare.cpp" line="115"/>
+        <location filename="../core/uploadDiveShare.cpp" line="120"/>
         <source>network error %1</source>
         <translation>Error de xarxa: %1</translation>
     </message>
