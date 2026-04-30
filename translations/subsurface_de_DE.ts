@@ -4425,7 +4425,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="287"/>
         <source>Min switch time [min]</source>
-        <translation>Min Wechseldauer [min]</translation>
+        <translation>Min. Wechseldauer [min]</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="301"/>
