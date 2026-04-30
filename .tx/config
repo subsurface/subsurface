@@ -1,14 +1,12 @@
 [main]
-host = https://www.transifex.com
+host = https://app.transifex.com
 
-[subsurface.subsurface4]
-file_filter = translations/subsurface_<lang>.ts
-source_file = translations/subsurface_source.ts
-source_lang = en
-type = TS
-
-[subsurface.terms]
-source_file = terms
-source_lang = en
-type = txt
+[o:subsurface:p:subsurface:r:translations-subsurface-source-ts--master]
+file_filter            = translations/subsurface_<lang>.ts
+source_file            = translations/subsurface_source.ts
+type                   = QT
+minimum_perc           = 0
+resource_name          = translations/subsurface_source.ts (master)
+replace_edited_strings = false
+keep_translations      = false
 
