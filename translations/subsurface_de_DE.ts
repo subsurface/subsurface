@@ -7321,7 +7321,7 @@ Siehe https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="192"/>
         <source>Subtitle format string:</source>
-        <translation>Format-String für Untertitel</translation>
+        <translation>Zeichenfolge für das Untertitelformat:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="213"/>
