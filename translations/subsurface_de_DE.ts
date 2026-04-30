@@ -3016,7 +3016,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="291"/>
         <source>Merge dive %1 with dive below</source>
-        <translation>Fasse Tauchgang %1 mit dem darunter zusammen</translation>
+        <translation>Tauchgang %1 mit dem darunter zusammenfassen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="300"/>
