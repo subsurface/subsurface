@@ -25,10 +25,7 @@
 
 © Subsurface developer team
 2011-2024</source>
-        <translation>Versio: %1
-
-© Subsurfacen kehitystiimi
-2011-2024</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="65"/>
@@ -339,17 +336,17 @@
 <context>
     <name>CheckCloudConnection</name>
     <message numerus="yes">
-        <location filename="../core/checkcloudconnection.cpp" line="68"/>
+        <location filename="../core/checkcloudconnection.cpp" line="67"/>
         <source>Waiting for cloud connection (%n second(s) passed)</source>
         <translation><numerusform>Odotetaan pilviyhteyttä (kulunut %n sekunti)</numerusform><numerusform>Odotetaan pilviyhteyttä (kulunut %n sekuntia)</numerusform></translation>
     </message>
     <message>
-        <location filename="../core/checkcloudconnection.cpp" line="82"/>
+        <location filename="../core/checkcloudconnection.cpp" line="81"/>
         <source>Cloud connection failed</source>
         <translation>Yhteys pilveen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/checkcloudconnection.cpp" line="123"/>
+        <location filename="../core/checkcloudconnection.cpp" line="124"/>
         <source>Trying different cloud server...</source>
         <translation>Yritetään toista pilvipalvelinta...</translation>
     </message>
@@ -397,12 +394,12 @@
         <translation>Kirjaudu sisään tai rekisteröidy</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="137"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="138"/>
         <source>No cloud mode</source>
         <translation>Off-line -tila</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="151"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="152"/>
         <source>Forgot password?</source>
         <translation>Salasana unohtunut</translation>
     </message>
@@ -418,192 +415,192 @@
 <context>
     <name>ColumnNameProvider</name>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Dive #</source>
         <translation>Sukellus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Date</source>
         <translation>Ajankohta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Time</source>
         <translation>Kello</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Duration</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Mode</source>
         <translation>Tila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Location</source>
         <translation>Kohde</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Weight</source>
         <translation>Painot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Cyl. size</source>
         <translation>Säiliön koko</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
         <source>Start pressure</source>
         <translation>Alkupaine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>End pressure</source>
         <translation>Loppupaine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Max. depth</source>
         <translation>Suurin syvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Avg. depth</source>
         <translation>Keskisyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Divemaster</source>
         <translation>Divemaster</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Buddy</source>
         <translation>Sukelluspari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Suit</source>
         <translation>Puku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Notes</source>
         <translation>Muistiinpanot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Tags</source>
         <translation>Avainsanat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Air temp.</source>
         <translation>Ilman lämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
         <source>Water temp.</source>
         <translation>Veden lämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>O₂</source>
         <translation>O₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>He</source>
         <translation>He</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample time</source>
         <translation>Näytteen aika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample depth</source>
         <translation>Näytteen syvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample temperature</source>
         <translation>Näytteen lämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample pO₂</source>
         <translation>Näytteen pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample CNS</source>
         <translation>Näytteen CNS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="76"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
         <source>Sample NDL</source>
         <translation>Näytteen NDL</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample TTS</source>
         <translation>Näytteen TTS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample stopdepth</source>
         <translation>Näytteen pysähdyssyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="77"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
         <source>Sample pressure</source>
         <translation>Näytteen säiliöpaine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Sample sensor1 pO₂</source>
         <translation>Näytesensori1 pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Sample sensor2 pO₂</source>
         <translation>Näytesensori2 pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="78"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
         <source>Sample sensor3 pO₂</source>
         <translation>Näytesensori3 pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
         <source>Sample setpoint</source>
         <translation>Näytteen setpoint</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
         <source>Visibility</source>
         <translation>Näkyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
         <source>Rating</source>
         <translation>Yleisarvio</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="79"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="80"/>
         <source>Sample heartrate</source>
         <translation>Näytteen syke</translation>
     </message>
@@ -611,400 +608,400 @@
 <context>
     <name>Command</name>
     <message>
-        <location filename="../commands/command_base.cpp" line="49"/>
+        <location filename="../commands/command_base.cpp" line="50"/>
         <source>&amp;Undo</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../commands/command_base.cpp" line="54"/>
+        <location filename="../commands/command_base.cpp" line="55"/>
         <source>&amp;Redo</source>
         <translation>Tee uudelleen</translation>
     </message>
     <message>
-        <location filename="../commands/command_base.cpp" line="69"/>
+        <location filename="../commands/command_base.cpp" line="70"/>
         <source>all dives</source>
         <translation>kaikki sukellukset</translation>
     </message>
     <message>
-        <location filename="../commands/command_device.cpp" line="15"/>
+        <location filename="../commands/command_device.cpp" line="16"/>
         <source>Set nickname of device %1 (serial %2) to %3</source>
         <translation>Aseta laitteen %1 (sarjanumero %2) lempinimi: %3</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="403"/>
+        <location filename="../commands/command_divelist.cpp" line="404"/>
         <source>add dive</source>
         <translation>lisää sukellus</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="474"/>
+        <location filename="../commands/command_divelist.cpp" line="473"/>
         <source>import %n dive(s) from %1</source>
         <translation><numerusform>tuo %n sukelluskohde %1:sta</numerusform><numerusform>tuo %n sukellusta %1:sta</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="602"/>
+        <location filename="../commands/command_divelist.cpp" line="596"/>
         <source>delete %n dive(s)</source>
         <translation><numerusform>poista %n sukellus</numerusform><numerusform>poista %n sukellusta</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="638"/>
+        <location filename="../commands/command_divelist.cpp" line="632"/>
         <source>shift time of %n dives</source>
         <translation><numerusform>muuta %n sukelluksen aikaa</numerusform><numerusform>muuta %n sukelluksen aikaa</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="686"/>
+        <location filename="../commands/command_divelist.cpp" line="680"/>
         <source>renumber %n dive(s)</source>
         <translation><numerusform>numeroi %n sukellus uudelleen</numerusform><numerusform>numeroi %n sukellusta uudelleen</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="744"/>
+        <location filename="../commands/command_divelist.cpp" line="738"/>
         <source>remove %n dive(s) from trip</source>
         <translation><numerusform>poista %n sukellus retkestä</numerusform><numerusform>poista %n sukellusta retkestä</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="756"/>
+        <location filename="../commands/command_divelist.cpp" line="750"/>
         <source>remove autogenerated trips</source>
         <translation>poista automaattisesti luodut retket</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divelist.cpp" line="768"/>
+        <location filename="../commands/command_divelist.cpp" line="762"/>
         <source>add %n dives to trip</source>
         <translation><numerusform>lisää %n sukellus retkeen</numerusform><numerusform>lisää %n sukellusta retkeen</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="775"/>
+        <location filename="../commands/command_divelist.cpp" line="769"/>
         <source>create trip</source>
         <translation>luo retki</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="788"/>
+        <location filename="../commands/command_divelist.cpp" line="782"/>
         <source>autogroup dives</source>
         <translation>ryhmittele automaattisesti</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="883"/>
+        <location filename="../commands/command_divelist.cpp" line="877"/>
         <source>split dive</source>
         <translation>jaa sukellus</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="901"/>
+        <location filename="../commands/command_divelist.cpp" line="895"/>
         <source>split dive computer</source>
         <translation>Eriytä sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="957"/>
+        <location filename="../commands/command_divelist.cpp" line="950"/>
         <source>move dive computer to front</source>
         <translation>tuo sukellustietokone eteen</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="963"/>
+        <location filename="../commands/command_divelist.cpp" line="956"/>
         <source>delete dive computer</source>
         <translation>poista sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../commands/command_divelist.cpp" line="968"/>
+        <location filename="../commands/command_divelist.cpp" line="961"/>
         <source>merge dive</source>
         <translation>yhdistä sukellus</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="78"/>
+        <location filename="../commands/command_divesite.cpp" line="79"/>
         <source>add dive site</source>
         <translation>lisää sukelluskohde</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="100"/>
+        <location filename="../commands/command_divesite.cpp" line="101"/>
         <source>import dive sites from %1</source>
         <translation>tuo sukelluskohteet %1:sta</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_divesite.cpp" line="136"/>
+        <location filename="../commands/command_divesite.cpp" line="137"/>
         <source>delete %n dive site(s)</source>
         <translation><numerusform>poista %n sukelluskohde</numerusform><numerusform>poista %n sukelluskohdetta</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="156"/>
+        <location filename="../commands/command_divesite.cpp" line="157"/>
         <source>purge unused dive sites</source>
         <translation>poista käyttämättömät sukelluskohteet</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="191"/>
+        <location filename="../commands/command_divesite.cpp" line="192"/>
         <source>Edit dive site name</source>
         <translation>Muokkaa sukelluskohteen nimeä</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="214"/>
+        <location filename="../commands/command_divesite.cpp" line="215"/>
         <source>Edit dive site description</source>
         <translation>Muokkaa sukelluskohteen kuvausta</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="237"/>
+        <location filename="../commands/command_divesite.cpp" line="238"/>
         <source>Edit dive site notes</source>
         <translation>Muokkaa sukelluskohteen muistiinpanoja</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="260"/>
+        <location filename="../commands/command_divesite.cpp" line="261"/>
         <source>Edit dive site country</source>
         <translation>Muokkaa sukelluskohteen maata</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="285"/>
+        <location filename="../commands/command_divesite.cpp" line="286"/>
         <source>Edit dive site location</source>
         <translation>Muokkaa sukelluskohteen sijaintia</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="314"/>
+        <location filename="../commands/command_divesite.cpp" line="315"/>
         <source>Edit dive site taxonomy</source>
         <translation>Muokkaa sukelluskohteen luokittelua</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="342"/>
+        <location filename="../commands/command_divesite.cpp" line="343"/>
         <source>merge dive sites</source>
         <translation>yhdistä sukelluskohteita</translation>
     </message>
     <message>
-        <location filename="../commands/command_divesite.cpp" line="396"/>
+        <location filename="../commands/command_divesite.cpp" line="397"/>
         <source>apply GPS fixes</source>
         <translation>käytä GPS-sijainteja</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="134"/>
-        <location filename="../commands/command_edit.cpp" line="522"/>
-        <location filename="../commands/command_edit_trip.cpp" line="18"/>
+        <location filename="../commands/command_edit.cpp" line="135"/>
+        <location filename="../commands/command_edit.cpp" line="523"/>
+        <location filename="../commands/command_edit_trip.cpp" line="19"/>
         <source>Edit %1</source>
         <translation>Muokkaa %1</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="136"/>
-        <location filename="../commands/command_edit.cpp" line="524"/>
+        <location filename="../commands/command_edit.cpp" line="137"/>
+        <location filename="../commands/command_edit.cpp" line="525"/>
         <source>Edit %1 (%n dive(s))</source>
         <translation><numerusform>Muokkaa %1 (%n sukellusta)</numerusform><numerusform>Muokkaa %1 (%n sukellus)</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="192"/>
+        <location filename="../commands/command_edit.cpp" line="193"/>
         <source>notes</source>
         <translation>muistiinpanot</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="198"/>
+        <location filename="../commands/command_edit.cpp" line="199"/>
         <source>suit</source>
         <translation>puku</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="204"/>
+        <location filename="../commands/command_edit.cpp" line="205"/>
         <source>rating</source>
         <translation>arvio</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="210"/>
+        <location filename="../commands/command_edit.cpp" line="211"/>
         <source>visibility</source>
         <translation>näkyvyys</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="216"/>
+        <location filename="../commands/command_edit.cpp" line="217"/>
         <source>wavesize</source>
         <translation>aallonkorkeus</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="222"/>
+        <location filename="../commands/command_edit.cpp" line="223"/>
         <source>current</source>
         <translation>virta</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="228"/>
+        <location filename="../commands/command_edit.cpp" line="229"/>
         <source>surge</source>
         <translation>aaltoilu</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="234"/>
+        <location filename="../commands/command_edit.cpp" line="235"/>
         <source>chill</source>
         <translation>kylmyys</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="250"/>
+        <location filename="../commands/command_edit.cpp" line="251"/>
         <source>air temperature</source>
         <translation>ilman lämpötila</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="269"/>
+        <location filename="../commands/command_edit.cpp" line="270"/>
         <source>water temperature</source>
         <translation>veden lämpötila</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="285"/>
+        <location filename="../commands/command_edit.cpp" line="286"/>
         <source>salinity</source>
         <translation>suolaisuus</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="301"/>
+        <location filename="../commands/command_edit.cpp" line="302"/>
         <source>Atm. pressure</source>
         <translation>Ilmakehän paine</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="321"/>
+        <location filename="../commands/command_edit.cpp" line="322"/>
         <source>duration</source>
         <translation>kesto</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="341"/>
+        <location filename="../commands/command_edit.cpp" line="342"/>
         <source>depth</source>
         <translation>syvyys</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="358"/>
+        <location filename="../commands/command_edit.cpp" line="359"/>
         <source>dive site</source>
         <translation>sukelluskohde</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="451"/>
+        <location filename="../commands/command_edit.cpp" line="452"/>
         <source>dive mode</source>
         <translation>sukellustyyppi</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="457"/>
+        <location filename="../commands/command_edit.cpp" line="458"/>
         <source>invalid</source>
         <translation>epäkelpo</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="583"/>
+        <location filename="../commands/command_edit.cpp" line="584"/>
         <source>tags</source>
         <translation>avainsanat</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="601"/>
+        <location filename="../commands/command_edit.cpp" line="602"/>
         <source>buddies</source>
         <translation>kavereita</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="619"/>
+        <location filename="../commands/command_edit.cpp" line="620"/>
         <source>dive guide</source>
         <translation>sukellusopas</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="750"/>
+        <location filename="../commands/command_edit.cpp" line="751"/>
         <source>Paste onto %n dive(s)</source>
         <translation><numerusform>Liitä %n sukellukseen</numerusform><numerusform>Liitä %n sukellukseen</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="828"/>
+        <location filename="../commands/command_edit.cpp" line="829"/>
         <source>Replan dive</source>
         <translation>Suunnittele sukellus uudellen</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="878"/>
+        <location filename="../commands/command_edit.cpp" line="879"/>
         <source>Add stop</source>
         <translation>Lisää pysähdys</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="879"/>
+        <location filename="../commands/command_edit.cpp" line="880"/>
         <source>Remove %n stop(s)</source>
         <translation><numerusform>Poista %n pysähdys</numerusform><numerusform>Poista %n pysähdystä</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="880"/>
+        <location filename="../commands/command_edit.cpp" line="881"/>
         <source>Move %n stop(s)</source>
         <translation><numerusform>Siirrä %n pysähdys</numerusform><numerusform>Siirrä %n pysähdystä</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="951"/>
+        <location filename="../commands/command_edit.cpp" line="952"/>
         <source>Add weight</source>
         <translation>Lisää paino</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="953"/>
+        <location filename="../commands/command_edit.cpp" line="954"/>
         <source>Add weight (%n dive(s))</source>
         <translation><numerusform>Lisää paino (%n sukellus)</numerusform><numerusform>Lisää paino (%n sukellusta)</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1039"/>
+        <location filename="../commands/command_edit.cpp" line="1040"/>
         <source>Remove weight</source>
         <translation>Poista paino</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1041"/>
+        <location filename="../commands/command_edit.cpp" line="1042"/>
         <source>Remove weight (%n dive(s))</source>
         <translation><numerusform>Poista paino (%n sukellus)</numerusform><numerusform>Poista paino (%n sukellusta)</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1072"/>
+        <location filename="../commands/command_edit.cpp" line="1073"/>
         <source>Edit weight</source>
         <translation>Muokkaa painoa</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1074"/>
+        <location filename="../commands/command_edit.cpp" line="1075"/>
         <source>Edit weight (%n dive(s))</source>
         <translation><numerusform>Muokkaa painoa (%n sukellus)</numerusform><numerusform>Muokkaa painoa (%n sukellusta)</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1128"/>
+        <location filename="../commands/command_edit.cpp" line="1129"/>
         <source>Add cylinder</source>
         <translation>Lisää säiliö</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1130"/>
+        <location filename="../commands/command_edit.cpp" line="1131"/>
         <source>Add cylinder (%n dive(s))</source>
         <translation><numerusform>Lisää säiliö (%n sukellus)</numerusform><numerusform>Lisää säiliö (%n sukellusta)</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1235"/>
+        <location filename="../commands/command_edit.cpp" line="1241"/>
         <source>Remove cylinder</source>
         <translation>Poista säiliö</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1237"/>
+        <location filename="../commands/command_edit.cpp" line="1243"/>
         <source>Remove cylinder (%n dive(s))</source>
         <translation><numerusform>Poista säiliö (%n sukellus)</numerusform><numerusform>Poista säiliö (%n sukellusta)</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1286"/>
+        <location filename="../commands/command_edit.cpp" line="1292"/>
         <source>Edit cylinder</source>
         <translation>Muokkaa säiliötä</translation>
     </message>
     <message numerus="yes">
-        <location filename="../commands/command_edit.cpp" line="1288"/>
+        <location filename="../commands/command_edit.cpp" line="1294"/>
         <source>Edit cylinder (%n dive(s))</source>
         <translation><numerusform>Muokkaa säiliötä (%n sukellus)</numerusform><numerusform>Muokkaa säiliötä (%n sukellusta)</numerusform></translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1354"/>
+        <location filename="../commands/command_edit.cpp" line="1360"/>
         <source>Edit sensors</source>
         <translation>Muokkaa sensoreita</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit.cpp" line="1403"/>
+        <location filename="../commands/command_edit.cpp" line="1409"/>
         <source>Edit dive [%1]</source>
         <translation>Muokkaa sukellusta [%1]</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit_trip.cpp" line="53"/>
+        <location filename="../commands/command_edit_trip.cpp" line="55"/>
         <source>trip location</source>
         <translation>matkakohde</translation>
     </message>
     <message>
-        <location filename="../commands/command_edit_trip.cpp" line="75"/>
+        <location filename="../commands/command_edit_trip.cpp" line="77"/>
         <source>trip notes</source>
         <translation>matkan muistiinpanot</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="67"/>
+        <location filename="../commands/command_event.cpp" line="66"/>
         <source>Add bookmark</source>
         <translation>Lisää kirjanmerkki</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="73"/>
+        <location filename="../commands/command_event.cpp" line="72"/>
         <source>Add dive mode switch to %1</source>
         <translation>Lisää sukellustyypin vaihto %1:ksi</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="80"/>
+        <location filename="../commands/command_event.cpp" line="79"/>
         <source>Add set point change</source>
         <translation>Aseta setpoint-muutos</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="99"/>
+        <location filename="../commands/command_event.cpp" line="98"/>
         <source>Rename bookmark to %1</source>
         <translation>Vaihda kirjanmerkki %1:ksi</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="127"/>
+        <location filename="../commands/command_event.cpp" line="126"/>
         <source>Remove %1 event</source>
         <translation>Poista %1 tapahtuma</translation>
     </message>
@@ -1101,8 +1098,8 @@
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
-        <source>Connect via Bluetooth</source>
-        <translation>Yhdistä Bluetoothin kautta</translation>
+        <source>Select Bluetooth Device</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="54"/>
@@ -1116,1104 +1113,1114 @@
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="80"/>
-        <source>Retrieve available details</source>
-        <translation>Hae yksityiskohdat</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="90"/>
-        <source>Read settings from backup file or from device before writing to the device</source>
-        <translation>Lue asetukset varmuuskopiolta tai sukellustietokoneesta, ennen niiden kirjoittamista laitteelle</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="93"/>
-        <source>Save changes to device</source>
-        <translation>Tallenna muutokset laitteelle</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="116"/>
-        <source>Read settings from backup file or from device before writing to a backup file</source>
-        <translation>Lue asetukset varmuuskopiosta tai sukellustietokoneesta, ennen niiden kirjoittamista varmuuskopioon</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="119"/>
-        <source>Backup</source>
-        <translation>Varmuuskopio</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="129"/>
-        <source>Restore backup</source>
-        <translation>Palauta varmuuskopio</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="139"/>
         <source>Update firmware</source>
         <translation>Päivitä laiteohjelmisto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="163"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="103"/>
+        <source>Retrieve available details</source>
+        <translation>Hae yksityiskohdat</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="113"/>
+        <source>Read settings from backup file or from device before writing to the device</source>
+        <translation>Lue asetukset varmuuskopiolta tai sukellustietokoneesta, ennen niiden kirjoittamista laitteelle</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="116"/>
+        <source>Save changes to device</source>
+        <translation>Tallenna muutokset laitteelle</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="126"/>
+        <source>Read settings from backup file or from device before writing to a backup file</source>
+        <translation>Lue asetukset varmuuskopiosta tai sukellustietokoneesta, ennen niiden kirjoittamista varmuuskopioon</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="129"/>
+        <source>Backup</source>
+        <translation>Varmuuskopio</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="139"/>
+        <source>Restore backup</source>
+        <translation>Palauta varmuuskopio</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="153"/>
+        <source>Force reinstall firmware</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="173"/>
         <source>Save libdivecomputer logfile</source>
         <translation>Tallenna sukellustietokoneen lokitiedosto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="170"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="180"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="177"/>
-        <source>Cancel</source>
-        <translation>Peruuta</translation>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="187"/>
+        <source>Close</source>
+        <translation>Sulje</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="214"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="224"/>
         <source>OSTC Mk2/2N/2C</source>
         <translation>OSTC Mk2/2N/2C</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="223"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="233"/>
         <source>OSTC 2/3/Sport/Plus/cR</source>
         <translation>OSTC 2/3/Sport/Plus/cR</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="232"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="242"/>
         <source>OSTC 4</source>
         <translation>OSTC 4</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="241"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="251"/>
         <source>Suunto Vyper family</source>
         <translation>Suunto Vyper -tuoteperhe</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="262"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1194"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2497"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3572"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="272"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1204"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2507"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3587"/>
         <source>Basic settings</source>
         <translation>Perusasetukset</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="268"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1267"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2570"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3667"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="278"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1277"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2585"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3682"/>
         <source>Serial No.</source>
         <translation>Sarjanumero</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="278"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1628"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2840"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="288"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1638"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2855"/>
         <source>Length</source>
         <translation>Pituus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="305"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1290"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2593"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3690"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="315"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1300"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2608"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3705"/>
         <source>Firmware version</source>
         <translation>Laiteohjelmiston versio</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="315"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1479"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2722"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3724"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="325"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1489"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2737"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3739"/>
         <source>Custom text</source>
         <translation>Valinnainen teksti</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="338"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3647"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="348"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3662"/>
         <source>Number of dives</source>
         <translation>Sukellusmäärä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="345"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1595"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2814"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="355"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1605"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2829"/>
         <source>Show safety stop</source>
         <translation>Näytä turvapysähdys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="359"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1544"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="369"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1554"/>
         <source>Sampling rate</source>
         <translation>Näytetiheys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="388"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1336"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2639"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="398"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1346"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2654"/>
         <source>Date format</source>
         <translation>Päiväyksen muoto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="399"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="409"/>
         <source>MM/DD/YY</source>
         <translation>KK/PP/VV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="404"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="414"/>
         <source>DD/MM/YY</source>
         <translation>PP/KK/VV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="409"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="419"/>
         <source>YY/MM/DD</source>
         <translation>VV/KK/PP</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="417"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1578"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2797"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="427"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1588"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2812"/>
         <source>Sync dive computer time with PC</source>
         <translation>Synkronoi sukellustietokoneen aika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="424"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="434"/>
         <source>Salinity</source>
         <translation>Suolapitoisuus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="434"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="444"/>
         <source>kg/ℓ</source>
         <translation>kg/ℓ</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="463"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1635"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2847"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="473"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1645"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2862"/>
         <source>Start Depth</source>
         <translation>Alkusyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="470"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1602"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="480"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1612"/>
         <source>End Depth</source>
         <translation>Kohdesyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="477"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1642"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="487"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1652"/>
         <source>Reset Depth</source>
         <translation>Nollaa syvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="487"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1612"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2824"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3885"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="497"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1622"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2839"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3900"/>
         <source>s</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="506"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="531"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="553"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="632"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1652"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1677"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1699"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1845"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2857"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2976"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="516"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="541"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="563"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="642"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1662"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1687"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1709"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1855"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2872"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2991"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="573"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1719"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2880"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="583"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1729"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2895"/>
         <source>Advanced settings</source>
         <translation>Kehittyneet asetukset</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="579"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1739"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="589"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1749"/>
         <source>Alt GF can be selected underwater</source>
         <translation>Vaihtoehtoinen GF voidaan valita sukelluksen aikana</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="586"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1806"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="596"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1816"/>
         <source>Desaturation</source>
         <translation>Desaturaatio</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="596"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1746"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2916"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="606"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1756"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2931"/>
         <source>Future TTS</source>
         <translation>Tuleva pintautumisaika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="603"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="707"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="733"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="759"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="799"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="822"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1219"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1767"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1790"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1816"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1868"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1934"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1960"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2042"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2058"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2391"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2522"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2893"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2937"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2960"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2996"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3074"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="613"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="717"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="743"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="769"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="809"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="832"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1229"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1777"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1800"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1826"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1878"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1944"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1970"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2052"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2068"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2401"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2537"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2908"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2952"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2975"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3011"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3089"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="645"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1858"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2989"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="655"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1868"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3004"/>
         <source>Decotype</source>
         <translation>Deko-tyyppi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="656"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1901"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3029"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="666"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1911"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3044"/>
         <source>ZH-L16</source>
         <translation>ZH-L16</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="661"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1507"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2750"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1517"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2765"/>
         <source>Gauge</source>
         <translation>Mittari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="666"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="676"/>
         <source>ZH-L16 CC</source>
         <translation>ZH-L16 CC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="671"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1512"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2755"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="681"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1522"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2770"/>
         <source>Apnea</source>
         <translation>Vapaasukellus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="676"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="686"/>
         <source>L16-GF OC</source>
         <translation>L16-GF OC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="681"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="691"/>
         <source>L16-GF CC</source>
         <translation>L16-GF CC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="686"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="696"/>
         <source>PSCR-GF</source>
         <translation>PSCR-GF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1914"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3047"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3827"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3919"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="704"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1924"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3062"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3842"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3934"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="723"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1924"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3057"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="733"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1934"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3072"/>
         <source>Last deco</source>
         <translation>Viimeisin dekosyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="749"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1950"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3067"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="759"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1960"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3082"/>
         <source>Alt GFLow</source>
         <translation>Vaihtoehtoinen GFLow</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="775"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1976"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3090"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="785"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1986"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3105"/>
         <source>Alt GFHigh</source>
         <translation>Vaihtoehtoinen GFHigh</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="782"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1983"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="792"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1993"/>
         <source>Saturation</source>
         <translation>Saturaatio</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="792"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1783"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2953"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="802"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1793"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2968"/>
         <source>GFHigh</source>
         <translation>GFHigh</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="815"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1760"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2930"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="825"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1770"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2945"/>
         <source>GFLow</source>
         <translation>GFLow</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="838"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2014"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="848"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2024"/>
         <source>Graphical speed indicator</source>
         <translation>Graafinen nopeusnäyttö</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="845"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="861"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2074"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2090"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3111"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3127"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3143"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="855"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="871"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2084"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2100"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3126"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3142"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3158"/>
         <source>ℓ/min</source>
         <translation>ℓ/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="877"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2028"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3097"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="887"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2038"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3112"/>
         <source>Bottom gas consumption</source>
         <translation>Pohjakaasun kulutus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="884"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2035"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3104"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="894"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2045"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3119"/>
         <source>Deco gas consumption</source>
         <translation>Deko-kaasun kulutus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="892"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2133"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3226"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="902"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2143"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3241"/>
         <source>Gas settings</source>
         <translation>Kaasuasetukset</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="935"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1020"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2176"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2261"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3269"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3354"/>
-        <source>%O₂</source>
-        <translation>%O₂</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="940"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1025"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2181"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2266"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3274"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3359"/>
-        <source>%He</source>
-        <translation>%He</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="945"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1030"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2186"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2271"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3279"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3364"/>
-        <source>Type</source>
-        <translation>Tyyppi</translation>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3284"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3369"/>
+        <source>%O₂</source>
+        <translation>%O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="950"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1035"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1100"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2191"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2276"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2351"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3284"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3369"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3444"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3289"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3374"/>
+        <source>%He</source>
+        <translation>%He</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="955"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1040"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2196"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2281"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3294"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3379"/>
+        <source>Type</source>
+        <translation>Tyyppi</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="960"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1045"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1110"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2201"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2286"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2361"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3299"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3384"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3459"/>
         <source>Change depth</source>
         <translation>Muutoksen syvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="955"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2196"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3289"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="965"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2206"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3304"/>
         <source>Gas 1</source>
         <translation>Kaasu 1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="960"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2201"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3294"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="970"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2211"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3309"/>
         <source>Gas 2</source>
         <translation>Kaasu 2</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="965"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2206"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3299"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="975"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2216"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3314"/>
         <source>Gas 3</source>
         <translation>Kaasu 3</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="970"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2211"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3304"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="980"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2221"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3319"/>
         <source>Gas 4</source>
         <translation>Kaasu 4</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="975"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2216"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3309"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="985"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2226"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3324"/>
         <source>Gas 5</source>
         <translation>Kaasu 5</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1040"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2281"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3374"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1050"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2291"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3389"/>
         <source>Dil 1</source>
         <translation>Laimenne 1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1045"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2286"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3379"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1055"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2296"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3394"/>
         <source>Dil 2</source>
         <translation>Laimenne 2</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1050"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2291"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3384"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1060"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2301"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3399"/>
         <source>Dil 3</source>
         <translation>Laimenne 3</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1055"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2296"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3389"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1065"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2306"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3404"/>
         <source>Dil 4</source>
         <translation>Laimenne 4</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1060"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2301"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3394"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1070"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2311"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3409"/>
         <source>Dil 5</source>
         <translation>Laimenne 5</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1095"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2346"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3439"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1105"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2356"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3454"/>
         <source>Setpoint</source>
         <translation>Setpoint</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1105"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2356"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3449"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1115"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2366"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3464"/>
         <source>SP 1</source>
         <translation>SP 1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1110"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2361"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3454"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1120"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2371"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3469"/>
         <source>SP 2</source>
         <translation>SP 2</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1115"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2366"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3459"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1125"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2376"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3474"/>
         <source>SP 3</source>
         <translation>SP 3</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1136"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1152"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2439"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2455"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3514"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3530"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1146"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1162"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2449"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2465"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3529"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3545"/>
         <source>cbar</source>
         <translation>cbar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1168"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2471"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3546"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1178"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2481"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3561"/>
         <source>pO₂ max</source>
         <translation>pO₂ max</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1175"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2478"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3553"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1185"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2488"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3568"/>
         <source>pO₂ min</source>
         <translation>pO₂ min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1201"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2504"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1211"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2519"/>
         <source>Eco</source>
         <translation>Eko</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1206"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2509"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1216"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2524"/>
         <source>Medium</source>
         <translation>Keskimääräinen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1211"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2514"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1221"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2529"/>
         <source>High</source>
         <translation>Korkea</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1230"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2533"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1240"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2548"/>
         <source>English</source>
         <translation>Englanti</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1235"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2538"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1245"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2553"/>
         <source>German</source>
         <translation>Saksa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1240"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2543"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1250"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2558"/>
         <source>French</source>
         <translation>Ranska</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1245"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2548"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1255"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2563"/>
         <source>Italian</source>
         <translation>Italia</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1254"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2557"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1264"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2572"/>
         <source>m/°C</source>
         <translation>m/°C</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1259"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2562"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1269"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2577"/>
         <source>ft/°F</source>
         <translation>ft/°F</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1301"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2604"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1311"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2619"/>
         <source>MMDDYY</source>
         <translation>KKPPVV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1306"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2609"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1316"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2624"/>
         <source>DDMMYY</source>
         <translation>PPKKVV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1311"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2614"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1321"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2629"/>
         <source>YYMMDD</source>
         <translation>VVKKPP</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1326"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2629"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1336"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2644"/>
         <source>Language</source>
         <translation>Kieli</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1346"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2649"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1356"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2664"/>
         <source>Brightness</source>
         <translation>Kirkkaus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1356"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2659"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3861"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1366"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2674"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3876"/>
         <source>Units</source>
         <translation>Yksiköt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1366"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2669"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1376"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2684"/>
         <source>Salinity (0-5%)</source>
         <translation>Suolapitoisuus (0-5%)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1379"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2682"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1389"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2697"/>
         <source>Reset device to default settings</source>
         <translation>Palauta laite oletusasetuksiin</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1393"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1403"/>
         <source>230LSB/Gauss</source>
         <translation>230LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1398"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1408"/>
         <source>330LSB/Gauss</source>
         <translation>330LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1403"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1413"/>
         <source>390LSB/Gauss</source>
         <translation>390LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1408"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1418"/>
         <source>440LSB/Gauss</source>
         <translation>440LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1413"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1423"/>
         <source>660LSB/Gauss</source>
         <translation>660LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1418"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1428"/>
         <source>820LSB/Gauss</source>
         <translation>820LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1423"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1433"/>
         <source>1090LSB/Gauss</source>
         <translation>1090LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1428"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1438"/>
         <source>1370LSB/Gauss</source>
         <translation>1370LSB/Gauss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1462"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1472"/>
         <source>Compass gain</source>
         <translation>Kompassin vahvistus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1472"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2715"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3810"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1482"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2730"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3825"/>
         <source>Computer model</source>
         <translation>Sukellustietokoneen malli</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1497"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2740"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1507"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2755"/>
         <source>OC</source>
         <translation>Vapaakierto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1502"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2745"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1512"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2760"/>
         <source>CC</source>
         <translation>Suljettukierto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1520"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2763"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1530"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2778"/>
         <source>Dive mode</source>
         <translation>Sukellustyyppi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1531"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1541"/>
         <source>2s</source>
         <translation>2s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1536"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3780"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1546"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3795"/>
         <source>10s</source>
         <translation>10s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1555"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2774"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1565"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2789"/>
         <source>Standard</source>
         <translation>Oletus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1560"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2779"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1570"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2794"/>
         <source>Red</source>
         <translation>Punainen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1565"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2784"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1575"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2799"/>
         <source>Green</source>
         <translation>Vihreä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1570"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2789"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1580"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2804"/>
         <source>Blue</source>
         <translation>Sininen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1585"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2804"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1595"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2819"/>
         <source>Dive mode color</source>
         <translation>Sukellustyypin väri</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1725"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1735"/>
         <source>Left button sensitivity</source>
         <translation>Vasemman painikkeen herkkyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1732"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3172"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1742"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3187"/>
         <source>Always show pO₂</source>
         <translation>Näytä aina pO2</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1753"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2923"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1763"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2938"/>
         <source>Pressure sensor offset</source>
         <translation>Painesensorin poikkeama</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1884"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3012"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1894"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3027"/>
         <source>mbar</source>
         <translation>mbar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1906"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3034"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1916"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3049"/>
         <source>ZH-L16+GF</source>
         <translation>ZH-L16+GF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1993"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2003"/>
         <source>Flip screen</source>
         <translation>Käänteinen näyttö</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2000"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2010"/>
         <source>Right button sensitivity</source>
         <translation>Oikean painikkeen herkkyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2007"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2017"/>
         <source>MOD warning</source>
         <translation>Varoitus: MOD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2021"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2031"/>
         <source>Dynamic ascent rate</source>
         <translation>Vaihtuva nousunopeus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2106"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3199"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2116"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3214"/>
         <source>Temperature sensor offset</source>
         <translation>Lämpötila-anturin poikkeama</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2113"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3206"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2123"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3221"/>
         <source>°C</source>
         <translation>°C</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2371"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3464"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2381"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3479"/>
         <source>SP 4</source>
         <translation>SP 4</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2376"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3469"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2386"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3484"/>
         <source>SP 5</source>
         <translation>SP 5</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2384"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2394"/>
         <source>O₂ in calibration gas</source>
         <translation>Kalibrointikaasun happipitoisuus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2408"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3478"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2418"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3493"/>
         <source>Fixed setpoint</source>
         <translation>Määrätty setpoint</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2413"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3483"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2423"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3498"/>
         <source>Sensor</source>
         <translation>Sensori</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2418"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2428"/>
         <source>Auto SP</source>
         <translation>Auto SP</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2886"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2514"/>
+        <source>Cave</source>
+        <translation>Luola</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2901"/>
         <source>Travel gas consumption</source>
         <translation>Siirtymäkaasun kulutus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2909"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2924"/>
         <source>Button sensitivity</source>
         <translation>Painikkeen herkkyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3039"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3054"/>
         <source>VPM</source>
         <translation>VPM</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3179"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3194"/>
         <source>VPM conservatism</source>
         <translation>VPM konservatismi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3186"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3201"/>
         <source>+</source>
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3491"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3506"/>
         <source>Setpoint fallback</source>
         <translation>Varasetpoint</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3594"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3609"/>
         <source>Safety level</source>
         <translation>Turvamarginaali</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3620"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3635"/>
         <source>Altitude range</source>
         <translation>Korkeusväli</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3627"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3642"/>
         <source>Model</source>
         <translation>Malli</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3707"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3722"/>
         <source>Max. depth</source>
         <translation>Suurin syvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3754"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3769"/>
         <source>P0 (none)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation>P0 (ei mitään)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3759"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3774"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation>P1 (keskimääräinen)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3764"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3779"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
         <translation>P2 (korkea)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3772"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3787"/>
         <source>Sample rate</source>
         <translation>Näytetiheys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3785"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3800"/>
         <source>20s</source>
         <translation>20s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3790"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3805"/>
         <source>30s</source>
         <translation>30s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3795"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3810"/>
         <source>60s</source>
         <translation>60s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3803"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3818"/>
         <source>Total dive time</source>
         <translation>Sukellusaika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3841"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3856"/>
         <source>24h</source>
         <translation>24t</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3846"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3861"/>
         <source>12h</source>
         <translation>12t</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3854"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3869"/>
         <source>Time format</source>
         <translation>Ajan muoto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3869"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3884"/>
         <source>Imperial</source>
         <translation>Brittiläinen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3874"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3889"/>
         <source>Metric</source>
         <translation>Metrinen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3892"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3907"/>
         <source>Light</source>
         <translation>Vaalea</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3909"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3924"/>
         <source>Depth alarm</source>
         <translation>Syvyyshälytys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3929"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3944"/>
         <source>Time alarm</source>
         <translation>Aikahälytys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="892"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="933"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1364"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1409"/>
         <source>Backup dive computer settings</source>
         <translation>Varmuuskopioi sukellustietokoneen asetukset</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1365"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1386"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1410"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1431"/>
         <source>Backup files</source>
         <translation>Varmuuskopiot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1369"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1414"/>
         <source>XML backup error</source>
         <translation>Virhe XML-varmuuskopioinnissa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1370"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1415"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation>Virhe tallennettaessa varmistustiedostoa.
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1373"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1418"/>
         <source>Backup succeeded</source>
         <translation>Varmistus onnistui</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1374"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1419"/>
         <source>Your settings have been saved to: %1</source>
         <translation>Asetuksesi on tallennettu: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1385"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1430"/>
         <source>Restore dive computer settings</source>
         <translation>Palauta sukellustietokoneen asetukset</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1391"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1437"/>
         <source>XML restore error</source>
         <translation>XML-tiedoston palautuksessa virhe</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1392"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1438"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation>Virhe varmistustiedoston palautuksessa.
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1396"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1442"/>
         <source>Restore succeeded</source>
         <translation>Palautus onnistui</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1397"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1443"/>
         <source>Your settings have been restored successfully.</source>
         <translation>Asetuksesi on palautettu onnistuneesti.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1407"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1453"/>
         <source>Select firmware file</source>
         <translation>Valitse laiteohjelmiston tiedosto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1408"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1454"/>
         <source>All files</source>
         <translation>Kaikki tiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1462"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1490"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Valitse lokitiedosto sukellustietokoneen tietojen tallennukseen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1463"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1491"/>
         <source>Log files</source>
         <translation>Lokitiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1488"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1514"/>
         <source>Connecting to device...</source>
         <translation>Yhdistetään laitteeseen...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1514"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1544"/>
         <source>Connected to device</source>
         <translation>Yhdistetty laitteeseen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1534"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1569"/>
         <source>Disconnected from device</source>
         <translation>Yhteys laitteeseen katkaistu</translation>
     </message>
@@ -2284,103 +2291,103 @@
 <context>
     <name>CylindersModel</name>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>Type</source>
         <translation>Tyyppi</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>Size</source>
         <translation>Tilavuus</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>Work press.</source>
         <translation>Paineluokka</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
-        <location filename="../qt-models/cylindermodel.cpp" line="37"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="38"/>
         <source>Start press.</source>
         <translation>Alkupaine</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>End press.</source>
         <translation>Loppupaine</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>O₂%</source>
         <translation>O₂%</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="24"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
         <source>He%</source>
         <translation>He%</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Deco switch at</source>
         <translation>Vaihda deko syvyydessä</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Bot. MOD</source>
         <translation>Pohja MOD</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>MND</source>
         <translation>MND</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="25"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
         <source>Use</source>
         <translation>Käyttö</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="26"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="27"/>
         <source>Sensors</source>
         <translation>Sensorit</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="57"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="58"/>
         <source>cuft</source>
         <translation>ft³</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="61"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="62"/>
         <source>ℓ</source>
         <translation>ℓ</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="272"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="275"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation>Tämä kaasu on käytössä. Vain säiliöt, joita ei käytetä sukelluksella, voidaan poistaa.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="274"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="277"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation>Poista säiliö.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="285"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="288"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
         <translation>Dekokaasun vaihtosyvyys. Lasketaan käyttäen dekon pO₂ -asetusta, ellei arvoa ole asetettu käsin.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="287"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="290"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max. depth.</source>
         <translation>Laskettu käyttäen pohjan pO₂ asetusta. MOD vaikuttaa O₂%:iin, aseta arvoksi &apos;*&apos; parhaaksi O₂% maksimi syvyyteen.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="289"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="292"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max. depth.</source>
         <translation>Laskettu käyttäen parhaan seoksen asetusta END. Asetus MND muttaa He%, aseta &apos;*&apos; saadaksesi optimaalisen He% maksimisyvyyteen.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="291"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="294"/>
         <source>Index of cylinder that you want to move sensor data from.</source>
         <translation>Säiliön numore, johon haluat siirtää sensorin tiedot.</translation>
     </message>
@@ -2419,68 +2426,68 @@
 <context>
     <name>DiveComponentSelection</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="332"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="328"/>
         <source>Dive site: </source>
         <translation>Sukelluskohde:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="334"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="330"/>
         <source>Dive guide: </source>
         <translation>Sukellusopas:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="336"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="332"/>
         <source>Buddy: </source>
         <translation>Sukelluspari: </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="338"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="334"/>
         <source>Rating: </source>
         <translation>Arvio: </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="340"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="336"/>
         <source>Visibility: </source>
         <translation>Näkyvyys: </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="342"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="338"/>
         <source>Notes:
 </source>
         <translation>Muistiinpanot:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="344"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="340"/>
         <source>Suit: </source>
         <translation>Puku: </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="346"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="342"/>
         <source>Tags: </source>
         <translation>Avainsanat:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="356"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="352"/>
         <source>Cylinders:
 </source>
         <translation>Säiliöt:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="364"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="360"/>
         <source>Weights:
 </source>
         <translation>Painot:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="371"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="367"/>
         <source>Dive number: </source>
         <translation>Sukellusnumero:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="373"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="369"/>
         <source>Date / time: </source>
         <translation>Päivä / aika:</translation>
     </message>
@@ -2789,57 +2796,67 @@
         <translation>Näkyvyys:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="363"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="362"/>
         <source>No profile to show</source>
         <translation>Ei näytettävää graafia</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="369"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="370"/>
+        <source>prev.DC</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="384"/>
+        <source>next DC</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="405"/>
         <source>Suit:</source>
         <translation>Puku:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="376"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="412"/>
         <source>Air Temp:</source>
         <translation>Ilman lämpötila:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="383"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="419"/>
         <source>Water Temp:</source>
         <translation>Veden lämpötila:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="425"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="461"/>
         <source>Cylinder:</source>
         <translation>Säiliö:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="433"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="469"/>
         <source>Weight:</source>
         <translation>Massa:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="441"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="477"/>
         <source>SAC:</source>
         <translation>Pintakulutus:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="484"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="520"/>
         <source>Dive guide:</source>
         <translation>Sukellusopas:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="492"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="528"/>
         <source>Buddy:</source>
         <translation>Sukelluspari:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="530"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="566"/>
         <source>Tags:</source>
         <translation>Avainsanat:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="566"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="602"/>
         <source>Notes</source>
         <translation>Muistiinpanot</translation>
     </message>
@@ -2847,38 +2864,38 @@
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="144"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="140"/>
         <source> (cyl. %1)</source>
         <translation> (säiliö %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="148"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="144"/>
         <source>ICD</source>
         <translation>ICD</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="149"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="145"/>
         <source>ΔHe</source>
         <translation>ΔHe</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="150"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="146"/>
         <source>ΔN₂</source>
         <translation>ΔN₂</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="168"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="164"/>
         <source>Manual switch to OC</source>
         <translation>Vaihto avoimeen kiertoon</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="170"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="166"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation>alku</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="171"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="167"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation>loppu</translation>
@@ -2887,27 +2904,27 @@
 <context>
     <name>DiveImportedModel</name>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="38"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="37"/>
         <source>Date/time</source>
         <translation>Päivä/aika</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="40"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="39"/>
         <source>Duration</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="42"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="41"/>
         <source>Depth</source>
         <translation>Syvyys</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="72"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="71"/>
         <source>h</source>
         <translation>t</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveimportedmodel.cpp" line="72"/>
+        <location filename="../qt-models/diveimportedmodel.cpp" line="71"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -3041,127 +3058,127 @@
 <context>
     <name>DiveListView</name>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="779"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="730"/>
         <source>Expand all</source>
         <translation>Laajenna kaikki retket</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="781"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="732"/>
         <source>Collapse all</source>
         <translation>Supista kaikki retket</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="785"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="736"/>
         <source>Collapse others</source>
         <translation>Tiivistä muut</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="790"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="741"/>
         <source>Remove dive(s) from trip</source>
         <translation><numerusform>Erota sukellus retkestä</numerusform><numerusform>Erota sukellukset retkestä</numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="792"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="743"/>
         <source>Create new trip above</source>
         <translation>Liitä uuteen retkeen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="807"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="758"/>
         <source>Add dive(s) to trip immediately above</source>
         <translation><numerusform>Lisää sukellus yläpuoliseen retkeen</numerusform><numerusform>Lisää sukellukset yläpuoliseen retkeen</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="809"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="760"/>
         <source>Add dive(s) to trip immediately below</source>
         <translation><numerusform>Lisää sukellus alapuoliseen retkeen</numerusform><numerusform>Lisää sukellukset alapuoliseen retkeen</numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="813"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="764"/>
         <source>Merge trip with trip above</source>
         <translation>Liitä retki yllä olevaan retkeen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="814"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="765"/>
         <source>Merge trip with trip below</source>
         <translation>Liitä retki alla olevaan retkeen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="769"/>
         <source>Delete dive(s)</source>
         <translation><numerusform>Poista sukellus</numerusform><numerusform>Poista sukellukset</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="820"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="771"/>
         <source>Mark dive(s) valid</source>
         <translation><numerusform>Merkitse sukellus epäkelvoksi</numerusform><numerusform>Merkitse sukellukset epäkelvoiksi</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="822"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="773"/>
         <source>Mark dive(s) invalid</source>
         <translation><numerusform>Merkitse sukellus epäkelvoksi</numerusform><numerusform>Merkitse sukellukset epäkelvoiksi</numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="825"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="776"/>
         <source>Merge selected dives</source>
         <translation>Yhdistä valitut sukellukset</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="827"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="778"/>
         <source>Add dive(s) to arbitrary trip</source>
         <translation><numerusform>Lisää sukellus valitsemaasi retkeen</numerusform><numerusform>Lisää sukellukset valitsemaasi retkeen</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divelistview.cpp" line="828"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="779"/>
         <source>Renumber dive(s)</source>
         <translation><numerusform>Numeroi sukellus uudelleen</numerusform><numerusform>Numeroi sukellukset uudelleen</numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="829"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="780"/>
         <source>Shift dive times</source>
         <translation>Muuta sukellusaikoja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="830"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="781"/>
         <source>Split selected dives</source>
         <translation>Jaa valitut sukellukset</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="831"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="782"/>
         <source>Load media from file(s)</source>
         <translation>Lataa mediaa tiedostoista</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="832"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="783"/>
         <source>Load media from web</source>
         <translation>Lataa mediaa webistä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="858"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="812"/>
         <source>Open media files</source>
         <translation>Avaa mediatiedostoja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="861"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="815"/>
         <source>Media files</source>
         <translation>Mediatiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="862"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="816"/>
         <source>Image files</source>
         <translation>Kuvatiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="863"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="817"/>
         <source>Video files</source>
         <translation>Viedeotiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="864"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="818"/>
         <source>All files</source>
         <translation>Kaikki tiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="933"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="887"/>
         <source>%1 does not appear to be an image</source>
         <translation>%1 ei vaikuta kuvalta</translation>
     </message>
@@ -3169,12 +3186,12 @@
 <context>
     <name>DiveLocationModel</name>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="400"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="424"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
         <translation>Luo uusi sukelluskohde ja kopioi oleelliset tiedot valitusta sukelluskohteesta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="401"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="425"/>
         <source>Create a new dive site with this name</source>
         <translation>Luo uusi sukelluskohde tälle nimelle</translation>
     </message>
@@ -3264,13 +3281,13 @@
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="270"/>
-        <source>CSV Dive computer dive profile</source>
-        <translation>CSV sukellusprofiili</translation>
+        <source>CSV dive computer dive profile</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="280"/>
-        <source>CSV Computed Profile Panel data</source>
-        <translation>CSV laskettu profiilitiedot</translation>
+        <source>CSV computed profile panel data</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
@@ -3601,261 +3618,261 @@
         <translation>Raahaa yllä olevat tagit alapuolelle vastaaviin sarakkeisiin</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="379"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="585"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="380"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="586"/>
         <source>Tab</source>
         <translation>Sarkain</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="693"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="813"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="916"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="694"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="815"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="914"/>
         <source>Sample time</source>
         <translation>Näytteen aika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="695"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="814"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="696"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="816"/>
         <source>Sample depth</source>
         <translation>Näytteen syvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="717"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="826"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="718"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="828"/>
         <source>Sample setpoint</source>
         <translation>Näytteen setpoint</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="701"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="817"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="702"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="819"/>
         <source>Sample sensor1 pO₂</source>
         <translation>Näytesensori1 pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="703"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="818"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="704"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="820"/>
         <source>Sample sensor2 pO₂</source>
         <translation>Näytesensori2 pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="705"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="819"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="706"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="821"/>
         <source>Sample sensor3 pO₂</source>
         <translation>Näytesensori3 pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="699"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="816"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="700"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="818"/>
         <source>Sample pO₂</source>
         <translation>Näytteen </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="697"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="815"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="698"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="817"/>
         <source>Sample temperature</source>
         <translation>Näytteen lämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="707"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="820"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="708"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="822"/>
         <source>Sample CNS</source>
         <translation>Näytteen CNS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="577"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="713"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="823"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="578"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="714"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="825"/>
         <source>Sample stopdepth</source>
         <translation>Näytteen pysähdyssyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="655"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="656"/>
         <source>Some column headers were pre-populated; please drag and drop the headers so they match the column they are in.</source>
         <translation>Osa otsakkeista on valmiiksi generoitu; raahaa otsakkeita s.e. ne vastaavat sarakkeiden tietoja.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="709"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="821"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="710"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="823"/>
         <source>Sample NDL</source>
         <translation>Näytteen NDL</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="711"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="822"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="712"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="824"/>
         <source>Sample TTS</source>
         <translation>Näytteen TTS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="715"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="824"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="716"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="826"/>
         <source>Sample pressure</source>
         <translation>Näytteen säiliöpaine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="721"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="812"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="918"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="722"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="814"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="916"/>
         <source>Dive #</source>
         <translation>Sukellus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="722"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="809"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="919"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="723"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="811"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="917"/>
         <source>Date</source>
         <translation>Ajankohta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="723"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="811"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="920"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="724"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="813"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="918"/>
         <source>Time</source>
         <translation>Kello</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="724"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="921"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="725"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="919"/>
         <source>Duration</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="725"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="925"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="726"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="923"/>
         <source>Max. depth</source>
         <translation>Suurin syvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="726"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="926"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="727"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="924"/>
         <source>Avg. depth</source>
         <translation>Keskisyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="727"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="922"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="728"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="920"/>
         <source>Mode</source>
         <translation>Tila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="728"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="942"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="729"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="940"/>
         <source>Air temp.</source>
         <translation>Ilman lämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="729"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="943"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="730"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="941"/>
         <source>Water temp.</source>
         <translation>Veden lämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="730"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="937"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="731"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="935"/>
         <source>Cyl. size</source>
         <translation>Säiliön koko</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="731"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="938"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="732"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="936"/>
         <source>Start pressure</source>
         <translation>Alkupaine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="732"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="939"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="733"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="937"/>
         <source>End pressure</source>
         <translation>Loppupaine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="733"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="940"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="734"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="938"/>
         <source>O₂</source>
         <translation>O₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="734"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="941"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="735"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="939"/>
         <source>He</source>
         <translation>He</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="735"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="923"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="736"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="921"/>
         <source>Location</source>
         <translation>Kohde</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="736"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="924"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="737"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="922"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="737"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="927"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="738"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="925"/>
         <source>Divemaster</source>
         <translation>Divemaster</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="738"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="928"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="739"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="926"/>
         <source>Buddy</source>
         <translation>Sukelluspari</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="739"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="929"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="740"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="927"/>
         <source>Suit</source>
         <translation>Puku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="740"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="828"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="945"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="741"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="830"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="943"/>
         <source>Rating</source>
         <translation>Yleisarvio</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="741"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="827"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="944"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="742"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="829"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="942"/>
         <source>Visibility</source>
         <translation>Näkyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="742"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="930"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="743"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="928"/>
         <source>Notes</source>
         <translation>Muistiinpanot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="743"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="931"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="744"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="929"/>
         <source>Weight</source>
         <translation>Painot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="744"/>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="932"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="745"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="930"/>
         <source>Tags</source>
         <translation>Avainsanat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="825"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="827"/>
         <source>Sample heartrate</source>
         <translation>Näytteen syke</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="970"/>
+        <location filename="../desktop-widgets/divelogimportdialog.cpp" line="968"/>
         <source>multiple files</source>
         <translation>useita tiedostoja</translation>
     </message>
@@ -3937,62 +3954,62 @@
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="209"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="210"/>
         <source>unknown</source>
         <translation>tuntematon</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="293"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="294"/>
         <source>cyl.</source>
         <translation>säiliö</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="416"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="415"/>
         <source>Final depth</source>
         <translation>Lopullinen syvyys</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="418"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="417"/>
         <source>Run time</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="420"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="419"/>
         <source>Duration</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="422"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="421"/>
         <source>Used gas</source>
         <translation>Käytetty kaasuseos</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="424"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="423"/>
         <source>CC setpoint</source>
         <translation>CC-asetuspiste</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="426"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="425"/>
         <source>Dive mode</source>
         <translation>Sukellustyyppi</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1205"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1208"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1211"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1214"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1214"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1217"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1261"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1264"/>
         <source>Stop times</source>
         <translation>Pysähdysajat</translation>
     </message>
@@ -4288,17 +4305,17 @@
         <translation>Lisää säiliö</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="64"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="67"/>
         <source>Add dive data point</source>
         <translation>Lisää sukellusetappi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="73"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="76"/>
         <source>Save new</source>
         <translation>Tallenna uusi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="187"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="197"/>
         <source>kg/ℓ</source>
         <translation>kg/ℓ</translation>
     </message>
@@ -4363,7 +4380,7 @@ p, li { white-space: pre-wrap; }
     <name>DiveSiteListView</name>
     <message>
         <location filename="../desktop-widgets/divesitelistview.ui" line="14"/>
-        <location filename="../desktop-widgets/divesitelistview.cpp" line="27"/>
+        <location filename="../desktop-widgets/divesitelistview.cpp" line="28"/>
         <source>Dive sites</source>
         <translation>Sukelluskohteet</translation>
     </message>
@@ -4378,28 +4395,28 @@ p, li { white-space: pre-wrap; }
         <translation>Poista käyttämättömät sukelluskohteet</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divesitelistview.cpp" line="20"/>
+        <location filename="../desktop-widgets/divesitelistview.cpp" line="21"/>
         <source>Done</source>
         <translation>Valmis</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divesitelistview.cpp" line="23"/>
+        <location filename="../desktop-widgets/divesitelistview.cpp" line="24"/>
         <source>Dive site management</source>
         <translation>Sukelluskohteiden hallinta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divesitelistview.cpp" line="65"/>
+        <location filename="../desktop-widgets/divesitelistview.cpp" line="66"/>
         <source>Delete dive site?</source>
         <translation>Poistetaanko sukelluskohde?</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/divesitelistview.cpp" line="66"/>
+        <location filename="../desktop-widgets/divesitelistview.cpp" line="67"/>
         <source>This dive site has %n dive(s). Do you really want to delete it?
 </source>
         <translation><numerusform>Tällä sukelloskohteella on %n sukellus. Halutko poistaa sen?</numerusform><numerusform>Tällä sukelloskohteella on %n sukellusta. Halutko poistaa ne?</numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divesitelistview.cpp" line="83"/>
+        <location filename="../desktop-widgets/divesitelistview.cpp" line="84"/>
         <source>New dive site</source>
         <translation>Uusi sukelluskohde</translation>
     </message>
@@ -4538,195 +4555,207 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveTripModelBase</name>
     <message numerus="yes">
-        <location filename="../qt-models/divetripmodel.cpp" line="77"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="81"/>
         <source>(%n dive(s))</source>
         <translation><numerusform>(%n sukellus)</numerusform><numerusform>(%n sukellusta)</numerusform></translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="79"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="83"/>
         <source>(%L1 shown)</source>
         <translation>(näytetään %L1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="126"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="130"/>
         <source>(%1 shown)</source>
         <translation> (näytetään %1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="219"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="409"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="223"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="418"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="221"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="411"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="225"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="420"/>
         <source>Date</source>
         <translation>Ajankohta</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="223"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="413"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="227"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
         <source>Rating</source>
         <translation>Yleisarvio</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="225"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="229"/>
         <source>Depth(%1)</source>
         <translation>Syvyys(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="225"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="229"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="225"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="229"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="227"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="417"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="426"/>
         <source>Duration</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="229"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="233"/>
         <source>Temp.(°%1)</source>
         <translation>Lämpö (°%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="235"/>
         <source>Weight(%1)</source>
         <translation>Massa(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="235"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="235"/>
         <source>lbs</source>
         <translation>pauna</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="233"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="432"/>
         <source>Suit</source>
         <translation>Puku</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="235"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="425"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="239"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="434"/>
         <source>Cylinder</source>
         <translation>Säiliö</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="427"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="241"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="436"/>
         <source>Gas</source>
         <translation>Kaasu</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="241"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="245"/>
         <source>SAC(%1)</source>
         <translation>Pintakulutus(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="241"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="245"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="431"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="247"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="440"/>
         <source>OTU</source>
         <translation>Happikertymä (OTU)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="245"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="249"/>
         <source>Max. CNS</source>
         <translation>Max. CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="247"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="435"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="251"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="444"/>
         <source>Tags</source>
         <translation>Avainsanat</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="249"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="253"/>
         <source>Media before/during/after dive</source>
         <translation>Kuvat/videot sukelluksen yhteydessä</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="251"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="439"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="255"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="448"/>
         <source>Country</source>
         <translation>Maa</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="253"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="441"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="257"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
         <source>Buddy</source>
         <translation>Sukelluspari</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="255"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="443"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="259"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="452"/>
         <source>Dive guide</source>
         <translation>Sukellusopas</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="257"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="445"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="261"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="454"/>
         <source>Location</source>
         <translation>Kohde</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="415"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="263"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="456"/>
+        <source>Notes</source>
+        <translation>Muistiinpanot</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="265"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="458"/>
+        <source>Divemode</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
         <source>Depth</source>
         <translation>Syvyys</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="419"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="428"/>
         <source>Temp.</source>
         <translation>Lämpö</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="421"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="430"/>
         <source>Weight</source>
         <translation>Painot</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="429"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="438"/>
         <source>SAC</source>
         <translation>Pintakulutus</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="433"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="442"/>
         <source>Max CNS</source>
         <translation>Max CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="437"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="446"/>
         <source>Media</source>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="475"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="488"/>
         <source>finish populating data store</source>
         <translation>lopeta tietosäilön muodostus</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="477"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="490"/>
         <source>setting up internal data structures</source>
         <translation>luodaan sisäiset tietorakenteet</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="479"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="492"/>
         <source>done setting up internal data structures</source>
         <translation>sisäisten tietorakenteiden luonti valmis</translation>
     </message>
@@ -4819,29 +4848,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DivesiteImportedModel</name>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="30"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="31"/>
         <source>Name</source>
         <translation>Nimi</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="32"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="33"/>
         <source>Location</source>
         <translation>Kohde</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="34"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="35"/>
         <source>Country</source>
         <translation>Maa</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="36"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="37"/>
         <source>Nearest
 Existing Site</source>
         <translation>Lähin
 Olemassaoleva kohde</translation>
     </message>
     <message>
-        <location filename="../qt-models/divesiteimportmodel.cpp" line="38"/>
+        <location filename="../qt-models/divesiteimportmodel.cpp" line="39"/>
         <source>Distance</source>
         <translation>Etäisyys</translation>
     </message>
@@ -4849,73 +4878,73 @@ Olemassaoleva kohde</translation>
 <context>
     <name>DownloadFromDCWidget</name>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="86"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="96"/>
         <source>Download</source>
         <translation>Lataa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="90"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="100"/>
         <source>Choose Bluetooth download mode</source>
         <translation>Valitse latausmoodi Bluetoothille</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="200"/>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="203"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="213"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="216"/>
         <source>Connecting to dive computer</source>
         <translation>Muodostetaan yhteyttä sukellustietokoneeseen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="298"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="311"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="347"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="361"/>
         <source>Find Uemis dive computer</source>
         <translation>Etsi Uemis-sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="347"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="361"/>
         <source>Find Garmin dive computer</source>
         <translation>Etsi Garmin-sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="373"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="387"/>
         <source>Cancel download</source>
         <translation>Peruuta lataus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="452"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Valitse lokitiedosto sukellustietokoneen tietojen tallennukseen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="453"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="468"/>
         <source>Log files</source>
         <translation>Lokitiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="466"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="481"/>
         <source>Warning</source>
         <translation>Varoitus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="467"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="482"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation>Kun sukellustietokoneen latauksesta tallennetaan raakatiedosto, sukelluksia EI tallenneta sukelluslistaan.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="478"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="493"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation>Valitse tiedosto sukellustietokoneen muistin tallennukseen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="479"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="494"/>
         <source>Dump files</source>
         <translation>Raakatiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="507"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="522"/>
         <source>Retry download</source>
         <translation>Yritä latausta uudelleen</translation>
     </message>
@@ -4986,36 +5015,47 @@ Olemassaoleva kohde</translation>
         <translation>Tallenna sukellustietokoneen raakatiedosto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="211"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="191"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="442"/>
+        <source>Sync dive computer time</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="194"/>
+        <source>Adjust the time on the dive computer to match the time on the PC (if supported by the dive computer model).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="221"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="218"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="328"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="366"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="474"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="499"/>
         <source>Download</source>
         <translation>Lataa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="265"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="275"/>
         <source>Downloaded dives</source>
         <translation>Ladatut sukellukset</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="275"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="285"/>
         <source>Select all</source>
         <translation>Valitse kaikki</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="282"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="292"/>
         <source>Unselect all</source>
         <translation>Poista valinnat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="323"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="333"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="330"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="340"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="359"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
@@ -5081,22 +5121,22 @@ Olemassaoleva kohde</translation>
         <translation>lataa kaikki sukellukset</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="446"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="471"/>
         <source>Please wait while we record these dives...</source>
         <translation>Odota, kun nämä sukellukset tallennetaan...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="461"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="486"/>
         <source>Accept</source>
         <translation>Hyväksy</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="487"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="512"/>
         <source>Select All</source>
         <translation>Valitse kaikki</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="496"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="521"/>
         <source>Unselect All</source>
         <translation>Poista valinnat</translation>
     </message>
@@ -5104,7 +5144,7 @@ Olemassaoleva kohde</translation>
 <context>
     <name>DownloadThread</name>
     <message>
-        <location filename="../core/downloadfromdcthread.cpp" line="129"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="123"/>
         <source>No new dives downloaded from dive computer</source>
         <translation>Uusia sukelluksia ei ladattu sukellustietokoneesta</translation>
     </message>
@@ -5334,37 +5374,37 @@ Olemassaoleva kohde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="121"/>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="241"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="242"/>
         <source>Select folder and scan</source>
         <translation>Valitse hakemisto ja etsi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="174"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="175"/>
         <source>Traverse media directories</source>
         <translation>Hae mediatidestoja hakemistoista</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="180"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="181"/>
         <source>Stop scanning</source>
         <translation>Lopeta etsintä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="251"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="252"/>
         <source>Scanning cancelled - results may be incomplete</source>
         <translation>Etsintä peruutettu - tulokset voivat olla vaillinaiset</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="255"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="256"/>
         <source>No matching media files found</source>
         <translation>Ei löytynyt hakuehtoja vastaavia mediatideostoja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="267"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at their current place.</source>
         <translation>Löytyi &lt;b&gt;%1&lt;/b&gt; mediatiedostoa nykyisestä paikasta.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="269"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="270"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at new locations:</source>
         <translation>Löytyi &lt;b&gt;%1&lt;/b&gt; midiatiedostoja uudesta paikasta:</translation>
     </message>
@@ -5512,32 +5552,32 @@ Olemassaoleva kohde</translation>
 <context>
     <name>LocationFilterDelegate</name>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="459"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="478"/>
         <source> (same GPS fix)</source>
         <translation>(sama GPS-kiinnitys)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="464"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="483"/>
         <source> (~%1 away</source>
         <translation> (~%1 poissa</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="465"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="484"/>
         <source>, %n dive(s) here)</source>
         <translation><numerusform>, %n sukellus täällä)</numerusform><numerusform>, %n sukellusta täällä)</numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="470"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="489"/>
         <source>(no existing GPS data, add GPS fix from this dive)</source>
         <translation>(Ei GPS tietoja, lisää GPS kiinnitys tästä sukelluksesta)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="472"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="491"/>
         <source>(no GPS data)</source>
         <translation>(ei GPS -tietoja)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="474"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="493"/>
         <source>Pick site: </source>
         <translation>Valitse kohde:</translation>
     </message>
@@ -5613,27 +5653,27 @@ Olemassaoleva kohde</translation>
 <context>
     <name>LocationInformationModel</name>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="59"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="60"/>
         <source>Name</source>
         <translation>Nimi</translation>
     </message>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="61"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="62"/>
         <source>Description</source>
         <translation>Kuvaus</translation>
     </message>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="63"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="64"/>
         <source># of dives</source>
         <translation># sukellusta</translation>
     </message>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="103"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="104"/>
         <source>Click here to edit the divesite.</source>
         <translation>Näpäytä muokataksesi sukelluskohdetta.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divelocationmodel.cpp" line="104"/>
+        <location filename="../qt-models/divelocationmodel.cpp" line="105"/>
         <source>Clicking here will remove this divesite.</source>
         <translation>Poista sukelluskohde.</translation>
     </message>
@@ -5641,27 +5681,32 @@ Olemassaoleva kohde</translation>
 <context>
     <name>LocationInformationWidget</name>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="34"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="36"/>
         <source>Done</source>
         <translation>Valmis</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="37"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="39"/>
         <source>Dive site management</source>
         <translation>Sukelluskohteiden hallinta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="65"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="66"/>
         <source>Merge into current site</source>
         <translation>Yhdistä valittuun kohteeseen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="253"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="69"/>
+        <source>Merge current site into this site</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="277"/>
         <source>Select GPS file to open</source>
         <translation>Valitse avattava GPS-tiedosto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="255"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="279"/>
         <source>GPS files (*.gpx *.GPX)</source>
         <translation>GPS-tiedostot (*.gpx *.GPX)</translation>
     </message>
@@ -5677,38 +5722,38 @@ Olemassaoleva kohde</translation>
 <context>
     <name>MainTab</name>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="34"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="100"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="35"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="112"/>
         <source>Notes</source>
         <translation>Muistiinpanot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="36"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="37"/>
         <source>Equipment</source>
         <translation>Varusteet</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="38"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="39"/>
         <source>Information</source>
         <translation>Tiedot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="40"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="41"/>
         <source>Summary</source>
         <translation>Yhteenveto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="42"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="43"/>
         <source>Media</source>
         <translation>Media</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="44"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="45"/>
         <source>Extra Info</source>
         <translation>Lisätiedot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="91"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="103"/>
         <source>Trip notes</source>
         <translation>Matkan muistiinpanot</translation>
     </message>
@@ -5762,7 +5807,7 @@ Olemassaoleva kohde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="150"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="364"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="366"/>
         <source>Open</source>
         <translation>Avaa</translation>
     </message>
@@ -6012,16 +6057,16 @@ Olemassaoleva kohde</translation>
         <translation>Pilvitallennus yhdistetty</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="602"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="463"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="496"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="626"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="654"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="553"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="466"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="499"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="631"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="657"/>
         <source>Warning</source>
         <translation>Varoitus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="603"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="554"/>
         <source>Trying to merge dives with %1min interval in between</source>
         <translation>Yritetään yhdistää sukelluksia %1min &quot;pinta-ajalla&quot;</translation>
     </message>
@@ -6054,217 +6099,217 @@ ei tule muokata suoraan, koska ne päivitettään automaattisesti
 uuden Subsurface-version myötä.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="355"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="402"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1139"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="357"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="404"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1142"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Ole hyvä ja tallenna tai peruuta sukelluksen muokkaus ennen kuin avaat uuden lokin.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="361"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="363"/>
         <source>Open file</source>
         <translation>Avaa tiedosto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="365"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1543"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="367"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1533"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="463"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="466"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation>Tallenna tai peruuta sukelluksen muutokset ennen yhdistämistä verkkoon</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="475"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="985"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="478"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="988"/>
         <source>Save changes?</source>
         <translation>Tallenna muutokset?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="476"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="479"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation>Sinulla on tallentamattomia muutoksia. Haluatko tallentaa ne pilvitallennustilaan?
 Mikäli et, muutokset synkronoidaan pilveen vasta, kun valitset &quot;Avaa pilvitallennustila&quot; tai &quot;Tallenna pilveen&quot;</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="486"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="489"/>
         <source>Failure taking cloud storage online</source>
         <translation>Yhdistäminen pilveen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="534"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="537"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Ole hyvä ja tallenna tai peruuta sukelluksen muokkaus ennen lokitiedoston sulkemista.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="596"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="601"/>
         <source>Please save or cancel the current dive edit before quiting the application.</source>
         <translation>Ole hyvä ja tallenna tai peruuta muutokset sukellukseen ennen sovelluksen sulkemista.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="626"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="631"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Ole hyvä ja tallenna tai peruuta sukelluksen muokkaus ennen sukelluksen lisäystä.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="654"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="657"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Yritetään muokata sukellusta, joka ei ole sukellussuunnitelma.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="731"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="736"/>
         <source>Yearly statistics</source>
         <translation>Vuositilastot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="879"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="920"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="882"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="923"/>
         <source>Dive log files</source>
         <translation>Sukelluslokit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="899"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="941"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1167"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="944"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1170"/>
         <source>Subsurface files</source>
         <translation>Subsurfacen tiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="900"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="942"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="945"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="901"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="944"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="904"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="947"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="902"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="945"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="905"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="948"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="903"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="946"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="906"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="949"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="904"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="947"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="907"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="950"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="905"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="948"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="908"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="951"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="906"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="949"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="909"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="952"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="907"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="950"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="910"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="953"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="908"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="951"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="911"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="954"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="909"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="952"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="912"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="955"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="910"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="953"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="913"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="956"/>
         <source>MkVI files</source>
         <translation>MkVI-tiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="911"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="954"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="914"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="957"/>
         <source>APD log viewer</source>
         <translation>APD log viewer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="912"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="955"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="915"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="958"/>
         <source>OSTCtools</source>
         <translation>OSTCtools</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="913"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="956"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="916"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="959"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="943"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="946"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="957"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="969"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="960"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="972"/>
         <source>All files</source>
         <translation>Kaikki tiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="964"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="967"/>
         <source>Dive site files</source>
         <translation>Sukelluskohdetiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="979"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="982"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Haluatko tallentaa muutoksesi tiedostoon %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="980"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="983"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Haluatko tallentaa muutoksesi tiedostoon?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="986"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="989"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Muutokset hylätään, jos et tallenna niitä.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1166"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1169"/>
         <source>Save file as</source>
         <translation>Tallenna nimellä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1248"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1251"/>
         <source>[local cache for] %1</source>
         <translation>[paikallinen cache] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1249"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1252"/>
         <source>[cloud storage for] %1</source>
         <translation>[pilvitallennus] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1289"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1393"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1288"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1384"/>
         <source>multiple files</source>
         <translation>useita tiedostoja</translation>
     </message>
@@ -6286,12 +6331,12 @@ Subsurface on jo yrittänyt esi-täyttää sijaintitiedot, mutta kannattaa viel�
         <translation>Avaa sukellusloki</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1369"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
         <source>Open dive site file</source>
         <translation>Avaa sukelluskohteiden tiedosto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1543"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1533"/>
         <source>Contacting cloud service...</source>
         <translation>Otetaan yhteyttä pilvipalveluun...</translation>
     </message>
@@ -6348,12 +6393,13 @@ QML-modulit QtPositioning tai QtLocation saattavat puuttua!</translation>
 <context>
     <name>OstcFirmwareCheck</name>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="296"/>
-        <source>You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2</source>
-        <translation>Sinun tulisi päivittää sukellustietokoneesi ohjelmisto (firmware): käytössä on versio %1, kun viimeisin vakaa versio on %2</translation>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="333"/>
+        <source>A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2.
+Not using the latest available stable firmware version on your dive computer means that Subsurface may not work correctly with it.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="299"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="336"/>
         <source>
 
 If your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update</source>
@@ -6362,27 +6408,27 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
 Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia ladatessasi ennen, kuin jatkat päivitystä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="300"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="337"/>
         <source>Not now</source>
         <translation>Ei nyt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="301"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="338"/>
         <source>Update firmware</source>
         <translation>Päivitä laiteohjelmisto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="303"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="340"/>
         <source>Firmware upgrade notice</source>
         <translation>Huomautus laiteohjelmiston päivityksessä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="321"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="358"/>
         <source>Save the downloaded firmware as</source>
         <translation>Tallenna ladattu laiteohjelmisto nimellä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="322"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="359"/>
         <source>Firmware files</source>
         <translation>Firmware-tiedostot</translation>
     </message>
@@ -6390,74 +6436,74 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="458"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="466"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="459"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="467"/>
         <source>Last stop at 20ft</source>
         <translation>Viimeinen pysähdys 20 jalassa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="460"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="468"/>
         <source>50% avg. depth to 20ft</source>
         <translation>50% keskisyvyydestä - 20 jalkaan</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="461"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="469"/>
         <source>20ft to surface</source>
         <translation>20 jalasta pintaan</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="462"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="470"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="464"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="472"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="465"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="473"/>
         <source>Last stop at 6m</source>
         <translation>Viimeinen pysähdys kuudessa metrissä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="466"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="474"/>
         <source>50% avg. depth to 6m</source>
         <translation>50% keskisyvyydestä - 6m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="467"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="475"/>
         <source>6m to surface</source>
         <translation>6m:stä pintaan</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="468"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="476"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="471"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="472"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="479"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="480"/>
         <source>cuft/min</source>
         <translation>ft³/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="480"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="481"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="488"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="489"/>
         <source>ℓ/min</source>
         <translation>ℓ/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="490"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="498"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="495"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="503"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -6465,7 +6511,7 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
 <context>
     <name>PlannerWidgets</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="595"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="633"/>
         <source>Print runtime table</source>
         <translation>Tulosta sukellussuunnitelma</translation>
     </message>
@@ -6479,7 +6525,7 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="32"/>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="121"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="127"/>
         <source>Subsurface cloud storage</source>
         <translation>Subsurfacen pilvitallennustila</translation>
     </message>
@@ -6509,55 +6555,65 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
         <translation>Tallenna salasana paikallisesti</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="110"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="109"/>
+        <source>If you have a cloud account and forgot your password, you can reset it here:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="116"/>
+        <source>Reset Password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="128"/>
         <source>To create a new cloud account:</source>
         <translation>Uuden pilvitunnuksen luonti:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="120"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="138"/>
         <source>1) Enter an email address and a novel password that Subsurface will use to initialise the dive log in the cloud. Click Apply to send the above email address and password to the (remote) cloud server. Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;,&apos;-&apos;,&apos;_&apos;, and &apos;+&apos;.</source>
         <translation>1) Anna sähköpostiosoite ja uusi sanalasana, joilla Subsurfacen sukellusloki luodaan pilveen. Pilvitallennustilan salasanassa voi olla vain kirjaimia, numeroita ja seuraavat erikoismerkit: &apos;.&apos;,&apos;-&apos;,&apos;_&apos;, ja &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="130"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="148"/>
         <source>2) The server responds by sending a verification PIN to the above email address (This is the only occasion that Subsurface uses the email address provided above). The above dialog now has a new PIN text box, not visible previously.</source>
         <translation>2) Sähköpostiosoitteeseesi lähetetään varmistusviestissä PIN-koodi, jolla voit vahvistaa osoitteesi yläpuoliseen PIN-kenttään. (Jatkossa käytetään vain sähköpostiosoitetta ja salasanaa.)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="140"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.ui" line="158"/>
         <source>3) Enter the PIN in the corresponding text box in the above dialog (this field is only visible while the server is waiting for email address confirmation). Click Apply again. The Subsurface cloud storage account will be marked as verified and the Subsurface cloud storage service is initialised for use.</source>
         <translation>3) Syötä PIN-koodi sille varattuun kenttään (kenttä on näkyvissä vain, kun palvelin odottaa sähköpostin vahvistusta). Hyväksy toiminto ja Subsurface-pilvitunnus merkitään vahvistetuksi, ja tunnus on käytettävissä.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="11"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="12"/>
         <source>Cloud</source>
         <translation>Pilvi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="40"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="46"/>
         <source>Change ignored. Cloud storage email and new password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>Muutos peruttu. Pilvitallennuksen sähköpostiosoite ja uusi salasana voi sisältää vain kirjaimia, numeroita ja merkit &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="49"/>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="53"/>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="75"/>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="89"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="55"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="59"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="81"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="95"/>
         <source>Warning</source>
         <translation>Varoitus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="115"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="121"/>
         <source>Subsurface cloud storage (credentials verified)</source>
         <translation>Subsurfacen pilvitallennustila (käyttäjä todennettu)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="117"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="123"/>
         <source>Subsurface cloud storage (incorrect password)</source>
         <translation>Subsurfacen pilvitallennustila (virheellinen salasana)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="119"/>
+        <location filename="../desktop-widgets/preferences/preferences_cloud.cpp" line="125"/>
         <source>Subsurface cloud storage (PIN required)</source>
         <translation>Subsurfacen pilvitallennustila (tarvitaan PIN)</translation>
     </message>
@@ -6700,8 +6756,8 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="67"/>
-        <source>Show unused cylinders in the Cylinders table of the Equipment tab</source>
-        <translation>Näytä käyttämättömät säiliöt varustetabissa</translation>
+        <source>Show unused cylinders in the Cylinders table of the Equipment tab and include them in export / copy / merge</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_equipment.ui" line="74"/>
@@ -6942,8 +6998,8 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="113"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred date format. Commonly used fields are&lt;/p&gt;&lt;p&gt;d (day of month)&lt;/p&gt;&lt;p&gt;ddd (abbr. day name)&lt;/p&gt;&lt;p&gt;M (month number)&lt;/p&gt;&lt;p&gt;MMM (abbr. month name)&lt;/p&gt;&lt;p&gt;yy/yyyy (2/4 digit year)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ensisijainen päiväyksen muoto. Yleisimmät kentät ovat&lt;/p&gt;&lt;p&gt;d (kuukauden päivä)&lt;/p&gt;&lt;p&gt;ddd (lyh. päivän nimi)&lt;/p&gt;&lt;p&gt;M (kuukauden numero)&lt;/p&gt;&lt;p&gt;MMM (lyh. kuukauden nimi)&lt;/p&gt;&lt;p&gt;yy/yyyy (2/4 numeroinen vuosi)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred date format. Commonly used fields are&lt;/p&gt;&lt;p&gt;d (day of month)&lt;/p&gt;&lt;p&gt;ddd (abbreviated day name)&lt;/p&gt;&lt;p&gt;M (month number)&lt;/p&gt;&lt;p&gt;MMM (abbreviated month name)&lt;/p&gt;&lt;p&gt;yy/yyyy (2/4 digit year)&lt;/p&gt;&lt;p&gt;See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString for full list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="132"/>
@@ -6952,49 +7008,48 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="151"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred time format&lt;/p&gt;&lt;p&gt;Commonly used format specifiers are&lt;/p&gt;&lt;p&gt;h (hours in 12h format)&lt;/p&gt;&lt;p&gt;H (hours in 24h format)&lt;/p&gt;&lt;p&gt;mm (2 digit minutes)&lt;/p&gt;&lt;p&gt;ss (2 digit seconds)&lt;/p&gt;&lt;p&gt;t/tt (a/p or am/pm)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ensisijainen ajan esitysmuoto&lt;/p&gt;&lt;p&gt;Yleisimmät muotoilukomennot ovat&lt;/p&gt;&lt;p&gt;h (tunnit 12t muodossa)&lt;/p&gt;&lt;p&gt;H (tunnit 24t muodossa)&lt;/p&gt;&lt;p&gt;mm (2 numeron minuutit)&lt;/p&gt;&lt;p&gt;ss (2 numeron sekunnit)&lt;/p&gt;&lt;p&gt;t/tt (a/i tai ap/ip)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred time format&lt;/p&gt;&lt;p&gt;Commonly used format specifiers are&lt;/p&gt;&lt;p&gt;h (hours)&lt;/p&gt;&lt;p&gt;hh (2 digit hours)&lt;/p&gt;&lt;p&gt;mm (2 digit minutes)&lt;/p&gt;&lt;p&gt;ss (2 digit seconds)&lt;/p&gt;&lt;p&gt;AP or ap (AM/PM or am/pm)&lt;/p&gt;&lt;p&gt;See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString for full list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="13"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="14"/>
         <source>Language</source>
         <translation>Kieli</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="74"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="77"/>
         <source>Restart required</source>
         <translation>Vaaditaan uudelleenkäynnistys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="75"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="78"/>
         <source>To correctly load a new language you must restart Subsurface.</source>
         <translation>Uuden kielen lataaminen vaatii Subsurfacen uudelleenkäynnistyksen
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="97"/>
-        <source>These will be used as is. This might not be what you intended.
-See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
-        <translation>Näitä käytetään sellaisenaan. Et välttämättä halua tätä.
-Katso http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="100"/>
+        <source>These will be used as is. This might not be what you intended. To avoid this warning wrap the literal parts in quotes (').
+See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="100"/>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="106"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="103"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="109"/>
         <source>Literal characters</source>
         <translation>Kirjainmerkit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="101"/>
-        <source>Non-special character(s) in time format.
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="104"/>
+        <source>Non-standard character(s) in time format.
 </source>
-        <translation>Ajan muotoilussa ei ole erikoismerkkejä</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="107"/>
-        <source>Non-special character(s) in date format.
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="110"/>
+        <source>Non-standard character(s) in date format.
 </source>
-        <translation>Päiväyksen muotoilussa ei ole erikoismerkkejä</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7470,12 +7525,12 @@ Katso http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <translation>Tulosta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printdialog.cpp" line="202"/>
+        <location filename="../desktop-widgets/printdialog.cpp" line="203"/>
         <source>Filename to export html to</source>
         <translation>Tiedostonimi html viennille</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printdialog.cpp" line="203"/>
+        <location filename="../desktop-widgets/printdialog.cpp" line="204"/>
         <source>Html file</source>
         <translation>Html-tiedosto</translation>
     </message>
@@ -7513,84 +7568,89 @@ Katso http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <translation>Väritulostus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.ui" line="120"/>
+        <location filename="../desktop-widgets/printoptions.ui" line="99"/>
+        <source>Page orientation landscape</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/printoptions.ui" line="127"/>
         <source>DPI resolution</source>
         <translation>DPI-tarkkuus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.ui" line="132"/>
+        <location filename="../desktop-widgets/printoptions.ui" line="139"/>
         <source>Template</source>
         <translation>Sapluuna</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.ui" line="157"/>
+        <location filename="../desktop-widgets/printoptions.ui" line="164"/>
         <source>Edit</source>
         <translation>Muuta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.ui" line="164"/>
+        <location filename="../desktop-widgets/printoptions.ui" line="171"/>
         <source>Delete</source>
         <translation>Poista</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.ui" line="171"/>
+        <location filename="../desktop-widgets/printoptions.ui" line="178"/>
         <source>Export</source>
         <translation>Vienti</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.ui" line="178"/>
+        <location filename="../desktop-widgets/printoptions.ui" line="185"/>
         <source>Import</source>
         <translation>Tuonti</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="135"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="162"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="198"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="230"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="132"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="159"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="195"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="227"/>
         <source>Read-only template!</source>
         <translation>Kirjoitussuojattu templaatti!</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="136"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="133"/>
         <source>The template '%1' is read-only and cannot be edited.
 Please export this template to a different file.</source>
         <translation>Templaatti &apos;%1&apos; on kirjoitussuojattu, eikä sitä voi muokata.
 Tallenna muokkauksesi eri nimelle.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="152"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="149"/>
         <source>Import template file</source>
         <translation>Liitä sapluunatiedosto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="153"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="184"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="150"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="181"/>
         <source>HTML files</source>
         <translation>HTML-tiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="163"/>
-        <location filename="../desktop-widgets/printoptions.cpp" line="199"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="160"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="196"/>
         <source>The destination template &apos;%1&apos; is read-only and cannot be overwritten.</source>
         <translation>Kohdetemplaatti &apos;%1&apos; on kirjoitussuojattu, eikä sitä voi muokata.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="183"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="180"/>
         <source>Export template files as</source>
         <translation>Vie sapluunatiedosto nimellä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="223"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="220"/>
         <source>This action cannot be undone!</source>
         <translation>Tätä toimintoa ei voida perua</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="224"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="221"/>
         <source>Delete template &apos;%1&apos;?</source>
         <translation>Poistaa templaatti &apos;%1&apos;?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/printoptions.cpp" line="231"/>
+        <location filename="../desktop-widgets/printoptions.cpp" line="228"/>
         <source>The template &apos;%1&apos; is read-only and cannot be deleted.</source>
         <translation>Templaatti &apos;%1&apos; on kirjoitussuojattu, eikä sitä voi muokata.</translation>
     </message>
@@ -7598,22 +7658,22 @@ Tallenna muokkauksesi eri nimelle.</translation>
 <context>
     <name>ProfileScene</name>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="574"/>
+        <location filename="../profile-widget/profilescene.cpp" line="583"/>
         <source>Planned dive</source>
         <translation>Suunniteltu sukellus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="576"/>
+        <location filename="../profile-widget/profilescene.cpp" line="585"/>
         <source>Manually added dive</source>
         <translation>Käsin lisätty sukellus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="578"/>
+        <location filename="../profile-widget/profilescene.cpp" line="587"/>
         <source>Unknown dive computer</source>
         <translation>Tuntematon sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="582"/>
+        <location filename="../profile-widget/profilescene.cpp" line="590"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 / %2)</translation>
     </message>
@@ -7622,92 +7682,97 @@ Tallenna muokkauksesi eri nimelle.</translation>
     <name>ProfileWidget</name>
     <message>
         <location filename="../desktop-widgets/profilewidget.ui" line="14"/>
+        <source>Toggle infobox</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/profilewidget.ui" line="26"/>
         <source>Toggle tissue heat-map</source>
         <translation>Näytä kudosten saturaatiokartta (heat-map)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="26"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="38"/>
         <source>Toggle pO₂ graph</source>
         <translation>Näytä/piilota pO₂ -kuvaaja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="38"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="50"/>
         <source>Toggle pN₂ graph</source>
         <translation>Näytä/piilota pN₂ -kuvaaja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="50"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="62"/>
         <source>Toggle pHe graph</source>
         <translation>Näytä/piilota pHe-kuvaaja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="62"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="74"/>
         <source>Toggle DC reported ceiling</source>
         <translation>Näytä/piilota sukellustietokoneen raportoima kattosyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="74"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="86"/>
         <source>Toggle calculated ceiling</source>
         <translation>Näytä/piilota laskettu kattosyvyys</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="86"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="98"/>
         <source>Toggle calculating all tissues</source>
         <translation>Näytä/piilota kaikkien kudosten laskenta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="98"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="110"/>
         <source>Toggle calculated ceiling with 3m increments</source>
         <translation>Näytä/piilota laskettu kattosyvyys 3m:n tarkkuudella</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="110"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="122"/>
         <source>Toggle heart rate</source>
         <translation>Näytä/piilota syke</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="122"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="134"/>
         <source>Toggle MOD</source>
         <translation>Näytä/piilota MOD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="134"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="146"/>
         <source>Toggle EAD, END, EADD</source>
         <translation>Näytä/piilota EAD, END sekä EADD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="146"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="158"/>
         <source>Toggle NDL, TTS</source>
         <translation>Näytä/piilota NDL, TTS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="158"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="170"/>
         <source>Toggle SAC rate</source>
         <translation>Näytä/piilota hengitysnopeus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="170"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="182"/>
         <source>Toggle ruler</source>
         <translation>Näytä/piilota viivain</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="182"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="194"/>
         <source>Scale graph</source>
         <translation>Muuta kuvasuhdetta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="194"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="206"/>
         <source>Toggle media</source>
         <translation>Näytä/piilota media</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="206"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="218"/>
         <source>Toggle gas bar</source>
         <translation>Vaihda seospalkin tilaa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/profilewidget.ui" line="218"/>
-        <location filename="../desktop-widgets/profilewidget.ui" line="221"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="230"/>
+        <location filename="../desktop-widgets/profilewidget.ui" line="233"/>
         <source>Toggle deco information</source>
         <translation>Vaihda deko-tiedot</translation>
     </message>
@@ -7715,128 +7780,133 @@ Tallenna muokkauksesi eri nimelle.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="241"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="245"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Suoranousu-/pintautumisaikaa ei näytetä, koska niiden laskemiseen kuluu liikaa aikaa</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="541"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="556"/>
         <source>Make first dive computer</source>
         <translation>Aseta ensimmäiseksi sukellustietokoneeksi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="543"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="558"/>
         <source>Delete this dive computer</source>
         <translation>Poista tämä sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="544"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="559"/>
         <source>Split this dive computer into own dive</source>
         <translation>Jaa tämä sukellustietokone omaksi sukelluksekseen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="547"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="562"/>
         <source>Rename this dive computer</source>
         <translation>Nimeä sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="562"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="577"/>
         <source>Edit Gas Change</source>
         <translation>Muokkaa kaasun vaihtoa</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="570"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="585"/>
         <source>Add gas change</source>
         <translation>Lisää kaasun vaihto</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="577"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="592"/>
         <source>Add setpoint change</source>
         <translation>Aseta setpoint-muutos</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="578"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="593"/>
         <source>Add bookmark</source>
         <translation>Lisää kirjanmerkki</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="579"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="594"/>
         <source>Split dive into two</source>
         <translation>Jaa sukellus kahtia</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="584"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="599"/>
         <source>Change divemode</source>
         <translation>Muuta sukellustyyppi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="596"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="612"/>
         <source>Remove event</source>
         <translation>Poista tapahtuma</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="597"/>
-        <source>Hide similar events</source>
-        <translation>Piilota samankaltaiset tapahtumat</translation>
+        <location filename="../profile-widget/profilewidget2.cpp" line="613"/>
+        <source>Hide event</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="600"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="614"/>
+        <source>Hide events of type &apos;%1&apos;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="617"/>
         <source>Edit name</source>
         <translation>Muokkaa nimeä</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="629"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="636"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="646"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="653"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Muokkaa säiliön %1 painetta (arvioitu %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="651"/>
-        <source>Unhide all events</source>
-        <translation>Näytä kaikki tapahtumat</translation>
+        <location filename="../profile-widget/profilewidget2.cpp" line="661"/>
+        <source>Unhide event type</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="679"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="668"/>
+        <source>All event types</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="672"/>
+        <source>Unhide individually hidden events of this dive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="700"/>
         <source>Edit nickname</source>
         <translation>Muokkaa lempinimeä</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="680"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="701"/>
         <source>Set new nickname for %1 (serial %2):</source>
         <translation>Aseta uusi lempinimi laitteelle %1 (sarjanumero %2):</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="691"/>
-        <source>Hide events</source>
-        <translation>Piilota tapahtumat</translation>
-    </message>
-    <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="691"/>
-        <source>Hide all %1 events?</source>
-        <translation>Piilota kaikki %1 tapahtumat</translation>
-    </message>
-    <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="726"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
         <source>Remove the selected event?</source>
         <translation>Poistetaanko valitut tapahtumat?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="727"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="747"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="775"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
         <source>Edit name of bookmark</source>
         <translation>Muokkaa kirjanmerkin nimeä</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="776"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="796"/>
         <source>Custom name:</source>
         <translation>Valinnainen nimi:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="781"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="801"/>
         <source>Name is too long!</source>
         <translation>Nimi on liian pitkä!</translation>
     </message>
@@ -7844,218 +7914,223 @@ Tallenna muokkauksesi eri nimelle.</translation>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="372"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="373"/>
         <source>Open local dive data file</source>
         <translation>Avaa paikallinen sukelluslokitiedosto</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="394"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="395"/>
         <source>Opening local data file failed</source>
         <translation>Paikallisen tiedoston avaus epäonnistui</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="412"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="416"/>
         <source>Processing %1 dives</source>
         <translation>Käsitellään %1 sukellusta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="414"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 sukellusta ladattu paikallisesta tiedostosta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="421"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="425"/>
         <source>Incorrect cloud credentials</source>
         <translation>Virheelliset pilvitunnukset</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="580"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="581"/>
         <source>working in no-cloud mode</source>
         <translation>käytä off-line -tilassa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="584"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="585"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Virhe paikallisen tallenteen jäsentämisessä, keskeytetään</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="594"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="596"/>
         <source>no cloud credentials</source>
         <translation>Ei pilvipalvelun tunnuksia</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="595"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="675"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="678"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Syötä pilvipalvelun tunnuksent.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="636"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="638"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>Pilvipalvelun sähköpostiosoitteessa ja salasanassa voi olla vain kirjaimia, numeroita ja merkit  &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="642"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="644"/>
         <source>Invalid format for email address</source>
         <translation>Virheellinen sähköpostiosoite</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="683"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="686"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Yritetään avata yhteyttä pilvipalveluun uusilla tunnuksilla</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="695"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
         <source>Testing cloud credentials</source>
         <translation>Testataan pilvipalvelun tunnuksia</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="712"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="715"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Käyttäjätunnusta ei voitu vahvistaa, koska pilvipalvelin ei vastaa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
         <source>Incorrect email / password combination</source>
         <translation>Virheelliset tunnukset (käyttäjätunnus tai salasana)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="723"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="726"/>
         <source>Cloud credentials require verification PIN</source>
         <translation>Pilvitunnus pitää vahvistaa PIN-koodilla</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="726"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="729"/>
         <source>Incorrect PIN, please try again</source>
         <translation>Virheellinen PIN, yritä uudelleen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="731"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="734"/>
         <source>PIN accepted, credentials verified</source>
         <translation>PIN-koodi hyväksytty, tunnukset vahvistettu</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="743"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="746"/>
         <source>Deleting cloud account...</source>
         <translation>Tuhotaan pilvitili...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="757"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="760"/>
         <source>No response from cloud server to delete account</source>
         <translation>Pilvipalvelin ei kuitannut tilin tuhoamista</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="768"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="772"/>
         <source>Cloud storage account deleted.</source>
         <translation>Pivlitili tuhottu.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="776"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="780"/>
         <source>Cloud storage error: %1</source>
         <translation>Virhe pilvitallennuksessa: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="823"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="827"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>Ladataan sukellukset paikallisesta tallennustilasta (&apos;ei pilve&apos; tila)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="871"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="876"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Yhteysvirhe pilvipalveluun, käytetään off-line -tilassa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="891"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="895"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Yhteys muodostettu pilvipalveluun. Sukelluslista on tyhjä.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1098"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1100"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
         <source>h</source>
         <translation>t</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1098"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1100"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1106"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1098"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
         <source>sec</source>
         <translation>sek</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1224"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1228"/>
         <source>weight</source>
         <translation>Massa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1517"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1521"/>
         <source>[%1]Changes saved:'%2'.
 %1 possible via context menu</source>
         <translation>[%1]Mutoksia tallennettu:&apos;%2&apos;.
 %1 mahdollista valikon kautta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1519"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
         <source>Redo</source>
         <translation>Toista</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1519"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
         <source>Undo: %1</source>
         <translation>Peruuta: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1521"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1525"/>
         <source>Undo</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1541"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1545"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation>Fataali virhe: tiedoston tallennus epäonnistui. Kopioi virheloki ja raportoi kehittäjille.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1881"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1885"/>
         <source>no default cylinder</source>
         <translation>ei oletussäiliötä</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2391"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2390"/>
         <source>(unsaved changes in memory)</source>
         <translation>(tallentamattomia muutoksia muistissa)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2393"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2392"/>
         <source>(changes synced locally)</source>
         <translation>(muutokset tallennettu paikallisesti)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2394"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2393"/>
         <source>(synced with cloud)</source>
         <translation>(synkronoitu pilveen)</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2401"/>
+        <source>(incorrect cloud email or password)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../core/fulltext.cpp" line="152"/>
+        <location filename="../core/fulltext.cpp" line="153"/>
         <source>Create full text index</source>
         <translation>Luo täysi teksti-indeksi</translation>
     </message>
     <message>
-        <location filename="../core/fulltext.cpp" line="153"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="708"/>
+        <location filename="../core/fulltext.cpp" line="154"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="713"/>
         <source>start processing</source>
         <translation>aloita käsittely</translation>
     </message>
     <message>
-        <location filename="../core/fulltext.cpp" line="158"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="739"/>
+        <location filename="../core/fulltext.cpp" line="159"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="744"/>
         <source>%1 dives processed</source>
         <translation>%1 sukellusta käsitelty</translation>
     </message>
@@ -8065,7 +8140,7 @@ Tallenna muokkauksesi eri nimelle.</translation>
         <translation>ei sukelluksia valitulla aikajaksolla</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="707"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="712"/>
         <source>populate data model</source>
         <translation>luo tietomalli</translation>
     </message>
@@ -8486,52 +8561,52 @@ Ole hyvä ja raportoi sukellustietokoneet, jotka
 tarvitsevat tämän asetuksen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="570"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="571"/>
         <source>Display</source>
         <translation>Näyttö</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="578"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="579"/>
         <source>Show only one column in Portrait mode</source>
         <translation>Näytä vain yksi sarake pystyasennossa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="589"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="591"/>
         <source>Depth line based on ×3 intervals</source>
         <translation>Syvyysviivat perustuen ×3 väleihin</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="603"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="606"/>
         <source>Profile deco ceiling</source>
         <translation>Profiilin deko-katto</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="611"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="614"/>
         <source>Show DC reported ceiling</source>
         <translation>Näytä sukellustietokoneen raportoima kattosyvyys</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="621"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="625"/>
         <source>Show calculated ceiling</source>
         <translation>Näytä laskettu kattosyvyys</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="631"/>
-        <source>GFLow</source>
-        <translation>GFLow</translation>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="637"/>
+        <source>GFLow (10 to 150)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="644"/>
-        <source>GFHigh</source>
-        <translation>GFHigh</translation>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="671"/>
+        <source>GFHigh (10 to 150</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="661"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="708"/>
         <source>Developer</source>
         <translation>Kehittäjä</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="669"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="716"/>
         <source>Display Developer menu</source>
         <translation>Näytä kehittäjävalikko</translation>
     </message>
@@ -8597,38 +8672,38 @@ Osa mediatiedostojen aikaleimoista ei ole minkään valitun sukelluksen aikana (
         <translation>Lataa mediatiedostot vaikka niiden ajankohta ei osu sukelluksen aikaan</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="129"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="125"/>
         <source>Open image file</source>
         <translation>Avaa kuvatiedosto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="131"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="127"/>
         <source>Image files</source>
         <translation>Kuvatiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="219"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="215"/>
         <source>Selected dive date/time</source>
         <translation>Valitun sukelluksen päivä/aika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="221"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="217"/>
         <source>First selected dive date/time</source>
         <translation>Ensimmäisen valitun sukelluksen päivä/aika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="222"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="218"/>
         <source>Last selected dive date/time</source>
         <translation>Viimeisen valitun sukelluksen päivä/aika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="224"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="220"/>
         <source>
 Files with inappropriate date/time</source>
         <translation>Tiedostot virheellisellä päivällä/ajalla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="234"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="230"/>
         <source>No Exif date/time found</source>
         <translation>Päivää/aikaa ei löytynyt Exif-tiedoista</translation>
     </message>
@@ -8721,28 +8796,28 @@ Files with inappropriate date/time</source>
         <translation>Tuo viestit (virheet, varoitukset jne.)</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="55"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="56"/>
         <source>Open SmartTrak files</source>
         <translation>Avaa SmartTrak-tiedostot</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="56"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="57"/>
         <source>SmartTrak files</source>
         <translation>SmartTrak-tiedostot</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="56"/>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="67"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="57"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="68"/>
         <source>All files</source>
         <translation>Kaikki tiedostot</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="66"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="67"/>
         <source>Open Subsurface files</source>
         <translation>Avaa Subsurfacen tiedostot</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="67"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="68"/>
         <source>Subsurface files</source>
         <translation>Subsurfacen tiedostot</translation>
     </message>
@@ -8751,11 +8826,11 @@ Files with inappropriate date/time</source>
     <name>StartPage</name>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="34"/>
-        <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation>Käyttääksesi Subsurface-mobiilia pilvitallennustilan kanssa, syötä käyttäjätunnuksesi ja salasanasi. &lt;br/&gt;&lt;br/&gt;Mikäli tämä on ensimmäinen kerta, kun käytät Subsurfacen pilvitallennusta, syötä sähköpostiosoitteesi (kaikki pieniä kirjaimia) ja haluamasi salasana (kirjaimia ja numeroita). &lt;br/&gt;&lt;br/&gt;Käyttääksesi Subsurface-mobiilia pelkästään paikallisella tallennuksella, valitse ei-pilveä -painike.</translation>
+        <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;&lt;font color=&quot;red&quot;&gt;If you are an existing user with dives stored in the cloud then synchronisation can take a few minutes. Please be patient and wait until your dives appear in the list.&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/StartPage.qml" line="47"/>
+        <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
         <source>Thank you for registering with Subsurface. We sent &lt;b&gt;%1&lt;/b&gt; a PIN code to complete the registration. If you do not receive an email from us within 15 minutes, please check the correct spelling of your email address and your spam box first.&lt;br/&gt;&lt;br/&gt;In case of any problems regarding cloud account setup, please contact us at our user forum (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Kiitoksia Subsurfacen rekisteröinnistä. Lähetimme &lt;b&gt; %1 &lt;/b&gt; PIN-koodin rekisteröinnin viimeistelemiseksi. Jos et saa viestiä 15 minuutin sisällä, tarkista sähköpostiosoitteesi ja spam-kansiosi. &lt;br/&gt;&lt;br/&gt;Mikäli sinulla on ongelmia pilvitallennuksen kanssa, otathan yhteyttä käyttäjä-foorumilla (https://subsurface-divelog.org/user-forum/). &lt;br/&gt;&lt;br/&gt;</translation>
     </message>
@@ -8820,8 +8895,8 @@ Files with inappropriate date/time</source>
     </message>
     <message>
         <location filename="../stats/boxseries.cpp" line="107"/>
-        <location filename="../stats/statsvariables.cpp" line="1058"/>
-        <location filename="../stats/statsvariables.cpp" line="1092"/>
+        <location filename="../stats/statsvariables.cpp" line="1059"/>
+        <location filename="../stats/statsvariables.cpp" line="1093"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -8996,279 +9071,279 @@ Files with inappropriate date/time</source>
         <translation>95% varmuusalue</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="66"/>
+        <location filename="../stats/statsvariables.cpp" line="67"/>
         <source>no divesite</source>
         <translation>ei sukelluskohdetta</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="99"/>
+        <location filename="../stats/statsvariables.cpp" line="100"/>
         <source>no trip</source>
         <translation>ei retkeä</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="356"/>
+        <location filename="../stats/statsvariables.cpp" line="357"/>
         <source>Median</source>
         <translation>Mediaani</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="357"/>
+        <location filename="../stats/statsvariables.cpp" line="358"/>
         <source>Mean</source>
         <translation>Keskiarvo</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="358"/>
+        <location filename="../stats/statsvariables.cpp" line="359"/>
         <source>Time-weighted mean</source>
         <translation>Aikapainotettu keskiarvo</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="359"/>
+        <location filename="../stats/statsvariables.cpp" line="360"/>
         <source>Sum</source>
         <translation>Summa</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="360"/>
+        <location filename="../stats/statsvariables.cpp" line="361"/>
         <source>Minimum</source>
         <translation>Alin</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="361"/>
+        <location filename="../stats/statsvariables.cpp" line="362"/>
         <source>Maximum</source>
         <translation>Korkein</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="763"/>
-        <location filename="../stats/statsvariables.cpp" line="1144"/>
-        <location filename="../stats/statsvariables.cpp" line="1351"/>
+        <location filename="../stats/statsvariables.cpp" line="764"/>
+        <location filename="../stats/statsvariables.cpp" line="1145"/>
+        <location filename="../stats/statsvariables.cpp" line="1352"/>
         <source>%1–%2</source>
         <translation>%1–%2</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="858"/>
+        <location filename="../stats/statsvariables.cpp" line="859"/>
         <source>Yearly</source>
         <translation>Vuosi</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="875"/>
+        <location filename="../stats/statsvariables.cpp" line="876"/>
         <source>Quarterly</source>
         <translation>Kvartaali</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="879"/>
+        <location filename="../stats/statsvariables.cpp" line="880"/>
         <source>%1 Q%2</source>
         <translation>%1 Q%2</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="887"/>
+        <location filename="../stats/statsvariables.cpp" line="888"/>
         <source>Q%1</source>
         <translation>Q%1</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="921"/>
+        <location filename="../stats/statsvariables.cpp" line="922"/>
         <source>Monthly</source>
         <translation>Kuukausi</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="959"/>
+        <location filename="../stats/statsvariables.cpp" line="960"/>
         <source>Date</source>
         <translation>Ajankohta</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="985"/>
-        <location filename="../stats/statsvariables.cpp" line="1212"/>
-        <location filename="../stats/statsvariables.cpp" line="1292"/>
+        <location filename="../stats/statsvariables.cpp" line="986"/>
+        <location filename="../stats/statsvariables.cpp" line="1213"/>
+        <location filename="../stats/statsvariables.cpp" line="1293"/>
         <source>in %1 %2 steps</source>
         <translation>%1 %2 vaiheessa</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1031"/>
+        <location filename="../stats/statsvariables.cpp" line="1032"/>
         <source>Max. Depth</source>
         <translation>Maksimisyvyys</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1043"/>
+        <location filename="../stats/statsvariables.cpp" line="1044"/>
         <source>Mean Depth</source>
         <translation>Keskisyvyys</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1055"/>
+        <location filename="../stats/statsvariables.cpp" line="1056"/>
         <source>in %1 min steps</source>
         <translation>%1 min vaiheessa</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1067"/>
+        <location filename="../stats/statsvariables.cpp" line="1068"/>
         <source>in hours</source>
         <translation>tuntia</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1073"/>
+        <location filename="../stats/statsvariables.cpp" line="1074"/>
         <source>h</source>
         <translation>t</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1089"/>
+        <location filename="../stats/statsvariables.cpp" line="1090"/>
         <source>Duration</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1114"/>
-        <location filename="../stats/statsvariables.cpp" line="1138"/>
+        <location filename="../stats/statsvariables.cpp" line="1115"/>
+        <location filename="../stats/statsvariables.cpp" line="1139"/>
         <source>in %1 %2/min steps</source>
         <translation>%1 %2/min vaiheessa</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1118"/>
-        <location filename="../stats/statsvariables.cpp" line="1148"/>
-        <location filename="../stats/statsvariables.cpp" line="1177"/>
+        <location filename="../stats/statsvariables.cpp" line="1119"/>
+        <location filename="../stats/statsvariables.cpp" line="1149"/>
+        <location filename="../stats/statsvariables.cpp" line="1178"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1174"/>
+        <location filename="../stats/statsvariables.cpp" line="1175"/>
         <source>SAC</source>
         <translation>Pintakulutus</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1264"/>
+        <location filename="../stats/statsvariables.cpp" line="1265"/>
         <source>Water temperature</source>
         <translation>Veden lämpötila</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1276"/>
+        <location filename="../stats/statsvariables.cpp" line="1277"/>
         <source>Air temperature</source>
         <translation>Ilman lämpötila</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1315"/>
+        <location filename="../stats/statsvariables.cpp" line="1316"/>
         <source>Weight</source>
         <translation>Painot</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1362"/>
+        <location filename="../stats/statsvariables.cpp" line="1363"/>
         <source>in %L2 steps</source>
         <translation>%L2 vaiheessa</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1380"/>
+        <location filename="../stats/statsvariables.cpp" line="1381"/>
         <source>Dive #</source>
         <translation>Sukellus</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1412"/>
+        <location filename="../stats/statsvariables.cpp" line="1413"/>
         <source>Dive mode</source>
         <translation>Sukellustyyppi</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1440"/>
+        <location filename="../stats/statsvariables.cpp" line="1441"/>
         <source>People</source>
         <translation>Ihmiset</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1466"/>
+        <location filename="../stats/statsvariables.cpp" line="1467"/>
         <source>Buddies</source>
         <translation>Kaverit</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1488"/>
+        <location filename="../stats/statsvariables.cpp" line="1489"/>
         <source>Dive guides</source>
         <translation>Sukellusoppaat</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1512"/>
+        <location filename="../stats/statsvariables.cpp" line="1513"/>
         <source>Tags</source>
         <translation>Avainsanat</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1551"/>
+        <location filename="../stats/statsvariables.cpp" line="1552"/>
         <source>in %1% steps</source>
         <translation>%1% vaiheessa</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1571"/>
+        <location filename="../stats/statsvariables.cpp" line="1572"/>
         <source>Air</source>
         <translation>Ilma</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1573"/>
+        <location filename="../stats/statsvariables.cpp" line="1574"/>
         <source>Oxygen</source>
         <translation>Happi</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1575"/>
+        <location filename="../stats/statsvariables.cpp" line="1576"/>
         <source>EAN%1–%2</source>
         <translation>EAN%1–%2</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1578"/>
+        <location filename="../stats/statsvariables.cpp" line="1579"/>
         <source>%1/%2–%3/%4</source>
         <translation>%1/%2–%3/%4</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1589"/>
+        <location filename="../stats/statsvariables.cpp" line="1590"/>
         <source>General</source>
         <translation>Yleistä</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1616"/>
+        <location filename="../stats/statsvariables.cpp" line="1617"/>
         <source>Gas type</source>
         <translation>Seostyyppi</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1672"/>
+        <location filename="../stats/statsvariables.cpp" line="1673"/>
         <source>In %L1% steps</source>
         <translation>%L1% vaiheessa</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1722"/>
+        <location filename="../stats/statsvariables.cpp" line="1723"/>
         <source>O₂ (max)</source>
         <translation>O₂ (max)</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1731"/>
+        <location filename="../stats/statsvariables.cpp" line="1732"/>
         <source>O₂ (bottom gas)</source>
         <translation>O₂ (pohjakaasu)</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1740"/>
+        <location filename="../stats/statsvariables.cpp" line="1741"/>
         <source>He (max)</source>
         <translation>He (max)</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1755"/>
+        <location filename="../stats/statsvariables.cpp" line="1756"/>
         <source>Suit type</source>
         <translation>Sukelluspuvun tyyppi</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1785"/>
+        <location filename="../stats/statsvariables.cpp" line="1786"/>
         <source>Weightsystem</source>
         <translation>Painojärjestelmä</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1815"/>
+        <location filename="../stats/statsvariables.cpp" line="1816"/>
         <source>Cylinder type</source>
         <translation>Säiliötyyppi</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1841"/>
+        <location filename="../stats/statsvariables.cpp" line="1842"/>
         <source>Dive site</source>
         <translation>Sukelluskohde</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1867"/>
+        <location filename="../stats/statsvariables.cpp" line="1868"/>
         <source>Dive trip</source>
         <translation>Sukellusmatka</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1891"/>
+        <location filename="../stats/statsvariables.cpp" line="1892"/>
         <source>Day of week</source>
         <translation>Viikonpäivä</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1916"/>
+        <location filename="../stats/statsvariables.cpp" line="1917"/>
         <source>Rating</source>
         <translation>Yleisarvio</translation>
     </message>
     <message>
-        <location filename="../stats/statsvariables.cpp" line="1942"/>
+        <location filename="../stats/statsvariables.cpp" line="1943"/>
         <source>Visibility</source>
         <translation>Näkyvyys</translation>
     </message>
@@ -9366,18 +9441,23 @@ Files with inappropriate date/time</source>
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="97"/>
+        <source>C&amp;ontribute</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/about.ui" line="104"/>
         <source>&amp;Website</source>
         <translation>&amp;Verkkosivusto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.ui" line="104"/>
+        <location filename="../desktop-widgets/about.ui" line="111"/>
         <source>&amp;Close</source>
         <translation>&amp;Sulje</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="15"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2024&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Sukelluslokiohjelmisto useille käyttöjärjestelmille&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger ja tiimi, 2011-2024 &lt;/span&gt;</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -9423,19 +9503,19 @@ Files with inappropriate date/time</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="181"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="179"/>
         <source>Remove cylinder?</source>
         <translation>Poistetaanko säiliö?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="182"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="180"/>
         <source>The deleted cylinder has sensor readings, which will be lost.
 Do you want to continue?</source>
         <translation>Poistettavalle säiliölle on painetietoja, jotka häviävät.
 Haluatk jatkaa?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="211"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveEquipment.cpp" line="209"/>
         <source>Warning: edited %1 dives</source>
         <translation>Varoitus: muokattu %1 sukellusta</translation>
     </message>
@@ -9608,54 +9688,54 @@ Haluatk jatkaa?</translation>
         <translation>Miellyttävä</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="26"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="37"/>
         <source>Use DC</source>
         <translation>Käytä sukellustietokonetta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="39"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="50"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="42"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="53"/>
         <source>Undo</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="86"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="96"/>
         <source>Warning: edited %1 dives</source>
         <translation>Varoitus: muokattu %1 sukellusta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="136"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="148"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="155"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="173"/>
         <source>h</source>
         <translation>t</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="155"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="173"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="143"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="155"/>
         <source>sec</source>
         <translation>sek</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="161"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="173"/>
         <source>d</source>
         <translation>p</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="231"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="235"/>
         <source>unknown</source>
         <translation>tuntematon</translation>
     </message>
@@ -9665,7 +9745,7 @@ Haluatk jatkaa?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="6"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="433"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="252"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="254"/>
         <source>Notes</source>
         <translation>Muistiinpanot</translation>
     </message>
@@ -9691,7 +9771,7 @@ Haluatk jatkaa?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.ui" line="223"/>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="251"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="253"/>
         <source>Location</source>
         <translation>Kohde</translation>
     </message>
@@ -9727,27 +9807,27 @@ Haluatk jatkaa?</translation>
         <translation>Yleisarvio</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="48"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="49"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="52"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="53"/>
         <source>Undo</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="219"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="221"/>
         <source>Trip location</source>
         <translation>Matkakohde</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="225"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="227"/>
         <source>Trip notes</source>
         <translation>Matkan muistiinpanot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="300"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveNotes.cpp" line="302"/>
         <source>Warning: edited %1 dives</source>
         <translation>Varoitus: muokattu %1 sukellusta</translation>
     </message>
@@ -9765,47 +9845,47 @@ Haluatk jatkaa?</translation>
         <translation>Zoomi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="56"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
         <source>Load media from file(s)</source>
         <translation>Lataa mediaa tiedostoista</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="60"/>
         <source>Load media file(s) from web</source>
         <translation>Lataa mediatiedostoja verkosta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="62"/>
         <source>Delete selected media files</source>
         <translation>Poista valitut mediatiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="60"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="63"/>
         <source>Delete all media files</source>
         <translation>Poista kaikki mediatiedostot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="61"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="64"/>
         <source>Open folder of selected media files</source>
         <translation>Avaa valittujen mediatiedostojen hakemisto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="62"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="65"/>
         <source>Recalculate selected thumbnails</source>
         <translation>Generoi valitut pikkukuvat uudelleen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="63"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="66"/>
         <source>Save dive data as subtitles</source>
         <translation>Tallenna sukellustiedot tekstitykseksi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="155"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="158"/>
         <source>Deleting media files</source>
         <translation>Poistetaan mediatiedostoja</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="155"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="158"/>
         <source>Are you sure you want to delete all media files?</source>
         <translation>Haluatko varmasti poistaa kaikki mediatiedostot?</translation>
     </message>
@@ -9858,57 +9938,57 @@ Haluatk jatkaa?</translation>
         <translation>Kaasun kulutus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="14"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="15"/>
         <source>Highest total SAC of a dive</source>
         <translation>Korkein pintakulutus sukelluksella</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="15"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="16"/>
         <source>Lowest total SAC of a dive</source>
         <translation>Matalin pintakulutus sukelluksella</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="16"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="17"/>
         <source>Average total SAC of all selected dives</source>
         <translation>Keskimääräinen pintakulutus valituilla sukelluksilla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="17"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="18"/>
         <source>Highest temperature</source>
         <translation>Korkein lämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="18"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="19"/>
         <source>Lowest temperature</source>
         <translation>Matalin lämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="19"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="20"/>
         <source>Average temperature of all selected dives</source>
         <translation>Valittujen sukellusten keskilämpötila</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="20"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="21"/>
         <source>Deepest dive</source>
         <translation>Syvin sukellus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="21"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="22"/>
         <source>Shallowest dive</source>
         <translation>Matalin sukellus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="22"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="23"/>
         <source>Longest dive</source>
         <translation>Pisin sukellus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="23"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="24"/>
         <source>Shortest dive</source>
         <translation>Lyhin sukellus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="24"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="25"/>
         <source>Average length of all selected dives</source>
         <translation>Valittujen sukellusten keskimääräinen kesto</translation>
     </message>
@@ -10171,7 +10251,7 @@ sekoittaa ilmasta ja käyttäen:
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="484"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="480"/>
         <source>%1click to visit %2</source>
         <translation>napauta %1 pohjassa avataksesi %2</translation>
     </message>
@@ -10179,7 +10259,7 @@ sekoittaa ilmasta ja käyttäen:
 <context>
     <name>ToolTipItem</name>
     <message>
-        <location filename="../profile-widget/divetooltipitem.cpp" line="132"/>
+        <location filename="../profile-widget/divetooltipitem.cpp" line="131"/>
         <source>Information</source>
         <translation>Tiedot</translation>
     </message>
@@ -10241,74 +10321,74 @@ sekoittaa ilmasta ja käyttäen:
 <context>
     <name>UpdateManager</name>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="58"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="57"/>
         <source>Check for updates.</source>
         <translation>Tarkista päivitykset.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="59"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="58"/>
         <source>Subsurface was unable to check for updates.</source>
         <translation>Päivitysten tarkistus epäonnistui.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="64"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="63"/>
         <source>The following error occurred:</source>
         <translation>Tapahtui seuraava virhe:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="65"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="64"/>
         <source>Please check your internet connection.</source>
         <translation>Tarkista Internet-yhteys.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="75"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="74"/>
         <source>You are using the latest version of Subsurface.</source>
         <translation>Käytössä on uusin versio Subsurfacesta.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="78"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="77"/>
         <source>A new version of Subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
         <translation>Saatavilla on uusi versio Subsurfacesta.&lt;br/&gt;Näpäytä:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; ladataksesi sen.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="84"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="83"/>
         <source>A new version of Subsurface is available.</source>
         <translation>Saatavilla on uusi versio Subsurfacesta.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="85"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="84"/>
         <source>Latest version is %1, please check %2 our download page %3 for information in how to update.</source>
         <translation>Uusin versio on %1, tarkista %2 lataussivultamme %3 päivitysohjeiksi.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="95"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="94"/>
         <source>Newest release version is </source>
         <translation>Uusin julkaistu versio on</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="96"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="95"/>
         <source>The server returned the following information:</source>
         <translation>Palvelin palautti seuraavan tiedon:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="112"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="111"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
 If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation>Tarkistetaan joka toinen viikko uuden version saatavuus.
 Mikäli et halua tarkistusta tehtävän, valitse kieltävä painike.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="114"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="113"/>
         <source>Decline</source>
         <translation>Kieltäydy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="115"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="114"/>
         <source>Accept</source>
         <translation>Hyväksy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="116"/>
         <source>Automatic check for updates</source>
         <translation>Päivitysten automaattinen tarkistus</translation>
     </message>
@@ -10556,7 +10636,7 @@ Keski</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="791"/>
+        <location filename="../core/libdivecomputer.c" line="857"/>
         <source>Error parsing the header</source>
         <translation>Virhe otsaketietojen tulkinnassa</translation>
     </message>
@@ -10564,366 +10644,358 @@ Keski</translation>
 <context>
     <name>gettextFromC</name>
     <message>
-        <location filename="../backend-shared/exportfuncs.cpp" line="272"/>
-        <location filename="../backend-shared/exportfuncs.cpp" line="309"/>
-        <location filename="../core/save-html.c" line="490"/>
-        <location filename="../core/save-html.c" line="580"/>
+        <location filename="../backend-shared/exportfuncs.cpp" line="273"/>
+        <location filename="../backend-shared/exportfuncs.cpp" line="310"/>
+        <location filename="../core/save-html.c" line="491"/>
+        <location filename="../core/save-html.c" line="581"/>
         <location filename="../core/worldmap-save.c" line="117"/>
         <source>Can&apos;t open file %s</source>
         <translation>Tiedoston avaus ei onnistu %s</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="71"/>
+        <location filename="../commands/command_event.cpp" line="70"/>
         <source>modechange</source>
         <translation>vaihda moodia</translation>
     </message>
     <message>
-        <location filename="../commands/command_event.cpp" line="77"/>
-        <location filename="../core/planner.c" line="272"/>
+        <location filename="../commands/command_event.cpp" line="76"/>
+        <location filename="../core/planner.c" line="273"/>
         <source>SP change</source>
         <translation>SP:n mutos</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="308"/>
-        <location filename="../core/cochran.c" line="314"/>
-        <location filename="../core/cochran.c" line="384"/>
-        <location filename="../core/libdivecomputer.c" line="249"/>
+        <location filename="../core/cochran.c" line="309"/>
+        <location filename="../core/cochran.c" line="315"/>
+        <location filename="../core/cochran.c" line="385"/>
+        <location filename="../core/libdivecomputer.c" line="315"/>
         <source>deco stop</source>
         <translation>deko-pysähdys</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="335"/>
-        <location filename="../core/cochran.c" line="389"/>
-        <location filename="../core/import-csv.c" line="696"/>
-        <location filename="../core/libdivecomputer.c" line="251"/>
+        <location filename="../core/cochran.c" line="336"/>
+        <location filename="../core/cochran.c" line="390"/>
+        <location filename="../core/import-csv.c" line="689"/>
+        <location filename="../core/libdivecomputer.c" line="317"/>
         <source>ascent</source>
         <translation>nousu</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="341"/>
-        <location filename="../core/import-csv.c" line="674"/>
+        <location filename="../core/cochran.c" line="342"/>
+        <location filename="../core/import-csv.c" line="667"/>
         <source>battery</source>
         <translation>paristo</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="347"/>
-        <location filename="../core/libdivecomputer.c" line="267"/>
+        <location filename="../core/cochran.c" line="348"/>
+        <location filename="../core/libdivecomputer.c" line="333"/>
         <source>OLF</source>
         <translation>Happikertymä</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="352"/>
-        <location filename="../core/libdivecomputer.c" line="266"/>
+        <location filename="../core/cochran.c" line="353"/>
+        <location filename="../core/libdivecomputer.c" line="332"/>
         <source>maxdepth</source>
         <translation>Suurin syvyys</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="357"/>
-        <location filename="../core/cochran.c" line="403"/>
-        <location filename="../core/libdivecomputer.c" line="268"/>
+        <location filename="../core/cochran.c" line="358"/>
+        <location filename="../core/cochran.c" line="404"/>
+        <location filename="../core/libdivecomputer.c" line="334"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="364"/>
-        <location filename="../core/cochran.c" line="413"/>
-        <location filename="../core/cochran.c" line="420"/>
-        <location filename="../core/import-csv.c" line="777"/>
-        <location filename="../core/libdivecomputer.c" line="259"/>
-        <location filename="../core/libdivecomputer.c" line="273"/>
-        <location filename="../core/plannernotes.c" line="54"/>
+        <location filename="../core/cochran.c" line="365"/>
+        <location filename="../core/cochran.c" line="414"/>
+        <location filename="../core/cochran.c" line="421"/>
+        <location filename="../core/import-csv.c" line="770"/>
+        <location filename="../core/libdivecomputer.c" line="325"/>
+        <location filename="../core/libdivecomputer.c" line="339"/>
+        <location filename="../core/plannernotes.c" line="55"/>
         <source>gaschange</source>
         <translation>Kaasun vaihto</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="369"/>
-        <location filename="../core/cochran.c" line="408"/>
-        <location filename="../core/libdivecomputer.c" line="250"/>
+        <location filename="../core/cochran.c" line="370"/>
+        <location filename="../core/cochran.c" line="409"/>
+        <location filename="../core/libdivecomputer.c" line="316"/>
         <source>rbt</source>
         <translation>pohja-aika</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="378"/>
-        <location filename="../core/cochran.c" line="425"/>
-        <location filename="../core/libdivecomputer.c" line="252"/>
+        <location filename="../core/cochran.c" line="379"/>
+        <location filename="../core/cochran.c" line="426"/>
+        <location filename="../core/libdivecomputer.c" line="318"/>
         <source>ceiling</source>
         <translation>katto</translation>
     </message>
     <message>
-        <location filename="../core/cochran.c" line="394"/>
-        <location filename="../core/libdivecomputer.c" line="254"/>
+        <location filename="../core/cochran.c" line="395"/>
+        <location filename="../core/libdivecomputer.c" line="320"/>
         <source>transmitter</source>
         <translation>lähetin</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="275"/>
+        <location filename="../core/datatrak.c" line="274"/>
         <source>clear</source>
         <translation>tyhjennä</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="278"/>
+        <location filename="../core/datatrak.c" line="277"/>
         <source>misty</source>
         <translation>sumuinen</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="281"/>
+        <location filename="../core/datatrak.c" line="280"/>
         <source>fog</source>
         <translation>sumu</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="284"/>
+        <location filename="../core/datatrak.c" line="283"/>
         <source>rain</source>
         <translation>sade</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="287"/>
+        <location filename="../core/datatrak.c" line="286"/>
         <source>storm</source>
         <translation>myrsky</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="290"/>
+        <location filename="../core/datatrak.c" line="289"/>
         <source>snow</source>
         <translation>lumi</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="310"/>
+        <location filename="../core/datatrak.c" line="309"/>
         <source>No suit</source>
         <translation>Ei pukua</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="313"/>
+        <location filename="../core/datatrak.c" line="312"/>
         <source>Shorty</source>
         <translation>lyhyt</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="316"/>
+        <location filename="../core/datatrak.c" line="315"/>
         <source>Combi</source>
         <translation>yhdistelmä</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="319"/>
+        <location filename="../core/datatrak.c" line="318"/>
         <source>Wet suit</source>
         <translation>Märkäpuku</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="322"/>
+        <location filename="../core/datatrak.c" line="321"/>
         <source>Semidry suit</source>
         <translation>Puolikuiva</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="325"/>
+        <location filename="../core/datatrak.c" line="324"/>
         <source>Dry suit</source>
         <translation>Kuivapuku</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="386"/>
+        <location filename="../core/datatrak.c" line="385"/>
         <source>no stop</source>
         <translation>ilman pysähdystä</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="388"/>
+        <location filename="../core/datatrak.c" line="387"/>
         <location filename="../core/tag.c" line="20"/>
         <source>deco</source>
         <translation>deko</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="390"/>
+        <location filename="../core/datatrak.c" line="389"/>
         <source>single ascent</source>
         <translation>yksittäinen nousu</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="392"/>
+        <location filename="../core/datatrak.c" line="391"/>
         <source>multiple ascent</source>
         <translation>useita nousuja</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="394"/>
+        <location filename="../core/datatrak.c" line="393"/>
         <source>fresh water</source>
         <translation>makea vesi</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="396"/>
+        <location filename="../core/datatrak.c" line="395"/>
         <source>salt water</source>
         <translation>suolavesi</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="417"/>
+        <location filename="../core/datatrak.c" line="416"/>
         <source>sight seeing</source>
         <translation>nähtävyydet</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="419"/>
+        <location filename="../core/datatrak.c" line="418"/>
         <source>club dive</source>
         <translation>seurasukellus</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="421"/>
+        <location filename="../core/datatrak.c" line="420"/>
         <location filename="../core/tag.c" line="19"/>
         <source>instructor</source>
         <translation>kouluttaja</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="423"/>
+        <location filename="../core/datatrak.c" line="422"/>
         <source>instruction</source>
         <translation>opastus</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="425"/>
+        <location filename="../core/datatrak.c" line="424"/>
         <location filename="../core/tag.c" line="18"/>
         <source>night</source>
         <translation>yö</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="427"/>
+        <location filename="../core/datatrak.c" line="426"/>
         <location filename="../core/tag.c" line="16"/>
         <source>cave</source>
         <translation>luola</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="429"/>
+        <location filename="../core/datatrak.c" line="428"/>
         <location filename="../core/tag.c" line="15"/>
         <source>ice</source>
         <translation>jää</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="431"/>
+        <location filename="../core/datatrak.c" line="430"/>
         <source>search</source>
         <translation>etsi</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="438"/>
+        <location filename="../core/datatrak.c" line="437"/>
         <location filename="../core/tag.c" line="16"/>
         <source>wreck</source>
         <translation>hylky</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="440"/>
+        <location filename="../core/datatrak.c" line="439"/>
         <location filename="../core/tag.c" line="17"/>
         <source>river</source>
         <translation>joki</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="442"/>
+        <location filename="../core/datatrak.c" line="441"/>
         <location filename="../core/tag.c" line="14"/>
         <source>drift</source>
         <translation>virta</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="444"/>
+        <location filename="../core/datatrak.c" line="443"/>
         <location filename="../core/tag.c" line="19"/>
         <source>photo</source>
         <translation>valokuva</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="446"/>
+        <location filename="../core/datatrak.c" line="445"/>
         <source>other</source>
         <translation>muu</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="456"/>
+        <location filename="../core/datatrak.c" line="455"/>
         <source>Other activities</source>
         <translation>Muut aktiviteetit</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="480"/>
+        <location filename="../core/datatrak.c" line="479"/>
         <source>Datatrak/Wlog notes</source>
         <translation>Datatrak/Wlog -muistiinpanot</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="523"/>
+        <location filename="../core/datatrak.c" line="522"/>
         <source>[Warning] Manual dive # %d
 </source>
         <translation>[Varoitus] Käsin syötetty sukellus # %d
 </translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="549"/>
+        <location filename="../core/datatrak.c" line="548"/>
         <source>[Error] Out of memory for dive %d. Abort parsing.</source>
         <translation>[Virhe] Muisti on loppu sukelluksella %d. Keskeytetään jäsentäminen.</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="639"/>
-        <location filename="../core/import-divinglog.c" line="308"/>
-        <location filename="../core/libdivecomputer.c" line="233"/>
-        <location filename="../core/string-format.cpp" line="154"/>
-        <location filename="../core/uemis-downloader.c" line="201"/>
+        <location filename="../core/datatrak.c" line="638"/>
+        <location filename="../core/import-divinglog.c" line="309"/>
+        <location filename="../core/libdivecomputer.c" line="299"/>
+        <location filename="../core/string-format.cpp" line="156"/>
+        <location filename="../core/uemis-downloader.c" line="203"/>
         <source>unknown</source>
         <translation>tuntematon</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="694"/>
+        <location filename="../core/datatrak.c" line="691"/>
         <source>[Error] File is not a DataTrak file. Aborted</source>
         <translation>[Virhe] Tiedosto ei ole DataTrak-muodossa. Kekseytetty</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="719"/>
+        <location filename="../core/datatrak.c" line="716"/>
         <source>Error: no dive</source>
         <translation>Virhe: ei sukellusta</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="35"/>
+        <location filename="../core/dive.c" line="31"/>
         <source>Open circuit</source>
         <translation>Avoin kierto</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="36"/>
+        <location filename="../core/dive.c" line="32"/>
         <source>CCR</source>
         <translation>CCR</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="37"/>
+        <location filename="../core/dive.c" line="33"/>
         <source>pSCR</source>
         <translation>pSCR</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="38"/>
+        <location filename="../core/dive.c" line="34"/>
         <source>Freedive</source>
         <translation>Vapaasukellus</translation>
     </message>
     <message>
-        <location filename="../core/divefilter.cpp" line="205"/>
+        <location filename="../core/divefilter.cpp" line="208"/>
         <source>%L1/%L2 shown</source>
         <translation>%L1/%L2 näytetään</translation>
     </message>
     <message>
-        <location filename="../core/divefilter.cpp" line="207"/>
+        <location filename="../core/divefilter.cpp" line="210"/>
         <source>%L1 dives</source>
         <translation>%L1 sukellusta</translation>
     </message>
     <message>
-        <location filename="../core/divelist.c" line="652"/>
-        <location filename="../core/equipment.c" line="200"/>
-        <location filename="../core/planner.c" line="1171"/>
-        <location filename="../core/planner.c" line="1174"/>
-        <source>air</source>
-        <translation>ilma</translation>
-    </message>
-    <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
-        <location filename="../core/string-format.cpp" line="237"/>
-        <location filename="../desktop-widgets/templatelayout.cpp" line="464"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="161"/>
+        <location filename="../core/string-format.cpp" line="239"/>
+        <location filename="../desktop-widgets/templatelayout.cpp" line="454"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="165"/>
         <source>h</source>
         <translation>t</translation>
     </message>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
-        <location filename="../core/plannernotes.c" line="62"/>
-        <location filename="../core/plannernotes.c" line="523"/>
-        <location filename="../core/string-format.cpp" line="237"/>
+        <location filename="../core/plannernotes.c" line="63"/>
+        <location filename="../core/plannernotes.c" line="524"/>
+        <location filename="../core/string-format.cpp" line="239"/>
         <location filename="../core/worldmap-save.c" line="50"/>
-        <location filename="../desktop-widgets/templatelayout.cpp" line="465"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="161"/>
+        <location filename="../desktop-widgets/templatelayout.cpp" line="455"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="165"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
-        <location filename="../core/qthelper.h" line="85"/>
-        <location filename="../desktop-widgets/templatelayout.cpp" line="465"/>
+        <location filename="../core/qthelper.h" line="84"/>
+        <location filename="../desktop-widgets/templatelayout.cpp" line="455"/>
         <source>sec</source>
         <translation>sek</translation>
     </message>
@@ -10939,86 +11011,109 @@ Keski</translation>
     </message>
     <message>
         <location filename="../core/divesite-helper.cpp" line="29"/>
-        <location filename="../core/save-html.c" line="535"/>
+        <location filename="../core/save-html.c" line="536"/>
         <source>Tags</source>
         <translation>Avainsanat</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="85"/>
+        <location filename="../core/equipment.c" line="86"/>
         <source>OC-gas</source>
         <translation>Vapaankierron seos</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="85"/>
+        <location filename="../core/equipment.c" line="86"/>
         <source>diluent</source>
         <translation>diluent</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="85"/>
-        <location filename="../core/equipment.c" line="204"/>
-        <location filename="../core/planner.c" line="1175"/>
-        <location filename="../core/planner.c" line="1178"/>
+        <location filename="../core/equipment.c" line="86"/>
+        <location filename="../core/equipment.c" line="205"/>
+        <location filename="../core/planner.c" line="1199"/>
+        <location filename="../core/planner.c" line="1202"/>
         <source>oxygen</source>
         <translation>happi</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="85"/>
+        <location filename="../core/equipment.c" line="86"/>
         <source>not used</source>
         <translation>käyttämättä</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="202"/>
+        <location filename="../core/equipment.c" line="201"/>
+        <location filename="../core/planner.c" line="1195"/>
+        <location filename="../core/planner.c" line="1198"/>
+        <location filename="../core/string-format.cpp" line="285"/>
+        <source>air</source>
+        <translation>ilma</translation>
+    </message>
+    <message>
+        <location filename="../core/equipment.c" line="203"/>
         <source>EAN%d</source>
         <translation>EAN%d</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="322"/>
+        <location filename="../core/equipment.c" line="323"/>
         <source>integrated</source>
         <translation>integroitu</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="323"/>
+        <location filename="../core/equipment.c" line="324"/>
         <source>belt</source>
         <translation>vyöpaino</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="324"/>
+        <location filename="../core/equipment.c" line="325"/>
         <source>ankle</source>
         <translation>nilkkapaino</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="325"/>
+        <location filename="../core/equipment.c" line="326"/>
         <source>backplate</source>
         <translation>selkälevy</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="326"/>
+        <location filename="../core/equipment.c" line="327"/>
         <source>clip-on</source>
         <translation>clip-on</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="118"/>
+        <location filename="../core/eventtype.cpp" line="90"/>
+        <source>info</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/eventtype.cpp" line="91"/>
+        <source>warn</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/eventtype.cpp" line="92"/>
+        <source>alarm</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/file.c" line="117"/>
         <source>No dives in the input file &apos;%s&apos;</source>
         <translation>Tiedostosta &apos;%s&apos; ei löytynyt yhtään sukellusta</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="234"/>
+        <location filename="../core/file.c" line="230"/>
         <source>Cannot open CSV file %s; please use Import log file dialog</source>
         <comment>'Import log file' should be the same text as corresponding label in Import menu</comment>
         <translation>CSV -tiedoston %s avaus epäonnistui; käytä Tuonti -dialogia</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="325"/>
-        <location filename="../core/import-csv.c" line="124"/>
-        <location filename="../core/import-csv.c" line="349"/>
-        <location filename="../core/import-csv.c" line="512"/>
-        <location filename="../core/import-csv.c" line="854"/>
-        <location filename="../core/ostctools.c" line="57"/>
+        <location filename="../core/file.c" line="318"/>
+        <location filename="../core/import-csv.c" line="123"/>
+        <location filename="../core/import-csv.c" line="346"/>
+        <location filename="../core/import-csv.c" line="506"/>
+        <location filename="../core/import-csv.c" line="842"/>
+        <location filename="../core/ostctools.c" line="56"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Tiedoston &apos;%s&apos; avaaminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="327"/>
+        <location filename="../core/file.c" line="320"/>
         <source>Empty file &apos;%s&apos;</source>
         <translation>Tyhjä tiedosto &apos;%s&apos;</translation>
     </message>
@@ -11084,7 +11179,7 @@ Keski</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="55"/>
-        <location filename="../core/plannernotes.c" line="176"/>
+        <location filename="../core/plannernotes.c" line="177"/>
         <source>duration</source>
         <translation>kesto</translation>
     </message>
@@ -11110,7 +11205,7 @@ Keski</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="60"/>
-        <location filename="../core/plannernotes.c" line="521"/>
+        <location filename="../core/plannernotes.c" line="522"/>
         <source>SAC</source>
         <translation>Pintakulutus</translation>
     </message>
@@ -11245,32 +11340,32 @@ Keski</translation>
         <translation>ei ole</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="167"/>
+        <location filename="../core/gas.c" line="169"/>
         <source>Air</source>
         <translation>Ilma</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="168"/>
+        <location filename="../core/gas.c" line="170"/>
         <source>Nitrox</source>
         <translation>Nitrox</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="169"/>
+        <location filename="../core/gas.c" line="171"/>
         <source>Hypoxic Trimix</source>
         <translation>Hypoxic Trimix</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="170"/>
+        <location filename="../core/gas.c" line="172"/>
         <source>Normoxic Trimix</source>
         <translation>Normoxic Trimix</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="171"/>
+        <location filename="../core/gas.c" line="173"/>
         <source>Hyperoxic Trimix</source>
         <translation>Hyperoxic Trimix</translation>
     </message>
     <message>
-        <location filename="../core/gas.c" line="172"/>
+        <location filename="../core/gas.c" line="174"/>
         <source>Oxygen</source>
         <translation>Happi</translation>
     </message>
@@ -11306,346 +11401,356 @@ Keski</translation>
         <translation>Virhe: Subsurfacen pilvitallennustila on korruptoitunut</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="347"/>
+        <location filename="../core/git-access.c" line="351"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
         <translation>Virhe: Subsurfacen pilvitallennustilan päivitys epäonnistui, yritä myöhemmin uudelleen</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="404"/>
+        <location filename="../core/git-access.c" line="408"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
         <translation>Etä- ja paikallinen tallennus eroavat toisistaan. Error: merge failed (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="434"/>
+        <location filename="../core/git-access.c" line="438"/>
         <source>Remote storage and local data diverged. Cannot combine local and remote changes</source>
         <translation>Virhe: paikallinen- ja pilvitadata eroavat toisistaan. Emme voi yhdistää näitä keskenään</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="471"/>
+        <location filename="../core/git-access.c" line="475"/>
         <source>Remote storage and local data diverged</source>
         <translation>Virhe: paikallinen ja pilvidata eroavat toisistaan</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="475"/>
+        <location filename="../core/git-access.c" line="479"/>
         <source>Remote storage and local data diverged. Error: writing the data failed (%s)</source>
         <translation>Paikallinen ja pilvidata eroavat toisistaan. Virhe: tiedon tallennus epäonnistui (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="485"/>
+        <location filename="../core/git-access.c" line="489"/>
         <source>Problems with local cache of Subsurface cloud data</source>
         <translation>Virhe: ongelmia paikallisen pilvidatan kopion kanssa</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="486"/>
+        <location filename="../core/git-access.c" line="490"/>
         <source>Moved cache data to %s. Please try the operation again.</source>
         <translation>Paikallinen kopio siirretty %s. Ole hyvä ja yritä toimintoa uudelleen.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="541"/>
+        <location filename="../core/git-access.c" line="545"/>
         <source>Update local storage to match cloud storage</source>
         <translation>Päivitä paikallinen tallennustila vastaamaan pilvipalvelua</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="549"/>
+        <location filename="../core/git-access.c" line="553"/>
         <source>Push local changes to cloud storage</source>
         <translation>Tallenna paikalliset muutokset pilvitallennustilaan</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="569"/>
+        <location filename="../core/git-access.c" line="573"/>
         <source>Try to merge local changes into cloud storage</source>
         <translation>Yritä yhdistää paikalliset muutokset pilvitallennustilaan</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="613"/>
+        <location filename="../core/git-access.c" line="617"/>
         <source>Store data into cloud storage</source>
         <translation>Tallenna tiedot pilvitallennustilaan</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="689"/>
+        <location filename="../core/git-access.c" line="693"/>
         <source>Sync with cloud storage</source>
         <translation>Synkronoi pilvitallennustila</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="721"/>
+        <location filename="../core/git-access.c" line="725"/>
         <source>Can&apos;t reach cloud server, working with local data</source>
         <translation>Lukeminen pilvitallennustilasta epäonnistui, käytetään paikallista dataa</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="735"/>
+        <location filename="../core/git-access.c" line="739"/>
         <source>Successful cloud connection, fetch remote</source>
         <translation>Onnistunut yhteys pilvitallennustilaan, haetaan tiedot</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="752"/>
+        <location filename="../core/git-access.c" line="756"/>
         <source>Done syncing with cloud storage</source>
         <translation>Synkronointi pilvitallennustilaan valmis</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="899"/>
+        <location filename="../core/git-access.c" line="905"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Virhe: yhteys Subsurfacen pilvitallennustilaan</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="902"/>
+        <location filename="../core/git-access.c" line="908"/>
         <source>git clone of %s failed (%s)</source>
         <translation>lokin %s haku epäonnistui (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="927"/>
+        <location filename="../core/git-access.c" line="933"/>
         <source>Synchronising data file</source>
         <translation>Synkronoidaan tiedot</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="228"/>
+        <location filename="../core/import-csv.c" line="227"/>
         <source>No dive profile found from &apos;%s&apos;</source>
         <translation>Sukellusprofiilia ei löytynyt &apos;%s&apos;:sta</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="613"/>
+        <location filename="../core/import-csv.c" line="606"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>Poseidon -tuonti epäonnistui: tiedoston &apos;%s&apos; luku epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="649"/>
+        <location filename="../core/import-csv.c" line="642"/>
         <source>Mouth piece position OC</source>
         <translation>Suukappaleen asema (avoin kierto)</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="653"/>
+        <location filename="../core/import-csv.c" line="646"/>
         <source>Mouth piece position CC</source>
         <translation>Suukappaleen asento (suljettu kierto)</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="657"/>
+        <location filename="../core/import-csv.c" line="650"/>
         <source>Mouth piece position unknown</source>
         <translation>Suukappaleen asento tuntematon</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="661"/>
+        <location filename="../core/import-csv.c" line="654"/>
         <source>Mouth piece position not connected</source>
         <translation>Suukappale ei kytketty</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="668"/>
+        <location filename="../core/import-csv.c" line="661"/>
         <source>Power off</source>
         <translation>Sammuta</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="718"/>
+        <location filename="../core/import-csv.c" line="711"/>
         <source>O₂ calibration failed</source>
         <translation>Happikalibrointi epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/import-csv.c" line="720"/>
-        <location filename="../core/import-csv.c" line="729"/>
+        <location filename="../core/import-csv.c" line="713"/>
+        <location filename="../core/import-csv.c" line="722"/>
         <source>O₂ calibration</source>
         <translation>Happikalibrointi</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="248"/>
+        <location filename="../core/libdivecomputer.c" line="314"/>
         <source>none</source>
         <translation>ei mitään</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="253"/>
+        <location filename="../core/libdivecomputer.c" line="319"/>
         <source>workload</source>
         <translation>työmäärä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="255"/>
+        <location filename="../core/libdivecomputer.c" line="321"/>
         <source>violation</source>
         <translation>rike</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="256"/>
+        <location filename="../core/libdivecomputer.c" line="322"/>
         <source>bookmark</source>
         <translation>kirjanmerkki</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="257"/>
+        <location filename="../core/libdivecomputer.c" line="323"/>
         <source>surface</source>
         <translation>pinta</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="324"/>
         <source>safety stop</source>
         <translation>turvapysähdys</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="326"/>
         <source>safety stop (voluntary)</source>
         <translation>turvapysähdys (vapaaehtoinen)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="327"/>
         <source>safety stop (mandatory)</source>
         <translation>turvapysähdys (pakollinen)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="328"/>
         <source>deepstop</source>
         <translation>syväpysähdys</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="263"/>
+        <location filename="../core/libdivecomputer.c" line="329"/>
         <source>ceiling (safety stop)</source>
         <translation>katto (turvapysähdys)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="264"/>
+        <location filename="../core/libdivecomputer.c" line="330"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>liian syvällä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="265"/>
+        <location filename="../core/libdivecomputer.c" line="331"/>
         <source>divetime</source>
         <translation>sukellusaika</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="269"/>
+        <location filename="../core/libdivecomputer.c" line="335"/>
         <source>airtime</source>
         <translation>Ilma-aika</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="270"/>
+        <location filename="../core/libdivecomputer.c" line="336"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="271"/>
+        <location filename="../core/libdivecomputer.c" line="337"/>
         <source>heading</source>
         <translation>suunta</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="272"/>
+        <location filename="../core/libdivecomputer.c" line="338"/>
         <source>tissue level warning</source>
         <translation>kudoskertymän varoitus</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="282"/>
+        <location filename="../core/libdivecomputer.c" line="348"/>
         <source>invalid event number</source>
         <translation>tuntematon tapahtumanumero</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="599"/>
+        <location filename="../core/libdivecomputer.c" line="665"/>
         <source>Error parsing the datetime</source>
         <translation>Virhe ajan jäsentämisessä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="618"/>
+        <location filename="../core/libdivecomputer.c" line="684"/>
         <source>Dive %d: %s</source>
         <translation>Sukellus %d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="624"/>
+        <location filename="../core/libdivecomputer.c" line="690"/>
         <source>Error parsing the divetime</source>
         <translation>Virhe sukelluksen keston jäsentämisessä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="634"/>
+        <location filename="../core/libdivecomputer.c" line="700"/>
         <source>Error parsing the maxdepth</source>
         <translation>Virhe maksimisyvyyden jäsentämisessä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="648"/>
+        <location filename="../core/libdivecomputer.c" line="714"/>
         <source>Error parsing temperature</source>
         <translation>Virhe lämpötilan jäsentämisessä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="667"/>
+        <location filename="../core/libdivecomputer.c" line="733"/>
         <source>Error parsing the gas mix count</source>
         <translation>Virhe kaasuseosten määrän jäsentämisessä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="678"/>
+        <location filename="../core/libdivecomputer.c" line="744"/>
         <source>Error obtaining water salinity</source>
         <translation>Virhe veden suolapitoisuuden määrityksessä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="700"/>
+        <location filename="../core/libdivecomputer.c" line="766"/>
         <source>Error obtaining surface pressure</source>
         <translation>Virhe ilmanpaineen määrityksessä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="722"/>
+        <location filename="../core/libdivecomputer.c" line="788"/>
         <source>Error obtaining dive mode</source>
         <translation>Virhe sukellusmoodin kanssa</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="744"/>
+        <location filename="../core/libdivecomputer.c" line="810"/>
         <source>Error parsing the gas mix</source>
         <translation>Virhe kaasuseoksen jäsentämisessä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="772"/>
+        <location filename="../core/libdivecomputer.c" line="838"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Jäsentäjän luominen %s %s epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="778"/>
+        <location filename="../core/libdivecomputer.c" line="844"/>
         <source>Error registering the data</source>
         <translation>Virhe tiedon rekisteröinnissä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="798"/>
+        <location filename="../core/libdivecomputer.c" line="864"/>
         <source>Error parsing the samples</source>
         <translation>Virhe näytteiden tulkinnassa</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="823"/>
+        <location filename="../core/libdivecomputer.c" line="889"/>
         <source>Already downloaded dive at %s</source>
         <translation>Sukellus on jo ladattu %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1029"/>
+        <location filename="../core/libdivecomputer.c" line="1095"/>
         <source>Event: waiting for user action</source>
         <translation>Tapahtuma: odotetaan käyttäjän toimia</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1041"/>
+        <location filename="../core/libdivecomputer.c" line="1107"/>
         <source>read %dkb</source>
         <translation>lue %dkb</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1061"/>
+        <location filename="../core/libdivecomputer.c" line="1127"/>
         <source>model=%s firmware=%u serial=%u</source>
         <translation>malli=%s firmware=%u sarjanumero=%u</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1114"/>
+        <location filename="../core/libdivecomputer.c" line="1180"/>
         <source>Error registering the event handler.</source>
         <translation>Virhe tapahtumakäsittelijän rekisteröinnissä.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1119"/>
+        <location filename="../core/libdivecomputer.c" line="1185"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Virhe perumiskäsittelijän rekisteröinnissä.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1140"/>
+        <location filename="../core/libdivecomputer.c" line="1205"/>
+        <source>Dumping not supported on this device</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/libdivecomputer.c" line="1207"/>
+        <source>Dive data dumping error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/libdivecomputer.c" line="1215"/>
         <source>Dive data import error</source>
         <translation>Virhe sukellusten jäsentämisessä</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1430"/>
+        <location filename="../core/libdivecomputer.c" line="1514"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>libdivecomputer-kontekstin luominen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1439"/>
+        <location filename="../core/libdivecomputer.c" line="1523"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Avaaminen epäonnistui: %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1451"/>
+        <location filename="../core/libdivecomputer.c" line="1535"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
         <translation>Virhe avattaessa laitetta %s %s (%s).
 Ongelman selvittämiseksi tarvitaan yleensä lokitiedostot. Voit kopioida ne leikepöydälleä Tietoja valikon kautta.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1453"/>
+        <location filename="../core/libdivecomputer.c" line="1537"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
@@ -11654,282 +11759,282 @@ Ongelman tutkimiseksi libdivecomputer lokitiedosto on hyödyllinen.
 Voit luoda tämän tiedoston valitsemalla kyseisen valinnan sukellusten lataus -dialogista.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1462"/>
+        <location filename="../core/libdivecomputer.c" line="1568"/>
         <source>No new dives downloaded from dive computer</source>
         <translation>Uusia sukelluksia ei ladattu sukellustietokoneesta</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="186"/>
-        <location filename="../core/parse-xml.c" line="1222"/>
+        <location filename="../core/load-git.c" line="185"/>
+        <location filename="../core/parse-xml.c" line="1229"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
         <translation>sukelluskohteella on useita GPS -positioita; %s
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="211"/>
-        <location filename="../core/parse.c" line="534"/>
+        <location filename="../core/load-git.c" line="210"/>
+        <location filename="../core/parse.c" line="533"/>
         <source>additional name for site: %s
 </source>
         <translation>Ylimääräinen nimi sukelluskohteelle: %s
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1935"/>
+        <location filename="../core/load-git.c" line="1948"/>
         <source>Load dives from local cache</source>
         <translation>Lataa sukellukset paikallisesta välimuistista</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1939"/>
+        <location filename="../core/load-git.c" line="1952"/>
         <source>Successfully opened dive data</source>
         <translation>Sukellusdatan avaus onnistui</translation>
     </message>
     <message>
-        <location filename="../core/ostctools.c" line="123"/>
-        <location filename="../core/ostctools.c" line="154"/>
+        <location filename="../core/ostctools.c" line="122"/>
+        <location filename="../core/ostctools.c" line="153"/>
         <source>Unknown DC in dive %d</source>
         <translation>Tuntematon sukellustietokone sukelluksella %d</translation>
     </message>
     <message>
-        <location filename="../core/ostctools.c" line="166"/>
+        <location filename="../core/ostctools.c" line="165"/>
         <source>Error - %s - parsing dive %d</source>
         <translation>Virhe - %s - jäsentäessä sukellusta %d</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="406"/>
+        <location filename="../core/parse-xml.c" line="407"/>
         <source>Strange percentage reading %s
 </source>
         <translation>Outo prosenttiosuus: %s
 </translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="1779"/>
+        <location filename="../core/parse-xml.c" line="1780"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Tiedoston &apos;%s&apos; lukeminen epäonnistui.</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2377"/>
+        <location filename="../core/parse-xml.c" line="2381"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Tyylitiedoston %s avaus ei onnistu</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="894"/>
+        <location filename="../core/planner.c" line="907"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Seosta %s ei löydy</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1179"/>
+        <location filename="../core/planner.c" line="1203"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="52"/>
+        <location filename="../core/plannernotes.c" line="53"/>
         <source>Isobaric counterdiffusion information</source>
         <translation>Isobaarisen käänteisdiffuusion tiedot</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="53"/>
-        <location filename="../core/plannernotes.c" line="178"/>
+        <location filename="../core/plannernotes.c" line="54"/>
+        <location filename="../core/plannernotes.c" line="179"/>
         <source>runtime</source>
         <translation>sukellusaika</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="55"/>
+        <location filename="../core/plannernotes.c" line="56"/>
         <source>&amp;#916;He</source>
         <translation>&amp;#916;He</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="56"/>
+        <location filename="../core/plannernotes.c" line="57"/>
         <source>&amp;#916;N&amp;#8322;</source>
         <translation>&amp;#916;N&amp;#8322;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="57"/>
+        <location filename="../core/plannernotes.c" line="58"/>
         <source>max &amp;#916;N&amp;#8322;</source>
         <translation>max &amp;#916;N&amp;#8322;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="72"/>
         <location filename="../core/plannernotes.c" line="73"/>
         <location filename="../core/plannernotes.c" line="74"/>
-        <location filename="../core/qthelper.cpp" line="643"/>
-        <location filename="../core/qthelper.cpp" line="885"/>
-        <location filename="../core/qthelper.cpp" line="1351"/>
+        <location filename="../core/plannernotes.c" line="75"/>
+        <location filename="../core/qthelper.cpp" line="641"/>
+        <location filename="../core/qthelper.cpp" line="883"/>
+        <location filename="../core/qthelper.cpp" line="1311"/>
         <location filename="../core/units.c" line="16"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="79"/>
+        <location filename="../core/plannernotes.c" line="80"/>
         <source>DISCLAIMER / WARNING: THIS IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
         <translation>VAROITUS: TÄMÄ ON UUSI TOTEUTUS %s ALGORITMISTA JA SUKELLUSTEN SUUNNITTELUOMINAISUUDESTA. TESTAUS EI OLE OLLUT RIITTÄVÄN KATTAVAA, JOTEN SUOSITAMME, ETTÄ ETTE SUKELLA VAIN NÄIDEN TULOSTEN PERUSTEELLA.</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="89"/>
+        <location filename="../core/plannernotes.c" line="90"/>
         <source>VPM-B</source>
         <translation>VPM-B</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="90"/>
+        <location filename="../core/plannernotes.c" line="91"/>
         <source>BUHLMANN</source>
         <translation>BUHLMANN</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="124"/>
-        <location filename="../core/plannernotes.c" line="486"/>
-        <location filename="../core/plannernotes.c" line="492"/>
-        <location filename="../core/plannernotes.c" line="531"/>
-        <location filename="../core/plannernotes.c" line="565"/>
-        <location filename="../core/plannernotes.c" line="599"/>
-        <location filename="../core/plannernotes.c" line="610"/>
+        <location filename="../core/plannernotes.c" line="125"/>
+        <location filename="../core/plannernotes.c" line="487"/>
+        <location filename="../core/plannernotes.c" line="493"/>
+        <location filename="../core/plannernotes.c" line="532"/>
+        <location filename="../core/plannernotes.c" line="566"/>
+        <location filename="../core/plannernotes.c" line="600"/>
+        <location filename="../core/plannernotes.c" line="611"/>
         <source>Warning:</source>
         <translation>Varoitus:</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="125"/>
+        <location filename="../core/plannernotes.c" line="126"/>
         <source>Decompression calculation aborted due to excessive time</source>
         <translation>Dekon laskeminen on keskeytetty kohtuuttoman keston vuoksi</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="140"/>
-        <location filename="../core/plannernotes.c" line="147"/>
-        <location filename="../core/plannernotes.c" line="155"/>
+        <location filename="../core/plannernotes.c" line="141"/>
+        <location filename="../core/plannernotes.c" line="148"/>
+        <location filename="../core/plannernotes.c" line="156"/>
         <source>Subsurface</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="142"/>
+        <location filename="../core/plannernotes.c" line="143"/>
         <source>dive plan&lt;/b&gt; (overlapping dives detected)</source>
         <translation>sukellussuunnitelma&lt;/b&gt; (päällekkäisiä sukelluksia havaittu)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="149"/>
+        <location filename="../core/plannernotes.c" line="150"/>
         <source>dive plan&lt;/b&gt; created on</source>
         <translation>sukellussuunnitelma&lt;/b&gt; luotu</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="157"/>
+        <location filename="../core/plannernotes.c" line="158"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
         <translation>sukellussuunnitelma&lt;/b&gt; (pinta-aika </translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="159"/>
+        <location filename="../core/plannernotes.c" line="160"/>
         <source>created on</source>
         <translation>luotu</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="166"/>
-        <location filename="../core/plannernotes.c" line="169"/>
+        <location filename="../core/plannernotes.c" line="167"/>
+        <location filename="../core/plannernotes.c" line="170"/>
         <source>Runtime: %dmin%s</source>
         <translation>Kesto: %dmin%s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="174"/>
+        <location filename="../core/plannernotes.c" line="175"/>
         <source>depth</source>
         <translation>syvyys</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="180"/>
+        <location filename="../core/plannernotes.c" line="181"/>
         <source>gas</source>
         <translation>kaasu</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="234"/>
+        <location filename="../core/plannernotes.c" line="235"/>
         <source>%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>%s -&gt; %.*f %s %d:%02d min:ssa - kesto %d:%02u - %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="235"/>
-        <location filename="../core/plannernotes.c" line="243"/>
+        <location filename="../core/plannernotes.c" line="236"/>
+        <location filename="../core/plannernotes.c" line="244"/>
         <source>Ascend</source>
         <translation>Nouse</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="235"/>
-        <location filename="../core/plannernotes.c" line="243"/>
+        <location filename="../core/plannernotes.c" line="236"/>
+        <location filename="../core/plannernotes.c" line="244"/>
         <source>Descend</source>
         <translation>Laske</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="242"/>
+        <location filename="../core/plannernotes.c" line="243"/>
         <source>%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>%s -&gt; %.*f %s %d:%02d min:ssa - kesto %d:%02u - %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="257"/>
+        <location filename="../core/plannernotes.c" line="258"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
         <translation>Pysy syvyydessä %.*f %s %d:%02d min - aika %d:%02u seoksella %s (SP = %.1fbar CCR)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="264"/>
+        <location filename="../core/plannernotes.c" line="265"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
         <translation>Pysy %.*f %s:n syvyydessä %d:%02d min - sukellusaika %d:%02u kaasulla %s %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="311"/>
+        <location filename="../core/plannernotes.c" line="312"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="315"/>
-        <location filename="../core/plannernotes.c" line="320"/>
+        <location filename="../core/plannernotes.c" line="316"/>
+        <location filename="../core/plannernotes.c" line="321"/>
         <source>%3dmin</source>
         <translation>%3d min</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="330"/>
-        <location filename="../core/plannernotes.c" line="353"/>
+        <location filename="../core/plannernotes.c" line="331"/>
+        <location filename="../core/plannernotes.c" line="354"/>
         <source>(SP = %.1fbar CCR)</source>
         <translation>(SP = %.1fbar CCR)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="387"/>
+        <location filename="../core/plannernotes.c" line="388"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation>Vaihda kaasu seuraavaan %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="389"/>
+        <location filename="../core/plannernotes.c" line="390"/>
         <source>Switch gas to %s</source>
         <translation>Vaihda kaasu seuraavaan: %s
 </translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="418"/>
+        <location filename="../core/plannernotes.c" line="419"/>
         <source>CNS</source>
         <translation>Happikertymä (CNS)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="419"/>
+        <location filename="../core/plannernotes.c" line="420"/>
         <source>OTU</source>
         <translation>Happikertymä (OTU)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="424"/>
+        <location filename="../core/plannernotes.c" line="425"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
         <translation>Dekomalli: Bühlmann ZHL-16C: GFLow = %d%% ja GFHigh = %d%%</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="427"/>
+        <location filename="../core/plannernotes.c" line="428"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
         <translation>Dekomalli: VPM-B nimelliskonservatismilla</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="429"/>
+        <location filename="../core/plannernotes.c" line="430"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
         <translation>Dekomalli: VPM-B +%d konservatismilla</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="431"/>
+        <location filename="../core/plannernotes.c" line="432"/>
         <source>, effective GF=%d/%d</source>
         <translation>, efektiivinen GF=%d/%d</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="433"/>
+        <location filename="../core/plannernotes.c" line="434"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
         <translation>Dekomalli: Harrastesukellus perustuen Bühlmann ZHL-16B käyttäen GFLow = %d%% ja GFHigh = %d%%</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="441"/>
+        <location filename="../core/plannernotes.c" line="442"/>
         <source>ATM pressure: %dmbar (%d%s)&lt;br/&gt;
 &lt;/div&gt;
 </source>
@@ -11938,82 +12043,82 @@ Voit luoda tämän tiedoston valitsemalla kyseisen valinnan sukellusten lataus -
 </translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="456"/>
+        <location filename="../core/plannernotes.c" line="457"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation>Kaasun kulutus (CCR -etappeja ei mukana):</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="458"/>
+        <location filename="../core/plannernotes.c" line="459"/>
         <source>Gas consumption (based on SAC</source>
         <translation>Ilmankulutus (perustuen SAC:iin</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="487"/>
+        <location filename="../core/plannernotes.c" line="488"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>tämä on enemmän kaasua kuin sinulla on määritellyissä säiliöissä!</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="493"/>
+        <location filename="../core/plannernotes.c" line="494"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>sinulla ei ole tarpeeksi kaasua jakaaksesi sitä pintaan nousun ajan!</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="518"/>
+        <location filename="../core/plannernotes.c" line="519"/>
         <source>Minimum gas</source>
         <translation>Minimikaasu</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="519"/>
+        <location filename="../core/plannernotes.c" line="520"/>
         <source>based on</source>
         <translation>perustuu</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="532"/>
+        <location filename="../core/plannernotes.c" line="533"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
         <translation>tarvitaan enemmän kaasua, kuin sylinterissä on lähdössä </translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="537"/>
+        <location filename="../core/plannernotes.c" line="538"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s suunnitellussa nousussa)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="540"/>
+        <location filename="../core/plannernotes.c" line="541"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation>%.0f%s/%.0f%s / &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="545"/>
+        <location filename="../core/plannernotes.c" line="546"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s during planned ascent)</source>
         <translation>%.0f%s / &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s suunnitellun nousun aikana)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="548"/>
+        <location filename="../core/plannernotes.c" line="549"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation>%.0f%s / &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="566"/>
+        <location filename="../core/plannernotes.c" line="567"/>
         <source>Isobaric counterdiffusion conditions exceeded</source>
         <translation>Isobaarisen käänteisdiffuusion ehdot ylitetty</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="597"/>
+        <location filename="../core/plannernotes.c" line="598"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>korkea pO₂ -arvo %.2f %d:%02u:ssa seoksella %s syvyydessä %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="608"/>
+        <location filename="../core/plannernotes.c" line="609"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>matala pO₂ -arvo %.2f %d:%02u:ssa seoksella %s syvyydessä %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1053"/>
+        <location filename="../core/profile.c" line="1060"/>
         <source>planned waypoint above ceiling</source>
         <translation>Suunniteltu etappipysähdys katon yläpuolella</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1341"/>
+        <location filename="../core/profile.c" line="1376"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -12022,77 +12127,77 @@ S: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1348"/>
+        <location filename="../core/profile.c" line="1383"/>
         <source>P: %d%s (%s)
 </source>
         <translation>P: %d%s (%s)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1352"/>
+        <location filename="../core/profile.c" line="1387"/>
         <source>T: %.1f%s
 </source>
         <translation>L: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1358"/>
+        <location filename="../core/profile.c" line="1393"/>
         <source>V: %.1f%s
 </source>
         <translation>N: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1361"/>
+        <location filename="../core/profile.c" line="1396"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1363"/>
+        <location filename="../core/profile.c" line="1398"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1365"/>
+        <location filename="../core/profile.c" line="1400"/>
         <source>pO₂: %.2fbar
 </source>
         <translation>pO₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1367"/>
+        <location filename="../core/profile.c" line="1402"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
         <translation>SCR ΔpO₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1370"/>
+        <location filename="../core/profile.c" line="1405"/>
         <source>pN₂: %.2fbar
 </source>
         <translation>pN₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1372"/>
+        <location filename="../core/profile.c" line="1407"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1375"/>
+        <location filename="../core/profile.c" line="1410"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1384"/>
+        <location filename="../core/profile.c" line="1419"/>
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -12101,7 +12206,7 @@ EADD: %d%s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1390"/>
+        <location filename="../core/profile.c" line="1425"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -12110,779 +12215,779 @@ EADD: %d%s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1395"/>
+        <location filename="../core/profile.c" line="1430"/>
         <source>Density: %.1fg/ℓ
 </source>
         <translation>Tiheys: %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1407"/>
+        <location filename="../core/profile.c" line="1442"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
         <translation>Turvapysähdys: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1410"/>
+        <location filename="../core/profile.c" line="1445"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
         <translation>Turvapysähdys: tuntematon kesto @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1415"/>
+        <location filename="../core/profile.c" line="1450"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deko: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1418"/>
+        <location filename="../core/profile.c" line="1453"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
         <translation>Deko: tuntematon kesto @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1422"/>
+        <location filename="../core/profile.c" line="1457"/>
         <source>In deco
 </source>
         <translation>Dekossa</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1424"/>
+        <location filename="../core/profile.c" line="1459"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1427"/>
+        <location filename="../core/profile.c" line="1462"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1430"/>
+        <location filename="../core/profile.c" line="1465"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Deko: %umin @ %.0f%s (lask.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1438"/>
+        <location filename="../core/profile.c" line="1473"/>
         <source>In deco (calc)
 </source>
         <translation>Dekossa (lask.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1441"/>
+        <location filename="../core/profile.c" line="1476"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1443"/>
+        <location filename="../core/profile.c" line="1478"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation>NDL: &gt;2h (lask.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1447"/>
+        <location filename="../core/profile.c" line="1482"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1449"/>
+        <location filename="../core/profile.c" line="1484"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation>TTS: &gt;2h (lask.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1452"/>
+        <location filename="../core/profile.c" line="1487"/>
         <source>RBT: %umin
 </source>
         <translation>RBT: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1455"/>
+        <location filename="../core/profile.c" line="1490"/>
         <source>GF %d%%
 </source>
         <translation>GF %d%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1457"/>
+        <location filename="../core/profile.c" line="1492"/>
         <source>Surface GF %.0f%%
 </source>
         <translation>Surface GF %.0f%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1460"/>
+        <location filename="../core/profile.c" line="1495"/>
         <source>Calculated ceiling %.1f%s
 </source>
         <translation>Laskettu katto %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1466"/>
+        <location filename="../core/profile.c" line="1501"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Kudos %.0fmin: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1473"/>
+        <location filename="../core/profile.c" line="1508"/>
         <source>ICD in leading tissue
 </source>
         <translation>ICD johtavassa kudoksessa
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1475"/>
+        <location filename="../core/profile.c" line="1510"/>
         <source>heart rate: %d
 </source>
         <translation>sydämen syke: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1477"/>
+        <location filename="../core/profile.c" line="1512"/>
         <source>bearing: %d
 </source>
         <translation>suunta: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1480"/>
+        <location filename="../core/profile.c" line="1515"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>Keskisyvyys tähän asti %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1576"/>
+        <location filename="../core/profile.c" line="1637"/>
         <source>ΔT:%d:%02dmin</source>
         <translation>ΔT:%d:%02dmin</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1580"/>
+        <location filename="../core/profile.c" line="1641"/>
         <source>%s ΔD:%.1f%s</source>
         <translation>%s ΔD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1584"/>
+        <location filename="../core/profile.c" line="1645"/>
         <source>%s ↓D:%.1f%s</source>
         <translation>%s ↓D:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1588"/>
+        <location filename="../core/profile.c" line="1649"/>
         <source>%s ↑D:%.1f%s</source>
         <translation>%s ↑D:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1592"/>
+        <location filename="../core/profile.c" line="1653"/>
         <source>%s øD:%.1f%s
 </source>
         <translation>%s øD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1596"/>
+        <location filename="../core/profile.c" line="1657"/>
         <source>%s ↓V:%.2f%s</source>
         <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1600"/>
+        <location filename="../core/profile.c" line="1661"/>
         <source>%s ↑V:%.2f%s</source>
         <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1604"/>
+        <location filename="../core/profile.c" line="1665"/>
         <source>%s øV:%.2f%s</source>
         <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1611"/>
+        <location filename="../core/profile.c" line="1695"/>
         <source>%s ΔP:%d%s</source>
         <translation>%s ΔP:%d%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1636"/>
+        <location filename="../core/profile.c" line="1711"/>
         <source>%s SAC:%.*f%s/min</source>
         <translation>%s SAC:%.*f%s/min</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="75"/>
+        <location filename="../core/qthelper.cpp" line="73"/>
         <source>%1km</source>
         <translation>%1km</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="77"/>
+        <location filename="../core/qthelper.cpp" line="75"/>
         <source>%1m</source>
         <translation>%1m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="81"/>
+        <location filename="../core/qthelper.cpp" line="79"/>
         <source>%1mi</source>
         <translation>%1 mailia</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="83"/>
+        <location filename="../core/qthelper.cpp" line="81"/>
         <source>%1yd</source>
         <translation>%1 vuotta</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="101"/>
-        <location filename="../core/qthelper.cpp" line="246"/>
+        <location filename="../core/qthelper.cpp" line="99"/>
+        <location filename="../core/qthelper.cpp" line="244"/>
         <source>N</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="101"/>
-        <location filename="../core/qthelper.cpp" line="247"/>
+        <location filename="../core/qthelper.cpp" line="99"/>
+        <location filename="../core/qthelper.cpp" line="245"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="102"/>
-        <location filename="../core/qthelper.cpp" line="248"/>
+        <location filename="../core/qthelper.cpp" line="100"/>
+        <location filename="../core/qthelper.cpp" line="246"/>
         <source>E</source>
         <translation>E</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="102"/>
-        <location filename="../core/qthelper.cpp" line="249"/>
+        <location filename="../core/qthelper.cpp" line="100"/>
+        <location filename="../core/qthelper.cpp" line="247"/>
         <source>W</source>
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="538"/>
-        <location filename="../core/qthelper.cpp" line="553"/>
-        <location filename="../core/qthelper.cpp" line="797"/>
-        <location filename="../core/qthelper.cpp" line="1326"/>
+        <location filename="../core/qthelper.cpp" line="536"/>
+        <location filename="../core/qthelper.cpp" line="551"/>
+        <location filename="../core/qthelper.cpp" line="795"/>
+        <location filename="../core/qthelper.cpp" line="1286"/>
         <location filename="../core/units.c" line="103"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="541"/>
-        <location filename="../core/qthelper.cpp" line="555"/>
-        <location filename="../core/qthelper.cpp" line="799"/>
-        <location filename="../core/qthelper.cpp" line="1325"/>
+        <location filename="../core/qthelper.cpp" line="539"/>
+        <location filename="../core/qthelper.cpp" line="553"/>
+        <location filename="../core/qthelper.cpp" line="797"/>
+        <location filename="../core/qthelper.cpp" line="1285"/>
         <location filename="../core/units.c" line="108"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="567"/>
-        <location filename="../core/qthelper.cpp" line="577"/>
-        <location filename="../core/qthelper.cpp" line="852"/>
-        <location filename="../core/qthelper.cpp" line="1301"/>
+        <location filename="../core/qthelper.cpp" line="565"/>
+        <location filename="../core/qthelper.cpp" line="575"/>
+        <location filename="../core/qthelper.cpp" line="850"/>
+        <location filename="../core/qthelper.cpp" line="1261"/>
         <location filename="../core/units.c" line="163"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="187"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="191"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="569"/>
-        <location filename="../core/qthelper.cpp" line="579"/>
-        <location filename="../core/qthelper.cpp" line="854"/>
-        <location filename="../core/qthelper.cpp" line="1302"/>
+        <location filename="../core/qthelper.cpp" line="567"/>
+        <location filename="../core/qthelper.cpp" line="577"/>
+        <location filename="../core/qthelper.cpp" line="852"/>
+        <location filename="../core/qthelper.cpp" line="1262"/>
         <location filename="../core/units.c" line="159"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="189"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="193"/>
         <source>lbs</source>
         <translation>pauna</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="593"/>
-        <location filename="../core/qthelper.cpp" line="825"/>
+        <location filename="../core/qthelper.cpp" line="591"/>
+        <location filename="../core/qthelper.cpp" line="823"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="596"/>
-        <location filename="../core/qthelper.cpp" line="827"/>
+        <location filename="../core/qthelper.cpp" line="594"/>
+        <location filename="../core/qthelper.cpp" line="825"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="629"/>
+        <location filename="../core/qthelper.cpp" line="627"/>
         <location filename="../core/units.c" line="57"/>
         <source>ℓ</source>
         <translation>ℓ</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="631"/>
-        <location filename="../core/qthelper.cpp" line="1374"/>
+        <location filename="../core/qthelper.cpp" line="629"/>
+        <location filename="../core/qthelper.cpp" line="1334"/>
         <location filename="../core/units.c" line="62"/>
         <source>cuft</source>
         <translation>ft³</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="646"/>
-        <location filename="../core/qthelper.cpp" line="887"/>
-        <location filename="../core/qthelper.cpp" line="1350"/>
+        <location filename="../core/qthelper.cpp" line="644"/>
+        <location filename="../core/qthelper.cpp" line="885"/>
+        <location filename="../core/qthelper.cpp" line="1310"/>
         <location filename="../core/units.c" line="20"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="652"/>
+        <location filename="../core/qthelper.cpp" line="650"/>
         <source>g/ℓ</source>
         <translation>g/ℓ</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="657"/>
+        <location filename="../core/qthelper.cpp" line="655"/>
         <source>Fresh</source>
         <translation>Makea</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="658"/>
+        <location filename="../core/qthelper.cpp" line="656"/>
         <source>Brackish</source>
         <translation>Murto</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="659"/>
+        <location filename="../core/qthelper.cpp" line="657"/>
         <source>EN13319</source>
         <translation>EN13319</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="660"/>
+        <location filename="../core/qthelper.cpp" line="658"/>
         <source>Salt</source>
         <translation>Suola</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="661"/>
+        <location filename="../core/qthelper.cpp" line="659"/>
         <source>Use DC</source>
         <translation>Käytä sukellustietokonetta</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="908"/>
-        <location filename="../core/qthelper.cpp" line="1259"/>
+        <location filename="../core/qthelper.cpp" line="906"/>
+        <location filename="../core/qthelper.cpp" line="1219"/>
         <source>AIR</source>
         <translation>Ilma</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="910"/>
+        <location filename="../core/qthelper.cpp" line="908"/>
         <source>EAN</source>
         <translation>EAN</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="985"/>
+        <location filename="../core/qthelper.cpp" line="983"/>
         <source>more than %1 days</source>
         <translation>yli %1 päivää</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1029"/>
+        <location filename="../core/qthelper.cpp" line="1028"/>
         <location filename="../core/qthelper.cpp" line="1034"/>
         <source>no dives</source>
         <translation>ei sukelluksia</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1259"/>
+        <location filename="../core/qthelper.cpp" line="1219"/>
         <source>OXYGEN</source>
         <translation>HAPPI</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1274"/>
+        <location filename="../core/qthelper.cpp" line="1234"/>
         <source>cyl.</source>
         <translation>säiliö</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1373"/>
+        <location filename="../core/qthelper.cpp" line="1333"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1027"/>
+        <location filename="../core/save-git.c" line="1044"/>
         <source>Start saving data</source>
         <translation>Tallenna tiedot</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1037"/>
+        <location filename="../core/save-git.c" line="1054"/>
         <source>Start saving dives</source>
         <translation>Tallenna sukellukset</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1070"/>
+        <location filename="../core/save-git.c" line="1087"/>
         <source>Done creating local cache</source>
         <translation>Paikallisen välitallennustilan luonti valmis</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1328"/>
+        <location filename="../core/save-git.c" line="1345"/>
         <source>Preparing to save data</source>
         <translation>Valmistellaan datan tallennus</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1392"/>
+        <location filename="../core/save-git.c" line="1409"/>
         <source>Failed to save dives to %s[%s] (%s)</source>
         <translation>Sukellusten tallennus kohteeseen %s[%s] (%s) epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="509"/>
+        <location filename="../core/save-html.c" line="510"/>
         <source>Number</source>
         <translation>Numero</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="510"/>
+        <location filename="../core/save-html.c" line="511"/>
         <source>Date</source>
         <translation>Ajankohta</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="511"/>
+        <location filename="../core/save-html.c" line="512"/>
         <source>Time</source>
         <translation>Kello</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="512"/>
+        <location filename="../core/save-html.c" line="513"/>
         <source>Location</source>
         <translation>Kohde</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="513"/>
+        <location filename="../core/save-html.c" line="514"/>
         <source>Air temp.</source>
         <translation>Ilman lämpötila</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="514"/>
+        <location filename="../core/save-html.c" line="515"/>
         <source>Water temp.</source>
         <translation>Veden lämpötila</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="515"/>
+        <location filename="../core/save-html.c" line="516"/>
         <source>Dives</source>
         <translation>Sukelluksia</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="516"/>
+        <location filename="../core/save-html.c" line="517"/>
         <source>Expand all</source>
         <translation>Laajenna kaikki retket</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="517"/>
+        <location filename="../core/save-html.c" line="518"/>
         <source>Collapse all</source>
         <translation>Supista kaikki retket</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="518"/>
+        <location filename="../core/save-html.c" line="519"/>
         <source>Trips</source>
         <translation>Retkiä</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="519"/>
+        <location filename="../core/save-html.c" line="520"/>
         <source>Statistics</source>
         <translation>Tilastot</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="520"/>
+        <location filename="../core/save-html.c" line="521"/>
         <source>Advanced search</source>
         <translation>Laajennettu haku</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="524"/>
+        <location filename="../core/save-html.c" line="525"/>
         <source>Rating</source>
         <translation>Yleisarvio</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="525"/>
+        <location filename="../core/save-html.c" line="526"/>
         <source>WaveSize</source>
         <translation>Aallonkorkeus</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="526"/>
+        <location filename="../core/save-html.c" line="527"/>
         <source>Visibility</source>
         <translation>Näkyvyys</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="527"/>
+        <location filename="../core/save-html.c" line="528"/>
         <source>Current</source>
         <translation>Virta</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="528"/>
+        <location filename="../core/save-html.c" line="529"/>
         <source>Surge</source>
         <translation>Aaltoilu</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="529"/>
+        <location filename="../core/save-html.c" line="530"/>
         <source>Chill</source>
         <translation>Kylmyys</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="530"/>
+        <location filename="../core/save-html.c" line="531"/>
         <source>Duration</source>
         <translation>Kesto</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="531"/>
+        <location filename="../core/save-html.c" line="532"/>
         <source>Diveguide</source>
         <translation>Sukellusopas</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="532"/>
+        <location filename="../core/save-html.c" line="533"/>
         <source>Divemaster</source>
         <translation>Sukellusvanhin</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="533"/>
+        <location filename="../core/save-html.c" line="534"/>
         <source>Buddy</source>
         <translation>Sukelluspari</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="534"/>
+        <location filename="../core/save-html.c" line="535"/>
         <source>Suit</source>
         <translation>Puku</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="536"/>
-        <location filename="../smtk-import/smartrak.c" line="262"/>
-        <location filename="../smtk-import/smartrak.c" line="335"/>
+        <location filename="../core/save-html.c" line="537"/>
+        <location filename="../smtk-import/smartrak.c" line="266"/>
+        <location filename="../smtk-import/smartrak.c" line="339"/>
         <source>Notes</source>
         <translation>Muistiinpanot</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="537"/>
+        <location filename="../core/save-html.c" line="538"/>
         <source>Show more details</source>
         <translation>Näytä lisää yksityiskohtia</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="540"/>
+        <location filename="../core/save-html.c" line="541"/>
         <source>Yearly statistics</source>
         <translation>Vuositilastot</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="541"/>
+        <location filename="../core/save-html.c" line="542"/>
         <source>Year</source>
         <translation>Vuosi</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="542"/>
+        <location filename="../core/save-html.c" line="543"/>
         <source>Total time</source>
         <translation>Kokonaisaika</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="543"/>
+        <location filename="../core/save-html.c" line="544"/>
         <source>Average time</source>
         <translation>Keskimääräinen kesto</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="544"/>
+        <location filename="../core/save-html.c" line="545"/>
         <source>Shortest time</source>
         <translation>Lyhin kesto</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="545"/>
+        <location filename="../core/save-html.c" line="546"/>
         <source>Longest time</source>
         <translation>Pisin kesto</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="546"/>
+        <location filename="../core/save-html.c" line="547"/>
         <source>Average depth</source>
         <translation>Keskisyvyys</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="547"/>
+        <location filename="../core/save-html.c" line="548"/>
         <source>Min. depth</source>
         <translation>Pienin syvyys</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="548"/>
+        <location filename="../core/save-html.c" line="549"/>
         <source>Max. depth</source>
         <translation>Suurin syvyys</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="549"/>
+        <location filename="../core/save-html.c" line="550"/>
         <source>Average SAC</source>
         <translation>Pintakulutus</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="550"/>
+        <location filename="../core/save-html.c" line="551"/>
         <source>Min. SAC</source>
         <translation>Pienin pintakulutus</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="551"/>
+        <location filename="../core/save-html.c" line="552"/>
         <source>Max. SAC</source>
         <translation>Suurin pintakulutus</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="552"/>
+        <location filename="../core/save-html.c" line="553"/>
         <source>Average temp.</source>
         <translation>Keskilämpötila</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="553"/>
+        <location filename="../core/save-html.c" line="554"/>
         <source>Min. temp.</source>
         <translation>Alin lämpötila</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="554"/>
+        <location filename="../core/save-html.c" line="555"/>
         <source>Max. temp.</source>
         <translation>Ylin lämpötila</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="555"/>
+        <location filename="../core/save-html.c" line="556"/>
         <source>Back to list</source>
         <translation>Takaisin listalle</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="558"/>
+        <location filename="../core/save-html.c" line="559"/>
         <source>Dive #</source>
         <translation>Sukellus</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="559"/>
+        <location filename="../core/save-html.c" line="560"/>
         <source>Dive profile</source>
         <translation>Sukellusprofiili</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="560"/>
+        <location filename="../core/save-html.c" line="561"/>
         <source>Dive information</source>
         <translation>Sukellustiedot</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="561"/>
+        <location filename="../core/save-html.c" line="562"/>
         <source>Dive equipment</source>
         <translation>Sukellusvarusteet</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="562"/>
-        <location filename="../core/save-html.c" line="569"/>
+        <location filename="../core/save-html.c" line="563"/>
+        <location filename="../core/save-html.c" line="570"/>
         <source>Type</source>
         <translation>Tyyppi</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="563"/>
+        <location filename="../core/save-html.c" line="564"/>
         <source>Size</source>
         <translation>Tilavuus</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="564"/>
+        <location filename="../core/save-html.c" line="565"/>
         <source>Work pressure</source>
         <translation>Paineluokka</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="565"/>
+        <location filename="../core/save-html.c" line="566"/>
         <source>Start pressure</source>
         <translation>Alkupaine</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="566"/>
+        <location filename="../core/save-html.c" line="567"/>
         <source>End pressure</source>
         <translation>Loppupaine</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="567"/>
+        <location filename="../core/save-html.c" line="568"/>
         <source>Gas</source>
         <translation>Kaasu</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="568"/>
+        <location filename="../core/save-html.c" line="569"/>
         <source>Weight</source>
         <translation>Painot</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="570"/>
+        <location filename="../core/save-html.c" line="571"/>
         <source>Events</source>
         <translation>Tapahtumat</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="571"/>
+        <location filename="../core/save-html.c" line="572"/>
         <source>Name</source>
         <translation>Nimi</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="572"/>
+        <location filename="../core/save-html.c" line="573"/>
         <source>Value</source>
         <translation>Arvo</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="573"/>
+        <location filename="../core/save-html.c" line="574"/>
         <source>Coordinates</source>
         <translation>Koordinaatit</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="574"/>
+        <location filename="../core/save-html.c" line="575"/>
         <source>Dive status</source>
         <translation>Sukelluksen tila</translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="849"/>
+        <location filename="../core/save-xml.c" line="864"/>
         <source>Failed to save dives to %s (%s)</source>
         <translation>Sukellusten %s (%s) tallennus epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/save-xml.c" line="969"/>
+        <location filename="../core/save-xml.c" line="984"/>
         <source>Failed to save divesites to %s (%s)</source>
         <translation>Sukelluskohteiden %s (%s) tallennus epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="142"/>
+        <location filename="../core/statistics.c" line="143"/>
         <source>All (by type stats)</source>
         <translation>Kaikki (tyypin mukaan)</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="153"/>
+        <location filename="../core/statistics.c" line="154"/>
         <source>All (by max depth stats)</source>
         <translation>Kaikki (maksimisyvyyden mukaan)</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="156"/>
+        <location filename="../core/statistics.c" line="157"/>
         <source>All (by min. temp stats)</source>
         <translation>Kaikki (minimilämpötilan mukaan)</translation>
     </message>
     <message>
-        <location filename="../core/statistics.c" line="224"/>
+        <location filename="../core/statistics.c" line="225"/>
         <source>All (by trip stats)</source>
         <translation>Kaikki (matkan tilastojen mukaan)</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="270"/>
+        <location filename="../core/string-format.cpp" line="293"/>
         <source>Sunday</source>
         <translation>sunnuntai</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="271"/>
+        <location filename="../core/string-format.cpp" line="294"/>
         <source>Monday</source>
         <translation>maanantai</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="272"/>
+        <location filename="../core/string-format.cpp" line="295"/>
         <source>Tuesday</source>
         <translation>tiistai</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="273"/>
+        <location filename="../core/string-format.cpp" line="296"/>
         <source>Wednesday</source>
         <translation>keskiviikko</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="274"/>
+        <location filename="../core/string-format.cpp" line="297"/>
         <source>Thursday</source>
         <translation>torstai</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="275"/>
+        <location filename="../core/string-format.cpp" line="298"/>
         <source>Friday</source>
         <translation>perjantai</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="276"/>
+        <location filename="../core/string-format.cpp" line="299"/>
         <source>Saturday</source>
         <translation>lauantai</translation>
     </message>
     <message numerus="yes">
-        <location filename="../core/string-format.cpp" line="306"/>
+        <location filename="../core/string-format.cpp" line="329"/>
         <source>(%n dive(s))</source>
         <translation><numerusform>(%n sukelluksia)</numerusform><numerusform>(%n sukellusta)</numerusform></translation>
     </message>
@@ -13032,12 +13137,12 @@ EADD: %d%s / %.1fg/ℓ
         <translation>joulu</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="35"/>
+        <location filename="../core/uemis-downloader.c" line="37"/>
         <source>Disconnect/reconnect the SDA</source>
         <translation>Irrota/kytke uudelleen SDA</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="36"/>
+        <location filename="../core/uemis-downloader.c" line="38"/>
         <source>Uemis Zurich: the file system is almost full.
 Disconnect/reconnect the dive computer
 and click &apos;Retry&apos;</source>
@@ -13046,7 +13151,7 @@ Liitä sukellustietokone uudestaan
 ja yritä uudestaan.</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="37"/>
+        <location filename="../core/uemis-downloader.c" line="39"/>
         <source>Uemis Zurich: the file system is full.
 Disconnect/reconnect the dive computer
 and click Retry</source>
@@ -13054,195 +13159,200 @@ and click Retry</source>
 Irrota ja liitä sukellustietokone uudestaan, jonka jälkeen klikkaa &quot;Yritä uudestaan&quot;</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="38"/>
+        <location filename="../core/uemis-downloader.c" line="40"/>
         <source>Short write to req.txt file.
 Is the Uemis Zurich plugged in correctly?</source>
         <translation>Tiedoston req.txt kirjoittaminen epäonnistui.
 Onko Uemis Zurich kytketty oikein?</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="39"/>
+        <location filename="../core/uemis-downloader.c" line="41"/>
         <source>No dives to download.</source>
         <translation>Ei ladattavia sukelluksia.</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="503"/>
+        <location filename="../core/uemis-downloader.c" line="505"/>
         <source>%s %s</source>
         <translation>%s %s</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="539"/>
+        <location filename="../core/uemis-downloader.c" line="541"/>
         <source>data</source>
         <translation>tieto</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="567"/>
+        <location filename="../core/uemis-downloader.c" line="569"/>
         <source>dive log #</source>
         <translation>Sukellusloki #</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="569"/>
+        <location filename="../core/uemis-downloader.c" line="571"/>
         <source>dive spot #</source>
         <translation>sukelluskohde #</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="571"/>
+        <location filename="../core/uemis-downloader.c" line="573"/>
         <source>details for #</source>
         <translation>yksityiskohdat #</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="800"/>
+        <location filename="../core/uemis-downloader.c" line="802"/>
         <source>wetsuit</source>
         <translation>märkäpuku</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="800"/>
+        <location filename="../core/uemis-downloader.c" line="802"/>
         <source>semidry</source>
         <translation>puolikuiva</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="800"/>
+        <location filename="../core/uemis-downloader.c" line="802"/>
         <source>drysuit</source>
         <translation>kuivapuku</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="801"/>
+        <location filename="../core/uemis-downloader.c" line="803"/>
         <source>shorty</source>
         <translation>lyhyt</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="801"/>
+        <location filename="../core/uemis-downloader.c" line="803"/>
         <source>vest</source>
         <translation>liivi</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="801"/>
+        <location filename="../core/uemis-downloader.c" line="803"/>
         <source>long john</source>
         <translation>haalari</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="801"/>
+        <location filename="../core/uemis-downloader.c" line="803"/>
         <source>jacket</source>
         <translation>takki</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="801"/>
+        <location filename="../core/uemis-downloader.c" line="803"/>
         <source>full suit</source>
         <translation>kokopuku</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="801"/>
+        <location filename="../core/uemis-downloader.c" line="803"/>
         <source>2 pcs full suit</source>
         <translation>Kaksiosainen kokopuku</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="802"/>
+        <location filename="../core/uemis-downloader.c" line="804"/>
         <source>membrane</source>
         <translation>laminaatti</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1341"/>
+        <location filename="../core/uemis-downloader.c" line="1343"/>
         <source>Initialise communication</source>
         <translation>Muodosta yhteys</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1344"/>
+        <location filename="../core/uemis-downloader.c" line="1346"/>
         <source>Uemis init failed</source>
         <translation>Uemiksen lukeminen epäonnistui</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1356"/>
-        <location filename="../core/uemis-downloader.c" line="1459"/>
+        <location filename="../core/uemis-downloader.c" line="1358"/>
+        <location filename="../core/uemis-downloader.c" line="1461"/>
         <source>Start download</source>
         <translation>Aloita lataus</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="202"/>
+        <location filename="../core/uemis-downloader.c" line="1523"/>
+        <source>Time sync not supported by dive computer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/uemis.c" line="203"/>
         <source>Safety stop violation</source>
         <translation>Turvapysähdyksen laiminlyönti</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="204"/>
+        <location filename="../core/uemis.c" line="205"/>
         <source>Speed alarm</source>
         <translation>Hälytys: nousunopeus</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="207"/>
+        <location filename="../core/uemis.c" line="208"/>
         <source>Speed warning</source>
         <translation>Varoitus: nousunopeus</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="209"/>
+        <location filename="../core/uemis.c" line="210"/>
         <source>pO₂ green warning</source>
         <translation>Varoitus: hapen osapaine (vihreä)</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="212"/>
+        <location filename="../core/uemis.c" line="213"/>
         <source>pO₂ ascend warning</source>
         <translation>Varoitus: pO₂ nousu</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="214"/>
+        <location filename="../core/uemis.c" line="215"/>
         <source>pO₂ ascend alarm</source>
         <translation>Hälytys: pO₂ nousu</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="218"/>
+        <location filename="../core/uemis.c" line="219"/>
         <source>Tank pressure info</source>
         <translation>Tiedotus: säiliöpaine</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="220"/>
+        <location filename="../core/uemis.c" line="221"/>
         <source>RGT warning</source>
         <translation>Varoitus: kaasumäärä</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="222"/>
+        <location filename="../core/uemis.c" line="223"/>
         <source>RGT alert</source>
         <translation>Hälytys: kaasumäärä</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="224"/>
+        <location filename="../core/uemis.c" line="225"/>
         <source>Tank change suggested</source>
         <translation>Säiliönvaihtoehdotus</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="226"/>
+        <location filename="../core/uemis.c" line="227"/>
         <source>Depth limit exceeded</source>
         <translation>Syvyysraja ylitetty</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="228"/>
+        <location filename="../core/uemis.c" line="229"/>
         <source>Max deco time warning</source>
         <translation>Varoitus: etappipysähdysaika</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="230"/>
+        <location filename="../core/uemis.c" line="231"/>
         <source>Dive time info</source>
         <translation>Tiedotus: sukellusaika</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="232"/>
+        <location filename="../core/uemis.c" line="233"/>
         <source>Dive time alert</source>
         <translation>Hälytys: sukellusaika</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="234"/>
+        <location filename="../core/uemis.c" line="235"/>
         <source>Marker</source>
         <translation>merkki</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="236"/>
+        <location filename="../core/uemis.c" line="237"/>
         <source>No tank data</source>
         <translation>Ei tietoja säiliöistä</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="238"/>
+        <location filename="../core/uemis.c" line="239"/>
         <source>Low battery warning</source>
         <translation>Varoitus: heikko paristo</translation>
     </message>
     <message>
-        <location filename="../core/uemis.c" line="240"/>
+        <location filename="../core/uemis.c" line="241"/>
         <source>Low battery alert</source>
         <translation>Hälytys: heikko paristo</translation>
     </message>
@@ -13317,7 +13427,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="427"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="430"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation>Älä tallenna tyhjää lokitiedostoa pilveen</translation>
     </message>
@@ -13362,87 +13472,87 @@ Onko Uemis Zurich kytketty oikein?</translation>
         <translation>Poista tämä etappi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="505"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="520"/>
         <source>Cyl</source>
         <translation>Säiliöt</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="178"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="182"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="258"/>
+        <location filename="../smtk-import/smartrak.c" line="262"/>
         <source>Built</source>
         <translation>Käännetty</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="258"/>
+        <location filename="../smtk-import/smartrak.c" line="262"/>
         <source>Sank</source>
         <translation>Upposi</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="258"/>
+        <location filename="../smtk-import/smartrak.c" line="262"/>
         <source>Sank Time</source>
         <translation>Sukellusaika</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="259"/>
+        <location filename="../smtk-import/smartrak.c" line="263"/>
         <source>Reason</source>
         <translation>Syy</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="259"/>
+        <location filename="../smtk-import/smartrak.c" line="263"/>
         <source>Nationality</source>
         <translation>Kansallisuus</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="259"/>
+        <location filename="../smtk-import/smartrak.c" line="263"/>
         <source>Shipyard</source>
         <translation>Telakka</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="260"/>
+        <location filename="../smtk-import/smartrak.c" line="264"/>
         <source>ShipType</source>
         <translation>Aluksen tyyppi</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="260"/>
+        <location filename="../smtk-import/smartrak.c" line="264"/>
         <source>Length</source>
         <translation>Pituus</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="260"/>
+        <location filename="../smtk-import/smartrak.c" line="264"/>
         <source>Beam</source>
         <translation>Puomi</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="261"/>
+        <location filename="../smtk-import/smartrak.c" line="265"/>
         <source>Draught</source>
         <translation>Kuivuus</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="261"/>
+        <location filename="../smtk-import/smartrak.c" line="265"/>
         <source>Displacement</source>
         <translation>Syrjäytys</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="261"/>
+        <location filename="../smtk-import/smartrak.c" line="265"/>
         <source>Cargo</source>
         <translation>Lasti</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="273"/>
+        <location filename="../smtk-import/smartrak.c" line="277"/>
         <source>Wreck Data</source>
         <translation>Hylyn tiedot</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="334"/>
+        <location filename="../smtk-import/smartrak.c" line="338"/>
         <source>Altitude</source>
         <translation>Korkeus</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="334"/>
+        <location filename="../smtk-import/smartrak.c" line="338"/>
         <source>Depth</source>
         <translation>Syvyys</translation>
     </message>
@@ -13455,163 +13565,163 @@ Onko Uemis Zurich kytketty oikein?</translation>
         <translation>Subsurface-mobiili</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="289"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
         <source>Dive list</source>
         <translation>Sukelluslista</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="300"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="316"/>
         <source>Dive management</source>
         <translation>Sukellusten hallinta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="395"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="440"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="498"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="411"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="456"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="523"/>
         <source>Back</source>
         <translation>Takaisin</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="312"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
         <source>Add dive manually</source>
         <translation>Lisää sukellus käsin</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="324"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="340"/>
         <source>Download from DC</source>
         <translation>Lataa sukellustietokoneelta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="336"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="352"/>
         <source>Manual sync with cloud</source>
         <translation>Synkronoi kerran pilvipalveluun</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="342"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="358"/>
         <source>Completed manual sync with cloud
 </source>
         <translation>Manuaalinen synkronointi pilvipalveluun suoritettu
 </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
-        <source>Disable auto cloud sync</source>
-        <translation>Poista automaattinen pilvisynkronointi käytöstä</translation>
+        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
+        <source>Auto cloud sync</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
-        <source>Enable auto cloud sync</source>
-        <translation>Ota automaattinen pilvisynkronointi käyttöön</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="356"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="372"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Tiedot tallennetaan vain paikallisesti, kun poistat automaattisen pilvipalvelusynkronoinnin käytöstä. Tämä voi olla hyödyllistä, kun käytössä on huono verkkoyhteys. Valitse &apos;Synkronoi kerran pilvipalveluun&apos;, kun olet toimivassa verkossa ja haluat synkronoida tietosi pilvipalveluun.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="382"/>
         <source>Dive summary</source>
         <translation>Sukelluksen yhteenveto</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="377"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="393"/>
         <source>Export</source>
         <translation>Vienti</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="389"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="405"/>
         <source>Location</source>
         <translation>Kohde</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="413"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="429"/>
         <source>Statistics</source>
         <translation>Tilastot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="422"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="438"/>
         <source>Settings</source>
         <translation>Asetukset</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="435"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="451"/>
         <source>Help</source>
         <translation>Ohje</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="447"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="463"/>
         <source>About</source>
         <translation>Tietoja</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="458"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="474"/>
         <source>Show user manual</source>
         <translation>Näytä käyttöohje</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="467"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="483"/>
+        <source>Contribute to Subsurface</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
         <source>Ask for support</source>
         <translation>Pyydä apua</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="471"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="496"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
         <translation>sähköpostiohjelman avaus epäonnistui, lähetä itse sähköposti osoitteeseen support@subsurface-divelog.org - virheloki on kopioitu leikepöydälle ja voit liittää (paste) sen suoraan sähköpostiin.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="481"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="506"/>
         <source>Reset forgotten Subsurface Cloud password</source>
         <translation>Resetoi unohtunut Subsurfacen pilvitallennuksen salasana</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="517"/>
         <source>Developer</source>
         <translation>Kehittäjä</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="502"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="527"/>
         <source>App log</source>
         <translation>Sovellusloki</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="509"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="534"/>
         <source>Test busy indicator (toggle)</source>
         <translation>Testaa busy-indikaattoria</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="519"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="521"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="544"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="546"/>
         <source>Test notification text</source>
         <translation>Testaa ilmoitustekstiä</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="525"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="550"/>
         <source>Theme information</source>
         <translation>Teeman tiedot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="533"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="558"/>
         <source>Enable verbose logging (currently: %1)</source>
         <translation>Ota käyttöön tarkempi lokitus (tällä hetkellä: %1)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="535"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="560"/>
         <source>Not persistent</source>
         <translation>Ei pysyvä</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="542"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="567"/>
         <source>Access local cloud cache dirs</source>
         <translation>Selaa paikallisia pilvikopioita</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="581"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="606"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
         <translation>Fontin koko liian suuri näytölle, suositellaan vaihtoa pienempään kirjasimeen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="741"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="766"/>
         <source>Subsurface-mobile starting up</source>
         <translation>Subsurface-mobiilin käynnistys</translation>
     </message>
