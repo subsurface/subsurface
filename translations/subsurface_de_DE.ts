@@ -11711,7 +11711,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/import-suunto-json.cpp" line="263"/>
         <source>dive</source>
-        <translation>Tauchgan</translation>
+        <translation>Tauchgang</translation>
     </message>
     <message>
         <location filename="../core/import-suunto-json.cpp" line="417"/>
