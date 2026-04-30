@@ -5303,7 +5303,7 @@ Wenn das Gerät Bluetooth unterstützt, Bluetooth am Tauchcomputer aktivieren un
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="459"/>
         <source>&lt;br&gt;&lt;br&gt;A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2. &lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;If your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update.&lt;/font&gt;</source>
-        <translation>&lt;br&gt;&lt;br&gt;Ein Firmware-Update ist verfügbar: Momentane version %1, aber die aktuelle stabile Version ist %2. &lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Wenn das Gerät Bluetooth unterstützt, Bluetooth am Tauchcomputer aktivieren und vor dem Fortsetzen des Updates die gleichen Schritte wie zum Logbuch-Download durchführen.&lt;/font&gt;</translation>
+        <translation>&lt;br&gt;&lt;br&gt;Ein Firmware-Update ist verfügbar: Momentane Version %1, aber die aktuelle stabile Version ist %2. &lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Wenn das Gerät Bluetooth unterstützt, Bluetooth am Tauchcomputer aktivieren und vor dem Fortsetzen des Updates die gleichen Schritte wie zum Logbuch-Download durchführen.&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="481"/>
