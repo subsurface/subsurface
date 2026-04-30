@@ -11418,7 +11418,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="79"/>
         <source>any dive computer</source>
-        <translation>Beliebiger Tauchcomputer</translation>
+        <translation>beliebiger Tauchcomputer</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="87"/>
