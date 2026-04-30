@@ -397,12 +397,12 @@
         <translation>Влезте или се регистрирайте</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="137"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="138"/>
         <source>No cloud mode</source>
         <translation>Режим без облак</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="151"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="152"/>
         <source>Forgot password?</source>
         <translation>Забравена парола?</translation>
     </message>
@@ -2867,38 +2867,38 @@
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="145"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="140"/>
         <source> (cyl. %1)</source>
         <translation> (бут. %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="149"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="144"/>
         <source>ICD</source>
         <translation>ICD</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="150"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="145"/>
         <source>ΔHe</source>
         <translation>ΔHe</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="151"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="146"/>
         <source>ΔN₂</source>
         <translation>ΔN₂</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="169"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="164"/>
         <source>Manual switch to OC</source>
         <translation>Ръчно включване на OC</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="171"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="166"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation> начало</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="172"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="167"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation> край</translation>
@@ -3997,22 +3997,22 @@
         <translation>Режим на гмуркане</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1198"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1208"/>
         <source>min</source>
         <translation>мин</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1204"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1214"/>
         <source>m</source>
         <translation>м</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1207"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1217"/>
         <source>ft</source>
         <translation>фута</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1254"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1264"/>
         <source>Stop times</source>
         <translation>Стоп времена</translation>
     </message>
@@ -7665,22 +7665,22 @@ Please export this template to a different file.</source>
 <context>
     <name>ProfileScene</name>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="580"/>
+        <location filename="../profile-widget/profilescene.cpp" line="583"/>
         <source>Planned dive</source>
         <translation>Планирано гмуркане</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="582"/>
+        <location filename="../profile-widget/profilescene.cpp" line="585"/>
         <source>Manually added dive</source>
         <translation>Ръчно добавено гмуркане</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="584"/>
+        <location filename="../profile-widget/profilescene.cpp" line="587"/>
         <source>Unknown dive computer</source>
         <translation>Непознат гмуркачески компютър</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="587"/>
+        <location filename="../profile-widget/profilescene.cpp" line="590"/>
         <source> (#%1 of %2)</source>
         <translation> (№%1 от %2)</translation>
     </message>
@@ -7842,68 +7842,78 @@ Please export this template to a different file.</source>
         <translation>Смени режим на гмуркане</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="611"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="612"/>
         <source>Remove event</source>
         <translation>Премахни събитие</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="612"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="613"/>
         <source>Hide event</source>
         <translation>Скрий събитие</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="613"/>
-        <source>Hide similar events</source>
-        <translation>Премахни малки събития</translation>
+        <location filename="../profile-widget/profilewidget2.cpp" line="614"/>
+        <source>Hide events of type &apos;%1&apos;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="616"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="617"/>
         <source>Edit name</source>
         <translation>Редактирай име</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="645"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="652"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="646"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="653"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Промени налягането на бутилка %1 (текущо интерполирана като %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="660"/>
-        <source>Unhide all events</source>
-        <translation>Покажи всички събития</translation>
+        <location filename="../profile-widget/profilewidget2.cpp" line="661"/>
+        <source>Unhide event type</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="688"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="668"/>
+        <source>All event types</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="672"/>
+        <source>Unhide individually hidden events of this dive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="700"/>
         <source>Edit nickname</source>
         <translation>Редактирай прякор</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="689"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="701"/>
         <source>Set new nickname for %1 (serial %2):</source>
         <translation>Задай нов прякор за %1 (serial %2):</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="728"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
         <source>Remove the selected event?</source>
         <translation>Премахни избраните събития?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="729"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="747"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="777"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
         <source>Edit name of bookmark</source>
         <translation>Редактирай име в показалец</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="796"/>
         <source>Custom name:</source>
         <translation>Потребителско име:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="783"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="801"/>
         <source>Name is too long!</source>
         <translation> Името е прекалено дълго!</translation>
     </message>
@@ -7921,190 +7931,195 @@ Please export this template to a different file.</source>
         <translation>Отварянето на локален файл с данни неуспешно</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="413"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="416"/>
         <source>Processing %1 dives</source>
         <translation>Обработка на %1 гмуркания</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="415"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 гмуркания заредени от локален файл с данни</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="422"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="425"/>
         <source>Incorrect cloud credentials</source>
         <translation>Грешнен потребител или парола към облака</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="577"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="581"/>
         <source>working in no-cloud mode</source>
         <translation>режим на работа без облак</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="581"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="585"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Грешка при разряда на локалния склад</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="591"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="596"/>
         <source>no cloud credentials</source>
         <translation>няма облакови пълномощия</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="592"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="672"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="678"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Моля въведете валидни облакови пълномощия</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="633"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="638"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>Е-мейла и паролата за облаковия склад могат да съдържат букви, числа, &apos;.&apos;, &apos;-&apos;, &apos;_&apos; и &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="644"/>
         <source>Invalid format for email address</source>
         <translation>Грешен формат на имейл адрес</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="680"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="686"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Опит за отваряна не облаковия склад с нови пълномощия</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="692"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
         <source>Testing cloud credentials</source>
         <translation>Тестване на облакови пълномощия</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="709"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="715"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Няма отговор от облаковия сървър за да провери вашите данни</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="715"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
         <source>Incorrect email / password combination</source>
         <translation>Грешен потребител или парола</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="726"/>
         <source>Cloud credentials require verification PIN</source>
         <translation>Облаковите пълномощия изискват PIN валидация</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="723"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="729"/>
         <source>Incorrect PIN, please try again</source>
         <translation>Невалиден PIN, моля опитайте пак</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="734"/>
         <source>PIN accepted, credentials verified</source>
         <translation>Валиден PIN, пълномощията потвърдени</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="740"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="746"/>
         <source>Deleting cloud account...</source>
         <translation>Изтриване на облаков акаунт...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="754"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="760"/>
         <source>No response from cloud server to delete account</source>
         <translation>Няма отговор от облаковия сървър за изтриване на акаунта</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="765"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="772"/>
         <source>Cloud storage account deleted.</source>
         <translation>Облаковия акаунт бе изтрит.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="773"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="780"/>
         <source>Cloud storage error: %1</source>
         <translation>Грешка в облаков слад: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="820"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="827"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>Зареждане на гмуркания от локален склад (режим без облак)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="868"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="876"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Не може да бъде осъществена връзка с облаковия слад</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="888"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="895"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Облаковия слад беше отворен успешно. Няма гмуркания в регистъра.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1097"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
         <source>h</source>
         <translation>ч.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1097"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1099"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1106"/>
         <source>min</source>
         <translation>мин</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
         <source>sec</source>
         <translation>сек.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1221"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1228"/>
         <source>weight</source>
         <translation>тегло</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1514"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1521"/>
         <source>[%1]Changes saved:'%2'.
 %1 possible via context menu</source>
         <translation>[%1]Промени запазени:&apos;%2&apos;.
 %1 е възможно с контекст меню</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1516"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
         <source>Redo</source>
         <translation>Върни</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1516"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
         <source>Undo: %1</source>
         <translation>Отмяна: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1518"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1525"/>
         <source>Undo</source>
         <translation>Отмени</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1538"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1545"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation>Грешка: файла с данни не може да бъде записан. Моля запише лог файла и докладвайте на разработчиците.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1878"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1885"/>
         <source>no default cylinder</source>
         <translation>Няма бутилка по подразбиране</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2383"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2390"/>
         <source>(unsaved changes in memory)</source>
         <translation>(незаписани промени в паметта)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2385"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2392"/>
         <source>(changes synced locally)</source>
         <translation>(промените синхронизирани локално)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2386"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2393"/>
         <source>(synced with cloud)</source>
         <translation>(синхронизиране с облака)</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2401"/>
+        <source>(incorrect cloud email or password)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -8552,52 +8567,52 @@ Please report DCs that need this setting</source>
 Моля докладвайте ГК, които имат нужда от настройки</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="570"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="571"/>
         <source>Display</source>
         <translation>Дисплей</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="578"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="579"/>
         <source>Show only one column in Portrait mode</source>
         <translation>Покажи само една колона в портретен режим</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="589"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="591"/>
         <source>Depth line based on ×3 intervals</source>
         <translation>Дълбочинна линия базирана на ×3 интервали</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="603"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="606"/>
         <source>Profile deco ceiling</source>
         <translation>Таван на декомпресия в профила</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="611"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="614"/>
         <source>Show DC reported ceiling</source>
         <translation>Покажи отчетен таван на гмуркачески компютър</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="621"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="625"/>
         <source>Show calculated ceiling</source>
         <translation>Покажи калкулиран таван</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="631"/>
-        <source>GFLow</source>
-        <translation>GFLow</translation>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="637"/>
+        <source>GFLow (10 to 150)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="648"/>
-        <source>GFHigh</source>
-        <translation>GFHigh</translation>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="671"/>
+        <source>GFHigh (10 to 150</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="669"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="708"/>
         <source>Developer</source>
         <translation>Разработчик</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="677"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="716"/>
         <source>Display Developer menu</source>
         <translation>Покажи меню на разработчик</translation>
     </message>
@@ -9433,11 +9448,16 @@ Files with inappropriate date/time</source>
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="97"/>
+        <source>C&amp;ontribute</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/about.ui" line="104"/>
         <source>&amp;Website</source>
         <translation>&amp;Уебсайт</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.ui" line="104"/>
+        <location filename="../desktop-widgets/about.ui" line="111"/>
         <source>&amp;Close</source>
         <translation>&amp;Затвори</translation>
     </message>
@@ -10912,7 +10932,7 @@ Maximum</source>
         <location filename="../core/datatrak.c" line="638"/>
         <location filename="../core/import-divinglog.c" line="309"/>
         <location filename="../core/libdivecomputer.c" line="299"/>
-        <location filename="../core/string-format.cpp" line="155"/>
+        <location filename="../core/string-format.cpp" line="156"/>
         <location filename="../core/uemis-downloader.c" line="203"/>
         <source>unknown</source>
         <translation>неизвестно</translation>
@@ -10960,7 +10980,7 @@ Maximum</source>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
-        <location filename="../core/string-format.cpp" line="238"/>
+        <location filename="../core/string-format.cpp" line="239"/>
         <location filename="../desktop-widgets/templatelayout.cpp" line="454"/>
         <location filename="../qt-models/divetripmodel.cpp" line="165"/>
         <source>h</source>
@@ -10971,7 +10991,7 @@ Maximum</source>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
         <location filename="../core/plannernotes.c" line="63"/>
         <location filename="../core/plannernotes.c" line="524"/>
-        <location filename="../core/string-format.cpp" line="238"/>
+        <location filename="../core/string-format.cpp" line="239"/>
         <location filename="../core/worldmap-save.c" line="50"/>
         <location filename="../desktop-widgets/templatelayout.cpp" line="455"/>
         <location filename="../qt-models/divetripmodel.cpp" line="165"/>
@@ -11029,7 +11049,7 @@ Maximum</source>
         <location filename="../core/equipment.c" line="201"/>
         <location filename="../core/planner.c" line="1195"/>
         <location filename="../core/planner.c" line="1198"/>
-        <location filename="../core/string-format.cpp" line="284"/>
+        <location filename="../core/string-format.cpp" line="285"/>
         <source>air</source>
         <translation>въздух</translation>
     </message>
@@ -11062,6 +11082,21 @@ Maximum</source>
         <location filename="../core/equipment.c" line="327"/>
         <source>clip-on</source>
         <translation>щипка</translation>
+    </message>
+    <message>
+        <location filename="../core/eventtype.cpp" line="90"/>
+        <source>info</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/eventtype.cpp" line="91"/>
+        <source>warn</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/eventtype.cpp" line="92"/>
+        <source>alarm</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/file.c" line="117"/>
@@ -11786,7 +11821,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>Не може да бъде напревен разбор на &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2378"/>
+        <location filename="../core/parse-xml.c" line="2381"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Не може да бъде отворен стилов файл %s</translation>
     </message>
@@ -12085,12 +12120,12 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>ниска pO₂ стойност %.2f към %d:%02u с газ %s при дълбочина %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1054"/>
+        <location filename="../core/profile.c" line="1060"/>
         <source>planned waypoint above ceiling</source>
         <translation>планирана точка над таван</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1370"/>
+        <location filename="../core/profile.c" line="1376"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -12099,77 +12134,77 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1377"/>
+        <location filename="../core/profile.c" line="1383"/>
         <source>P: %d%s (%s)
 </source>
         <translation>P: %d%s (%s)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1381"/>
+        <location filename="../core/profile.c" line="1387"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1387"/>
+        <location filename="../core/profile.c" line="1393"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1390"/>
+        <location filename="../core/profile.c" line="1396"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/мин
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1392"/>
+        <location filename="../core/profile.c" line="1398"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1394"/>
+        <location filename="../core/profile.c" line="1400"/>
         <source>pO₂: %.2fbar
 </source>
         <translation>pO₂: %.2fбара
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1396"/>
+        <location filename="../core/profile.c" line="1402"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
         <translation>SCR ΔpO₂: %.2бара
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1399"/>
+        <location filename="../core/profile.c" line="1405"/>
         <source>pN₂: %.2fbar
 </source>
         <translation>pN₂: %.2fбара
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1401"/>
+        <location filename="../core/profile.c" line="1407"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fбар
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1404"/>
+        <location filename="../core/profile.c" line="1410"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1413"/>
+        <location filename="../core/profile.c" line="1419"/>
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -12178,7 +12213,7 @@ EADD: %d%s / %.1fгр./л.
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1419"/>
+        <location filename="../core/profile.c" line="1425"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -12187,215 +12222,215 @@ EADD: %d%s / %.1fгр./л.
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1424"/>
+        <location filename="../core/profile.c" line="1430"/>
         <source>Density: %.1fg/ℓ
 </source>
         <translation>Плъност: %.1fг/л.
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1436"/>
+        <location filename="../core/profile.c" line="1442"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
         <translation>Стоп за безопастност: %uмин @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1439"/>
+        <location filename="../core/profile.c" line="1445"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
         <translation>Стоп за безопастност: неопределено време @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1444"/>
+        <location filename="../core/profile.c" line="1450"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deco: %uмин @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1447"/>
+        <location filename="../core/profile.c" line="1453"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
         <translation>Deco: неопр. време @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1451"/>
+        <location filename="../core/profile.c" line="1457"/>
         <source>In deco
 </source>
         <translation>В Deco
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1453"/>
+        <location filename="../core/profile.c" line="1459"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %uмин
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1456"/>
+        <location filename="../core/profile.c" line="1462"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %uмин
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1459"/>
+        <location filename="../core/profile.c" line="1465"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Deco: %uмин @ %.0f%s (калк.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1467"/>
+        <location filename="../core/profile.c" line="1473"/>
         <source>In deco (calc)
 </source>
         <translation>В Deco (калк.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1470"/>
+        <location filename="../core/profile.c" line="1476"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %uмин (калк.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1472"/>
+        <location filename="../core/profile.c" line="1478"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation>NDL: &gt;2ч (калк.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1476"/>
+        <location filename="../core/profile.c" line="1482"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %uмин (калк.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1478"/>
+        <location filename="../core/profile.c" line="1484"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation>TTS: &gt;2ч (калк.)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1481"/>
+        <location filename="../core/profile.c" line="1487"/>
         <source>RBT: %umin
 </source>
         <translation>RBT: %uмин
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1484"/>
+        <location filename="../core/profile.c" line="1490"/>
         <source>GF %d%%
 </source>
         <translation>GF %d%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1486"/>
+        <location filename="../core/profile.c" line="1492"/>
         <source>Surface GF %.0f%%
 </source>
         <translation>Повърхностен GF %.0f%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1489"/>
+        <location filename="../core/profile.c" line="1495"/>
         <source>Calculated ceiling %.1f%s
 </source>
         <translation>Калкулиран таван %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1495"/>
+        <location filename="../core/profile.c" line="1501"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Тъкан %.0fмин: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1502"/>
+        <location filename="../core/profile.c" line="1508"/>
         <source>ICD in leading tissue
 </source>
         <translation>ICD в първа тъкан
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1504"/>
+        <location filename="../core/profile.c" line="1510"/>
         <source>heart rate: %d
 </source>
         <translation>сърдечен ритъм: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1506"/>
+        <location filename="../core/profile.c" line="1512"/>
         <source>bearing: %d
 </source>
         <translation>лагер: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1509"/>
+        <location filename="../core/profile.c" line="1515"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>средна дълбочина до %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1631"/>
+        <location filename="../core/profile.c" line="1637"/>
         <source>ΔT:%d:%02dmin</source>
         <translation>ΔT:%d:%02dмин.</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1635"/>
+        <location filename="../core/profile.c" line="1641"/>
         <source>%s ΔD:%.1f%s</source>
         <translation>%s ΔD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1639"/>
+        <location filename="../core/profile.c" line="1645"/>
         <source>%s ↓D:%.1f%s</source>
         <translation>%s ↓D:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1643"/>
+        <location filename="../core/profile.c" line="1649"/>
         <source>%s ↑D:%.1f%s</source>
         <translation>%s ↑D:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1647"/>
+        <location filename="../core/profile.c" line="1653"/>
         <source>%s øD:%.1f%s
 </source>
         <translation>%s øD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1651"/>
+        <location filename="../core/profile.c" line="1657"/>
         <source>%s ↓V:%.2f%s</source>
         <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1655"/>
+        <location filename="../core/profile.c" line="1661"/>
         <source>%s ↑V:%.2f%s</source>
         <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1659"/>
+        <location filename="../core/profile.c" line="1665"/>
         <source>%s øV:%.2f%s</source>
         <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1689"/>
+        <location filename="../core/profile.c" line="1695"/>
         <source>%s ΔP:%d%s</source>
         <translation>%s ΔP:%d%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1705"/>
+        <location filename="../core/profile.c" line="1711"/>
         <source>%s SAC:%.*f%s/min</source>
         <translation>%s SAC:%.*f%s/мин.</translation>
     </message>
@@ -12925,42 +12960,42 @@ EADD: %d%s / %.1fгр./л.
         <translation>Всички (според статистики на пътуване)</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="292"/>
+        <location filename="../core/string-format.cpp" line="293"/>
         <source>Sunday</source>
         <translation>Неделя</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="293"/>
+        <location filename="../core/string-format.cpp" line="294"/>
         <source>Monday</source>
         <translation>Понеделник</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="294"/>
+        <location filename="../core/string-format.cpp" line="295"/>
         <source>Tuesday</source>
         <translation>Вторник</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="295"/>
+        <location filename="../core/string-format.cpp" line="296"/>
         <source>Wednesday</source>
         <translation>Сряда</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="296"/>
+        <location filename="../core/string-format.cpp" line="297"/>
         <source>Thursday</source>
         <translation>Четвъртък</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="297"/>
+        <location filename="../core/string-format.cpp" line="298"/>
         <source>Friday</source>
         <translation>Петък</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="298"/>
+        <location filename="../core/string-format.cpp" line="299"/>
         <source>Saturday</source>
         <translation>Сряда</translation>
     </message>
     <message numerus="yes">
-        <location filename="../core/string-format.cpp" line="328"/>
+        <location filename="../core/string-format.cpp" line="329"/>
         <source>(%n dive(s))</source>
         <translation><numerusform>(%n гмуркане (гмуркания))</numerusform><numerusform>(%n гмуркане (гмуркания))</numerusform></translation>
     </message>
@@ -13539,158 +13574,163 @@ Uemis Zurich включен ли е правилно?</translation>
         <translation>Subsurface-mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="289"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
         <source>Dive list</source>
         <translation>Списък на гмуркания</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="300"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="316"/>
         <source>Dive management</source>
         <translation>Менажиране на гмуркания</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="395"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="440"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="498"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="411"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="456"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="523"/>
         <source>Back</source>
         <translation>Назад</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="312"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
         <source>Add dive manually</source>
         <translation>Ръчно добавяне на гмъркане</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="324"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="340"/>
         <source>Download from DC</source>
         <translation>Изтегли от леководолазен компютър</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="336"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="352"/>
         <source>Manual sync with cloud</source>
         <translation>Ръчна синхронизация с облака</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="342"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="358"/>
         <source>Completed manual sync with cloud
 </source>
         <translation>Ръчна синхронизация с облака приключена
 </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
         <source>Auto cloud sync</source>
         <translation>Авто-синхронизиране с облака</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="356"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="372"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Изключването на автоматична синхронизация с облака значи запис на данни само локално. Това е много полезно в ситуации без добър интернет. Моля изберете &quot;Ръчна синхронизация с облака&quot; за да синхронизирате данните само при добра възможност.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="382"/>
         <source>Dive summary</source>
         <translation>Обзор на гмуркане</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="377"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="393"/>
         <source>Export</source>
         <translation>Експорт</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="389"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="405"/>
         <source>Location</source>
         <translation>Местонахождение</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="413"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="429"/>
         <source>Statistics</source>
         <translation>Статистика</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="422"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="438"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="435"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="451"/>
         <source>Help</source>
         <translation>Помощ</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="447"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="463"/>
         <source>About</source>
         <translation>За приложението</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="458"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="474"/>
         <source>Show user manual</source>
         <translation>Покажи ръководство за употреба</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="467"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="483"/>
+        <source>Contribute to Subsurface</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
         <source>Ask for support</source>
         <translation>Попитайте за поддръжка</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="471"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="496"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
         <translation>Неуспешем опит за отваряне на имейл клиента. Моля, ръчно пратете имейл за поддръжка към support@subsurface-divelog.org. Гмуркаческите регистри са копирани в клипборда и могат да бъдат поставени в този имейл.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="481"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="506"/>
         <source>Reset forgotten Subsurface Cloud password</source>
         <translation>Рестартирай забравена Subsurface облак парола</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="517"/>
         <source>Developer</source>
         <translation>Разработчик</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="502"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="527"/>
         <source>App log</source>
         <translation>Регистър на приложението</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="509"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="534"/>
         <source>Test busy indicator (toggle)</source>
         <translation>Тествай индикатор за заетост (превключване)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="519"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="521"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="544"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="546"/>
         <source>Test notification text</source>
         <translation>Тествай текст за нотификация</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="525"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="550"/>
         <source>Theme information</source>
         <translation>Информация за темата</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="533"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="558"/>
         <source>Enable verbose logging (currently: %1)</source>
         <translation>Активиране на подробен лог (текущо състояние: %1)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="535"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="560"/>
         <source>Not persistent</source>
         <translation>Непостоянен</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="542"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="567"/>
         <source>Access local cloud cache dirs</source>
         <translation>Достъп до директории за локален облаков кеш</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="581"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="606"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
         <translation>Големината на шрифта е най-вероятно прекалено голяма за дисплея. Пропоръчва се смаляване на шрифта</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="741"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="766"/>
         <source>Subsurface-mobile starting up</source>
         <translation>Subsurface-mobile се стартира</translation>
     </message>
