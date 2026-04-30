@@ -12482,7 +12482,7 @@ Die kann durch Setzen einen Häkchens im Download-Dialog erstellt werden.</trans
     <message>
         <location filename="../core/profile.cpp" line="1414"/>
         <source>Calculated ceiling %.1f%s</source>
-        <translation>Berechnete Ceiling %.1f%s</translation>
+        <translation>Berechnete Auftauchgrenze %.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.cpp" line="1420"/>
