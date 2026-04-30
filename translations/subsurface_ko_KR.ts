@@ -397,12 +397,12 @@
         <translation>로그인 또는 등록</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="137"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="138"/>
         <source>No cloud mode</source>
         <translation>클라우드 없음 모드</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="151"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="152"/>
         <source>Forgot password?</source>
         <translation>비밀번호를 잊었나요?</translation>
     </message>
@@ -2867,38 +2867,38 @@
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="145"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="140"/>
         <source> (cyl. %1)</source>
         <translation> (실린더 %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="149"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="144"/>
         <source>ICD</source>
         <translation>ICD</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="150"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="145"/>
         <source>ΔHe</source>
         <translation>ΔHe</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="151"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="146"/>
         <source>ΔN₂</source>
         <translation>ΔN₂</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="169"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="164"/>
         <source>Manual switch to OC</source>
         <translation>개방회로로 수동 전환</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="171"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="166"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation>시작</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="172"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="167"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation>종료</translation>
@@ -3997,22 +3997,22 @@
         <translation>다이브 모드</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1198"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1208"/>
         <source>min</source>
         <translation>분</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1204"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1214"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1207"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1217"/>
         <source>ft</source>
         <translation>피트</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1254"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1264"/>
         <source>Stop times</source>
         <translation>정지 시간</translation>
     </message>
@@ -7665,22 +7665,22 @@ Please export this template to a different file.</source>
 <context>
     <name>ProfileScene</name>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="580"/>
+        <location filename="../profile-widget/profilescene.cpp" line="583"/>
         <source>Planned dive</source>
         <translation>계획된 다이빙</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="582"/>
+        <location filename="../profile-widget/profilescene.cpp" line="585"/>
         <source>Manually added dive</source>
         <translation>수동으로 추가된 다이빙</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="584"/>
+        <location filename="../profile-widget/profilescene.cpp" line="587"/>
         <source>Unknown dive computer</source>
         <translation>알 수 없는 다이브 컴퓨터</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="587"/>
+        <location filename="../profile-widget/profilescene.cpp" line="590"/>
         <source> (#%1 of %2)</source>
         <translation> (%2 중 #%1)</translation>
     </message>
@@ -7842,68 +7842,78 @@ Please export this template to a different file.</source>
         <translation>다이브 모드 변경</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="611"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="612"/>
         <source>Remove event</source>
         <translation>이벤트 삭제</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="612"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="613"/>
         <source>Hide event</source>
         <translation>이벤트 숨기기</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="613"/>
-        <source>Hide similar events</source>
-        <translation>유사한 이벤트 숨기기</translation>
+        <location filename="../profile-widget/profilewidget2.cpp" line="614"/>
+        <source>Hide events of type &apos;%1&apos;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="616"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="617"/>
         <source>Edit name</source>
         <translation>이름 편집</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="645"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="652"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="646"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="653"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>실린더 %1의 압력 조정 (현재 %2로 보간됨)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="660"/>
-        <source>Unhide all events</source>
-        <translation>모든 이벤트 숨기기 취소</translation>
+        <location filename="../profile-widget/profilewidget2.cpp" line="661"/>
+        <source>Unhide event type</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="688"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="668"/>
+        <source>All event types</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="672"/>
+        <source>Unhide individually hidden events of this dive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="700"/>
         <source>Edit nickname</source>
         <translation>닉네임 편집</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="689"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="701"/>
         <source>Set new nickname for %1 (serial %2):</source>
         <translation>%1 (serial %2)의 새 닉네임 설정:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="728"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
         <source>Remove the selected event?</source>
         <translation>선택된 이벤트를 삭제할까요?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="729"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="747"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="777"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
         <source>Edit name of bookmark</source>
         <translation>북마크 이름 편집</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="796"/>
         <source>Custom name:</source>
         <translation>커스텀 이름:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="783"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="801"/>
         <source>Name is too long!</source>
         <translation>이름이 너무 깁니다!</translation>
     </message>
@@ -7921,190 +7931,195 @@ Please export this template to a different file.</source>
         <translation>로컬 데이터 파일 열기 실패</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="413"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="416"/>
         <source>Processing %1 dives</source>
         <translation>%1개 다이빙 처리 중</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="415"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1개 다이빙을 로컬 다이빙 데이터 파일에서 불러옴</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="422"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="425"/>
         <source>Incorrect cloud credentials</source>
         <translation>클라우드 자격증명이 올바르지 않음</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="577"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="581"/>
         <source>working in no-cloud mode</source>
         <translation>클라우드 없음 모드에서 작업 중</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="581"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="585"/>
         <source>Error parsing local storage, giving up</source>
         <translation>로컬 저장소 구문 분석 오류, 중단합니다</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="591"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="596"/>
         <source>no cloud credentials</source>
         <translation>클라우드 자격증명 없음</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="592"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="672"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="678"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>유효한 클라우드 자격증명을 입력하세요.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="633"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="638"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>클라우드 저장소의 이메일과 비밀번호에는 오로지 글자, 숫자, 그리고 &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, 및 &apos;+&apos;만 입력 가능합니다.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="644"/>
         <source>Invalid format for email address</source>
         <translation>이메일 주소의 형식이 유효하지 않음</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="680"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="686"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>새 자격증명으로 클라우드 저장소 열기 시도 중</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="692"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
         <source>Testing cloud credentials</source>
         <translation>클라우드 자격증명 테스트 중</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="709"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="715"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>클라우드 서버로부터 자격 증명을 확인하기 위한 응답이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="715"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
         <source>Incorrect email / password combination</source>
         <translation>이메일 / 비밀번호 조합이 올바르지 않습니다</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="726"/>
         <source>Cloud credentials require verification PIN</source>
         <translation>클라우드 자격증명에는 인증 PIN이 요구됩니다</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="723"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="729"/>
         <source>Incorrect PIN, please try again</source>
         <translation>잘못된 PIN입니다. 다시 시도해주세요.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="734"/>
         <source>PIN accepted, credentials verified</source>
         <translation>PIN 승인됨, 자격 증명 확인됨</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="740"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="746"/>
         <source>Deleting cloud account...</source>
         <translation>클라우드 계정 삭제 중...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="754"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="760"/>
         <source>No response from cloud server to delete account</source>
         <translation>클라우드 서버로부터 계정을 삭제하기 위한 응답이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="765"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="772"/>
         <source>Cloud storage account deleted.</source>
         <translation>클라우드 저장소 계정 삭제됨.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="773"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="780"/>
         <source>Cloud storage error: %1</source>
         <translation>클라우드 저장소 오류: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="820"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="827"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>로컬 저장소에서 다이빙 불러오기 (&apos;클라우드 없음&apos; 모드)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="868"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="876"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>클라우드 서버에 연결하지 못했습니다. 클라우드 없음 상태로 되돌아갑니다.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="888"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="895"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>클라우드 저장소 열기 성공. 다이빙 목록에 다이빙 없음.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1097"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
         <source>h</source>
         <translation>시</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1097"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1099"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1106"/>
         <source>min</source>
         <translation>분</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
         <source>sec</source>
         <translation>초</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1221"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1228"/>
         <source>weight</source>
         <translation>웨이트</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1514"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1521"/>
         <source>[%1]Changes saved:'%2'.
 %1 possible via context menu</source>
         <translation>[%1]변경 사항이 다음으로 저장되었습니다:&apos;%2&apos;
 %1은 컨텍스트 메뉴를 통해 가능합니다.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1516"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
         <source>Redo</source>
         <translation>다시 실행</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1516"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
         <source>Undo: %1</source>
         <translation>실행 취소: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1518"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1525"/>
         <source>Undo</source>
         <translation>실행 취소</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1538"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1545"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation>치명적 오류: 데이터 파일을 저장할 수 없습니다. 로그 파일을 복사하고 보고하세요.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1878"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1885"/>
         <source>no default cylinder</source>
         <translation>기본 실린더 없음</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2383"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2390"/>
         <source>(unsaved changes in memory)</source>
         <translation>(메모리 내 저장되지 않은 변경사항)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2385"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2392"/>
         <source>(changes synced locally)</source>
         <translation>(로컬로 동기화된 변경 사항)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2386"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2393"/>
         <source>(synced with cloud)</source>
         <translation>(클라우드와 동기화됨)</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2401"/>
+        <source>(incorrect cloud email or password)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -8552,52 +8567,52 @@ Please report DCs that need this setting</source>
 이 설정이 필요한 다이브 컴퓨터를 보고해주세요.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="570"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="571"/>
         <source>Display</source>
         <translation>화면</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="578"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="579"/>
         <source>Show only one column in Portrait mode</source>
         <translation>세로화면 모드에서 한 개의 열만 보이기</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="589"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="591"/>
         <source>Depth line based on ×3 intervals</source>
         <translation>수심 선을 ×3 간격 기준으로</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="603"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="606"/>
         <source>Profile deco ceiling</source>
         <translation>프로필 감압 상승한계수심</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="611"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="614"/>
         <source>Show DC reported ceiling</source>
         <translation>다이브 컴퓨터가 보고한 상승한계수심 보이기</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="621"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="625"/>
         <source>Show calculated ceiling</source>
         <translation>계산된 상승한계수심 보이기</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="631"/>
-        <source>GFLow</source>
-        <translation>GF 낮음</translation>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="637"/>
+        <source>GFLow (10 to 150)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="648"/>
-        <source>GFHigh</source>
-        <translation>GF 높음</translation>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="671"/>
+        <source>GFHigh (10 to 150</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="669"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="708"/>
         <source>Developer</source>
         <translation>개발자</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="677"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="716"/>
         <source>Display Developer menu</source>
         <translation>개발자 메뉴 표시</translation>
     </message>
@@ -9433,11 +9448,16 @@ Files with inappropriate date/time</source>
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="97"/>
+        <source>C&amp;ontribute</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/about.ui" line="104"/>
         <source>&amp;Website</source>
         <translation>웹사이트</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.ui" line="104"/>
+        <location filename="../desktop-widgets/about.ui" line="111"/>
         <source>&amp;Close</source>
         <translation>닫기</translation>
     </message>
@@ -10912,7 +10932,7 @@ Maximum</source>
         <location filename="../core/datatrak.c" line="638"/>
         <location filename="../core/import-divinglog.c" line="309"/>
         <location filename="../core/libdivecomputer.c" line="299"/>
-        <location filename="../core/string-format.cpp" line="155"/>
+        <location filename="../core/string-format.cpp" line="156"/>
         <location filename="../core/uemis-downloader.c" line="203"/>
         <source>unknown</source>
         <translation>알 수 없는</translation>
@@ -10960,7 +10980,7 @@ Maximum</source>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
-        <location filename="../core/string-format.cpp" line="238"/>
+        <location filename="../core/string-format.cpp" line="239"/>
         <location filename="../desktop-widgets/templatelayout.cpp" line="454"/>
         <location filename="../qt-models/divetripmodel.cpp" line="165"/>
         <source>h</source>
@@ -10971,7 +10991,7 @@ Maximum</source>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
         <location filename="../core/plannernotes.c" line="63"/>
         <location filename="../core/plannernotes.c" line="524"/>
-        <location filename="../core/string-format.cpp" line="238"/>
+        <location filename="../core/string-format.cpp" line="239"/>
         <location filename="../core/worldmap-save.c" line="50"/>
         <location filename="../desktop-widgets/templatelayout.cpp" line="455"/>
         <location filename="../qt-models/divetripmodel.cpp" line="165"/>
@@ -11029,7 +11049,7 @@ Maximum</source>
         <location filename="../core/equipment.c" line="201"/>
         <location filename="../core/planner.c" line="1195"/>
         <location filename="../core/planner.c" line="1198"/>
-        <location filename="../core/string-format.cpp" line="284"/>
+        <location filename="../core/string-format.cpp" line="285"/>
         <source>air</source>
         <translation>공기</translation>
     </message>
@@ -11062,6 +11082,21 @@ Maximum</source>
         <location filename="../core/equipment.c" line="327"/>
         <source>clip-on</source>
         <translation>클립-온</translation>
+    </message>
+    <message>
+        <location filename="../core/eventtype.cpp" line="90"/>
+        <source>info</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/eventtype.cpp" line="91"/>
+        <source>warn</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/eventtype.cpp" line="92"/>
+        <source>alarm</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/file.c" line="117"/>
@@ -11785,7 +11820,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>&apos;%s&apos; 구문 분석 실패</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2378"/>
+        <location filename="../core/parse-xml.c" line="2381"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>스타일시트 %s를 열 수 없습니다.</translation>
     </message>
@@ -12084,12 +12119,12 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>낮은 pO₂ 값 %.2f at %d:%02u with 기체 %s at 수심 %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1054"/>
+        <location filename="../core/profile.c" line="1060"/>
         <source>planned waypoint above ceiling</source>
         <translation>상승한계수심 위의 계획된 웨이포인트</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1370"/>
+        <location filename="../core/profile.c" line="1376"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -12098,77 +12133,77 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1377"/>
+        <location filename="../core/profile.c" line="1383"/>
         <source>P: %d%s (%s)
 </source>
         <translation>P: %d%s (%s)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1381"/>
+        <location filename="../core/profile.c" line="1387"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1387"/>
+        <location filename="../core/profile.c" line="1393"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1390"/>
+        <location filename="../core/profile.c" line="1396"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/분
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1392"/>
+        <location filename="../core/profile.c" line="1398"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1394"/>
+        <location filename="../core/profile.c" line="1400"/>
         <source>pO₂: %.2fbar
 </source>
         <translation>pO₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1396"/>
+        <location filename="../core/profile.c" line="1402"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
         <translation>SCR ΔpO₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1399"/>
+        <location filename="../core/profile.c" line="1405"/>
         <source>pN₂: %.2fbar
 </source>
         <translation>pN₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1401"/>
+        <location filename="../core/profile.c" line="1407"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1404"/>
+        <location filename="../core/profile.c" line="1410"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1413"/>
+        <location filename="../core/profile.c" line="1419"/>
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -12177,7 +12212,7 @@ EADD: %d%s / %.1fg/리터
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1419"/>
+        <location filename="../core/profile.c" line="1425"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -12186,215 +12221,215 @@ EADD: %d%s / %.1fg/리터
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1424"/>
+        <location filename="../core/profile.c" line="1430"/>
         <source>Density: %.1fg/ℓ
 </source>
         <translation>밀도: %.1fg/리터
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1436"/>
+        <location filename="../core/profile.c" line="1442"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
         <translation>안전 정지: %u분 @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1439"/>
+        <location filename="../core/profile.c" line="1445"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
         <translation>안전 정지: 알 수 없는 시간 @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1444"/>
+        <location filename="../core/profile.c" line="1450"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>감압: %u분 @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1447"/>
+        <location filename="../core/profile.c" line="1453"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
         <translation>감압: 알 수 없는 시간 @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1451"/>
+        <location filename="../core/profile.c" line="1457"/>
         <source>In deco
 </source>
         <translation>감압 중
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1453"/>
+        <location filename="../core/profile.c" line="1459"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1456"/>
+        <location filename="../core/profile.c" line="1462"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1459"/>
+        <location filename="../core/profile.c" line="1465"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>감압: %u분 @ %.0f%s (계산됨)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1467"/>
+        <location filename="../core/profile.c" line="1473"/>
         <source>In deco (calc)
 </source>
         <translation>감압 중 (계산됨)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1470"/>
+        <location filename="../core/profile.c" line="1476"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %u분 (계산됨)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1472"/>
+        <location filename="../core/profile.c" line="1478"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation>NDL: &gt;2시간 (계산됨)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1476"/>
+        <location filename="../core/profile.c" line="1482"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %u분 (계산됨)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1478"/>
+        <location filename="../core/profile.c" line="1484"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation>TTS: &gt;2시간 (계산됨)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1481"/>
+        <location filename="../core/profile.c" line="1487"/>
         <source>RBT: %umin
 </source>
         <translation>RBT: %u분
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1484"/>
+        <location filename="../core/profile.c" line="1490"/>
         <source>GF %d%%
 </source>
         <translation>GF %d%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1486"/>
+        <location filename="../core/profile.c" line="1492"/>
         <source>Surface GF %.0f%%
 </source>
         <translation>수면 GF %.0f%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1489"/>
+        <location filename="../core/profile.c" line="1495"/>
         <source>Calculated ceiling %.1f%s
 </source>
         <translation>계산된 상승한계수심 %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1495"/>
+        <location filename="../core/profile.c" line="1501"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>조직 %.0f분: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1502"/>
+        <location filename="../core/profile.c" line="1508"/>
         <source>ICD in leading tissue
 </source>
         <translation>주요 조직 내 ICD
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1504"/>
+        <location filename="../core/profile.c" line="1510"/>
         <source>heart rate: %d
 </source>
         <translation>심박수: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1506"/>
+        <location filename="../core/profile.c" line="1512"/>
         <source>bearing: %d
 </source>
         <translation>베어링: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1509"/>
+        <location filename="../core/profile.c" line="1515"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>평균 수심에서 여기까지 %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1631"/>
+        <location filename="../core/profile.c" line="1637"/>
         <source>ΔT:%d:%02dmin</source>
         <translation>ΔT:%d:%02d분</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1635"/>
+        <location filename="../core/profile.c" line="1641"/>
         <source>%s ΔD:%.1f%s</source>
         <translation>%s ΔD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1639"/>
+        <location filename="../core/profile.c" line="1645"/>
         <source>%s ↓D:%.1f%s</source>
         <translation>%s ↓D:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1643"/>
+        <location filename="../core/profile.c" line="1649"/>
         <source>%s ↑D:%.1f%s</source>
         <translation>%s ↑D:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1647"/>
+        <location filename="../core/profile.c" line="1653"/>
         <source>%s øD:%.1f%s
 </source>
         <translation>%s øD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1651"/>
+        <location filename="../core/profile.c" line="1657"/>
         <source>%s ↓V:%.2f%s</source>
         <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1655"/>
+        <location filename="../core/profile.c" line="1661"/>
         <source>%s ↑V:%.2f%s</source>
         <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1659"/>
+        <location filename="../core/profile.c" line="1665"/>
         <source>%s øV:%.2f%s</source>
         <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1689"/>
+        <location filename="../core/profile.c" line="1695"/>
         <source>%s ΔP:%d%s</source>
         <translation>%s ΔP:%d%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1705"/>
+        <location filename="../core/profile.c" line="1711"/>
         <source>%s SAC:%.*f%s/min</source>
         <translation>%s SAC:%.*f%s/분</translation>
     </message>
@@ -12924,42 +12959,42 @@ EADD: %d%s / %.1fg/리터
         <translation>모두 (트립별 통계)</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="292"/>
+        <location filename="../core/string-format.cpp" line="293"/>
         <source>Sunday</source>
         <translation>일요일</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="293"/>
+        <location filename="../core/string-format.cpp" line="294"/>
         <source>Monday</source>
         <translation>월요일</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="294"/>
+        <location filename="../core/string-format.cpp" line="295"/>
         <source>Tuesday</source>
         <translation>화요일</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="295"/>
+        <location filename="../core/string-format.cpp" line="296"/>
         <source>Wednesday</source>
         <translation>수요일</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="296"/>
+        <location filename="../core/string-format.cpp" line="297"/>
         <source>Thursday</source>
         <translation>목요일</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="297"/>
+        <location filename="../core/string-format.cpp" line="298"/>
         <source>Friday</source>
         <translation>금요일</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="298"/>
+        <location filename="../core/string-format.cpp" line="299"/>
         <source>Saturday</source>
         <translation>토요일</translation>
     </message>
     <message numerus="yes">
-        <location filename="../core/string-format.cpp" line="328"/>
+        <location filename="../core/string-format.cpp" line="329"/>
         <source>(%n dive(s))</source>
         <translation><numerusform>(%n개 다이빙(들))</numerusform></translation>
     </message>
@@ -13538,158 +13573,163 @@ Uemis Zurich가 올바르게 연결되었습니까?</translation>
         <translation>Subsurface-mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="289"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
         <source>Dive list</source>
         <translation>다이빙 목록</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="300"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="316"/>
         <source>Dive management</source>
         <translation>다이빙 관리</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="395"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="440"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="498"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="411"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="456"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="523"/>
         <source>Back</source>
         <translation>뒤로 가기</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="312"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
         <source>Add dive manually</source>
         <translation>다이빙 수동 추가</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="324"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="340"/>
         <source>Download from DC</source>
         <translation>다이브 컴퓨터에서 다운로드</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="336"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="352"/>
         <source>Manual sync with cloud</source>
         <translation>클라우드와 수동 동기화</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="342"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="358"/>
         <source>Completed manual sync with cloud
 </source>
         <translation>클라우드와 수동 동기화 완료됨
 </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
         <source>Auto cloud sync</source>
         <translation>자동 클라우드 동기화</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="356"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="372"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>자동 클라우드 동기화를 끄면 모든 데이터가 로컬에만 저장됩니다. 이는 네트워크 접속이 제한되거나 없는 상황에서 매우 유용할 수 있습니다. 네트워크 연결이 가능할 때 데이터를 클라우드 저장소에 동기화하려면 &apos;클라우드와 수동 동기화&apos;를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="382"/>
         <source>Dive summary</source>
         <translation>다이빙 요약</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="377"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="393"/>
         <source>Export</source>
         <translation>내보내기</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="389"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="405"/>
         <source>Location</source>
         <translation>위치</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="413"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="429"/>
         <source>Statistics</source>
         <translation>통계</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="422"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="438"/>
         <source>Settings</source>
         <translation>설정</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="435"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="451"/>
         <source>Help</source>
         <translation>도움말</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="447"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="463"/>
         <source>About</source>
         <translation>대하여</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="458"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="474"/>
         <source>Show user manual</source>
         <translation>사용자 매뉴얼 표시</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="467"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="483"/>
+        <source>Contribute to Subsurface</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
         <source>Ask for support</source>
         <translation>지원 요청하기</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="471"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="496"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
         <translation>이메일 클라이언트를 열지 못했습니다. 직접 지원 요청 이메일을 작성하여 support@subsurface-divelog.org로 보내주세요 - 클립보드에 복사된 로그를 해당 이메일에 붙여넣을 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="481"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="506"/>
         <source>Reset forgotten Subsurface Cloud password</source>
         <translation>잊어버린 Subsurface 클라우드 비밀번호 재설정</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="517"/>
         <source>Developer</source>
         <translation>개발자</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="502"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="527"/>
         <source>App log</source>
         <translation>앱 로그</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="509"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="534"/>
         <source>Test busy indicator (toggle)</source>
         <translation>바쁨 표시 테스트 (전환)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="519"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="521"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="544"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="546"/>
         <source>Test notification text</source>
         <translation>문자 알림 테스트</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="525"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="550"/>
         <source>Theme information</source>
         <translation>테마 정보</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="533"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="558"/>
         <source>Enable verbose logging (currently: %1)</source>
         <translation>자세한 로깅 활성화 (현재: %1)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="535"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="560"/>
         <source>Not persistent</source>
         <translation>지속되지 않음</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="542"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="567"/>
         <source>Access local cloud cache dirs</source>
         <translation>로컬 클라우드 캐시 디렉터리에 접근</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="581"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="606"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
         <translation>글꼴 크기가 디스플레이에 비해 너무 클 수 있으므로 작은 글꼴로 전환하는 것이 좋습니다</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="741"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="766"/>
         <source>Subsurface-mobile starting up</source>
         <translation>Subsurface-mobile 시작 중</translation>
     </message>
