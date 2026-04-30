@@ -397,12 +397,12 @@
         <translation>Conectarse o registrarse</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="138"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="137"/>
         <source>No cloud mode</source>
         <translation>Sin conexión a la nube</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="152"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="151"/>
         <source>Forgot password?</source>
         <translation>¿Olvidaste tu clave?</translation>
     </message>
@@ -2868,38 +2868,38 @@ Este gas se está usando. Solo se pueden borrar botellas que no se usen en la in
 <context>
     <name>DiveEventItem</name>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="140"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="145"/>
         <source> (cyl. %1)</source>
         <translation>(bot. %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="144"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="149"/>
         <source>ICD</source>
         <translation>ICD</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="145"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="150"/>
         <source>ΔHe</source>
         <translation>ΔHe</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="146"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="151"/>
         <source>ΔN₂</source>
         <translation>ΔN₂</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="164"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="169"/>
         <source>Manual switch to OC</source>
         <translation>Cambio manual a OC</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="166"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="171"/>
         <source> begin</source>
         <comment>Starts with space!</comment>
         <translation>comienzo</translation>
     </message>
     <message>
-        <location filename="../profile-widget/diveeventitem.cpp" line="167"/>
+        <location filename="../profile-widget/diveeventitem.cpp" line="172"/>
         <source> end</source>
         <comment>Starts with space!</comment>
         <translation>fin</translation>
@@ -3998,22 +3998,22 @@ Este gas se está usando. Solo se pueden borrar botellas que no se usen en la in
         <translation>Modo de buceo</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1208"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1198"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1214"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1204"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1217"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1207"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1264"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1254"/>
         <source>Stop times</source>
         <translation>Tiempos de parada</translation>
     </message>
@@ -7667,22 +7667,22 @@ Por favor, exporta esta plantilla a un archivo distinto.</translation>
 <context>
     <name>ProfileScene</name>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="583"/>
+        <location filename="../profile-widget/profilescene.cpp" line="580"/>
         <source>Planned dive</source>
         <translation>Inmersión planeada</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="585"/>
+        <location filename="../profile-widget/profilescene.cpp" line="582"/>
         <source>Manually added dive</source>
         <translation>Inmersión añadida a mano</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="587"/>
+        <location filename="../profile-widget/profilescene.cpp" line="584"/>
         <source>Unknown dive computer</source>
         <translation>Ordenador de buceo desconocido</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilescene.cpp" line="590"/>
+        <location filename="../profile-widget/profilescene.cpp" line="587"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 of %2)</translation>
     </message>
@@ -7844,78 +7844,68 @@ Por favor, exporta esta plantilla a un archivo distinto.</translation>
         <translation>Cambiar el modo de buceo</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="612"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="611"/>
         <source>Remove event</source>
         <translation>Borrar evento</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="613"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="612"/>
         <source>Hide event</source>
         <translation>Ocultar evento</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="614"/>
-        <source>Hide events of type &apos;%1&apos;</source>
-        <translation>Ocultar eventos tipo &apos;%1&apos;</translation>
+        <location filename="../profile-widget/profilewidget2.cpp" line="613"/>
+        <source>Hide similar events</source>
+        <translation>Ocultar eventos similares</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="617"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="616"/>
         <source>Edit name</source>
         <translation>Editar nombre</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="646"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="653"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="645"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="652"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Ajusta la presión de Bot. %1 (actualmente interpolada como %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="661"/>
-        <source>Unhide event type</source>
-        <translation>Mostrar eventos tipo</translation>
+        <location filename="../profile-widget/profilewidget2.cpp" line="660"/>
+        <source>Unhide all events</source>
+        <translation>Revelar todos los eventos</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="668"/>
-        <source>All event types</source>
-        <translation>Todos los tipos</translation>
-    </message>
-    <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="672"/>
-        <source>Unhide individually hidden events of this dive</source>
-        <translation>Mostrar eventos ocultos individualmente en esta inmersión</translation>
-    </message>
-    <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="700"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="688"/>
         <source>Edit nickname</source>
         <translation>Editar alias</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="701"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="689"/>
         <source>Set new nickname for %1 (serial %2):</source>
         <translation>Crear nuevo alias para %1 (Nº serie %2):</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="746"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="728"/>
         <source>Remove the selected event?</source>
         <translation>¿ Borrar el evento seleccionado ?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="747"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="729"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="777"/>
         <source>Edit name of bookmark</source>
         <translation>Editar el nombre de la marca</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="796"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
         <source>Custom name:</source>
         <translation>Nombre personalizado:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="801"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="783"/>
         <source>Name is too long!</source>
         <translation>¡El nombre es demasiado largo!</translation>
     </message>
@@ -7933,196 +7923,191 @@ Por favor, exporta esta plantilla a un archivo distinto.</translation>
         <translation>Abrir archivo de datos local ha fallado</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="416"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="413"/>
         <source>Processing %1 dives</source>
         <translation>Procesando %1 buceos</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="415"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 inmersiones cargados desde archivo local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="425"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="422"/>
         <source>Incorrect cloud credentials</source>
         <translation>Credenciales de la nube incorrectas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="581"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="577"/>
         <source>working in no-cloud mode</source>
         <translation>Funcionando en modo local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="585"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="581"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Error analizando el almacenamiento local. Abortando.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="596"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="591"/>
         <source>no cloud credentials</source>
         <translation>sin credenciales para la nube</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="597"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="678"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="592"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="672"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Por favor, introduce credenciales para la nube validas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="638"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="633"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>El correo y la contraseña del almacenamiento en la nube solo pueden contener letras, números, &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, y &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="644"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
         <source>Invalid format for email address</source>
         <translation>Formato de correo electrónico inválido</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="686"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="680"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Intentando acceder al almacenamiento en la nube con nuevas credenciales</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="698"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="692"/>
         <source>Testing cloud credentials</source>
         <translation>Comprobando credenciales para la nube</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="715"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="709"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Sin respuesta del servidor en la nube al validar las credenciales</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="715"/>
         <source>Incorrect email / password combination</source>
         <translation>Combinación email/password incorrecta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="726"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <source>Cloud credentials require verification PIN</source>
         <translation>Las credenciales en la nube requieren PIN de verificación</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="729"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="723"/>
         <source>Incorrect PIN, please try again</source>
         <translation>PIN incorrecto, por favor inténtalo de nuevo</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="734"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
         <source>PIN accepted, credentials verified</source>
         <translation>PIN aceptado, credenciales verificadas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="746"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="740"/>
         <source>Deleting cloud account...</source>
         <translation>Borrando cuenta en la nube ...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="760"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="754"/>
         <source>No response from cloud server to delete account</source>
         <translation>No se ha recibido respuesta del servidoe en la nube al borrar la cuenta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="772"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="765"/>
         <source>Cloud storage account deleted.</source>
         <translation>Cuenta de almacenamiento en la nube borrada.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="780"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="773"/>
         <source>Cloud storage error: %1</source>
         <translation>Error en almacenamiento en la nube: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="827"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="820"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>Cargando inmersiones desde el almacenamiento local (sin nube)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="876"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="868"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Fallo al conectar con el servidor en la nube, volviendo al modo local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="895"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="888"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Almacenamiento en la nube abierto. No hay inmersiones en la lista.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1097"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1104"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1106"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1097"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1099"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1102"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1228"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1221"/>
         <source>weight</source>
         <translation>peso</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1521"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1514"/>
         <source>[%1]Changes saved:'%2'.
 %1 possible via context menu</source>
         <translation>[%1]Cambios guardados:&apos;%2&apos;.
 %1 es posible desde el menú contextual</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1516"/>
         <source>Redo</source>
         <translation>Rehacer</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1523"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1516"/>
         <source>Undo: %1</source>
         <translation>Deshacer: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1525"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1518"/>
         <source>Undo</source>
         <translation>Deshacer</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1545"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1538"/>
         <source>Fatal error: cannot save data file. Please copy log file and report.</source>
         <translation>Error fatal: no se puede guardar el archivo de datos.
 Por favor, copia el archivo de registro e informa.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1885"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1878"/>
         <source>no default cylinder</source>
         <translation>sin botella por defecto</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2390"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2383"/>
         <source>(unsaved changes in memory)</source>
         <translation>(cambios en memoria no guardados)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2392"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2385"/>
         <source>(changes synced locally)</source>
         <translation>(cambios sincronizados localmente)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2393"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="2386"/>
         <source>(synced with cloud)</source>
         <translation>(sincronizado con la nube)</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="2401"/>
-        <source>(incorrect cloud email or password)</source>
-        <translation>(correo o password incorrectos)</translation>
     </message>
 </context>
 <context>
@@ -8570,52 +8555,52 @@ incluso los que no se reconozcan como ordenadores de buceo.
 Por favor, reporta ordenadores que necesiten este ajuste.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="571"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="570"/>
         <source>Display</source>
         <translation>Monitor</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="579"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="578"/>
         <source>Show only one column in Portrait mode</source>
         <translation>Mostrar solo una columna en modo horizontal</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="591"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="589"/>
         <source>Depth line based on ×3 intervals</source>
         <translation>Líneas de profundidad basadas en intervalos x3</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="606"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="603"/>
         <source>Profile deco ceiling</source>
         <translation>Techo deco del perfil</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="614"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="611"/>
         <source>Show DC reported ceiling</source>
         <translation>Mostrar techo reportado por el ordenador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="625"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="621"/>
         <source>Show calculated ceiling</source>
         <translation>Mostrar el techo calculado</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="637"/>
-        <source>GFLow (10 to 150)</source>
-        <translation>GFbajo (10 a 150)</translation>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="631"/>
+        <source>GFLow</source>
+        <translation>GF bajo</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="671"/>
-        <source>GFHigh (10 to 150</source>
-        <translation>GFalto (10 a 150</translation>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="648"/>
+        <source>GFHigh</source>
+        <translation>GF alto</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="708"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="669"/>
         <source>Developer</source>
         <translation>Desarrollador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="716"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="677"/>
         <source>Display Developer menu</source>
         <translation>Mostrar el menú de desarrolladores</translation>
     </message>
@@ -9453,16 +9438,11 @@ Archivos con fecha/hora incorrectas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/about.ui" line="97"/>
-        <source>C&amp;ontribute</source>
-        <translation>C&amp;ontribuir</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/about.ui" line="104"/>
         <source>&amp;Website</source>
         <translation>Sitio &amp;web</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/about.ui" line="111"/>
+        <location filename="../desktop-widgets/about.ui" line="104"/>
         <source>&amp;Close</source>
         <translation>&amp;Cerrar</translation>
     </message>
@@ -10936,7 +10916,7 @@ Media</translation>
         <location filename="../core/datatrak.c" line="638"/>
         <location filename="../core/import-divinglog.c" line="309"/>
         <location filename="../core/libdivecomputer.c" line="299"/>
-        <location filename="../core/string-format.cpp" line="156"/>
+        <location filename="../core/string-format.cpp" line="155"/>
         <location filename="../core/uemis-downloader.c" line="203"/>
         <source>unknown</source>
         <translation>desconocido</translation>
@@ -10984,7 +10964,7 @@ Media</translation>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
-        <location filename="../core/string-format.cpp" line="239"/>
+        <location filename="../core/string-format.cpp" line="238"/>
         <location filename="../desktop-widgets/templatelayout.cpp" line="454"/>
         <location filename="../qt-models/divetripmodel.cpp" line="165"/>
         <source>h</source>
@@ -10995,7 +10975,7 @@ Media</translation>
         <location filename="../core/divelogexportlogic.cpp" line="94"/>
         <location filename="../core/plannernotes.c" line="63"/>
         <location filename="../core/plannernotes.c" line="524"/>
-        <location filename="../core/string-format.cpp" line="239"/>
+        <location filename="../core/string-format.cpp" line="238"/>
         <location filename="../core/worldmap-save.c" line="50"/>
         <location filename="../desktop-widgets/templatelayout.cpp" line="455"/>
         <location filename="../qt-models/divetripmodel.cpp" line="165"/>
@@ -11053,7 +11033,7 @@ Media</translation>
         <location filename="../core/equipment.c" line="201"/>
         <location filename="../core/planner.c" line="1195"/>
         <location filename="../core/planner.c" line="1198"/>
-        <location filename="../core/string-format.cpp" line="285"/>
+        <location filename="../core/string-format.cpp" line="284"/>
         <source>air</source>
         <translation>aire</translation>
     </message>
@@ -11086,21 +11066,6 @@ Media</translation>
         <location filename="../core/equipment.c" line="327"/>
         <source>clip-on</source>
         <translation>clip-on</translation>
-    </message>
-    <message>
-        <location filename="../core/eventtype.cpp" line="90"/>
-        <source>info</source>
-        <translation>informativo</translation>
-    </message>
-    <message>
-        <location filename="../core/eventtype.cpp" line="91"/>
-        <source>warn</source>
-        <translation>aviso</translation>
-    </message>
-    <message>
-        <location filename="../core/eventtype.cpp" line="92"/>
-        <source>alarm</source>
-        <translation>alarma</translation>
     </message>
     <message>
         <location filename="../core/file.c" line="117"/>
@@ -11824,7 +11789,7 @@ Puedes crear el archivo de registro seleccionando la casilla correspondiente en 
         <translation>No se pudo analizar &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2381"/>
+        <location filename="../core/parse-xml.c" line="2378"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>No se puede abrir la hoja de estilo %s</translation>
     </message>
@@ -12123,12 +12088,12 @@ Puedes crear el archivo de registro seleccionando la casilla correspondiente en 
         <translation>valor de pO₂ bajo %.2f en %d:%02u con gas %s a profundidad %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1060"/>
+        <location filename="../core/profile.c" line="1054"/>
         <source>planned waypoint above ceiling</source>
         <translation>punto del perfil planificado  por encima del techo</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1376"/>
+        <location filename="../core/profile.c" line="1370"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -12137,77 +12102,77 @@ Prof: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1383"/>
+        <location filename="../core/profile.c" line="1377"/>
         <source>P: %d%s (%s)
 </source>
         <translation>P: %d%s (%s)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1387"/>
+        <location filename="../core/profile.c" line="1381"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1393"/>
+        <location filename="../core/profile.c" line="1387"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1396"/>
+        <location filename="../core/profile.c" line="1390"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>CAS: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1398"/>
+        <location filename="../core/profile.c" line="1392"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1400"/>
+        <location filename="../core/profile.c" line="1394"/>
         <source>pO₂: %.2fbar
 </source>
         <translation>pO₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1402"/>
+        <location filename="../core/profile.c" line="1396"/>
         <source>SCR ΔpO₂: %.2fbar
 </source>
         <translation>SCR ΔpO₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1405"/>
+        <location filename="../core/profile.c" line="1399"/>
         <source>pN₂: %.2fbar
 </source>
         <translation>pN₂: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1407"/>
+        <location filename="../core/profile.c" line="1401"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1410"/>
+        <location filename="../core/profile.c" line="1404"/>
         <source>MOD: %d%s
 </source>
         <translation>PMO: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1419"/>
+        <location filename="../core/profile.c" line="1413"/>
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -12216,7 +12181,7 @@ EADD: %d%s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1425"/>
+        <location filename="../core/profile.c" line="1419"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -12225,214 +12190,214 @@ EADD: %d%s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1430"/>
+        <location filename="../core/profile.c" line="1424"/>
         <source>Density: %.1fg/ℓ
 </source>
         <translation>Densidad: %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1442"/>
+        <location filename="../core/profile.c" line="1436"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
         <translation>Parada de seguridad: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1445"/>
+        <location filename="../core/profile.c" line="1439"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
         <translation>Parada de seguridad: duración desconocida @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1450"/>
+        <location filename="../core/profile.c" line="1444"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Parada deco: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1453"/>
+        <location filename="../core/profile.c" line="1447"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
         <translation>Parada deco: duración desconocida @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1457"/>
+        <location filename="../core/profile.c" line="1451"/>
         <source>In deco
 </source>
         <translation>En deco
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1459"/>
+        <location filename="../core/profile.c" line="1453"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1462"/>
+        <location filename="../core/profile.c" line="1456"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1465"/>
+        <location filename="../core/profile.c" line="1459"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Parada deco: %umin @ %.0f%s (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1473"/>
+        <location filename="../core/profile.c" line="1467"/>
         <source>In deco (calc)
 </source>
         <translation>En deco (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1476"/>
+        <location filename="../core/profile.c" line="1470"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1478"/>
+        <location filename="../core/profile.c" line="1472"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation>LND: &gt;2h (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1482"/>
+        <location filename="../core/profile.c" line="1476"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1484"/>
+        <location filename="../core/profile.c" line="1478"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation>TTS: &gt;2h (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1487"/>
+        <location filename="../core/profile.c" line="1481"/>
         <source>RBT: %umin
 </source>
         <translation>RBT: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1490"/>
+        <location filename="../core/profile.c" line="1484"/>
         <source>GF %d%%
 </source>
         <translation>GF %d%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1492"/>
+        <location filename="../core/profile.c" line="1486"/>
         <source>Surface GF %.0f%%
 </source>
         <translation>Superficie GF %.0f%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1495"/>
+        <location filename="../core/profile.c" line="1489"/>
         <source>Calculated ceiling %.1f%s
 </source>
         <translation>Techo calculado %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1501"/>
+        <location filename="../core/profile.c" line="1495"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Tejido %.0fmin: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1508"/>
+        <location filename="../core/profile.c" line="1502"/>
         <source>ICD in leading tissue
 </source>
         <translation>ICD en el tejido principal</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1510"/>
+        <location filename="../core/profile.c" line="1504"/>
         <source>heart rate: %d
 </source>
         <translation>ritmo cardiaco: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1512"/>
+        <location filename="../core/profile.c" line="1506"/>
         <source>bearing: %d
 </source>
         <translation>Soporte: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1515"/>
+        <location filename="../core/profile.c" line="1509"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>Prof. media hasta aquí %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1637"/>
+        <location filename="../core/profile.c" line="1631"/>
         <source>ΔT:%d:%02dmin</source>
         <translation>ΔT:%d:%02dmin</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1641"/>
+        <location filename="../core/profile.c" line="1635"/>
         <source>%s ΔD:%.1f%s</source>
         <translation>%s ΔProf:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1645"/>
+        <location filename="../core/profile.c" line="1639"/>
         <source>%s ↓D:%.1f%s</source>
         <translation>%s ↓Prof:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1649"/>
+        <location filename="../core/profile.c" line="1643"/>
         <source>%s ↑D:%.1f%s</source>
         <translation>%s ↑Prof:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1653"/>
+        <location filename="../core/profile.c" line="1647"/>
         <source>%s øD:%.1f%s
 </source>
         <translation>%s øProf:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1657"/>
+        <location filename="../core/profile.c" line="1651"/>
         <source>%s ↓V:%.2f%s</source>
         <translation>%s ↓V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1661"/>
+        <location filename="../core/profile.c" line="1655"/>
         <source>%s ↑V:%.2f%s</source>
         <translation>%s ↑V:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1665"/>
+        <location filename="../core/profile.c" line="1659"/>
         <source>%s øV:%.2f%s</source>
         <translation>%s øV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1695"/>
+        <location filename="../core/profile.c" line="1689"/>
         <source>%s ΔP:%d%s</source>
         <translation>%s ΔPres:%d%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1711"/>
+        <location filename="../core/profile.c" line="1705"/>
         <source>%s SAC:%.*f%s/min</source>
         <translation>%s CAS:%.*f%s/min</translation>
     </message>
@@ -12962,42 +12927,42 @@ EADD: %d%s / %.1fg/ℓ
         <translation>Todo (por estadísticas de viaje)</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="293"/>
+        <location filename="../core/string-format.cpp" line="292"/>
         <source>Sunday</source>
         <translation>Domingo</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="294"/>
+        <location filename="../core/string-format.cpp" line="293"/>
         <source>Monday</source>
         <translation>Lunes</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="295"/>
+        <location filename="../core/string-format.cpp" line="294"/>
         <source>Tuesday</source>
         <translation>Martes</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="296"/>
+        <location filename="../core/string-format.cpp" line="295"/>
         <source>Wednesday</source>
         <translation>Miércoles</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="297"/>
+        <location filename="../core/string-format.cpp" line="296"/>
         <source>Thursday</source>
         <translation>Jueves</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="298"/>
+        <location filename="../core/string-format.cpp" line="297"/>
         <source>Friday</source>
         <translation>Viernes</translation>
     </message>
     <message>
-        <location filename="../core/string-format.cpp" line="299"/>
+        <location filename="../core/string-format.cpp" line="298"/>
         <source>Saturday</source>
         <translation>Sábado</translation>
     </message>
     <message numerus="yes">
-        <location filename="../core/string-format.cpp" line="329"/>
+        <location filename="../core/string-format.cpp" line="328"/>
         <source>(%n dive(s))</source>
         <translation><numerusform>(%n inmersión(es))</numerusform><numerusform>(%n inmersión(es))</numerusform><numerusform>(%n inmersión(es))</numerusform></translation>
     </message>
@@ -13576,162 +13541,157 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Subsurface-mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="289"/>
         <source>Dive list</source>
         <translation>Lista de inmersiones</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="316"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="300"/>
         <source>Dive management</source>
         <translation>Gestión de inmersiones</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="411"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="456"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="523"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="305"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="395"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="440"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="498"/>
         <source>Back</source>
         <translation>Atrás</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="312"/>
         <source>Add dive manually</source>
         <translation>Añadir inmersión manualmente</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="340"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="324"/>
         <source>Download from DC</source>
         <translation>Descargar desde el ordenador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="352"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="336"/>
         <source>Manual sync with cloud</source>
         <translation>Sincronización manual con la nube</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="358"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="342"/>
         <source>Completed manual sync with cloud
 </source>
         <translation>Sincronización manual completada</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
         <source>Auto cloud sync</source>
         <translation>Sincronización automática con la nube</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="372"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="356"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Desactivar la sincronización automática con la nube hace que todos los datos se guarden localmente. Esto puede ser muy útil en situaciones con acceso limitado a la red. Por favor, selecciona &apos;Sincronización manual con la nube&apos; si dispones de conexión y quieres sincronizar tus datos con el almacenamiento en la nube.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="382"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
         <source>Dive summary</source>
         <translation>Resumen de la inmersión</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="393"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="377"/>
         <source>Export</source>
         <translation>Exportar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="405"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="389"/>
         <source>Location</source>
         <translation>Ubicación</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="429"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="413"/>
         <source>Statistics</source>
         <translation>Estadísticas</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="438"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="422"/>
         <source>Settings</source>
         <translation>Ajustes</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="451"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="435"/>
         <source>Help</source>
         <translation>Ayuda</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="463"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="447"/>
         <source>About</source>
         <translation>Acerca de</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="474"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="458"/>
         <source>Show user manual</source>
         <translation>Mostrar manual de usuario</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="483"/>
-        <source>Contribute to Subsurface</source>
-        <translation>Contribuir a Subsurface</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="467"/>
         <source>Ask for support</source>
         <translation>Pedir ayuda</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="496"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="471"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
         <translation>Fallo al abrir el cliente de correo electrónico, por favor remite manualmente un correo a support@subsurface-divelog.org el registro se ha guardado en el portapapeles y puede pegarse en el correo.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="506"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="481"/>
         <source>Reset forgotten Subsurface Cloud password</source>
         <translation>Reiniciar password olvidada</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="517"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="492"/>
         <source>Developer</source>
         <translation>Desarrollador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="527"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="502"/>
         <source>App log</source>
         <translation>Registro de la app</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="534"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="509"/>
         <source>Test busy indicator (toggle)</source>
         <translation>Probar indicador de ocupado.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="544"/>
-        <location filename="../mobile-widgets/qml/main.qml" line="546"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="519"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="521"/>
         <source>Test notification text</source>
         <translation>Probar texto de notificación.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="550"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="525"/>
         <source>Theme information</source>
         <translation>Información de tema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="558"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="533"/>
         <source>Enable verbose logging (currently: %1)</source>
         <translation>Activar registro ampliado (actualmente: %1)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="560"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="535"/>
         <source>Not persistent</source>
         <translation>No persistente</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="567"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="542"/>
         <source>Access local cloud cache dirs</source>
         <translation>Acceder a las carpetas de caché local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="606"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="581"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
         <translation>Tamaño de fuente aparentemente demasiado grande para la pantalla, se sugiere cambiar a una fuente de menor tamaño</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="766"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="741"/>
         <source>Subsurface-mobile starting up</source>
         <translation>Iniciando Subsurface-mobile</translation>
     </message>
