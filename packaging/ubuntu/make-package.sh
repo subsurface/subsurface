@@ -146,10 +146,15 @@ else
 fi
 
 # Upload each distro variant separately so that orig.tar.xz is included in
-# every batch. A single dput call with multiple .changes files causes dput to
-# skip orig.tar.xz for all distros after the first, and Launchpad returns a
-# 550 error because the file isn't yet in the PPA pool.
+# every batch.
+# Launchpad appears to be randomly failing, even in this scenario, so try
+# all of them and then error at the end if one or more didn't succeed.
+failed=""
 for f in "${FOLDER}-${rev}"~*.changes; do
 	rm -f ~/.dput.log
-	dput "$PPA" "$f"
+	dput "$PPA" "$f" || { echo "WARNING: dput failed for $f"; failed="$failed $f"; }
 done
+if [ -n "$failed" ]; then
+	echo "The following uploads failed:$failed"
+	exit 1
+fi
