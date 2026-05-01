@@ -108,7 +108,7 @@ debuild -S -d
 #
 rel=focal
 others="jammy noble"
-others_nowebkit="questing"
+others_nowebkit="questing resolute"
 
 build() {
 	local next="$1"
