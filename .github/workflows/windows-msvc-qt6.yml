@@ -235,7 +235,8 @@ jobs:
       - name: Clone qlitehtml
         shell: pwsh
         run: |
-          $qlitehtmlVersion = "b8f9096eae730ec9464b24874e4e6312144aa9ce"
+          $qlitehtmlVersion = (Get-Content "scripts/get-dep-lib.sh" | Select-String 'CURRENT_QLITEHTML="(.+)"').Matches.Groups[1].Value
+          Write-Host "Using qlitehtml version: $qlitehtmlVersion"
 
           git clone https://github.com/dirkhh/qlitehtml.git qlitehtml
           Push-Location qlitehtml

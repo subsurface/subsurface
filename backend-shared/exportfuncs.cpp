@@ -61,7 +61,7 @@ static QString profileText(const struct dive &dive)
 	return text;
 }
 
-static void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename, bool diveinfo, int width, int height)
+void exportProfile(ProfileScene &profile, const struct dive &dive, const QString &filename, bool diveinfo, int width, int height)
 {
 	int profileWidth = profileScale * width;
 	int profileHeight = profileScale * height;
@@ -82,7 +82,7 @@ static void exportProfile(ProfileScene &profile, const struct dive &dive, const 
 	image.save(filename);
 }
 
-static std::unique_ptr<ProfileScene> getPrintProfile()
+std::unique_ptr<ProfileScene> getPrintProfile()
 {
 	return std::make_unique<ProfileScene>((double)profileScale, true, false);
 }
