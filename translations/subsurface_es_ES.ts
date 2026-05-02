@@ -7356,7 +7356,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="253"/>
         <source>NDL: [ndl]</source>
-        <translation>LND: [lnd]</translation>
+        <translation>LND: [ndl]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="261"/>
