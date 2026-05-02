@@ -3011,12 +3011,12 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="283"/>
         <source>Merge dive %1 with dive above</source>
-        <translation>Fasse Tauchgang %1 mit dem darüber zusammen</translation>
+        <translation>Tauchgang %1 mit dem darüber zusammenfassen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="291"/>
         <source>Merge dive %1 with dive below</source>
-        <translation>Fasse Tauchgang %1 mit dem darunter zusammen</translation>
+        <translation>Tauchgang %1 mit dem darunter zusammenfassen</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="300"/>
@@ -4425,7 +4425,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="287"/>
         <source>Min switch time [min]</source>
-        <translation>Min Wechseldauer [min]</translation>
+        <translation>Min. Wechseldauer [min]</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="301"/>
@@ -5303,7 +5303,7 @@ Wenn das Gerät Bluetooth unterstützt, Bluetooth am Tauchcomputer aktivieren un
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="459"/>
         <source>&lt;br&gt;&lt;br&gt;A firmware update for your dive computer is available: you have version %1 but the latest stable version is %2. &lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;If your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update.&lt;/font&gt;</source>
-        <translation>&lt;br&gt;&lt;br&gt;Ein Firmware-Update ist verfügbar: Momentane version %1, aber die aktuelle stabile Version ist %2. &lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Wenn das Gerät Bluetooth unterstützt, Bluetooth am Tauchcomputer aktivieren und vor dem Fortsetzen des Updates die gleichen Schritte wie zum Logbuch-Download durchführen.&lt;/font&gt;</translation>
+        <translation>&lt;br&gt;&lt;br&gt;Ein Firmware-Update ist verfügbar: Momentane Version %1, aber die aktuelle stabile Version ist %2. &lt;br&gt;&lt;br&gt;&lt;font color=&quot;red&quot;&gt;Wenn das Gerät Bluetooth unterstützt, Bluetooth am Tauchcomputer aktivieren und vor dem Fortsetzen des Updates die gleichen Schritte wie zum Logbuch-Download durchführen.&lt;/font&gt;</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="481"/>
@@ -7321,7 +7321,7 @@ Siehe https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="192"/>
         <source>Subtitle format string:</source>
-        <translation>Format-String für Untertitel</translation>
+        <translation>Zeichenfolge für das Untertitelformat:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="213"/>
@@ -7371,7 +7371,7 @@ Siehe https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="285"/>
         <source>Stop depth: [stopdepth]</source>
-        <translation>Stopp-Tiefe: [stopdepth]</translation>
+        <translation>Stopptiefe: [stopdepth]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="293"/>
@@ -11418,7 +11418,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="79"/>
         <source>any dive computer</source>
-        <translation>Beliebiger Tauchcomputer</translation>
+        <translation>beliebiger Tauchcomputer</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="87"/>
@@ -11711,7 +11711,7 @@ Durchschnitt</translation>
     <message>
         <location filename="../core/import-suunto-json.cpp" line="263"/>
         <source>dive</source>
-        <translation>Tauchgan</translation>
+        <translation>Tauchgang</translation>
     </message>
     <message>
         <location filename="../core/import-suunto-json.cpp" line="417"/>
@@ -12482,7 +12482,7 @@ Die kann durch Setzen einen Häkchens im Download-Dialog erstellt werden.</trans
     <message>
         <location filename="../core/profile.cpp" line="1414"/>
         <source>Calculated ceiling %.1f%s</source>
-        <translation>Berechnete Ceiling %.1f%s</translation>
+        <translation>Berechnete Auftauchgrenze %.1f%s</translation>
     </message>
     <message>
         <location filename="../core/profile.cpp" line="1420"/>
