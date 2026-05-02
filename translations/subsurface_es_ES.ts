@@ -7336,7 +7336,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="221"/>
         <source>Dive time: [time]</source>
-        <translation>Tiempo de buceo: [tiempo]</translation>
+        <translation>Tiempo de buceo: [time]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="229"/>
