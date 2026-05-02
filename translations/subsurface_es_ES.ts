@@ -7466,7 +7466,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="429"/>
         <source>Stop depth (calculated): [stopdepth_calc]</source>
-        <translation>Profundidad de parada (calculada): [prof_calc]</translation>
+        <translation>Profundidad de parada (calculada): [stopdepth_calc]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="437"/>
