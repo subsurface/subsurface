@@ -7376,7 +7376,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="285"/>
         <source>Stop depth: [stopdepth]</source>
-        <translation>Profundidad de parada: [prof]</translation>
+        <translation>Profundidad de parada: [stopdepth]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="293"/>
