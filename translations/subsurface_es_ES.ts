@@ -7406,7 +7406,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="333"/>
         <source>O₂ pressure (rebreather): [o2_pressure]</source>
-        <translation>Presión de O₂ (rebreather): [presion_o2]</translation>
+        <translation>Presión de O₂ (rebreather): [o2_pressure]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="341"/>
