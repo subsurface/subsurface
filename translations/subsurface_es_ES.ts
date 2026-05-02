@@ -7421,12 +7421,12 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="357"/>
         <source>MOD: [mod]</source>
-        <translation>PMO: [pmo]</translation>
+        <translation>PMO: [mod]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="365"/>
         <source>EAD: [ead]</source>
-        <translation>PEA: [pea]</translation>
+        <translation>PEA: [ead]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="373"/>
