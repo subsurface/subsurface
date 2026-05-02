@@ -7476,7 +7476,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="445"/>
         <source>Bearing: [bearing]</source>
-        <translation>Rumbo: [rumbo]</translation>
+        <translation>Rumbo: [bearing]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="453"/>
