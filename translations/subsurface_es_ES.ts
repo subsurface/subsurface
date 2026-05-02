@@ -7486,7 +7486,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="461"/>
         <source>Current GF: [current_gf]</source>
-        <translation>GF actual: [gf_actual]</translation>
+        <translation>GF actual: [current_gf]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="469"/>
