@@ -7481,7 +7481,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="453"/>
         <source>Surface GF: [surface_gf]</source>
-        <translation>GF superficie: [gf_superf]</translation>
+        <translation>GF superficie: [surface_gf]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="461"/>
