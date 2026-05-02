@@ -7471,7 +7471,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="437"/>
         <source>Heartrate: [heartrate]</source>
-        <translation>Ritmo cardiaco: [ritmo]</translation>
+        <translation>Ritmo cardiaco: [heartrate]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="445"/>
