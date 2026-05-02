@@ -7351,7 +7351,7 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="245"/>
         <source>Ceiling: [ceiling]</source>
-        <translation>Techo: [techo]</translation>
+        <translation>Techo: [ceiling]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="253"/>
