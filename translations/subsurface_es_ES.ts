@@ -7441,12 +7441,12 @@ Visita https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="389"/>
         <source>Vertical speed: [speed]</source>
-        <translation>Velocidad vertical: [velocidad]</translation>
+        <translation>Velocidad vertical: [speed]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="397"/>
         <source>In deco (calculated): [in_deco]</source>
-        <translation>En deco (calculada): [en_deco]</translation>
+        <translation>En deco (calculada): [in_deco]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="405"/>
