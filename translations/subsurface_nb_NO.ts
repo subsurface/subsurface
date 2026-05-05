@@ -824,7 +824,7 @@
     <message>
         <location filename="../commands/command_edit.cpp" line="236"/>
         <source>chill</source>
-        <translation>vind</translation>
+        <translation>kuldefornemmelse</translation>
     </message>
     <message>
         <location filename="../commands/command_edit.cpp" line="252"/>
@@ -1264,7 +1264,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="252"/>
         <source>OSTC 4/5</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 4/5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="437"/>
@@ -1470,7 +1470,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="447"/>
         <source>kg/L</source>
-        <translation type="unfinished"/>
+        <translation>kg/L</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="858"/>
@@ -1480,7 +1480,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3138"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3154"/>
         <source>L/min</source>
-        <translation type="unfinished"/>
+        <translation>L/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="890"/>
@@ -1986,12 +1986,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2588"/>
         <source>Serial no.</source>
-        <translation type="unfinished"/>
+        <translation>Serienr.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2861"/>
         <source>Start depth</source>
-        <translation type="unfinished"/>
+        <translation>Startdybde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2916"/>
@@ -2001,12 +2001,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2930"/>
         <source>Compass declination</source>
-        <translation type="unfinished"/>
+        <translation>Misvisning på kompass</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3026"/>
         <source>°</source>
-        <translation type="unfinished"/>
+        <translation>°</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3066"/>
@@ -2460,12 +2460,12 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.cpp" line="81"/>
         <source>Wave size: </source>
-        <translation type="unfinished"/>
+        <translation>Bølgehøyde:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.cpp" line="83"/>
         <source>Current: </source>
-        <translation type="unfinished"/>
+        <translation>strøm</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.cpp" line="85"/>
@@ -2475,7 +2475,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.cpp" line="87"/>
         <source>Chill: </source>
-        <translation type="unfinished"/>
+        <translation>Kuldefornemmelse</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.cpp" line="89"/>
@@ -3287,12 +3287,12 @@
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="235"/>
         <source>Width</source>
-        <translation type="unfinished"/>
+        <translation>Bredde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="251"/>
         <source>Height</source>
-        <translation type="unfinished"/>
+        <translation>Høyde</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="290"/>
@@ -3327,7 +3327,7 @@
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="364"/>
         <source>CSV dive list</source>
-        <translation type="unfinished"/>
+        <translation>CSV-dykkeliste</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="374"/>
@@ -3544,7 +3544,7 @@
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="179"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="183"/>
         <source>Export CSV file as</source>
-        <translation>Eksporter CSV-file som</translation>
+        <translation>Eksporter CSV-fil som</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="180"/>
@@ -3992,7 +3992,7 @@
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="251"/>
         <source>kg/L</source>
-        <translation type="unfinished"/>
+        <translation>kg/L</translation>
     </message>
 </context>
 <context>
@@ -4000,7 +4000,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="10"/>
         <source>New Dive Plan</source>
-        <translation type="unfinished"/>
+        <translation>Ny dykkeplan</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="13"/>
@@ -4025,7 +4025,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="30"/>
         <source>Gas %1</source>
-        <translation type="unfinished"/>
+        <translation>Gass %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="175"/>
@@ -4046,7 +4046,7 @@
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="205"/>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="449"/>
         <source>Dive Mode</source>
-        <translation type="unfinished"/>
+        <translation>Dykkemodus</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="211"/>
@@ -4077,12 +4077,12 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="234"/>
         <source>Sea Water</source>
-        <translation type="unfinished"/>
+        <translation>Sjøvann</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="234"/>
         <source>Fresh Water</source>
-        <translation type="unfinished"/>
+        <translation>Ferskvann</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="234"/>
@@ -4107,7 +4107,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="277"/>
         <source>Mix</source>
-        <translation type="unfinished"/>
+        <translation>Miks</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="282"/>
@@ -4127,12 +4127,12 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="428"/>
         <source>Depth [%1]</source>
-        <translation type="unfinished"/>
+        <translation>Dybde [%1]</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="433"/>
         <source>Time [min]</source>
-        <translation type="unfinished"/>
+        <translation>Tid [min]</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="438"/>
@@ -4142,7 +4142,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="443"/>
         <source>Setpoint [bar]</source>
-        <translation type="unfinished"/>
+        <translation>Settpunkt [bar]</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="525"/>
@@ -4157,7 +4157,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerEdit.qml" line="642"/>
         <source>Save plan</source>
-        <translation type="unfinished"/>
+        <translation>Lagre plan</translation>
     </message>
 </context>
 <context>
@@ -4165,17 +4165,17 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="11"/>
         <source>Gas Calculator</source>
-        <translation type="unfinished"/>
+        <translation>Gasskalkulator</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="38"/>
         <source>Oxygen %</source>
-        <translation type="unfinished"/>
+        <translation>Oksygen %</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="49"/>
         <source>Helium %</source>
-        <translation type="unfinished"/>
+        <translation>Helium %</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerGasCalculator.qml" line="62"/>
@@ -4346,7 +4346,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
         <source>L/min</source>
-        <translation type="unfinished"/>
+        <translation>L/min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="15"/>
@@ -4456,7 +4456,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="437"/>
         <source>Deco pO₂ [bar]</source>
-        <translation type="unfinished"/>
+        <translation>Deko-pO₂ [bar]</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DivePlannerSetup.qml" line="456"/>
@@ -4534,7 +4534,7 @@
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="221"/>
         <source>kg/L</source>
-        <translation type="unfinished"/>
+        <translation>kg/L</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="40"/>
@@ -6115,7 +6115,7 @@ Denne verdien angis normalt i hele timer (h:00):</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="325"/>
         <source>&amp;About Subsurface</source>
-        <translation>Om Subsurf&amp;ace</translation>
+        <translation>&amp;Om Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="333"/>
@@ -6245,7 +6245,7 @@ Denne verdien angis normalt i hele timer (h:00):</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="504"/>
         <source>Cloud stora&amp;ge online</source>
-        <translation>Skylagri%ng online</translation>
+        <translation>Skylagring tilkoblet</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="577"/>
@@ -6462,7 +6462,7 @@ Hvis du svarer nei vil skylagring kun bli synkronisert neste gang du velger &quo
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="960"/>
         <source>FIT</source>
-        <translation type="unfinished"/>
+        <translation>FIT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="964"/>
@@ -6535,7 +6535,7 @@ Hvis du svarer nei vil skylagring kun bli synkronisert neste gang du velger &quo
         <location filename="../desktop-widgets/mainwindow.cpp" line="1349"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
-        <translation>Du åpnet en datafil fra en eldre versjon av Subsurface. Vi anbefaler at du leser manualen for å else om endringene i den nye versjonen, særlig med tanke på dykkestedsdatabasen.
+        <translation>Du åpnet en datafil fra en eldre versjon av Subsurface. Vi anbefaler at du leser manualen for å lese om endringene i den nye versjonen, særlig med tanke på dykkestedsdatabasen.
 Subsurface har allerede konvertert dataene, men det er sikkert lurt å kikke på dykkestedsdatabasen og sjekke at alt er greit.</translation>
     </message>
     <message>
@@ -6624,7 +6624,7 @@ Subsurface har allerede konvertert dataene, men det er sikkert lurt å kikke på
         <location filename="../desktop-widgets/diveplanner.cpp" line="484"/>
         <location filename="../desktop-widgets/diveplanner.cpp" line="485"/>
         <source>L/min</source>
-        <translation type="unfinished"/>
+        <translation>L/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="494"/>
@@ -6950,7 +6950,7 @@ Subsurface har allerede konvertert dataene, men det er sikkert lurt å kikke på
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="147"/>
         <source>Dive planner default setpoint</source>
-        <translation>Standard setpoint i dykkeplanlegger</translation>
+        <translation>Standard settpunkt i dykkeplanlegger</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="170"/>
@@ -6980,7 +6980,7 @@ Subsurface har allerede konvertert dataene, men det er sikkert lurt å kikke på
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="205"/>
         <source>L/min</source>
-        <translation type="unfinished"/>
+        <translation>L/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="215"/>
@@ -7224,7 +7224,7 @@ See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="119"/>
         <source>In the Information tab, show tools for recording wave height, surge and chill during a dive</source>
-        <translation>Vis verktøy for bølgehøyde, dønninger og vind i informasjons-fanen</translation>
+        <translation>Vis verktøy for bølgehøyde, dønninger og kuldefornemmelse i informasjons-fanen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_log.ui" line="127"/>
@@ -7337,7 +7337,7 @@ See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="229"/>
         <source>Depth: [depth]</source>
-        <translation type="unfinished"/>
+        <translation>Dybde: [dybde]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="237"/>
@@ -7407,7 +7407,7 @@ See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="341"/>
         <source>O₂ setpoint: [o2_setpoint]</source>
-        <translation type="unfinished"/>
+        <translation>O₂-settpunkt: [o2_setpoint]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="349"/>
@@ -7467,7 +7467,7 @@ See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="437"/>
         <source>Heartrate: [heartrate]</source>
-        <translation type="unfinished"/>
+        <translation>Puls: [heartrate] </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_media.ui" line="445"/>
@@ -7761,7 +7761,7 @@ See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="264"/>
         <source>mm (for dives shorter than 1 hour), hh:mm (otherwise)</source>
-        <translation>mm (for dykk kortere enn 1 time), hh:mm (ellers)</translation>
+        <translation>mm (for dykk kortere enn 1 time), tt:mm (ellers)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="274"/>
@@ -7771,7 +7771,7 @@ See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="280"/>
         <source>Show units in dive list table</source>
-        <translation>Vis enheter i liste over dyk</translation>
+        <translation>Vis enheter i liste over dykk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="290"/>
@@ -8034,7 +8034,7 @@ See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="609"/>
         <source>Add setpoint change</source>
-        <translation>Legg til endring av setpoint</translation>
+        <translation>Legg til endring av settpunkt</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="610"/>
@@ -8446,12 +8446,12 @@ See https://doc.qt.io/archives/qt-4.8/qdatetime.html#fromString</source>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="17"/>
         <source>Add setpoint change</source>
-        <translation>Legg til endring av setpoint</translation>
+        <translation>Legg til endring av settpunkt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="43"/>
         <source>New setpoint (0 for OC)</source>
-        <translation>Nytt setpoint (0 for OC)</translation>
+        <translation>Nytt settpunkt (0 for OC)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/setpoint.ui" line="61"/>
@@ -9680,7 +9680,7 @@ Filer med upassende dykkedato/-tid</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="67"/>
         <source>Firmware</source>
-        <translation type="unfinished"/>
+        <translation>Firmware</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="92"/>
@@ -9695,7 +9695,7 @@ Filer med upassende dykkedato/-tid</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="142"/>
         <source>Dive Mode</source>
-        <translation type="unfinished"/>
+        <translation>Dykkemodus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveExtraInfo.ui" line="167"/>
@@ -9860,7 +9860,7 @@ Filer med upassende dykkedato/-tid</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="708"/>
         <source>Chill</source>
-        <translation>Vind</translation>
+        <translation>Kuldefornemmelse</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="739"/>
@@ -9875,7 +9875,7 @@ Filer med upassende dykkedato/-tid</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="40"/>
         <source>Use DC</source>
-        <translation>Bruk DC</translation>
+        <translation>Bruk computer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="53"/>
@@ -11308,7 +11308,7 @@ Snitt</translation>
     <message>
         <location filename="../core/filterconstraint.cpp" line="53"/>
         <source>chill</source>
-        <translation>Vind</translation>
+        <translation>kuldefornemmelse</translation>
     </message>
     <message>
         <location filename="../core/filterconstraint.cpp" line="55"/>
@@ -11515,7 +11515,7 @@ Snitt</translation>
     <message>
         <location filename="../core/gas.cpp" line="192"/>
         <source>invalid gas</source>
-        <translation type="unfinished"/>
+        <translation>ugyldig gass</translation>
     </message>
     <message>
         <location filename="../core/git-access.cpp" line="91"/>
@@ -11713,7 +11713,7 @@ Snitt</translation>
     <message>
         <location filename="../core/import-suunto-json.cpp" line="263"/>
         <source>dive</source>
-        <translation type="unfinished"/>
+        <translation>dykk</translation>
     </message>
     <message>
         <location filename="../core/import-suunto-json.cpp" line="417"/>
@@ -11732,7 +11732,7 @@ Snitt</translation>
         <location filename="../core/import-suunto-json.cpp" line="439"/>
         <location filename="../core/import-suunto-json.cpp" line="473"/>
         <source>depth alarm</source>
-        <translation type="unfinished"/>
+        <translation>dybdealarm</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.cpp" line="341"/>
@@ -11970,7 +11970,7 @@ Du kan lage denne ved å velge tilsvarende sjekkboks når i nedlastingsdialogen.
     <message>
         <location filename="../core/divesoft.cpp" line="53"/>
         <source>Unknown Divesoft model %s, using Freedom as default</source>
-        <translation type="unfinished"/>
+        <translation>Ukjent Divesoft-modell %er, bruker Freedom som standard</translation>
     </message>
     <message>
         <location filename="../core/divesoft.cpp" line="60"/>
@@ -11981,7 +11981,7 @@ Du kan lage denne ved å velge tilsvarende sjekkboks når i nedlastingsdialogen.
         <location filename="../core/divesoft.cpp" line="67"/>
         <location filename="../core/fit_file.cpp" line="24"/>
         <source>Unknown DC</source>
-        <translation type="unfinished"/>
+        <translation>Ukjent computer</translation>
     </message>
     <message>
         <location filename="../core/divesoft.cpp" line="75"/>
@@ -12691,7 +12691,7 @@ Du kan lage denne ved å velge tilsvarende sjekkboks når i nedlastingsdialogen.
     <message>
         <location filename="../core/string-format.cpp" line="459"/>
         <source>Use DC</source>
-        <translation>Bruk DC</translation>
+        <translation>Bruk computer</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="609"/>
@@ -12843,7 +12843,7 @@ Du kan lage denne ved å velge tilsvarende sjekkboks når i nedlastingsdialogen.
     <message>
         <location filename="../core/save-html.cpp" line="535"/>
         <source>Chill</source>
-        <translation>Vind</translation>
+        <translation>Kuldefornemmelse</translation>
     </message>
     <message>
         <location filename="../core/save-html.cpp" line="536"/>
@@ -13632,7 +13632,7 @@ Er Uemis Zurich plugget i ordentlig?</translation>
     <message>
         <location filename="../core/import-asd.cpp" line="617"/>
         <source>Equipment: </source>
-        <translation type="unfinished"/>
+        <translation>Utstyr:</translation>
     </message>
 </context>
 <context>
@@ -13660,7 +13660,7 @@ Er Uemis Zurich plugget i ordentlig?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="395"/>
         <source>Download from DC</source>
-        <translation>Lastet ned fra DC</translation>
+        <translation>Lastet ned fra computer</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="408"/>
@@ -13707,7 +13707,7 @@ Er Uemis Zurich plugget i ordentlig?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="494"/>
         <source>Technical Diving</source>
-        <translation type="unfinished"/>
+        <translation>Teknisk dykking</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="498"/>
@@ -13717,7 +13717,7 @@ Er Uemis Zurich plugget i ordentlig?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="507"/>
         <source>Gas Calculator</source>
-        <translation type="unfinished"/>
+        <translation>Gasskalkulator</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="519"/>
@@ -13957,7 +13957,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="620"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="682"/>
         <source>L/min</source>
-        <translation type="unfinished"/>
+        <translation>L/min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="219"/>
@@ -14185,7 +14185,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="264"/>
         <source>Login successful</source>
-        <translation type="unfinished"/>
+        <translation>Innlogging gjennomført</translation>
     </message>
     <message>
         <location filename="../core/uploadDiveLogsDE.cpp" line="272"/>
