@@ -10,6 +10,8 @@
   <depth max='22.65 m' mean='13.227 m' />
   <temperature water='29.1 C' />
   <surface pressure='1.028 bar' />
+  <extradata key='Serial' value='2804271178' />
+  <extradata key='FW Version' value='3.0.1102' />
   <extradata key='HW version' value='70.6.0' />
   <event time='0:00 min' type='11' value='32' name='gaschange' cylinder='0' o2='32.0%' />
   <event time='18:03 min' name='ascent' />

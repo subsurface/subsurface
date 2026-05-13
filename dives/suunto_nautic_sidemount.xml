@@ -15,6 +15,8 @@
   <depth max='21.24 m' mean='12.26 m' />
   <temperature water='9.2 C' />
   <surface pressure='1.024 bar' />
+  <extradata key='Serial' value='288100258646' />
+  <extradata key='FW Version' value='2.45.46' />
   <extradata key='HW version' value='GT_RevX' />
   <event time='0:00 min' type='11' value='21' name='gaschange' cylinder='0' />
   <event time='2:01 min' name='depth alarm' />
