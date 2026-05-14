@@ -13,6 +13,7 @@
   <temperature water='5.1 C' />
   <surface pressure='0.981 bar' />
   <water salinity='1000 g/l' />
+  <extradata key='Time offset from UTC [s]' value='+3600' />
   <event time='0:00 min' type='25' flags='3' name='gaschange' cylinder='2' o2='14.0%' he='32.0%' />
   <sample time='0:00 min' depth='1.71 m' temp='23.3 C' ndl='1000:00 min' dc_supplied_ppo2='1.148 bar' po2='0.5 bar' bearing='312' />
   <sample time='0:01 min' depth='1.78 m' dc_supplied_ppo2='1.156 bar' />
