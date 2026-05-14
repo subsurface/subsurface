@@ -57,7 +57,7 @@
     <binary>subsurface</binary>
   </provides>
   <branding>
-    <color type="primary" scheme_preference="light">#ccd8e8</color>
-    <color type="primary" scheme_preference="dark">#21416a</color>
+    <color type="primary" scheme_preference="light">#adc0d8</color>
+    <color type="primary" scheme_preference="dark">#112135</color>
   </branding>
 </component>
