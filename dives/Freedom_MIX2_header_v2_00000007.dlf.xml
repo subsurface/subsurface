@@ -16,7 +16,7 @@
   <event time='30:15 min' type='25' flags='2' name='gaschange' cylinder='1' o2='50.0%' />
   <event time='40:32 min' type='25' flags='1' name='gaschange' cylinder='0' />
   <event time='54:09 min' type='25' flags='2' name='gaschange' cylinder='1' o2='50.0%' />
-  <sample time='0:00 min' depth='1.76 m' temp='22.0 C' ndl='1000:00 min' dc_supplied_ppo2='0.245 bar' po2='0.5 bar' bearing='312' />
+  <sample time='0:00 min' depth='1.76 m' temp='22.0 C' ndl='1000:00 min' dc_supplied_ppo2='0.245 bar' po2='0.5 bar' />
   <sample time='0:01 min' depth='1.785 m' />
   <sample time='0:02 min' depth='1.81 m' tts='1:00 min' dc_supplied_ppo2='0.247 bar' />
   <sample time='0:03 min' depth='1.83 m' dc_supplied_ppo2='0.248 bar' />
