@@ -182,13 +182,25 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Log.i(TAG + " processIntent device name", device.getDeviceName());
 		try {
 			setUsbDevice(device);
-		} catch (UnsatisfiedLinkError e) {
-			// The native library may not be fully loaded yet (observed on
-			// Android 16 Beta). Defer the intent and let checkPendingIntents()
-			// process it once the native side is ready.
-			Log.w(TAG + " processIntent", "native not ready, deferring intent", e);
+		} catch (LinkageError e) {
+			// The native library may not be fully loaded yet.
+			// checkPendingIntents() is only called once
+			// during startup, so schedule a one-shot retry
+			Log.w(TAG + " processIntent", "native not ready, scheduling retry", e);
 			isIntentPending = true;
-			isInitialized = false;
+			new Handler(Looper.getMainLooper()).postDelayed(() -> {
+				if (!isIntentPending)
+					return;
+				isIntentPending = false;
+				UsbDevice retryDevice = (UsbDevice) getIntent().getParcelableExtra(UsbManager.EXTRA_DEVICE);
+				if (retryDevice == null)
+					return;
+				try {
+					setUsbDevice(retryDevice);
+				} catch (LinkageError retryError) {
+					Log.e(TAG + " processIntent", "native still not ready after retry, giving up", retryError);
+				}
+			}, 500);
 		}
 	} // processIntent
 
