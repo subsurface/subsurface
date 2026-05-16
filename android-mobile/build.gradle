@@ -17,7 +17,7 @@ buildscript {
 allprojects {
     repositories {
         mavenCentral()
-        maven { url 'https://jitpack.io' }
+        maven { url = 'https://jitpack.io' }
 	google()
     }
 }
@@ -51,11 +51,11 @@ android {
     } else {
         compileSdkVersion androidCompileSdkVersion
     }
-    ndkVersion androidNdkVersion
+    ndkVersion = androidNdkVersion
 
     buildToolsVersion androidBuildToolsVersion
 
-    namespace "org.subsurfacedivelog.mobile"
+    namespace = "org.subsurfacedivelog.mobile"
 
     defaultConfig {
         applicationId project.findProperty("subsurfaceApplicationId") ?: "org.subsurfacedivelog.mobile"
@@ -82,7 +82,7 @@ android {
     }
 
     lint {
-        abortOnError false
+        abortOnError = false
     }
 
     packaging {
