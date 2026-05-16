@@ -1,4 +1,4 @@
-FROM ubuntu:24.04 AS base
+FROM ubuntu:26.04 AS base
 
 # set the basic information and paths that everything else is based on
 ENV NDK_VERSION=27.2.12479018
