@@ -137,15 +137,13 @@ static void parse_header(const QJsonObject &header, struct dive *d)
 		dc.model = map_device_name(device_name);
 
 	std::string serial = device["SerialNumber"].toString().toStdString();
-	if (!serial.empty()) {
-		dc.serial = serial;
-		dc.deviceid = calculate_string_hash(serial.c_str());
-	}
+	if (!serial.empty())
+		add_extra_data(&dc, STRING_KEY_SERIAL_NUMBER, serial);
 
 	QJsonObject info = device["Info"].toObject();
 	std::string sw = info["SW"].toString().toStdString();
 	if (!sw.empty())
-		dc.fw_version = sw;
+		add_extra_data(&dc, STRING_KEY_FIRMWARE_VERSION, sw);
 
 	std::string hw = info["HW"].toString().toStdString();
 	if (!hw.empty())
