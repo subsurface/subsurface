@@ -9,6 +9,8 @@ concurrency:
   group: publish-release-${{ github.event.client_payload.sha }}
   cancel-in-progress: false
 
+permissions: read-all
+
 jobs:
   publish-draft-release:
     if: github.event.client_payload.event_name == 'push' && github.event.client_payload.ref == 'refs/heads/master'

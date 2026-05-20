@@ -17,6 +17,8 @@ on:
         default: 'x86-64'
         description: 'Architecture name for artifacts (e.g., x86-64, arm64)'
 
+permissions: read-all
+
 jobs:
   build:
     runs-on: ${{ inputs.runner || 'ubuntu-latest' }}

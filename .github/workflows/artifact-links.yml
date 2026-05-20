@@ -12,6 +12,8 @@ on:
     types:
       - completed
 
+permissions: read-all
+
 jobs:
   artifacts-url-comments:
     name: Add artifact links to PR and issues

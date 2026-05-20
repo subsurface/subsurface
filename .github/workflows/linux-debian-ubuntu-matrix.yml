@@ -13,6 +13,8 @@ on:
     - master
   workflow_dispatch:
 
+permissions: read-all
+
 jobs:
   qt5-builds:
     strategy:

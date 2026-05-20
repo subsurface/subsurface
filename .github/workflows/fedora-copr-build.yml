@@ -7,6 +7,8 @@ on:
     - master
     - current
 
+permissions: read-all
+
 jobs:
   setup-build:
     name: Submit build to Fedora COPR

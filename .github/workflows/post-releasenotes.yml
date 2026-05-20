@@ -10,6 +10,8 @@ on:
 env:
   RELEASE_PUBLISHER: "true"
 
+permissions: read-all
+
 jobs:
   postRelease:
     outputs:

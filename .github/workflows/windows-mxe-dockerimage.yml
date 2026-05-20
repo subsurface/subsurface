@@ -8,6 +8,8 @@ on:
     - scripts/docker/mxe-build-container/**
     - .github/workflows/windows-mxe-dockerimage.yml
 
+permissions: read-all
+
 jobs:
   windows-mxe:
     runs-on: ubuntu-latest
