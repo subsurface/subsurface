@@ -8,7 +8,7 @@ export DH_VERBOSE=1
 export DEB_BUILD_MAINT_OPTIONS = optimize=-lto nocheck
 
 export MY_INSTALL_ROOT=$(CURDIR)/install-root
-export QTVERSION=$(shell qmake -query QT_VERSION)
+export QTVERSION=$(shell qmake -query QT_VERSION 2>/dev/null)
 
 %:
 	dh $@ --buildsystem=cmake --builddirectory=subsurface-build --parallel

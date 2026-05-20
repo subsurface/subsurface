@@ -1,7 +1,5 @@
-# We use the package
-subsurface source: source-is-missing theme/jqplot.canvasAxisTickRenderer.js
-subsurface source: source-is-missing theme/jqplot.canvasTextRenderer.js
-subsurface source: source-is-missing theme/jqplot.highlighter.js
-subsurface source: source-is-missing theme/jquery.jqplot.min.js
-subsurface source: source-is-missing theme/jquery.min.js
-subsurface source: source-is-missing theme/list_lib.js
+# These files are minified/generated and have no separate upstream source
+subsurface source: source-is-missing [SupportedDivecomputers.html]
+subsurface source: source-is-missing [theme/jquery.jqplot.min.js]
+subsurface source: source-is-missing [theme/jquery.min.js]
+subsurface source: source-is-missing [theme/list_lib.js]
