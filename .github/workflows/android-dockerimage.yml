@@ -10,6 +10,8 @@ on:
     - scripts/get-dep-lib.sh
     - .github/workflows/android-dockerimage.yml
 
+permissions: read-all
+
 jobs:
   android-build-container:
     runs-on: ubuntu-latest

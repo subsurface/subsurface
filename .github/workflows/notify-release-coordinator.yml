@@ -10,6 +10,8 @@ on:
         required: true
         type: string
 
+permissions: read-all
+
 jobs:
   notify:
     if: github.ref == 'refs/heads/master' && always()

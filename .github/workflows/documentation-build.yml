@@ -11,6 +11,8 @@ on:
         description: "The cache key used for the documentation"
         value: ${{ jobs.documentation.outputs.cache-key }}
 
+permissions: read-all
+
 jobs:
   documentation:
     runs-on: ubuntu-24.04

@@ -20,6 +20,8 @@ env:
   # Build configuration
   BUILD_TYPE: Release
 
+permissions: read-all
+
 jobs:
   build-documentation:
     uses: ./.github/workflows/documentation-build.yml

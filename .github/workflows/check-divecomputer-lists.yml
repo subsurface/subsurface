@@ -20,6 +20,8 @@ on:
     - scripts/**
     - .github/workflows/check-divecomputer-lists.yml
 
+permissions: read-all
+
 jobs:
   check:
     runs-on: ubuntu-24.04
