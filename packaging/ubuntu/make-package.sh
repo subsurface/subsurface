@@ -140,8 +140,16 @@ fi
 cd ..
 
 if [[ "$1" = "current" ]] ; then
-	# this is a current release
-	dput ppa:subsurface/subsurface "$FOLDER-$rev"~*.changes
+	PPA="ppa:subsurface/subsurface"
 else
-	dput ppa:subsurface/subsurface-daily "$FOLDER-$rev"~*.changes
+	PPA="ppa:subsurface/subsurface-daily"
 fi
+
+# Upload each distro variant separately so that orig.tar.xz is included in
+# every batch. A single dput call with multiple .changes files causes dput to
+# skip orig.tar.xz for all distros after the first, and Launchpad returns a
+# 550 error because the file isn't yet in the PPA pool.
+for f in "${FOLDER}-${rev}"~*.changes; do
+	rm -f ~/.dput.log
+	dput "$PPA" "$f"
+done
