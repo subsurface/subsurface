@@ -220,6 +220,8 @@ jobs:
         files: ${{ steps.build.outputs.dmg }}
 
   notify-release-coordinator:
+    permissions:
+      contents: write
     if: always()
     needs: [compute-version, build]
     uses: ./.github/workflows/notify-release-coordinator.yml

@@ -53,6 +53,8 @@ jobs:
         body_path: gh_release_notes.md
 
   notify-release-coordinator:
+    permissions:
+      contents: write
     if: always()
     needs: postRelease
     uses: ./.github/workflows/notify-release-coordinator.yml

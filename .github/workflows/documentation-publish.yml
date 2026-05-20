@@ -81,6 +81,8 @@ jobs:
           Subsurface-Documentation-${{ steps.version_number.outputs.version }}.tar.gz
 
   notify-release-coordinator:
+    permissions:
+      contents: write
     if: always()
     needs: publish-documentation
     uses: ./.github/workflows/notify-release-coordinator.yml
