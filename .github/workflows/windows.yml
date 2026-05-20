@@ -109,6 +109,8 @@ jobs:
          ./smtk2ssrf*.exe
 
   notify-release-coordinator:
+    permissions:
+      contents: write
     if: always()
     needs: build
     uses: ./.github/workflows/notify-release-coordinator.yml
