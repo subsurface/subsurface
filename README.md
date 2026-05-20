@@ -7,9 +7,10 @@
 
 [![Snap](https://github.com/subsurface/subsurface/actions/workflows/linux-snap.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-snap.yml)
 [![Ubuntu 20.04 / Qt 5.15-- for AppImage](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-20.04-qt5-appimage.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-20.04-qt5-appimage.yml)
-[![Ubuntu 24.04 / Qt 5.15--](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-24.04-qt5.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-24.04-qt5.yml)
-[![Fedora 35 / Qt 6--](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-35-qt6.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-35-qt6.yml)
-[![Debian Bookworm / Qt 5.15--](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-bookworm-5.15.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-bookworm-5.15.yml)
+[![Debian/Ubuntu--](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-ubuntu-matrix.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-ubuntu-matrix.yml)
+[![Fedora / Qt 6--](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-qt6.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-qt6.yml)
+
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/2607/badge)](https://www.bestpractices.dev/projects/2607)
 
 Subsurface can be found at http://subsurface-divelog.org/
 
