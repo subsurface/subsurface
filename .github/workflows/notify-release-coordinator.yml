@@ -23,6 +23,8 @@ jobs:
     - name: Notify release coordinator
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        RELEASE_TAG: ${{ inputs.release_tag }}
+        CONCLUSION: ${{ inputs.conclusion }}
       run: |
         jq -nc \
           --arg sha "${{ github.sha }}" \
@@ -30,7 +32,7 @@ jobs:
           --arg event_name "${{ github.event_name }}" \
           --arg workflow "${{ github.workflow }}" \
           --arg run_id "${{ github.run_id }}" \
-          --arg conclusion "${{ inputs.conclusion }}" \
-          --arg tag "${{ inputs.release_tag }}" \
+          --arg conclusion "$CONCLUSION" \
+          --arg tag "$RELEASE_TAG" \
           '{event_type:"release-artifact-finished", client_payload:{sha:$sha, ref:$ref, event_name:$event_name, workflow:$workflow, run_id:$run_id, conclusion:$conclusion, tag:$tag}}' \
           | gh api --method POST repos/${{ github.repository }}/dispatches --input -
