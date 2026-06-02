@@ -147,12 +147,30 @@ fi
 
 # Upload each distro variant separately so that orig.tar.xz is included in
 # every batch.
-# Launchpad appears to be randomly failing, even in this scenario, so try
-# all of them and then error at the end if one or more didn't succeed.
+# Launchpad's FTP upload endpoint randomly returns transient 550 errors
+# ("Requested action not taken: internal server error"), so retry each
+# upload a few times with linear backoff before giving up. After all
+# uploads have been attempted, error out at the end if one or more
+# definitively failed.
 failed=""
+max_attempts=5
 for f in "${FOLDER}-${rev}"~*.changes; do
-	rm -f ~/.dput.log
-	dput "$PPA" "$f" || { echo "WARNING: dput failed for $f"; failed="$failed $f"; }
+	attempt=1
+	while : ; do
+		rm -f ~/.dput.log
+		if dput "$PPA" "$f"; then
+			break
+		fi
+		if [ "$attempt" -ge "$max_attempts" ]; then
+			echo "WARNING: dput failed for $f after $attempt attempts"
+			failed="$failed $f"
+			break
+		fi
+		delay=$((attempt * 30))
+		echo "dput failed for $f (attempt $attempt/$max_attempts), retrying in ${delay}s..."
+		sleep "$delay"
+		attempt=$((attempt + 1))
+	done
 done
 if [ -n "$failed" ]; then
 	echo "The following uploads failed:$failed"
