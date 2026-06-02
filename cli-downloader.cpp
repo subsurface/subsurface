@@ -86,9 +86,12 @@ int cliFirmwareUpdate(const std::string &vendor, const std::string &product, con
 		return 3;
 	}
 
+	// Close the connection explicitly to match the GUI behaviour in
+	// processStateChanged(FWUPDATE, DONE), which closes the BT connection to
+	// signal the device to start writing flash.
+	config.dc_close(data);
+
 	fprintf(stdout, "\nFirmware update completed successfully\n");
-	// Don't call dc_close() - the firmware update thread has already closed the device
-	// Calling it again causes errors like "Failed to receive the echo"
 	return 0;
 }
 

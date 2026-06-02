@@ -615,11 +615,15 @@ void ConfigureDiveComputer::dc_close(device_data_t *data)
 	if (data->device)
 		dc_device_close(data->device);
 	data->device = NULL;
+	// Close the iostream before freeing the context: dc_serial_close (and other iostream
+	// close implementations) may call SYSERROR(abstract->context, ...) on error paths
+	// (e.g. tcsetattr/ioctl failing on a disconnected RFCOMM fd). Freeing the context
+	// first causes a use-after-free in those error paths.
+	dc_iostream_close(data->iostream);
+	data->iostream = NULL;
 	if (data->context)
 		dc_context_free(data->context);
 	data->context = NULL;
-	dc_iostream_close(data->iostream);
-	data->iostream = NULL;
 
 	if (data->libdc_logfile)
 		fclose(data->libdc_logfile);
