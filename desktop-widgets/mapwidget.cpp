@@ -30,6 +30,10 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MapWidget::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &MapWidget::reload);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MapWidget::reload);
+	// Previously triggered directly from DiveFilter; now driven via the
+	// notifier to keep core code free of desktop-widget dependencies.
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteFilterModeChanged, this, &MapWidget::reload);
+	connect(&diveListNotifier, &DiveListNotifier::filteredDiveSitesChanged, this, &MapWidget::setSelected);
 	setSource(urlMapWidget);
 }
 
