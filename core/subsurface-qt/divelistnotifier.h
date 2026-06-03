@@ -125,6 +125,13 @@ signals:
 	// Filter-related signals
 	void numShownChanged();
 	void filterReset();
+	// Emitted when dive-site filter mode is entered or left. Listeners
+	// (e.g. the map widget) can use this to trigger a full reload.
+	void diveSiteFilterModeChanged();
+	// Emitted when the set of dive sites that the dive-site filter restricts
+	// to has changed. Listeners (e.g. the map widget) can update their
+	// selection accordingly without core code having to reach into the UI.
+	void filteredDiveSitesChanged(std::vector<dive_site *> sites);
 
 	// Event-related signals. Currently, we're very blunt: only one signal for any changes to the events.
 	void eventsChanged(dive *d);

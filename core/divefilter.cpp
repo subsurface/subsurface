@@ -8,12 +8,6 @@
 #include "range.h"
 #include "selection.h"
 #include "subsurface-qt/divelistnotifier.h"
-#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
-#include "desktop-widgets/mapwidget.h"
-#include "desktop-widgets/mainwindow.h"
-#include "desktop-widgets/divelistview.h"
-#include "qt-models/filtermodels.h"
-#endif
 
 // Set filter status of dive and return whether it has been changed
 bool DiveFilter::setFilterStatus(struct dive *d, bool shown, std::vector<dive *> &removeFromSelection) const
@@ -146,11 +140,9 @@ void DiveFilter::startFilterDiveSites(std::vector<dive_site *> ds)
 	} else {
 		std::sort(ds.begin(), ds.end());
 		dive_sites = std::move(ds);
-		// When switching into dive site mode, reload the dive sites.
-		// TODO: why here? why not catch the filterReset signal in the map widget
-#ifdef MAP_SUPPORT
-		MapWidget::instance()->reload();
-#endif
+		// Notify listeners that dive-site filter mode was entered; a
+		// listening map widget will reload to show only filtered sites.
+		emit diveListNotifier.diveSiteFilterModeChanged();
 		emit diveListNotifier.filterReset();
 	}
 }
@@ -161,9 +153,8 @@ void DiveFilter::stopFilterDiveSites()
 		return;
 	dive_sites.clear();
 	emit diveListNotifier.filterReset();
-#ifdef MAP_SUPPORT
-	MapWidget::instance()->reload();
-#endif
+	// Notify listeners that dive-site filter mode was left.
+	emit diveListNotifier.diveSiteFilterModeChanged();
 }
 
 void DiveFilter::setFilterDiveSite(std::vector<dive_site *> ds)
@@ -176,10 +167,10 @@ void DiveFilter::setFilterDiveSite(std::vector<dive_site *> ds)
 	dive_sites = std::move(ds);
 
 	emit diveListNotifier.filterReset();
-#ifdef MAP_SUPPORT
-	MapWidget::instance()->setSelected(dive_sites);
-#endif
-	MainWindow::instance()->diveList->expandAll();
+	// Notify UI listeners (map widget, dive list view) that the set of
+	// filtered dive sites has changed. Keeping this as a signal avoids
+	// pulling desktop-widget headers/symbols into core.
+	emit diveListNotifier.filteredDiveSitesChanged(dive_sites);
 }
 
 const std::vector<dive_site *> &DiveFilter::filteredDiveSites() const

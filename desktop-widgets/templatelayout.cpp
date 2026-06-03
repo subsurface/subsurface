@@ -6,7 +6,6 @@
 #include <QTextStream>
 
 #include "templatelayout.h"
-#include "mainwindow.h"
 #include "printoptions.h"
 #include "core/dive.h"
 #include "core/divelist.h"

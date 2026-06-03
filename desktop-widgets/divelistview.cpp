@@ -46,6 +46,10 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &DiveListView::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveListView::cylinderEdited);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveListView::cylinderEdited);
+	// Previously called directly from DiveFilter::setFilterDiveSite via
+	// MainWindow::instance()->diveList->expandAll().
+	connect(&diveListNotifier, &DiveListNotifier::filteredDiveSitesChanged,
+		this, [this](const std::vector<dive_site *> &) { expandAll(); });
 
 	setSortingEnabled(true);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
