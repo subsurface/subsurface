@@ -599,29 +599,54 @@ void Printer::print()
 void Printer::previewOnePage()
 {
 	if (printMode == PREVIEW) {
+#ifdef USE_QLITEHTML
+		// Render the first page of the document into the supplied
+		// paintDevice (a QImage in the test harness, a widget pixmap
+		// elsewhere) using QLiteHtmlWidget.  generateContent() does
+		// the profile-image injection and litehtml CSS adaptation.
+		pageSize.setHeight(paintDevice->height());
+		pageSize.setWidth(paintDevice->width());
+
+		QString content = generateContent();
+
+		QLiteHtmlWidget widget;
+		widget.setResourceHandler([](const QUrl &url) -> QByteArray {
+			if (url.isLocalFile()) {
+				QFile file(url.toLocalFile());
+				if (file.open(QIODevice::ReadOnly))
+					return file.readAll();
+			}
+			return QByteArray();
+		});
+		widget.setUrl(QUrl("file:///", QUrl::TolerantMode));
+		widget.resize(pageSize);
+		widget.setHtml(content);
+		// Force layout/paint pipeline to run without showing the widget.
+		widget.setAttribute(Qt::WA_DontShowOnScreen, true);
+		widget.show();
+		QCoreApplication::processEvents();
+
+		QPainter painter(paintDevice);
+		static_cast<QWidget &>(widget).render(&painter, QPoint(),
+			QRegion(0, 0, pageSize.width(), pageSize.height()));
+		painter.end();
+
+		widget.hide();
+#else
 		TemplateLayout t(printOptions, templateOptions);
 
 		pageSize.setHeight(paintDevice->height());
 		pageSize.setWidth(paintDevice->width());
-#ifndef USE_QLITEHTML
 		webView->page()->setViewportSize(pageSize);
-#endif
 		// initialize the border settings
 		// templateOptions.border_width = std::max(1, pageSize.width() / 1000);
-#ifndef USE_QLITEHTML
 		if (printOptions.type == print_options::DIVELIST)
 			webView->setHtml(t.generate(getDives()));
 		else if (printOptions.type == print_options::STATISTICS )
 			webView->setHtml(t.generateStatistics());
-#endif
 		bool ok;
 		int divesPerPage;
-#ifndef USE_QLITEHTML
 		divesPerPage = webView->page()->mainFrame()->findFirstElement("body").attribute("data-numberofdives").toInt(&ok);
-#else
-		divesPerPage = 1;   // FIXME
-		ok = true;
-#endif
 		if (!ok) {
 			divesPerPage = 1; // print each dive in a single page if the attribute is missing or malformed
 			//TODO: show warning
@@ -631,6 +656,7 @@ void Printer::previewOnePage()
 		} else {
 			render(1);
 		}
+#endif
 	}
 }
 
