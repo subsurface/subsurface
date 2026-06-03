@@ -509,7 +509,11 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	BUILDDIR=${BUILDDIRS[$i]}
 	echo "build $SUBSURFACE_EXECUTABLE in $BUILDDIR"
 
-	if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] && [ "$BUILD_WITH_WEBKIT" = "1" ]; then
+	# Printing support requires either QtWebKit (Qt5 only, and only if -build-with-webkit
+	# was passed because WebKit isn't part of a standard Qt5 install) or QLiteHtml
+	# (the Qt6 replacement, which this script builds automatically for Qt6 desktop builds).
+	if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] && \
+	   { [ "$BUILD_WITH_WEBKIT" = "1" ] || [ "$BUILD_WITH_QT6" = "1" ]; }; then
 		EXTRA_OPTS="-DNO_PRINTING=OFF"
 	else
 		EXTRA_OPTS="-DNO_PRINTING=ON"
