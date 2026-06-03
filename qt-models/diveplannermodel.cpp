@@ -1172,8 +1172,8 @@ void DivePlannerPointsModel::updateDiveProfile()
 
 	if (doComputeVariations) {
 #ifdef VARIATIONS_IN_BACKGROUND
-		QtConcurrent::run([this, plan = std::move(plan_copy), deco = plan_deco_state] ()
-				  { this->computeVariationsAsync(std::move(plan), deco); });
+		(void)QtConcurrent::run([this, plan = std::move(plan_copy), deco = plan_deco_state] ()
+				       { this->computeVariationsAsync(std::move(plan), deco); });
 #else
 		computeVariationsAsync(std::move(plan_copy), plan_deco_state);
 #endif

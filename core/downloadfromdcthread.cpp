@@ -524,7 +524,12 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 {
 	QByteArray firmwareData = reply->readAll();
 	QFile file(storeFirmware);
-	file.open(QIODevice::WriteOnly);
+	if (!file.open(QIODevice::WriteOnly)) {
+		report_error("Failed to open %s for writing: %s", qPrintable(storeFirmware), qPrintable(file.errorString()));
+		reply->close();
+		emit checkCompleted();
+		return;
+	}
 	file.write(firmwareData);
 	file.close();
 	report_info("Downloaded OSTC firmware %s to %s.", qPrintable(latestFirmwareAvailable), qPrintable(storeFirmware));
