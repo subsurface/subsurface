@@ -336,10 +336,63 @@ QString Printer::generateContent()
 	// still applies.  Use max-width/max-height to constrain the image
 	// proportionally — the image picks whichever is more restrictive
 	// while maintaining its aspect ratio.
-	QString repl = QString("<div class=\"diveProfile\" id=\"dive_\\1\">"
-			       "<img style=\"max-width:100%%; max-height:%1px;\" src=\"file:///%2/dive_\\1.png\">"
-			       "</div>").arg(profileMaxHeight).arg(printDir.path());
-	html.replace(QRegularExpression("<div\\s+class=\"diveProfile\"\\s+id=\"dive_([^\"]*)\"\\s*>\\s*</div>"), repl);
+	//
+	// We must accept the full range of <div> spellings that the old
+	// WebKit-based printing path used to handle:
+	//   - extra classes alongside "diveProfile" (e.g. "summary diveProfile compact")
+	//   - the diveProfile class/id attributes in any order, with any number
+	//     of additional attributes (style="...", data-*, etc.)
+	//   - self-closing form  <div ... />
+	//   - explicit empty form <div ...></div>
+	// The replacement preserves the original opening tag's attributes so
+	// the template author's styling continues to apply, and replaces the
+	// empty body with the <img> referencing the rendered profile.
+	QRegularExpression diveDivRe(R"(<div\b([^>]*?)\s*(/)?>(\s*</div>)?)",
+				      QRegularExpression::DotMatchesEverythingOption);
+	QRegularExpression classAttrRe(R"RX(\bclass\s*=\s*"([^"]*)")RX");
+	QRegularExpression idAttrRe(R"RX(\bid\s*=\s*"dive_([^"]+)")RX");
+	QRegularExpression wsRe(R"(\s+)");
+
+	QString rewritten;
+	rewritten.reserve(html.size());
+	int last = 0;
+	QRegularExpressionMatchIterator it = diveDivRe.globalMatch(html);
+	while (it.hasNext()) {
+		QRegularExpressionMatch m = it.next();
+		const QString attrs = m.captured(1);
+		const bool selfClosing = m.captured(2) == "/";
+		const bool hasExplicitClose = !m.captured(3).isEmpty();
+
+		// Only rewrite empty divs — either self-closing or immediately
+		// followed by </div>. A div that wraps content is not a profile
+		// placeholder.
+		if (!selfClosing && !hasExplicitClose)
+			continue;
+
+		QRegularExpressionMatch cm = classAttrRe.match(attrs);
+		QRegularExpressionMatch im = idAttrRe.match(attrs);
+		if (!cm.hasMatch() || !im.hasMatch())
+			continue;
+
+		const QStringList classes = cm.captured(1).split(wsRe, SKIP_EMPTY);
+		if (!classes.contains(QStringLiteral("diveProfile")))
+			continue;
+
+		const QString diveId = im.captured(1);
+		const QString replacement =
+			QString("<div%1><img style=\"max-width:100%%; max-height:%2px;\" "
+				"src=\"file:///%3/dive_%4.png\"></div>")
+				.arg(attrs)
+				.arg(profileMaxHeight)
+				.arg(printDir.path())
+				.arg(diveId);
+
+		rewritten.append(html.mid(last, m.capturedStart() - last));
+		rewritten.append(replacement);
+		last = m.capturedEnd();
+	}
+	rewritten.append(html.mid(last));
+	html = rewritten;
 
 	// Adapt the HTML for litehtml compatibility.
 	// pageSize must be set before calling generateContent() —
