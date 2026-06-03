@@ -131,7 +131,8 @@ void TabDivePhotos::saveSubtitles()
 				if (!duration)
 					continue;
 				std::string buffer = save_subtitles_buffer(parent.currentDive, offset, duration);
-				subtitlefile.open(QIODevice::WriteOnly);
+				if (!subtitlefile.open(QIODevice::WriteOnly))
+					continue;
 				subtitlefile.write(buffer.c_str(), buffer.size());
 				subtitlefile.close();
 			}

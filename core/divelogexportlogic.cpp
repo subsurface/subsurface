@@ -27,7 +27,10 @@ static void exportHTMLsettings(const QString &filename, struct htmlExportSetting
 	QString fontSize = hes.fontSize;
 	QString fontFamily = hes.fontFamily;
 	QFile file(filename);
-	file.open(QIODevice::WriteOnly | QIODevice::Text);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		report_error("Failed to open %s for writing: %s", qPrintable(filename), qPrintable(file.errorString()));
+		return;
+	}
 	QTextStream out(&file);
 	out << "settings = {\"fontSize\":\"" << fontSize << "\",\"fontFamily\":\"" << fontFamily << "\",\"listOnly\":\""
 	    << hes.listOnly << "\",\"subsurfaceNumbers\":\"" << hes.subsurfaceNumbers << "\",";
@@ -75,7 +78,10 @@ static void exportHTMLstatisticsTotal(QTextStream &out, stats_t *total_stats)
 static void exportHTMLstatistics(const QString filename, struct htmlExportSetting &hes)
 {
 	QFile file(filename);
-	file.open(QIODevice::WriteOnly | QIODevice::Text);
+	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+		report_error("Failed to open %s for writing: %s", qPrintable(filename), qPrintable(file.errorString()));
+		return;
+	}
 	QTextStream out(&file);
 
 	stats_t total_stats;
