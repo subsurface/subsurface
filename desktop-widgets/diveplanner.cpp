@@ -73,6 +73,7 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	ui.waterType->setItemData(0, FRESHWATER_SALINITY);
 	ui.waterType->setItemData(1, SEAWATER_SALINITY);
 	ui.waterType->setItemData(2, EN13319_SALINITY);
+	ui.waterType->setCurrentIndex(1);
 	waterTypeUpdateTexts();
 
 	disableDecoElements(static_cast<int>(prefs.planner_deco_mode), OC);
