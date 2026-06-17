@@ -812,10 +812,11 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	}
 
 	// "collapse all" really closes all trips,
-	// "collapse" keeps the trip with the selected dive open
+	// "collapse others" keeps the trip with the selected dive open
 	QAction *actionTaken = popup.exec(event->globalPos());
 	if (actionTaken == collapseAction && collapseAction) {
 		this->setAnimated(false);
+		expand(selectedIndexes().first());
 		scrollTo(selectedIndexes().first());
 		this->setAnimated(true);
 	}
