@@ -551,6 +551,18 @@ dc_status_t BLEObject::select_preferred_service()
 	connect(preferred, &QLowEnergyService::characteristicWritten, this, &BLEObject::characteristicWritten);
 	connect(preferred, &QLowEnergyService::descriptorWritten, this, &BLEObject::writeCompleted);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(preferred, &QLowEnergyService::errorOccurred,
+		this, [](QLowEnergyService::ServiceError e) {
+			report_info("preferred service error %d", static_cast<int>(e));
+		});
+#else
+	connect(preferred, QOverload<QLowEnergyService::ServiceError>::of(&QLowEnergyService::error),
+		this, [](QLowEnergyService::ServiceError e) {
+			report_info("preferred service error %d", static_cast<int>(e));
+		});
+#endif
+
 	return DC_STATUS_SUCCESS;
 }
 
@@ -650,6 +662,33 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_IOS) || QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	QBluetoothDeviceInfo remoteDevice = getBtDeviceInfo(QString(devaddr));
+
+	// Many BLE dive computers (e.g. Suunto EON Steel) stop advertising once
+	// bonded, so the device may NEVER reappear in a scan - waiting/rescanning
+	// is unreliable (see issue #4840 verbose log). On Android the device is
+	// addressed by MAC, and we already know the address + that it is an LE
+	// device from the paired-device enumeration, so synthesise a usable info.
+	//
+	// NOTE: this MAC-based fallback must NOT be used on macOS/iOS, where
+	// CoreBluetooth identifies peripherals by UUID rather than MAC address.
+	//
+	if (!remoteDevice.isValid() || remoteDevice.address().isNull()) {
+#if defined(Q_OS_ANDROID)
+		QBluetoothAddress addr{QString(devaddr)};
+		if (addr.isNull()) {
+			report_error("Could not parse device address %s", devaddr);
+			return DC_STATUS_IO;
+		}
+		report_info("Device %s not in scan cache; synthesising device info from paired address", devaddr);
+		remoteDevice = QBluetoothDeviceInfo(addr, QString(devaddr), 0);
+		remoteDevice.setCoreConfigurations(QBluetoothDeviceInfo::LowEnergyCoreConfiguration);
+#else
+		report_info("No valid cached device info for %s (paired but not scanned?)", devaddr);
+		report_error("Could not resolve device %s - bring it close and rescan", devaddr);
+		return DC_STATUS_IO;
+#endif
+	}
+
 	QLowEnergyController *controller = QLowEnergyController::createCentral(remoteDevice);
 #else
 	// this is deprecated but given that we don't use Qt to scan for
@@ -758,11 +797,27 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 			const char *value = c.properties() & QLowEnergyCharacteristic::Notify ?
 				"0100" : "0200";
 
-			report_info("now writing \"0x%s\" to the descriptor %s", value, to_str(d.uuid()).c_str());
-
-			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex(value));
-			WAITFOR(ble->descriptorWritten(), 1000);
-			if (!ble->descriptorWritten()) {
+			// The CCCD write confirmation (descriptorWritten) can take well
+			// over 1 s on the Qt6 Android backend (MTU/connection-parameter
+			// negotiation) and the request is sometimes dropped silently.
+			// Retry a few times and wait up to the normal BLE_TIMEOUT each go.
+			//
+			// descriptorWritten() is a *cumulative* counter, so snapshot it
+			// before each attempt and wait for it to advance.
+			//
+			const int maxAttempts = 3;
+			bool enabled = false;
+			for (int attempt = 0; attempt < maxAttempts && !enabled; attempt++) {
+				const int before = ble->descriptorWritten();
+				report_info("writing \"0x%s\" to descriptor %s (attempt %d/%d)",
+					    value, to_str(d.uuid()).c_str(), attempt + 1, maxAttempts);
+				ble->preferredService()->writeDescriptor(d, QByteArray::fromHex(value));
+				WAITFOR(ble->descriptorWritten() > before, BLE_TIMEOUT);
+				enabled = ble->descriptorWritten() > before;
+				if (!enabled)
+					report_info("..CCCD write not confirmed within %d ms, retrying", BLE_TIMEOUT);
+			}
+			if (!enabled) {
 				report_info("Bluetooth: Failed to enable notifications for characteristic %s", to_str(c.uuid()).c_str());
 				report_error("Bluetooth: Failed to enable notifications.");
 				delete ble;
