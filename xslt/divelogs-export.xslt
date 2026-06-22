@@ -135,7 +135,7 @@
               <xsl:value-of select="$double - 1" />
             </dbltank>
             <vol>
-              <xsl:value-of select="format-number(substring-before(@size, ' ') div $double, '#.##')" />
+              <xsl:value-of select="substring-before(@size, ' ') div $double" />
             </vol>
             <start_pressure>
               <xsl:choose>
@@ -387,7 +387,7 @@
     <xsl:param name="until" />
 
     <xsl:variable name="curdepth">
-      <xsl:value-of select="format-number(((($timefirst + 60) - $timefirst) div ($timesecond - $timefirst) * ($depthsecond - $depthfirst) + $depthfirst), '#.##')" />
+      <xsl:value-of select="((($timefirst + 60) - $timefirst) div ($timesecond - $timefirst) * ($depthsecond - $depthfirst) + $depthfirst)" />
     </xsl:variable>
     <xsl:variable name="curtime">
       <xsl:value-of select="$timefirst + 60" />
