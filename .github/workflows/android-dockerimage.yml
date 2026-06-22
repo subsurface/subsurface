@@ -19,7 +19,7 @@ jobs:
       VERSION: 6.10.3-2 # the version number is based on the Qt version
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     - name: Build the name for the docker image
       id: build_name
