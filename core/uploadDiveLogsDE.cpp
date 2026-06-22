@@ -65,6 +65,8 @@ bool uploadDiveLogsDE::prepareDives(bool selected)
 	xsltStylesheetPtr xslt_divelogs = NULL;
 	xsltStylesheetPtr xslt_json = NULL;
 
+	bool ret = true;
+
 	emit uploadStatus(tr("building json to upload"));
 
 	xslt_divelogs = get_stylesheet("divelogs-export.xslt");
@@ -78,8 +80,21 @@ bool uploadDiveLogsDE::prepareDives(bool selected)
 	if (!xslt_json) {
 		report_info("%s missing stylesheet", errPrefix);
 		report_error("%s", qPrintable(tr("Stylesheet to export to json is not found")));
+		xsltFreeStylesheet(xslt_divelogs);
 		return false;
 	}
+
+	/*
+	 * Set locale to "C" to make sure we use '.' as decimal separator in the JSON output,
+	 * regardless of user's locale.
+	 *
+	 * POSIX specifies that the returned pointer,
+	 * not just the contents of the pointed-to string,
+	 * may be invalidated by subsequent calls to setlocale.
+	 */
+	const char* temp_user_locale = setlocale(LC_NUMERIC, NULL);
+	char* user_locale = strdup(temp_user_locale);
+	setlocale(LC_NUMERIC, "C");
 
 	put_string(&mb_json, "[");
 
@@ -138,10 +153,9 @@ bool uploadDiveLogsDE::prepareDives(bool selected)
 		if (!doc) {
 			report_info("%s could not parse back into memory the XML file we've just created!", errPrefix);
 			report_error("%s", qPrintable(tr("internal error")));
-			xsltFreeStylesheet(xslt_divelogs);
-			xsltFreeStylesheet(xslt_json);
 			free_xml_params(params);
-			return false;
+			ret = false;
+			goto cleanup;
 		}
 
 		xml_params_add_int(params, "allcylinders", prefs.include_unused_tanks);
@@ -150,6 +164,7 @@ bool uploadDiveLogsDE::prepareDives(bool selected)
 		if (!transformed) {
 			report_info("%s XSLT transform failed for dive: %d", errPrefix, i);
 			report_error("%s", qPrintable(tr("Conversion of dive %1 to divelogs.de format failed").arg(i)));
+			xmlFreeDoc(doc);
 			continue;
 		}
 		xmlDocDumpMemory(transformed, (xmlChar **)&membuf, &streamsize);
@@ -161,14 +176,14 @@ bool uploadDiveLogsDE::prepareDives(bool selected)
 		if (!doc) {
 			report_info("%s could not parse back into memory the XML file we've just created!", errPrefix);
 			report_error("%s", qPrintable(tr("internal error")));
-			xsltFreeStylesheet(xslt_divelogs);
-			xsltFreeStylesheet(xslt_json);
-			return false;
+			ret = false;
+			goto cleanup;
 		}
 		transformed = xsltApplyStylesheet(xslt_json, doc, NULL);
 		if (!transformed) {
 			report_info("%s XSLT transform failed for dive: %d", errPrefix, i);
 			report_error("%s", qPrintable(tr("Conversion of dive %1 to divelogs.de format failed").arg(i)));
+			xmlFreeDoc(doc);
 			continue;
 		}
 		xsltSaveResultToString((xmlChar **)&membuf, &streamsize, transformed, xslt_json);
@@ -187,9 +202,14 @@ bool uploadDiveLogsDE::prepareDives(bool selected)
 	// Wrap the JSON array
 	put_string(&mb_json, "]");
 
+cleanup:
+	// Restore user's locale
+	setlocale(LC_NUMERIC, user_locale);
+	free(user_locale);
+
 	xsltFreeStylesheet(xslt_divelogs);
 	xsltFreeStylesheet(xslt_json);
-	return true;
+	return ret;
 }
 
 
