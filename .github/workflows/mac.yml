@@ -28,7 +28,7 @@ jobs:
       release_tag: v${{ steps.version_number.outputs.version }}
     steps:
     - name: checkout sources
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
 
@@ -58,7 +58,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
     - name: checkout sources
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
@@ -86,7 +86,7 @@ jobs:
 
     - name: checkout our packaged Qt resources
       if: ${{ matrix.qtversion == 5 }}
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         repository: subsurface/qt-mac
         ref: main

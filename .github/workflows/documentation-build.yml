@@ -31,7 +31,7 @@ jobs:
         DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get -y -q install git
 
     - name: checkout sources
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
