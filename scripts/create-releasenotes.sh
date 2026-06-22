@@ -9,6 +9,7 @@ json=$(gh pr list -s merged -S "$1" --json title,number,url)
 cp gh_release_notes_top.md gh_release_notes.md
 if [[ $json != "[]" ]]; then
 	echo -n $json | jq -j '.[0]|{title}|join(" ")' > release_content_title.txt
+	echo -n $json | jq -j '.[0]|{number}|join(" ")' > release_pr_number.txt
 
 	(
 		echo -n 'This build was created by [merging pull request '

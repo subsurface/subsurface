@@ -17,6 +17,9 @@ jobs:
     outputs:
       release_tag: v${{ steps.version_number.outputs.version }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
     - name: checkout sources
       uses: actions/checkout@v6
@@ -38,6 +41,34 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         scripts/create-releasenotes.sh $EVENT_HEAD_COMMIT_ID
+
+    - name: comment on merged pull request with release tag
+      if: github.event_name == 'push' && hashFiles('release_pr_number.txt') != ''
+      env:
+        GH_TOKEN: ${{ github.token }}
+        RELEASE_TAG: v${{ steps.version_number.outputs.version }}
+        BUILD_NUMBER: ${{ steps.version_number.outputs.buildnr }}
+      run: |
+        set -eu
+        pr_number=$(< release_pr_number.txt)
+        marker='<!-- subsurface-release-info -->'
+
+        # Idempotency: skip if a previous run already posted the marker.
+        existing=$(gh pr view "$pr_number" \
+          --repo ${{ github.repository }} \
+          --json comments \
+          --jq ".comments[].body" | grep -F "$marker" || true)
+        if [ -n "$existing" ]; then
+          echo "PR #$pr_number already has release-info comment, skipping."
+          exit 0
+        fi
+
+        release_url="https://github.com/${{ github.repository_owner }}/nightly-builds/releases/tag/${RELEASE_TAG}"
+        gh pr comment "$pr_number" \
+          --repo ${{ github.repository }} \
+          --body "${marker}
+        This pull request first appeared in release [${RELEASE_TAG}](${release_url}) (build ${BUILD_NUMBER})."
+        echo "Posted release-info comment on PR #$pr_number."
 
     # add a file containing the release title so it can be picked up and listed on the release page on our web server
     - name: publish release
