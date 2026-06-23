@@ -546,11 +546,12 @@ void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
 	if (index.column() == LocationInformationModel::DIVESITE)
 		idx = index.model()->index(index.row(), LocationInformationModel::NAME);
 
+	// Synthetic rows return nullptr for the dive site column; a real site returns its pointer.
+	// A null ds signals that a new site should be created from the entered text.
 	dive_site *ds = index.model()->index(index.row(), LocationInformationModel::DIVESITE)
 			    .data().value<dive_site *>();
-	currDs = index.row() <= 1 ? nullptr : ds;
-	if (index.row() >= 1)
-		setText(idx.data().toString());
+	currDs = ds;
+	setText(idx.data().toString());
 	if (view->isVisible())
 		view->hide();
 	emit diveSiteSelected();
