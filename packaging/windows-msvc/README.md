@@ -6,24 +6,29 @@ This guide explains how to build Subsurface natively on Windows using Microsoft 
 
 ### Required Software
 
-1. **Visual Studio 2022** (Community, Professional, or Enterprise)
+1. **Visual Studio 2026 (or 2022)** (Community, Professional, or Enterprise)
    - Install with "Desktop development with C++" workload
    - Ensure CMake and Ninja are included (or install separately)
+   - Make sure that the vcpkg package is NOT selected for installation
 
 2. **Git for Windows**
    - Download from https://git-scm.com/download/win
 
 3. **Qt 6.8** (or later LTS)
    - Download the online installer from https://www.qt.io/download-qt-installer
-   - Install Qt 6.8.x for MSVC 2022 64-bit
+   - Install Qt 6.8.x for MSVC 2026 64-bit, or MSVC 2022 64-bit if using Visual Studio 2022
    - Include these modules: Qt Location, Qt Positioning, Qt Connectivity, Qt5Compat, Qt WebChannel, Qt WebEngine
 
 4. **vcpkg** (for C/C++ dependencies)
    - If not already installed, see "Installing vcpkg" below
+   - Do NOT use the vcpkg that comes with Visual Studio
 
 5. **NSIS** (for creating installers)
    - Download from https://nsis.sourceforge.io/Download
    - Add to PATH: `C:\Program Files (x86)\NSIS`
+```powershell
+[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files (x86)\NSIS", "User")
+```
 
 ### Installing vcpkg
 
@@ -39,7 +44,11 @@ cd vcpkg
 Set the environment variable:
 ```powershell
 [Environment]::SetEnvironmentVariable("VCPKG_ROOT", "C:\vcpkg", "User")
+[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "User") + ";C:\vcpkg", "User")
 ```
+
+Start a new PowerShell instance after this.
+
 
 ## Quick Start
 
@@ -229,7 +238,7 @@ This is expected on Windows. The CMakeLists.txt has been updated to find librari
 ### Qt not found
 Set the `Qt6_DIR` environment variable to your Qt installation, e.g.:
 ```powershell
-$env:Qt6_DIR = "C:\Qt\6.8.0\msvc2022_64"
+$env:Qt6_DIR = "C:\Qt\6.8.0\msvc2026_64"
 ```
 
 ### libdivecomputer build fails
