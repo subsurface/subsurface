@@ -14,6 +14,19 @@ find_path(QLITEHTML_INCLUDE_DIR
 	DOC "QLiteHtml include directory"
 )
 
+find_path(QLITEHTML_LITEHTML_INCLUDE_DIR
+	NAMES litehtml/master_css.h
+	PATH_SUFFIXES include src/3rdparty/litehtml/include
+	HINTS
+		${CMAKE_PREFIX_PATH}
+		${CMAKE_SOURCE_DIR}/qlitehtml
+	PATHS
+		${CMAKE_INSTALL_PREFIX}/include
+		/usr/local/include
+		/usr/include
+	DOC "litehtml include directory used by QLiteHtml"
+)
+
 find_library(QLITEHTML_LIBRARY
 	NAMES qlitehtml qlitehtml1 libqlitehtml
 	HINTS ${CMAKE_PREFIX_PATH}
@@ -24,11 +37,12 @@ find_library(QLITEHTML_LIBRARY
 	DOC "QLiteHtml library"
 )
 
-if(QLITEHTML_INCLUDE_DIR AND QLITEHTML_LIBRARY)
+if(QLITEHTML_INCLUDE_DIR AND QLITEHTML_LITEHTML_INCLUDE_DIR AND QLITEHTML_LIBRARY)
 	set(QLITEHTML_FOUND TRUE)
 	set(QLITEHTML_LIBRARIES ${QLITEHTML_LIBRARY})
 	message(STATUS "QLiteHtml found: ${QLITEHTML_LIBRARY}")
-	include_directories(${QLITEHTML_INCLUDE_DIR})
+	message(STATUS "litehtml headers found: ${QLITEHTML_LITEHTML_INCLUDE_DIR}")
+	include_directories(${QLITEHTML_INCLUDE_DIR} ${QLITEHTML_LITEHTML_INCLUDE_DIR})
 else()
 	set(QLITEHTML_FOUND FALSE)
 endif()

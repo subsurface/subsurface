@@ -45,7 +45,7 @@
     .\build.ps1 -BuildType Debug -Clean
 
 .EXAMPLE
-    .\build.ps1 -Qt6Dir "C:\Qt\6.8.0\msvc2022_64"
+    .\build.ps1 -Qt6Dir "C:\Qt\6.8.0\msvc2026_64"
 #>
 
 param(
@@ -146,9 +146,14 @@ if (-not $Qt6Dir) {
     } else {
         # Try common Qt installation paths
         $qtPaths = @(
+            "C:\Qt\6.8*\msvc2026_64",
+            "C:\Qt\6.7*\msvc2026_64",
+            "C:\Qt\6.6*\msvc2026_64",
             "C:\Qt\6.8*\msvc2022_64",
             "C:\Qt\6.7*\msvc2022_64",
             "C:\Qt\6.6*\msvc2022_64",
+            "$env:USERPROFILE\Qt\6.8*\msvc2026_64",
+            "$env:USERPROFILE\Qt\6.7*\msvc2026_64",
             "$env:USERPROFILE\Qt\6.8*\msvc2022_64",
             "$env:USERPROFILE\Qt\6.7*\msvc2022_64"
         )
@@ -448,6 +453,19 @@ if (-not $SkipQlitehtml) {
         exit $LASTEXITCODE
     }
 
+    # qlitehtml vendors litehtml as an excluded subdirectory. Some CMake/Ninja
+    # versions do not include the bundled litehtml install rules from the
+    # top-level install target, but Subsurface includes litehtml/master_css.h.
+    $litehtmlInclude = Join-Path $qlitehtmlDir "src\3rdparty\litehtml\include"
+    if (Test-Path (Join-Path $litehtmlInclude "litehtml\master_css.h")) {
+        Write-Host "Installing bundled litehtml headers..."
+        Copy-Item "$litehtmlInclude\*" -Destination "$InstallDir\include" -Recurse -Force
+    } else {
+        Write-Error "Bundled litehtml headers not found at $litehtmlInclude"
+        Pop-Location
+        exit 1
+    }
+
     Pop-Location
 
     Write-Host "qlitehtml built successfully" -ForegroundColor Green
@@ -475,6 +493,7 @@ $cmakeArgs = @(
     "-DCMAKE_TOOLCHAIN_FILE=$VcpkgRoot\scripts\buildsystems\vcpkg.cmake",
     "-DSUBSURFACE_TARGET_EXECUTABLE=DesktopExecutable",
     "-DBUILD_WITH_QT6=ON",
+    "-DSUBSURFACE_VCPKG_ROOT=$VcpkgRoot",
     "-DLIBDIVECOMPUTER_INCLUDE_DIR=$InstallDir\include",
     "-DLIBDIVECOMPUTER_LIBRARIES=$InstallDir\lib\libdivecomputer.lib",
     "-DLIBGIT2_INCLUDE_DIR=$vcpkgInstalled\include",
