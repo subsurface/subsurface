@@ -58,3 +58,8 @@ ReleaseNotes/ReleaseNotes.pdf
 ReleaseNotes/ReleaseNotes.text
 # MapWidget.qml is generated from MapWidgetQt5.qml or MapWidgetQt6.qml
 map-widget/qml/MapWidget.qml
+
+# Artefacts produced by the MSVC build
+googlemaps/
+install-msvc/
+qlitehtml/
