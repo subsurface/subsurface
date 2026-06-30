@@ -10,17 +10,17 @@ default_target: all
 
 
 mobile:
-	if test ! -d build-mobile; then (echo "error: please run build.sh before make"; exit -1;); fi
+	if test ! -d build-mobile; then (echo "error: please run build.sh before make"; exit 1;); fi
 	cd build-mobile; make 
 	cd build-mobile; make install
 
 desktop:
-	if test ! -d build; then (echo "error: please run build.sh before make"; exit -1;); fi
+	if test ! -d build; then (echo "error: please run build.sh before make"; exit 1;); fi
 	cd build; make 
 	cd build; make install
 
 check:
-	if test ! -d build; then (echo "error: please run build.sh before make"; exit -1;); fi
+	if test ! -d build; then (echo "error: please run build.sh before make"; exit 1;); fi
 	cd build; make check
 
 
