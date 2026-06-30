@@ -91,6 +91,7 @@ struct dive {
 	int number_of_computers() const;
 	void fixup_dive();
 	void fixup_dive_dc(struct divecomputer &dc);
+	void ensure_o2_cylinder();
 	timestamp_t endtime() const;		/* maximum over divecomputers (with samples) */
 	duration_t totaltime() const;		/* maximum over divecomputers (with samples) */
 	temperature_t dc_airtemp() const;	/* average over divecomputers */
