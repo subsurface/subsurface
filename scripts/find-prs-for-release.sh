@@ -24,11 +24,13 @@ FROM_TAG=""
 while [[ $# -gt 0 ]]; do
 	case "$1" in
 		--tag)
+			[[ $# -lt 2 ]] && croak_usage
 			[[ -n $TAG ]] && croak_usage
 			TAG="$2"
 			shift 2
 			;;
 		--from-tag)
+			[[ $# -lt 2 ]] && croak_usage
 			[[ -n $FROM_TAG ]] && croak_usage
 			FROM_TAG="$2"
 			shift 2
@@ -51,7 +53,7 @@ if [[ -d "$SUBSURFACE_ROOT/../nightly-builds" ]]; then
 else
 	NB_DIR="$SUBSURFACE_ROOT/nightly-builds"
 	[[ -d "$NB_DIR" ]] || \
-		git clone https://github.com/subsurface/nightly-builds "$NB_DIR" &> /dev/null || croak "Failed to clone nightly-builds"
+		git clone --quiet https://github.com/subsurface/nightly-builds "$NB_DIR" || croak "Failed to clone nightly-builds"
 fi
 
 # Fetch latest refs
@@ -86,6 +88,10 @@ find_sha_for_buildnr() {
 	return 1
 }
 
+lookup_sha_for_buildnr() {
+	find_sha_for_buildnr "$1" || true
+}
+
 # Validate tag format first
 if [[ ! $TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+-CICD-release$ ]]; then
 	croak "Invalid tag format: $TAG. Expected format: vX.Y.N-CICD-release (e.g. v6.0.5629-CICD-release)"
@@ -96,16 +102,12 @@ TAG_BUILDNR=$(extract_buildnr "$TAG")
 [[ -z $TAG_BUILDNR ]] && croak "Cannot parse build number from tag: $TAG"
 
 # Find SHA for this release
-TO_SHA=$(find_sha_for_buildnr "$TAG_BUILDNR")
-RESOLVED_BUILDNR="$TAG_BUILDNR"
+TO_SHA=$(lookup_sha_for_buildnr "$TAG_BUILDNR")
 
 # If exact match not found, try the next build (in case tags are pointing to earlier commits)
 if [[ -z $TO_SHA ]]; then
 	FALLBACK_BUILDNR=$((TAG_BUILDNR + 1))
-	TO_SHA=$(find_sha_for_buildnr "$FALLBACK_BUILDNR")
-	if [[ -n $TO_SHA ]]; then
-		RESOLVED_BUILDNR="$FALLBACK_BUILDNR"
-	fi
+	TO_SHA=$(lookup_sha_for_buildnr "$FALLBACK_BUILDNR")
 fi
 
 [[ -z $TO_SHA ]] && croak "Cannot find subsurface commit for release $TAG (build $TAG_BUILDNR or $((TAG_BUILDNR + 1)))"
@@ -119,18 +121,20 @@ if [[ -n $FROM_TAG ]]; then
 	FROM_BUILDNR=$(extract_buildnr "$FROM_TAG")
 	[[ -z $FROM_BUILDNR ]] && croak "Cannot parse build number from from-tag: $FROM_TAG"
 
-	FROM_SHA=$(find_sha_for_buildnr "$FROM_BUILDNR")
+	FROM_SHA=$(lookup_sha_for_buildnr "$FROM_BUILDNR")
 
 	# Fallback: try adjacent build number
 	if [[ -z $FROM_SHA ]]; then
-		FROM_SHA=$(find_sha_for_buildnr "$((FROM_BUILDNR + 1))")
+		FROM_SHA=$(lookup_sha_for_buildnr "$((FROM_BUILDNR + 1))")
 	fi
 
 	[[ -z $FROM_SHA ]] && croak "Cannot find subsurface commit for from-tag $FROM_TAG (build $FROM_BUILDNR)"
 else
-	# Find the previous release automatically based on the resolved build number
+	# Find the previous release automatically based on the build number we actually
+	# resolved (the tag's build number, or the fallback build number if needed).
+	RESOLVED_BUILDNR="${FALLBACK_BUILDNR:-$TAG_BUILDNR}"
 	PREV_BUILDNR=$((RESOLVED_BUILDNR - 1))
-	FROM_SHA=$(find_sha_for_buildnr "$PREV_BUILDNR")
+	FROM_SHA=$(lookup_sha_for_buildnr "$PREV_BUILDNR")
 
 	if [[ -z $FROM_SHA ]]; then
 		# No previous release found; use the repository root commit
