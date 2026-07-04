@@ -1262,6 +1262,24 @@ for analysis and management of OSTC devices. Only raw dive computer data will be
 imported to _Subsurface_; the rest of the
 data (buddies, equipment, notes, etc) need to be completed manually.
 
+// AI-generated (Claude)
+==== Importing from the Suunto app
+
+Newer Suunto dive computers (Nautic, Nautic S, Ocean, EON Core, EON Steel, D5) are configured
+and synced through the Suunto companion phone app rather than a direct USB or Bluetooth
+download. The app can export a dive as a _.json_ file; _Subsurface_ detects this format
+automatically, so it can be opened with either _File ->  Open log file_ or
+_Import ->  Import log files_ (no format needs to be selected from the dropdown).
+
+The Suunto app's JSON export does not always include the gas mix used during the dive; for
+the Ocean in particular it never does. If the app also exported a matching _.fit_ file (same
+file name as the _.json_, different extension - the app writes both files alongside each
+other), select *both files together* in the same import dialog. _Subsurface_ then combines
+them into a single dive: the JSON stays the source for the depth/time profile, NDL, tank
+pressure and events, while the paired FIT file supplies the gas mix and, where available, the
+gradient factors used by the dive computer's deco model. Selecting only the _.json_ or only
+the _.fit_ file still works as before, just without this extra data.
+
 ==== Importing from Mares Dive Organizer V2.1
 
 Since Mares uses proprietary Windows software not compatible with

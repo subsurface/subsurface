@@ -359,7 +359,7 @@ int parse_file(const char *filename, struct divelog *log)
 
 	/* Suunto JSON device log (from Suunto app export) */
 	if (fmt && (!strcasecmp(fmt + 1, "json")))
-		if (suunto_json_import(mem, log) > 0)
+		if (suunto_json_import(mem, std::string(), log) > 0)
 			return 0;
 #endif
 
