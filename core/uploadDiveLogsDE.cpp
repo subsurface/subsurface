@@ -66,6 +66,7 @@ bool uploadDiveLogsDE::prepareDives(bool selected)
 	xsltStylesheetPtr xslt_json = NULL;
 
 	bool ret = true;
+	char *user_locale = NULL;
 
 	emit uploadStatus(tr("building json to upload"));
 
@@ -92,9 +93,26 @@ bool uploadDiveLogsDE::prepareDives(bool selected)
 	 * not just the contents of the pointed-to string,
 	 * may be invalidated by subsequent calls to setlocale.
 	 */
-	const char* temp_user_locale = setlocale(LC_NUMERIC, NULL);
-	char* user_locale = strdup(temp_user_locale);
-	setlocale(LC_NUMERIC, "C");
+	const char *temp_user_locale = setlocale(LC_NUMERIC, NULL);
+	if (!temp_user_locale) {
+		report_info("%s could not query user locale", errPrefix);
+		report_error("%s", qPrintable(tr("internal error")));
+		ret = false;
+		goto cleanup;
+	}
+	user_locale = strdup(temp_user_locale);
+	if (!user_locale) {
+		report_info("%s could not save user locale", errPrefix);
+		report_error("%s", qPrintable(tr("internal error")));
+		ret = false;
+		goto cleanup;
+	}
+	if (!setlocale(LC_NUMERIC, "C")) {
+		report_info("%s could not set C numeric locale", errPrefix);
+		report_error("%s", qPrintable(tr("internal error")));
+		ret = false;
+		goto cleanup;
+	}
 
 	put_string(&mb_json, "[");
 
@@ -204,7 +222,8 @@ bool uploadDiveLogsDE::prepareDives(bool selected)
 
 cleanup:
 	// Restore user's locale
-	setlocale(LC_NUMERIC, user_locale);
+	if (user_locale)
+		setlocale(LC_NUMERIC, user_locale);
 	free(user_locale);
 
 	xsltFreeStylesheet(xslt_divelogs);
