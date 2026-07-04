@@ -183,10 +183,17 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "
 	# Use SUBSURFACE_VCPKG_ROOT to avoid conflicts with vcpkg toolchain variables
 	# The vcpkg toolchain sets VCPKG_INSTALLED_DIR based on toolchain file location,
 	# which can point to VS bundled vcpkg instead of the one we installed deps to
+	# AI-generated (Claude)
+	# Normalize to forward slashes: this path gets embedded verbatim into
+	# generated install(CODE ...) script text below, where a native
+	# backslash path (e.g. "C:\vcpkg") would be misparsed as an escape
+	# sequence (e.g. "\v") by the generated cmake_install.cmake.
 	if(DEFINED SUBSURFACE_VCPKG_ROOT)
-		set(_VCPKG_PREFIX "${SUBSURFACE_VCPKG_ROOT}/installed/x64-windows")
+		file(TO_CMAKE_PATH "${SUBSURFACE_VCPKG_ROOT}" _VCPKG_ROOT_NORMALIZED)
+		set(_VCPKG_PREFIX "${_VCPKG_ROOT_NORMALIZED}/installed/x64-windows")
 	elseif(DEFINED ENV{VCPKG_ROOT})
-		set(_VCPKG_PREFIX "$ENV{VCPKG_ROOT}/installed/x64-windows")
+		file(TO_CMAKE_PATH "$ENV{VCPKG_ROOT}" _VCPKG_ROOT_NORMALIZED)
+		set(_VCPKG_PREFIX "${_VCPKG_ROOT_NORMALIZED}/installed/x64-windows")
 	else()
 		set(_VCPKG_PREFIX "C:/vcpkg/installed/x64-windows")
 	endif()

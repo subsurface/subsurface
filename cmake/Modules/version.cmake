@@ -4,9 +4,12 @@ if(DEFINED ENV{CANONICALVERSION})
 	set(CANONICAL_VERSION_STRING $ENV{CANONICALVERSION})
 else()
 	if(USING_MSVC)
+		# AI-generated (Claude)
 		# Use PowerShell on Windows with MSVC
+		# -NoProfile avoids the user's PowerShell profile script writing
+		# extra text to stdout, which would corrupt the captured version string.
 		execute_process(
-			COMMAND powershell -ExecutionPolicy Bypass -File ${CMAKE_TOP_SRC_DIR}/scripts/get-version.ps1
+			COMMAND powershell -NoProfile -ExecutionPolicy Bypass -File ${CMAKE_TOP_SRC_DIR}/scripts/get-version.ps1
 			WORKING_DIRECTORY ${CMAKE_TOP_SRC_DIR}
 			OUTPUT_VARIABLE CANONICAL_VERSION_STRING
 			OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -27,7 +30,7 @@ else()
 	if(USING_MSVC)
 		# Use PowerShell on Windows with MSVC
 		execute_process(
-			COMMAND powershell -ExecutionPolicy Bypass -File ${CMAKE_TOP_SRC_DIR}/scripts/get-version.ps1 4
+			COMMAND powershell -NoProfile -ExecutionPolicy Bypass -File ${CMAKE_TOP_SRC_DIR}/scripts/get-version.ps1 4
 			WORKING_DIRECTORY ${CMAKE_TOP_SRC_DIR}
 			OUTPUT_VARIABLE CANONICAL_VERSION_STRING_4
 			OUTPUT_STRIP_TRAILING_WHITESPACE
