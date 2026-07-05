@@ -6,6 +6,7 @@
 #include "gettext.h"
 #include "qthelper.h"
 #include "git-access.h"
+#include "libdivecomputer.h"
 #include "pref.h"
 #include "libdivecomputer/version.h"
 
@@ -93,6 +94,7 @@ static void print_help()
 	printf("\n --firmware-file=<path>       Path to firmware file for --update-firmware");
 	printf("\n --update-firmware            Update firmware on the configured dive computer");
 	printf("\n --force-update-firmware      Force firmware update (if supported)");
+	printf("\n --libdc-logfile=<path>       Write libdivecomputer log to file");
 #endif
 	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)\n\n");
 }
@@ -175,6 +177,10 @@ void parse_argument(const char *arg)
 			}
 			if (strcmp(arg, "--force-update-firmware") == 0) {
 				firmware_force_update = true;
+				return;
+			}
+			if (strncmp(arg, "--libdc-logfile=", sizeof("--libdc-logfile=") - 1) == 0) {
+				logfile_name = arg + sizeof("--libdc-logfile=") - 1;
 				return;
 			}
 			if (strncmp(arg, "--list-dc", sizeof("--list-dc") - 1) == 0) {

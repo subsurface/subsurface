@@ -2,8 +2,10 @@
 #include "qt-models/diveimportedmodel.h"
 #include "core/configuredivecomputer.h"
 #include "core/downloadfromdcthread.h"
+#include "core/libdivecomputer.h"
 #include "core/subsurfacestartup.h"
 #include <QCoreApplication>
+#include <QEventLoop>
 #include <QThread>
 #include <QDir>
 
@@ -16,17 +18,53 @@ static QString expandTilde(const QString &path)
 	return path;
 }
 
+static bool isHexDigit(QChar c)
+{
+	return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+}
+
+static bool looksLikeBluetoothAddress(const QString &device)
+{
+	QString address = device.trimmed();
+	if (address.startsWith("LE:"))
+		address = address.mid(3);
+
+	if (address.size() == 12) {
+		for (QChar c: address) {
+			if (!isHexDigit(c))
+				return false;
+		}
+		return true;
+	}
+
+	if (address.size() == 17) {
+		for (int i = 0; i < address.size(); ++i) {
+			if (i % 3 == 2) {
+				if (address[i] != ':' && address[i] != '-')
+					return false;
+			} else if (!isHexDigit(address[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	return false;
+}
+
 // Perform a firmware update from the command line. Returns 0 on success, non-zero on failure.
 int cliFirmwareUpdate(const std::string &vendor, const std::string &product, const std::string &device, const std::string &filename, bool force)
 {
 	ConfigureDiveComputer config;
 	DCDeviceData localData;
+	QString deviceName = QString::fromStdString(device);
 
 	// prepare device_data
 	localData.setVendor(QString::fromStdString(vendor));
 	localData.setProduct(QString::fromStdString(product));
-	localData.setDevName(QString::fromStdString(device));
-	localData.setBluetoothMode(false);
+	localData.setBluetoothMode(looksLikeBluetoothAddress(deviceName));
+	localData.setDevName(deviceName);
+	localData.setSaveLog(!logfile_name.empty());
 	device_data_t *data = localData.internalData();
 
 	// Set up the descriptor (needed for dc_open)
@@ -49,8 +87,12 @@ int cliFirmwareUpdate(const std::string &vendor, const std::string &product, con
 	QString expandedFilename = expandTilde(QString::fromStdString(filename));
 
 	// Start firmware update and wait for thread to finish via state changes/signals.
-	// The ConfigureDiveComputer starts a thread; we'll connect to signals and wait in a local event loop.
+	// Close during the same FWUPDATE -> DONE transition as the GUI. For OSTC 4/5,
+	// leaving service mode promptly is what lets the device continue into the
+	// firmware installation step after the upload has completed.
 	bool hadError = false;
+	bool closedDevice = false;
+	QEventLoop loop;
 	QObject::connect(&config, &ConfigureDiveComputer::error, [&hadError](QString e){
 		fprintf(stderr, "Firmware update error: %s\n", e.toLocal8Bit().constData());
 		hadError = true;
@@ -62,14 +104,20 @@ int cliFirmwareUpdate(const std::string &vendor, const std::string &product, con
 		fprintf(stdout, "Progress: %d%%\r", percent);
 		fflush(stdout);
 	});
+	QObject::connect(&config, &ConfigureDiveComputer::stateChanged,
+			 [&config, data, &closedDevice, &loop](ConfigureDiveComputer::states oldState, ConfigureDiveComputer::states newState) {
+		if (oldState == ConfigureDiveComputer::FWUPDATE && newState == ConfigureDiveComputer::DONE && !closedDevice) {
+			config.dc_close(data);
+			closedDevice = true;
+		}
+		if (newState == ConfigureDiveComputer::DONE || newState == ConfigureDiveComputer::ERRORED)
+			loop.quit();
+	});
 
 	config.startFirmwareUpdate(expandedFilename, data, force);
 
-	// Wait until state becomes DONE or ERRORED
-	while (config.currentState != ConfigureDiveComputer::DONE && config.currentState != ConfigureDiveComputer::ERRORED) {
-		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-		QThread::msleep(50);
-	}
+	if (config.currentState != ConfigureDiveComputer::DONE && config.currentState != ConfigureDiveComputer::ERRORED)
+		loop.exec();
 
 	// Let any remaining events be processed (important for thread cleanup)
 	QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
@@ -86,10 +134,10 @@ int cliFirmwareUpdate(const std::string &vendor, const std::string &product, con
 		return 3;
 	}
 
-	// Close the connection explicitly to match the GUI behaviour in
-	// processStateChanged(FWUPDATE, DONE), which closes the BT connection to
-	// signal the device to start writing flash.
-	config.dc_close(data);
+	if (!closedDevice)
+		config.dc_close(data);
+	QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+	QThread::msleep(250);
 
 	fprintf(stdout, "\nFirmware update completed successfully\n");
 	return 0;
@@ -106,7 +154,7 @@ void cliDownloader(const std::string &vendor, const std::string &product, const 
 	auto data = diveImportedModel.thread.data();
 	data->setVendor(QString::fromStdString(vendor));
 	data->setProduct(QString::fromStdString(product));
-	data->setBluetoothMode(false);
+	data->setBluetoothMode(looksLikeBluetoothAddress(QString::fromStdString(device)));
 	if (data->vendor() == "Uemis") {
 		QString devname = QString::fromStdString(device);
 		int colon = devname.indexOf(QStringLiteral(":\\ (UEMISSDA)"));
@@ -121,7 +169,7 @@ void cliDownloader(const std::string &vendor, const std::string &product, const 
 
 	// some assumptions - should all be configurable
 	data->setForceDownload(false);
-	data->setSaveLog(true);
+	data->setSaveLog(!logfile_name.empty());
 	data->setSaveDump(false);
 	data->setSyncTime(false);
 
