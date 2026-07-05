@@ -636,9 +636,9 @@ static void patch_from_fit(const std::string &fit_buffer, struct dive *d, struct
 		cyl->cylinder_use = fit_dive->cylinders[0].cylinder_use;
 
 		if (fit_dive->cylinders.size() > 1)
-			report_info("Suunto JSON: paired FIT file has %zu gas mixes; only gas 0 "
+			report_info("Suunto JSON: paired FIT file has %u gas mixes; only gas 0 "
 				    "was applied (multi-gas Ocean import is not yet supported)",
-				    fit_dive->cylinders.size());
+				    (unsigned)fit_dive->cylinders.size());
 	}
 
 	/* Gradient factors: libdivecomputer's Garmin parser surfaces the FIT
