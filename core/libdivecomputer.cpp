@@ -1396,18 +1396,20 @@ static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *cont
 #if defined(BT_SUPPORT) && !defined(__ANDROID__) && !defined(__APPLE__)
 static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *data)
 {
-	dc_bluetooth_address_t address = 0;
+	dc_bluetooth_address_t address = dc_bluetooth_str2addr(data->devname.c_str());
 	dc_iterator_t *iterator = NULL;
 	dc_bluetooth_device_t *device = NULL;
 
 	// Try to find the rfcomm device address
-	dc_bluetooth_iterator_new (&iterator, context, data->descriptor);
-	while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS) {
-		address = dc_bluetooth_device_get_address (device);
-		dc_bluetooth_device_free (device);
-		break;
+	if (!address) {
+		dc_bluetooth_iterator_new (&iterator, context, data->descriptor);
+		while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS) {
+			address = dc_bluetooth_device_get_address (device);
+			dc_bluetooth_device_free (device);
+			break;
+		}
+		dc_iterator_free (iterator);
 	}
-	dc_iterator_free (iterator);
 
 	if (!address) {
 		dev_info("No rfcomm device found");

@@ -44,9 +44,6 @@ int main(int argc, char **argv)
 	std::vector<std::string> importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
 
-	// set a default logfile name for libdivecomputer so we always get a logfile
-	logfile_name = "subsurface-downloader.log";
-
 	subsurface_mkdir(system_default_directory().c_str());
 
 	if (subsurface_user_is_root() && !force_root) {
