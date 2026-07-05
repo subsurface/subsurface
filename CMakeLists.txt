@@ -1032,6 +1032,42 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			message(WARNING "windeployqt not found - Qt DLLs will not be copied automatically")
 		endif()
 
+		# Manually copy Qt6 core DLLs.
+		# windeployqt requires Qt6ShaderTools.dll (a transitive dependency of Qt6Quick
+		# via Qt6Gui) to walk the full dependency tree, even when that DLL is not actually
+		# needed at runtime. If the qtshadertools module is not installed, windeployqt aborts
+		# before copying a single DLL, leaving the staging directory without any Qt libraries.
+		# To avoid this, we copy the Qt6 DLLs that Subsurface actually uses explicitly.
+		# This list intentionally excludes Qt6WebEngine*.dll (100+ MB each) and debug DLLs.
+		if(USINGQT6)
+			install(CODE "
+				message(STATUS \"Copying Qt6 core DLLs from ${QT_INSTALL_PREFIX}/bin...\")
+				# Core Qt6 libraries required by Subsurface (release builds only)
+				set(_qt6_required_dlls
+					# Qt base
+					Qt6Core Qt6Gui Qt6Widgets Qt6Network Qt6Xml Qt6Sql Qt6Svg
+					Qt6Concurrent Qt6OpenGL Qt6OpenGLWidgets Qt6DBus
+					# QML / Quick
+					Qt6Qml Qt6QmlCore Qt6QmlMeta Qt6QmlModels
+					Qt6QmlNetwork Qt6QmlWorkerScript
+					Qt6Quick Qt6QuickTemplates2 Qt6QuickControls2 Qt6QuickWidgets
+					Qt6QuickControls2Basic Qt6QuickControls2Impl
+					# Subsurface-specific modules
+					Qt6Location Qt6Positioning Qt6PositioningQuick
+					Qt6Bluetooth Qt6WebChannel Qt6Core5Compat
+					Qt6PrintSupport
+				)
+				foreach(_dll_base \${_qt6_required_dlls})
+					set(_dll_path \"${QT_INSTALL_PREFIX}/bin/\${_dll_base}.dll\")
+					if(EXISTS \"\${_dll_path}\")
+						file(COPY \"\${_dll_path}\" DESTINATION \"${WINDOWSSTAGING}\")
+					else()
+						message(STATUS \"  Note: \${_dll_base}.dll not found at ${QT_INSTALL_PREFIX}/bin (optional or not installed)\")
+					endif()
+				endforeach()
+			")
+		endif()
+
 		# Manually copy Qt plugins since windeployqt doesn't always work reliably
 		if(NOT QT_INSTALL_PREFIX OR QT_INSTALL_PREFIX STREQUAL "")
 			message(FATAL_ERROR "QT_INSTALL_PREFIX is not set - cannot copy Qt plugins. Check Qt6_DIR is set correctly.")
@@ -1167,6 +1203,46 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		include(InstallRequiredSystemLibraries)
 		if(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
 			install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${WINDOWSSTAGING})
+		endif()
+
+		# Verify that all essential Qt DLLs made it into the staging directory.
+		# If any are missing it means both windeployqt and the manual copy failed,
+		# which would produce a silently-broken installer.  Fail loudly here so CI
+		# produces a red build instead of a green build with a broken artifact.
+		if(USINGQT6)
+			# Qt6Location is optional: only available when map support is enabled.
+			# Resolve this at configure time so the install script has the right list.
+			if(MAPSUPPORT)
+				set(_essential_location_dll "Qt6Location.dll")
+			else()
+				set(_essential_location_dll "")
+			endif()
+			install(CODE "
+				message(STATUS \"Verifying essential Qt6 DLLs in staging directory...\")
+				# _essential_location_dll is expanded at configure time (empty when MAPSUPPORT is OFF)
+				set(_essential_qt6_dlls
+					Qt6Core.dll Qt6Gui.dll Qt6Widgets.dll Qt6Network.dll
+					Qt6Qml.dll Qt6Quick.dll Qt6Positioning.dll
+					${_essential_location_dll}
+				)
+				set(_missing \"\")
+				foreach(_dll \${_essential_qt6_dlls})
+					if(_dll AND NOT EXISTS \"${WINDOWSSTAGING}/\${_dll}\")
+						list(APPEND _missing \"\${_dll}\")
+					endif()
+				endforeach()
+				if(_missing)
+					string(JOIN \"\\n  \" _missing_str \${_missing})
+					message(FATAL_ERROR
+						\"Essential Qt6 DLLs are missing from the staging directory:\\n\"
+						\"  \${_missing_str}\\n\"
+						\"Both windeployqt and the manual copy step failed to provide them.\\n\"
+						\"Check that the Qt installation at '${QT_INSTALL_PREFIX}' is correct\\n\"
+						\"and that all required Qt modules are installed.\")
+				else()
+					message(STATUS \"All essential Qt6 DLLs verified in staging directory.\")
+				endif()
+			")
 		endif()
 	else()
 		# For MinGW/MXE builds, use the existing dlllist.cmake script
