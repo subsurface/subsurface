@@ -615,30 +615,35 @@ void TestParse::importSuuntoJsonOceanNoFit()
 {
 #if defined(SUBSURFACE_MOBILE)
 	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
-#endif
+#else
 	/* Regression guard: calling suunto_json_import() directly with an empty
 	 * fit_buffer (i.e. no paired FIT file selected) must behave exactly
 	 * like the plain JSON-only import above, reusing the same reference
 	 * output. This confirms the added parameter didn't change the default
-	 * (no-FIT) behavior. */
+	 * (no-FIT) behavior. suunto_json_import() itself is only declared for
+	 * !SUBSURFACE_MOBILE (see core/file.h), so this whole body -- not just
+	 * the QSKIP above -- has to be compiled out on mobile. */
 	auto [json_buf, jerr] = readfile(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_air.json");
 	QVERIFY(jerr > 0);
 	QCOMPARE(suunto_json_import(json_buf, std::string(), &divelog), 1);
 	QCOMPARE(save_dives("./test_suunto_ocean_air_no_fit.ssrf"), 0);
 	FILE_COMPARE("./test_suunto_ocean_air_no_fit.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_air.xml");
+#endif
 }
 
 void TestParse::importSuuntoJsonOceanWithFit()
 {
 #if defined(SUBSURFACE_MOBILE)
 	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
-#endif
+#else
 	/* Suunto Ocean, EAN32 dive. The JSON alone has no gas mix (the Ocean's
 	 * JSON export has no Diving.Gases block), so suunto_json_import() is
 	 * given the paired FIT file too, which carries the gas mix (DIVE_GAS)
 	 * and gradient factors (DIVE_SETTINGS) that get patched onto the
-	 * JSON-derived dive. */
+	 * JSON-derived dive. suunto_json_import() is only declared for
+	 * !SUBSURFACE_MOBILE (see core/file.h), so this whole body -- not just
+	 * the QSKIP above -- has to be compiled out on mobile. */
 	auto [json_buf, jerr] = readfile(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_nitrox.json");
 	auto [fit_buf, ferr] = readfile(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_nitrox.fit");
 	QVERIFY(jerr > 0);
@@ -647,6 +652,7 @@ void TestParse::importSuuntoJsonOceanWithFit()
 	QCOMPARE(save_dives("./test_suunto_ocean_nitrox.ssrf"), 0);
 	FILE_COMPARE("./test_suunto_ocean_nitrox.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_nitrox.xml");
+#endif
 }
 
 QTEST_GUILESS_MAIN(TestParse)
