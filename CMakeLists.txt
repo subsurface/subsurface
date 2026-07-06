@@ -1278,18 +1278,9 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# Flatpak installs the plugin under /app and Qt finds it at runtime
 	# through its normal plugin search path, so this symlink step is not needed.
 	if (NOT FLATHUB_BUILD)
-		# First try the traditional path: one level above the source directory.
-		# This works in all standard (non-symlink) builds where the source dir is
-		# a sibling of install-root.
+		# CMAKE_INSTALL_PREFIX always points to the correct location.
 		file(GLOB_RECURSE GOOGLEMAPS
-			${CMAKE_SOURCE_DIR}/../install-root/libqtgeoservices_googlemaps.so)
-		# Fallback: if the source dir is a symlink (e.g. subsurface_build/subsurface ->
-		# ../subsurface), ".." resolves via the real path and misses the actual
-		# install-root.  CMAKE_INSTALL_PREFIX always points to the correct location.
-		if (NOT GOOGLEMAPS)
-			file(GLOB_RECURSE GOOGLEMAPS
-				${CMAKE_INSTALL_PREFIX}/libqtgeoservices_googlemaps.so)
-		endif()
+			${CMAKE_INSTALL_PREFIX}/libqtgeoservices_googlemaps.so)
 		if (NOT GOOGLEMAPS)
 			message(STATUS "Cannot find libqtgeoservices_googlemaps.so")
 		else()
