@@ -21,6 +21,7 @@ endif ()
 set(CMAKE_MODULE_PATH
 	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
 	${${PROJECT_NAME}_SOURCE_DIR}/../install-root/lib/cmake
+	${CMAKE_INSTALL_PREFIX}/lib/cmake
 	${CMAKE_MODULE_PATH}
 )
 
@@ -859,9 +860,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	# - it misses a couple of resources and frameworks
 	# - it seems to always deploy the SQL plugins (even though they aren't needed)
 	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-		set(MACDEPLOY_ARGS "-qmldir=${CMAKE_SOURCE_DIR}/mobile-widgets/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_SOURCE_DIR}/../install-root/lib")
+		set(MACDEPLOY_ARGS "-qmldir=${CMAKE_SOURCE_DIR}/mobile-widgets/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_INSTALL_PREFIX}/lib")
 	else()
-		set(MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Resources/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_SOURCE_DIR}/../install-root/lib")
+		set(MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Resources/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_INSTALL_PREFIX}/lib")
 	endif()
 	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources)
 	set(PLUGINDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns)
@@ -887,8 +888,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		# and finally, for fat binaries, we copy the one that's in the 'logical' spot under the INSTALL_ROOT
 		# this should cover all cases and always get us the correct library
 		install(CODE "execute_process(COMMAND cp ${QT_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
-		install(CODE "execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../install-root/${QT_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
-		install(CODE "execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../install-root/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
+		install(CODE "execute_process(COMMAND cp ${CMAKE_INSTALL_PREFIX}/${QT_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
+		install(CODE "execute_process(COMMAND cp ${CMAKE_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
 	endif()
 	# this will fail is macdeployqt isn't in the PATH - that seemed to happen in the past, but not recently
 	# also, on M1 macOS systems macdeployqt throws a ton of (apparently harmless) errors. Warn the unsuspecting developer
@@ -1270,7 +1271,18 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# Flatpak installs the plugin under /app and Qt finds it at runtime
 	# through its normal plugin search path, so this symlink step is not needed.
 	if (NOT FLATHUB_BUILD)
-		file(GLOB_RECURSE GOOGLEMAPS ${CMAKE_SOURCE_DIR}/../install-root/libqtgeoservices_googlemaps.so)
+		# First try the traditional path: one level above the source directory.
+		# This works in all standard (non-symlink) builds where the source dir is
+		# a sibling of install-root.
+		file(GLOB_RECURSE GOOGLEMAPS
+			${CMAKE_SOURCE_DIR}/../install-root/libqtgeoservices_googlemaps.so)
+		# Fallback: if the source dir is a symlink (e.g. subsurface_build/subsurface ->
+		# ../subsurface), ".." resolves via the real path and misses the actual
+		# install-root.  CMAKE_INSTALL_PREFIX always points to the correct location.
+		if (NOT GOOGLEMAPS)
+			file(GLOB_RECURSE GOOGLEMAPS
+				${CMAKE_INSTALL_PREFIX}/libqtgeoservices_googlemaps.so)
+		endif()
 		if (NOT GOOGLEMAPS)
 			message(STATUS "Cannot find libqtgeoservices_googlemaps.so")
 		else()
