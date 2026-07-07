@@ -33,6 +33,9 @@ slots:
 	void settingsChanged();
 	void escDetected();
 	void colorsChanged();
+signals:
+	// Emitted when the user selects a different dive computer in the Dive Computer Info tab.
+	void dcChangeRequested(int dcIndex);
 private:
 	bool lastSelectedDive;
 	int lastTabSelectedDive;

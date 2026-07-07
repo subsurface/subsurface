@@ -41,8 +41,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	addTab(extraWidgets.last(), tr("Summary"));
 	extraWidgets << new TabDivePhotos(this);
 	addTab(extraWidgets.last(), tr("Media"));
-	extraWidgets << new TabDiveExtraInfo(this);
-	addTab(extraWidgets.last(), tr("Dive Computer Info"));
+	auto *extraInfoTab = new TabDiveExtraInfo(this);
+	extraWidgets << extraInfoTab;
+	addTab(extraInfoTab, tr("Dive Computer Info"));
+	connect(extraInfoTab, &TabDiveExtraInfo::dcChangeRequested,
+		this, &MainTab::dcChangeRequested);
 
 	// make sure we know if this is a light or dark mode
 	isDark = paletteIsDark(palette());
