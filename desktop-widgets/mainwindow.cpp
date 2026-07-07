@@ -176,6 +176,7 @@ MainWindow::MainWindow() :
 		QIcon::setThemeName("subsurface");
 	}
 	connect(diveList.get(), &DiveListView::divesSelected, this, &MainWindow::divesSelected);
+	connect(mainTab.get(), &MainTab::dcChangeRequested, this, &MainWindow::selectDC);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MainWindow::readSettings);
 	for (int i = 0; i < NUM_RECENT_FILES; i++) {
 		actionsRecent[i] = new QAction(this);
@@ -836,6 +837,13 @@ void MainWindow::on_actionNextDC_triggered()
 {
 	profile->nextDC();
 	// TODO: remove
+	mainTab->updateDiveInfo(getDiveSelection(), profile->d, profile->dc);
+}
+
+void MainWindow::selectDC(int dc)
+{
+	if (profile->d)
+		profile->plotDive(profile->d, dc);
 	mainTab->updateDiveInfo(getDiveSelection(), profile->d, profile->dc);
 }
 
