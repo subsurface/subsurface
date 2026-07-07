@@ -16,7 +16,6 @@
 #include <QStatusBar>
 #include <QNetworkProxy>
 #include <QUndoStack>
-#include <map>
 #include "core/color.h"
 #include "core/device.h"
 #include "core/divelog.h"
@@ -1314,17 +1313,6 @@ void MainWindow::setTitle()
 	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved + shown);
 }
 
-// AI-generated (Claude)
-namespace {
-// A .json/.fit pair sharing the same base name, as exported together by the
-// Suunto app for one dive. Indices refer back into the fileNames list passed
-// to importFiles(), so a complete pair can be marked "consumed" there.
-struct SuuntoPair {
-	size_t jsonIdx = std::string::npos;
-	size_t fitIdx = std::string::npos;
-};
-}
-
 void MainWindow::importFiles(const std::vector<std::string> &fileNames)
 {
 	if (fileNames.empty())
@@ -1332,43 +1320,7 @@ void MainWindow::importFiles(const std::vector<std::string> &fileNames)
 
 	struct divelog log;
 	std::vector<bool> consumed(fileNames.size(), false);
-
-	/* The Suunto app exports a .json and a .fit file with the same base
-	 * name for the same dive. If the user selected both, merge them into
-	 * a single suunto_json_import() call so the JSON's richer profile and
-	 * the FIT's gas mix/gradient factors end up on one dive, instead of
-	 * two unrelated dives. Only exact, case-insensitive base-name matches
-	 * within this selection are paired -- no scanning the filesystem for
-	 * a sibling file that wasn't explicitly selected. */
-	std::map<QString, SuuntoPair> suuntoPairs;
-	for (size_t i = 0; i < fileNames.size(); ++i) {
-		QFileInfo fi(QString::fromStdString(fileNames[i]));
-		QString suffix = fi.suffix().toLower();
-		if (suffix != "json" && suffix != "fit")
-			continue;
-		SuuntoPair &pair = suuntoPairs[fi.completeBaseName().toLower()];
-		if (suffix == "json")
-			pair.jsonIdx = i;
-		else
-			pair.fitIdx = i;
-	}
-
-	for (const auto &[stem, pair]: suuntoPairs) {
-		if (pair.jsonIdx == std::string::npos || pair.fitIdx == std::string::npos)
-			continue; // not a complete pair -- both files import individually below
-		std::string jsonEncoded = encodeFileName(fileNames[pair.jsonIdx]);
-		std::string fitEncoded = encodeFileName(fileNames[pair.fitIdx]);
-		auto [jsonBuf, jerr] = readfile(jsonEncoded.c_str());
-		auto [fitBuf, ferr] = readfile(fitEncoded.c_str());
-		if (jerr <= 0)
-			continue; // couldn't read the JSON -- fall through to the normal per-file import below
-		if (ferr <= 0)
-			report_info("Suunto import: could not read paired FIT file '%s', importing gas mix from JSON as-is",
-				    fileNames[pair.fitIdx].c_str());
-		suunto_json_import(jsonBuf, ferr > 0 ? fitBuf : std::string(), &log);
-		consumed[pair.jsonIdx] = true;
-		consumed[pair.fitIdx] = true;
-	}
+	suunto_json_fit_pair_import(fileNames, consumed, &log);
 
 	for (size_t i = 0; i < fileNames.size(); ++i) {
 		if (consumed[i])
