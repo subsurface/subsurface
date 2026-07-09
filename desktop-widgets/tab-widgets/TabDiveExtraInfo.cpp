@@ -121,10 +121,10 @@ void TabDiveExtraInfo::populateSerialCombo(const QString &modelName, int selecte
 	for (int n = 0; n < group.size(); ++n) {
 		const DCEntry &e = group[n];
 		QString label;
-		if (e.serial.isEmpty())
-			label = tr("(no serial) #%1").arg(n + 1);
-		else if (serialCount.value(e.serial) > 1)
-			label = tr("%1 (#%2)").arg(e.serial).arg(n + 1);
+		if (serialCount.value(e.serial) > 1)
+			label = e.serial.isEmpty()
+				? tr("(no serial) #%1").arg(n + 1)
+				: tr("%1 (#%2)").arg(e.serial).arg(n + 1);
 		else
 			label = e.serial;
 		ui->serialCombo->addItem(label, e.index); // item data = DC index
