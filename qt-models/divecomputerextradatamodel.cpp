@@ -2,6 +2,7 @@
 #include "qt-models/divecomputerextradatamodel.h"
 #include "core/divecomputer.h"
 #include "core/metrics.h"
+#include <libdivecomputer/parser.h>
 
 ExtraDataModel::ExtraDataModel(QObject *parent) : CleanerTableModel(parent)
 {
@@ -50,9 +51,14 @@ void ExtraDataModel::updateDiveComputer(const struct divecomputer *dc)
 	if (dc) {
 		new_items.reserve(dc->extra_data.size());
 		for (const extra_data &data: dc->extra_data) {
-			// Filter out serial and firmware version, because these data
-			// have their own field in struct divecomputer.
-			if (data.key != "Serial" && data.key != "FW Version" && data.key != "Firmware")
+			// Filter out fields that are hoisted to first-class members of
+			// struct divecomputer and displayed elsewhere in the UI.
+			// "Firmware" and "DC Firmware Version" are legacy aliases used by some older Garmin/Uwatec imports.
+			if (data.key != STRING_KEY_SERIAL_NUMBER &&
+			    data.key != STRING_KEY_FIRMWARE_VERSION &&
+			    data.key != "Firmware" &&
+			    data.key != "DC Firmware Version" &&
+			    data.key != STRING_KEY_TIMEZONE_OFFSET)
 				new_items.push_back(data);
 		}
 	}

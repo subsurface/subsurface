@@ -171,7 +171,10 @@ void TabDiveExtraInfo::updateData(const std::vector<dive *> &, dive *currentDive
 
 	// --- Remaining read-only fields ---
 	ui->firmware->setText(QString::fromStdString(dc->fw_version).trimmed());
-	ui->date->setText(get_dive_date_string(dc->when));
+	QString dateStr = get_dive_date_string(dc->when);
+	if (dc->timezone_offset != TIMEZONE_OFFSET_INVALID)
+		dateStr += tr(" (UTC%1)").arg(format_timezone_offset(dc->timezone_offset));
+	ui->date->setText(dateStr);
 	ui->duration->setText(get_dive_duration_string(dc->duration.seconds, tr("h"), tr("min"), tr("sec"),
 			" ", dc->divemode == FREEDIVE));
 	if (dc->divemode >= 0 && dc->divemode < NUM_DIVEMODE)

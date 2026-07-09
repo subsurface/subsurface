@@ -1,5 +1,6 @@
 #include "string-format.h"
 #include "dive.h"
+#include "divecomputer.h"
 #include "divelist.h"
 #include "divelog.h"
 #include "divesite.h"
@@ -11,6 +12,7 @@
 #include "range.h"
 #include "subsurface-string.h"
 #include "trip.h"
+#include <cstdlib>
 #include <QDateTime>
 #include <QLocale>
 #include <QTextDocument>
@@ -553,6 +555,19 @@ QString get_dive_date_string(timestamp_t when)
 	QDateTime ts;
 	ts.setMSecsSinceEpoch(when * 1000L);
 	return loc.toString(ts.toUTC(), QString::fromStdString(prefs.date_format + " " + prefs.time_format));
+}
+
+QString format_timezone_offset(int seconds)
+{
+	if (seconds == TIMEZONE_OFFSET_INVALID)
+		return QString();
+	int absSeconds = std::abs(seconds);
+	int hours = absSeconds / 3600;
+	int mins = (absSeconds % 3600) / 60;
+	return QStringLiteral("%1%2:%3")
+		.arg(seconds < 0 ? QChar('-') : QChar('+'))
+		.arg(hours, 2, 10, QChar('0'))
+		.arg(mins, 2, 10, QChar('0'));
 }
 
 std::string get_dive_date_c_string(timestamp_t when)

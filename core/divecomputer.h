@@ -4,6 +4,7 @@
 
 #include "divemode.h"
 #include "units.h"
+#include <climits>
 #include <set>
 #include <string>
 #include <vector>
@@ -15,6 +16,11 @@ struct tank_sensor_mapping;
 
 /* Is this header the correct place? */
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
+
+/* Extra-data key for the DC-reported timezone offset (seconds east of UTC). */
+#define STRING_KEY_TIMEZONE_OFFSET "Time offset from UTC [s]"
+/* Sentinel used when the dive computer did not report a timezone offset. */
+constexpr int TIMEZONE_OFFSET_INVALID = INT_MAX;
 
 /*
  * NOTE! The deviceid and diveid are model-specific *hashes* of
@@ -38,6 +44,7 @@ struct divecomputer {
 	enum divemode_t divemode = OC;	// dive computer type: OC(default) or CCR
 	uint8_t no_o2sensors = 0;	// rebreathers: number of O2 sensors used
 	int salinity = 0;		// kg per 10000 l
+	int timezone_offset = TIMEZONE_OFFSET_INVALID;	// seconds east of UTC reported by DC; TIMEZONE_OFFSET_INVALID if not available
 	std::string model, serial, fw_version;
 	uint32_t deviceid = 0, diveid = 0;
 	// Note: ve store samples, events and extra_data in std::vector<>s.

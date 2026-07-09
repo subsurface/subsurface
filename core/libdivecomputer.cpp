@@ -669,7 +669,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 
 		if (dt.timezone != DC_TIMEZONE_NONE) {
 			std::string timezone_offset = format_string_std("%+d", dt.timezone);
-			add_extra_data(&dive->dcs[0], "Time offset from UTC [s]", timezone_offset);
+			add_extra_data(&dive->dcs[0], STRING_KEY_TIMEZONE_OFFSET, timezone_offset);
 		}
 	}
 
