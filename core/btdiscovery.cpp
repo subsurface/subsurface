@@ -503,36 +503,6 @@ void BTDiscovery::stopAgent()
 	discoveryAgent->stop();
 }
 
-bool isBluetoothAddress(const QString &address)
-{
-	return extractBluetoothAddress(address) != QString();
-}
-QString extractBluetoothAddress(const QString &address)
-{
-	QRegularExpression re("(LE:)*([0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}|{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}})",
-			      QRegularExpression::CaseInsensitiveOption);
-	QRegularExpressionMatch m = re.match(address);
-	return m.captured(0);
-}
-
-std::pair<QString, QString> extractBluetoothNameAddress(const QString &address)
-{
-	// sometimes our device text is of the form "name (address)", sometimes it's just "address"
-	// let's simply return the address
-	QString extractedAddress = extractBluetoothAddress(address);
-	if (extractedAddress == address.trimmed())
-		return { address, QString() };
-
-	QRegularExpression re("^([^()]+)\\(([^)]*\\))$");
-	QRegularExpressionMatch m = re.match(address);
-	if (m.hasMatch()) {
-		QString name = m.captured(1).trimmed();
-		return { extractedAddress, name };
-	}
-	report_info("can't parse address %s", qPrintable(address));
-	return { QString(), QString() };
-}
-
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo)
 {
 	btDeviceInfo[devaddr] = deviceInfo;

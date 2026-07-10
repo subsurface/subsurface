@@ -45,6 +45,7 @@ private:
 
 	void updateLocalDeviceInformation();
 	void initializeDeviceDiscoveryAgent();
+	void updateBluetoothModeAvailability(const QBluetoothDeviceInfo *device);
 };
 
 #endif // BTDEVICESELECTIONDIALOG_H

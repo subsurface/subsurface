@@ -6,6 +6,7 @@
 #include "core/divelist.h"
 #include "core/divelog.h"
 #include "core/errorhelper.h"
+#include "core/bluetoothaddress.h"
 #include "core/settings/qPrefDiveComputer.h"
 #include "core/subsurface-float.h"
 #include "core/subsurface-string.h"
@@ -441,9 +442,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 			// Need to ensure that any scan is shut down BEFORE starting the download
 			// because internally (as of 5.15.13) the QT discovery agent uses a QTimer
 			// that can only be shut off from the same thread it was started from.
-			QString devAddr = data->devName().startsWith("LE:")
-							 ? data->devName().right(data->devName().size()-3)
-							 : data->devName();
+			QString devAddr = bluetoothAddressWithoutPrefix(data->devName());
 			getBtDeviceInfo(devAddr);
 		}
 	} else

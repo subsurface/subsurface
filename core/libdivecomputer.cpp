@@ -49,6 +49,7 @@
 #include "core/qthelper.h"
 #include "core/pref.h"
 #include "core/file.h"
+#include "core/bluetoothaddress.h"
 #include <algorithm>
 #include <array>
 #include <charconv>
@@ -1318,8 +1319,11 @@ unsigned int get_supported_transports(device_data_t *data)
 		 */
 		if (data->bluetooth_mode) {
 			supported &= (DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
-			if (starts_with(data->devname, "LE:"))
+			QString devname = QString::fromStdString(data->devname);
+			if (isBluetoothLowEnergyAddress(devname))
 				supported &= DC_TRANSPORT_BLE;
+			else if (isBluetoothClassicAddress(devname))
+				supported &= DC_TRANSPORT_BLUETOOTH;
 		} else {
 			supported &= ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
 		}
@@ -1399,9 +1403,9 @@ static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *cont
 }
 
 #if defined(BT_SUPPORT) && !defined(__ANDROID__) && !defined(__APPLE__)
-static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *data)
+static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *data, const char *devname)
 {
-	dc_bluetooth_address_t address = dc_bluetooth_str2addr(data->devname.c_str());
+	dc_bluetooth_address_t address = dc_bluetooth_str2addr(devname);
 	dc_iterator_t *iterator = NULL;
 	dc_bluetooth_device_t *device = NULL;
 
@@ -1443,12 +1447,13 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 #ifdef BT_SUPPORT
 	if (transports & DC_TRANSPORT_BLUETOOTH) {
-		dev_info("Opening rfcomm stream %s", data->devname.c_str());
+		std::string address = bluetoothAddressWithoutPrefix(QString::fromStdString(data->devname)).toStdString();
+		dev_info("Opening rfcomm stream %s", address.c_str());
 #if defined(__ANDROID__) || defined(__APPLE__)
 		// we don't have BT on iOS in the first place, so this is for Android and macOS
-		rc = rfcomm_stream_open(&data->iostream, context, data->devname.c_str());
+		rc = rfcomm_stream_open(&data->iostream, context, address.c_str());
 #else
-		rc = bluetooth_device_open(context, data);
+		rc = bluetooth_device_open(context, data, address.c_str());
 #endif
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;

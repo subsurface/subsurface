@@ -3,6 +3,7 @@
 #include "core/configuredivecomputer.h"
 #include "core/downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
+#include "core/bluetoothaddress.h"
 #include "core/subsurfacestartup.h"
 #include <QCoreApplication>
 #include <QEventLoop>
@@ -18,52 +19,19 @@ static QString expandTilde(const QString &path)
 	return path;
 }
 
-static bool isHexDigit(QChar c)
-{
-	return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
-}
-
-static bool looksLikeBluetoothAddress(const QString &device)
-{
-	QString address = device.trimmed();
-	if (address.startsWith("LE:"))
-		address = address.mid(3);
-
-	if (address.size() == 12) {
-		for (QChar c: address) {
-			if (!isHexDigit(c))
-				return false;
-		}
-		return true;
-	}
-
-	if (address.size() == 17) {
-		for (int i = 0; i < address.size(); ++i) {
-			if (i % 3 == 2) {
-				if (address[i] != ':' && address[i] != '-')
-					return false;
-			} else if (!isHexDigit(address[i])) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	return false;
-}
-
 // Perform a firmware update from the command line. Returns 0 on success, non-zero on failure.
 int cliFirmwareUpdate(const std::string &vendor, const std::string &product, const std::string &device, const std::string &filename, bool force)
 {
 	ConfigureDiveComputer config;
 	DCDeviceData localData;
 	QString deviceName = QString::fromStdString(device);
+	QString bluetoothAddress = extractBluetoothAddress(deviceName);
 
 	// prepare device_data
 	localData.setVendor(QString::fromStdString(vendor));
 	localData.setProduct(QString::fromStdString(product));
-	localData.setBluetoothMode(looksLikeBluetoothAddress(deviceName));
-	localData.setDevName(deviceName);
+	localData.setBluetoothMode(!bluetoothAddress.isEmpty());
+	localData.setDevName(bluetoothAddress.isEmpty() ? deviceName : bluetoothAddress);
 	localData.setSaveLog(!logfile_name.empty());
 	device_data_t *data = localData.internalData();
 
@@ -152,11 +120,13 @@ void cliDownloader(const std::string &vendor, const std::string &product, const 
 	});
 
 	auto data = diveImportedModel.thread.data();
+	QString deviceName = QString::fromStdString(device);
+	QString bluetoothAddress = extractBluetoothAddress(deviceName);
 	data->setVendor(QString::fromStdString(vendor));
 	data->setProduct(QString::fromStdString(product));
-	data->setBluetoothMode(looksLikeBluetoothAddress(QString::fromStdString(device)));
+	data->setBluetoothMode(!bluetoothAddress.isEmpty());
 	if (data->vendor() == "Uemis") {
-		QString devname = QString::fromStdString(device);
+		QString devname = deviceName;
 		int colon = devname.indexOf(QStringLiteral(":\\ (UEMISSDA)"));
 		if (colon >= 0) {
 			devname.truncate(colon + 2);
@@ -164,7 +134,7 @@ void cliDownloader(const std::string &vendor, const std::string &product, const 
 		}
 		data->setDevName(devname);
 	} else {
-		data->setDevName(QString::fromStdString(device));
+		data->setDevName(bluetoothAddress.isEmpty() ? deviceName : bluetoothAddress);
 	}
 
 	// some assumptions - should all be configurable
