@@ -379,13 +379,13 @@ Kirigami.Page {
 						var connectionString = comboConnection.currentText
 						// separate BT address and BT name (if applicable)
 						// pattern that matches BT addresses
-						var btAddr = "(LE:)?([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}";
+						var btAddr = "((LE|BT):)?([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}";
 
 						// On iOS we store UUID instead of device address.
 						if (Qt.platform.os === 'ios')
 							btAddr = "(LE:)?\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}";
 
-						var pattern = new RegExp(btAddr);
+						var pattern = new RegExp(btAddr, "i");
 						var devAddress = "";
 						devAddress = pattern.exec(connectionString);
 						if (devAddress !== null) {

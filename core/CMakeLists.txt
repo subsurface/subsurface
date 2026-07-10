@@ -39,6 +39,8 @@ endif()
 
 # compile the core library part in C, part in C++
 set(SUBSURFACE_CORE_LIB_SRCS
+	bluetoothaddress.cpp
+	bluetoothaddress.h
 	checkcloudconnection.cpp
 	checkcloudconnection.h
 	cloudstorage.cpp
