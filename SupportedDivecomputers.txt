@@ -32,7 +32,7 @@ Scorpena: Alpha
 Scubapro: Aladin A1, Aladin A2, Aladin H Matrix, Aladin Sport Matrix, Aladin Square, Chromis, G2, G2 Console, G2 HUD, G2 TEK, G3, Luna 2.0, Luna 2.0 AI, Mantis, Mantis 2, Meridian, XTender 5
 Seac: Action, Guru, Jack, Screen, Tablet
 Seemann: XP5
-Shearwater: Nerd, Nerd 2, Perdix, Perdix 2, Perdix AI, Peregrine, Peregrine TX, Petrel, Petrel 2, Petrel 3, Predator, Teric, Tern, Tern TX
+Shearwater: Nerd, Nerd 2, Perdix, Perdix 2, Perdix 3, Perdix AI, Peregrine, Peregrine TX, Petrel, Petrel 2, Petrel 3, Predator, Teric, Tern, Tern TX
 Sherwood: Amphos, Amphos 2.0, Amphos Air, Amphos Air 2.0, Beacon, Insight, Insight 2, Sage, Vision, Wisdom, Wisdom 2, Wisdom 3, Wisdom 4
 Sporasub: SP2
 Subgear: XP Air, XP-10, XP-3G, XP-Air
