@@ -70,6 +70,7 @@ struct namePattern {
 static struct namePattern name[] = {
 	// Shearwater dive computers
 	{ "Predator", "Shearwater", "Predator" },
+	{ "Perdix 3", "Shearwater", "Perdix 3"},
 	{ "Perdix 2", "Shearwater", "Perdix 2"},
 	{ "Petrel 3", "Shearwater", "Petrel 3"},
 	// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device

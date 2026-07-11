@@ -2,6 +2,7 @@
 #include <errno.h>
 
 #include <QtBluetooth/QBluetoothAddress>
+#include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 #include <QLowEnergyController>
 #include <QLowEnergyService>
 #include <QCoreApplication>
@@ -175,6 +176,7 @@ static const struct uuid_match serial_service_uuids[] = {
 	{ "ca7b0001-f785-4c38-b599-c7c5fbadb034", "Pelagic (i330R, DSX)" },
 	{ "fdcdeaaa-295d-470e-bf15-04217b7aa0a0", "ScubaPro (G2, G3)"},
 	{ "fe25c237-0ece-443c-b0aa-e02033e7029d", "Shearwater (Perdix/Teric/Peregrine/Tern)" },
+	{ "1aa44039-1667-4b29-87cc-dfecaaf31d97", "Shearwater (Perdix 3)" },
 	{ "0000fcef-0000-1000-8000-00805f9b34fb", "Divesoft" },
         { "6e400001-b5a3-f393-e0a9-e50e24dc10b8", "Cressi"}, // Must have higher priority than Nordic UART
         { "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
@@ -705,11 +707,48 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
 #endif
 
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+	// AI-generated (Claude)
+	// Some dive computers (e.g. the Shearwater Perdix 3) advertise with a
+	// resolvable random address that changes between connections. BlueZ
+	// frequently aborts a cold connect to such a device because the
+	// controller needs a fresh advertising report to know the current
+	// address; connecting works reliably only while an LE scan is active.
+	// Keep a scan running for the duration of the connect attempt.
+	QBluetoothDeviceDiscoveryAgent scanAgent;
+	scanAgent.setLowEnergyDiscoveryTimeout(0); // scan until stop()
+	scanAgent.start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
+#endif
+
 	// Try to connect to the device
 	controller->connectToDevice();
 
 	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
 	WAITFOR(controller->state() != QLowEnergyController::ConnectingState, BLE_TIMEOUT);
+
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+	// AI-generated (Claude)
+	// A cold LE connect on BlueZ can fail transiently: the kernel may
+	// abort the first attempt with le-connection-abort-by-local while it
+	// waits for a fresh advertising report, or the connect can complete
+	// just after our timeout while BlueZ is still retrying. Retry a few
+	// times (with the scan still active) before giving up.
+	for (int attempt = 1; attempt <= 2; attempt++) {
+		if (controller->state() == QLowEnergyController::ConnectedState)
+			break;
+		if (controller->state() == QLowEnergyController::UnconnectedState) {
+			report_info("connect attempt %d to %s failed ('%s'), retrying",
+				    attempt, devaddr, qPrintable(controller->errorString()));
+			controller->connectToDevice();
+		} else {
+			report_info("connect attempt %d to %s still pending, waiting longer",
+				    attempt, devaddr);
+		}
+		WAITFOR(controller->state() != QLowEnergyController::ConnectingState, BLE_TIMEOUT);
+	}
+
+	scanAgent.stop();
+#endif
 
 	switch (controller->state()) {
 	case QLowEnergyController::ConnectedState:
