@@ -77,7 +77,7 @@
               <bool>true</bool>
              </property>
             </widget>
-            <widget class="QLineEdit" name="suit">
+            <widget class="TagWidget" name="suit">
              <property name="readOnly">
               <bool>false</bool>
              </property>
@@ -94,6 +94,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>TagWidget</class>
+   <extends>QPlainTextEdit</extends>
+   <header>desktop-widgets/tagwidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
