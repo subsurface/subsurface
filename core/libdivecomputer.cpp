@@ -1402,7 +1402,7 @@ static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *cont
 	return dc_irda_open(&data->iostream, context, address, 1);
 }
 
-#if defined(BT_SUPPORT) && !defined(__ANDROID__) && !defined(__APPLE__)
+#if defined(BT_SUPPORT) && defined(_WIN32)
 static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *data, const char *devname)
 {
 	dc_bluetooth_address_t address = dc_bluetooth_str2addr(devname);
@@ -1449,8 +1449,9 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	if (transports & DC_TRANSPORT_BLUETOOTH) {
 		std::string address = bluetoothAddressWithoutPrefix(QString::fromStdString(data->devname)).toStdString();
 		dev_info("Opening rfcomm stream %s", address.c_str());
-#if defined(__ANDROID__) || defined(__APPLE__)
-		// we don't have BT on iOS in the first place, so this is for Android and macOS
+#if !defined(_WIN32)
+		// Use the Qt RFCOMM implementation on platforms where libdivecomputer's
+		// native Bluetooth implementation is not part of the bundled build.
 		rc = rfcomm_stream_open(&data->iostream, context, address.c_str());
 #else
 		rc = bluetooth_device_open(context, data, address.c_str());
