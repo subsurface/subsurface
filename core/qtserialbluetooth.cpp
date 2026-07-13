@@ -56,7 +56,11 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char *d
 	// Wait until the connection succeeds or until an error occurs
 	QEventLoop loop;
 	loop.connect(serial_port->socket, SIGNAL(connected()), SLOT(quit()));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	loop.connect(serial_port->socket, &QBluetoothSocket::errorOccurred, &loop, &QEventLoop::quit);
+#else
 	loop.connect(serial_port->socket, SIGNAL(error(QBluetoothSocket::SocketError)), SLOT(quit()));
+#endif
 
 	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
 	QTimer timer;
