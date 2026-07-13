@@ -376,6 +376,9 @@ static double calculate_airuse(const struct dive &dive)
 		return 0.0;
 
 	for (auto [i, cyl]: enumerated_range(dive.cylinders)) {
+		if (cyl.cylinder_use == NOT_USED)
+			continue;
+
 		pressure_t start, end;
 
 		start = cyl.start.mbar ? cyl.start : cyl.sample_start;

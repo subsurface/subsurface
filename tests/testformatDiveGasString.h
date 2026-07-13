@@ -9,6 +9,7 @@ private slots:
 	void test_air();
 	void test_nitrox();
 	void test_nitrox_not_use();
+	void test_sac_ignores_not_used_cylinder();
 	void test_nitrox_deco();
 	void test_reverse_nitrox_deco();
 	void test_trimix();
