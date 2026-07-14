@@ -138,6 +138,24 @@ static void put_gasmix(struct membuffer *b, struct gasmix mix)
 	}
 }
 
+static void save_suit_info(struct membuffer *b, const struct dive &dive)
+{
+	for (const auto &item : dive.suit_items) {
+		put_format(b, "suit_part ");
+		const char *type = "suit";
+		if (item.type == suit_component_t::BOOTS) type = "boots";
+		else if (item.type == suit_component_t::GLOVES) type = "gloves";
+		else if (item.type == suit_component_t::BCD) type = "bcd";
+		else if (item.type == suit_component_t::FINS) type = "fins";
+		put_format(b, "type=%s", type);
+		show_utf8(b, " brand=", item.brand.c_str(), "");
+		show_utf8(b, " model=", item.model.c_str(), "");
+		show_utf8(b, " thickness=", item.thickness.c_str(), "");
+		show_utf8(b, " size=", item.size.c_str(), "");
+		put_format(b, "\n");
+	}
+}
+
 static void save_cylinder_info(struct membuffer *b, const struct dive &dive)
 {
 	for (auto &cyl: dive.cylinders) {
@@ -429,6 +447,7 @@ static void create_dive_buffer(const struct dive &dive, struct membuffer *b)
 		report_info("removed reference to non-existant dive site with uuid %08x\n", dive.dive_site->uuid);
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
+	save_suit_info(b, dive);
 	save_weightsystem_info(b, dive);
 	save_dive_temperature(b, dive);
 }

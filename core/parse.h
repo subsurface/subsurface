@@ -74,6 +74,7 @@ struct parser_state {
 	int taxonomy_category = 0, taxonomy_origin = 0;
 
 	bool in_settings = false;
+	bool in_suit_part = false;
 	bool in_userid = false;
 	bool in_fulltext = false;
 	bool in_filter_constraint = false;
@@ -83,6 +84,7 @@ struct parser_state {
 	int sample_rate = 0;
 	struct { std::string key; std::string value; } cur_extra_data;
 	struct { int16_t sensor_id; unsigned int cylinder_index; } cur_tank_sensor_mapping;
+	suit_component_t cur_suit_part;
 	struct units xml_parsing_units;
 	struct divelog *log = nullptr;				/* non-owning */
 	std::vector<fingerprint_record> *fingerprints = nullptr;
@@ -126,6 +128,8 @@ cylinder_t *cylinder_start(struct parser_state *state);
 void cylinder_end(struct parser_state *state);
 void ws_start(struct parser_state *state);
 void ws_end(struct parser_state *state);
+void suit_part_start(struct parser_state *state);
+void suit_part_end(struct parser_state *state);
 
 void sample_start(struct parser_state *state);
 void sample_end(struct parser_state *state);

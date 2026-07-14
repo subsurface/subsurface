@@ -6,6 +6,7 @@
 #include "core/gettextfromc.h"
 #include "desktop-widgets/mainwindow.h"
 #include "qt-models/cylindermodel.h"
+#include "qt-models/suitcomponentmodel.h"
 #include "qt-models/models.h"
 #include "desktop-widgets/starwidget.h"
 #include "profile-widget/profilewidget2.h"
@@ -98,6 +99,7 @@ void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 	QComboBox *c = qobject_cast<QComboBox *>(editor);
 	QString data = index.model()->data(index, Qt::DisplayRole).toString();
 	int i = c->findText(data);
+	const QSignalBlocker blocker(c);
 	if (i != -1)
 		c->setCurrentIndex(i);
 	else
@@ -108,24 +110,43 @@ void ComboBoxDelegate::setEditorData(QWidget *editor, const QModelIndex &index) 
 QWidget *ComboBoxDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
 	QComboBox *comboDelegate = new QComboBox(parent);
-	comboDelegate->setModel(create_model_func(comboDelegate));
+	if (create_model_func) {
+		comboDelegate->setModel(create_model_func(comboDelegate));
+	} else {
+		// If no create_model_func is provided, we assume the model will be provided by the table model itself.
+		// However, ComboBoxDelegate is designed to own the model.
+		// For SuitInfoDelegate, we want to use completion models from SuitComponentModel.
+		if ( SuitComponentModel *suitModel = qobject_cast<SuitComponentModel *>(const_cast<QAbstractItemModel *>(index.model()))) {
+			switch (index.column()) {
+			case SuitComponentModel::BRAND:
+				comboDelegate->setModel(suitModel->brandCompletionModel());
+				break;
+			case SuitComponentModel::MODEL:
+				comboDelegate->setModel(suitModel->modelCompletionModel());
+				break;
+			case SuitComponentModel::THICKNESS:
+				comboDelegate->setModel(suitModel->thicknessCompletionModel());
+				break;
+			case SuitComponentModel::SIZE:
+				comboDelegate->setModel(suitModel->sizeCompletionModel());
+				break;
+			}
+		}
+	}
 	comboDelegate->setEditable(true);
 	comboDelegate->completer()->setCaseSensitivity(Qt::CaseInsensitive);
 	comboDelegate->completer()->setCompletionMode(QCompleter::PopupCompletion);
 	comboDelegate->completer()->setFilterMode(Qt::MatchContains);
-	comboDelegate->view()->setEditTriggers(QAbstractItemView::AllEditTriggers);
 	comboDelegate->lineEdit()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
 	comboDelegate->lineEdit()->setEnabled(editable);
 	comboDelegate->view()->installEventFilter(const_cast<QObject *>(qobject_cast<const QObject *>(this)));
 	QAbstractItemView *comboPopup = comboDelegate->lineEdit()->completer()->popup();
-	comboPopup->setMouseTracking(true);
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
 	connect(comboDelegate, &QComboBox::textHighlighted, this, &ComboBoxDelegate::testActivationString);
 #else
 	connect(comboDelegate, QOverload<const QString &>::of(&QComboBox::highlighted), this, &ComboBoxDelegate::testActivationString);
 #endif
 	connect(comboDelegate, QOverload<int>::of(&QComboBox::activated), this, &ComboBoxDelegate::fakeActivation);
-	connect(comboPopup, &QAbstractItemView::entered, this, &ComboBoxDelegate::testActivationIndex);
 	connect(comboPopup, &QAbstractItemView::activated, this, &ComboBoxDelegate::fakeActivation);
 	currCombo.comboEditor = comboDelegate;
 	currCombo.currRow = index.row();
@@ -341,6 +362,49 @@ static QAbstractItemModel *createWSInfoModel(QWidget *parent)
 }
 
 WSInfoDelegate::WSInfoDelegate(QObject *parent) : ComboBoxDelegate(&createWSInfoModel, parent, true)
+{
+}
+
+void SuitInfoDelegate::editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
+{
+}
+
+void SuitInfoDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+	if (!index.isValid())
+		return;
+
+	QComboBox *combo = qobject_cast<QComboBox *>(editor);
+	QString value = combo->currentText();
+	model->setData(index, value);
+}
+
+SuitInfoDelegate::SuitInfoDelegate(QObject *parent) : ComboBoxDelegate(nullptr, parent, true)
+{
+}
+
+static QAbstractItemModel *createSuitTypeModel(QWidget *parent)
+{
+	QStringListModel *model = new QStringListModel(parent);
+	model->setStringList({QObject::tr("Suit"), QObject::tr("Boots"), QObject::tr("Gloves"), QObject::tr("BCD"), QObject::tr("Fins")});
+	return model;
+}
+
+SuitTypeDelegate::SuitTypeDelegate(QObject *parent) : ComboBoxDelegate(&createSuitTypeModel, parent, false)
+{
+}
+
+void SuitTypeDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+	if (!index.isValid())
+		return;
+
+	QComboBox *combo = qobject_cast<QComboBox *>(editor);
+	QString value = combo->currentText();
+	model->setData(index, value);
+}
+
+void SuitTypeDelegate::editorClosed(QWidget *, QAbstractItemDelegate::EndEditHint)
 {
 }
 

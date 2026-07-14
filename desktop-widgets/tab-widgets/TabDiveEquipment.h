@@ -14,6 +14,7 @@ namespace Ui {
 
 class WeightModel;
 class CylindersModel;
+class SuitComponentModel;
 
 class TabDiveEquipment : public TabBase {
 	Q_OBJECT
@@ -28,10 +29,11 @@ private slots:
 	void divesChanged(const QVector<dive *> &dives, DiveField field);
 	void addCylinder_clicked();
 	void addWeight_clicked();
+	void addSuit_clicked();
 	void toggleTriggeredColumn();
 	void editCylinderWidget(const QModelIndex &index);
 	void editWeightWidget(const QModelIndex &index);
-	void on_suit_editingFinished();
+	void editSuitWidget(const QModelIndex &index);
 	void divesEdited(int count);
 	void diveComputerEdited(dive &dive, divecomputer &dc);
 	void cylinderRemoved(struct dive *dive, int);
@@ -41,11 +43,19 @@ private:
 	SuitCompletionModel suitModel;
 	CylindersModel *cylindersModel;
 	WeightModel *weightModel;
+	SuitComponentModel *suitComponentModel;
 
 	TankInfoDelegate tankInfoDelegate;
 	TankUseDelegate tankUseDelegate;
 	SensorDelegate sensorDelegate;
 	WSInfoDelegate wsInfoDelegate;
+	SuitTypeDelegate suitTypeDelegate;
+	SuitInfoDelegate suitInfoDelegate;
+
+	SuitBrandCompletionModel suitBrandCompletionModel;
+	SuitModelCompletionModel suitModelCompletionModel;
+	SuitThicknessCompletionModel suitThicknessCompletionModel;
+
 	void setCylinderColumnVisibility();
 };
 

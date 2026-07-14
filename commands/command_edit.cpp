@@ -195,6 +195,22 @@ QString EditNotes::fieldName() const
 }
 
 // ***** Suit *****
+void EditSuit::set(struct dive *d, QString v) const
+{
+	d->suit = v.toStdString();
+	if (!d->suit.empty()) {
+		if (!d->notes.empty())
+			d->notes += "\n";
+		d->notes += "Suit: " + d->suit;
+		d->suit.clear();
+	}
+}
+
+QString EditSuit::data(struct dive *d) const
+{
+	return QString::fromStdString(d->suit);
+}
+
 QString EditSuit::fieldName() const
 {
 	return Command::Base::tr("suit");

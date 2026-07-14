@@ -105,6 +105,24 @@ private:
 	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
 };
 
+class SuitInfoDelegate : public ComboBoxDelegate {
+	Q_OBJECT
+public:
+	explicit SuitInfoDelegate(QObject *parent = 0);
+private:
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
+};
+
+class SuitTypeDelegate : public ComboBoxDelegate {
+	Q_OBJECT
+public:
+	explicit SuitTypeDelegate(QObject *parent = 0);
+private:
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+	void editorClosed(QWidget *widget, QAbstractItemDelegate::EndEditHint hint) override;
+};
+
 class GasTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:

@@ -93,3 +93,75 @@ bool TagCompletionModel::relevantDiveField(const DiveField &f)
 {
 	return f.tags;
 }
+
+QStringList SuitBrandCompletionModel::getStrings()
+{
+	QSet<QString> set;
+	for (auto &dive: divelog.dives) {
+		for (const auto &item : dive->suit_items)
+			if (!item.brand.empty())
+				set.insert(QString::fromStdString(item.brand));
+	}
+	QStringList list = set.values();
+	std::sort(list.begin(), list.end());
+	return list;
+}
+
+bool SuitBrandCompletionModel::relevantDiveField(const DiveField &f)
+{
+	return f.suit;
+}
+
+QStringList SuitModelCompletionModel::getStrings()
+{
+	QSet<QString> set;
+	for (auto &dive: divelog.dives) {
+		for (const auto &item : dive->suit_items)
+			if (!item.model.empty())
+				set.insert(QString::fromStdString(item.model));
+	}
+	QStringList list = set.values();
+	std::sort(list.begin(), list.end());
+	return list;
+}
+
+bool SuitModelCompletionModel::relevantDiveField(const DiveField &f)
+{
+	return f.suit;
+}
+
+QStringList SuitThicknessCompletionModel::getStrings()
+{
+	QSet<QString> set;
+	for (auto &dive: divelog.dives) {
+		for (const auto &item : dive->suit_items)
+			if (!item.thickness.empty())
+				set.insert(QString::fromStdString(item.thickness));
+	}
+	QStringList list = set.values();
+	std::sort(list.begin(), list.end());
+	return list;
+}
+
+bool SuitThicknessCompletionModel::relevantDiveField(const DiveField &f)
+{
+	return f.suit;
+}
+
+QStringList SuitSizeCompletionModel::getStrings()
+{
+	QSet<QString> set;
+	for (auto &dive: divelog.dives) {
+		for (const auto &item : dive->suit_items)
+			if (!item.size.empty())
+				set.insert(QString::fromStdString(item.size));
+	}
+	QStringList list = set.values();
+	std::sort(list.begin(), list.end());
+	return list;
+}
+
+bool SuitSizeCompletionModel::relevantDiveField(const DiveField &f)
+{
+	return f.suit;
+}

@@ -49,6 +49,7 @@ struct dive {
 	std::string notes;
 	std::string diveguide, buddy;
 	std::string suit;
+	suit_table suit_items;
 	cylinder_table cylinders;
 	weightsystem_table weightsystems;
 	int number = 0;

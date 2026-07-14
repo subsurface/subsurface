@@ -102,10 +102,12 @@ public:
 	QString fieldName() const override;
 };
 
-class EditSuit : public EditStringSetter<DiveField::SUIT, &dive::suit> {
+class EditSuit : public EditTemplate<QString, DiveField::SUIT> {
 public:
-	using EditStringSetter::EditStringSetter;	// Use constructor of base class.
+	using EditTemplate<QString, DiveField::SUIT>::EditTemplate;
 	QString fieldName() const override;
+	void set(struct dive *d, QString v) const override;
+	QString data(struct dive *d) const override;
 };
 
 class EditRating : public EditDefaultSetter<int, DiveField::RATING, &dive::rating> {

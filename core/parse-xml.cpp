@@ -41,6 +41,8 @@
 
 int last_xml_version = -1;
 
+static xmlNode *cur_node = nullptr;
+
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params);
 
 static void divedate(const char *buffer, timestamp_t *when, struct parser_state *state)
@@ -1336,10 +1338,24 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH_STATE("name.dive", add_dive_site, dive))
 		return;
-	if (MATCH("suit", utf8_string_std, &dive->suit))
+	if (MATCH("suit", utf8_string_std, &dive->suit)) {
+		if (!dive->suit.empty()) {
+			if (!dive->notes.empty())
+				dive->notes += "\n";
+			dive->notes += "Suit: " + dive->suit;
+			dive->suit.clear();
+		}
 		return;
-	if (MATCH("divesuit", utf8_string_std, &dive->suit))
+	}
+	if (MATCH("divesuit", utf8_string_std, &dive->suit)) {
+		if (!dive->suit.empty()) {
+			if (!dive->notes.empty())
+				dive->notes += "\n";
+			dive->notes += "Suit: " + dive->suit;
+			dive->suit.clear();
+		}
 		return;
+	}
 	if (MATCH("notes", utf8_string_std, &dive->notes))
 		return;
 	// For historic reasons, we accept dive guide as well as dive master
@@ -1362,6 +1378,8 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	if (MATCH("surge.dive", get_rating, &dive->surge))
 		return;
 	if (MATCH("chill.dive", get_rating, &dive->chill))
+		return;
+	if (match_name("suit_part", name))
 		return;
 	if (MATCH_STATE("airpressure.dive", pressure, &dive->surface_pressure))
 		return;
@@ -1503,6 +1521,33 @@ static void try_to_fill_filter_constraint(const char *name, char *buf, struct pa
 	nonmatch("fulltext", name, buf);
 }
 
+static void suit_type(const char *buffer, enum suit_component_t::type *type)
+{
+	if (!strcmp(buffer, "suit")) *type = suit_component_t::SUIT;
+	else if (!strcmp(buffer, "boots")) *type = suit_component_t::BOOTS;
+	else if (!strcmp(buffer, "gloves")) *type = suit_component_t::GLOVES;
+	else if (!strcmp(buffer, "bcd")) *type = suit_component_t::BCD;
+	else if (!strcmp(buffer, "fins")) *type = suit_component_t::FINS;
+}
+
+static void try_to_fill_suit_part(const char *name, char *buf, struct parser_state *state)
+{
+	start_match("suit_part", name, buf);
+
+	if (MATCH("type", suit_type, &state->cur_suit_part.type))
+		return;
+	if (MATCH("brand", utf8_string_std, &state->cur_suit_part.brand))
+		return;
+	if (MATCH("model", utf8_string_std, &state->cur_suit_part.model))
+		return;
+	if (MATCH("thickness", utf8_string_std, &state->cur_suit_part.thickness))
+		return;
+	if (MATCH("size", utf8_string_std, &state->cur_suit_part.size))
+		return;
+
+	nonmatch("suit_part", name, buf);
+}
+
 static bool entry(const char *name, char *buf, struct parser_state *state)
 {
 	if (!strncmp(name, "version.program", sizeof("version.program") - 1) ||
@@ -1521,6 +1566,10 @@ static bool entry(const char *name, char *buf, struct parser_state *state)
 	}
 	if (state->cur_dive_site) {
 		try_to_fill_dive_site(state, name, buf);
+		return true;
+	}
+	if (state->in_suit_part) {
+		try_to_fill_suit_part(name, buf, state);
 		return true;
 	}
 	if (state->in_filter_constraint) {
@@ -1608,8 +1657,12 @@ static bool visit_one_node(xmlNode *node, struct parser_state *state)
 		return true;
 
 	name = nodename(node, buffer, sizeof(buffer));
+	xmlNode *old_node = cur_node;
+	cur_node = node;
 
-	return entry(name, (char *)content, state);
+	bool ret = entry(name, (char *)content, state);
+	cur_node = old_node;
+	return ret;
 }
 
 static bool traverse(xmlNode *root, struct parser_state *state);
@@ -1683,6 +1736,7 @@ static struct nesting {
 	  { "gasmix", (parser_func)cylinder_start, (parser_func)cylinder_end },
 	  { "cylinder", (parser_func)cylinder_start, (parser_func)cylinder_end },
 	  { "weightsystem", ws_start, ws_end },
+	  { "suit_part", suit_part_start, suit_part_end },
 	  { "divecomputer", divecomputer_start, divecomputer_end },
 	  { "P", sample_start, sample_end },
 	  { "userid", userid_start, userid_stop},
@@ -1716,12 +1770,20 @@ static bool traverse(xmlNode *root, struct parser_state *state)
 			rule++;
 		} while (rule->name);
 
-		if (rule->start)
+		if (rule->start) {
+			xmlNode *old_node = cur_node;
+			cur_node = n;
 			rule->start(state);
+			cur_node = old_node;
+		}
 		if ((ret = visit(n, state)) == false)
 			break;
-		if (rule->end)
+		if (rule->end) {
+			xmlNode *old_node = cur_node;
+			cur_node = n;
 			rule->end(state);
+			cur_node = old_node;
+		}
 	}
 	return ret;
 }

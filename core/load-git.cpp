@@ -240,7 +240,14 @@ static void parse_dive_buddy(char *, struct git_parser_state *state)
 { state->active_dive->buddy = get_first_converted_string(state); }
 
 static void parse_dive_suit(char *, struct git_parser_state *state)
-{ state->active_dive->suit = get_first_converted_string(state); }
+{
+	std::string suit = get_first_converted_string(state);
+	if (!suit.empty()) {
+		if (!state->active_dive->notes.empty())
+			state->active_dive->notes += "\n";
+		state->active_dive->notes += "Suit: " + suit;
+	}
+}
 
 static void parse_dive_notes(char *, struct git_parser_state *state)
 { state->active_dive->notes = get_first_converted_string(state); }
@@ -441,6 +448,34 @@ static void parse_dive_cylinder(char *line, struct git_parser_state *state)
 		state->o2pressure_sensor = static_cast<int>(state->active_dive->cylinders.size());
 
 	state->active_dive->cylinders.push_back(std::move(cylinder));
+}
+
+static void parse_suit_part_keyvalue(void *_item, const char *key, const std::string &value)
+{
+	suit_component_t *item = (suit_component_t *)_item;
+	if (same_string(key, "type")) {
+		if (value == "suit") item->type = suit_component_t::SUIT;
+		else if (value == "boots") item->type = suit_component_t::BOOTS;
+		else if (value == "gloves") item->type = suit_component_t::GLOVES;
+		else if (value == "bcd") item->type = suit_component_t::BCD;
+		else if (value == "fins") item->type = suit_component_t::FINS;
+	} else if (same_string(key, "brand")) {
+		item->brand = value;
+	} else if (same_string(key, "model")) {
+		item->model = value;
+	} else if (same_string(key, "thickness")) {
+		item->thickness = value;
+	} else if (same_string(key, "size")) {
+		item->size = value;
+	}
+}
+
+static void parse_dive_suit_part(char *line, struct git_parser_state *state)
+{
+	suit_component_t item;
+	while (line && *line)
+		line = parse_keyvalue_entry(parse_suit_part_keyvalue, &item, line, state);
+	state->active_dive->suit_items.push_back(item);
 }
 
 static void parse_weightsystem_keyvalue(void *_ws, const char *key, const std::string &value)
@@ -1089,7 +1124,7 @@ static const std::array dive_action {
 	/* For historical reasons, we accept divemaster and diveguide */
 	D(airpressure), D(airtemp), D(buddy), D(chill), D(current), D(cylinder), D(diveguide),
 	keyword_action { "divemaster", parse_dive_diveguide },
-	D(divesiteid), D(duration), D(gps), D(invalid), D(location), D(notes), D(notrip), D(rating), D(suit), D(surge),
+	D(divesiteid), D(duration), D(gps), D(invalid), D(location), D(notes), D(notrip), D(rating), D(suit), D(suit_part), D(surge),
 	D(tags), D(visibility), D(watersalinity), D(watertemp), D(wavesize), D(weightsystem)
 };
 

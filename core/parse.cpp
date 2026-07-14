@@ -315,6 +315,19 @@ void ws_end(struct parser_state *state)
 {
 }
 
+void suit_part_start(struct parser_state *state)
+{
+	state->cur_suit_part = suit_component_t();
+	state->in_suit_part = true;
+}
+
+void suit_part_end(struct parser_state *state)
+{
+	if (state->cur_dive)
+		state->cur_dive->suit_items.push_back(state->cur_suit_part);
+	state->in_suit_part = false;
+}
+
 /*
  * If the given cylinder doesn't exist, return NO_SENSOR.
  */

@@ -308,6 +308,20 @@ void weightsystem_table::set(int idx, weightsystem_t ws)
 	(*this)[idx] = std::move(ws);
 }
 
+bool suit_component_t::operator==(const suit_component_t &other) const
+{
+	return type == other.type &&
+	       brand == other.brand &&
+	       model == other.model &&
+	       thickness == other.thickness &&
+	       size == other.size;
+}
+
+void suit_table::add(suit_component_t s)
+{
+	push_back(s);
+}
+
 /* when planning a dive we need to make sure that all cylinders have a sane depth assigned
  * and if we are tracking gas consumption the pressures need to be reset to start = end = workingpressure */
 void reset_cylinders(struct dive *dive, bool track_gas)

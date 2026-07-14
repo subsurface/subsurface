@@ -171,6 +171,24 @@ static void put_gasmix(struct membuffer *b, struct gasmix mix)
 	}
 }
 
+static void save_suit_info(struct membuffer *b, const struct dive &dive)
+{
+	for (const auto &item : dive.suit_items) {
+		put_format(b, "  <suit_part");
+		const char *type = "suit";
+		if (item.type == suit_component_t::BOOTS) type = "boots";
+		else if (item.type == suit_component_t::GLOVES) type = "gloves";
+		else if (item.type == suit_component_t::BCD) type = "bcd";
+		else if (item.type == suit_component_t::FINS) type = "fins";
+		put_format(b, " type='%s'", type);
+		show_utf8(b, item.brand.c_str(), " brand='", "'", 1);
+		show_utf8(b, item.model.c_str(), " model='", "'", 1);
+		show_utf8(b, item.thickness.c_str(), " thickness='", "'", 1);
+		show_utf8(b, item.size.c_str(), " size='", "'", 1);
+		put_format(b, "/>\n");
+	}
+}
+
 static void save_cylinder_info(struct membuffer *b, const struct dive &dive)
 {
 	for (auto &cyl: dive.cylinders) {
@@ -510,6 +528,7 @@ void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anon
 		put_format(b, ">\n");
 	save_overview(b, dive, anonymize);
 	save_cylinder_info(b, dive);
+	save_suit_info(b, dive);
 	save_weightsystem_info(b, dive);
 	save_dive_temperature(b, dive);
 	/* Save the dive computer data */

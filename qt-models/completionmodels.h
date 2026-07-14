@@ -47,4 +47,32 @@ private:
 	bool relevantDiveField(const DiveField &f) override;
 };
 
+class SuitBrandCompletionModel final : public CompletionModelBase {
+	Q_OBJECT
+private:
+	QStringList getStrings() override;
+	bool relevantDiveField(const DiveField &f) override;
+};
+
+class SuitModelCompletionModel final : public CompletionModelBase {
+	Q_OBJECT
+private:
+	QStringList getStrings() override;
+	bool relevantDiveField(const DiveField &f) override;
+};
+
+class SuitThicknessCompletionModel final : public CompletionModelBase {
+	Q_OBJECT
+private:
+	QStringList getStrings() override;
+	bool relevantDiveField(const DiveField &f) override;
+};
+
+class SuitSizeCompletionModel final : public CompletionModelBase {
+	Q_OBJECT
+private:
+	QStringList getStrings() override;
+	bool relevantDiveField(const DiveField &f) override;
+};
+
 #endif // COMPLETIONMODELS_H

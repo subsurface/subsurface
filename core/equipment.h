@@ -122,4 +122,19 @@ extern std::pair<volume_t, pressure_t> get_tank_info_data(const std::vector<tank
 extern void add_cylinder_description(const cylinder_type_t &);
 extern void reset_tank_info_table(std::vector<tank_info> &table);
 
+
+struct suit_component_t {
+	enum type { SUIT, BOOTS, GLOVES, BCD, FINS } type = SUIT;
+	std::string brand;
+	std::string model;
+	std::string thickness;
+	std::string size;
+
+	bool operator==(const suit_component_t &other) const;
+};
+
+struct suit_table : public std::vector<suit_component_t> {
+	void add(suit_component_t s);
+};
+
 #endif // EQUIPMENT_H

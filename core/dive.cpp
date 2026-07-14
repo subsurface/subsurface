@@ -1863,6 +1863,22 @@ static bool has_weightsystem(const weightsystem_table &t, const weightsystem_t &
 	return any_of(t.begin(), t.end(), [&w] (auto &w2) { return w == w2; });
 }
 
+static void merge_suit_items(struct dive &res, const struct dive &a, const struct dive &b)
+{
+	res.suit_items = a.suit_items;
+	for (const auto &item : b.suit_items) {
+		bool found = false;
+		for (const auto &existing : res.suit_items) {
+			if (existing == item) {
+				found = true;
+				break;
+			}
+		}
+		if (!found)
+			res.suit_items.push_back(item);
+	}
+}
+
 static void merge_equipment(struct dive &res, const struct dive &a, const struct dive &b)
 {
 	for (auto &ws: a.weightsystems) {
@@ -2352,6 +2368,7 @@ std::unique_ptr<dive> dive::create_merged_dive(const struct dive &a, const struc
 	auto cylinders_map_b = std::make_unique<int[]>(std::max(size_t(1), b.cylinders.size()));
 	merge_cylinders(*res, a, b, cylinders_map_a.get(), cylinders_map_b.get());
 	merge_equipment(*res, a, b);
+	merge_suit_items(*res, a, b);
 	merge_temperatures(*res, a, b);
 	if (prefer_downloaded) {
 		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */
