@@ -99,6 +99,8 @@ void DiveLogExportDialog::showExplanation()
 		ui->description->setText(tr("Subsurface native XML format."));
 	} else if (ui->exportSubsurfaceSitesXML->isChecked()) {
 		ui->description->setText(tr("Subsurface dive sites native XML format."));
+	} else if (ui->exportKML->isChecked()) {
+		ui->description->setText(tr("Dive sites in KML format for Google Earth and similar applications."));
 	} else if (ui->exportImageDepths->isChecked()) {
 		ui->description->setText(tr("Write depths of images to file."));
 	} else if (ui->exportTeX->isChecked()) {
@@ -163,6 +165,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 {
 	QString filename;
 	QString stylesheet;
+	bool sitesOnly = false;
 	QString lastDir = QDir::homePath();
 
 	if (QDir(qPrefDisplay::lastDir()).exists())
@@ -201,15 +204,19 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 				save_dives_logic(bt.data(), ui->exportSelected->isChecked(), ui->anonymize->isChecked());
 			}
 		} else if (ui->exportSubsurfaceSitesXML->isChecked()) {
+			stylesheet = "divesites-export.xslt";
+			sitesOnly = true;
 			filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface dive sites XML"), lastDir,
 								tr("Subsurface files") + " (*.xml)");
-			if (!filename.isEmpty()) {
-				if (!filename.contains('.'))
-					filename.append(".xml");
-				QByteArray bt = QFile::encodeName(filename);
-				auto sites = getDiveSitesToExport(ui->exportSelected->isChecked());
-				save_dive_sites_logic(bt.data(), sites.data(), (int)sites.size(), ui->anonymize->isChecked());
-			}
+			if (!filename.isEmpty() && !filename.contains('.'))
+				filename.append(".xml");
+		} else if (ui->exportKML->isChecked()) {
+			stylesheet = "kml-export.xslt";
+			sitesOnly = true;
+			filename = QFileDialog::getSaveFileName(this, tr("Export dive sites as KML"), lastDir,
+								tr("KML files") + " (*.kml)");
+			if (!filename.isEmpty() && !filename.contains('.'))
+				filename.append(".kml");
 		} else if (ui->exportImageDepths->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
 			if (!filename.isEmpty())
@@ -246,8 +253,11 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		qPrefDisplay::set_lastDir(fileInfo.dir().path());
 		// the non XSLT exports are called directly above, the XSLT based ons are called here
 		if (!stylesheet.isEmpty()) {
-			QFuture<std::pair<int, std::string>> future = exportUsingStyleSheet(filename, ui->exportSelected->isChecked(),
-					ui->CsvUnits_2->currentIndex(), stylesheet.toUtf8(), ui->anonymize->isChecked());
+			QFuture<std::pair<int, std::string>> future = sitesOnly ?
+				exportDiveSitesUsingStyleSheet(filename, getDiveSitesToExport(ui->exportSelected->isChecked()),
+						stylesheet, ui->anonymize->isChecked()) :
+				exportUsingStyleSheet(filename, ui->exportSelected->isChecked(), ui->CsvUnits_2->currentIndex(),
+						stylesheet, ui->anonymize->isChecked());
 			MainWindow::instance()->getNotificationWidget()->showNotification(tr("Please wait, exporting..."), KMessageWidget::Information);
 			MainWindow::instance()->getNotificationWidget()->setFuture(future);
 		}
