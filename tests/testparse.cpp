@@ -13,6 +13,7 @@
 #include "core/trip.h"
 #include "core/xmlparams.h"
 #include <QTextStream>
+#include <QXmlStreamReader>
 
 /* We have to use a macro since QCOMPARE
  * can only be called from a test method
@@ -450,6 +451,85 @@ void TestParse::exportUDDF()
 
 	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt", false);
 	FILE_COMPARE("testuddfexport.uddf", SUBSURFACE_TEST_DATA "/dives/test42.uddf");
+}
+
+static std::vector<const dive_site *> allDiveSites()
+{
+	std::vector<const dive_site *> sites;
+	sites.reserve(divelog.sites.size());
+	for (const auto &site: divelog.sites)
+		sites.push_back(site.get());
+	return sites;
+}
+
+void TestParse::exportDiveSitesXML()
+{
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog), 0);
+	dive_site *site = divelog.sites.get_by_uuid(0xec2bbc32);
+	QVERIFY(site);
+	site->name = "Lake & Ice";
+	site->description = "Alpine <lake>";
+	site->notes = "Bring a drysuit";
+	taxonomy_set_category(site->taxonomy, TC_COUNTRY, "New Zealand", GEOMANUAL);
+
+	auto result = export_dive_sites_xslt("testdivesites.xml", allDiveSites(), "divesites-export.xslt", false);
+	QCOMPARE(result.first, 0);
+	QVERIFY2(result.second.empty(), result.second.c_str());
+
+	clear_dive_file_data();
+	QCOMPARE(parse_file("testdivesites.xml", &divelog), 0);
+	site = divelog.sites.get_by_uuid(0xec2bbc32);
+	QVERIFY(site);
+	QCOMPARE(site->name, std::string("Lake & Ice"));
+	QCOMPARE(site->description, std::string("Alpine <lake>"));
+	QCOMPARE(site->notes, std::string("Bring a drysuit"));
+	QCOMPARE(site->location.lat.udeg, -43342295);
+	QCOMPARE(site->location.lon.udeg, 171545936);
+	QCOMPARE(taxonomy_get_value(site->taxonomy, TC_COUNTRY), std::string("New Zealand"));
+}
+
+void TestParse::exportKML()
+{
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog), 0);
+	dive_site *site = divelog.sites.get_by_uuid(0xec2bbc32);
+	QVERIFY(site);
+	site->name = "Lake & Ice";
+	site->description = "Alpine <lake>";
+	site->notes = "Bring a drysuit";
+	divelog.sites.create("Site without coordinates");
+
+	auto result = export_dive_sites_xslt("testdivesites.kml", allDiveSites(), "kml-export.xslt", false);
+	QCOMPARE(result.first, 0);
+	QVERIFY2(result.second.empty(), result.second.c_str());
+
+	QFile file("testdivesites.kml");
+	QVERIFY(file.open(QIODevice::ReadOnly));
+	QXmlStreamReader xml(&file);
+	int placemarks = 0;
+	QString name;
+	QString description;
+	QString coordinates;
+	while (!xml.atEnd()) {
+		xml.readNext();
+		if (!xml.isStartElement())
+			continue;
+		if (xml.name() == QStringLiteral("kml"))
+			QCOMPARE(xml.namespaceUri().toString(), QStringLiteral("http://www.opengis.net/kml/2.2"));
+		else if (xml.name() == QStringLiteral("Placemark"))
+			placemarks++;
+		else if (xml.name() == QStringLiteral("name") && placemarks > 0)
+			name = xml.readElementText();
+		else if (xml.name() == QStringLiteral("description"))
+			description = xml.readElementText();
+		else if (xml.name() == QStringLiteral("coordinates"))
+			coordinates = xml.readElementText().trimmed();
+	}
+
+	QVERIFY2(!xml.hasError(), qPrintable(xml.errorString()));
+	QCOMPARE(placemarks, 1);
+	QCOMPARE(name, QStringLiteral("Lake & Ice"));
+	QCOMPARE(description, QStringLiteral("Alpine <lake>\nBring a drysuit"));
+	QCOMPARE(coordinates, QStringLiteral("171.545936,-43.342295,0"));
 }
 
 void TestParse::importUDDF()

@@ -24,6 +24,7 @@
 #include <QFileInfo>
 #include <QtConcurrent>
 #include <memory>
+#include <utility>
 
 // Default implementation of the export callback: do nothing / never cancel
 void ExportCallback::setProgress(int)
@@ -365,5 +366,13 @@ QFuture<std::pair<int, std::string>> exportUsingStyleSheet(const QString &filena
 	const QString &stylesheet, bool anonymize)
 {
 	return QtConcurrent::run(export_dives_xslt, filename.toUtf8(), doExport, units, stylesheet.toUtf8(), anonymize);
+}
+
+QFuture<std::pair<int, std::string>> exportDiveSitesUsingStyleSheet(const QString &filename,
+		std::vector<const dive_site *> sites, const QString &stylesheet, bool anonymize)
+{
+	return QtConcurrent::run([filename, sites = std::move(sites), stylesheet, anonymize]() {
+		return export_dive_sites_xslt(qPrintable(filename), sites, qPrintable(stylesheet), anonymize);
+	});
 }
 #endif
