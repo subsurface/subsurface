@@ -2225,7 +2225,9 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 		case EX_DIVE_SITES_XML:
 			{
 				auto sites = getDiveSitesToExport(false);
-				export_dive_sites_xslt(qPrintable(fileName + ".xml"), sites, "divesites-export.xslt", anonymize);
+				auto result = export_dive_sites_xslt(qPrintable(fileName + ".xml"), sites, "divesites-export.xslt", anonymize);
+				if (result.first)
+					report_error("%s", result.second.c_str());
 				break;
 			}
 		default:
