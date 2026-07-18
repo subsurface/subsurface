@@ -530,6 +530,12 @@ void TestParse::exportKML()
 	QCOMPARE(name, QStringLiteral("Lake & Ice"));
 	QCOMPARE(description, QStringLiteral("Alpine <lake>\nBring a drysuit"));
 	QCOMPARE(coordinates, QStringLiteral("171.545936,-43.342295,0"));
+
+#if defined(Q_OS_LINUX)
+	result = export_dive_sites_xslt("/dev/full", allDiveSites(), "kml-export.xslt", false);
+	QVERIFY(result.first != 0);
+	QVERIFY(!result.second.empty());
+#endif
 }
 
 void TestParse::importUDDF()

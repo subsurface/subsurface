@@ -822,9 +822,15 @@ static std::pair<int, std::string> transform_xslt(const char *filename, struct m
 	/* Write the transformed export to file */
 	f = subsurface_fopen(filename, "w");
 	if (f) {
-		xsltSaveResultToFile(f, transformed, xslt);
-		fclose(f);
-		/* Check write errors? */
+		int write_result = xsltSaveResultToFile(f, transformed, xslt);
+		int write_error = write_result < 0 ? errno : 0;
+		int close_result = fclose(f);
+		int close_error = close_result != 0 ? errno : 0;
+		if (write_result < 0 || close_result != 0) {
+			int error = close_error ? close_error : write_error;
+			res = std::make_pair(-1, format_string_std(translate("gettextFromC", "Failed to write %s (%s)"), filename,
+					strerror(error ? error : EIO)));
+		}
 	} else {
 		res = std::make_pair(-1, format_string_std(translate("gettextFromC", "Failed to open %s for writing (%s)"), filename, strerror(errno)));
 	}
