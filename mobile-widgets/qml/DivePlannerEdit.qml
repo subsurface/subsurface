@@ -295,9 +295,11 @@ TemplatePage {
 			delegate: RowLayout {
 				width: cylinderListView.width
 				spacing: Kirigami.Units.smallSpacing
+				// give the row index a name that signal arguments cannot shadow
+				readonly property int rowIndex: index
 
 				TemplateLabel {
-					text: index + 1
+					text: rowIndex + 1
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
 					horizontalAlignment: Text.AlignHCenter
 					verticalAlignment: Text.AlignVCenter
@@ -310,7 +312,7 @@ TemplatePage {
 					onActivated: {
 						if (currentIndex !== -1) {
 							// Update the 'type' property in the model with the selected cylinder text
-							cylinderListModel.setProperty(index, "type", currentText);
+							cylinderListModel.setProperty(rowIndex, "type", currentText);
 
 							// This updates the dive plan summary in real-time
 							generatePlan();
@@ -324,7 +326,7 @@ TemplatePage {
 					text: mix
 					onTextChanged: {
 						if (text !== mix) {
-							cylinderListModel.setProperty(index, "mix", text);
+							cylinderListModel.setProperty(rowIndex, "mix", text);
 							generatePlan();
 						}
 					}
@@ -356,7 +358,7 @@ TemplatePage {
 					visible: overallDivemode.currentIndex == 1
 					onClicked: {
 						// Update 'use': if checked is true, set 'use' to 1 (Diluent); otherwise, set to 0 (OC-gas)
-						cylinderListModel.setProperty(index, "use", checked ? 1 : 0);
+						cylinderListModel.setProperty(rowIndex, "use", checked ? 1 : 0);
 						generatePlan();
 					}
 				}
@@ -368,7 +370,7 @@ TemplatePage {
 					validator: IntValidator { bottom: 0; top: 10000 }
 					onTextChanged: {
 						if (Number(text) !== pressure) {
-							cylinderListModel.setProperty(index, "pressure", Number(text));
+							cylinderListModel.setProperty(rowIndex, "pressure", Number(text));
 							generatePlan();
 						}
 					}
@@ -379,7 +381,7 @@ TemplatePage {
 					font.bold: true
 					enabled: cylinderListModel.count > 1
 					onClicked: {
-						cylinderListModel.remove(index);
+						cylinderListModel.remove(rowIndex);
 						generatePlan();
 					}
 				}
@@ -457,6 +459,8 @@ TemplatePage {
 			delegate: RowLayout {
 				width: segmentListView.width
 				spacing: Kirigami.Units.smallSpacing
+				// give the row index a name that signal arguments cannot shadow
+				readonly property int rowIndex: index
 
 				SsrfTextField {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
@@ -465,7 +469,7 @@ TemplatePage {
 					validator: IntValidator { bottom: 0; top: 900 }
 					onTextChanged: {
 						if (Number(text) !== depth) {
-							segmentListModel.setProperty(index, "depth", Number(text));
+							segmentListModel.setProperty(rowIndex, "depth", Number(text));
 							generatePlan();
 						}
 					}
@@ -479,7 +483,7 @@ TemplatePage {
 					validator: IntValidator { bottom: 1; top: 999 }
 					onTextChanged: {
 						if (Number(text) !== duration) {
-							segmentListModel.setProperty(index, "duration", Number(text));
+							segmentListModel.setProperty(rowIndex, "duration", Number(text));
 							generatePlan();
 						}
 					}
@@ -491,7 +495,7 @@ TemplatePage {
 					model: gasNumberModel
 					currentIndex: gas
 					onActivated: {
-						segmentListModel.setProperty(index, "gas", currentIndex)
+						segmentListModel.setProperty(rowIndex, "gas", currentIndex)
 						generatePlan();
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
@@ -512,7 +516,7 @@ TemplatePage {
 					onTextChanged: {
 						if (cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1) {
 							if (Math.round(Number(text) * 1000) !== setpoint) {
-								segmentListModel.setProperty(index, "setpoint", Math.round(Number(text) * 1000));
+								segmentListModel.setProperty(rowIndex, "setpoint", Math.round(Number(text) * 1000));
 								generatePlan();
 							}
 						}
@@ -527,7 +531,7 @@ TemplatePage {
 					currentIndex: divemode === 2 ? 1 : divemode
 					visible: overallDivemode.currentIndex == 2
 					onActivated: {
-						segmentListModel.setProperty(index, "divemode", currentIndex === 1 ? 2 : currentIndex);
+						segmentListModel.setProperty(rowIndex, "divemode", currentIndex === 1 ? 2 : currentIndex);
 						generatePlan();
 					}
 					onActiveFocusChanged: segmentListView.interactive = !activeFocus
@@ -538,7 +542,7 @@ TemplatePage {
 					font.bold: true
 					enabled: segmentListModel.count > 1
 					onClicked: {
-						segmentListModel.remove(index);
+						segmentListModel.remove(rowIndex);
 						generatePlan();
 					}
 
