@@ -138,7 +138,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="224"/>
         <source>Show all BT devices</source>
-        <translation>Montre tous les appareils BT</translation>
+        <translation>Montrer tous les appareils BT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
@@ -5993,7 +5993,7 @@ Emplacement :
 %2
 
 Veuillez noter qu&apos;avec cette version de Subsurface, les modèles par défaut
-sont en lecture seule et ne doivent pas être modifiés directement, puisque 
+sont en lecture seule et ne doivent pas être modifiés directement, puisque
 l&apos;application peut les écraser au démarrage.</translation>
     </message>
     <message>
@@ -8393,7 +8393,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="545"/>
-        <source>Temporarily show all bluetooth devices 
+        <source>Temporarily show all bluetooth devices
 even if not recognized as dive computers.
 Please report DCs that need this setting</source>
         <translation>Afficher temporairement tous les périphériques bluetooth
@@ -10245,7 +10245,7 @@ mélangés à partir de l&apos;air et en utilisant :
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="112"/>
-        <source>Subsurface is checking every two weeks if a new version is available. 
+        <source>Subsurface is checking every two weeks if a new version is available.
 If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation>Subsurface vérifie toutes les deux semaines si une nouvelle version est disponible.
 Si vous ne souhaitez plus que Subsurface fasse cette vérification, cliquez sur Refuser.</translation>
@@ -10415,9 +10415,9 @@ Si vous ne souhaitez plus que Subsurface fasse cette vérification, cliquez sur 
     <name>YearlyStatisticsModel</name>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="132"/>
-        <source>Year 
+        <source>Year
  &gt; Month / Trip</source>
-        <translation>Année 
+        <translation>Année
  &gt; Mois / Voyage</translation>
     </message>
     <message>
@@ -10427,9 +10427,9 @@ Si vous ne souhaitez plus que Subsurface fasse cette vérification, cliquez sur 
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="138"/>
-        <source>Duration 
+        <source>Duration
  Total</source>
-        <translation>Durée 
+        <translation>Durée
  Totale</translation>
     </message>
     <message>
