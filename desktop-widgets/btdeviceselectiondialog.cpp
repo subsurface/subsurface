@@ -83,17 +83,24 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 
 BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
 {
+	stopDeviceDiscovery();
 	delete ui;
 
 	// Clean the local device
 	delete localDevice;
+	delete remoteDeviceDiscoveryAgent;
+}
 
-	if (remoteDeviceDiscoveryAgent) {
-		// Clean the device discovery agent
-		if (remoteDeviceDiscoveryAgent->isActive())
-			remoteDeviceDiscoveryAgent->stop();
-		delete remoteDeviceDiscoveryAgent;
-	}
+void BtDeviceSelectionDialog::stopDeviceDiscovery()
+{
+	if (remoteDeviceDiscoveryAgent && remoteDeviceDiscoveryAgent->isActive())
+		remoteDeviceDiscoveryAgent->stop();
+}
+
+void BtDeviceSelectionDialog::done(int result)
+{
+	stopDeviceDiscovery();
+	QDialog::done(result);
 }
 
 void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
@@ -118,11 +125,6 @@ void BtDeviceSelectionDialog::on_save_clicked()
 	QString address = remoteDeviceInfo.address().isNull() ? remoteDeviceInfo.deviceUuid().toString() :
 								remoteDeviceInfo.address().toString();
 	saveBtDeviceInfo(address, remoteDeviceInfo);
-	if (remoteDeviceDiscoveryAgent->isActive()) {
-		// Stop the SDP agent if the clear button is pressed and enable the Scan button
-		remoteDeviceDiscoveryAgent->stop();
-		ui->scan->setEnabled(true);
-	}
 
 	// Close the device selection dialog and set the result code to Accepted
 	accept();
@@ -133,11 +135,8 @@ void BtDeviceSelectionDialog::on_clear_clicked()
 	ui->dialogStatus->setText(tr("Remote devices list was cleared."));
 	ui->discoveredDevicesList->clear();
 
-	if (remoteDeviceDiscoveryAgent->isActive()) {
-		// Stop the SDP agent if the clear button is pressed and enable the Scan button
-		remoteDeviceDiscoveryAgent->stop();
-		ui->scan->setEnabled(true);
-	}
+	stopDeviceDiscovery();
+	ui->scan->setEnabled(true);
 }
 
 void BtDeviceSelectionDialog::on_scan_clicked()
@@ -413,9 +412,6 @@ void BtDeviceSelectionDialog::deviceDiscoveryError(QBluetoothDeviceDiscoveryAgen
 	ui->dialogStatus->setText(tr("Device discovery error: %1.").arg(errorDescription));
 }
 
-extern QString markBLEAddress(const QBluetoothDeviceInfo *device);
-extern QString btDeviceAddress(const QBluetoothDeviceInfo *device, bool isBle);
-
 QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 {
 	if (!selectedRemoteDeviceInfo)
@@ -427,7 +423,7 @@ QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 	switch (btMode) {
 	case 0:		// Auto
 	default:
-		return markBLEAddress(device);
+		return btDeviceAddressForAuto(device);
 	case 1:		// Force LE
 		return btDeviceAddress(device, true);
 	case 2:		// Force Classic

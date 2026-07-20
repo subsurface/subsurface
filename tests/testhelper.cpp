@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testhelper.h"
 #include "core/bluetoothaddress.h"
+#include "core/btdiscovery.h"
 
 void TestHelper::initTestCase()
 {
@@ -56,6 +57,17 @@ void TestHelper::parseNameAddress()
 	QCOMPARE(address, QString("BT:01:a2:b3:c4:d5:06"));
 	QCOMPARE(name, QString("somename"));
 
+}
+
+void TestHelper::automaticBluetoothAddress()
+{
+	QBluetoothDeviceInfo macDevice(QBluetoothAddress("01:A2:B3:C4:D5:06"), "test", 0);
+	macDevice.setCoreConfigurations(QBluetoothDeviceInfo::LowEnergyCoreConfiguration);
+	QCOMPARE(btDeviceAddressForAuto(&macDevice), QString("01:A2:B3:C4:D5:06"));
+
+	QBluetoothUuid uuid(QStringLiteral("{6e50ff5d-cdd3-4c43-a80a-1ed4c7d2d2a5}"));
+	QBluetoothDeviceInfo uuidDevice(uuid, "test", 0);
+	QCOMPARE(btDeviceAddressForAuto(&uuidDevice), QString("LE:") + uuid.toString());
 }
 
 QTEST_GUILESS_MAIN(TestHelper)

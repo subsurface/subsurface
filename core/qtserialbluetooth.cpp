@@ -4,6 +4,7 @@
 #include <QtBluetooth/QBluetoothAddress>
 #include <QtBluetooth/QBluetoothSocket>
 #include <QBluetoothLocalDevice>
+#include <QElapsedTimer>
 #include <QEventLoop>
 #include <QTimer>
 #include <QThread>
@@ -39,6 +40,15 @@ struct qt_serial_t {
 	long timeout;
 };
 
+static bool rfcomm_error_is_terminal(QBluetoothSocket::SocketError error,
+				     QBluetoothSocket::SocketState state)
+{
+	/* Qt can report an operation error while RFCOMM setup is still active. */
+	return error != QBluetoothSocket::SocketError::OperationError ||
+	       (state != QBluetoothSocket::SocketState::ServiceLookupState &&
+		state != QBluetoothSocket::SocketState::ConnectingState);
+}
+
 static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char *devaddr)
 {
 	// Allocate memory.
@@ -52,21 +62,57 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char *d
 
 	// Create a RFCOMM socket
 	serial_port->socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);
+	QBluetoothSocket *socket = serial_port->socket;
+	QElapsedTimer elapsed;
+	elapsed.start();
 
 	// Wait until the connection succeeds or until an error occurs
 	QEventLoop loop;
 	loop.connect(serial_port->socket, SIGNAL(connected()), SLOT(quit()));
+	QObject::connect(serial_port->socket, &QBluetoothSocket::stateChanged, &loop,
+			 [&loop, &elapsed](QBluetoothSocket::SocketState state) {
+		report_info("RFCOMM socket state changed after %lld ms: %d",
+			    static_cast<long long>(elapsed.elapsed()), static_cast<int>(state));
+		if (state == QBluetoothSocket::SocketState::UnconnectedState ||
+		    state == QBluetoothSocket::SocketState::ClosingState)
+			loop.quit();
+	});
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-	loop.connect(serial_port->socket, &QBluetoothSocket::errorOccurred, &loop, &QEventLoop::quit);
+	QObject::connect(socket, &QBluetoothSocket::errorOccurred, &loop,
+			 [socket, &loop, &elapsed](QBluetoothSocket::SocketError error) {
+		const auto state = socket->state();
+		const bool terminal = rfcomm_error_is_terminal(error, state);
+		report_info("RFCOMM socket error after %lld ms: %d (%s), state %d (%s)",
+			    static_cast<long long>(elapsed.elapsed()), static_cast<int>(error),
+			    qPrintable(socket->errorString()),
+			    static_cast<int>(state), terminal ? "terminal" : "connection still in progress");
+		if (terminal)
+			loop.quit();
+	});
 #else
-	loop.connect(serial_port->socket, SIGNAL(error(QBluetoothSocket::SocketError)), SLOT(quit()));
+	QObject::connect(socket,
+			 QOverload<QBluetoothSocket::SocketError>::of(&QBluetoothSocket::error), &loop,
+			 [socket, &loop, &elapsed](QBluetoothSocket::SocketError error) {
+		const auto state = socket->state();
+		const bool terminal = rfcomm_error_is_terminal(error, state);
+		report_info("RFCOMM socket error after %lld ms: %d (%s), state %d (%s)",
+			    static_cast<long long>(elapsed.elapsed()), static_cast<int>(error),
+			    qPrintable(socket->errorString()),
+			    static_cast<int>(state), terminal ? "terminal" : "connection still in progress");
+		if (terminal)
+			loop.quit();
+	});
 #endif
 
 	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
 	QTimer timer;
 	int msec = 5000;
 	timer.setSingleShot(true);
-	loop.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
+	QObject::connect(&timer, &QTimer::timeout, &loop, [&loop, &elapsed]() {
+		report_info("RFCOMM socket connection wait timed out after %lld ms",
+			    static_cast<long long>(elapsed.elapsed()));
+		loop.quit();
+	});
 
 	QBluetoothAddress remoteDeviceAddress(devaddr);
 #if defined(Q_OS_ANDROID)
@@ -95,8 +141,12 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char *d
 
 		// Get the latest error and try to match it with one from libdivecomputer
 		QBluetoothSocket::SocketError err = serial_port->socket->error();
-		report_info("Failed to connect to device %s. Device state %d. Error: %d", devaddr, static_cast<int>(serial_port->socket->state()), static_cast<int>(err));
+		report_info("Failed to connect to device %s after %lld ms. Device state %d. Error: %d (%s)",
+			    devaddr, static_cast<long long>(elapsed.elapsed()),
+			    static_cast<int>(serial_port->socket->state()), static_cast<int>(err),
+			    qPrintable(serial_port->socket->errorString()));
 
+		delete socket;
 		free (serial_port);
 		switch(err) {
 		case QBluetoothSocket::SocketError::HostNotFoundError:

@@ -324,12 +324,13 @@ QString btDeviceAddress(const QBluetoothDeviceInfo *device, bool isBle)
 	return prefix + address;
 }
 
-QString markBLEAddress(const QBluetoothDeviceInfo *device)
+QString btDeviceAddressForAuto(const QBluetoothDeviceInfo *device)
 {
-	QBluetoothDeviceInfo::CoreConfigurations flags = device->coreConfigurations();
-	bool isBle = flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration;
-
-	return btDeviceAddress(device, isBle);
+	// A reported transport is a capability, not a request to force that transport.
+	// UUID-only identifiers used on Apple platforms cannot be used for Classic and
+	// therefore remain explicitly marked as LE. MAC addresses remain unqualified so
+	// that the transports supported by the selected dive computer can be tried.
+	return btDeviceAddress(device, device->address().isNull());
 }
 
 void BTDiscovery::btDeviceDiscoveryFinished()
@@ -344,7 +345,7 @@ void BTDiscovery::btDeviceDiscoveryFinished()
 void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 {
 	btPairedDevice this_d;
-	this_d.address = markBLEAddress(&device);
+	this_d.address = btDeviceAddressForAuto(&device);
 	this_d.name = device.name();
 	btPairedDevices.append(this_d);
 
