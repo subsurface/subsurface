@@ -186,7 +186,7 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="167"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation>Le périphérique Bluetooth local était %1.</translation>
+        <translation>Le périphérique Bluetooth local était %1 et a été remplacé par .</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="168"/>
@@ -203,14 +203,14 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="321"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="341"/>
         <source>UNPAIRED</source>
-        <translation>UNPAIRED</translation>
+        <translation>Non-appairé</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="190"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="326"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="339"/>
         <source>PAIRED</source>
-        <translation>PAIRED</translation>
+        <translation>APPAIRÉ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="193"/>
@@ -341,17 +341,17 @@
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="68"/>
         <source>Waiting for cloud connection (%n second(s) passed)</source>
-        <translation><numerusform>En attente de la connexion cloud (%n seconde écoulée)</numerusform><numerusform>En attente de la connexion cloud (%n secondes écoulées)</numerusform><numerusform>En attente de la connexion cloud (%n secondes écoulées)</numerusform></translation>
+        <translation><numerusform>En attente de la connexion nuagique (%n seconde écoulée)</numerusform><numerusform>En attente de la connexion nuagique (%n secondes écoulées)</numerusform><numerusform>En attente de la connexion nuagique (%n secondes écoulées)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="82"/>
         <source>Cloud connection failed</source>
-        <translation>La connexion au cloud a échoué</translation>
+        <translation>La connexion à l&apos;info-nuage a échoué</translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="123"/>
         <source>Trying different cloud server...</source>
-        <translation type="unfinished"/>
+        <translation>Tetative de connexion à un autre nuage ... </translation>
     </message>
 </context>
 <context>
@@ -359,12 +359,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="43"/>
         <source>Cloud credentials</source>
-        <translation>Informations de connexion pour le cloud</translation>
+        <translation>Informations de connexion pour le nuage</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="50"/>
         <source>Email</source>
-        <translation>E-mail</translation>
+        <translation>Courriel</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="65"/>
@@ -374,7 +374,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="82"/>
         <source>PIN</source>
-        <translation>PIN</translation>
+        <translation>NIP/translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="99"/>
@@ -399,7 +399,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="137"/>
         <source>No cloud mode</source>
-        <translation>Pas de mode cloud</translation>
+        <translation>Pas de mode nuagique</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="151"/>
@@ -412,7 +412,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="71"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation>Vérification du compte cloud nécessaire, entrer le PIN dans les préférences</translation>
+        <translation>Vérification du compte nuagique nécessaire, entrer le NIP dans les préférences</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="74"/>
         <source>Start pressure</source>
-        <translation>Pression de départ</translation>
+        <translation>Pression initiale</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="75"/>
@@ -628,7 +628,7 @@
     <message>
         <location filename="../commands/command_device.cpp" line="15"/>
         <source>Set nickname of device %1 (serial %2) to %3</source>
-        <translation type="unfinished"/>
+        <source>Renommer l&apos;appareil %1 (port série %2) en tant que %3</source>
     </message>
     <message>
         <location filename="../commands/command_divelist.cpp" line="403"/>
