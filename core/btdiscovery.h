@@ -20,6 +20,8 @@
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo);
 bool matchesKnownDiveComputerNames(QString btName);
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr);
+QString btDeviceAddress(const QBluetoothDeviceInfo *device, bool isBle);
+QString btDeviceAddressForAuto(const QBluetoothDeviceInfo *device);
 
 class BTDiscovery : public QObject {
 	Q_OBJECT

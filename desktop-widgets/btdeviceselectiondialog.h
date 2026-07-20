@@ -22,6 +22,9 @@ public:
 	QString getSelectedDeviceText();
 	static QString formatDeviceText(const QString &address, const QString &name);
 
+protected:
+	void done(int result) override;
+
 private slots:
 	void on_changeDeviceState_clicked();
 	void on_save_clicked();
@@ -43,6 +46,7 @@ private:
 	QBluetoothDeviceDiscoveryAgent *remoteDeviceDiscoveryAgent;
 	QScopedPointer<QBluetoothDeviceInfo> selectedRemoteDeviceInfo;
 
+	void stopDeviceDiscovery();
 	void updateLocalDeviceInformation();
 	void initializeDeviceDiscoveryAgent();
 	void updateBluetoothModeAvailability(const QBluetoothDeviceInfo *device);

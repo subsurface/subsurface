@@ -12,6 +12,7 @@ private slots:
 	void initTestCase();
 	void recognizeBtAddress();
 	void parseNameAddress();
+	void automaticBluetoothAddress();
 };
 
 #endif
