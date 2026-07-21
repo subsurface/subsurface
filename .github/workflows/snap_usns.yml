@@ -5,13 +5,15 @@ on:
   schedule:
   - cron: '0 5 * * *'
 
+permissions: read-all
+
 jobs:
   CheckUSNs:
     runs-on: ubuntu-22.04
 
     steps:
     - name: Check out code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
 
     - name: Set up Python
       uses: actions/setup-python@v6
@@ -19,7 +21,7 @@ jobs:
         python-version: '3.11'
 
     - name: Install Python dependencies
-      uses: insightsengineering/pip-action@v2.0.1
+      uses: insightsengineering/pip-action@v2.0.2
       with:
         requirements: .github/workflows/scripts/requirements.txt
 

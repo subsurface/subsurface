@@ -138,8 +138,13 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(const QString &filename
 	connect(ui.resetButton_4, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::resetSettings);
 	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
 	connect(ui.chooseLogFile, &QToolButton::clicked, this, &ConfigureDiveComputerDialog::pickLogFile);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	connect(ui.dateTimeSyncCheckBox, &QCheckBox::checkStateChanged, this, &ConfigureDiveComputerDialog::changeTimeSync);
+	connect(ui.logToFile, &QCheckBox::checkStateChanged, this, &ConfigureDiveComputerDialog::checkLogFile);
+#else
 	connect(ui.dateTimeSyncCheckBox, &QCheckBox::stateChanged, this, &ConfigureDiveComputerDialog::changeTimeSync);
 	connect(ui.logToFile, &QCheckBox::stateChanged, this, &ConfigureDiveComputerDialog::checkLogFile);
+#endif
 	connect(ui.connectButton, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::dc_open);
 	connect(ui.disconnectButton, &QPushButton::clicked, this, &ConfigureDiveComputerDialog::dc_close);
 #ifdef BT_SUPPORT
@@ -831,6 +836,9 @@ void ConfigureDiveComputerDialog::getDeviceData()
 
 	QString vendor = selectedDiveComputer.vendor;
 	QString product = selectedDiveComputer.product;
+	// libdivecomputer will auto-detect the correct dive computer between OSTC 4 and OSTC 5
+	if (product == "OSTC 4/5")
+		product = "OSTC 4";
 	device_data.vendor = vendor.toStdString();
 	device_data.product = product.toStdString();
 	device_data.descriptor = descriptorLookup.value(vendor.toLower() + product.toLower());

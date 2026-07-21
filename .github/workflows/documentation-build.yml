@@ -6,12 +6,20 @@ on:
       container-image:
         type: string
         required: false
+    outputs:
+      cache-key:
+        description: "The cache key used for the documentation"
+        value: ${{ jobs.documentation.outputs.cache-key }}
+
+permissions: read-all
 
 jobs:
   documentation:
     runs-on: ubuntu-24.04
     container:
       image: ${{ inputs.container-image }}
+    outputs:
+      cache-key: ${{ steps.compute-cache-key.outputs.key }}
 
     steps:
     - name: install packages for checkout
@@ -23,17 +31,24 @@ jobs:
         DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get -y -q install git
 
     - name: checkout sources
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
 
+    - name: compute cache key
+      id: compute-cache-key
+      run: |
+        KEY="documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}"
+        echo "key=$KEY" >> $GITHUB_OUTPUT
+        echo "Computed cache key: $KEY"
+
     - name: cache the documentation
       id: cache-documentation
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: Documentation/output
-        key: documentation-${{ hashFiles('Documentation') }}
+        key: ${{ steps.compute-cache-key.outputs.key }}
         enableCrossOsArchive: true
 
     - name: install packages for the build
@@ -42,7 +57,7 @@ jobs:
         if type sudo; then
           SUDO=sudo
         fi
-        DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get -y -q install make asciidoc docbook-xml w3m
+        DEBIAN_FRONTEND=noninteractive ${SUDO} apt-get -y -q install make asciidoctor docbook-xml ruby-asciidoctor-pdf w3m
 
     - name: build the documentation
       if: steps.cache-documentation.outputs.cache-hit != 'true'

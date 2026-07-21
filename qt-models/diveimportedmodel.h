@@ -13,6 +13,7 @@ public:
 	enum roleTypes { DateTime = Qt::UserRole + 1, Duration, Depth, Selected};
 
 	DiveImportedModel(QObject *parent = 0);
+	~DiveImportedModel();
 	int columnCount(const QModelIndex& index = QModelIndex()) const;
 	int rowCount(const QModelIndex& index = QModelIndex()) const;
 	QVariant data(const QModelIndex& index, int role) const;

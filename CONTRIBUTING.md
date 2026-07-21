@@ -85,10 +85,10 @@ In order to make reviews simpler and have contributions merged faster in the cod
 [2]: https://groups.google.com/g/subsurface-divelog
 [3]: https://www.transifex.com/
 [4]: https://explore.transifex.com/subsurface/subsurface/
-[5]: https://github.com/Subsurface/subsurface/issues
-[6]: https://github.com/Subsurface/subsurface/pulls
+[5]: https://github.com/subsurface/subsurface/issues
+[6]: https://github.com/subsurface/subsurface/pulls
 [7]: https://www.kernel.org/pub/software/scm/git/docs/user-manual.html
 [8]: https://gerrit-review.googlesource.com/Documentation/user-signedoffby.html
-[9]: https://github.com/subsurface/subsurface/Documentation/images/Screenshot-gitk-subsurface-1.png "Example with gitk"
-[10]: https://github.com/Subsurface/subsurface/blob/master/CODINGSTYLE.md
+[9]: https://github.com/subsurface/subsurface/blob/master/Documentation/images/Screenshot-gitk-subsurface-1.png "Example with gitk"
+[10]: https://github.com/subsurface/subsurface/blob/master/CODINGSTYLE.md
 [11]: https://en.wikipedia.org/wiki/Imperative_mood

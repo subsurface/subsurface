@@ -6,9 +6,10 @@
 #include <QTextStream>
 
 #include "templatelayout.h"
-#include "mainwindow.h"
 #include "printoptions.h"
+#include "core/dive.h"
 #include "core/divelist.h"
+#include "core/gettextfromc.h"
 #include "core/selection.h"
 #include "core/tag.h"
 #include "core/qthelper.h"

@@ -13,11 +13,13 @@ private slots:
 	void init();
 	void cleanup();
 
-	int parseCSV(int, std::string);
+	int parseCSV(int, std::string, int);
 	int parseDivingLog();
 	int parseV2NoQuestion();
 	int parseV3();
 	void testParse();
+	void testParseTsv();
+	void testParseCsv();
 	void testParseTankSensors();
 
 	void testParseDM4();
@@ -34,7 +36,10 @@ private slots:
 	int parseCSVprofile(int, std::string);
 	void exportCSVDiveProfile();
 	void exportUDDF();
+	void exportDiveSitesXML();
+	void exportKML();
 	void importUDDF();
+	void exportDiveLogsDE();
 
 	void parseDL7();
 
@@ -45,6 +50,12 @@ private slots:
 	void importDlfFreedomMixV2();
 	void importDlfFreedomMix2V2();
 	void importDlfFreedomMix2V2FactoryTest();
+
+	void importSuuntoJsonNautic();
+	void importSuuntoJsonEonCore();
+	void importSuuntoJsonOcean();
+	void importSuuntoJsonOceanNoFit();
+	void importSuuntoJsonOceanWithFit();
 private:
 	sqlite3 *_sqlite3_handle = NULL;
 };

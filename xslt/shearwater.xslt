@@ -115,8 +115,8 @@
 
         <extradata key="startBatteryVoltage" value="{startBatteryVoltage}"/>
         <extradata key="endBatteryVoltage" value="{endBatteryVoltage}"/>
-        <extradata key="computerFirmware" value="{computerFirmware}"/>
-        <extradata key="computerSerial" value="{computerSerial}"/>
+        <extradata key="FW Version" value="{computerFirmware}"/>
+        <extradata key="Serial" value="{computerSerial}"/>
         <extradata key="computerSoftwareVersion" value="{computerSoftwareVersion}"/>
         <extradata key="computerModel" value="{computerModel}"/>
         <extradata key="logVersion" value="{logVersion}"/>

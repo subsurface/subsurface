@@ -20,6 +20,7 @@ cd subsurface
 git submodule init
 git submodule update
 
+BUILDNUMBER=$(bash scripts/get-version.sh 1)
 GITVERSION=$(bash scripts/get-version.sh 4)
 GITDATE=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
 LIBDCREVISION=$(cd libdivecomputer ; git rev-parse --verify HEAD)
@@ -54,7 +55,7 @@ if [[ ! -d $FOLDER ]]; then
 	cp -a ../../googlemaps .
 
 	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
-	echo "$GITVERSION" > .gitversion
+	echo "$BUILDNUMBER" > latest-subsurface-buildnumber
 	echo "$GITDATE" > .gitdate
 	echo "$LIBDCREVISION" > libdivecomputer/revision
 
@@ -99,19 +100,39 @@ else
 fi
 
 cp debian/changelog ../changelog$SUFFIX
+cp debian/control ../control$SUFFIX
 
 debuild -S -d
 
 # create builds for the newer Ubuntu releases that Launchpad supports
 #
 rel=focal
-others="jammy noble oracular plucky"
-for next in $others
-do
+others="jammy noble"
+others_nowebkit="questing resolute"
+
+build() {
+	local next="$1"
+
 	sed -i "s/${rel}/${next}/g" debian/changelog
 	debuild -S -d
 	rel=$next
+}
+
+# older ubuntu releases have libqt5webkit5-dev, so use that
+for next in $others
+do
+	build "$next"
 done
+
+# newer ubuntu releases no longer have libqt5webkit5-dev, so drop the dependency
+sed -i '/libqt5webkit5-dev/d' debian/control
+sed -i -re 's/NO_(PRINTING|USERMANUAL)=OFF/NO_\1=ON/g' debian/rules
+
+for next in $others_nowebkit
+do
+	build "$next"
+done
+
 if [ -f debian/control.bak ] ; then
 	mv debian/control.bak debian/control
 fi
@@ -119,8 +140,39 @@ fi
 cd ..
 
 if [[ "$1" = "current" ]] ; then
-	# this is a current release
-	dput ppa:subsurface/subsurface "$FOLDER-$rev"~*.changes
+	PPA="ppa:subsurface/subsurface"
 else
-	dput ppa:subsurface/subsurface-daily "$FOLDER-$rev"~*.changes
+	PPA="ppa:subsurface/subsurface-daily"
+fi
+
+# Upload each distro variant separately so that orig.tar.xz is included in
+# every batch.
+# Launchpad's FTP upload endpoint randomly returns transient 550 errors
+# ("Requested action not taken: internal server error"), so retry each
+# upload a few times with linear backoff before giving up. After all
+# uploads have been attempted, error out at the end if one or more
+# definitively failed.
+failed=""
+max_attempts=5
+for f in "${FOLDER}-${rev}"~*.changes; do
+	attempt=1
+	while : ; do
+		rm -f ~/.dput.log
+		if dput "$PPA" "$f"; then
+			break
+		fi
+		if [ "$attempt" -ge "$max_attempts" ]; then
+			echo "WARNING: dput failed for $f after $attempt attempts"
+			failed="$failed $f"
+			break
+		fi
+		delay=$((attempt * 30))
+		echo "dput failed for $f (attempt $attempt/$max_attempts), retrying in ${delay}s..."
+		sleep "$delay"
+		attempt=$((attempt + 1))
+	done
+done
+if [ -n "$failed" ]; then
+	echo "The following uploads failed:$failed"
+	exit 1
 fi

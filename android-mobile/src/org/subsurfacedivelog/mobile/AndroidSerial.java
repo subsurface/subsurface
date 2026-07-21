@@ -152,7 +152,7 @@ public class AndroidSerial {
 			UsbDeviceConnection connection = manager.openDevice(usbDevice);
 
 			if (connection == null) {
-				manager.requestPermission(usbDevice, PendingIntent.getBroadcast(context, 0, new Intent("org.subsurfacedivelog.mobile.USB_PERMISSION"), 0));
+				manager.requestPermission(usbDevice, PendingIntent.getBroadcast(context, 0, new Intent("org.subsurfacedivelog.mobile.USB_PERMISSION"), PendingIntent.FLAG_IMMUTABLE));
 				Log.w(TAG, "Could not open device. Requesting permission.");
 				return null;
 			}

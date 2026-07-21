@@ -1,4 +1,4 @@
-DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_nl mobile-manual-v3 mobile-manual_es mobile-manual_fr
+DOCNAMES = user-manual user-manual_es user-manual_fr user-manual_nl user-manual_de mobile-manual-v3 mobile-manual_es mobile-manual_fr mobile-manual_de
 
 OUT ?= output
 
@@ -6,19 +6,41 @@ HTMLDOCS = $(patsubst %,$(OUT)/%.html,$(DOCNAMES))
 TEXTDOCS = $(patsubst %,$(OUT)/%.text,$(DOCNAMES))
 PDFDOCS = $(patsubst %,$(OUT)/%.pdf,$(DOCNAMES))
 
-ASCIIDOC = asciidoc
-A2X = a2x
+ASCIIDOC = asciidoctor
+A2X = asciidoctor-pdf
 BROWSER = firefox
 THEME = compact_subsurface
 PWD = $(realpath .)
 
-.PHONY: all doc show clean
+# Track the last commit hash affecting Documentation/ (not the version string)
+# FORCE ensures this rule always runs to check for git changes
+.latest_change_git_hash: FORCE
+	@NEW_HASH=$$(git log -1 --pretty=format:%H . 2>/dev/null || echo "unknown"); \
+	CURRENT=$$(cat $@ 2>/dev/null || echo ""); \
+	if [ "$$NEW_HASH" != "$$CURRENT" ]; then \
+		echo "$$NEW_HASH" > $@; \
+	fi
 
-.NOTPARALLEL:
+# Rebuild version file only when Documentation/ commit history changes
+.latest_change_version: .latest_change_git_hash
+	@git log -1 --pretty=format:%H . 2>/dev/null | xargs ../scripts/get-version-for-changeset.sh > $@ 2>/dev/null || echo "<unknown>" > $@
+
+# Read version from cache (fast; .latest_change_version regenerates when git state changes)
+VERSION = $(shell test -f .latest_change_version && cat .latest_change_version || echo "<unknown>")
+VERSION_DATE = $(shell git log -1 --pretty=format:%ad --date=short . 2>/dev/null || echo "<unknown>")
+DISPLAY_VERSION = $(VERSION)
+ifeq ($(DISPLAY_VERSION),<unknown>)
+DISPLAY_VERSION = &lt;unknown&gt;
+endif
+
+VERSION_OPTIONS := -a version="$(DISPLAY_VERSION)" -a version-date="$(VERSION_DATE)"
+ASCIIDOC_OPTIONS = -a toc=left -a themedir=$(PWD) -a theme=$(THEME) --failure-level=WARN $(VERSION_OPTIONS)
+
+.PHONY: all doc show clean
 
 mkdir = @mkdir -p $(@D)
 
-all: $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
+all: .latest_change_version $(HTMLDOCS) $(TEXTDOCS) $(PDFDOCS)
 
 doc: $(HTMLDOCS)
 
@@ -27,32 +49,17 @@ $(OUT)/images: images mobile-images
 	@cp -r images $(OUT)/
 	@cp -r mobile-images $(OUT)/
 
-$(OUT)/%.text: %.txt
+$(OUT)/%.text: $(OUT)/%.html
 	$(mkdir)
-	@VERSION=$(shell git log -1 --pretty=format:%H $< | xargs ../scripts/get-version-for-changeset.sh); \
-	if [ -z "$$VERSION" ]; then \
-		VERSION="pre-6.0.0"; \
-	fi; \
-	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
-	$(A2X) -f text -a version=$$VERSION -a version-date=$$VERSION_DATE --destination-dir=$(OUT)/ $<
+	w3m -dump -T text/html $< > $@
 
-$(OUT)/%.pdf: %.txt
+$(OUT)/%.pdf: %.txt .latest_change_version
 	$(mkdir)
-	@VERSION=$(shell git log -1 --pretty=format:%H $< | xargs ../scripts/get-version-for-changeset.sh); \
-	if [ -z "$$VERSION" ]; then \
-		VERSION="pre-6.0.0"; \
-	fi; \
-	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
-	$(A2X) --dblatex-opts "-P latex.output.revhistory=0" -f pdf -a version=$$VERSION -a version-date=$$VERSION_DATE --destination-dir=$(OUT)/ $<
+	$(A2X) $(VERSION_OPTIONS) --failure-level=WARN -o $(OUT)/$(basename $(notdir $<)).pdf $<
 
-$(OUT)/%.html: %.txt | $(OUT)/images
+$(OUT)/%.html: %.txt .latest_change_version | $(OUT)/images
 	$(mkdir)
-	@VERSION=$(shell git log -1 --pretty=format:%H $< | xargs ../scripts/get-version-for-changeset.sh); \
-	if [ -z "$$VERSION" ]; then \
-		VERSION="pre-6.0.0"; \
-	fi; \
-	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
-	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -a version=$$VERSION -a version-date=$$VERSION_DATE -o $@ $<
+	$(ASCIIDOC) $(ASCIIDOC_OPTIONS) -a toc-position=left -o $@ $<
 
 # for the web facing version of the desktop manual, just use the post-processing script
 user-manual.html.wp: $(OUT)/user-manual.html
@@ -63,19 +70,17 @@ user-manual.html.wp: $(OUT)/user-manual.html
 # the table of context and then post process
 mobile-manual-v3.html.wp: mobile-manual-v3.txt
 	$(mkdir)
-	@VERSION=$(shell git log -1 --pretty=format:%H $< | xargs ../scripts/get-version-for-changeset.sh); \
-	if [ -z "$$VERSION" ]; then \
-		VERSION="pre-6.0.0"; \
-	fi; \
-	VERSION_DATE=$(shell git log -1 --pretty=format:%ad --date=short $<); \
-	$(ASCIIDOC) -a toc -a toclevels=1 -a themedir=$(PWD) -a theme=$(THEME) -a version="$$VERSION" -a version-date="$$VERSION_DATE" -o $(<:%.txt=%.html.tmp) $< && \
-		bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp) && \
-		rm $(<:%.txt=%.html.tmp) && \
-		mv $(<:%.txt=%.html.tmp.wp) $(OUT)/$@
+	$(ASCIIDOC) $(ASCIIDOC_OPTIONS) -a toclevels=1 -o $(<:%.txt=%.html.tmp) $<
+	bash ../scripts/prep-manual.sh $(<:%.txt=%.html.tmp)
+	$(RM) $(<:%.txt=%.html.tmp)
+	mv $(<:%.txt=%.html.tmp.wp) $(OUT)/$@
 
 show: $(HTMLDOC)
 	$(BROWSER) $<
 
 clean:
-	rm -f *~ *.xml docbook-xsl.css
-	rm -rf $(OUT)/
+	$(RM) *~ *.xml docbook-xsl.css .latest_change_version .latest_change_git_hash
+	$(RM) -r $(OUT)/
+
+.PHONY: FORCE
+FORCE:

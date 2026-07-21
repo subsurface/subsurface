@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
-import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.12
-import org.kde.kirigami 2.4 as Kirigami
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import org.kde.kirigami as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 TemplatePage {
@@ -142,10 +142,13 @@ TemplatePage {
 			id: sectionTheme
 			title: qsTr("Theme")
 			width: parent.width
+			// add maxColWidth constraint to prevent swatches from overflowing in narrow columns
+			// labels should elide if space is tight
 			GridLayout {
 				visible: sectionTheme.isExpanded
 				columns: 2
 				width: parent.width
+				property real maxColWidth: Math.floor((width - columnSpacing) / 2)
 				TemplateLabel {
 					text: qsTr("Color theme")
 					font.pointSize: subsurfaceTheme.headingPointSize
@@ -171,25 +174,31 @@ TemplatePage {
 				Rectangle {
 					color: 	subsurfaceTheme.backgroundColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("background")
 						color: subsurfaceTheme.textColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				Rectangle {
 					color: subsurfaceTheme.backgroundColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("text")
 						color: subsurfaceTheme.textColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				Rectangle {
@@ -197,13 +206,16 @@ TemplatePage {
 					border.color: "black"
 					color: 	subsurfaceTheme.primaryColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("primary")
 						color: subsurfaceTheme.primaryTextColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				Rectangle {
@@ -211,13 +223,16 @@ TemplatePage {
 					border.color: "black"
 					color: subsurfaceTheme.primaryTextColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("primary text")
 						color: subsurfaceTheme.primaryColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				Rectangle {
@@ -225,13 +240,16 @@ TemplatePage {
 					border.color: "black"
 					color: 	subsurfaceTheme.darkerPrimaryColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("darker primary")
 						color: subsurfaceTheme.darkerPrimaryTextColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				Rectangle {
@@ -239,13 +257,16 @@ TemplatePage {
 					border.color: "black"
 					color: subsurfaceTheme.darkerPrimaryTextColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("darker primary text")
 						color: subsurfaceTheme.darkerPrimaryColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				Rectangle {
@@ -253,13 +274,16 @@ TemplatePage {
 					border.color: "black"
 					color: 	subsurfaceTheme.lightPrimaryColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("light primary")
 						color: subsurfaceTheme.lightPrimaryTextColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				Rectangle {
@@ -267,13 +291,16 @@ TemplatePage {
 					border.color: "black"
 					color: subsurfaceTheme.lightPrimaryTextColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("light primary text")
 						color: subsurfaceTheme.lightPrimaryColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				TemplateLabel {
@@ -284,13 +311,16 @@ TemplatePage {
 					border.color: "black"
 					color: subsurfaceTheme.secondaryTextColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("secondary text")
 						color: subsurfaceTheme.primaryColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				Rectangle {
@@ -298,13 +328,16 @@ TemplatePage {
 					border.color: "black"
 					color: 	subsurfaceTheme.drawerColor
 					Layout.fillWidth: true
+					Layout.maximumWidth: parent.maxColWidth
 					Layout.preferredHeight: 2 * Kirigami.Units.gridUnit
 					TemplateLabel {
 						text: qsTr("drawer")
 						color: subsurfaceTheme.textColor
 						colorBackground: parent.color
-						anchors.horizontalCenter: parent.horizontalCenter
-						anchors.verticalCenter: parent.verticalCenter
+						anchors.centerIn: parent
+						width: parent.width - Kirigami.Units.smallSpacing * 2
+						elide: Text.ElideRight
+						horizontalAlignment: Text.AlignHCenter
 					}
 				}
 				TemplateLabel {
@@ -320,6 +353,7 @@ TemplatePage {
 				}
 				Flow {
 					Layout.columnSpan: 2
+					Layout.fillWidth: true
 					spacing: Kirigami.Units.largeSpacing
 					TemplateButton {
 						text: qsTr("very small")
@@ -332,7 +366,6 @@ TemplatePage {
 					}
 					TemplateButton {
 						text: qsTr("small")
-						Layout.fillWidth: true
 						fontSize: subsurfaceTheme.regularPointSize / subsurfaceTheme.currentScale * 0.85
 						enabled: subsurfaceTheme.currentScale !== 0.85
 						onClicked: {
@@ -342,7 +375,6 @@ TemplatePage {
 					}
 					TemplateButton {
 						text: qsTr("regular")
-						Layout.fillWidth: true
 						fontSize: subsurfaceTheme.regularPointSize / subsurfaceTheme.currentScale * 0.85
 						enabled: subsurfaceTheme.currentScale !== 1.0
 						onClicked: {
@@ -352,7 +384,6 @@ TemplatePage {
 					}
 					TemplateButton {
 						text: qsTr("large")
-						Layout.fillWidth: true
 						fontSize: subsurfaceTheme.regularPointSize / subsurfaceTheme.currentScale * 1.15
 						enabled: subsurfaceTheme.currentScale !== 1.15
 						onClicked: {
@@ -362,7 +393,6 @@ TemplatePage {
 					}
 					TemplateButton {
 						text: qsTr("very large")
-						Layout.fillWidth: true
 						fontSize: subsurfaceTheme.regularPointSize / subsurfaceTheme.currentScale * 1.3
 						enabled: subsurfaceTheme.currentScale !== 1.3
 						onClicked: {
@@ -645,7 +675,7 @@ TemplatePage {
 					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gflow
-					validator: RegExpValidator { regExp: /1?\d{0,2}%?/ }
+					validator: RegularExpressionValidator { regularExpression: /1?\d{0,2}%?/ }
 					textFromValue: function (value, locale) {
 						return value + "%"
 					}
@@ -679,7 +709,7 @@ TemplatePage {
 					to: 150
 					stepSize: 1
 					value: PrefTechnicalDetails.gfhigh
-					validator: RegExpValidator { regExp: /1?\d{0,2}%?/ }
+					validator: RegularExpressionValidator { regularExpression: /1?\d{0,2}%?/ }
 					textFromValue: function (value, locale) {
 						return value + "%"
 					}

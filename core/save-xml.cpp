@@ -9,7 +9,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <unistd.h>
 #include <fcntl.h>
 
 #include "device.h"
@@ -78,17 +77,11 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 
 static void blankout(std::string &s)
 {
-	for(char &c: s) {
-		switch (c) {
-		case 'A'...'Z':
+	for (char &c: s) {
+		if (c >= 'A' && c <= 'Z')
 			c = 'X';
-			break;
-		case 'a'...'z':
+		else if (c >= 'a' && c <= 'z')
 			c = 'x';
-			break;
-		default:
-			;
-		}
 	}
 }
 
@@ -404,9 +397,8 @@ static void show_date(struct membuffer *b, timestamp_t when)
 
 	put_format(b, " date='%04u-%02u-%02u'",
 		   tm.tm_year, tm.tm_mon + 1, tm.tm_mday);
-	if (tm.tm_hour || tm.tm_min || tm.tm_sec)
-		put_format(b, " time='%02u:%02u:%02u'",
-			   tm.tm_hour, tm.tm_min, tm.tm_sec);
+	put_format(b, " time='%02u:%02u:%02u'",
+		   tm.tm_hour, tm.tm_min, tm.tm_sec);
 }
 
 static void save_samples(struct membuffer *b, const struct divecomputer &dc)
@@ -500,7 +492,7 @@ void save_one_dive_to_mb(struct membuffer *b, const struct dive &dive, bool anon
 		put_format(b, " sac='%d.%03d l/min'", FRACTION_TUPLE(dive.sac, 1000));
 	if (dive.otu)
 		put_format(b, " otu='%d'", dive.otu);
-	if (dive.maxcns)
+	if (dive.maxcns > 0)
 		put_format(b, " cns='%d%%'", dive.maxcns);
 
 	save_tags(b, dive.tags);
@@ -626,6 +618,25 @@ static void save_filter_presets(struct membuffer *b)
 	put_format(b, "</filterpresets>\n");
 }
 
+static void save_one_dive_site(struct membuffer *b, const struct dive_site &ds, bool anonymize)
+{
+	put_format(b, "<site uuid='%8x'", ds.uuid);
+	show_utf8_blanked(b, ds.name.c_str(), " name='", "'", 1, anonymize);
+	put_location(b, &ds.location, " gps='", "'");
+	show_utf8_blanked(b, ds.description.c_str(), " description='", "'", 1, anonymize);
+	put_format(b, ">\n");
+	show_utf8_blanked(b, ds.notes.c_str(), "  <notes>", " </notes>\n", 0, anonymize);
+	for (const auto &t: ds.taxonomy) {
+		if (t.category != TC_NONE && !t.value.empty()) {
+			put_format(b, "  <geo cat='%d'", t.category);
+			put_format(b, " origin='%d'", t.origin);
+			show_utf8_blanked(b, t.value.c_str(), " value='", "'", 1, anonymize);
+			put_format(b, "/>\n");
+		}
+	}
+	put_format(b, "</site>\n");
+}
+
 static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonymize)
 {
 	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", dataformat_version);
@@ -653,21 +664,7 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 		if (select_only && !ds->is_selected())
 			continue;
 
-		put_format(b, "<site uuid='%8x'", ds->uuid);
-		show_utf8_blanked(b, ds->name.c_str(), " name='", "'", 1, anonymize);
-		put_location(b, &ds->location, " gps='", "'");
-		show_utf8_blanked(b, ds->description.c_str(), " description='", "'", 1, anonymize);
-		put_format(b, ">\n");
-		show_utf8_blanked(b, ds->notes.c_str(), "  <notes>", " </notes>\n", 0, anonymize);
-		for (auto const &t: ds->taxonomy) {
-			if (t.category != TC_NONE && !t.value.empty()) {
-				put_format(b, "  <geo cat='%d'", t.category);
-				put_format(b, " origin='%d'", t.origin);
-				show_utf8_blanked(b, t.value.c_str(), " value='", "'", 1, anonymize);
-				put_format(b, "/>\n");
-			}
-		}
-		put_format(b, "</site>\n");
+		save_one_dive_site(b, *ds, anonymize);
 	}
 	put_format(b, "</divesites>\n<dives>\n");
 	for (auto &trip: divelog.trips)
@@ -714,7 +711,6 @@ static void save_backup(const char *name, const char *ext, const char *new_ext)
 		return;
 	if (name[len - 1] != '.')
 		return;
-	/* msvc doesn't have strncasecmp, has _strnicmp instead - crazy */
 	if (strncasecmp(name + len, ext, a))
 		return;
 
@@ -785,23 +781,13 @@ int save_dives_logic(const char *filename, const bool select_only, bool anonymiz
 // This is executed in a separate thread with QtConcurrent::run
 // so we don't have access to NotificationWidget
 
-static std::pair<int, std::string> export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize);
-
-std::pair<int, std::string> export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt, bool anonymize)
-{
-	struct xml_params *params = alloc_xml_params();
-	auto ret = export_dives_xslt_doit(filename, params, selected, units, export_xslt, anonymize);
-	free_xml_params(params);
-	return ret;
-}
-
-static std::pair<int, std::string> export_dives_xslt_doit(const char *filename, struct xml_params *params, bool selected, int units, const char *export_xslt, bool anonymize)
+static std::pair<int, std::string> transform_xslt(const char *filename, struct membuffer &buf,
+		struct xml_params *params, const char *export_xslt)
 {
 	FILE *f;
-	membuffer buf;
 	xmlDoc *doc;
 	xsltStylesheetPtr xslt = NULL;
-	xmlDoc *transformed;
+	xmlDoc *transformed = NULL;
 	auto res = std::make_pair(0, std::string());
 
 	if (verbose)
@@ -809,9 +795,6 @@ static std::pair<int, std::string> export_dives_xslt_doit(const char *filename, 
 
 	if (!filename)
 		return std::make_pair(-1, translate("gettextFromC", "No filename for export"));
-
-	/* Save XML to file and convert it into a memory buffer */
-	save_dives_buffer(&buf, selected, anonymize);
 
 	/*
 	 * Parse the memory buffer into XML document and
@@ -824,20 +807,30 @@ static std::pair<int, std::string> export_dives_xslt_doit(const char *filename, 
 
 	/* Convert to export format */
 	xslt = get_stylesheet(export_xslt);
-	if (!xslt)
+	if (!xslt) {
+		xmlFreeDoc(doc);
 		return std::make_pair(-1, translate("gettextFromC", "Failed to open export conversion stylesheet"));
-
-	xml_params_add_int(params, "units", units);
+	}
 
 	transformed = xsltApplyStylesheet(xslt, doc, xml_params_get(params));
 	xmlFreeDoc(doc);
+	if (!transformed) {
+		xsltFreeStylesheet(xslt);
+		return std::make_pair(-1, translate("gettextFromC", "Failed to transform XML for export"));
+	}
 
 	/* Write the transformed export to file */
 	f = subsurface_fopen(filename, "w");
 	if (f) {
-		xsltSaveResultToFile(f, transformed, xslt);
-		fclose(f);
-		/* Check write errors? */
+		int write_result = xsltSaveResultToFile(f, transformed, xslt);
+		int write_error = write_result < 0 ? errno : 0;
+		int close_result = fclose(f);
+		int close_error = close_result != 0 ? errno : 0;
+		if (write_result < 0 || close_result != 0) {
+			int error = close_error ? close_error : write_error;
+			res = std::make_pair(-1, format_string_std(translate("gettextFromC", "Failed to write %s (%s)"), filename,
+					strerror(error ? error : EIO)));
+		}
 	} else {
 		res = std::make_pair(-1, format_string_std(translate("gettextFromC", "Failed to open %s for writing (%s)"), filename, strerror(errno)));
 	}
@@ -847,55 +840,28 @@ static std::pair<int, std::string> export_dives_xslt_doit(const char *filename, 
 	return res;
 }
 
-static void save_dive_sites_buffer(struct membuffer *b, const struct dive_site *sites[], int nr_sites, bool anonymize)
-{
-	int i;
-	put_format(b, "<divesites program='subsurface' version='%d'>\n", dataformat_version);
-
-	/* save the dive sites */
-	for (i = 0; i < nr_sites; i++) {
-		const struct dive_site *ds = sites[i];
-
-		put_format(b, "<site uuid='%8x'", ds->uuid);
-		show_utf8_blanked(b, ds->name.c_str(), " name='", "'", 1, anonymize);
-		put_location(b, &ds->location, " gps='", "'");
-		show_utf8_blanked(b, ds->description.c_str(), " description='", "'", 1, anonymize);
-		put_format(b, ">\n");
-		show_utf8_blanked(b, ds->notes.c_str(), "  <notes>", " </notes>\n", 0, anonymize);
-		for (const auto &t: ds->taxonomy) {
-			if (t.category != TC_NONE && !t.value.empty()) {
-				put_format(b, "  <geo cat='%d'", t.category);
-				put_format(b, " origin='%d'", t.origin);
-				show_utf8_blanked(b, t.value.c_str(), " value='", "'", 1, anonymize);
-				put_format(b, "/>\n");
-			}
-		}
-		put_format(b, "</site>\n");
-	}
-	put_format(b, "</divesites>\n");
-}
-
-int save_dive_sites_logic(const char *filename, const struct dive_site *sites[], int nr_sites, bool anonymize)
+std::pair<int, std::string> export_dives_xslt(const char *filename, const bool selected, const int units,
+		const char *export_xslt, bool anonymize)
 {
 	membuffer buf;
-	FILE *f;
-	int error = 0;
+	xml_params params;
+	save_dives_buffer(&buf, selected, anonymize);
+	xml_params_add_int(&params, "units", units);
+	return transform_xslt(filename, buf, &params, export_xslt);
+}
 
-	save_dive_sites_buffer(&buf, sites, nr_sites, anonymize);
+std::pair<int, std::string> export_dive_sites_xslt(const char *filename,
+		const std::vector<const dive_site *> &sites, const char *export_xslt, bool anonymize)
+{
+	membuffer buf;
+	xml_params params;
 
-	if (same_string(filename, "-")) {
-		f = stdout;
-	} else {
-		try_to_backup(filename);
-		error = -1;
-		f = subsurface_fopen(filename, "w");
+	// Build a sites-only SSRF document using the same serializer as the native log format.
+	put_format(&buf, "<divelog program='subsurface' version='%d'>\n<divesites>\n", dataformat_version);
+	for (const dive_site *site: sites) {
+		if (site && !site->is_empty())
+			save_one_dive_site(&buf, *site, anonymize);
 	}
-	if (f) {
-		flush_buffer(&buf, f);
-		error = fclose(f);
-	}
-	if (error)
-		report_error(translate("gettextFromC", "Failed to save divesites to %s (%s)"), filename, strerror(errno));
-
-	return error;
+	put_format(&buf, "</divesites>\n</divelog>\n");
+	return transform_xslt(filename, buf, &params, export_xslt);
 }

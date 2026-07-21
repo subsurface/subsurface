@@ -1,0 +1,36 @@
+From 1657a37a204077701e83b2b08ca9e2f26775f501 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Sat, 14 Mar 2026 03:10:45 -0700
+Subject: [PATCH] DefaultPageTitleDelegate: use explicit Kirigami theme text
+ color
+
+The Material onSync handler may not re-fire when the header theme
+textColor binding updates (e.g. when __appWindow resolves after
+initial construction). This leaves Material.foreground at the
+system default, causing black title text on dark header backgrounds
+when the device is in dark mode but the app uses a light theme.
+
+Explicitly bind the Heading color to Kirigami.Theme.textColor so
+it updates reactively without depending on onSync.
+---
+ src/controls/private/DefaultPageTitleDelegate.qml | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/controls/private/DefaultPageTitleDelegate.qml b/src/controls/private/DefaultPageTitleDelegate.qml
+index 0fdb00fb..ee9f5cca 100644
+--- a/src/controls/private/DefaultPageTitleDelegate.qml
++++ b/src/controls/private/DefaultPageTitleDelegate.qml
+@@ -29,6 +29,10 @@ Item {
+         id: heading
+ 
+         anchors.fill: parent
++        // Explicitly bind to Kirigami theme color so the title updates
++        // reactively. Without this, Material.foreground (set by onSync)
++        // may retain a stale value from before the header theme resolved.
++        color: Kirigami.Theme.textColor
+         maximumLineCount: 1
+         elide: Text.ElideRight
+         textFormat: Text.PlainText
+-- 
+2.51.1
+

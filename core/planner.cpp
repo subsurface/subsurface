@@ -5,11 +5,6 @@
  *
  * (c) Dirk Hohndel 2013
  */
-#include <stdlib.h>
-#include <assert.h>
-#include <unistd.h>
-#include <ctype.h>
-#include <string.h>
 #include "dive.h"
 #include "divelist.h" // for init_decompression()
 #include "divelog.h"
@@ -20,16 +15,24 @@
 #include "event.h"
 #include "interpolate.h"
 #include "planner.h"
+#include "pref.h"
 #include "range.h"
 #include "subsurface-time.h"
 #include "gettext.h"
 #include "libdivecomputer/parser.h"
-#include "qthelper.h"
 #include "version.h"
+
+#include <stdlib.h>
+#include <assert.h>
+#include <ctype.h>
+#include <string.h>
 
 //#define DEBUG_PLAN 255
 
 static constexpr int base_timestep = 2; // seconds
+
+static constexpr int BACKGAS_BREAK_O2_DURATION_SECONDS = 12 * 60;
+static constexpr int BACKGAS_BREAK_DURATION_SECONDS = 6 * 60;
 
 static std::vector<depth_t> decostoplevels_metric = { 0_m, 3_m, 6_m, 9_m, 12_m, 15_m, 18_m, 21_m, 24_m, 27_m,
 					30_m, 33_m, 36_m, 39_m, 42_m, 45_m, 48_m, 51_m, 54_m, 57_m,
@@ -144,7 +147,7 @@ static int tissue_at_end(struct deco_state *ds, struct dive *dive, const struct 
 		 * portion of the dive.
 		 * Remember the value for later.
 		 */
-		if ((decoMode(true) == VPMB) && (lastdepth.mm > sample.depth.mm)) {
+		if ((pref_deco_mode(true) == VPMB) && (lastdepth.mm > sample.depth.mm)) {
 			pressure_t ceiling_pressure;
 			nuclear_regeneration(ds, t0.seconds);
 			vpmb_start_gradient(ds);
@@ -344,7 +347,7 @@ struct gaschanges {
 	int gasidx;
 };
 
-// Return new setpoint if cylinderi is a setpoint change an 0 if not
+// Return new setpoint if cylinderid is a setpoint change and 0 if not
 
 static int setpoint_change(struct dive *dive, int cylinderid)
 {
@@ -517,7 +520,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, depth_t trial_dep
 		add_segment(ds, dive->depth_to_bar(trial_depth),
 			    gasmix,
 			    wait_time, po2, divemode, prefs.decosac, true);
-	if (decoMode(true) == VPMB) {
+	if (pref_deco_mode(true) == VPMB) {
 		double tolerance_limit = tissue_tolerance_calc(ds, dive, dive->depth_to_bar(stoplevel), true);
 		update_regression(ds, dive);
 		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1).mm > stoplevel.mm) {
@@ -535,7 +538,7 @@ static bool trial_ascent(struct deco_state *ds, int wait_time, depth_t trial_dep
 			    gasmix,
 			    base_timestep, po2, divemode, prefs.decosac, true);
 		tolerance_limit = tissue_tolerance_calc(ds, dive, dive->depth_to_bar(trial_depth), true);
-		if (decoMode(true) == VPMB)
+		if (pref_deco_mode(true) == VPMB)
 			update_regression(ds, dive);
 		if (deco_allowed_depth(tolerance_limit, surface_pressure, dive, 1).mm > trial_depth.mm - deltad) {
 			/* We should have stopped */
@@ -704,9 +707,19 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	/* Find the gases available for deco */
 
 	bool inappropriate_cylinder_use = false;
-	std::vector<gaschanges> gaschanges = analyze_gaslist(diveplan, dive, dcNr, depth.mm, &best_first_ascend_cylinder, divemode == CCR && !prefs.dobailout, inappropriate_cylinder_use);
+	bool deco_on_loop = divemode == CCR && !(prefs.dobailout && pref_deco_mode(true) != RECREATIONAL);
+	std::vector<gaschanges> gaschanges = analyze_gaslist(diveplan, dive, dcNr, depth.mm, &best_first_ascend_cylinder, deco_on_loop, inappropriate_cylinder_use);
 	if (inappropriate_cylinder_use) {
 		error = PLAN_ERROR_INAPPROPRIATE_GAS;
+	}
+	if (divemode == CCR && prefs.dobailout && pref_deco_mode(true) != RECREATIONAL && best_first_ascend_cylinder == -1) {
+		error = PLAN_ERROR_NO_SUITABLE_BAILOUT_GAS;
+	}
+	if (prefs.doo2breaks) {
+		if (best_first_ascend_cylinder != -1 && get_o2(dive->get_cylinder(best_first_ascend_cylinder)->gasmix) <= 320)
+			break_cylinder = best_first_ascend_cylinder;
+		else
+			break_cylinder = 0;
 	}
 
 	/* Find the first potential decostopdepth above current depth */
@@ -725,7 +738,8 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	diveplan.surface_interval = tissue_at_end(ds, dive, dc, cache);
 	nuclear_regeneration(ds, clock);
 	vpmb_start_gradient(ds);
-	if (decoMode(true) == RECREATIONAL) {
+
+	if (pref_deco_mode(true) == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth.mm >= 10000;
 		track_ascent_gas(depth, dive, current_cylinder, avg_depth, bottom_time, safety_stop, divemode);
 		// How long can we stay at the current depth and still directly ascent to the surface?
@@ -777,6 +791,8 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 		return error;
 	}
 
+	// VPM-B or Buehlmann Deco
+
 	if (best_first_ascend_cylinder != -1 && best_first_ascend_cylinder != current_cylinder) {
 		current_cylinder = best_first_ascend_cylinder;
 		gas = dive->get_cylinder(current_cylinder)->gasmix;
@@ -787,9 +803,8 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 #endif
 	}
 
-	// VPM-B or Buehlmann Deco
 	tissue_at_end(ds, dive, dc, cache);
-	if ((divemode == CCR || divemode == PSCR) && prefs.dobailout) {
+	if (IS_REBREATHER_MODE(divemode) && prefs.dobailout) {
 		divemode = OC;
 		po2 = 0;
 		int bailoutsegment = std::max(prefs.min_switch_duration, 60 * prefs.problemsolvingtime);
@@ -811,7 +826,7 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	do {
 		if (decostoptable)
 			decostoptable->clear();
-		is_final_plan = (decoMode(true) == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
+		is_final_plan = (pref_deco_mode(true) == BUEHLMANN) || (previous_deco_time - ds->deco_time < 10);  // CVA time converges
 		if (ds->deco_time != 10000000)
 			vpmb_next_gradient(ds, ds->deco_time, diveplan.surface_pressure.mbar / 1000.0, true);
 
@@ -975,20 +990,15 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 
 				o2breaking = false;
 				stop_cylinder = current_cylinder;
-				if (prefs.doo2breaks && prefs.last_stop) {
-					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on
-					 * backgas.  This could be customized if there were demand.
+				if (prefs.doo2breaks) {
+					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on backgas.
+					 * Note: The backgas break interval will be reset in between deco stops, so after going from 6m to 3m a
+					 * full 12 minute / 6 minute interval on oxygen / backgas will be planned.
+					 * This behaviour could be optimised and customized if there was demand.
 					 */
-					if (break_cylinder == -1) {
-						if (best_first_ascend_cylinder != -1 && get_o2(dive->get_cylinder(best_first_ascend_cylinder)->gasmix) <= 320)
-							break_cylinder = best_first_ascend_cylinder;
-						else
-							break_cylinder = 0;
-					}
 					if (get_o2(dive->get_cylinder(current_cylinder)->gasmix) == 1000) {
-						if (laststoptime >= 12 * 60) {
-							laststoptime = 12 * 60;
-							new_clock = clock + laststoptime;
+						if (laststoptime >= BACKGAS_BREAK_O2_DURATION_SECONDS) {
+							laststoptime = BACKGAS_BREAK_O2_DURATION_SECONDS;
 							o2breaking = true;
 							o2break_next = true;
 							breakfrom_cylinder = current_cylinder;
@@ -998,9 +1008,8 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 							current_cylinder = break_cylinder;
 						}
 					} else if (o2break_next) {
-						if (laststoptime >= 6 * 60) {
-							laststoptime = 6 * 60;
-							new_clock = clock + laststoptime;
+						if (laststoptime >= BACKGAS_BREAK_DURATION_SECONDS) {
+							laststoptime = BACKGAS_BREAK_DURATION_SECONDS;
 							o2breaking  = true;
 							o2break_next = false;
 							if (is_final_plan)
@@ -1036,7 +1045,7 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	} while (!is_final_plan && error == PLAN_OK);
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0_m, current_cylinder, po2, false, divemode);
-	if (decoMode(true) == VPMB) {
+	if (pref_deco_mode(true) == VPMB) {
 		diveplan.eff_gfhigh = lrint(100.0 * regressionb(ds));
 		diveplan.eff_gflow = lrint(100.0 * (regressiona(ds) * first_stop_depth.mm + regressionb(ds)));
 	}

@@ -1,21 +1,26 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.11
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.11
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 SpinBox {
 	id: control
 	editable: true
 	font.pointSize: subsurfaceTheme.regularPointSize
 
+	FontMetrics {
+		id: spinFontMetrics
+		font: control.font
+	}
+
 	contentItem: TextInput {
 		z: 2
-		width: Kirigami.Units.gridUnit * 3
+		width: Math.max(Kirigami.Units.gridUnit * 3, Math.ceil(spinFontMetrics.height * 2))
 		text: control.textFromValue(control.value, control.locale)
 		font: control.font
-		color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.disabledTextColor
+		color: control.enabled ? subsurfaceTheme.textColor : subsurfaceTheme.secondaryTextColor
 		horizontalAlignment: Qt.AlignHCenter
 		verticalAlignment: Qt.AlignVCenter
 
@@ -26,15 +31,15 @@ SpinBox {
 
 	up.indicator: Rectangle {
 		x: control.mirrored ? 0 : parent.width - width
-		height: Kirigami.Units.gridUnit * 1.5
-		implicitWidth: Kirigami.Units.gridUnit
-		implicitHeight: Kirigami.Units.gridUnit
+		height: Math.max(Kirigami.Units.gridUnit * 1.5, Math.ceil(spinFontMetrics.height))
+		implicitWidth: Math.max(Kirigami.Units.gridUnit, Math.ceil(spinFontMetrics.height))
+		implicitHeight: Math.max(Kirigami.Units.gridUnit, Math.ceil(spinFontMetrics.height))
 		color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		border.color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		Text {
 			text: "+"
 			font.pixelSize: control.font.pixelSize * 1.5
-			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
+			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.secondaryTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter
@@ -44,15 +49,15 @@ SpinBox {
 
 	down.indicator: Rectangle {
 		x: control.mirrored ? parent.width - width : 0
-		height: Kirigami.Units.gridUnit * 1.5
-		implicitWidth: Kirigami.Units.gridUnit
-		implicitHeight: Kirigami.Units.gridUnit
+		height: Math.max(Kirigami.Units.gridUnit * 1.5, Math.ceil(spinFontMetrics.height))
+		implicitWidth: Math.max(Kirigami.Units.gridUnit, Math.ceil(spinFontMetrics.height))
+		implicitHeight: Math.max(Kirigami.Units.gridUnit, Math.ceil(spinFontMetrics.height))
 		color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		border.color: control.enabled ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 		Text {
 			text: "-"
 			font.pixelSize: control.font.pixelSize * 1.5
-			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.disabledTextColor
+			color: control.enabled ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.secondaryTextColor
 			anchors.fill: parent
 			fontSizeMode: Text.Fit
 			horizontalAlignment: Text.AlignHCenter

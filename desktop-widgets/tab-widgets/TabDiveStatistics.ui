@@ -10,9 +10,6 @@
     <height>304</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Statistics</string>
-  </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="verticalSpacing">
     <number>0</number>
@@ -67,7 +64,6 @@
          <property name="verticalSpacing">
           <number>0</number>
          </property>
-
          <item row="0" column="0">
           <widget class="QGroupBox" name="groupBoxb">
            <property name="title">

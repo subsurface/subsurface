@@ -74,23 +74,8 @@ static bool parseExif(QFile &f, struct metadata *metadata)
 	if (getBE<uint16_t>(f) != 0xffd8)
 		return false;
 	for (;;) {
-		switch (getBE<uint16_t>(f)) {
-		case 0xffc0:
-		case 0xffc2:
-		case 0xffc4:
-		case 0xffd0 ... 0xffd7:
-		case 0xffdb:
-		case 0xffdd:
-		case 0xffe0:
-		case 0xffe2 ... 0xffef:
-		case 0xfffe: {
-			uint16_t len = getBE<uint16_t>(f);
-			if (len < 2)
-				return false;
-			f.seek(f.pos() + len - 2); // TODO: switch to QFile::skip()
-			break;
-		}
-		case 0xffe1: {
+		uint16_t marker = getBE<uint16_t>(f);
+		if (marker == 0xffe1) {
 			uint16_t len = getBE<uint16_t>(f);
 			if (len < 2)
 				return false;
@@ -104,12 +89,19 @@ static bool parseExif(QFile &f, struct metadata *metadata)
 			metadata->location = create_location(exif.GeoLocation.Latitude, exif.GeoLocation.Longitude);
 			metadata->timestamp = exif.epoch();
 			return true;
-		}
-		case 0xffda:
-		case 0xffd9:
+		} else if (marker == 0xffda || marker == 0xffd9) {
 			// We expect EXIF data before any scan data
 			return false;
-		default:
+		} else if (marker == 0xffc0 || marker == 0xffc2 || marker == 0xffc4 ||
+			   (marker >= 0xffd0 && marker <= 0xffd7) ||
+			   marker == 0xffdb || marker == 0xffdd || marker == 0xffe0 ||
+			   (marker >= 0xffe2 && marker <= 0xffef) ||
+			   marker == 0xfffe) {
+			uint16_t len = getBE<uint16_t>(f);
+			if (len < 2)
+				return false;
+			f.seek(f.pos() + len - 2); // TODO: switch to QFile::skip()
+		} else {
 			return false;
 		}
 	}
@@ -284,8 +276,12 @@ static bool parseDate(const QString &s_in, timestamp_t &timestamp)
 	s.replace('-', ':');
 	QDateTime datetime = QDateTime::fromString(s, "yyyy:M:d h:m:s");
 	if (datetime.isValid()) {
-		// Not knowing any better, we suppose that time is give in UTC
-		datetime.setTimeSpec(Qt::UTC);
+		// Not knowing any better, we suppose that time is given in UTC
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+		datetime = QDateTime(datetime.date(), datetime.time(), QTimeZone(QTimeZone::UTC));
+#else
+		datetime = QDateTime(datetime.date(), datetime.time(), Qt::UTC);
+#endif
 		timestamp = dateTimeToTimestamp(datetime);
 		return true;
 	}
@@ -325,7 +321,11 @@ static bool parseDate(const QString &s_in, timestamp_t &timestamp)
 		return false;
 
 	// Not knowing any better, we suppose that time is give in UTC
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	datetime = QDateTime(date, time, QTimeZone(QTimeZone::UTC));
+#else
 	datetime = QDateTime(date, time, Qt::UTC);
+#endif
 	if (datetime.isValid()) {
 		timestamp = dateTimeToTimestamp(datetime);
 		return true;

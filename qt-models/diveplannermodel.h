@@ -41,6 +41,7 @@ public:
 	void cylinderRenumber(int mapping[]);
 	void removeSelectedPoints(const std::vector<int> &rows);
 	void setPlanMode(Mode mode);
+	void resetPlanState();
 	bool isPlanner() const;
 	void createSimpleDive(struct dive *d);
 	Mode currentMode() const;

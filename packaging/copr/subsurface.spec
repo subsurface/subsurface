@@ -1,21 +1,22 @@
 #
 # Fedora COPR spec file for package subsurface
 #
-# Copyright (c) 2014-2022 Dirk Hohndel
+# Copyright (c) 2014-2026 Dirk Hohndel
 #
 
 %define latestVersion 0.0.0.0
+%define packageRevision 1
 
 Name:           subsurface
 Version:	%latestVersion
-Release:        1%{?dist}
+Release:        %packageRevision%{?dist}
 
 Summary:        SUMMARY
 
 License:        GPL v2
 Url:            http://subsurface-divelog.org
 
-Source:		subsurface-%latestVersion.orig.tar.xz
+Source:		subsurface-%latestVersion-%packageRevision.orig.tar.xz
 
 Group:          Productivity/Other
 
@@ -23,7 +24,7 @@ BuildRequires:  desktop-file-utils
 BuildRequires:  fdupes
 BuildRequires:  gcc-c++
 BuildRequires:  make
-BuildRequires:  asciidoc
+BuildRequires:  asciidoctor
 BuildRequires:  autoconf
 BuildRequires:  automake
 BuildRequires:  libtool

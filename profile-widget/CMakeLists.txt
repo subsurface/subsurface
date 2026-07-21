@@ -27,6 +27,13 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 	tankitem.cpp
 	tankitem.h
 )
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
+set(SUBSURFACE_PROFILE_DIVEHANDLER
+	divehandler.cpp
+	divehandler.h
+)
+endif()
+
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 set(SUBSURFACE_PROFILE_LIB_SRCS
 	${SUBSURFACE_PROFILE_LIB_SRCS}
@@ -36,8 +43,7 @@ set(SUBSURFACE_PROFILE_LIB_SRCS
 else ()
 set(SUBSURFACE_PROFILE_LIB_SRCS
 	${SUBSURFACE_PROFILE_LIB_SRCS}
-	divehandler.cpp
-	divehandler.h
+	${SUBSURFACE_PROFILE_DIVEHANDLER}
 	profilewidget2.cpp
 	profilewidget2.h
 	ruleritem.cpp

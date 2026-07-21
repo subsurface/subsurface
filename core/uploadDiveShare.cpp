@@ -81,11 +81,16 @@ void uploadDiveShare::updateProgressSlot(qint64 current, qint64 total)
 
 void uploadDiveShare::uploadFinishedSlot()
 {
-	QByteArray html = reply->readAll();
-	reply->deleteLater();
+	if (!reply)
+		return;
 	timeout.stop();
-	if (reply->error() != 0)  {
-		emit uploadFinish(false, reply->errorString(), html);
+	QByteArray html = reply->readAll();
+	auto error = reply->error();
+	QString errorString = reply->errorString();
+	reply->deleteLater();
+	reply = nullptr;
+	if (error != QNetworkReply::NoError) {
+		emit uploadFinish(false, errorString, html);
 	} else {
 		emit uploadFinish(true, tr("Upload successful"), html);
 	}

@@ -8,7 +8,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <assert.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
@@ -32,6 +31,7 @@
 #include "membuffer.h"
 #include "picture.h"
 #include "qthelper.h"
+#include "string-format.h"
 #include "range.h"
 #include "sample.h"
 #include "tag.h"
@@ -516,6 +516,15 @@ static int match_state(const char *pattern, const char *name,
 	return 1;
 }
 
+#ifdef _MSC_VER
+// MSVC doesn't support GNU statement expressions ({ ... })
+// Type checking is done implicitly through the function pointer cast
+#define MATCH(pattern, fn, dest) \
+	match(pattern, name, (matchfn_t)(fn), buf, dest)
+
+#define MATCH_STATE(pattern, fn, dest) \
+	match_state(pattern, name, (matchfn_state_t)(fn), buf, dest, state)
+#else
 #define MATCH(pattern, fn, dest) ({ 			\
 	/* Silly type compatibility test */ 		\
 	if (0) (fn)("test", dest);			\
@@ -525,6 +534,7 @@ static int match_state(const char *pattern, const char *name,
 	/* Silly type compatibility test */ 		\
 	if (0) (fn)("test", dest, state);		\
 	match_state(pattern, name, (matchfn_state_t) (fn), buf, dest, state); })
+#endif
 
 static void get_index(const char *buffer, int *i)
 {
@@ -1146,10 +1156,8 @@ static degrees_t parse_degrees(const char *buf, const char **end)
 	} while (--decimals);
 
 	/* Rounding */
-	switch (*buf) {
-	case '5' ... '9':
+	if (*buf >= '5' && *buf <= '9')
 		value++;
-	}
 	while (isdigit(*buf))
 		buf++;
 
@@ -1732,47 +1740,18 @@ static void reset_all(struct parser_state *state)
 	state->import_source = parser_state::UNKNOWN;
 }
 
-/* divelog.de sends us xml files that claim to be iso-8859-1
- * but once we decode the HTML encoded characters they turn
- * into UTF-8 instead. So skip the incorrect encoding
- * declaration and decode the HTML encoded characters */
-static const char *preprocess_divelog_de(const char *buffer)
-{
-	const char *ret = strstr(buffer, "<DIVELOGSDATA>");
-
-	if (ret) {
-		xmlParserCtxtPtr ctx;
-		char buf[] = "";
-		size_t i;
-
-		for (i = 0; i < strlen(ret); ++i)
-			if (!isascii(ret[i]))
-				return buffer;
-
-		ctx = xmlCreateMemoryParserCtxt(buf, sizeof(buf));
-		ret = (char *)xmlStringLenDecodeEntities(ctx, (xmlChar *)ret, strlen(ret), XML_SUBSTITUTE_REF, 0, 0, 0);
-
-		return ret;
-	}
-	return buffer;
-}
-
 int parse_xml_buffer(const char *url, const char *buffer, int, struct divelog *log,
 				const struct xml_params *params)
 {
 	xmlDoc *doc;
-	const char *res = preprocess_divelog_de(buffer);
 	int ret = 0;
 	struct parser_state state;
 
 	state.log = log;
 	state.fingerprints = &fingerprints; // simply use the global table for now
-	doc = xmlReadMemory(res, strlen(res), url, NULL, XML_PARSE_HUGE);
+	doc = xmlReadMemory(buffer, strlen(buffer), url, NULL, XML_PARSE_HUGE);
 	if (!doc)
-		doc = xmlReadMemory(res, strlen(res), url, "latin1", XML_PARSE_HUGE);
-
-	if (res != buffer)
-		free((char *)res);
+		doc = xmlReadMemory(buffer, strlen(buffer), url, "latin1", XML_PARSE_HUGE);
 
 	if (!doc)
 		return report_error(translate("gettextFromC", "Failed to parse '%s'"), url);

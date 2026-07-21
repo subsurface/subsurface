@@ -4,7 +4,7 @@
 #include <QNetworkReply>
 #include <QHttpMultiPart>
 #include <QTimer>
-#include <QFile>
+#include "core/membuffer.h"
 
 class uploadDiveLogsDE : public QObject {
 	Q_OBJECT
@@ -18,6 +18,9 @@ private slots:
 	void uploadFinishedSlot();
 	void uploadTimeoutSlot();
 	void uploadErrorSlot(QNetworkReply::NetworkError error);
+	void loginFinishedSlot();
+	void loginTimeoutSlot();
+	void loginErrorSlot(QNetworkReply::NetworkError error);
 
 signals:
 	void uploadFinish(bool success, const QString &text);
@@ -27,13 +30,12 @@ signals:
 private:
 	uploadDiveLogsDE();
 
-	void uploadDives(const QString &filename, const QString &userid, const QString &password);
-	void cleanupTempFile();
+	void uploadDives(const QString &userid, const QString &password);
 
 	// only to be used in desktop-widgets::subsurfacewebservices
-	bool prepareDives(const QString &tempfile, bool selected);
+	bool prepareDives(bool selected);
 
-	QFile tempFile;
+	membuffer mb_json;
 	QNetworkReply *reply;
 	QHttpMultiPart *multipart;
 	QTimer timeout;

@@ -1,86 +1,105 @@
-# Instructions for building the Android package from source
+# Building Subsurface-mobile for Android
 
-## In a Container
+Use the pre-built Docker image that contains the NDK, SDK, Qt, and all pre-compiled native dependencies.
 
-The easiest way to build a .apk package for Android is to use
-our own docker image that has all of the build components
-pre-assembled.
+Initial setup:
 
-All it takes is this:
-
-```.sh
-export GIT_AUTHOR_NAME=<your name>
-export GIT_AUTHOR_EMAIL=<email to be used with github>
-
+```bash
 cd /some/path
 git clone https://github.com/subsurface/subsurface
 cd subsurface
 git submodule init
-git submodule update
-./packaging/android/docker-build.sh
+git submodule update --recursive
 ```
 
-_Caveat:_ With this build script `libdivecomputer` is pulled from git in the version specified in the submodule, so if you have changed `libdivecomputer` make sure to commit any changes and update the git submodule version before building.
+Now use `local-build.sh` in order to run builds inside the container. This
+mounts the Subsurface source tree as well as the build output trees as
+volumes, ensuring that builds are fully incremental and build artifacts are
+easy to analyze.
 
-This will result in Subsurface-mobile-VERSION.apk to be created in /some/path/subsurface/output/android/.
+The following directories are created as siblings of the source tree and
+persist between runs so that ninja, cmake and the autotools-based subbuilds
+can do incremental work:
 
-## On a Linux host
+- `/some/path/build-android` -- main Subsurface cmake/ninja build tree
+- `/some/path/kirigami-build-android` -- Kirigami build tree
+- `/some/path/googlemaps-android` -- googlemaps source checkout
+- `/some/path/googlemaps-build-android` -- googlemaps Qt plugin build tree
+- `/some/path/libdivecomputer-build-android` -- libdivecomputer build tree
+- `/some/path/install-root-arm64-v8a-android` -- install prefix for the
+  cross-compiled native libraries (OpenSSL, SQLite, libxml2, libxslt, libzip,
+  libgit2, libdivecomputer, Kirigami, googlemaps); seeded on first run from
+  the contents baked into the container image
 
-alternatively you can build locally without the help of our container.
+The signed output (.apk and if requested, .aab) ends up in
+`/some/path/subsurface/output/android`.
 
-Setup your build environment on a Ubuntu 20.04 Linux box
+### Container image changes and clean rebuilds
 
-I think these packages should be enough:
+When the container image is upgraded -- e.g. because a new Qt or NDK version
+ships -- the existing build trees and install root would be pinned to
+toolchain paths from the old image and would fail in confusing ways. To
+avoid this, `local-build.sh` records the content-addressed ID of the image
+it last used in `install-root-arm64-v8a-android/.image-id`. On every run it
+compares the stamp against the ID of the current image and, if they differ,
+wipes all six directories above and re-seeds the install root from the new
+image before building. The wipe is done inside a throwaway container so it
+works regardless of which user owns the files on the host.
 
-```.sh
-sudo apt-get update
-sudo apt-get install -y \
-    autoconf \
-    automake \
-    cmake \
-    git \
-    libtool-bin \
-    make \
-    wget \
-    unzip \
-    python \
-    python3-pip \
-    bzip2 \
-    pkg-config \
-    libx11-xcb1 \
-    libgl1-mesa-glx \
-    libglib2.0-0 \
-    openjdk-8-jdk \
-    curl \
-    coreutils \
-    p7zip-full
+If you ever want to force a full clean rebuild without changing the image,
+just delete the stamp file:
 
-sudo mkdir /android
-sudo chown `id -un` /android
-cd /android
-wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip
-unzip commandlinetools-linux-*.zip
-
-git clone https://github.com/subsurface/subsurface
-
-# now get the SDK, NDK, Qt, everything that's needed
-bash /android/subsurface/scripts/docker/android-build-container/android-build-setup.sh
+```bash
+rm /some/path/install-root-arm64-v8a-android/.image-id
 ```
 
-Once this has completed, you should have a working build environment.
+The next `local-build.sh` invocation will treat it as a fresh start.
 
-```.sh
-bash -x subsurface/packaging/android/qmake-build.sh
+If you provide a `.secrets` file in the Subsurface source directory (or a
+location specified in the -secrets argument) with the encoded signing key,
+the outputs will be signed. The format of this file is
+```
+ANDROID_KEYSTORE_BASE64=<base64 encoded key>
+ANDROID_KEYSTORE_PASSWORD=<password>
+ANDROID_KEYSTORE_ALIAS=<keystore alias used>
 ```
 
-should build a working .aab as well as a .apk that can be installed on
-your attached device:
-
-```.sh
-./platform-tools/adb  install ./subsurface-mobile-build/android-build/build/outputs/apk/debug/android-build-debug.apk
+```bash
+bash packaging/android/local-build.sh [-secrets <path to secrets file>] [-build-aab]
 ```
 
-Note that since you don't have the same signing key that I have,
-you'll have to uninstall the 'official' Subsurface-mobile binary in
-order for this to work. And likewise you have to uninstall yours
-before you'll be able to install an official binary again.
+Note: if you test your own build on a device, since you do not have the
+release  signing key, you need to uninstall any official Subsurface-mobile
+build before  installing your own, and vice versa.
+
+## CI workflow
+
+The GitHub Actions workflow (`.github/workflows/android.yml`) runs the same
+Docker-based build, signs the APK/AAB with the project keystore, and uploads
+the artifacts. On pushes to `master` it also creates a nightly release.
+
+## Docker image
+
+The container image is defined in
+`scripts/docker/android-build-container/Dockerfile`. It is a multi-stage
+build:
+
+1. **base** -- Ubuntu 24.04 with NDK 27.2, SDK 35, JDK 17, cmake, ninja
+2. **lib-base** -- builds native libraries (OpenSSL, libxml2, libxslt,
+   libzip, libgit2, SQLite) into `install-root-arm64-v8a`
+3. **final** -- copies the pre-built libraries and installs Qt
+   (Android arm64-v8a + host tools)
+
+The image is rebuilt via `.github/workflows/android-dockerimage.yml` and
+pushed to Docker Hub as `subsurface/android-build:<tag>`.
+
+## Build script overview
+
+`packaging/android/in-container-build.sh` runs
+inside the container and performs these steps:
+
+1. Build Kirigami and ECM (via `scripts/mobilecomponents.sh`)
+2. Cross-compile libdivecomputer
+3. Configure and build Subsurface with cmake + Ninja
+4. `local-build.sh` (and the CI workflow) then run Gradle to produce the
+APK/AAB and sign them with the keystore.

@@ -7,12 +7,25 @@ file(WRITE ${CMAKE_BINARY_DIR}/version.h.in
 file(COPY cmake/Modules/version.cmake
     DESTINATION ${CMAKE_BINARY_DIR})
 
-add_custom_target(
-	version ALL COMMAND ${CMAKE_COMMAND}
-	-D SRC=${CMAKE_BINARY_DIR}/version.h.in
-	-D DST=${CMAKE_BINARY_DIR}/ssrf-version.h
-	-D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
-	-D CMAKE_TOP_SRC_DIR=${CMAKE_SOURCE_DIR}
-	-D CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}
-	-P ${CMAKE_BINARY_DIR}/version.cmake
-)
+if(MSVC)
+	set(USING_MSVC TRUE)
+else()
+	set(USING_MSVC FALSE)
+endif()
+
+# On Android, ssrf-version.h is generated before cmake runs by
+# packaging/android/in-container-build.sh, so we
+# don't need (or want) the unconditional custom target — it would re-run on
+# every ninja invocation and risks invalidating the incremental build.
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
+	add_custom_target(
+		version ALL COMMAND ${CMAKE_COMMAND}
+		-D SRC=${CMAKE_BINARY_DIR}/version.h.in
+		-D DST=${CMAKE_BINARY_DIR}/ssrf-version.h
+		-D CMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
+		-D CMAKE_TOP_SRC_DIR=${CMAKE_SOURCE_DIR}
+		-D CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}
+		-D USING_MSVC=${USING_MSVC}
+		-P ${CMAKE_BINARY_DIR}/version.cmake
+	)
+endif()

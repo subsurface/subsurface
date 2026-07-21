@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2
-import org.kde.kirigami 2.4 as Kirigami
+import QtQuick
+import QtQuick.Controls
+import org.kde.kirigami as Kirigami
 
 Button {
 	id: root
@@ -12,6 +12,7 @@ Button {
 		antialiasing: true
 		radius: Kirigami.Units.smallSpacing * 2
 		height: buttonText.height * 2
+		width: buttonText.width + buttonText.height
 	}
 	contentItem: Text {
 		id: buttonText

@@ -41,4 +41,4 @@ endif()
 
 INCLUDE( FindPackageHandleStandardArgs )
 FIND_PACKAGE_HANDLE_STANDARD_ARGS( git2 DEFAULT_MSG LIBGIT2_INCLUDE_DIR LIBGIT2_LIBRARIES )
-include_directories(${LIBGIT2_INCLUDE_DIR}})
+include_directories(${LIBGIT2_INCLUDE_DIR})

@@ -7,8 +7,6 @@
 #include <QSortFilterProxyModel>
 #include "core/units.h"
 
-#define RECENTLY_ADDED_DIVESITE ((struct dive_site *)~0)
-
 struct dive;
 struct dive_trip;
 

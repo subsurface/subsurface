@@ -7,7 +7,16 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef _MSC_VER
+#include <io.h>
+#define write _write
+#define close _close
+#define unlink _unlink
+#define R_OK 4
+#define W_OK 2
+#else
 #include <unistd.h>
+#endif
 #include <inttypes.h>
 #include <string.h>
 #include <sys/types.h>
@@ -36,8 +45,12 @@
 
 #include "libdivecomputer.h"
 #include "core/version.h"
+#include "core/string-format.h"
 #include "core/qthelper.h"
+#include "core/pref.h"
 #include "core/file.h"
+#include "core/bluetoothaddress.h"
+#include <algorithm>
 #include <array>
 #include <charconv>
 
@@ -309,51 +322,56 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 	return DC_STATUS_SUCCESS;
 }
 
+/* we mark these for translation here, but we store the untranslated strings
+ * and only translate them when they are displayed on screen */
+static const char *get_event_name(int type)
+{
+	switch (type) {
+	case SAMPLE_EVENT_NONE:			return QT_TRANSLATE_NOOP("gettextFromC", "none");
+	case SAMPLE_EVENT_DECOSTOP:		return QT_TRANSLATE_NOOP("gettextFromC", "deco stop");
+	case SAMPLE_EVENT_RBT:			return QT_TRANSLATE_NOOP("gettextFromC", "rbt");
+	case SAMPLE_EVENT_ASCENT:		return QT_TRANSLATE_NOOP("gettextFromC", "ascent");
+	case SAMPLE_EVENT_CEILING:		return QT_TRANSLATE_NOOP("gettextFromC", "ceiling");
+	case SAMPLE_EVENT_WORKLOAD:		return QT_TRANSLATE_NOOP("gettextFromC", "workload");
+	case SAMPLE_EVENT_TRANSMITTER:		return QT_TRANSLATE_NOOP("gettextFromC", "transmitter");
+	case SAMPLE_EVENT_VIOLATION:		return QT_TRANSLATE_NOOP("gettextFromC", "violation");
+	case SAMPLE_EVENT_BOOKMARK:		return QT_TRANSLATE_NOOP("gettextFromC", "bookmark");
+	case SAMPLE_EVENT_SURFACE:		return QT_TRANSLATE_NOOP("gettextFromC", "surface");
+	case SAMPLE_EVENT_SAFETYSTOP:		return QT_TRANSLATE_NOOP("gettextFromC", "safety stop");
+	case SAMPLE_EVENT_GASCHANGE:		return QT_TRANSLATE_NOOP("gettextFromC", "gaschange");
+	case SAMPLE_EVENT_SAFETYSTOP_VOLUNTARY:	return QT_TRANSLATE_NOOP("gettextFromC", "safety stop (voluntary)");
+	case SAMPLE_EVENT_SAFETYSTOP_MANDATORY:	return QT_TRANSLATE_NOOP("gettextFromC", "safety stop (mandatory)");
+	case SAMPLE_EVENT_DEEPSTOP:		return QT_TRANSLATE_NOOP("gettextFromC", "deepstop");
+	case SAMPLE_EVENT_CEILING_SAFETYSTOP:	return QT_TRANSLATE_NOOP("gettextFromC", "ceiling (safety stop)");
+	// The third argument to QT_TRANSLATE_NOOP3 is a comment for translators:
+	// "event showing dive is below deco floor and adding deco time"
+	case SAMPLE_EVENT_FLOOR:		return QT_TRANSLATE_NOOP("gettextFromC", "below floor");
+	case SAMPLE_EVENT_DIVETIME:		return QT_TRANSLATE_NOOP("gettextFromC", "divetime");
+	case SAMPLE_EVENT_MAXDEPTH:		return QT_TRANSLATE_NOOP("gettextFromC", "maxdepth");
+	case SAMPLE_EVENT_OLF:			return QT_TRANSLATE_NOOP("gettextFromC", "OLF");
+	case SAMPLE_EVENT_PO2:			return QT_TRANSLATE_NOOP("gettextFromC", "pO₂");
+	case SAMPLE_EVENT_AIRTIME:		return QT_TRANSLATE_NOOP("gettextFromC", "airtime");
+	case SAMPLE_EVENT_RGBM:			return QT_TRANSLATE_NOOP("gettextFromC", "rgbm");
+	case SAMPLE_EVENT_HEADING:		return QT_TRANSLATE_NOOP("gettextFromC", "heading");
+	case SAMPLE_EVENT_TISSUELEVEL:		return QT_TRANSLATE_NOOP("gettextFromC", "tissue level warning");
+	case SAMPLE_EVENT_GASCHANGE2:		return QT_TRANSLATE_NOOP("gettextFromC", "gaschange");
+	default:				return nullptr;
+	}
+}
+
 static void handle_event(struct divecomputer *dc, const struct sample &sample, dc_sample_value_t value)
 {
 	int type, time;
 	struct event *ev;
-
-	/* we mark these for translation here, but we store the untranslated strings
-	 * and only translate them when they are displayed on screen */
-	static const char *events[] = {
-		[SAMPLE_EVENT_NONE]			= QT_TRANSLATE_NOOP("gettextFromC", "none"),
-		[SAMPLE_EVENT_DECOSTOP]			= QT_TRANSLATE_NOOP("gettextFromC", "deco stop"),
-		[SAMPLE_EVENT_RBT]			= QT_TRANSLATE_NOOP("gettextFromC", "rbt"),
-		[SAMPLE_EVENT_ASCENT]			= QT_TRANSLATE_NOOP("gettextFromC", "ascent"),
-		[SAMPLE_EVENT_CEILING]			= QT_TRANSLATE_NOOP("gettextFromC", "ceiling"),
-		[SAMPLE_EVENT_WORKLOAD]			= QT_TRANSLATE_NOOP("gettextFromC", "workload"),
-		[SAMPLE_EVENT_TRANSMITTER]		= QT_TRANSLATE_NOOP("gettextFromC", "transmitter"),
-		[SAMPLE_EVENT_VIOLATION]		= QT_TRANSLATE_NOOP("gettextFromC", "violation"),
-		[SAMPLE_EVENT_BOOKMARK]			= QT_TRANSLATE_NOOP("gettextFromC", "bookmark"),
-		[SAMPLE_EVENT_SURFACE]			= QT_TRANSLATE_NOOP("gettextFromC", "surface"),
-		[SAMPLE_EVENT_SAFETYSTOP]		= QT_TRANSLATE_NOOP("gettextFromC", "safety stop"),
-		[SAMPLE_EVENT_GASCHANGE]		= QT_TRANSLATE_NOOP("gettextFromC", "gaschange"),
-		[SAMPLE_EVENT_SAFETYSTOP_VOLUNTARY]	= QT_TRANSLATE_NOOP("gettextFromC", "safety stop (voluntary)"),
-		[SAMPLE_EVENT_SAFETYSTOP_MANDATORY]	= QT_TRANSLATE_NOOP("gettextFromC", "safety stop (mandatory)"),
-		[SAMPLE_EVENT_DEEPSTOP]			= QT_TRANSLATE_NOOP("gettextFromC", "deepstop"),
-		[SAMPLE_EVENT_CEILING_SAFETYSTOP]	= QT_TRANSLATE_NOOP("gettextFromC", "ceiling (safety stop)"),
-		[SAMPLE_EVENT_FLOOR]			= std::array<const char *, 2>{QT_TRANSLATE_NOOP3("gettextFromC", "below floor", "event showing dive is below deco floor and adding deco time")}[1],
-		[SAMPLE_EVENT_DIVETIME]			= QT_TRANSLATE_NOOP("gettextFromC", "divetime"),
-		[SAMPLE_EVENT_MAXDEPTH]			= QT_TRANSLATE_NOOP("gettextFromC", "maxdepth"),
-		[SAMPLE_EVENT_OLF]			= QT_TRANSLATE_NOOP("gettextFromC", "OLF"),
-		[SAMPLE_EVENT_PO2]			= QT_TRANSLATE_NOOP("gettextFromC", "pO₂"),
-		[SAMPLE_EVENT_AIRTIME]			= QT_TRANSLATE_NOOP("gettextFromC", "airtime"),
-		[SAMPLE_EVENT_RGBM]			= QT_TRANSLATE_NOOP("gettextFromC", "rgbm"),
-		[SAMPLE_EVENT_HEADING]			= QT_TRANSLATE_NOOP("gettextFromC", "heading"),
-		[SAMPLE_EVENT_TISSUELEVEL]		= QT_TRANSLATE_NOOP("gettextFromC", "tissue level warning"),
-		[SAMPLE_EVENT_GASCHANGE2]		= QT_TRANSLATE_NOOP("gettextFromC", "gaschange"),
-	};
-	const int nr_events = sizeof(events) / sizeof(const char *);
 	const char *name;
 
 	/*
 	 * Other evens might be more interesting, but for now we just print them out.
 	 */
 	type = value.event.type;
-	name = QT_TRANSLATE_NOOP("gettextFromC", "invalid event number");
-	if (type < nr_events && events[type])
-		name = events[type];
+	name = get_event_name(type);
+	if (!name)
+		name = QT_TRANSLATE_NOOP("gettextFromC", "invalid event number");
 #ifdef SAMPLE_EVENT_STRING
 	if (type == SAMPLE_EVENT_STRING)
 		name = value.event.name;
@@ -489,7 +507,10 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 			sample.stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample.stoptime.seconds = stoptime = value.deco.time;
 		}
-		sample.tts.seconds = value.deco.tts;
+		if (value.deco.tts)
+			sample.tts.seconds = value.deco.tts;
+
+		break;
 	default:
 		break;
 	}
@@ -588,7 +609,7 @@ uint32_t calculate_string_hash(const char *str)
 	return calculate_diveid((const unsigned char *)str, strlen(str));
 }
 
-static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str)
+static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_field_string_t *str, bool got_location)
 {
 	// Our dive ID is the string hash of the "Dive ID" string
 	if (!strcmp(str->desc, "Dive ID")) {
@@ -601,8 +622,8 @@ static void parse_string_field(device_data_t *devdata, struct dive *dive, dc_fie
 	add_extra_data(&dive->dcs[0], str->desc, str->value);
 
 	/* GPS data? */
-	if (!strncmp(str->desc, "GPS", 3)) {
-		char *line = (char *) str->value;
+	if (!got_location && !strncmp(str->desc, "GPS", 3)) {
+		char *line = (char *)str->value;
 		location_t location;
 
 		/* Do we already have a divesite? */
@@ -646,6 +667,11 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		tm.tm_min = dt.minute;
 		tm.tm_sec = dt.second;
 		dive->when = dive->dcs[0].when = utc_mktime(&tm);
+
+		if (dt.timezone != DC_TIMEZONE_NONE) {
+			std::string timezone_offset = format_string_std("%+d", dt.timezone);
+			add_extra_data(&dive->dcs[0], STRING_KEY_TIMEZONE_OFFSET, timezone_offset);
+		}
 	}
 
 	// Parse the divetime.
@@ -737,6 +763,29 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	if (rc == DC_STATUS_SUCCESS)
 		dive->dcs[0].surface_pressure.mbar = lrint(surface_pressure * 1000.0);
 
+	dc_location_t dc_location;
+	// Currently libdivecomputer only supports one location per dive
+	rc = dc_parser_get_field(parser, DC_FIELD_LOCATION, 0, &dc_location);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		download_error(translate("gettextFromC", "Error obtaining location"));
+		return rc;
+	}
+	bool got_location = false;
+	if (rc == DC_STATUS_SUCCESS) {
+		location_t location;
+		location.lat.udeg = lrint(dc_location.latitude * 1000000);
+		location.lon.udeg = lrint(dc_location.longitude * 1000000);
+
+		char location_string[64];
+		snprintf(location_string, sizeof(location_string), "%.6f, %.6f", location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
+
+		unregister_dive_from_dive_site(dive);
+		devdata->log->sites.create(location_string, location)->add_dive(dive);
+
+		add_extra_data(&dive->dcs[0], "Start location", location_string);
+		got_location = true;
+	}
+
 	// The dive parsing may give us more device information
 	int idx;
 	for (idx = 0; idx < 100; idx++) {
@@ -746,7 +795,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 			break;
 		if (!str.desc || !str.value)
 			break;
-		parse_string_field(devdata, dive, &str);
+		parse_string_field(devdata, dive, &str, got_location);
 		free((void *)str.value); // libdc gives us copies of the value-string.
 	}
 
@@ -829,6 +878,18 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dc_parser_destroy(parser);
 
 	/*
+	 * If the dive parser didn't give us serial/firmware as string fields,
+	 * fall back to the numeric devinfo values from DC_EVENT_DEVINFO.
+	 * These are available for virtually all dive computers.
+	 */
+	if (dive->dcs[0].serial.empty() && devdata->devinfo.serial) {
+		dive->dcs[0].serial = std::to_string(devdata->devinfo.serial);
+		dive->dcs[0].deviceid = calculate_string_hash(dive->dcs[0].serial.c_str());
+	}
+	if (dive->dcs[0].fw_version.empty() && devdata->devinfo.firmware)
+		dive->dcs[0].fw_version = std::to_string(devdata->devinfo.firmware);
+
+	/*
 	 * Save off fingerprint data.
 	 *
 	 * NOTE! We do this after parsing the dive fully, so that
@@ -864,6 +925,32 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	    dive->dcs[0].samples[0].temperature.mkelvin == ZERO_C_IN_MKELVIN &&
 	    dive->dcs[0].samples[1].temperature.mkelvin > dive->dcs[0].samples[0].temperature.mkelvin)
 		dive->dcs[0].samples[0].temperature.mkelvin = dive->dcs[0].samples[1].temperature.mkelvin;
+
+	/* If a cylinder has both start/end pressure from the backend AND pressure sensor
+	 * data in samples, clear the start/end pressure. libdivecomputer calculates these
+	 * from the first/last sample with pressure, but Subsurface uses first/last sample
+	 * below the surface threshold, which gives more accurate SAC calculations by
+	 * excluding breathing at the surface before/after the dive. */
+	for (size_t i = 0; i < dive->cylinders.size(); i++) {
+		cylinder_t &cyl = dive->cylinders[i];
+		if (cyl.start.mbar == 0 && cyl.end.mbar == 0)
+			continue;
+
+		/* Check if any sample has pressure data for this cylinder (sensor index == cylinder index) */
+		bool has_pressure_samples = std::any_of(dive->dcs[0].samples.begin(), dive->dcs[0].samples.end(),
+			[i](const struct sample &s) {
+				for (int j = 0; j < MAX_SENSORS; j++) {
+					if (s.sensor[j] == (int)i && s.pressure[j].mbar > 0)
+						return true;
+				}
+				return false;
+			});
+
+		if (has_pressure_samples) {
+			cyl.start.mbar = 0;
+			cyl.end.mbar = 0;
+		}
+	}
 
 	devdata->log->dives.record_dive(std::move(dive));
 	return true;
@@ -1062,8 +1149,10 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				report_info("EVENT_DEVINFO gave us a different detected product (model %d instead of %d), which we are using now.",
 					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 				devdata->descriptor = better_descriptor;
-				devdata->product = dc_descriptor_get_product(better_descriptor);
-				devdata->vendor = dc_descriptor_get_vendor(better_descriptor);
+				const char *product = dc_descriptor_get_product(better_descriptor);
+				const char *vendor = dc_descriptor_get_vendor(better_descriptor);
+				devdata->product = product ? product : "";
+				devdata->vendor = vendor ? vendor : "";
 				devdata->model = devdata->vendor + " " + devdata->product;
 			} else {
 				report_info("EVENT_DEVINFO gave us a different detected product (model %d instead of %d), but that one is unknown.",
@@ -1230,8 +1319,11 @@ unsigned int get_supported_transports(device_data_t *data)
 		 */
 		if (data->bluetooth_mode) {
 			supported &= (DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
-			if (starts_with(data->devname, "LE:"))
+			QString devname = QString::fromStdString(data->devname);
+			if (isBluetoothLowEnergyAddress(devname))
 				supported &= DC_TRANSPORT_BLE;
+			else if (isBluetoothClassicAddress(devname))
+				supported &= DC_TRANSPORT_BLUETOOTH;
 		} else {
 			supported &= ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
 		}
@@ -1310,21 +1402,23 @@ static dc_status_t irda_device_open(dc_iostream_t **iostream, dc_context_t *cont
 	return dc_irda_open(&data->iostream, context, address, 1);
 }
 
-#if defined(BT_SUPPORT) && !defined(__ANDROID__) && !defined(__APPLE__)
-static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *data)
+#if defined(BT_SUPPORT) && defined(_WIN32)
+static dc_status_t bluetooth_device_open(dc_context_t *context, device_data_t *data, const char *devname)
 {
-	dc_bluetooth_address_t address = 0;
+	dc_bluetooth_address_t address = dc_bluetooth_str2addr(devname);
 	dc_iterator_t *iterator = NULL;
 	dc_bluetooth_device_t *device = NULL;
 
 	// Try to find the rfcomm device address
-	dc_bluetooth_iterator_new (&iterator, context, data->descriptor);
-	while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS) {
-		address = dc_bluetooth_device_get_address (device);
-		dc_bluetooth_device_free (device);
-		break;
+	if (!address) {
+		dc_bluetooth_iterator_new (&iterator, context, data->descriptor);
+		while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS) {
+			address = dc_bluetooth_device_get_address (device);
+			dc_bluetooth_device_free (device);
+			break;
+		}
+		dc_iterator_free (iterator);
 	}
-	dc_iterator_free (iterator);
 
 	if (!address) {
 		dev_info("No rfcomm device found");
@@ -1353,12 +1447,14 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 #ifdef BT_SUPPORT
 	if (transports & DC_TRANSPORT_BLUETOOTH) {
-		dev_info("Opening rfcomm stream %s", data->devname.c_str());
-#if defined(__ANDROID__) || defined(__APPLE__)
-		// we don't have BT on iOS in the first place, so this is for Android and macOS
-		rc = rfcomm_stream_open(&data->iostream, context, data->devname.c_str());
+		std::string address = bluetoothAddressWithoutPrefix(QString::fromStdString(data->devname)).toStdString();
+		dev_info("Opening rfcomm stream %s", address.c_str());
+#if !defined(_WIN32)
+		// Use the Qt RFCOMM implementation on platforms where libdivecomputer's
+		// native Bluetooth implementation is not part of the bundled build.
+		rc = rfcomm_stream_open(&data->iostream, context, address.c_str());
 #else
-		rc = bluetooth_device_open(context, data);
+		rc = bluetooth_device_open(context, data, address.c_str());
 #endif
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
@@ -1569,8 +1665,10 @@ int prepare_device_descriptor(int data_model, dc_family_t dc_fam, device_data_t 
 	dc_descriptor_t *data_descriptor = get_descriptor(dc_fam, data_model);
 	if (data_descriptor) {
 		dev_data.descriptor = data_descriptor;
-		dev_data.vendor = dc_descriptor_get_vendor(data_descriptor);
-		dev_data.model = dc_descriptor_get_product(data_descriptor);
+		const char *vendor = dc_descriptor_get_vendor(data_descriptor);
+		const char *model = dc_descriptor_get_product(data_descriptor);
+		dev_data.vendor = vendor ? vendor : "";
+		dev_data.model = model ? model : "";
 	} else {
 		return 0;
 	}

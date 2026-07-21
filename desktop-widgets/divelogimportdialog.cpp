@@ -177,7 +177,11 @@ void ColumnNameView::dragEnterEvent(QDragEnterEvent *event)
 
 void ColumnNameView::dragMoveEvent(QDragMoveEvent *event)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QModelIndex curr = indexAt(event->position().toPoint());
+#else
 	QModelIndex curr = indexAt(event->pos());
+#endif
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 	event->acceptProposedAction();
@@ -186,7 +190,7 @@ void ColumnNameView::dragMoveEvent(QDragMoveEvent *event)
 void ColumnNameView::dropEvent(QDropEvent *event)
 {
 	const QMimeData *mimeData = event->mimeData();
-	if (mimeData->data(subsurface_mimedata).count()) {
+	if (mimeData->data(subsurface_mimedata).size()) {
 		if (event->source() != this) {
 			event->acceptProposedAction();
 			QVariant value = QString(mimeData->data(subsurface_mimedata));
@@ -212,7 +216,11 @@ void ColumnDropCSVView::dragEnterEvent(QDragEnterEvent *event)
 
 void ColumnDropCSVView::dragMoveEvent(QDragMoveEvent *event)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QModelIndex curr = indexAt(event->position().toPoint());
+#else
 	QModelIndex curr = indexAt(event->pos());
+#endif
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 	event->acceptProposedAction();
@@ -220,12 +228,16 @@ void ColumnDropCSVView::dragMoveEvent(QDragMoveEvent *event)
 
 void ColumnDropCSVView::dropEvent(QDropEvent *event)
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	QModelIndex curr = indexAt(event->position().toPoint());
+#else
 	QModelIndex curr = indexAt(event->pos());
+#endif
 	if (!curr.isValid() || curr.row() != 0)
 		return;
 
 	const QMimeData *mimeData = event->mimeData();
-	if (!mimeData->data(subsurface_mimedata).count())
+	if (!mimeData->data(subsurface_mimedata).size())
 		return;
 
 	if (event->source() == this ) {
@@ -448,21 +460,23 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	QPair<QString, QString> pair = poseidonFileNames(fileName);
 	if (!pair.second.isEmpty()) {
 		QFile f_txt(pair.second);
-		f_txt.open(QFile::ReadOnly);
-		QString firstLine = f_txt.readLine();
-		if (firstLine.startsWith("MkVI_Config ")) {
-			poseidon = true;
-			fileName = pair.first; // Read data from CSV
-			headers.append("Time");
-			headers.append("Depth");
-			blockSignals(true);
-			ui->knownImports->setCurrentText("Poseidon MkVI");
-			blockSignals(false);
+		if (f_txt.open(QFile::ReadOnly)) {
+			QString firstLine = f_txt.readLine();
+			if (firstLine.startsWith("MkVI_Config ")) {
+				poseidon = true;
+				fileName = pair.first; // Read data from CSV
+				headers.append("Time");
+				headers.append("Depth");
+				blockSignals(true);
+				ui->knownImports->setCurrentText("Poseidon MkVI");
+				blockSignals(false);
+			}
 		}
 	}
 
 	QFile f(fileName);
-	f.open(QFile::ReadOnly);
+	if (!f.open(QFile::ReadOnly))
+		return;
 	QString firstLine = f.readLine();
 	if (firstLine.contains("SEABEAR")) {
 		seabear = true;
@@ -844,7 +858,8 @@ void DiveLogImportDialog::parseTxtHeader(QString fileName, xml_params &params)
 	QString time;
 	QString line;
 
-	f.open(QFile::ReadOnly);
+	if (!f.open(QFile::ReadOnly))
+		return;
 	while ((line = f.readLine().trimmed()).length() >= 0 && !f.atEnd()) {
 		if (line.contains("Dive Profile")) {
 			f.readLine();

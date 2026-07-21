@@ -14,32 +14,34 @@ on:
     - Documentation/**
     - .github/workflows/**
 
+env:
+  RELEASE_PUBLISHER: "true"
+
+permissions: read-all
+
 jobs:
   build-documentation:
     uses: ./.github/workflows/documentation-build.yml
 
   publish-documentation:
     needs: build-documentation
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
     runs-on: ubuntu-22.04
 
     steps:
-    - name: install packages
-      run: |
-        sudo apt-get -y update
-        DEBIAN_FRONTEND=noninteractive sudo apt-get -y -q install asciidoc docbook-xml w3m
-
     - name: checkout sources
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: load the documentation from cache
       id: load-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: Documentation/output
-        key: documentation-${{ hashFiles('Documentation') }}
+        key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
         enableCrossOsArchive: true
         fail-on-cache-miss: true
 
@@ -49,8 +51,41 @@ jobs:
       with:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
-    - name: publish artifacts
-      uses: actions/upload-artifact@v4
+    - name: publish pull request artifacts
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@v7
       with:
         name: Subsurface-Documentation-${{ steps.version_number.outputs.version }}
-        path: Documentation/output
+        path: |
+          Documentation/output
+          SupportedDivecomputers.html
+
+    # only publish a 'release' on push events (those include merging a PR)
+    - name: Create compressed archive (tar.gz)
+      if: github.event_name == 'push'
+      run: |
+        cp SupportedDivecomputers.html Documentation/output/
+        tar -czvf Subsurface-Documentation-${{ steps.version_number.outputs.version }}.tar.gz -C Documentation/output/ .
+
+    - name: upload documentation
+      if: github.event_name == 'push'
+      uses: softprops/action-gh-release@v3
+      with:
+        tag_name: v${{ steps.version_number.outputs.version }}
+        repository:  ${{ github.repository_owner }}/nightly-builds
+        token: ${{ secrets.NIGHTLY_BUILDS }}
+        draft: true
+        prerelease: false
+        fail_on_unmatched_files: true
+        files: |
+          Subsurface-Documentation-${{ steps.version_number.outputs.version }}.tar.gz
+
+  notify-release-coordinator:
+    permissions:
+      contents: write
+    if: always()
+    needs: publish-documentation
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.publish-documentation.outputs.release_tag }}
+      conclusion: ${{ needs.publish-documentation.result }}

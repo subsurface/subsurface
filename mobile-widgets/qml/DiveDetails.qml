@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Kirigami.Page {
 	id: diveDetailsPage // but this is referenced as detailsWindow
@@ -51,6 +51,58 @@ Kirigami.Page {
 
 	title: currentItem && currentItem.modelData && currentItem.modelData.location && "" !== currentItem.modelData.location ?
 		       currentItem.modelData.location : qsTr("Dive details")
+
+	// AI-generated (Claude)
+	// Custom title delegate: breadcrumb-style "Dive list > Location" in single column mode,
+	// plain title otherwise (when both pages are visible side by side)
+	titleDelegate: Item {
+		property bool singleColumn: pageStack.columnView.columnResizeMode === Kirigami.ColumnView.SingleColumn
+		Layout.fillWidth: true
+		Layout.minimumWidth: 0
+		Layout.maximumWidth: implicitWidth
+		implicitWidth: breadcrumbRow.implicitWidth
+		implicitHeight: breadcrumbRow.implicitHeight
+		Row {
+			id: breadcrumbRow
+			anchors.fill: parent
+			spacing: Kirigami.Units.smallSpacing
+			Kirigami.Heading {
+				visible: singleColumn
+				text: qsTr("Dive list")
+				maximumLineCount: 1
+				elide: Text.ElideRight
+				textFormat: Text.PlainText
+				font: Kirigami.Theme.defaultFont
+				color: Kirigami.Theme.textColor
+				opacity: 0.6
+				verticalAlignment: Text.AlignVCenter
+				height: parent.height
+				MouseArea {
+					anchors.fill: parent
+					onClicked: pageStack.goBack()
+				}
+			}
+			Kirigami.Icon {
+				visible: singleColumn
+				source: "go-next-symbolic"
+				implicitHeight: Kirigami.Units.iconSizes.small
+				implicitWidth: Kirigami.Units.iconSizes.small
+				isMask: true
+				color: Kirigami.Theme.textColor
+				anchors.verticalCenter: parent.verticalCenter
+			}
+			Kirigami.Heading {
+				text: diveDetailsPage.title
+				maximumLineCount: 1
+				elide: Text.ElideRight
+				textFormat: Text.PlainText
+				color: Kirigami.Theme.textColor
+				verticalAlignment: Text.AlignVCenter
+				height: parent.height
+			}
+		}
+	}
+
 	state: "view"
 	leftPadding: 0
 	topPadding: Kirigami.Units.gridUnit / 2
@@ -115,39 +167,31 @@ Kirigami.Page {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property variant contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, undoAction, redoAction ]
+	property var contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, undoAction, redoAction ]
+	property var contextualActions: contextactions
 
 	states: [
 		State {
 			name: "view"
 			PropertyChanges {
-				target: diveDetailsPage;
-				actions {
-					right: null
-					left: currentItem ? (currentItem.modelData && currentItem.modelData.gps !== "" ? mapAction : null) : null
-				}
+				target: diveDetailsPage
+				actions: []
 				contextualActions: contextactions
 			}
 		},
 		State {
 			name: "edit"
 			PropertyChanges {
-				target: diveDetailsPage;
-				actions {
-					right: cancelAction
-					left: null
-				}
+				target: diveDetailsPage
+				actions: []
 				contextualActions: []
 			}
 		},
 		State {
 			name: "add"
 			PropertyChanges {
-				target: diveDetailsPage;
-				actions {
-					right: cancelAction
-					left: null
-				}
+				target: diveDetailsPage
+				actions: []
 				contextualActions: []
 			}
 		}
@@ -227,17 +271,18 @@ Kirigami.Page {
 		text: qsTr("Delete dive")
 		icon {
 			name: ":/icons/trash-empty.svg"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		onTriggered: manager.deleteDive(currentItem.modelData.id)
 	}
 
 	property QtObject cancelAction: Kirigami.Action {
 		text: qsTr("Cancel edit")
+		visible: diveDetailsPage.state === "edit" || diveDetailsPage.state === "add"
 		icon {
 			name: ":/icons/dialog-cancel.svg"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		onTriggered: {
 			endEditMode()
 		}
@@ -247,32 +292,43 @@ Kirigami.Page {
 		text: qsTr("Show on map")
 		icon {
 			name: ":/icons/gps"
+			color: subsurfaceTheme.textColor
 		}
-		color: subsurfaceTheme.textColor
 		onTriggered: {
 			showMap()
 			mapPage.centerOnDiveSite(currentItem.modelData.diveSite)
 		}
 	}
 
-	actions.main: Kirigami.Action {
-		icon {
-			name: state !== "view" ? ":/icons/document-save.svg" :
-						 ":/icons/document-edit.svg"
-			color: subsurfaceTheme.primaryColor
-		}
-		text: state !== "view" ? qsTr("Save edits") : qsTr("Edit dive")
-		onTriggered: {
-			manager.appendTextToLog("save/edit button triggered")
-			if (state === "edit" || state === "add") {
-				detailsEdit.saveData()
-			} else {
-				startEditMode()
+	Item {
+		parent: diveDetailsPage
+		z: 999
+		anchors.bottom: parent.bottom
+		anchors.left: parent.left
+		anchors.right: parent.right
+		height: Kirigami.Units.gridUnit * 3 + Kirigami.Units.smallSpacing * 2
+		Row {
+			anchors.centerIn: parent
+			spacing: Kirigami.Units.gridUnit
+			SsrfToolButton {
+				iconSource: diveDetailsPage.state !== "view" ? "qrc:/icons/document-save.svg" : "qrc:/icons/document-edit.svg"
+				highlighted: true
+				onClicked: {
+					if (diveDetailsPage.state === "edit" || diveDetailsPage.state === "add")
+						detailsEdit.saveData()
+					else
+						startEditMode()
+				}
+			}
+			SsrfToolButton {
+				visible: diveDetailsPage.state === "edit" || diveDetailsPage.state === "add"
+				iconSource: "qrc:/icons/dialog-cancel.svg"
+				onClicked: endEditMode()
 			}
 		}
 	}
 
-	onBackRequested: {
+	onBackRequested: function(event) {
 		// if one of the drawers/menus is open, the back button should close those
 		if (globalDrawer.visible) {
 			globalDrawer.close()
@@ -288,8 +344,7 @@ Kirigami.Page {
 				endEditMode()
 				event.accepted = true;
 			} else if (state === "add") {
-				endEditMode()
-				pageStack.pop()
+				endEditMode() // endEditMode() already calls pageStack.pop() for "add"
 				event.accepted = true;
 			}
 		}
@@ -313,12 +368,16 @@ Kirigami.Page {
 		// was an add, we need to undo the addDive action that created the empty dive
 		// and we should also go back to the DiveDetails where we came from...
 		manager.appendTextToLog("endEditMode called with state " + state)
-		if (state === "add") {
+		var wasAdd = (state === "add")
+		// set state to "view" before any pageStack.pop() to prevent re-entrant calls:
+		// onCurrentItemChanged in main.qml also calls endEditMode() when navigating
+		// away from DiveDetails while in edit/add state, and if state is still "add"
+		// when that fires during our own pop(), it would double-pop the stack
+		state = "view";
+		if (wasAdd) {
 			manager.undo()
 			pageStack.pop()
 		}
-		// now all that is left is to cancel the edit/add state
-		state = "view";
 		focus = false;
 		Qt.inputMethod.hide();
 		detailsEdit.clearDetailsEdit();
@@ -385,37 +444,123 @@ Kirigami.Page {
 			model: swipeModel
 			currentIndex: -1
 			boundsBehavior: Flickable.StopAtBounds
-			maximumFlickVelocity: parent.width * 5
 			orientation: ListView.Horizontal
 			highlightFollowsCurrentItem: false
 			focus: true
 			clip: true
-			snapMode: ListView.SnapOneItem
-			highlightRangeMode: ListView.StrictlyEnforceRange
-			onMovementEnded: {
-				currentIndex = indexAt(contentX+1, 1);
-				manager.selectSwipeRow(currentIndex)
+			interactive: false  // horizontal swiping handled by DragHandler
+			property bool swipeInProgress: false
+			onWidthChanged: {
+				// after orientation change, realign to current page
+				if (currentIndex >= 0) {
+					snapAnimation.stop()
+					contentX = originX + currentIndex * width
+				}
 			}
-			delegate: Flickable {
-				id: internalScrollView
+			onOriginXChanged: {
+				// originX can shift after width settles during orientation
+				// changes as ListView repositions delegates internally
+				if (currentIndex >= 0 && !swipeInProgress)
+					contentX = originX + currentIndex * width
+			}
+			delegate: Item {
 				width: diveDetailsListView.width
 				height: diveDetailsListView.height
-				contentHeight: diveDetails.height
-				boundsBehavior: Flickable.StopAtBounds
 				property var modelData: model
-				DiveDetailsView {
-					id: diveDetails
-					width: internalScrollView.width
-					myId: model.id
+				property alias panningProfile: diveDetails.panningProfile
+
+				// reset zoom/pan when this delegate is no longer the current page
+				ListView.onIsCurrentItemChanged: {
+					if (!ListView.isCurrentItem)
+						diveDetails.resetZoom()
 				}
-				ScrollBar.vertical: ScrollBar { }
+
+				Flickable {
+					id: internalScrollView
+					anchors.fill: parent
+					contentHeight: diveDetails.height
+					flickableDirection: Flickable.VerticalFlick
+					boundsBehavior: Flickable.StopAtBounds
+					bottomMargin: Kirigami.Units.gridUnit * 4
+
+					DiveDetailsView {
+						id: diveDetails
+						width: internalScrollView.width
+						myId: model.id
+					}
+					ScrollBar.vertical: ScrollBar { }
+				}
 			}
-			ScrollIndicator.horizontal: ScrollIndicator { }
+
+			// smooth snap animation for horizontal page transitions
+			NumberAnimation {
+				id: snapAnimation
+				target: diveDetailsListView
+				property: "contentX"
+				duration: 250
+				easing.type: Easing.OutCubic
+				onRunningChanged: {
+					if (!running)
+						diveDetailsListView.swipeInProgress = false
+				}
+			}
+
 			Connections {
 				target: swipeModel
 				function onCurrentDiveChanged(index) {
-					currentIndex = index.row
-					diveDetailsListView.positionViewAtIndex(currentIndex, ListView.End)
+					diveDetailsListView.currentIndex = index.row
+					// skip positioning during swipe - the snap animation handles it
+					if (!diveDetailsListView.swipeInProgress) {
+						diveDetailsListView.contentX = diveDetailsListView.originX + diveDetailsListView.currentIndex * diveDetailsListView.width
+					}
+				}
+			}
+		}
+
+		// Handle horizontal swipes to switch between dives.
+		// Placed on the fixed parent Item (not inside the delegate)
+		// to avoid feedback loops from coordinate system changes.
+		// DragHandler with yAxis disabled only activates for
+		// horizontal drags, letting delegate Flickables handle
+		// vertical scrolling without interference.
+		DragHandler {
+			id: horizontalSwipeHandler
+			enabled: !diveDetailsListView.currentItem || !diveDetailsListView.currentItem.panningProfile
+			yAxis.enabled: false
+			target: null
+
+			property real startContentX
+			property real startFingerX
+			property real lastTranslationX: 0
+
+			onActiveChanged: {
+				if (active) {
+					startContentX = diveDetailsListView.contentX
+					startFingerX = centroid.position.x
+					lastTranslationX = 0
+					diveDetailsListView.swipeInProgress = true
+				} else {
+					// finger released - snap to target page
+					// use saved translation since activeTranslation resets on deactivation
+					var dx = lastTranslationX
+					var pageWidth = diveDetailsListView.width
+					var targetIndex = diveDetailsListView.currentIndex
+					if (dx < -pageWidth / 4 && targetIndex < diveDetailsListView.count - 1)
+						targetIndex++
+					else if (dx > pageWidth / 4 && targetIndex > 0)
+						targetIndex--
+					snapAnimation.to = diveDetailsListView.originX + targetIndex * pageWidth
+					snapAnimation.start()
+					diveDetailsListView.currentIndex = targetIndex
+					manager.selectSwipeRow(targetIndex)
+				}
+			}
+
+			onActiveTranslationChanged: {
+				if (active) {
+					var dx = centroid.position.x - startFingerX
+					lastTranslationX = dx
+					diveDetailsListView.contentX = startContentX - dx
 				}
 			}
 		}
@@ -425,6 +570,7 @@ Kirigami.Page {
 		anchors.fill: parent
 		leftMargin: Kirigami.Units.smallSpacing
 		rightMargin: Kirigami.Units.smallSpacing
+		bottomMargin: Kirigami.Units.gridUnit * 4
 		contentHeight: detailsEdit.height
 		// start invisible and scaled down, to get the transition
 		// off to the right start

@@ -18,6 +18,9 @@
 #include <QUndoStack>
 
 #include <QBluetoothLocalDevice>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+#include <QPermissions>
+#endif
 
 #include "qt-models/completionmodels.h"
 #include "qt-models/messagehandlermodel.h"
@@ -29,6 +32,7 @@
 #include "core/divefilter.h"
 #include "core/divelog.h"
 #include "core/filterconstraint.h"
+#include "core/gettextfromc.h"
 #include "core/qthelper.h"
 #include "core/qt-gui.h"
 #include "core/git-access.h"
@@ -51,11 +55,13 @@
 #include "core/worldmap-save.h"
 #include "core/uploadDiveLogsDE.h"
 #include "core/uploadDiveShare.h"
+#include "core/version.h"
 #include "commands/command_base.h"
 #include "commands/command.h"
 
 #if defined(Q_OS_ANDROID)
-#include <QtAndroid>
+#include <QJniObject>
+#include <QCoreApplication>
 #include "core/serial_usb_android.h"
 std::vector<android_usb_serial_device_descriptor> androidSerialDevices;
 #endif
@@ -148,6 +154,15 @@ QString QMLManager::consumeError()
 	QString ret;
 	ret.swap(m_lastError);
 	return ret;
+}
+
+void QMLManager::initBluetooth()
+{
+	BTDiscovery *btDiscovery = BTDiscovery::instance();
+	m_btEnabled = btDiscovery->btAvailable();
+	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
+		this, &QMLManager::btHostModeChange);
+	emit btEnabledChanged();
 }
 
 void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
@@ -286,12 +301,33 @@ QMLManager::QMLManager() :
 	if (ignore_bt) {
 		m_btEnabled = false;
 	} else {
-		// ensure that we start the BTDiscovery - this should be triggered by the export of the class
-		// to QML, but that doesn't seem to always work
-		BTDiscovery *btDiscovery = BTDiscovery::instance();
-		m_btEnabled = btDiscovery->btAvailable();
-		connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
-			this, &QMLManager::btHostModeChange);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
+		QBluetoothPermission btPermission;
+		btPermission.setCommunicationModes(QBluetoothPermission::Access);
+		switch (qApp->checkPermission(btPermission)) {
+		case Qt::PermissionStatus::Undetermined:
+			qApp->requestPermission(btPermission, this, [this](const QPermission &permission) {
+				if (permission.status() == Qt::PermissionStatus::Granted) {
+					report_info("Bluetooth permission granted");
+					initBluetooth();
+				} else {
+					report_info("Bluetooth permission denied");
+					m_btEnabled = false;
+					emit btEnabledChanged();
+				}
+			});
+			break;
+		case Qt::PermissionStatus::Granted:
+			initBluetooth();
+			break;
+		case Qt::PermissionStatus::Denied:
+			report_info("Bluetooth permission denied");
+			m_btEnabled = false;
+			break;
+		}
+#else
+		initBluetooth();
+#endif
 	}
 	progress_callback = &progressCallback;
 	set_git_update_cb(&gitProgressCB);
@@ -333,6 +369,8 @@ QMLManager::QMLManager() :
 	// get updates to the undo/redo texts
 	connect(Command::getUndoStack(), &QUndoStack::undoTextChanged, this, &QMLManager::undoTextChanged);
 	connect(Command::getUndoStack(), &QUndoStack::redoTextChanged, this, &QMLManager::redoTextChanged);
+
+	prefs.allowOcGasAsDiluent = false;
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
@@ -493,10 +531,10 @@ bool QMLManager::createSupportEmail()
 	QString messageBody = "Please describe your issue here and keep the logs below:\n\n\n\n";
 #if defined(Q_OS_ANDROID)
 	// let's use our nifty Java shareFile function
-	QAndroidJniObject activity = QtAndroid::androidActivity();
+	QJniObject activity(QNativeInterface::QAndroidApplication::context());
 	if (activity.isValid()) {
-		QAndroidJniObject applogfilepath = QAndroidJniObject::fromString(appLogFileName);
-		QAndroidJniObject libdcfilepath = QAndroidJniObject::fromString(QString::fromStdString(logfile_name));
+		QJniObject applogfilepath = QJniObject::fromString(appLogFileName);
+		QJniObject libdcfilepath = QJniObject::fromString(QString::fromStdString(logfile_name));
 		bool success = activity.callMethod<jboolean>("supportEmail",
 					"(Ljava/lang/String;Ljava/lang/String;)Z", // two string arguments, return bool
 					applogfilepath.object<jstring>(), libdcfilepath.object<jstring>());
@@ -633,20 +671,10 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 	// email address MUST be lower case or bad things happen
 	QString email = newEmail.toLower();
 
-	// make sure we only have letters, numbers, and +-_. in password and email address
-	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
 	if (!noCloud) {
 		// in case of NO_CLOUD, the email address + passwd do not care, so do not check it.
-		if (newPassword.isEmpty() ||
-			!regExp.match(newPassword).hasMatch() ||
-			!regExp.match(email).hasMatch()) {
+		if (!isValidPassword(newPassword) || !isValidEmail(email)) {
 			setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
-			return;
-		}
-		// use the same simplistic regex as the backend to check email addresses
-		regExp = QRegularExpression("^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\\.[a-zA-Z0-9]+");
-		if (!regExp.match(email).hasMatch()) {
-			setStartPageText(RED_FONT + tr("Invalid format for email address") + END_FONT);
 			return;
 		}
 	}
@@ -948,7 +976,11 @@ bool QMLManager::checkDate(struct dive *d, QString date)
 		}
 		// set date from string and make sure it's treated as UTC (like all our time stamps)
 		newDate = QDateTime::fromString(date, format);
-		newDate.setTimeSpec(Qt::UTC);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+		newDate = QDateTime(newDate.date(), newDate.time(), QTimeZone(QTimeZone::UTC));
+#else
+		newDate = QDateTime(newDate.date(), newDate.time(), Qt::UTC);
+#endif
 		if (!newDate.isValid()) {
 			appendTextToLog("unable to parse date " + date + " with the given format " + format);
 			QRegularExpression isoDate("\\d+-\\d+-\\d+[^\\d]+\\d+:\\d+");
@@ -1778,12 +1810,7 @@ QString QMLManager::getDate(const QString& diveId)
 
 QString QMLManager::getVersion() const
 {
-	QRegularExpression versionRe(":([()\\.,\\d]+)");
-	QRegularExpressionMatch match = versionRe.match(getUserAgent());
-	if (!match.hasMatch())
-		return QString();
-
-	return match.captured(1);
+	return QString(subsurface_git_version());
 }
 
 QString QMLManager::getGpsFromSiteName(const QString &siteName)
@@ -1905,7 +1932,7 @@ void QMLManager::writeToAppLogFile(const std::string &logText)
 #endif
 
 #if defined(Q_OS_ANDROID)
-//HACK to color the system bar on Android, use qtandroidextras and call the appropriate Java methods
+//HACK to color the system bar on Android, call the appropriate Java methods
 //this code is based on code in the Kirigami example app for Android (under LGPL-2) Copyright 2017 Marco Martin
 
 // there doesn't appear to be an include that defines these in an easily accessible way
@@ -1917,8 +1944,8 @@ void QMLManager::writeToAppLogFile(const std::string &logText)
 
 void QMLManager::setStatusbarColor(QColor color)
 {
-	QtAndroid::runOnAndroidThread([color]() {
-		QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
+	QNativeInterface::QAndroidApplication::runOnAndroidMainThread([color]() {
+		QJniObject window = QJniObject(QNativeInterface::QAndroidApplication::context()).callObjectMethod("getWindow", "()Landroid/view/Window;");
 		window.callMethod<void>("addFlags", "(I)V", FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 		window.callMethod<void>("clearFlags", "(I)V", FLAG_TRANSLUCENT_STATUS);
 		window.callMethod<void>("setStatusBarColor", "(I)V", color.rgba());
@@ -2098,7 +2125,7 @@ void QMLManager::androidUsbPopoulateConnections()
 	}
 }
 
-void QMLManager::showDownloadPage(QAndroidJniObject usbDevice)
+void QMLManager::showDownloadPage(QJniObject usbDevice)
 {
 	if (!usbDevice.isValid()) {
 		// this really shouldn't happen anymore, but just in case...
@@ -2116,7 +2143,7 @@ void QMLManager::showDownloadPage(QAndroidJniObject usbDevice)
 	emit pluggedInDeviceNameChanged();
 }
 
-void QMLManager::restartDownload(QAndroidJniObject usbDevice)
+void QMLManager::restartDownload(QJniObject usbDevice)
 {
 	// this gets called if we received a permission intent after
 	// already trying to download from USB
@@ -2198,7 +2225,9 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 		case EX_DIVE_SITES_XML:
 			{
 				auto sites = getDiveSitesToExport(false);
-				save_dive_sites_logic(qPrintable(fileName + ".xml"), sites.data(), (int)sites.size(), anonymize);
+				auto result = export_dive_sites_xslt(qPrintable(fileName + ".xml"), sites, "divesites-export.xslt", anonymize);
+				if (result.first)
+					report_error("%s", result.second.c_str());
 				break;
 			}
 		default:
@@ -2246,7 +2275,7 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 		fileName.replace("subsurface.log", "subsurface_divesites.xml");
 		{ // need a block so the compiler doesn't complain about creating the sites variable here
 			auto sites = getDiveSitesToExport(false);
-			if (save_dive_sites_logic(qPrintable(fileName), sites.data(), (int)sites.size(), anonymize) == 0) {
+			if (export_dive_sites_xslt(qPrintable(fileName), sites, "divesites-export.xslt", anonymize).first == 0) {
 				// ok, we have a file, let's send it
 				body = "Subsurface dive site data";
 			} else {
@@ -2260,12 +2289,12 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 	}
 #if defined(Q_OS_ANDROID)
 	// let's use our nifty Java shareViaEmail function
-	QAndroidJniObject activity = QtAndroid::androidActivity();
+	QJniObject activity(QNativeInterface::QAndroidApplication::context());
 	if (activity.isValid()) {
-		QAndroidJniObject attachmentPath = QAndroidJniObject::fromString(fileName);
-		QAndroidJniObject subject = QAndroidJniObject::fromString("Subsurface export");
-		QAndroidJniObject bodyString = QAndroidJniObject::fromString(body);
-		QAndroidJniObject emptyString = QAndroidJniObject::fromString("");
+		QJniObject attachmentPath = QJniObject::fromString(fileName);
+		QJniObject subject = QJniObject::fromString("Subsurface export");
+		QJniObject bodyString = QJniObject::fromString(body);
+		QJniObject emptyString = QJniObject::fromString("");
 		bool success = activity.callMethod<jboolean>("shareViaEmail",
 					"(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z", // five string arguments, return bool
 					subject.object<jstring>(), emptyString.object<jstring>(), bodyString.object<jstring>(),

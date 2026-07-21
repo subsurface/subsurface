@@ -14,10 +14,8 @@ po/*.mo
 /*.tar.gz
 share/
 packaging/windows/subsurface.nsi
-packaging/macos/Info.plist
 *.kdev4
 callgrind.out.*
-.gitignore
 build*/
 .rcc
 .moc
@@ -28,8 +26,11 @@ subsurface.pro.user*
 Subsurface-mobile.pro.user*
 Subsurface.app
 .DS_Store
+.vscode
 !android/**/*.xml
 build*
+!build.ps1
+!build.sh
 nightly-builds/
 mobile-widgets/qml/kirigami
 mobile-widgets/3rdparty/ECM/
@@ -42,12 +43,23 @@ packaging/ios/Qt
 packaging/ios/asset_catalog_compiler.Info.plist
 appdata/subsurface.appdata.xml
 android-mobile/Roboto-Regular.ttf
+android-mobile/.gradle/
+.secrets
 gh_release_notes.md
 release_content_title.txt
 /output/
 /Documentation/output/
+/Documentation/.latest_change_version
+/Documentation/.latest_change_git_hash
 /metainfo/subsurface.metainfo.xml
 ReleaseNotes/MobileReleaseNotes.pdf
 ReleaseNotes/MobileReleaseNotes.text
 ReleaseNotes/ReleaseNotes.pdf
 ReleaseNotes/ReleaseNotes.text
+# MapWidget.qml is generated from MapWidgetQt5.qml or MapWidgetQt6.qml
+map-widget/qml/MapWidget.qml
+
+# Artefacts produced by the MSVC build
+googlemaps/
+install-msvc/
+qlitehtml/

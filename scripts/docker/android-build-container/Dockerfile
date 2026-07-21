@@ -1,99 +1,63 @@
-FROM ubuntu:24.04 as base
+FROM ubuntu:24.04 AS base
+
+# set the basic information and paths that everything else is based on
+ENV NDK_VERSION=27.2.12479018
+ENV SDK_LEVEL=35
+ENV SDK_VERSION=35.0.0
+ENV ANDROID_PLATFORM=28
+ENV ANDROID_BUILD_ABI=arm64-v8a
+ENV QT_VERSION=6.10.3
+ENV BUILDROOT=/android
+ENV ANDROID_SDK_ROOT=/opt/android-sdk
 
 RUN apt-get update  && \
-    apt-get full-upgrade -y && \
-    apt-get install -y \
-    unzip \
-    git \
-    cmake \
-    autoconf \
-    libtool-bin \
-    openjdk-8-jdk \
-    wget && \
-    apt-get clean
+	apt-get full-upgrade -y && \
+	apt-get install -y \
+	unzip \
+	git \
+	cmake \
+	autoconf \
+	libtool-bin \
+	libegl-dev \
+	libxkbcommon-dev \
+	openjdk-17-jdk \
+	wget \
+	pkg-config \
+	ninja-build \
+	python3-pip \
+	python3-venv \
+	p7zip-full && \
+	apt-get clean
 
+RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools ${BUILDROOT}/src && \
+	wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -O /tmp/cmdline-tools.zip && \
+	unzip -q /tmp/cmdline-tools.zip -d /tmp/cmdline-tools-tmp && \
+	mv /tmp/cmdline-tools-tmp/cmdline-tools ${ANDROID_SDK_ROOT}/cmdline-tools/latest && \
+	rm -f /tmp/cmdline-tools.zip && \
+	SDKMANAGER="${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager" && \
+	( yes | ${SDKMANAGER} --licenses > /dev/null 2>&1 || true ) && \
+	${SDKMANAGER} "platforms;android-${SDK_LEVEL}" "build-tools;${SDK_VERSION}" "platform-tools" "ndk;${NDK_VERSION}"
 
-FROM base as build
+FROM base AS lib-base
 
-WORKDIR /android
+WORKDIR ${BUILDROOT}
 
-# Scrape the manually curated Qt install from the previous build image
-COPY --from=subsurface/android-build-container:5.15.1 /android/5.15.1 5.15.1
+ADD android-native-libs.sh get-dep-lib.sh ${BUILDROOT}/src
 
-# install, NDK and SDK there, plus the three files from the Subsurface
-# sources that we need to get the prep routines to run
-RUN wget https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip && \
-    unzip commandlinetools-linux-*.zip
-ADD android-build-setup.sh variables.sh .
+# build the native libraries that we need
+RUN bash -x ${BUILDROOT}/src/android-native-libs.sh 2>&1 | tee ${BUILDROOT}/native-libs.log
 
-# run the build setup
-RUN bash -x android-build-setup.sh
+FROM base AS final
+WORKDIR ${BUILDROOT}
 
-# clean up the files that we don't need to keep the container smaller
-RUN rm -rf \
-	   5*/android/lib/*x86* \
-	   5*/android/doc \
-	   5*/android/include/QtHelp \
-	   5*/android/include/QtFbSupport \
-	   5*/android/include/QtFontDatabaseSupport \
-	   5*/android/include/QtNfc \
-	   5*/android/include/QtPrintSupport \
-	   5*/android/include/QtTest \
-	   5*/android/include/QtXml \
-	   5*/android/plugins/geoservices/libqtgeoservices_mapboxgl.so \
-	   5*/android/lib/cmake/Qt5Test/Qt5TestConfig.cmake \
-	   commandlinetools-linux-*.zip \
-	   $( find platforms -name arch-mips -o -name arch-x86 ) \
-	   toolchains/x86-* android-ndk*/toolchains/llvm/prebuilt/x86-* \
-	   platforms/android-[12][2345678] \
-	   platforms/android-21/arch-x86_64 \
-	   ndk/*/sources/cxx-stl/llvm-libc++/libs/x* \
-	   ndk/*/sources/cxx-stl/llvm-libc++/libs/*/*static* \
-	   ndk/*/sources/cxx-stl/llvm-libc++/test \
-	   ndk/*/sources/cxx-stl/llvm-libc++/utils \
-	   ndk/*/sources/cxx-stl/llvmlibc++abi \
-	   ndk/*/sources/cxx-stl/system \
-	   ndk/*/sources/third_party \
-	   ndk/*/sysroot/usr/lib \
-	   build-tools/*/renderscript \
-	   platform-tools/systrace \
-	   tools/lib \
-	   tools/proguard \
-	   tools/support \
-	   emulator \
-	   platform-tools-2 \
-	   variables.sh \
-	   android-build-setup.sh \
-	   /usr/lib/gcc
+COPY --from=lib-base ${BUILDROOT}/src/install-root-${ANDROID_BUILD_ABI} ${BUILDROOT}/src/install-root-${ANDROID_BUILD_ABI}/
 
+# install Qt
+RUN python3 -m venv ${BUILDROOT}/.v && ${BUILDROOT}/.v/bin/pip3 install aqtinstall && \
+	OS_TAG="$(echo ${ANDROID_BUILD_ABI} | tr '-' '_')" && \
+	${BUILDROOT}/.v/bin/python3 -m aqt install-qt linux android ${QT_VERSION} android_${OS_TAG} \
+		--autodesktop --outputdir ${BUILDROOT}/Qt --modules qtlocation qtpositioning qtconnectivity qt5compat qtshadertools && \
+	${BUILDROOT}/.v/bin/python3 -m aqt install-qt linux desktop ${QT_VERSION} linux_gcc_64 \
+		--autodesktop --outputdir ${BUILDROOT}/Qt --modules qtshadertools --external 7z
 
-FROM base as final
-
-RUN apt-get install -y \
-    autoconf \
-    automake \
-    cmake \
-    git \
-    make \
-    wget \
-    zip \
-    unzip \
-    python3 \
-    python3-pip \
-    bzip2 \
-    pkg-config \
-    libx11-xcb1 \
-    libglib2.0-0 \
-    openjdk-8-jdk \
-    curl \
-    coreutils \
-    p7zip-full && \
-    apt-get clean
-
-WORKDIR /android
-
-COPY --from=build /android/ .
-
-RUN git config --global --add safe.directory /android/subsurface && \
-    git config --global --add safe.directory /android/subsurface/libdivecomputer && \
-    git config --global --add safe.directory /android/subsurface/nightly-builds
+ENV PATH=${BUILDROOT}/Qt/${QT_VERSION}/gcc_64/bin:${ANDROID_SDK_ROOT}/ndk/${NDK_VERSION}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}

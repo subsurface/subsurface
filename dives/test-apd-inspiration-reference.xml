@@ -6,7 +6,7 @@
 </site>
 </divesites>
 <dives>
-<dive otu='156' cns='69%' divesiteid='eea339da' date='2022-04-24' time='10:30:58' duration='104:00 min'>
+<dive number='942' otu='156' cns='69%' divesiteid='eea339da' date='2022-04-24' time='10:30:58' duration='104:00 min'>
   <buddy>Buddy Diver</buddy>
   <notes>Nice dive. Saw fish.</notes>
   <cylinder description='air' use='diluent' />
@@ -17,20 +17,22 @@
   <cylinder description='oxygen' o2='100.0%' use='diluent' />
   <cylinder description='16/48 (bailout)' o2='16.0%' he='48.0%' />
   <cylinder description='48% nx (bailout)' o2='48.0%' />
-  <divecomputer model='AP DiveSight' dctype='CCR' no_o2sensors='3'>
+  <divecomputer model='AP DiveSight' deviceid='0e66aa21' dctype='CCR' no_o2sensors='3'>
   <depth max='60.4 m' mean='21.111 m' />
   <temperature air='16.9 C' water='16.9 C' />
   <extradata key='Generator' value='AP DiveSight' />
   <extradata key='Generator Version' value='2.0.0.5' />
-  <extradata key='Serial Number' value='06H480000' />
-  <extradata key='Software Version' value='DC.00.06.00.36' />
+  <extradata key='Serial' value='06H480000' />
+  <extradata key='FW Version' value='DC.00.06.00.36' />
   <extradata key='Battery 1 at Begin [V]' value='5.6' />
   <extradata key='Battery 1 at End [V]' value='5.4' />
   <extradata key='Battery 2 at Begin [V]' value='5.7' />
   <extradata key='Battery 2 at End [V]' value='5.5' />
   <extradata key='Tempstik at Begin' value='[#_____]' />
   <extradata key='Tempstik at End' value='[_#####]' />
+  <extradata key='Elapsed on time at End [hh:mm:ss]' value='2:05:00' />
   <extradata key='Deco model' value='GF 50/70' />
+  <extradata key='Unit dive number' value='942' />
   <event time='0:00 min' type='11' value='21' name='gaschange' cylinder='0' />
   <event time='0:10 min' type='25' value='3145744' name='gaschange' cylinder='3' o2='16.0%' he='48.0%' />
   <event time='19:00 min' type='25' value='3145744' name='gaschange' cylinder='6' o2='16.0%' he='48.0%' />

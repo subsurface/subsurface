@@ -5,6 +5,7 @@
 #include "core/divelog.h"
 #include "core/event.h"
 #include "core/fulltext.h"
+#include "core/gettextfromc.h"
 #include "core/qthelper.h"
 #include "core/range.h"
 #include "core/sample.h"
@@ -377,8 +378,6 @@ void EditDiveSite::redo()
 static struct dive_site *createDiveSite(const std::string &name)
 {
 	struct dive_site *ds = new dive_site;
-	if (current_dive && current_dive->dive_site)
-		*ds = *current_dive->dive_site;
 
 	// If the current dive has a location, use that as location for the new dive site
 	if (current_dive) {
@@ -1305,12 +1304,21 @@ void EditSensors::undo()
 {
 	dc->tank_sensor_mappings = oldTankSensorMappings;
 
+	d->cylinders[cylinderIndex].sample_start = 0_bar;
+	d->cylinders[cylinderIndex].sample_end = 0_bar;
+
 	emit diveListNotifier.diveComputerEdited(*d, *dc);
 	d->invalidate_cache(); // Ensure that dive is written in git_save()
 }
 
 void EditSensors::redo()
 {
+	// If we're adding a real sensor mapping, first remove the "no sensors mapped" sentinel if present
+	if (sensorId != NO_SENSOR && dc->tank_sensor_mappings.size() == 1
+	    && dc->tank_sensor_mappings[0].sensor_id == NO_SENSOR) {
+		dc->tank_sensor_mappings.clear();
+	}
+
 	bool found = false;
 	for (auto it = dc->tank_sensor_mappings.begin(); it != dc->tank_sensor_mappings.end();) {
 		if (sensorId == NO_SENSOR) {
@@ -1345,6 +1353,9 @@ void EditSensors::redo()
 	if (!found) {
 		dc->tank_sensor_mappings.push_back(tank_sensor_mapping { sensorId, cylinderIndex });
 	}
+
+	d->cylinders[cylinderIndex].sample_start = 0_bar;
+	d->cylinders[cylinderIndex].sample_end = 0_bar;
 
 	emit diveListNotifier.diveComputerEdited(*d, *dc);
 	d->invalidate_cache(); // Ensure that dive is written in git_save()
@@ -1503,5 +1514,54 @@ bool EditDive::workToBeDone()
 }
 
 #endif // SUBSURFACE_MOBILE
+
+// Explicit template instantiations for MSVC
+// MSVC requires these when template definitions are in a .cpp file
+#ifdef _MSC_VER
+
+// EditBase instantiations
+template class EditBase<QString>;
+template class EditBase<int>;
+template class EditBase<bool>;
+template class EditBase<struct dive_site *>;
+
+// EditTemplate instantiations
+template class EditTemplate<QString, DiveField::NOTES>;
+template class EditTemplate<QString, DiveField::SUIT>;
+template class EditTemplate<int, DiveField::RATING>;
+template class EditTemplate<int, DiveField::VISIBILITY>;
+template class EditTemplate<int, DiveField::WAVESIZE>;
+template class EditTemplate<int, DiveField::CURRENT>;
+template class EditTemplate<int, DiveField::SURGE>;
+template class EditTemplate<int, DiveField::CHILL>;
+template class EditTemplate<int, DiveField::AIR_TEMP>;
+template class EditTemplate<int, DiveField::WATER_TEMP>;
+template class EditTemplate<int, DiveField::ATM_PRESS>;
+template class EditTemplate<int, DiveField::SALINITY>;
+template class EditTemplate<int, DiveField::DURATION>;
+template class EditTemplate<int, DiveField::DEPTH>;
+template class EditTemplate<int, DiveField::MODE>;
+template class EditTemplate<bool, DiveField::INVALID>;
+template class EditTemplate<struct dive_site *, DiveField::DIVESITE>;
+
+// EditDefaultSetter instantiations
+template class EditDefaultSetter<int, DiveField::RATING, &dive::rating>;
+template class EditDefaultSetter<int, DiveField::VISIBILITY, &dive::visibility>;
+template class EditDefaultSetter<int, DiveField::WAVESIZE, &dive::wavesize>;
+template class EditDefaultSetter<int, DiveField::CURRENT, &dive::current>;
+template class EditDefaultSetter<int, DiveField::SURGE, &dive::surge>;
+template class EditDefaultSetter<int, DiveField::CHILL, &dive::chill>;
+template class EditDefaultSetter<bool, DiveField::INVALID, &dive::invalid>;
+
+// EditStringSetter instantiations
+template class EditStringSetter<DiveField::NOTES, &dive::notes>;
+template class EditStringSetter<DiveField::SUIT, &dive::suit>;
+
+// EditTagsTemplate instantiations
+template class EditTagsTemplate<DiveField::TAGS>;
+template class EditTagsTemplate<DiveField::BUDDY>;
+template class EditTagsTemplate<DiveField::DIVEGUIDE>;
+
+#endif // _MSC_VER
 
 } // namespace Command

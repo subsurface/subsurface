@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QMenu>
+#include <QStandardItemModel>
 #include "core/btdiscovery.h"
 
 #include <QBluetoothUuid>
@@ -222,6 +223,7 @@ void BtDeviceSelectionDialog::currentItemChanged(QListWidgetItem *item, QListWid
 {
 	// If the list is cleared, we get a signal with a null item pointer
 	if (!item) {
+		updateBluetoothModeAvailability(nullptr);
 		ui->save->setEnabled(false);
 		return;
 	}
@@ -256,7 +258,25 @@ void BtDeviceSelectionDialog::currentItemChanged(QListWidgetItem *item, QListWid
 #endif
 	// Update the status message and the save button
 	ui->dialogStatus->setText(statusMessage);
+	updateBluetoothModeAvailability(&remoteDeviceInfo);
 	ui->save->setEnabled(enableSaveButton);
+}
+
+void BtDeviceSelectionDialog::updateBluetoothModeAvailability(const QBluetoothDeviceInfo *device)
+{
+	auto model = qobject_cast<QStandardItemModel *>(ui->btMode->model());
+	QStandardItem *classicItem = model ? model->item(2) : nullptr;
+	if (!classicItem)
+		return;
+
+	bool classicAvailable = !device || !device->address().isNull();
+	classicItem->setEnabled(classicAvailable);
+	if (!classicAvailable) {
+		if (ui->btMode->currentIndex() == 2)
+			ui->btMode->setCurrentIndex(0);
+		ui->dialogStatus->setText(ui->dialogStatus->text() + " " +
+					  tr("Bluetooth Classic is unavailable for devices identified by UUID."));
+	}
 }
 
 void BtDeviceSelectionDialog::localDeviceChanged(int index)
@@ -410,8 +430,10 @@ QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 		return markBLEAddress(device);
 	case 1:		// Force LE
 		return btDeviceAddress(device, true);
-	case 2:		// Force classical
-		return btDeviceAddress(device, false);
+	case 2:		// Force Classic
+		// Classic uses a MAC address. Apple platforms expose BLE devices as UUIDs,
+		// for which forcing Classic is not meaningful.
+		return device->address().isNull() ? QString() : "BT:" + btDeviceAddress(device, false);
 	}
 }
 

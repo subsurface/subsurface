@@ -2,14 +2,15 @@ Source: subsurface
 Section: utils
 Priority: optional
 Maintainer: Subsurface CI Bot <dirk@subsurface-divelog.org>
-Build-Depends: asciidoc,
-               debhelper (>= 9),
+Build-Depends: asciidoctor,
+               ruby-asciidoctor-pdf,
+               debhelper (>= 12),
                libtool,
                libxml2-dev,
                libxslt-dev,
                libgit2-dev,
                libsoup2.4-dev,
-               pkg-config,
+               pkgconf,
                txt2html,
                libzip-dev,
                libsqlite3-dev,

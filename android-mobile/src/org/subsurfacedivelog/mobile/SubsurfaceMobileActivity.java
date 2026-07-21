@@ -8,9 +8,7 @@
 
 package org.subsurfacedivelog.mobile;
 
-import org.qtproject.qt5.android.QtNative;
-
-import org.qtproject.qt5.android.bindings.QtActivity;
+import org.qtproject.qt.android.bindings.QtActivity;
 import android.os.*;
 import android.content.*;
 import android.app.*;
@@ -22,8 +20,8 @@ import android.hardware.usb.UsbManager;
 import android.util.Log;
 import java.io.File;
 import android.net.Uri;
-import android.support.v4.content.FileProvider;
-import android.support.v4.app.ShareCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.app.ShareCompat;
 import android.content.pm.PackageManager;
 import java.util.List;
 import android.content.pm.ResolveInfo;
@@ -39,14 +37,10 @@ public class SubsurfaceMobileActivity extends QtActivity
 
 	// you can share one or two files
 	public boolean shareViaEmail(String subject, String recipient, String body, String path1, String path2) {
-		// better save than sorry
-		if (QtNative.activity() == null)
-			return false;
-
 		Log.d(TAG + " shareFile - trying to share: ", path1 + " and " + path2 + " to " + recipient);
 
 		// Can't get this to work building my own intent, so let's use the IntentBuilder
-		Intent shareFileIntent = ShareCompat.IntentBuilder.from(QtNative.activity()).getIntent();
+		Intent shareFileIntent = new ShareCompat.IntentBuilder(this).getIntent();
 		shareFileIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
 		// recipients are always an array, even if there's only one
 		shareFileIntent.putExtra(Intent.EXTRA_EMAIL, new String[] { recipient });
@@ -57,7 +51,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 		File fileToShare = new File(path1);
 		Uri uri;
 		try {
-			uri = FileProvider.getUriForFile(QtNative.activity(), fileProviderAuthority, fileToShare);
+			uri = FileProvider.getUriForFile(this, fileProviderAuthority, fileToShare);
 		} catch (IllegalArgumentException e) {
 			Log.d(TAG + " shareFile - cannot get URI for ", path1);
 			return false;
@@ -73,7 +67,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 		if (!path2.isEmpty()) {
 			fileToShare = new File(path2);
 			try {
-				uri = FileProvider.getUriForFile(QtNative.activity(), fileProviderAuthority, fileToShare);
+				uri = FileProvider.getUriForFile(this, fileProviderAuthority, fileToShare);
 			} catch (IllegalArgumentException e) {
 				Log.d(TAG + " shareFile - cannot get URI for ", path2);
 				return false;
@@ -88,7 +82,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Log.d(TAG + " sendFile ", " create activity for the Intent");
 		// this actually allows sharing with any app that will take "text/plain" files, including Dropbox, etc
 		// in order for the recipient / subject to work, the user needs to be clever enough to share with an email app
-		QtNative.activity().startActivity(shareFileIntent);
+		this.startActivity(shareFileIntent);
 		return true;
 	}
 
@@ -115,6 +109,11 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Log.i(TAG + " onCreate", "onCreate SubsurfaceMobileActivity");
 		super.onCreate(savedInstanceState);
 
+		// Ensure app content does not draw behind system bars.
+		// The theme sets windowOptOutEdgeToEdgeEnforcement for Android 15+;
+		// this call handles pre-Android 15 devices.
+		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+
 		appContext = getApplicationContext();
 
 		// now we're checking if the App was started from another Android App via Intent
@@ -129,7 +128,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 
 		// Register the usb permission intent filter.
 		IntentFilter filter = new IntentFilter("org.subsurfacedivelog.mobile.USB_PERMISSION");
-		registerReceiver(usbReceiver, filter);
+		registerReceiver(usbReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
 
 	} // onCreate
 
@@ -138,7 +137,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public void onNewIntent(Intent intent)
 	{
 		Log.i(TAG + " onNewIntent", intent.getAction());
-		UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+		UsbDevice device = getUsbDevice(intent);
 		if (device == null) {
 			Log.i(TAG + " onNewIntent", "null device");
 			return;
@@ -175,13 +174,34 @@ public class SubsurfaceMobileActivity extends QtActivity
 			return;
 		}
 		Log.i(TAG + " processIntent", intent.getAction());
-		UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+		UsbDevice device = getUsbDevice(intent);
 		if (device == null) {
 			Log.i(TAG + " processIntent", "null device");
 			return;
 		}
 		Log.i(TAG + " processIntent device name", device.getDeviceName());
-		setUsbDevice(device);
+		try {
+			setUsbDevice(device);
+		} catch (LinkageError e) {
+			// The native library may not be fully loaded yet.
+			// checkPendingIntents() is only called once
+			// during startup, so schedule a one-shot retry
+			Log.w(TAG + " processIntent", "native not ready, scheduling retry", e);
+			isIntentPending = true;
+			new Handler(Looper.getMainLooper()).postDelayed(() -> {
+				if (!isIntentPending)
+					return;
+				isIntentPending = false;
+				UsbDevice retryDevice = getUsbDevice(getIntent());
+				if (retryDevice == null)
+					return;
+				try {
+					setUsbDevice(retryDevice);
+				} catch (LinkageError retryError) {
+					Log.e(TAG + " processIntent", "native still not ready after retry, giving up", retryError);
+				}
+			}, 500);
+		}
 	} // processIntent
 
 
@@ -192,7 +212,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 			if ("org.subsurfacedivelog.mobile.USB_PERMISSION".equals(action)) {
 				synchronized (this) {
 					if (intent.getBooleanExtra(UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
-						UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+						UsbDevice device = getUsbDevice(intent);
 						if (device == null) {
 							Log.i(TAG, " permission granted but null device");
 							return;
@@ -210,5 +230,14 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public static Context getAppContext()
 	{
 		return appContext;
+	}
+
+	// getParcelableExtra(String) was deprecated in API 33; the typed overload
+	// requires API 33, so guard by version.
+	@SuppressWarnings("deprecation")
+	private static UsbDevice getUsbDevice(Intent intent) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+			return intent.getParcelableExtra(UsbManager.EXTRA_DEVICE, UsbDevice.class);
+		return intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
 	}
 }

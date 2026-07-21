@@ -247,7 +247,11 @@ int gettimezoneoffset()
 	// Somewhat surprisingly, Windows doesn't have localtime_r (I thought this was POSIX?).
 	// Let's use the global timezone variable.
 	// Ultimately, use the portable C++20 API.
+#ifdef _MSC_VER
+	return static_cast<int>(-_timezone);
+#else
 	return static_cast<int>(-timezone);
+#endif
 #else
 	time_t now = time(nullptr);
 	struct tm local;

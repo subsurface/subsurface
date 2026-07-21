@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.4
-import QtQuick.Layouts 1.2
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Kirigami.Page {
 	id: statisticsPage
@@ -47,30 +47,33 @@ Kirigami.Page {
 
 	Component {
 		id: chartListDelegate
-		Kirigami.AbstractListItem {
+		ItemDelegate {
 			id: chartListDelegateItem
-			height: isHeader ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing // delegateInnerItem.height
+			width: ListView.view ? ListView.view.width : implicitWidth
+			height: isHeader ? 1 + 8 * Kirigami.Units.smallSpacing : 11 * Kirigami.Units.smallSpacing
+			background: Rectangle {
+				color: chartListDelegateItem.pressed ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.backgroundColor
+			}
 			onClicked: {
 				if (!isHeader) {
 					chartTypePopup.close()
 					statsManager.setChart(id)
 				}
 			}
-			Item {
-				id: chartListDelegateInnerItem
-				Row {
-					height: childrenRect.height
-					spacing: Kirigami.Units.smallSpacing
-					Kirigami.Icon {
-						id: chartIcon
-						source: icon
-						width: iconSize !== undefined ? iconSize.width : 0
-					}
-					Label {
-						text: chartName
-						font.bold: isHeader
-						color: subsurfaceTheme.textColor
-					}
+			contentItem: Row {
+				height: childrenRect.height
+				spacing: Kirigami.Units.smallSpacing
+				Kirigami.Icon {
+					id: chartIcon
+					source: model.icon
+					visible: model.iconSize !== undefined
+					width: model.iconSize !== undefined ? model.iconSize.width : 0
+					height: model.iconSize !== undefined ? model.iconSize.height : 0
+				}
+				Label {
+					text: chartName
+					font.bold: isHeader
+					color: subsurfaceTheme.textColor
 				}
 			}
 		}
@@ -85,6 +88,12 @@ Kirigami.Page {
 		focus: true
 		clip: true
 		closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+		background: Rectangle {
+			color: subsurfaceTheme.backgroundColor
+			border.color: subsurfaceTheme.darkerPrimaryColor
+			border.width: 1
+			radius: Kirigami.Units.smallSpacing
+		}
 		ListView {
 			id: chartTypes
 			model: chartListModel
@@ -237,30 +246,25 @@ Kirigami.Page {
 		}
 		Item {
 			Layout.column: wide ? 0 : 2
-			Layout.row: wide ? 6 : 2
-			Layout.preferredHeight: wide ? parent.height - Kirigami.Units.gridUnit * 16 : Kirigami.Units.gridUnit
-			Layout.fillWidth: wide ? false : true
+			Layout.row: wide ? 7 : 2
+			Layout.fillHeight: wide ? true : false
 			// just used for spacing
 		}
 		StatsView {
 			Layout.column: wide ? 1 : 0
 			Layout.row: wide ? 0 : 4
 			Layout.columnSpan: wide ? 1 : 3
-			Layout.rowSpan: wide ? 7 : 1
+			Layout.rowSpan: wide ? 8 : 1
 			id: statsView
 			Layout.margins: Kirigami.Units.smallSpacing
 			Layout.fillWidth: true
 			Layout.fillHeight: true
-			Layout.maximumHeight: wide ? statisticsPage.height - 2 * Kirigami.Units.gridUnit :
-						     statisticsPage.height - 2 * Kirigami.Units.gridUnit - i4.height
-			Layout.maximumWidth: wide ? statisticsPage.width - 2 * Kirigami.Units.gridUnit - i4.width :
-						     statisticsPage.width - 2 * Kirigami.Units.smallSpacing
 		}
 	}
 	Component.onCompleted: {
 		statsManager.init(statsView, chartListModel)
 	}
-	onBackRequested: {
+	onBackRequested: function(event) {
 		// if the menu drawer is open, the back button should close it
 		if (globalDrawer.visible) {
 			globalDrawer.close()

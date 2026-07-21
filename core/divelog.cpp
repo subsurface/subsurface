@@ -259,6 +259,8 @@ static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive
 			}
 		}
 
+		/* Dive was not merged - assign it to the target trip */
+		dive_to_add->divetrip = trip;
 		sequence_changed |= !dive_is_after_last(*dive_to_add);
 		dives_to_add.put(std::move(dive_to_add));
 	}

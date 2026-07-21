@@ -6,6 +6,7 @@
 #include "core/profile.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/qthelper.h"
+#include "core/string-format.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefLog.h"
 #include "libdivecomputer/parser.h"
@@ -124,7 +125,8 @@ void DiveProfileItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *o
 	const auto &data = pInfo.entry;
 	// This paints the colors of the velocities.
 	for (int i = from + 1; i < to; i++) {
-		QColor color = getColor((color_index_t)(VELOCITY_COLORS_START_IDX + data[i].velocity));
+		int velocityColorIdx = static_cast<int>(VELOCITY_COLORS_START_IDX) + static_cast<int>(data[i].velocity);
+		QColor color = getColor(static_cast<color_index_t>(velocityColorIdx));
 		pen.setBrush(QBrush(color));
 		painter->setPen(pen);
 		if (i - from < poly.count() - 1)

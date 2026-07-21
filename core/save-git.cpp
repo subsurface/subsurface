@@ -11,11 +11,11 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <git2.h>
 #include <memory>
 
+#include "commands/command.h"
 #include "dive.h"
 #include "divelog.h"
 #include "divesite.h"
@@ -33,6 +33,7 @@
 #include "version.h"
 #include "picture.h"
 #include "qthelper.h"
+#include "pref.h"
 #include "range.h"
 #include "gettext.h"
 #include "tag.h"
@@ -57,29 +58,19 @@ static void quote(struct membuffer *b, const char *text)
 	for (;;) {
 		const char *escape;
 
-		switch (*p++) {
-		default:
-			continue;
-		case 0:
+		char c = *p++;
+		if (c == 0) {
 			escape = NULL;
-			break;
-		case 1 ... 8:
-		case 11:
-		case 12:
-		case 14 ... 31:
+		} else if ((c > 0 && c < 9) || c == 11 || c == 12 || (c >= 14 && c <= 31)) {
 			escape = "?";
-			break;
-		case '\\':
+		} else if (c == '\\') {
 			escape = "\\\\";
-			break;
-		case '"':
+		} else if (c == '"') {
 			escape = "\\\"";
-			break;
-		case '\n':
-			escape = "\n\t";
-			if (*p == '\n')
-				escape = "\n";
-			break;
+		} else if (c == '\n') {
+			escape = (*p == '\n') ? "\n" : "\n\t";
+		} else {
+			continue;
 		}
 		put_bytes(b, text, (p - text - 1));
 		if (!escape)
@@ -699,20 +690,10 @@ static void create_trip_name(dive_trip *trip, struct membuffer *name, struct tm 
 
 		for (i = 0; i < MAXTRIPNAME; ) {
 			char c = *p++;
-			switch (c) {
-			case 0:
-			case ',':
-			case '.':
+			if (c == 0 || c == ',' || c == '.')
 				break;
-
-			case 'a' ... 'z':
-			case 'A' ... 'Z':
+			if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
 				ascii_loc[i++] = c;
-				continue;
-			default:
-				continue;
-			}
-			break;
 		}
 		if (i > 1) {
 			put_bytes(name, ascii_loc, i);
@@ -1072,7 +1053,7 @@ int get_authorship(git_repository *repo, git_signature **authorp)
 static void create_commit_message(struct membuffer *msg, bool create_empty)
 {
 	int nr = static_cast<int>(divelog.dives.size());
-	std::string changes_made = get_changes_made();
+	std::string changes_made = Command::changesMade();
 
 	if (create_empty) {
 		put_string(msg, "Initial commit to create empty repo.\n\n");

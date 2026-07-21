@@ -14,9 +14,10 @@
 #include <zip.h>
 #include <string>
 
-#include <QtAndroidExtras/QtAndroidExtras>
-#include <QtAndroidExtras/QAndroidJniObject>
-#include <QtAndroid>
+#include <QJniObject>
+#include <QJniEnvironment>
+#include <QCoreApplication>
+#include <QStandardPaths>
 #include <QDebug>
 #include <core/serial_usb_android.h>
 
@@ -85,18 +86,18 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 {
 	int i;
 	jint fd, vendorid, productid;
-	QAndroidJniObject usbName, usbDevice;
+	QJniObject usbName, usbDevice;
 
 	// Get the current main activity of the application.
-	QAndroidJniObject activity = QtAndroid::androidActivity();
+	QJniObject activity(QNativeInterface::QAndroidApplication::context());
 
-	QAndroidJniObject usb_service = QAndroidJniObject::fromString(USB_SERVICE);
+	QJniObject usb_service = QJniObject::fromString(USB_SERVICE);
 
 	// Get UsbManager from activity
-	QAndroidJniObject usbManager = activity.callObjectMethod("getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;", usb_service.object());
+	QJniObject usbManager = activity.callObjectMethod("getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;", usb_service.object());
 
 	// Get a HashMap<Name, UsbDevice> of all USB devices attached to Android
-	QAndroidJniObject deviceMap = usbManager.callObjectMethod("getDeviceList", "()Ljava/util/HashMap;");
+	QJniObject deviceMap = usbManager.callObjectMethod("getDeviceList", "()Ljava/util/HashMap;");
 	jint num_devices = deviceMap.callMethod<jint>("size", "()I");
 	if (num_devices == 0) {
 		// No USB device is attached.
@@ -105,8 +106,8 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 	}
 
 	// Iterate over all the devices and find the first available FTDI device.
-	QAndroidJniObject keySet = deviceMap.callObjectMethod("keySet", "()Ljava/util/Set;");
-	QAndroidJniObject iterator = keySet.callObjectMethod("iterator", "()Ljava/util/Iterator;");
+	QJniObject keySet = deviceMap.callObjectMethod("keySet", "()Ljava/util/Set;");
+	QJniObject iterator = keySet.callObjectMethod("iterator", "()Ljava/util/Iterator;");
 
 	for (i = 0; i < num_devices; i++) {
 		usbName = iterator.callObjectMethod("next", "()Ljava/lang/Object;");
@@ -136,7 +137,7 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 
 	// An device is present and we also have permission to use the device.
 	// Open the device and get its file descriptor.
-	QAndroidJniObject usbDeviceConnection = usbManager.callObjectMethod("openDevice", "(Landroid/hardware/usb/UsbDevice;)Landroid/hardware/usb/UsbDeviceConnection;", usbDevice.object());
+	QJniObject usbDeviceConnection = usbManager.callObjectMethod("openDevice", "(Landroid/hardware/usb/UsbDevice;)Landroid/hardware/usb/UsbDeviceConnection;", usbDevice.object());
 	if (usbDeviceConnection.object() == NULL) {
 		// Some error occurred while opening the device. Exit.
 		LOG("usbManager said we had permission to access, but then opening the device failed");
@@ -160,7 +161,7 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setUsbDevice(JNIEnv *
 	jobject,
 	jobject javaUsbDevice)
 {
-	QAndroidJniObject usbDevice(javaUsbDevice);
+	QJniObject usbDevice(javaUsbDevice);
 	if (usbDevice.isValid()) {
 		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
 
@@ -177,7 +178,7 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_restartDownload(JNIEn
 	jobject,
 	jobject javaUsbDevice)
 {
-	QAndroidJniObject usbDevice(javaUsbDevice);
+	QJniObject usbDevice(javaUsbDevice);
 	if (usbDevice.isValid()) {
 		android_usb_serial_device_descriptor descriptor = getDescriptor(usbDevice);
 
@@ -249,7 +250,7 @@ bool subsurface_user_is_root()
 /* called from QML manager */
 void checkPendingIntents()
 {
-	QAndroidJniObject activity = QtAndroid::androidActivity();
+	QJniObject activity(QNativeInterface::QAndroidApplication::context());
 	if (activity.isValid()) {
 		activity.callMethod<void>("checkPendingIntents");
 		qDebug() << "checkPendingIntents ";
@@ -261,7 +262,7 @@ void checkPendingIntents()
 QString getAndroidHWInfo()
 {
 	return QStringLiteral("%1/%2/%3")
-			.arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "MODEL").toString())
-			.arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "BRAND").toString())
-			.arg(QAndroidJniObject::getStaticObjectField<jstring>("android/os/Build", "PRODUCT").toString());
+			.arg(QJniObject::getStaticObjectField<jstring>("android/os/Build", "MODEL").toString())
+			.arg(QJniObject::getStaticObjectField<jstring>("android/os/Build", "BRAND").toString())
+			.arg(QJniObject::getStaticObjectField<jstring>("android/os/Build", "PRODUCT").toString());
 }

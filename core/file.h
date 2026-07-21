@@ -10,6 +10,32 @@
 #include <utility>
 #include <memory>
 
+// MSVC doesn't define mode_t
+#ifdef _MSC_VER
+typedef unsigned int mode_t;
+#endif
+
+// MSVC doesn't have dirent.h - provide minimal types and declarations
+#ifdef _MSC_VER
+#define NOMINMAX
+#include <windows.h>
+struct _wdirent {
+	wchar_t d_name[MAX_PATH];
+};
+struct _WDIR {
+	HANDLE handle;
+	WIN32_FIND_DATAW find_data;
+	struct _wdirent entry;
+	bool first;
+};
+typedef struct _WDIR _WDIR;
+typedef struct _wdirent _wdirent;
+
+extern _WDIR *_wopendir(const wchar_t *path);
+extern struct _wdirent *_wreaddir(_WDIR *dir);
+extern int _wclosedir(_WDIR *dir);
+#endif
+
 struct divelog;
 struct zip;
 
@@ -19,6 +45,14 @@ extern int divesoft_import(const std::string &buffer, struct divelog *log);
 extern int logtrak_import(const std::string &mem, struct divelog *log);
 extern int scubapro_asd_import(const std::string &mem, struct divelog *log);
 extern int fit_file_import(const std::string &buffer, struct divelog *log);
+extern int suunto_json_import(const std::string &buffer, const std::string &fit_buffer, struct divelog *log);
+// AI-generated (Claude)
+// Detects .json/.fit pairs sharing a base name among fileNames, as exported
+// together by the Suunto app for one dive, and imports each complete pair as
+// a single dive via suunto_json_import(). Marks consumed[i] for every file
+// that was part of a complete pair; unpaired files are left for the caller's
+// normal per-file import path.
+extern void suunto_json_fit_pair_import(const std::vector<std::string> &fileNames, std::vector<bool> &consumed, struct divelog *log);
 
 extern int try_to_open_cochran(const char *filename, std::string &mem, struct divelog *log);
 extern int try_to_open_liquivision(const char *filename, std::string &mem, struct divelog *log);

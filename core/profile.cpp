@@ -3,10 +3,6 @@
 /* creates all the necessary data for drawing the dive profile
  */
 #include "gettext.h"
-#include <limits.h>
-#include <string.h>
-#include <assert.h>
-#include <stdlib.h>
 
 #include "dive.h"
 #include "divelist.h"
@@ -26,9 +22,15 @@
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 #include "membuffer.h"
-#include "qthelper.h"
+#include "pref.h"
 #include "range.h"
 #include "format.h"
+
+#include <limits.h>
+#include <string.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <QMutex>
 
 //#define DEBUG_GAS 1
 
@@ -101,11 +103,8 @@ int get_maxdepth(const struct plot_info &pi)
 	return prefs.zoomed_plot ? mm : std::max(30000, mm);
 }
 
-/* UNUSED! */
-static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *dive) __attribute__((unused));
-
 /* Get local sac-rate (in ml/min) between entry1 and entry2 */
-static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *dive)
+[[maybe_unused]] static int get_local_sac(struct plot_info &pi, int idx1, int idx2, struct dive *dive)
 {
 	int index = 0;
 	cylinder_t *cyl;
@@ -843,6 +842,18 @@ static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, st
 	}
 }
 
+QMutex planLock;
+
+static void lock_planner()
+{
+	planLock.lock();
+}
+
+static void unlock_planner()
+{
+	planLock.unlock();
+}
+
 /* Let's try to do some deco calculations.
  */
 static void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_ds, const struct dive *dive,
@@ -864,7 +875,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 	deco_state_cache cache_data_initial;
 	lock_planner();
 	/* For VPM-B outside the planner, cache the initial deco state for CVA iterations */
-	if (decoMode(in_planner) == VPMB) {
+	if (pref_deco_mode(in_planner) == VPMB) {
 		cache_data_initial.cache(ds);
 	}
 	/* For VPM-B outside the planner, iterate until deco time converges (usually one or two iterations after the initial)
@@ -873,7 +884,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 	while ((abs(prev_deco_time - ds->deco_time) >= 30) && (count_iteration < 10)) {
 		depth_t first_ceiling, current_ceiling, last_ceiling;
 		int last_ndl_tts_calc_time = 0, final_tts = 0 , time_clear_ceiling = 0;
-		if (decoMode(in_planner) == VPMB)
+		if (pref_deco_mode(in_planner) == VPMB)
 			ds->first_ceiling_pressure.mbar = dive->depth_to_mbar(first_ceiling);
 
 		gasmix_loop loop_gas(*dive, *dc);
@@ -907,7 +918,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				entry.ceiling = prev.ceiling;
 			} else {
 				/* Keep updating the VPM-B gradients until the start of the ascent phase of the dive. */
-				if (decoMode(in_planner) == VPMB && last_ceiling.mm >= first_ceiling.mm && first_iteration == true) {
+				if (pref_deco_mode(in_planner) == VPMB && last_ceiling.mm >= first_ceiling.mm && first_iteration == true) {
 					nuclear_regeneration(ds, t1);
 					vpmb_start_gradient(ds);
 					/* For CVA iterations, calculate next gradient */
@@ -921,7 +932,7 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 					current_ceiling = entry.ceiling;
 				last_ceiling = current_ceiling;
 				/* If using VPM-B, take first_ceiling_pressure as the deepest ceiling */
-				if (decoMode(in_planner) == VPMB) {
+				if (pref_deco_mode(in_planner) == VPMB) {
 					if  (current_ceiling.mm >= first_ceiling.mm ||
 					     (time_deep_ceiling == t0 && entry.depth.mm == prev.depth.mm)) {
 						time_deep_ceiling = t1;
@@ -982,8 +993,8 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			* We don't for print-mode because this info doesn't show up there
 			* If the ceiling hasn't cleared by the last data point, we need tts for VPM-B CVA calculation
 			* It is not necessary to do these calculation on the first VPMB iteration, except for the last data point */
-			if ((prefs.calcndltts && (decoMode(in_planner) != VPMB || in_planner || !first_iteration)) ||
-			    (decoMode(in_planner) == VPMB && !in_planner && i == pi.nr - 1)) {
+			if ((prefs.calcndltts && (pref_deco_mode(in_planner) != VPMB || in_planner || !first_iteration)) ||
+			    (pref_deco_mode(in_planner) == VPMB && !in_planner && i == pi.nr - 1)) {
 				/* only calculate ndl/tts on every 30 seconds */
 				if ((entry.sec - last_ndl_tts_calc_time) < 30 && i != pi.nr - 1) {
 					struct plot_data &prev_entry = pi.entry[i - 1];
@@ -999,13 +1010,13 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				deco_state_cache cache_data;
 				cache_data.cache(ds);
 				calculate_ndl_tts(ds, dive, entry, *gasmix, surface_pressure, current_divemode, in_planner);
-				if (decoMode(in_planner) == VPMB && !in_planner && i == pi.nr - 1)
+				if (pref_deco_mode(in_planner) == VPMB && !in_planner && i == pi.nr - 1)
 					final_tts = entry.tts_calc;
 				/* Restore "real" deco state for next real time step */
-				cache_data.restore(ds, decoMode(in_planner) == VPMB);
+				cache_data.restore(ds, pref_deco_mode(in_planner) == VPMB);
 			}
 		}
-		if (decoMode(in_planner) == VPMB && !in_planner) {
+		if (pref_deco_mode(in_planner) == VPMB && !in_planner) {
 			int this_deco_time;
 			prev_deco_time = ds->deco_time;
 			// Do we need to update deco_time?
@@ -1453,6 +1464,9 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	if (idx1 < 0 || idx2 < 0)
 		return res;
 
+	if ((unsigned)idx1 >= pi.entry.size() || (unsigned)idx2 >= pi.entry.size())
+		return res;
+
 	if (pi.entry[idx1].sec > pi.entry[idx2].sec) {
 		int tmp = idx2;
 		idx2 = idx1;
@@ -1474,8 +1488,6 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	depth_t max_depth;
 	depth_t min_depth { .mm = INT_MAX };
 
-	int last_sec = start.sec;
-
 	volume_t cylinder_volume;
 	std::vector<int> start_pressures(pi.nr_cylinders, 0);
 	std::vector<int> last_pressures(pi.nr_cylinders, 0);
@@ -1483,13 +1495,15 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	std::vector<int> volumes_used(pi.nr_cylinders, 0);
 	std::vector<char> cylinder_is_used(pi.nr_cylinders, false);
 
-	for (int i = idx1; i < idx2; ++i) {
+	for (int i = idx1, last_idx = idx1; i <= idx2; ++i) {
+		const struct plot_data &last_data = pi.entry[last_idx];
 		const struct plot_data &data = pi.entry[i];
+
 		if (sum)
-			avg_speed += abs(data.speed) * (data.sec - last_sec);
+			avg_speed += abs(data.speed) * (data.sec - last_data.sec);
 		else
-			avg_speed += data.speed * (data.sec - last_sec);
-		avg_depth += data.depth * (data.sec - last_sec);
+			avg_speed += data.speed * (data.sec - last_data.sec);
+		avg_depth += ((data.depth + last_data.depth) / 2) * (data.sec - last_data.sec);
 
 		if (data.speed > max_desc_speed)
 			max_desc_speed = data.speed;
@@ -1513,8 +1527,8 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 					const cylinder_t *cyl = d->get_cylinder(cylinder_index);
 
 					// TODO: Implement addition/subtraction on units.h types
-					volumes_used[cylinder_index] += (cyl->gas_volume((pressure_t){ .mbar = last_pressures[cylinder_index] }) -
-									 cyl->gas_volume((pressure_t){ .mbar = next_pressure })).mliter;
+					volumes_used[cylinder_index] += (cyl->gas_volume(pressure_t::from_base(last_pressures[cylinder_index])) -
+									 cyl->gas_volume(pressure_t::from_base(next_pressure))).mliter;
 				}
 
 				// check if the gas in this cylinder is being used
@@ -1526,7 +1540,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 			last_pressures[cylinder_index] = next_pressure;
 		}
 
-		last_sec = data.sec;
+		last_idx = i;
 	}
 
 	avg_depth /= stop.sec - start.sec;

@@ -35,9 +35,8 @@
             </xsl:if>
 
             <xsl:call-template name="printLine">
-              <xsl:with-param name="line" select="substring-before(//AV1, $lf)"/>
               <xsl:with-param name="lineno" select="'1'"/>
-              <xsl:with-param name="remaining" select="substring-after(//AV1, $lf)"/>
+              <xsl:with-param name="remaining" select="//AV1"/>
             </xsl:call-template>
           </divecomputer>
         </dive>
@@ -46,7 +45,6 @@
   </xsl:template>
 
   <xsl:template name="printLine">
-    <xsl:param name="line"/>
     <xsl:param name="lineno"/>
     <xsl:param name="remaining"/>
 
@@ -54,7 +52,7 @@
       <xsl:when test="string(number(substring($line, 1, 1))) != 'NaN'">
         <sample>
           <xsl:call-template name="printFields">
-            <xsl:with-param name="line" select="$line"/>
+            <xsl:with-param name="remaining" select="$remaining"/>
             <xsl:with-param name="lineno" select="'0'"/>
           </xsl:call-template>
           <xsl:if test="$remaining != ''">
@@ -89,21 +87,24 @@
 
     <xsl:if test="$remaining != ''">
       <xsl:call-template name="printLine">
-        <xsl:with-param name="line" select="substring-before($remaining, $lf)"/>
         <xsl:with-param name="lineno" select="$lineno + 1"/>
-        <xsl:with-param name="remaining" select="substring-after($remaining, $lf)"/>
+        <xsl:with-param name="remaining">
+          <xsl:call-template name="csvSkipRecord">
+            <xsl:with-param name="document" select="$remaining"/>
+          </xsl:call-template>
+        </xsl:with-param>
       </xsl:call-template>
     </xsl:if>
   </xsl:template>
 
   <xsl:template name="printFields">
-    <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
     <xsl:param name="lineno"/>
 
     <xsl:variable name="value">
-      <xsl:call-template name="getFieldByIndex">
+      <xsl:call-template name="csvGetFieldByIndex">
         <xsl:with-param name="index" select="$timeField"/>
-        <xsl:with-param name="line" select="$line"/>
+        <xsl:with-param name="document" select="$remaining"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:attribute name="time">
@@ -111,9 +112,9 @@
     </xsl:attribute>
 
     <xsl:variable name="depth">
-      <xsl:call-template name="getFieldByIndex">
+      <xsl:call-template name="csvGetFieldByIndex">
         <xsl:with-param name="index" select="$depthField"/>
-        <xsl:with-param name="line" select="$line"/>
+        <xsl:with-param name="document" select="$remaining"/>
       </xsl:call-template>
     </xsl:variable>
     <xsl:attribute name="depth">

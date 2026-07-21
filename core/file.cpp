@@ -1,14 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include "gettext.h"
-#include <zip.h>
-#include <time.h>
-
+// Include Qt-using headers first to avoid MSVC/Qt6 version tagging conflicts
 #include "dive.h"
 #include "divelog.h"
 #include "subsurface-string.h"
@@ -16,9 +7,31 @@
 #include "errorhelper.h"
 #include "file.h"
 #include "git-access.h"
-#include "qthelper.h"
+#include "pref.h"
 #include "import-csv.h"
 #include "parse.h"
+#include "gettext.h"
+
+#ifdef _MSC_VER
+#include <io.h>
+#define read _read
+#else
+#include <unistd.h>
+#endif
+#include <fcntl.h>
+#include <sys/stat.h>
+
+// MSVC doesn't define S_ISREG
+#ifdef _MSC_VER
+#ifndef S_ISREG
+#define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
+#endif
+#endif
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <zip.h>
+#include <time.h>
 
 /* For SAMPLE_* */
 #include <libdivecomputer/parser.h>
@@ -343,6 +356,11 @@ int parse_file(const char *filename, struct divelog *log)
 	if (fmt && (!strcasecmp(fmt + 1, "asd"))) {
 		return scubapro_asd_import(mem, log);
 	}
+
+	/* Suunto JSON device log (from Suunto app export) */
+	if (fmt && (!strcasecmp(fmt + 1, "json")))
+		if (suunto_json_import(mem, std::string(), log) > 0)
+			return 0;
 #endif
 
 	return parse_file_buffer(filename, mem, log);

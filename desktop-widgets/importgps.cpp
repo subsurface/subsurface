@@ -15,6 +15,13 @@ ImportGPS::ImportGPS(QWidget *parent, QString fileName, class Ui::LocationInform
 	fileName(fileName), LocationUI(LocationUI)
 {
 	ui.setupUi(this);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	ui.timeZoneEdit->setTimeZone(QTimeZone::systemTimeZone());
+	ui.timeDiffEdit->setTimeZone(QTimeZone::systemTimeZone());
+#else
+	ui.timeZoneEdit->setTimeSpec(Qt::LocalTime);
+	ui.timeDiffEdit->setTimeSpec(Qt::LocalTime);
+#endif
 	connect(ui.timeDiffEdit, &QTimeEdit::timeChanged, this, &ImportGPS::timeDiffEditChanged);
 	connect(ui.timeZoneEdit, &QTimeEdit::timeChanged, this, &ImportGPS::timeZoneEditChanged);
 	connect(ui.timezone_backwards, &QRadioButton::toggled, this, &ImportGPS::changeZoneBackwards);

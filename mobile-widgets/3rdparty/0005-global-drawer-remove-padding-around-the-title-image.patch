@@ -1,0 +1,41 @@
+From 7ae6f5a97506d7f5620dc3be017a698367083869 Mon Sep 17 00:00:00 2001
+From: Berthold Stoeger <bstoeger@mail.tuwien.ac.at>
+Date: Sun, 22 Feb 2026 13:09:04 +0100
+Subject: [PATCH 3/4] global drawer: remove padding around the title image
+
+This looks simply odd - no idea why that's there.
+
+Original by Dirk Hohndel <dirk@hohndel.org>, ported to
+Kirigami v6.23.0.
+
+Signed-off-by: Berthold Stoeger <bstoeger@mail.tuwien.ac.at>
+---
+ src/controls/GlobalDrawer.qml | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+
+diff --git a/src/controls/GlobalDrawer.qml b/src/controls/GlobalDrawer.qml
+index 8281130c..b3e09c20 100644
+--- a/src/controls/GlobalDrawer.qml
++++ b/src/controls/GlobalDrawer.qml
+@@ -589,17 +589,13 @@ Kirigami.OverlayDrawer {
+ 
+                         spacing: 0
+ 
+-                        Layout.alignment: Qt.AlignHCenter
+-                        Layout.leftMargin: root.leftPadding
+-                        Layout.rightMargin: root.rightPadding
+                         Layout.bottomMargin: Kirigami.Units.smallSpacing
+-                        Layout.topMargin: root.topPadding
+                         Layout.fillWidth: true
+                         Layout.fillHeight: true
+                         Layout.preferredHeight: implicitHeight * opacity
+                         // NOTE: why this? just Layout.fillWidth: true doesn't seem sufficient
+                         // as items are added only after this column creation
+-                        Layout.minimumWidth: parent.width - root.leftPadding - root.rightPadding
++                        Layout.minimumWidth: parent.width
+ 
+                         visible: children.length > 0 && childrenRect.height > 0 && opacity > 0
+                         opacity: !root.collapsed || root.showTopContentWhenCollapsed
+-- 
+2.51.0
+

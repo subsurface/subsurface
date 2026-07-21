@@ -7,7 +7,7 @@
 #include <QObject>
 #include <QGeoCoordinate>
 
-#if defined(Q_OS_IOS)
+#if defined(Q_OS_IOS) || defined(Q_OS_ANDROID)
 #include <QtPlugin>
 Q_IMPORT_PLUGIN(QGeoServiceProviderFactoryGooglemaps)
 #endif

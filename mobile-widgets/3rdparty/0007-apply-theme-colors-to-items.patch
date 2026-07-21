@@ -1,0 +1,25 @@
+From 038ce8bac6925770b87222051fbd33a1aa25c8a3 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Wed, 4 Mar 2026 03:51:26 -0800
+Subject: [PATCH] apply theme colors to items
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/private/GlobalDrawerActionItem.qml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/controls/private/GlobalDrawerActionItem.qml b/src/controls/private/GlobalDrawerActionItem.qml
+index 5998bd02..34b6b737 100644
+--- a/src/controls/private/GlobalDrawerActionItem.qml
++++ b/src/controls/private/GlobalDrawerActionItem.qml
+@@ -37,6 +37,7 @@ QQC2.ItemDelegate {
+         Kirigami.Icon {
+             id: iconItem
+             color: listItem.tAction.icon.color
++            isMask: true
+             source: listItem.tAction.icon.name || listItem.tAction.icon.source
+ 
+             readonly property int size: Kirigami.Units.iconSizes.smallMedium
+-- 
+2.51.1
+

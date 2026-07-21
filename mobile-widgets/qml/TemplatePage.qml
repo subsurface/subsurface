@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.12
-import QtQuick.Controls 2.12
-import org.kde.kirigami 2.4 as Kirigami
+import QtQuick
+import QtQuick.Controls
+import org.kde.kirigami as Kirigami
 
 Kirigami.ScrollablePage {
 	width: rootItem.colWidth

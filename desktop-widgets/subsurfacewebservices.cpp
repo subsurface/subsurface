@@ -11,6 +11,7 @@
 #include "core/divelog.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
+#include "core/gettextfromc.h"
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "core/selection.h"
@@ -33,10 +34,6 @@
 #endif
 
 #include <QUrlQuery>
-
-#ifndef PATH_MAX
-#define PATH_MAX 4096
-#endif
 
 WebServices::WebServices(QWidget *parent) : QDialog(parent, QFlag(0)), reply(0)
 {
@@ -356,7 +353,10 @@ void DivelogsDeWebServices::saveToZipFile()
 {
 	if (!zipFile.isOpen()) {
 		zipFile.setFileTemplate(QDir::tempPath() + "/import-XXXXXX.dld");
-		zipFile.open();
+		if (!zipFile.open()) {
+			ui.status->setText(tr("Failed to create temporary file: %1").arg(zipFile.errorString()));
+			return;
+		}
 	}
 
 	zipFile.write(reply->readAll());

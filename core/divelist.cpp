@@ -14,6 +14,7 @@
 #include "fulltext.h"
 #include "interpolate.h"
 #include "planner.h"
+#include "pref.h"
 #include "qthelper.h" // for emit_reset_signal() -> should be removed
 #include "range.h"
 #include "gettext.h"
@@ -375,6 +376,9 @@ static double calculate_airuse(const struct dive &dive)
 		return 0.0;
 
 	for (auto [i, cyl]: enumerated_range(dive.cylinders)) {
+		if (cyl.cylinder_use == NOT_USED)
+			continue;
+
 		pressure_t start, end;
 
 		start = cyl.start.mbar ? cyl.start : cyl.sample_start;
@@ -765,6 +769,10 @@ dive *dive_table::get_by_uniq_id(int id) const
 
 void clear_dive_file_data()
 {
+	// Remember whether there was data to clear so we can avoid
+	// a spurious UI reset when called on an already-empty divelog.
+	bool had_data = !divelog.dives.empty();
+
 	fulltext_unregister_all();
 	select_single_dive(NULL);	// This is propagated up to the UI and clears all the information.
 
@@ -779,7 +787,8 @@ void clear_dive_file_data()
 	reset_tank_info_table(tank_info_table);
 
 	/* Inform frontend of reset data. This should reset all the models. */
-	emit_reset_signal();
+	if (had_data)
+		emit_reset_signal();
 }
 
 bool dive_less_than(const struct dive &a, const struct dive &b)

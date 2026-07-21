@@ -1,0 +1,30 @@
+From d493d54fca34341399b8e01437bd248956f3f934 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Thu, 5 Mar 2026 12:28:13 -0800
+Subject: [PATCH] Header: read colors from app window
+
+Allow the application to set background and header color
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/AbstractApplicationHeader.qml | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/controls/AbstractApplicationHeader.qml b/src/controls/AbstractApplicationHeader.qml
+index a61fb4a0..f486fe50 100644
+--- a/src/controls/AbstractApplicationHeader.qml
++++ b/src/controls/AbstractApplicationHeader.qml
+@@ -16,6 +16,10 @@ T.AbstractApplicationHeader {
+ 
+     Kirigami.Theme.inherit: false
+     Kirigami.Theme.colorSet: Kirigami.Theme.Header
++    Kirigami.Theme.backgroundColor: root.__appWindow && root.__appWindow.headerBackgroundColor !== undefined
++        ? root.__appWindow.headerBackgroundColor : undefined
++    Kirigami.Theme.textColor: root.__appWindow && root.__appWindow.headerTextColor !== undefined
++        ? root.__appWindow.headerTextColor : undefined
+ 
+     background: Rectangle {
+         color: Kirigami.Theme.backgroundColor
+-- 
+2.51.1
+

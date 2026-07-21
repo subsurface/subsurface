@@ -2,8 +2,8 @@
 #ifndef USERMANUAL_H
 #define USERMANUAL_H
 
-#ifdef USE_WEBENGINE
-# include <QWebEngineView>
+#if defined(USE_QLITEHTML)
+# include <qlitehtmlwidget.h>
 #else
 # include <QWebView>
 #endif
@@ -32,7 +32,7 @@ class UserManual : public QDialog {
 public:
 	explicit UserManual(QWidget *parent = 0);
 
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC)
 protected:
 	void showEvent(QShowEvent *e);
 	void hideEvent(QHideEvent *e);
@@ -49,23 +49,12 @@ slots:
 private:
 	SearchBar *searchBar;
 	QString mLastText;
-#ifdef USE_WEBENGINE
-	QWebEngineView *userManual;
+#if defined(USE_QLITEHTML)
+	QLiteHtmlWidget *userManual;
 #else
 	QWebView *userManual;
 #endif
-	void search(QString, bool backward = false);
+	void search(QString, bool backward = false, bool incremental = false);
 };
 
-#ifdef USE_WEBENGINE
-class UserManualPage : public QWebEnginePage {
-	Q_OBJECT
-
-public:
-	explicit UserManualPage(QObject* parent = 0) : QWebEnginePage(parent) {}
-
-protected:
-	bool acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame);
-};
-#endif
 #endif // USERMANUAL_H

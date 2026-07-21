@@ -7,6 +7,8 @@ on:
         type: string
         required: true
 
+permissions: read-all
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,7 +40,7 @@ jobs:
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
     # needs git from the previous step
     - name: checkout sources
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
@@ -48,37 +50,6 @@ jobs:
       uses: ./.github/actions/manage-version
       with:
         no-increment: true
-
-    - name: build subsurface-mobile
-      run: |
-        echo "--------------------------------------------------------------"
-        echo "building mobile"
-        cd ..
-        bash -e -x subsurface/scripts/build.sh -mobile -build-tests
-
-    - name: test mobile build
-      run: |
-        echo "--------------------------------------------------------------"
-        echo "running tests for mobile"
-
-        cd build-mobile/tests
-        # xvfb-run --auto-servernum ./TestGitStorage -v2
-        xvfb-run --auto-servernum make check
-        if [ $? -ne 0 ]; then
-          echo "Tests failed - adding the build output as artifacts"
-          exit 1
-        fi
-
-    - name: upload test artifacts
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-output-mobile-${{ steps.version_number.outputs.version }}
-        path: |
-          build-mobile/tests/
-          !build-mobile/tests/CMakeFiles/
-          !build-mobile/tests/Test*
-          build-mobile/tests/Testing/
 
     - name: build subsurface
       run: |
@@ -109,7 +80,7 @@ jobs:
 
     - name: upload test artifacts
       if: failure()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: test-output-${{ steps.version_number.outputs.version }}
         path: |
@@ -117,6 +88,18 @@ jobs:
           !build/tests/CMakeFiles/
           !build/tests/Test*
           build/tests/Testing/
+
+    - name: build and test subsurface-cli
+      run: |
+        echo "--------------------------------------------------------------"
+        echo "building CLI"
+        cd ..
+        bash -e -x subsurface/scripts/build.sh -cli
+
+        echo "--------------------------------------------------------------"
+        echo "running CLI tests"
+        cd subsurface/build-cli
+        python3 ../cli/tests/test_cli.py --cli-path ./cli/subsurface-cli
 
     - name: build subsurface-downloader
       run: |

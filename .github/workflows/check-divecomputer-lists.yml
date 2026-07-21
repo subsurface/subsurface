@@ -20,13 +20,15 @@ on:
     - scripts/**
     - .github/workflows/check-divecomputer-lists.yml
 
+permissions: read-all
+
 jobs:
   check:
     runs-on: ubuntu-24.04
 
     steps:
     - name: checkout sources
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive

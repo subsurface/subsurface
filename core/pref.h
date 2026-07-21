@@ -230,4 +230,5 @@ extern void subsurface_OS_pref_setup();
 extern void set_informational_units(const char *units);
 extern void set_git_prefs(std::string_view prefs);
 
+extern enum deco_mode pref_deco_mode(bool in_planner);
 #endif // PREF_H

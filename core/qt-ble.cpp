@@ -2,6 +2,7 @@
 #include <errno.h>
 
 #include <QtBluetooth/QBluetoothAddress>
+#include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 #include <QLowEnergyController>
 #include <QLowEnergyService>
 #include <QCoreApplication>
@@ -38,7 +39,14 @@ static int debugCounter;
 	timer.start();							\
 									\
 	do {								\
-		QCoreApplication::processEvents(QEventLoop::AllEvents, ms); \
+		/* Process events to receive BLE signals.		\
+		 * ExcludeUserInputEvents avoids dispatching		\
+		 * unrelated UI events on this worker thread, which	\
+		 * can crash when deleteLater'd objects get their	\
+		 * deferred deletes processed with wrong thread		\
+		 * affinity. */						\
+		QCoreApplication::processEvents(			\
+			QEventLoop::ExcludeUserInputEvents, ms);	\
 		if (expression)						\
 			break;						\
 		QThread::msleep(10);					\
@@ -168,10 +176,12 @@ static const struct uuid_match serial_service_uuids[] = {
 	{ "ca7b0001-f785-4c38-b599-c7c5fbadb034", "Pelagic (i330R, DSX)" },
 	{ "fdcdeaaa-295d-470e-bf15-04217b7aa0a0", "ScubaPro (G2, G3)"},
 	{ "fe25c237-0ece-443c-b0aa-e02033e7029d", "Shearwater (Perdix/Teric/Peregrine/Tern)" },
+	{ "1aa44039-1667-4b29-87cc-dfecaaf31d97", "Shearwater (Perdix 3)" },
 	{ "0000fcef-0000-1000-8000-00805f9b34fb", "Divesoft" },
         { "6e400001-b5a3-f393-e0a9-e50e24dc10b8", "Cressi"}, // Must have higher priority than Nordic UART
         { "6e400001-b5a3-f393-e0a9-e50e24dcca9e", "Nordic Semi UART" },
 	{ "00000001-8c3b-4f2c-a59e-8c08224f3253", "Halcyon Symbios" },
+	{ "84968ffe-d26d-478a-b953-5010bcf58bca", "Seac" },
 	{ NULL, }
 };
 
@@ -309,9 +319,17 @@ static bool is_write_characteristic(const QLowEnergyCharacteristic &c)
 		  QLowEnergyCharacteristic::WriteNoResponse);
 }
 
+static bool is_read_characteristic(const QLowEnergyCharacteristic &c)
+{
+	if (match_uuid_list(c.uuid(), skip_characteristics, ACCESS_READ))
+		return false;
+	return c.properties() &
+		 (QLowEnergyCharacteristic::Read);
+}
+
 // We need a Notify or Indicate for the reading side, and
 // a descriptor to enable it
-static bool is_read_characteristic(const QLowEnergyCharacteristic &c)
+static bool is_notify_characteristic(const QLowEnergyCharacteristic &c)
 {
 	if (match_uuid_list(c.uuid(), skip_characteristics, ACCESS_READ))
 		return false;
@@ -378,6 +396,25 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 
 	if (actual)
 		*actual = 0;
+
+	if (!notify) {
+		bool found = false;
+		auto service = preferredService();
+		for (const QLowEnergyCharacteristic &ch: service->characteristics()) {
+			if (!is_read_characteristic(ch))
+				continue;
+
+			report_info("Reading BLE characteristic %s", to_str(ch.uuid()).c_str());
+			service->readCharacteristic(ch);
+			found = true;
+			break;
+		}
+
+		if (!found) {
+			report_error("No read characteristic found.");
+			return DC_STATUS_IO;
+		}
+	}
 
 	// Wait for a packet
 	rc = poll(timeout);
@@ -460,7 +497,7 @@ dc_status_t BLEObject::select_preferred_service()
 		report_info("Found service %s %s", to_str(s->serviceUuid()).c_str(), qPrintable(s->serviceName()));
 
 		for (const QLowEnergyCharacteristic &c: s->characteristics()) {
-			report_info("   c: %s", to_str(c.uuid()).c_str());
+			report_info("   c: %s 0x%02x", to_str(c.uuid()).c_str(), int(c.properties()));
 
 			for (const QLowEnergyDescriptor &d: c.descriptors())
 				report_info("        d: %s", to_str(d.uuid()).c_str());
@@ -476,17 +513,19 @@ dc_status_t BLEObject::select_preferred_service()
 #endif
 			continue;
 
+		bool hasnotify = false;
 		bool hasread = false;
 		bool haswrite = false;
 		QBluetoothUuid uuid = s->serviceUuid();
 
 		for (const QLowEnergyCharacteristic &c: s->characteristics()) {
+			hasnotify |= is_notify_characteristic(c);
 			hasread |= is_read_characteristic(c);
 			haswrite |= is_write_characteristic(c);
 		}
 
-		if (!hasread) {
-			report_info(" .. ignoring service without read characteristic %s", to_str(uuid).c_str());
+		if (!hasnotify && !hasread) {
+			report_info(" .. ignoring service without read/notify characteristic %s", to_str(uuid).c_str());
 			continue;
 		}
 
@@ -497,6 +536,7 @@ dc_status_t BLEObject::select_preferred_service()
 
 		// We now know that the service has both read and write characteristics
 		preferred = s;
+		notify = hasnotify;
 		report_info("Using service %s as preferred service", to_str(s->serviceUuid()).c_str());
 		break;
 	}
@@ -508,9 +548,22 @@ dc_status_t BLEObject::select_preferred_service()
 	}
 
 	connect(preferred, &QLowEnergyService::stateChanged, this, &BLEObject::serviceStateChanged);
+	connect(preferred, &QLowEnergyService::characteristicRead, this, &BLEObject::characteristcStateChanged);
 	connect(preferred, &QLowEnergyService::characteristicChanged, this, &BLEObject::characteristcStateChanged);
 	connect(preferred, &QLowEnergyService::characteristicWritten, this, &BLEObject::characteristicWritten);
 	connect(preferred, &QLowEnergyService::descriptorWritten, this, &BLEObject::writeCompleted);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	connect(preferred, &QLowEnergyService::errorOccurred,
+		this, [](QLowEnergyService::ServiceError e) {
+			report_info("preferred service error %d", static_cast<int>(e));
+		});
+#else
+	connect(preferred, QOverload<QLowEnergyService::ServiceError>::of(&QLowEnergyService::error),
+		this, [](QLowEnergyService::ServiceError e) {
+			report_info("preferred service error %d", static_cast<int>(e));
+		});
+#endif
 
 	return DC_STATUS_SUCCESS;
 }
@@ -611,6 +664,33 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_IOS) || QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	QBluetoothDeviceInfo remoteDevice = getBtDeviceInfo(QString(devaddr));
+
+	// Many BLE dive computers (e.g. Suunto EON Steel) stop advertising once
+	// bonded, so the device may NEVER reappear in a scan - waiting/rescanning
+	// is unreliable (see issue #4840 verbose log). On Android the device is
+	// addressed by MAC, and we already know the address + that it is an LE
+	// device from the paired-device enumeration, so synthesise a usable info.
+	//
+	// NOTE: this MAC-based fallback must NOT be used on macOS/iOS, where
+	// CoreBluetooth identifies peripherals by UUID rather than MAC address.
+	//
+	if (!remoteDevice.isValid() || remoteDevice.address().isNull()) {
+#if defined(Q_OS_ANDROID)
+		QBluetoothAddress addr{QString(devaddr)};
+		if (addr.isNull()) {
+			report_error("Could not parse device address %s", devaddr);
+			return DC_STATUS_IO;
+		}
+		report_info("Device %s not in scan cache; synthesising device info from paired address", devaddr);
+		remoteDevice = QBluetoothDeviceInfo(addr, QString(devaddr), 0);
+		remoteDevice.setCoreConfigurations(QBluetoothDeviceInfo::LowEnergyCoreConfiguration);
+#else
+		report_info("No valid cached device info for %s (paired but not scanned?)", devaddr);
+		report_error("Could not resolve device %s - bring it close and rescan", devaddr);
+		return DC_STATUS_IO;
+#endif
+	}
+
 	QLowEnergyController *controller = QLowEnergyController::createCentral(remoteDevice);
 #else
 	// this is deprecated but given that we don't use Qt to scan for
@@ -627,11 +707,48 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
 #endif
 
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+	// AI-generated (Claude)
+	// Some dive computers (e.g. the Shearwater Perdix 3) advertise with a
+	// resolvable random address that changes between connections. BlueZ
+	// frequently aborts a cold connect to such a device because the
+	// controller needs a fresh advertising report to know the current
+	// address; connecting works reliably only while an LE scan is active.
+	// Keep a scan running for the duration of the connect attempt.
+	QBluetoothDeviceDiscoveryAgent scanAgent;
+	scanAgent.setLowEnergyDiscoveryTimeout(0); // scan until stop()
+	scanAgent.start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
+#endif
+
 	// Try to connect to the device
 	controller->connectToDevice();
 
 	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
 	WAITFOR(controller->state() != QLowEnergyController::ConnectingState, BLE_TIMEOUT);
+
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+	// AI-generated (Claude)
+	// A cold LE connect on BlueZ can fail transiently: the kernel may
+	// abort the first attempt with le-connection-abort-by-local while it
+	// waits for a fresh advertising report, or the connect can complete
+	// just after our timeout while BlueZ is still retrying. Retry a few
+	// times (with the scan still active) before giving up.
+	for (int attempt = 1; attempt <= 2; attempt++) {
+		if (controller->state() == QLowEnergyController::ConnectedState)
+			break;
+		if (controller->state() == QLowEnergyController::UnconnectedState) {
+			report_info("connect attempt %d to %s failed ('%s'), retrying",
+				    attempt, devaddr, qPrintable(controller->errorString()));
+			controller->connectToDevice();
+		} else {
+			report_info("connect attempt %d to %s still pending, waiting longer",
+				    attempt, devaddr);
+		}
+		WAITFOR(controller->state() != QLowEnergyController::ConnectingState, BLE_TIMEOUT);
+	}
+
+	scanAgent.stop();
+#endif
 
 	switch (controller->state()) {
 	case QLowEnergyController::ConnectedState:
@@ -701,7 +818,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 		}
 	} else {
 		for (const QLowEnergyCharacteristic &c: list) {
-			if (!is_read_characteristic(c))
+			if (!is_notify_characteristic(c))
 				continue;
 
 			report_info("Using read characteristic %s", to_str(c.uuid()).c_str());
@@ -716,11 +833,30 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 				}
 			}
 
-			report_info("now writing \"0x0100\" to the descriptor %s", to_str(d.uuid()).c_str());
+			const char *value = c.properties() & QLowEnergyCharacteristic::Notify ?
+				"0100" : "0200";
 
-			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
-			WAITFOR(ble->descriptorWritten(), 1000);
-			if (!ble->descriptorWritten()) {
+			// The CCCD write confirmation (descriptorWritten) can take well
+			// over 1 s on the Qt6 Android backend (MTU/connection-parameter
+			// negotiation) and the request is sometimes dropped silently.
+			// Retry a few times and wait up to the normal BLE_TIMEOUT each go.
+			//
+			// descriptorWritten() is a *cumulative* counter, so snapshot it
+			// before each attempt and wait for it to advance.
+			//
+			const int maxAttempts = 3;
+			bool enabled = false;
+			for (int attempt = 0; attempt < maxAttempts && !enabled; attempt++) {
+				const int before = ble->descriptorWritten();
+				report_info("writing \"0x%s\" to descriptor %s (attempt %d/%d)",
+					    value, to_str(d.uuid()).c_str(), attempt + 1, maxAttempts);
+				ble->preferredService()->writeDescriptor(d, QByteArray::fromHex(value));
+				WAITFOR(ble->descriptorWritten() > before, BLE_TIMEOUT);
+				enabled = ble->descriptorWritten() > before;
+				if (!enabled)
+					report_info("..CCCD write not confirmed within %d ms, retrying", BLE_TIMEOUT);
+			}
+			if (!enabled) {
 				report_info("Bluetooth: Failed to enable notifications for characteristic %s", to_str(c.uuid()).c_str());
 				report_error("Bluetooth: Failed to enable notifications.");
 				delete ble;

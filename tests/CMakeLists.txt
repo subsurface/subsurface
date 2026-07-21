@@ -92,6 +92,9 @@ function(TEST NAME FILE)
 		endif()
 	else()
 		add_test(NAME ${NAME} ${CFGARG} COMMAND  $<TARGET_FILE:${NAME}>)
+		if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+			set_tests_properties(${NAME} PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+		endif()
 	endif()
 endfunction()
 
@@ -119,6 +122,10 @@ if (BTSUPPORT)
 endif()
 TEST(TestParsePerformance testparseperformance.cpp)
 TEST(TestPlan testplan.cpp)
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
+TEST(TestDivePlannerModel testdiveplannermodel.cpp)
+set(TEST_DIVE_PLANNER_MODEL TestDivePlannerModel)
+endif()
 TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
 # this keeps randomly failing and I don't understand why
@@ -130,6 +137,15 @@ set(TEST_PICTURE TestPicture)
 endif()
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
+
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable" AND NOT NO_PRINTING)
+	TEST(TestPrinting testprinting.cpp)
+	target_sources(TestPrinting PRIVATE
+		../desktop-widgets/printer.cpp
+		../desktop-widgets/templatelayout.cpp
+	)
+	set(TEST_PRINTING TestPrinting)
+endif()
 
 #if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 #TEST(TestPlannerShared testplannershared.cpp)
@@ -151,6 +167,7 @@ TEST(TestQPrefTechnicalDetails testqPrefTechnicalDetails.cpp)
 TEST(TestQPrefUnits testqPrefUnits.cpp)
 TEST(TestQPrefUpdateManager testqPrefUpdateManager.cpp)
 TEST(TestformatDiveGasString testformatDiveGasString.cpp)
+TEST(TestRuler testruler.cpp)
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> -input ${SUBSURFACE_SOURCE}/tests)
 
 # this is currently broken
@@ -165,6 +182,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestGpsCoords
 	TestParse
 	TestPlan
+	${TEST_DIVE_PLANNER_MODEL}
 	TestAirPressure
 	TestDiveSiteDuplication
 	TestRenumber
@@ -172,6 +190,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestMerge
 	TestTagList
 	${TEST_PLANNER_SHARED}
+	${TEST_PRINTING}
 	TestQPrefCloudStorage
 	TestQPrefDisplay
 	TestQPrefDiveComputer
@@ -188,6 +207,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefUnits
 	TestQPrefUpdateManager
 	TestQML
+	TestRuler
 )
 
 # useful for debugging CMake issues

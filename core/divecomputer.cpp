@@ -368,12 +368,19 @@ struct event *get_event(struct divecomputer *dc, int idx)
 
 void add_extra_data(struct divecomputer *dc, const std::string &key, const std::string &value)
 {
-	if (key == "Serial") {
+	if (key == STRING_KEY_SERIAL_NUMBER) {
 		dc->deviceid = calculate_string_hash(value.c_str());
 		dc->serial = value;
 	}
-	if (key == "FW Version")
+	// Include support for dives imported with the legacy Garmin / Uwatec backends
+	if (key == STRING_KEY_FIRMWARE_VERSION || key == "Firmware" || key == "DC Firmware Version")
 		dc->fw_version = value;
+	if (key == STRING_KEY_TIMEZONE_OFFSET) {
+		char *end = nullptr;
+		long offset = strtol(value.c_str(), &end, 10);
+		if (end != value.c_str() && *end == '\0')
+			dc->timezone_offset = static_cast<int>(offset);
+	}
 
 	dc->extra_data.push_back(extra_data { key, value });
 }

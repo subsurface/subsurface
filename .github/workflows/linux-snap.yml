@@ -12,6 +12,8 @@ on:
     branches:
     - master
 
+permissions: read-all
+
 jobs:
   Snap:
     runs-on: ubuntu-latest
@@ -19,7 +21,7 @@ jobs:
     timeout-minutes: 60
     steps:
     - name: Check out code
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
@@ -55,9 +57,9 @@ jobs:
         echo "key=$( git merge-base origin/master $GITHUB_SHA )" >> $GITHUB_OUTPUT
 
     - name: CCache
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
-        key: ccache-${{ runner.os }}-${{ steps.setup-ccache.outputs.key }}
+        key: linux-ccache-${{ runner.os }}-${{ steps.setup-ccache.outputs.key }}
         restore-keys: |
           ccache-${{ runner.os }}-
         path: ~/.ccache/**
@@ -73,7 +75,7 @@ jobs:
 
     - name: Upload the snap
       if: github.event_name == 'push'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ steps.build-snap.outputs.snap-name }}
         path: ${{ steps.build-snap.outputs.snap-path }}

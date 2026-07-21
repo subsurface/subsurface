@@ -1,0 +1,46 @@
+From 95d23849c82d569402627cb27c0d408336ffd29f Mon Sep 17 00:00:00 2001
+From: Berthold Stoeger <bstoeger@mail.tuwien.ac.at>
+Date: Sun, 22 Feb 2026 13:00:03 +0100
+Subject: [PATCH 2/4] global drawer: expose pop() function
+
+This allows us to implement our own back button.
+
+Original by Dirk Hohndel <dirk@hohndel.org>, ported to
+Kirigami v6.23.0.
+
+Signed-off-by: Berthold Stoeger <bstoeger@mail.tuwien.ac.at>
+---
+ src/controls/GlobalDrawer.qml | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/src/controls/GlobalDrawer.qml b/src/controls/GlobalDrawer.qml
+index 929efa50..8281130c 100644
+--- a/src/controls/GlobalDrawer.qml
++++ b/src/controls/GlobalDrawer.qml
+@@ -261,6 +261,13 @@ Kirigami.OverlayDrawer {
+      */
+     property bool isMenu: false
+ 
++    /**
++     * pop: function
++     *
++     * Point to the pop function of the stackView inside the scrollView in order to be able to implement the Back button in the caller
++     */
++    function pop() { stackView.pop() }
++
+     /*!
+       \brief This property sets the visibility of the collapse button
+       when the drawer collapsible.
+@@ -550,6 +557,9 @@ Kirigami.OverlayDrawer {
+                     easing.type: Easing.InOutQuad
+                 }
+             }
++
++	    function pop() { stackView.pop() }
++
+             Flickable {
+                 id: mainFlickable
+ 
+-- 
+2.51.0
+

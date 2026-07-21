@@ -4,6 +4,30 @@ var start;			//index of first element viewed in itemsToShow
 var sizeofpage;			//size of viewed page
 var numberofwords = 0;		//just for stats
 var olditemstoshow;		//to reference the indices to all dives if changed
+
+function escapeHTML(str) {
+	if (!str) return "";
+	return String(str).replace(/[&<>"']/g, function(m) {
+		return {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#39;'
+		}[m];
+	});
+}
+
+function escapeJS(str) {
+	if (!str) return "";
+	return String(str).replace(/['"\\]/g, function(m) {
+		return {
+			"'": "\\'",
+			'"': '\\"',
+			'\\': '\\\\'
+		}[m];
+	});
+}
 //////////////////////////////////
 //				//
 //		View Model	//
@@ -214,7 +238,7 @@ function getlimited(dive)
 	return '<div style="height:20px"><div class="item">' + (settings.subsurfaceNumbers === '0' ? dive.number + 1 : dive.subsurface_number) + '</div>' +
 	       '<div class="item">' + dive.date + '</div>' +
 	       '<div class="item">' + dive.time + '</div>' +
-	       '<div class="item_large">' + dive.location + '</div>' +
+	       '<div class="item_large">' + escapeHTML(dive.location) + '</div>' +
 	       '<div class="item">' + dive.dive_duration + '</div>' +
 	       '<div class="item">' + put_depth_unit(dive.maxdepth) + " " + depth_unit + '</div></div>';
 };
@@ -223,17 +247,17 @@ function getExpanded(dive)
 {
 	var res = '<table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, diveguide:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a>' + getDiveCoor(dive) +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + escapeJS(dive.location) + '\', {location:true, diveguide:false, buddy:false, notes:false, tags:false,})\">' + escapeHTML(dive.location) + '</a>' + getDiveCoor(dive) +
 		  '</td></tr></table>' +
 		  '<table><tr><td class="words">' + translate.Air_Temp + ': </td><td>' + dive.temperature.air +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Water_Temp + ': </td><td>' + dive.temperature.water +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Rating + ':</td><td>' + putRating(dive.rating) +
 		  '</td></tr></table><table><tr><td class="words">' + translate.Max_Depth + ': </td><td>' + put_depth_unit(dive.maxdepth) + " " + depth_unit + '</td></tr><tr><td class="words">' + translate.Duration + ': </td><td>' + dive.dive_duration +
-		  '</td></tr><tr><td class="words">' + translate.DiveGuide + ': </td><td>' + dive.diveguide +
-		  '</td></tr><tr><td class="words"><p>' + translate.Buddy + ': </p></td><td>' + dive.buddy +
-		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + dive.suit +
+		  '</td></tr><tr><td class="words">' + translate.DiveGuide + ': </td><td>' + escapeHTML(dive.diveguide) +
+		  '</td></tr><tr><td class="words"><p>' + translate.Buddy + ': </p></td><td>' + escapeHTML(dive.buddy) +
+		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + escapeHTML(dive.suit) +
 		  '</td></tr><tr><td class="words">' + translate.Tags + ': </td><td>' + putTags(dive.tags) +
-		  '</td></tr></table><div style="margin:10px;"><p class="words">' + translate.Notes + ': </p>' + dive.notes + '</div>';
+		  '</td></tr></table><div style="margin:10px;"><p class="words">' + translate.Notes + ': </p>' + escapeHTML(dive.notes) + '</div>';
 	if (settings.listOnly === '0') {
 		res += '<center><a onclick="showDiveDetails(' + dive.number + ')">' + translate.Show_more_details + '</a></center>';
 	}
@@ -244,7 +268,7 @@ function putTags(tags)
 {
 	var result = "";
 	for (var i in tags) {
-		result += '<a onclick=\"Search_list_Modules(\'' + tags[i] + '\', {location:false, diveguide:false, buddy:false, notes:false, tags:true,})\">' + tags[i] + '</a>';
+		result += '<a onclick=\"Search_list_Modules(\'' + escapeJS(tags[i]) + '\', {location:false, diveguide:false, buddy:false, notes:false, tags:true,})\">' + escapeHTML(tags[i]) + '</a>';
 		if (i < tags.length - 1)
 			result += ', ';
 	}
@@ -770,7 +794,7 @@ function showtrips()
 	divelist.innerHTML = "";
 	for (var i = trips.length - 1; i >= 0; i--) {
 		divelist.innerHTML += '<ul id="trip_' + i + '" class="trips" onclick="toggle_trip_expansion(' + i + ')">' +
-				      trips[i].name + ' ( ' + trips[i].dives.length + ' dives)' + '</ul>' + '<div id="trip_dive_list_' + i + '"></div>';
+				      escapeHTML(trips[i].name) + ' ( ' + trips[i].dives.length + ' dives)' + '</ul>' + '<div id="trip_dive_list_' + i + '"></div>';
 	};
 	for (var i = 0; i < trips.length; i++) {
 		unexpand_trip(i);
@@ -966,7 +990,7 @@ function get_dive_HTML(dive)
 {
 	var table1 = '<h2 class="det_hed">' + translate.Dive_information + '</h2><table><tr><td class="words">' + translate.Date + ': </td><td>' + dive.date +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Time + ': </td><td>' + dive.time +
-		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + dive.location + '\', {location:true, diveguide:false, buddy:false, notes:false, tags:false,})\">' + dive.location + '</a></td>' + getDiveCoor(dive) +
+		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Location + ': </td><td>' + '<a onclick=\"Search_list_Modules(\'' + escapeJS(dive.location) + '\', {location:true, diveguide:false, buddy:false, notes:false, tags:false,})\">' + escapeHTML(dive.location) + '</a></td>' + getDiveCoor(dive) +
 		  '</tr></table>';
 	var table2 = '<table><tr><td class="words">' + translate.Rating + ':</td><td>' + putRating(dive.rating) + '</td>';
 	if (dive.wavesize > 0)
@@ -983,11 +1007,11 @@ function get_dive_HTML(dive)
 	var table3 = '<table><tr><td class="words">' + translate.Air_Temp + ': </td><td>' + dive.temperature.air +
 		  '</td><td class="words">&nbsp;&nbsp;&nbsp;&nbsp;' + translate.Water_Temp + ': </td><td>' + dive.temperature.water +
 		  '</td></tr></table><table><tr><td class="words">' + translate.Max_Depth + ': </td><td>' + put_depth_unit(dive.maxdepth) + " " + depth_unit + '</td></tr><tr><td class="words">' + translate.Duration + ': </td><td>' + dive.dive_duration +
-		  '</td></tr><tr><td class="words">' + translate.DiveGuide + ': </td><td>' + dive.diveguide +
-		  '</td></tr><tr><td class="words"><p>' + translate.Buddy + ': </p></td><td>' + dive.buddy +
-		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + dive.suit +
+		  '</td></tr><tr><td class="words">' + translate.DiveGuide + ': </td><td>' + escapeHTML(dive.diveguide) +
+		  '</td></tr><tr><td class="words"><p>' + translate.Buddy + ': </p></td><td>' + escapeHTML(dive.buddy) +
+		  '</td></tr><tr><td class="words">' + translate.Suit + ': </td><td>' + escapeHTML(dive.suit) +
 		  '</td></tr><tr><td class="words">' + translate.Tags + ': </td><td>' + putTags(dive.tags) +
-		  '</td></tr></table>'+ put_divecomputer_details(dive.divecomputers) +'<div style="margin:10px;"><p class="words">' + translate.Notes + ': </p>' + dive.notes + '</div>';
+		  '</td></tr></table>'+ put_divecomputer_details(dive.divecomputers) +'<div style="margin:10px;"><p class="words">' + translate.Notes + ': </p>' + escapeHTML(dive.notes) + '</div>';
 	return table1 + table2 + table3;
 };
 

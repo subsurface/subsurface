@@ -47,7 +47,11 @@ void StarWidget::mouseReleaseEvent(QMouseEvent *event)
 		return;
 	}
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	int starClicked = event->position().toPoint().x() / defaultIconMetrics().sz_small + 1;
+#else
 	int starClicked = event->pos().x() / defaultIconMetrics().sz_small + 1;
+#endif
 	if (starClicked > TOTALSTARS)
 		starClicked = TOTALSTARS;
 

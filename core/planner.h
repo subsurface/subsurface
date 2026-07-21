@@ -28,6 +28,7 @@ typedef enum {
 	PLAN_OK,
 	PLAN_ERROR_TIMEOUT,
 	PLAN_ERROR_INAPPROPRIATE_GAS,
+	PLAN_ERROR_NO_SUITABLE_BAILOUT_GAS,
 } planner_error_t;
 
 struct diveplan {

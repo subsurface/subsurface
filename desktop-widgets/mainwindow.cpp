@@ -16,7 +16,6 @@
 #include <QStatusBar>
 #include <QNetworkProxy>
 #include <QUndoStack>
-
 #include "core/color.h"
 #include "core/device.h"
 #include "core/divelog.h"
@@ -55,6 +54,7 @@
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/statswidget.h"
 #include "commands/command.h"
+#include "desktop-widgets/usermanualpath.h"
 
 #include "profilewidget.h"
 #include "profile-widget/profilewidget2.h"
@@ -73,7 +73,9 @@
 #include "qt-models/yearlystatisticsmodel.h"
 #include "preferences/preferencesdialog.h"
 
-#ifndef NO_USERMANUAL
+#ifdef NO_USERMANUAL
+#include <QDesktopServices>
+#else
 #include "usermanual.h"
 #endif
 
@@ -174,6 +176,7 @@ MainWindow::MainWindow() :
 		QIcon::setThemeName("subsurface");
 	}
 	connect(diveList.get(), &DiveListView::divesSelected, this, &MainWindow::divesSelected);
+	connect(mainTab.get(), &MainTab::dcChangeRequested, this, &MainWindow::selectDC);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MainWindow::readSettings);
 	for (int i = 0; i < NUM_RECENT_FILES; i++) {
 		actionsRecent[i] = new QAction(this);
@@ -205,9 +208,6 @@ MainWindow::MainWindow() :
 	diveList->setFocus();
 	diveList->expand(diveList->model()->index(0, 0));
 	diveList->scrollTo(diveList->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
-#ifdef NO_USERMANUAL
-	ui.menuHelp->removeAction(ui.actionUserManual);
-#endif
 
 	updateManager = new UpdateManager(this);
 	undoAction = Command::undoAction(this);
@@ -840,6 +840,13 @@ void MainWindow::on_actionNextDC_triggered()
 	mainTab->updateDiveInfo(getDiveSelection(), profile->d, profile->dc);
 }
 
+void MainWindow::selectDC(int dc)
+{
+	if (profile->d)
+		profile->plotDive(profile->d, dc);
+	mainTab->updateDiveInfo(getDiveSelection(), profile->d, profile->dc);
+}
+
 void MainWindow::on_actionFullScreen_triggered(bool checked)
 {
 	if (checked) {
@@ -866,7 +873,9 @@ void MainWindow::on_action_Check_for_Updates_triggered()
 
 void MainWindow::on_actionUserManual_triggered()
 {
-#ifndef NO_USERMANUAL
+#ifdef NO_USERMANUAL
+	QDesktopServices::openUrl(getUserManualUrl());
+#else
 	if (!helpView)
 		helpView = new UserManual(this);
 	helpView->show();
@@ -948,15 +957,19 @@ QString MainWindow::filter_import()
 		    " *.zxu *.zxl"
 		    " *.script"
 		    " *.asd"
+		    " *.fit"
+		    " *.json"
 		    ");;";
 
 	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
 	f += tr("Cochran") + " (*.can);;";
 	f += tr("CSV") + " (*.csv *.CSV);;";
 	f += tr("DiveLogs.de") + " (*.dld);;";
+	f += tr("FIT") + " (*.fit);;";
 	f += tr("JDiveLog") + " (*.jlb);;";
 	f += tr("Liquivision") + " (*.lvd);;";
 	f += tr("Suunto") + " (*.sde *.db);;";
+	f += tr("Suunto JSON") + " (*.json);;";
 	f += tr("UDCF") + " (*.udcf);;";
 	f += tr("UDDF") + " (*.uddf);;";
 	f += tr("XML") + " (*.xml);;";
@@ -1306,9 +1319,13 @@ void MainWindow::importFiles(const std::vector<std::string> &fileNames)
 		return;
 
 	struct divelog log;
+	std::vector<bool> consumed(fileNames.size(), false);
+	suunto_json_fit_pair_import(fileNames, consumed, &log);
 
-	for (const std::string &fn: fileNames) {
-		std::string encoded = encodeFileName(fn);
+	for (size_t i = 0; i < fileNames.size(); ++i) {
+		if (consumed[i])
+			continue;
+		std::string encoded = encodeFileName(fileNames[i]);
 		parse_file(encoded.c_str(), &log);
 	}
 	QString source = fileNames.size() == 1 ? QString::fromStdString(fileNames[0]) : tr("multiple files");

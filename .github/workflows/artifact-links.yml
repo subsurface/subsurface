@@ -6,11 +6,13 @@ on:
       - Publish the Documentation
       - Ubuntu 20.04 / Qt 5 for AppImage
       - Windows
-      - Android
+      - Windows MSVC
+      - Android Qt 6
       - Mac
-      - iOS
     types:
       - completed
+
+permissions: read-all
 
 jobs:
   artifacts-url-comments:

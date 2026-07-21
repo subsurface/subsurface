@@ -551,8 +551,10 @@ int logtrak_import(const std::string &mem, struct divelog *log)
 			devdata->descriptor = get_data_descriptor(dc_model, DC_FAMILY_UWATEC_SMART);
 			if (devdata->descriptor) {
 				// No need to check vendor or product if we got a correct descriptor
-				devdata->vendor = dc_descriptor_get_vendor(devdata->descriptor);
-				devdata->product = dc_descriptor_get_product(devdata->descriptor);
+				const char *vendor = dc_descriptor_get_vendor(devdata->descriptor);
+				const char *product = dc_descriptor_get_product(devdata->descriptor);
+				devdata->vendor = vendor ? vendor : "";
+				devdata->product = product ? product : "";
 				devdata->model = format_string_std("%s %s", devdata->vendor.c_str(), devdata->product.c_str()).c_str();
 				lt_dive->dcs[0].model = devdata->model;
 				// Galileo TMX devices use a different data set and parsing model in libdc.
@@ -614,7 +616,7 @@ int logtrak_import(const std::string &mem, struct divelog *log)
 			add_extra_data(&lt_dive->dcs[0], "DC Type", ltd_type);
 		free(ltd_type);
 		if (!lt_dive->dcs[0].fw_version.empty() && strcmp(lt_dive->dcs[0].fw_version.c_str(), "0"))
-			add_extra_data(&lt_dive->dcs[0], "DC Firmware Version", lt_dive->dcs[0].fw_version);
+			add_extra_data(&lt_dive->dcs[0], STRING_KEY_FIRMWARE_VERSION, lt_dive->dcs[0].fw_version);
 		Lt_String gfl(ltd_gf_low);
 		Lt_String gfh(ltd_gf_high);
 		if (gfl.string() != "" && gfl.string() != "0")

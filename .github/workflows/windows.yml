@@ -12,6 +12,11 @@ on:
     branches:
     - master
 
+env:
+  RELEASE_PUBLISHER: "true"
+
+permissions: read-all
+
 jobs:
   build-documentation:
     uses: ./.github/workflows/documentation-build.yml
@@ -20,6 +25,8 @@ jobs:
 
   build:
     needs: build-documentation
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
     runs-on: ubuntu-24.04
     container:
       image: docker://subsurface/mxe-build:3.4.0
@@ -30,7 +37,7 @@ jobs:
         apt-get -y update
 
     - name: checkout sources
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
@@ -43,10 +50,10 @@ jobs:
 
     - name: load the documentation from cache
       id: load-cache
-      uses: actions/cache@v4
+      uses: actions/cache@v6
       with:
         path: Documentation/output
-        key: documentation-${{ hashFiles('Documentation') }}
+        key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
         enableCrossOsArchive: true
         fail-on-cache-miss: true
 
@@ -79,7 +86,7 @@ jobs:
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: Subsurface-Windows-${{ steps.version_number.outputs.version }}
         path: |
@@ -89,13 +96,24 @@ jobs:
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
       if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
+        draft: true
         prerelease: false
         fail_on_unmatched_files: true
         files: |
          ./subsurface*.exe*
          ./smtk2ssrf*.exe
+
+  notify-release-coordinator:
+    permissions:
+      contents: write
+    if: always()
+    needs: build
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.build.outputs.release_tag }}
+      conclusion: ${{ needs.build.result }}

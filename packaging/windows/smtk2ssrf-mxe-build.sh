@@ -134,7 +134,7 @@ case "$RELEASE" in
 esac
 
 export PATH="$BASEDIR"/mxe/usr/bin:$PATH:"$BASEDIR"/mxe/usr/x86_64-w64-mingw32.shared/qt5/bin/
-export CXXFLAGS=-std=c++17
+export CXXFLAGS=-std=c++20
 export PKG_CONFIG_PATH_x86_64_w64_mingw32_static="$BASEDIR/mxe/usr/x86_64-w64-mingw32.static/lib/pkgconfig"
 export PKG_CONFIG_PATH_x86_64_w64_mingw32_shared="$BASEDIR/mxe/usr/x86_64-w64-mingw32.shared/lib/pkgconfig"
 export PKG_CONFIG_PATH="$PKG_CONFIG_PATH_x86_64_w64_mingw32_static":"$PKG_CONFIG_PATH_x86_64_w64_mingw32_shared"

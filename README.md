@@ -7,13 +7,12 @@
 
 [![Snap](https://github.com/subsurface/subsurface/actions/workflows/linux-snap.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-snap.yml)
 [![Ubuntu 20.04 / Qt 5.15-- for AppImage](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-20.04-qt5-appimage.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-20.04-qt5-appimage.yml)
-[![Ubuntu 24.04 / Qt 5.15--](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-24.04-qt5.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-ubuntu-24.04-qt5.yml)
-[![Fedora 35 / Qt 6--](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-35-qt6.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-35-qt6.yml)
-[![Debian Bookworm / Qt 5.15--](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-bookworm-5.15.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-bookworm-5.15.yml)
+[![Debian/Ubuntu--](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-ubuntu-matrix.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-debian-ubuntu-matrix.yml)
+[![Fedora / Qt 6--](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-qt6.yml/badge.svg)](https://github.com/subsurface/subsurface/actions/workflows/linux-fedora-qt6.yml)
 
-[![Coverity Scan Results](https://scan.coverity.com/projects/14405/badge.svg)](https://scan.coverity.com/projects/subsurface-divelog-subsurface)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/2607/badge)](https://www.bestpractices.dev/projects/2607)
 
-Subsurface can be found at http://subsurface-divelog.org
+Subsurface can be found at http://subsurface-divelog.org/
 
 Our user forum is at http://subsurface-divelog.org/user-forum/
 
@@ -147,7 +146,7 @@ opportunity to start on a new endeavor, Linus Torvalds decided to tackle
 his frustration with the lack of decent divelog software on Linux.
 
 Subsurface is the result of the work of him and a team of developers since
-then. It now supports Linux, Windows and MacOS and allows data import from
+then. It now supports Linux, Windows and macOS and allows data import from
 a large number of dive computers and several existing divelog programs. It
 provides advanced visualization of the key information provided by a
 modern dive computer and allows the user to track a wide variety of data

@@ -26,13 +26,18 @@ cd subsurface
 git submodule init
 git submodule update
 
+BUILDNUMBER=$(bash scripts/get-version.sh 1)
 GITVERSION=$(bash scripts/get-version.sh 4)
 GITDATE=$(git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
+# this seems to be the date format in changelog entries - not sure if that exact format is required
+# but we might as well use it
+CHANGELOGDATE=$(git log -1 --format="%at" | xargs -I{} date -d @{} +"%a %b %d %Y")
 LIBDCREVISION=$(cd libdivecomputer ; git rev-parse --verify HEAD)
 FOLDER="subsurface-$GITVERSION"
 
-# hardcode to 1 to mark that this is a test build, not a full release
-GITREVISION=1
+# increment when resubmitting failed build
+# remember to do a clean run or to remove the /root/$FOLDER so it gets recreated
+PACKAGEREVISION=1
 
 cd -
 
@@ -54,14 +59,14 @@ if [[ ! -d $FOLDER ]]; then
 
 	# make sure we only have the files we want (the builds should all be empty when running on GitHub)
 	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
-	echo "$GITVERSION" > .gitversion
+	echo "$BUILDNUMBER" > latest-subsurface-buildnumber
 	echo "$GITDATE" > .gitdate
 	echo "$LIBDCREVISION" > libdivecomputer/revision
 	cd ..
 fi
 
-if [[ ! -f rpmbuild/SOURCES/subsurface-$GITVERSION.orig.tar.xz ]] ; then
-	tar ch "$FOLDER" | xz > "rpmbuild/SOURCES/subsurface-$GITVERSION.orig.tar.xz"
+if [[ ! -f rpmbuild/SOURCES/subsurface-$GITVERSION-$PACKAGEREVISION.orig.tar.xz ]] ; then
+	tar ch "$FOLDER" | xz > "rpmbuild/SOURCES/subsurface-$GITVERSION-$PACKAGEREVISION.orig.tar.xz"
 fi
 
 # if the user wanted to post this automatically, do so
@@ -82,6 +87,8 @@ else
 fi
 cd "$HOME"/rpmbuild
 # shellcheck disable=SC2002
-cat "$TOPDIR"/subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $GITVERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/" > SPECS/subsurface.spec
+cat "$TOPDIR"/subsurface/packaging/copr/subsurface.spec | sed "s/%define latestVersion.*/%define latestVersion $GITVERSION/;s/DESCRIPTION/$DESCRIPTION/;s/SUMMARY/$SUMMARY/;s/%define packageRevision.*/%define packageRevision $PACKAGEREVISION/" > SPECS/subsurface.spec
+echo "* $CHANGELOGDATE Subsurface CI <subsurface@subsurface-divelog.org> - $GITVERSION" >> SPECS/subsurface.spec
+echo "- new upstream release $GITVERSION" >> SPECS/subsurface.spec
 rpmbuild --verbose -bs "$(pwd)/SPECS/subsurface.spec"
-copr build --nowait $REPO "$(pwd)/SRPMS/subsurface-$GITVERSION"-1.fc*.src.rpm
+copr build --nowait $REPO "$(pwd)/SRPMS/subsurface-$GITVERSION-$PACKAGEREVISION".fc*.src.rpm

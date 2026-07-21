@@ -1,0 +1,86 @@
+From 3eb8f1e6745ee72775eb9460f6768c2a072892c9 Mon Sep 17 00:00:00 2001
+From: Dirk Hohndel <dirk@hohndel.org>
+Date: Sun, 8 Mar 2026 22:48:23 -0700
+Subject: [PATCH] Correctly style the back button and context menu
+
+On an iOS device in dark appearance, but using the blue or pink theme in
+Subsurface-mobile, we otherwise get white on white text.
+
+Signed-off-by: Dirk Hohndel <dirk@hohndel.org>
+---
+ src/controls/GlobalDrawer.qml                 | 19 ++++++++++++++++-
+ .../private/ContextDrawerActionItem.qml       | 21 +++++++++++++++++++
+ 2 files changed, 39 insertions(+), 1 deletion(-)
+
+diff --git a/src/controls/GlobalDrawer.qml b/src/controls/GlobalDrawer.qml
+index b3e09c20..fbd54f5b 100644
+--- a/src/controls/GlobalDrawer.qml
++++ b/src/controls/GlobalDrawer.qml
+@@ -359,7 +359,6 @@ Kirigami.OverlayDrawer {
+ 
+                 Layout.fillWidth: true
+                 visible: menuColumn.level > 0
+-                icon.name: mirrored ? "go-previous-symbolic-rtl" : "go-previous-symbolic"
+ 
+                 text: Kirigami.MnemonicData.richTextLabel
+                 Accessible.name: Kirigami.MnemonicData.plainTextLabel
+@@ -369,6 +368,24 @@ Kirigami.OverlayDrawer {
+                 Kirigami.MnemonicData.controlType: Kirigami.MnemonicData.MenuItem
+                 Kirigami.MnemonicData.label: qsTr("Back")
+ 
++                contentItem: RowLayout {
++                    spacing: Kirigami.Units.largeSpacing
++                    Kirigami.Icon {
++                        source: ":/icons/chevron_left.svg"
++                        color: Kirigami.Theme.textColor
++                        Layout.minimumHeight: Kirigami.Units.iconSizes.smallMedium
++                        Layout.maximumHeight: Kirigami.Units.iconSizes.smallMedium
++                        Layout.minimumWidth: Kirigami.Units.iconSizes.smallMedium
++                        Layout.maximumWidth: Kirigami.Units.iconSizes.smallMedium
++                    }
++                    QQC2.Label {
++                        text: backItem.text
++                        color: Kirigami.Theme.textColor
++                        Layout.fillWidth: true
++                        elide: Text.ElideRight
++                    }
++                }
++
+                 onClicked: stackView.pop()
+ 
+                 Keys.onEnterPressed: stackView.pop()
+diff --git a/src/controls/private/ContextDrawerActionItem.qml b/src/controls/private/ContextDrawerActionItem.qml
+index ad7dbe43..bf94783c 100644
+--- a/src/controls/private/ContextDrawerActionItem.qml
++++ b/src/controls/private/ContextDrawerActionItem.qml
+@@ -36,6 +36,27 @@ QQC2.ItemDelegate {
+ 
+     Accessible.onPressAction: listItem.clicked()
+ 
++    contentItem: RowLayout {
++        spacing: Kirigami.Units.largeSpacing
++        Kirigami.Icon {
++            source: listItem.icon.name || listItem.icon.source
++            color: listItem.icon.color.a > 0 ? listItem.icon.color : Kirigami.Theme.textColor
++            readonly property int size: Kirigami.Units.iconSizes.smallMedium
++            Layout.minimumHeight: size
++            Layout.maximumHeight: size
++            Layout.minimumWidth: size
++            Layout.maximumWidth: size
++            visible: source !== undefined
++        }
++        QQC2.Label {
++            text: listItem.text
++            color: Kirigami.Theme.textColor
++            Layout.fillWidth: true
++            elide: Text.ElideRight
++            font: listItem.font
++        }
++    }
++
+     Kirigami.Separator {
+         id: separatorAction
+ 
+-- 
+2.51.1
+

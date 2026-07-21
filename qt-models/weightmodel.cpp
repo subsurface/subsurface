@@ -4,6 +4,7 @@
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/qthelper.h"
+#include "core/string-format.h"
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "qt-models/weightsysteminfomodel.h"
 #ifndef SUBSURFACE_MOBILE

@@ -8,6 +8,10 @@
   <xsl:strip-space elements="*"/>
   <xsl:output method="xml" indent="yes"/>
 
+  <xsl:variable name="is_apd_inspiration">
+    <xsl:value-of select="boolean(/uddf/diver/owner/equipment/divecomputer/@id = 'INSPIRATION')"/>
+  </xsl:variable>
+
   <xsl:template match="/">
     <divelog program="subsurface-import" version="2">
       <settings>
@@ -90,7 +94,7 @@
     <xsl:variable name="max_num_o2sensors">
       <xsl:choose>
         <!-- On the APD Inspiration, sensor slots 4 to 6 contain the second controller's readings for the first 3 cells.-->
-        <xsl:when test="/uddf/diver/owner/equipment/divecomputer/@id = 'INSPIRATION'">
+        <xsl:when test="$is_apd_inspiration">
           <xsl:text>3</xsl:text>
         </xsl:when>
         <xsl:otherwise>
@@ -124,9 +128,9 @@
           </xsl:call-template>
         </xsl:when>
       </xsl:choose>
-      <xsl:if test="dive_number|u:informationbeforedive/u:divenumber != ''">
+      <xsl:if test="dive_number|informationbeforedive/divenumber|u:informationbeforedive/u:divenumber != ''">
         <xsl:attribute name="number">
-          <xsl:value-of select="dive_number|u:informationbeforedive/u:divenumber"/>
+          <xsl:value-of select="dive_number|informationbeforedive/divenumber|u:informationbeforedive/u:divenumber"/>
         </xsl:attribute>
       </xsl:if>
       <xsl:if test="(dive_duration != '' and dive_duration != 0) or (u:informationafterdive/u:diveduration != '' and u:informationafterdive/u:diveduration != 0)">
@@ -446,9 +450,7 @@
         <xsl:if test="$divemode">
           <xsl:attribute name='dctype'>
             <xsl:call-template name="divemodeConvert">
-              <xsl:with-param name="divemode">
-                <xsl:value-of select="$divemode"/>
-              </xsl:with-param>
+              <xsl:with-param name="divemode" select="$divemode"/>
             </xsl:call-template>
           </xsl:attribute>
         </xsl:if>
@@ -468,14 +470,14 @@
           </extradata>
         </xsl:if>
         <xsl:if test="/uddf/diver/owner/equipment/divecomputer/serialnumber">
-          <extradata key="Serial Number">
+          <extradata key="Serial">
             <xsl:attribute name="value">
               <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/serialnumber"/>
             </xsl:attribute>
           </extradata>
         </xsl:if>
         <xsl:if test="/uddf/diver/owner/equipment/divecomputer/softwareupdate/softwareversion">
-          <extradata key="Software Version">
+          <extradata key="FW Version">
             <xsl:attribute name="value">
               <xsl:value-of select="/uddf/diver/owner/equipment/divecomputer/softwareupdate/softwareversion"/>
             </xsl:attribute>
@@ -483,10 +485,12 @@
         </xsl:if>
 
         <xsl:variable name="batteryvoltage_values" select="samples/waypoint[batteryvoltage]"/>
+
         <xsl:for-each select="/uddf/diver/owner/equipment/rebreather/battery">
           <xsl:variable name="reference" select="@id"/>
+
           <!-- On the APD Inspiration, battery slots 3 and 4 contain the second controller's readings for the batteries.-->
-          <xsl:if test="not(/uddf/diver/owner/equipment/divecomputer/@id = 'INSPIRATION' and position() &gt; 2)">
+          <xsl:if test="not($is_apd_inspiration and position() &gt; 2)">
             <extradata>
               <xsl:attribute name="key">
                 <xsl:value-of select="concat('Battery ', position(), ' at Begin [V]')"/>
@@ -513,34 +517,29 @@
               <extradata key="Tempstik at Begin">
                 <xsl:attribute name="value">
                   <xsl:call-template name="getTempstikGraph">
-                    <xsl:with-param name="tempstik_value">
-                      <!-- The tempstik readings at the beginning of the dive seem to be bogus -->
-                      <xsl:value-of select="samples/waypoint[scrubber[@ref = 'tempstik'] and divetime > 0][1]/scrubber[@ref = 'tempstik']"/>
-                    </xsl:with-param>
+                    <!-- The tempstik readings at the beginning of the dive seem to be bogus -->
+                    <xsl:with-param name="tempstik_value" select="samples/waypoint[scrubber[@ref = 'tempstik'] and divetime > 0][1]/scrubber[@ref = 'tempstik']"/>
                   </xsl:call-template>
                 </xsl:attribute>
               </extradata>
               <extradata key="Tempstik at End">
                 <xsl:attribute name="value">
                   <xsl:call-template name="getTempstikGraph">
-                    <xsl:with-param name="tempstik_value">
-                      <xsl:value-of select="samples/waypoint[scrubber[@ref = 'tempstik']][last()]/scrubber[@ref = 'tempstik']"/>
-                    </xsl:with-param>
+                    <xsl:with-param name="tempstik_value" select="samples/waypoint[scrubber[@ref = 'tempstik']][last()]/scrubber[@ref = 'tempstik']"/>
                   </xsl:call-template>
                 </xsl:attribute>
               </extradata>
             </xsl:when>
-
             <xsl:otherwise>
               <xsl:variable name="scrubber_values" select="samples/waypoint[scrubber]"/>
               <xsl:for-each select="/uddf/diver/owner/equipment/rebreather/scrubbermonitor[@id]">
                 <xsl:variable name="reference" select="@id"/>
+
                 <extradata key="Scrubber Monitor at Begin">
                   <xsl:attribute name="value">
                     <xsl:value-of select="$scrubber_values[scrubber[@ref = $reference]][1]/scrubber[@ref = $reference]"/>
                     <xsl:if test="$scrubber_values[scrubber[@ref = $reference]][1]/scrubber[@ref = $reference]/@units != ''">
-                      <xsl:text> </xsl:text>
-                      <xsl:value-of select="$scrubber_values[scrubber[@ref = $reference]][1]/scrubber[@ref = $reference]/@units"/>
+                      <xsl:value-of select="concat(' ', $scrubber_values[scrubber[@ref = $reference]][1]/scrubber[@ref = $reference]/@units)"/>
                     </xsl:if>
                   </xsl:attribute>
                 </extradata>
@@ -548,11 +547,57 @@
                   <xsl:attribute name="value">
                     <xsl:value-of select="$scrubber_values[scrubber[@ref = $reference]][last()]/scrubber[@ref = $reference]"/>
                     <xsl:if test="$scrubber_values[scrubber[@ref = $reference]][last()]/scrubber[@ref = $reference]/@units != ''">
-                      <xsl:text> </xsl:text>
-                      <xsl:value-of select="$scrubber_values[scrubber[@ref = $reference]][last()]/scrubber[@ref = $reference]/@units"/>
+                      <xsl:value-of select="concat(' ', $scrubber_values[scrubber[@ref = $reference]][last()]/scrubber[@ref = $reference]/@units)"/>
                     </xsl:if>
                   </xsl:attribute>
                 </extradata>
+              </xsl:for-each>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:if>
+
+        <xsl:if test="/uddf/diver/owner/equipment/*[self::divecomputer or self::rebreather]/timerdevice">
+          <xsl:choose>
+            <xsl:when test="/uddf/diver/owner/equipment/rebreather/timerdevice/@id = 'elapsed_on_time' and informationafterdive/timer[@ref = 'elapsed_on_time']">
+              <!-- APD Inspiration 'Elapsed on time' timer -->
+              <extradata key="Elapsed on time at End [hh:mm:ss]">
+                <xsl:attribute name="value">
+                  <xsl:call-template name="timeConvertHours">
+                    <xsl:with-param name="timeSec" select="informationafterdive/timer[@ref = 'elapsed_on_time']"/>
+                  </xsl:call-template>
+                </xsl:attribute>
+              </extradata>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:variable name="timer_values" select="*[self::informationbeforedive or self::informationafterdive][timer]"/>
+
+              <xsl:for-each select="/uddf/diver/owner/equipment/*[self::divecomputer or self::rebreather]/timerdevice[@id]">
+                <xsl:variable name="reference" select="@id"/>
+
+                <xsl:if test="$timer_values[self::informationbeforedive]/timer[@ref = $reference]">
+                  <extradata>
+                    <xsl:attribute name="key">
+                      <xsl:value-of select="concat($reference, ' at Begin [hh:mm:ss]')"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="value">
+                      <xsl:call-template name="timeConvertHours">
+                        <xsl:with-param name="timeSec" select="$timer_values[self::informationbeforedive]/timer[@ref = $reference]"/>
+                      </xsl:call-template>
+                    </xsl:attribute>
+                  </extradata>
+                </xsl:if>
+                <xsl:if test="$timer_values[self::informationafterdive]/timer[@ref = $reference]">
+                  <extradata>
+                    <xsl:attribute name="key">
+                      <xsl:value-of select="concat($reference, ' at End [hh:mm:ss]')"/>
+                    </xsl:attribute>
+                    <xsl:attribute name="value">
+                      <xsl:call-template name="timeConvertHours">
+                        <xsl:with-param name="timeSec" select="$timer_values[self::informationafterdive]/timer[@ref = $reference]"/>
+                      </xsl:call-template>
+                    </xsl:attribute>
+                  </extradata>
+                </xsl:if>
               </xsl:for-each>
             </xsl:otherwise>
           </xsl:choose>
@@ -564,6 +609,15 @@
             <xsl:attribute name="value">
               <xsl:value-of select="concat('GF ', round(samples/waypoint[setgflow and divetime > 0][1]/setgflow * 100), '/', round(samples/waypoint[setgfhigh and divetime > 0][1]/setgfhigh * 100))"/>
                 <!-- The gradient factor readings at the beginning of the dive seem to be bogus -->
+            </xsl:attribute>
+          </extradata>
+        </xsl:if>
+
+        <xsl:if test="$is_apd_inspiration and informationbeforedive/divenumber">
+          <!-- APD Inspiration unit dive number - this is a non-user-modifiable counter -->
+          <extradata key="Unit dive number">
+            <xsl:attribute name="value">
+              <xsl:value-of select="informationbeforedive/divenumber"/>
             </xsl:attribute>
           </extradata>
         </xsl:if>
@@ -896,7 +950,15 @@
   <xsl:template name="timeConvert">
     <xsl:param name="timeSec"/>
     <xsl:if test="$timeSec != ''">
-      <xsl:value-of select="concat(floor(number($timeSec) div 60), ':',    format-number(floor(number($timeSec) mod 60), '00'), ' min')"/>
+      <xsl:value-of select="concat(floor(number($timeSec) div 60), ':', format-number(floor(number($timeSec) mod 60), '00'), ' min')"/>
+    </xsl:if>
+  </xsl:template>
+
+  <!-- convert time in seconds to hours:minutes:seconds -->
+  <xsl:template name="timeConvertHours">
+    <xsl:param name="timeSec"/>
+    <xsl:if test="$timeSec != ''">
+      <xsl:value-of select="concat(floor(number($timeSec) div 3600), ':', format-number(floor(number($timeSec) mod 3600 div 60), '00'), ':', format-number(floor(number($timeSec) mod 60), '00'))"/>
     </xsl:if>
   </xsl:template>
   <!-- end convert time -->

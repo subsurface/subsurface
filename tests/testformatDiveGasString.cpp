@@ -1,5 +1,6 @@
 #include "testformatDiveGasString.h"
 
+#include "../core/divelist.h"
 #include "../core/dive.h"
 #include "../core/string-format.h"
 
@@ -50,6 +51,36 @@ void TestformatDiveGasString::test_nitrox_not_use()
 	cylinder->end = 100_bar;
 
 	QCOMPARE(formatDiveGasString(&dive), "32%");
+}
+
+void TestformatDiveGasString::test_sac_ignores_not_used_cylinder()
+{
+	struct dive one_dive;
+	cylinder_t *cylinder = one_dive.get_or_create_cylinder(0);
+	cylinder->type.size.mliter = 10000;
+	cylinder->start = 230_bar;
+	cylinder->end = 100_bar;
+	cylinder->cylinder_use = OC_GAS;
+
+	divecomputer dc;
+	dc.divemode = OC;
+	dc.duration.seconds = 60;
+	dc.meandepth.mm = 10000;
+	one_dive.dcs.push_back(dc);
+
+	dive_table table;
+	table.update_cylinder_related_info(one_dive);
+
+	struct dive two_dive = one_dive;
+	cylinder = two_dive.get_or_create_cylinder(1);
+	cylinder->type.size.mliter = 10000;
+	cylinder->start = 230_bar;
+	cylinder->end = 100_bar;
+	cylinder->cylinder_use = NOT_USED;
+
+	table.update_cylinder_related_info(two_dive);
+
+	QCOMPARE(one_dive.sac, two_dive.sac);
 }
 
 void TestformatDiveGasString::test_nitrox_deco()

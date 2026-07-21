@@ -5,16 +5,27 @@
 #include "core/errorhelper.h"
 
 #include <QtConcurrent>
+#ifndef Q_OS_IOS
 #include <QProcess>
+#endif
 
-// Note: this is a global instead of a function-local variable on purpose.
-// We don't want this to be generated in a different thread context if
-// VideoFrameExtractor::instance() is called from a worker thread.
+// AI-generated (Claude)
+// Use Q_APPLICATION_STATIC for the same reasons as ImageDownloader:
+// lazy init, correct thread affinity, and no pre-QCoreApplication crash.
+#if QT_VERSION >= QT_VERSION_CHECK(6, 3, 0)
+Q_APPLICATION_STATIC(VideoFrameExtractor, s_videoFrameExtractor)
+
+VideoFrameExtractor *VideoFrameExtractor::instance()
+{
+	return s_videoFrameExtractor();
+}
+#else
 static VideoFrameExtractor frameExtractor;
 VideoFrameExtractor *VideoFrameExtractor::instance()
 {
 	return &frameExtractor;
 }
+#endif
 
 VideoFrameExtractor::VideoFrameExtractor()
 {
@@ -78,6 +89,10 @@ void VideoFrameExtractor::processItem(QString originalFilename, QString filename
 		position.seconds = clamp(duration.seconds * prefs.extract_video_thumbnails_position / 100,
 					 0, duration.seconds);
 	}
+#ifdef Q_OS_IOS
+	// QProcess is not available on iOS; video thumbnail extraction is not supported
+	return fail(originalFilename, duration, false);
+#else
 	QString posString = QString("%1:%2:%3").arg(position.seconds / 3600, 2, 10, QChar('0'))
 					       .arg((position.seconds % 3600) / 60, 2, 10, QChar('0'))
 					       .arg(position.seconds % 60, 2, 10, QChar('0'));
@@ -115,4 +130,5 @@ void VideoFrameExtractor::processItem(QString originalFilename, QString filename
 	emit extracted(originalFilename, std::move(img), duration, position);
 	QMutexLocker l(&lock);
 	workingOn.remove(originalFilename);
+#endif
 }

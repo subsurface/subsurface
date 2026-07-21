@@ -21,6 +21,7 @@ endif ()
 set(CMAKE_MODULE_PATH
 	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
 	${${PROJECT_NAME}_SOURCE_DIR}/../install-root/lib/cmake
+	${CMAKE_INSTALL_PREFIX}/lib/cmake
 	${CMAKE_MODULE_PATH}
 )
 
@@ -61,8 +62,11 @@ option(BUILD_TESTS "Build the tests" OFF)
 # Option whether we should try to build against Qt6, if it is available
 option(BUILD_WITH_QT6 "try to build against Qt6 (incomplete)" OFF)
 
-SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable, MobileExecutable, or DownloaderExecutable")
-LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable" "DownloaderExecutable")
+# Option to indicate whether this is a build run on Flathub
+option(FLATHUB_BUILD "customize build for Flathub)" OFF)
+
+SET(SUBSURFACE_TARGET_EXECUTABLE "DesktopExecutable" CACHE STRING "The type of application, DesktopExecutable, MobileExecutable, CLI or DownloaderExecutable")
+LIST(APPEND SUBSURFACE_ACCEPTED_EXECUTABLES  "DesktopExecutable" "MobileExecutable" "DownloaderExecutable" "CLI")
 SET_PROPERTY(CACHE SUBSURFACE_TARGET_EXECUTABLE PROPERTY STRINGS ${SUBSURFACE_ACCEPTED_EXECUTABLES})
 
 #verify if Platform is correct and warn on wxit with example.
@@ -82,14 +86,16 @@ add_definitions(-DSUBSURFACE_SOURCE="${SUBSURFACE_SOURCE}")
 
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
-set(CMAKE_CXX_STANDARD 17)
+# MSVC requires C++20 for designated initializers;
+# Kirigami 6 requires C++20
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 #
 # TODO: This Compilation part should go on the Target specific CMake.
 #
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override -Wno-unused-command-line-argument")
 	if ((CMAKE_SYSTEM_NAME MATCHES "Darwin") AND
 	   ((CMAKE_SYSTEM_VERSION MATCHES "11.4.") OR
 	    (CMAKE_OSX_DEPLOYMENT_TARGET MATCHES "10.7") OR
@@ -97,7 +103,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 	endif()
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override -Wno-unused-command-line-argument")
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	# Warn about possible float conversion errors
 	# Use NOT VERSION_LESS since VERSION_GREATER_EQUAL is not available
@@ -111,6 +117,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
   # using Intel C++
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # using Visual Studio C++
+  # Disable Qt version tagging which causes segment errors on MSVC
+  add_definitions(-DQT_NO_VERSION_TAGGING)
 endif()
 
 # set up profiling
@@ -125,15 +133,24 @@ if (SUBSURFACE_ASAN_BUILD)
 	SET(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 endif()
 
-# every compiler understands -Wall
-set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror=format")
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror=format")
+# Compiler-specific warning flags
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# MSVC: /W4 is similar to -Wall, format warnings are on by default
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+else()
+	# GCC/Clang
+	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror=format")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror=format")
+endif()
 
-# by detault optimize with -O2 even for debug builds
-set (GCC_OPTIMIZATION_FLAGS "-O2" CACHE STRING "GCC optimization flags")
-message (STATUS "GCC optimization flags: " ${GCC_OPTIMIZATION_FLAGS})
-set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
-set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+# by default optimize with -O2 even for debug builds (GCC/Clang only)
+if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	set(GCC_OPTIMIZATION_FLAGS "-O2" CACHE STRING "GCC optimization flags")
+	message(STATUS "GCC optimization flags: " ${GCC_OPTIMIZATION_FLAGS})
+	set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+endif()
 
 # pkgconfig for required libraries
 find_package(PkgConfig)
@@ -147,6 +164,7 @@ include(pkgconfig_helper)
 # module file.
 include(HandleFindGit2)
 include(HandleFindLibDiveComputer)
+include(HandleFindQLiteHtml)
 include(HandleFtdiSupport)
 include(HandleVersionGeneration)
 include(RunOnBuildDir)
@@ -155,20 +173,82 @@ include(cmake_variables_helper)
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	include_directories(${CMAKE_OSX_SYSROOT}/usr/include/libxml2)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lxml2 -lxslt -lsqlite3)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	# On iOS, libxml2 and libxslt come from our cross-compiled install prefix;
+	# sqlite3 is provided by the iOS SDK
+	pkg_config_library(LIBXML libxml-2.0 REQUIRED)
+	pkg_config_library(LIBXSLT libxslt REQUIRED)
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lsqlite3)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# On Windows with MSVC/vcpkg, set paths directly
+	# Use SUBSURFACE_VCPKG_ROOT to avoid conflicts with vcpkg toolchain variables
+	# The vcpkg toolchain sets VCPKG_INSTALLED_DIR based on toolchain file location,
+	# which can point to VS bundled vcpkg instead of the one we installed deps to
+	# AI-generated (Claude)
+	# Normalize to forward slashes: this path gets embedded verbatim into
+	# generated install(CODE ...) script text below, where a native
+	# backslash path (e.g. "C:\vcpkg") would be misparsed as an escape
+	# sequence (e.g. "\v") by the generated cmake_install.cmake.
+	if(DEFINED SUBSURFACE_VCPKG_ROOT)
+		file(TO_CMAKE_PATH "${SUBSURFACE_VCPKG_ROOT}" _VCPKG_ROOT_NORMALIZED)
+		set(_VCPKG_PREFIX "${_VCPKG_ROOT_NORMALIZED}/installed/x64-windows")
+	elseif(DEFINED ENV{VCPKG_ROOT})
+		file(TO_CMAKE_PATH "$ENV{VCPKG_ROOT}" _VCPKG_ROOT_NORMALIZED)
+		set(_VCPKG_PREFIX "${_VCPKG_ROOT_NORMALIZED}/installed/x64-windows")
+	else()
+		set(_VCPKG_PREFIX "C:/vcpkg/installed/x64-windows")
+	endif()
+	message(STATUS "Using vcpkg prefix: ${_VCPKG_PREFIX}")
+
+	# libxml2: headers are in include/libxml2/, library is libxml2.lib
+	set(LIBXML2_INCLUDE_DIR "${_VCPKG_PREFIX}/include/libxml2")
+	set(LIBXML2_LIBRARY "${_VCPKG_PREFIX}/lib/libxml2.lib")
+	# libxslt: headers are in include/, library is libxslt.lib
+	set(LIBXSLT_INCLUDE_DIR "${_VCPKG_PREFIX}/include")
+	set(LIBXSLT_LIBRARIES "${_VCPKG_PREFIX}/lib/libxslt.lib")
+	# sqlite3: library is sqlite3.lib
+	set(SQLITE3_LIBRARY "${_VCPKG_PREFIX}/lib/sqlite3.lib")
+
+	include_directories(${LIBXML2_INCLUDE_DIR} ${LIBXSLT_INCLUDE_DIR})
+
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBXML2_LIBRARY} ${LIBXSLT_LIBRARIES} ${SQLITE3_LIBRARY})
 else()
 	pkg_config_library(LIBXML libxml-2.0 REQUIRED)
 	pkg_config_library(LIBSQLITE3 sqlite3 REQUIRED)
 	pkg_config_library(LIBXSLT libxslt REQUIRED)
 endif()
-pkg_config_library(LIBZIP libzip REQUIRED)
 
-if(NOT ANDROID)
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	# Use direct path - _VCPKG_PREFIX was set above
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES "${_VCPKG_PREFIX}/lib/zip.lib")
+else()
+	pkg_config_library(LIBZIP libzip REQUIRED)
+endif()
+
+if(NOT ANDROID AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS" AND NOT SUBSURFACE_TARGET_EXECUTABLE STREQUAL "CLI")
 	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		pkg_config_library(BLUEZ bluez REQUIRED)
 	endif()
-	pkg_config_library(LIBUSB libusb-1.0 QUIET)
-	pkg_config_library(LIBMTP libmtp QUIET)
-	pkg_config_library(LIBRAW libraw_r )
+	if(CMAKE_SYSTEM_NAME STREQUAL "Windows" AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		find_package(libusb CONFIG QUIET)
+		if(libusb_FOUND)
+			set(LIBUSB_FOUND TRUE)
+			get_target_property(LIBUSB_INCLUDE_DIRS libusb-1.0 INTERFACE_INCLUDE_DIRECTORIES)
+			set(LIBUSB_LIBRARIES libusb-1.0)
+			include_directories(${LIBUSB_INCLUDE_DIRS})
+			LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBUSB_LIBRARIES})
+		endif()
+		find_package(libraw CONFIG QUIET)
+		if(libraw_FOUND)
+			set(LIBRAW_FOUND TRUE)
+			LIST(APPEND SUBSURFACE_LINK_LIBRARIES libraw::raw_r)
+		endif()
+		# libmtp is not available via vcpkg, skip for now
+	else()
+		pkg_config_library(LIBUSB libusb-1.0 QUIET)
+		pkg_config_library(LIBMTP libmtp QUIET)
+		pkg_config_library(LIBRAW libraw_r )
+	endif()
 endif()
 
 include_directories(.
@@ -214,7 +294,7 @@ if(QT_VERSION_MAJOR STREQUAL "6")
 		# QML files with a weird error about Qml.WorkerScript missing
 		# linking Subsurface against that component appears enough to hack
 		# around that, but that feels... wrong
-		if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+		if(APPLE)
 			find_package(Qt6 COMPONENTS QmlWorkerScript)
 			LIST(APPEND SUBSURFACE_LINK_LIBRARIES Qt6::QmlWorkerScript)
 		endif()
@@ -238,27 +318,39 @@ message(STATUS "building with Qt ${QT_VERSION}")
 # if the configuration is too big or would disrupt the normal code flux,
 # move it somewhere else (another file) and include it.
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
-	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	if(APPLE)
 		set(SUBSURFACE_TARGET Subsurface)
 	else()
 		set(SUBSURFACE_TARGET subsurface)
 	endif()
 	list(APPEND QT_EXTRA_COMPONENTS QuickWidgets)
 	remove_definitions(-DSUBSURFACE_MOBILE)
+	add_definitions(-DSUBSURFACE_DESKTOP)
 	if(NO_USERMANUAL)
 		message(STATUS "building without built-in user manual support")
 		add_definitions(-DNO_USERMANUAL)
 	else()
+		set(REQUEST_QLITEHTML ON)
 		set(REQUEST_WEBKIT ON)
-		set(REQUEST_WEBENGINE ON)
 	endif()
 	if(NO_PRINTING)
 		message(STATUS "building without printing support")
 		add_definitions(-DNO_PRINTING)
 	else()
 		set(REQUEST_WEBKIT ON)
-		set(REQUEST_WEBENGINE ON)
 	endif()
+
+	# Try QLiteHtml first, but ONLY for Qt6 builds
+	# If QLiteHtml is found, use it (this is the preferred option for Qt6)
+	if(USINGQT6 AND QLITEHTML_FOUND)
+		message(STATUS "building with QLiteHtml (Qt6)")
+		LIST(APPEND QT_EXTRA_COMPONENTS PrintSupport)
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${QLITEHTML_LIBRARIES})
+		add_definitions(-DUSE_QLITEHTML)
+		set(REQUEST_WEBKIT OFF)
+	endif()
+
+	# Try WebKit next (Qt5 only, has best printing support)
 	if(REQUEST_WEBKIT)
 		# Because Qt5WebKitWidgets isn't a part of the "regular" Qt5, we can't get it the normal way
 		find_package(Qt5WebKitWidgets QUIET)
@@ -266,46 +358,16 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 			LIST(APPEND QT_EXTRA_COMPONENTS PrintSupport WebKitWidgets)
 			LIST(APPEND SUBSURFACE_LINK_LIBRARIES Qt5::WebKitWidgets)
 			message(STATUS "building with QtWebKit")
-			set(REQUEST_WEBENGINE OFF)
-		endif()
-	endif()
-	if(REQUEST_WEBENGINE)
-		if(USINGQT6)
-			find_package(Qt6WebEngineWidgets)
-			if(Qt6WebEngineWidgets_FOUND STREQUAL "1")
-				LIST(APPEND QT_EXTRA_COMPONENTS PrintSupport WebEngineWidgets)
-				LIST(APPEND SUBSURFACE_LINK_LIBRARIES Qt6::WebEngineWidgets)
-				message(STATUS "building with QtWebEngine, disabling printing support")
-				set(NO_PRINTING ON)
-				add_definitions(-DNO_PRINTING)
-				add_definitions(-DUSE_WEBENGINE)
-			else()
-				message(STATUS "didn't find QtWebEngine nor QtWebKit, building without user manual and printing support")
-				add_definitions(-DNO_PRINTING)
-				add_definitions(-DNO_USERMANUAL)
-				set(NO_PRINTING ON)
-				set(NO_USERMANUAL ON)
-			endif()
 		else()
-			find_package(Qt5WebEngineWidgets)
-			if(Qt5WebEngineWidgets_FOUND STREQUAL "1")
-				LIST(APPEND QT_EXTRA_COMPONENTS PrintSupport WebEngineWidgets)
-				LIST(APPEND SUBSURFACE_LINK_LIBRARIES Qt5::WebEngineWidgets)
-				message(STATUS "building with QtWebEngine, disabling printing support")
-				set(NO_PRINTING ON)
-				add_definitions(-DNO_PRINTING)
-				add_definitions(-DUSE_WEBENGINE)
-			else()
-				message(STATUS "didn't find QtWebEngine nor QtWebKit, building without user manual and printing support")
-				add_definitions(-DNO_PRINTING)
-				add_definitions(-DNO_USERMANUAL)
-				set(NO_PRINTING ON)
-				set(NO_USERMANUAL ON)
-			endif()
+			message(STATUS "didn't find QtWebKit or QLiteHtml, building without user manual and printing support")
+			add_definitions(-DNO_PRINTING)
+			add_definitions(-DNO_USERMANUAL)
+			set(NO_PRINTING ON)
+			set(NO_USERMANUAL ON)
 		endif()
 	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	if(APPLE)
 		set(SUBSURFACE_TARGET Subsurface-mobile)
 	else()
 		set(SUBSURFACE_TARGET subsurface-mobile)
@@ -320,7 +382,7 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	message(STATUS "Building Subsurface-mobile requires BT support")
 	set(BTSUPPORT ON)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
-	if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+	if(APPLE)
 		set(SUBSURFACE_TARGET Subsurface-downloader)
 	else()
 		set(SUBSURFACE_TARGET subsurface-downloader)
@@ -329,14 +391,72 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	set(LIBRAW_SUPPORT OFF)
 	add_definitions(-DSUBSURFACE_DOWNLOADER)
 	message(STATUS "building the embedded Subsurface-downloader app")
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
+	set(SUBSURFACE_TARGET subsurface-cli)
+	set(BTSUPPORT OFF)
+	set(LIBRAW_SUPPORT OFF)
+	set(MAPSUPPORT OFF)
+	add_definitions(-DSUBSURFACE_CLI)
+	message(STATUS "building the subsurface-cli tool")
 endif()
 
 if(ANDROID)
 	set(NO_PRINTING ON)
 	set(NO_USERMANUAL ON)
 	set(BUILD_TESTS OFF)
-	list(APPEND QT_EXTRA_COMPONENTS AndroidExtras)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -llog)
+	# AI-generated (Claude)
+	# googlemaps static plugin for Android - same approach as iOS;
+	# dynamic plugin discovery on Android is unreliable for third-party plugins.
+	set(GOOGLEMAPS_LIBRARY GOOGLEMAPS_LIBRARY-NOTFOUND)
+	foreach(_root ${CMAKE_FIND_ROOT_PATH})
+		if(EXISTS "${_root}/plugins/geoservices/libqtgeoservices_googlemaps.a")
+			set(GOOGLEMAPS_LIBRARY "${_root}/plugins/geoservices/libqtgeoservices_googlemaps.a")
+			message(STATUS "Found googlemaps static plugin: ${GOOGLEMAPS_LIBRARY}")
+			break()
+		endif()
+	endforeach()
+	if(GOOGLEMAPS_LIBRARY)
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${GOOGLEMAPS_LIBRARY})
+	else()
+		message(WARNING "googlemaps plugin not found for Android - map will not work")
+	endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	set(NO_PRINTING ON)
+	set(NO_USERMANUAL ON)
+	set(BUILD_TESTS OFF)
+	execute_process(
+		COMMAND bash scripts/get-version.sh 3
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE SSRF_VERSION_3DIGIT
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	execute_process(
+		COMMAND bash scripts/get-version.sh 4
+		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+		OUTPUT_VARIABLE SSRF_VERSION_4DIGIT
+		OUTPUT_STRIP_TRAILING_WHITESPACE
+	)
+	set(MACOSX_BUNDLE_GUI_IDENTIFIER "org.subsurface-divelog.subsurface-mobile")
+	set(MACOSX_BUNDLE_BUNDLE_VERSION "${SSRF_VERSION_4DIGIT}")
+	set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_3DIGIT}")
+	find_library(MESSAGEUI_FRAMEWORK MessageUI)
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${MESSAGEUI_FRAMEWORK})
+	# libgit2 depends on iconv on iOS
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -liconv)
+	# googlemaps static plugin for iOS - search all paths in CMAKE_FIND_ROOT_PATH
+	set(GOOGLEMAPS_LIBRARY GOOGLEMAPS_LIBRARY-NOTFOUND)
+	foreach(_root ${CMAKE_FIND_ROOT_PATH})
+		if(EXISTS "${_root}/plugins/geoservices/libqtgeoservices_googlemaps.a")
+			set(GOOGLEMAPS_LIBRARY "${_root}/plugins/geoservices/libqtgeoservices_googlemaps.a")
+			break()
+		endif()
+	endforeach()
+	if(GOOGLEMAPS_LIBRARY)
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${GOOGLEMAPS_LIBRARY})
+	else()
+		message(WARNING "googlemaps plugin not found - build it with qmake first")
+	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# add pthread to the end of the library list on Linux
 	# this is only needed on Ubuntu
@@ -375,12 +495,20 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_STRING}")
 	set(MACOSX_BUNDLE_LONG_VERSION_STRING "${SSRF_VERSION_STRING}")
 	set(MACOSX_BUNDLE_COPYRIGHT "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger and others")
+	# Use custom Info.plist template with Bluetooth permissions
+	set(MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/cmake/Modules/MacOSXBundleInfo.plist.in")
 	set_source_files_properties(${ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
 	set(SUBSURFACE_PKG MACOSX_BUNDLE ${ICON_FILE})
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lwsock32 -lws2_32)
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES wsock32 ws2_32)
+		add_definitions(-D_WIN32)
+	else()
+		# GCC/MinGW
+		LIST(APPEND SUBSURFACE_LINK_LIBRARIES -lwsock32 -lws2_32)
+		add_definitions(-mwindows -D_WIN32)
+	endif()
 	remove_definitions(-DUNICODE)
-	add_definitions(-mwindows -D_WIN32)
 endif()
 
 if(BTSUPPORT)
@@ -398,38 +526,41 @@ else()
 	message(STATUS "building without built-in libraw support")
 endif()
 
-if(ANDROID)
-	# when building for Android, the toolchain file requires all cmake modules
-	# to be inside the CMAKE_FIND_ROOT_PATH - which prevents cmake from finding
-	# our Qt installation. This is ugly, but it works.
+if(ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	# when cross-compiling for Android or iOS, the toolchain file restricts
+	# find_package to the sysroot - this ensures system-root paths are also searched
 	set(CMAKE_FIND_ROOT_PATH "/;${CMAKE_FIND_ROOT_PATH}")
 endif()
 set(QT_FIND_COMPONENTS Core Concurrent Widgets Network Svg Positioning Quick ${QT_EXTRA_COMPONENTS})
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-	# Kirigami 5.62 and newer require at least Qt 5.12
-	if(ANDROID)
-		find_package(Qt${QT_VERSION_MAJOR} 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools)
+	if(ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
+		find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools)
 	else()
-		find_package(Qt${QT_VERSION_MAJOR} 5.12 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
+		find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS} LinguistTools Test QuickTest)
 	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 	# let's pick a version that's not ancient
 	find_package(Qt${QT_VERSION_MAJOR} 5.11 REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
+	set(BUILD_TESTS OFF)
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
+	# CLI needs these Qt components for subsurface_corelib dependencies
+	set(QT_FIND_COMPONENTS Core Concurrent Gui Network Widgets)
+	find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS ${QT_FIND_COMPONENTS})
 	set(BUILD_TESTS OFF)
 endif()
 
 foreach(_QT_COMPONENT ${QT_FIND_COMPONENTS})
 	list(APPEND QT_LIBRARIES Qt${QT5OR6}::${_QT_COMPONENT})
 endforeach()
-if(NOT ANDROID)
+if(NOT ANDROID AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
 	LIST(APPEND QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt${QT5OR6}::Test Qt${QT5OR6}::QuickTest)
 endif()
 
 #set up the subsurface_link_libraries variable
 LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES} ${LIBMTP_LIBRARIES})
-if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable" AND NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 	if(USINGQT6)
 		if(MAPSUPPORT)
 			qt_add_resources(SUBSURFACE_RESOURCES map-widget/qml/map-widget.qrc)
@@ -448,13 +579,15 @@ if(DEFINED ENV{LGTM_SRC})
 endif()
 
 # include translations
-if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable" AND NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 add_subdirectory(translations)
 endif()
 add_subdirectory(core)
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 add_subdirectory(qt-models)
 add_subdirectory(commands)
-if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
+endif()
+if (NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable" AND NOT SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
 add_subdirectory(profile-widget)
 if(MAPSUPPORT)
 add_subdirectory(map-widget)
@@ -467,44 +600,77 @@ add_subdirectory(backend-shared)
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	add_subdirectory(desktop-widgets)
 endif()
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
+	add_subdirectory(profile-widget)
+	add_subdirectory(cli)
+endif()
 
 # create the executables
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	# set up Kirigami using KDE ECM
 	# that's available as kde-extra-cmake-modules on Homebrew, on all Linux flavors
-	# Android and iOS are built via qmake, Windows build of Subsurface-mobile isn't supported
+	# Windows build of Subsurface-mobile isn't supported
 	find_package(ECM REQUIRED CONFIG PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/ECM)
+	# KF6KirigamiPlatform declares a dependency on Qt6::GuiPrivate, but some distros
+	# (e.g. Debian) don't ship the CMake config for private modules even when the
+	# private headers are installed. Since Kirigami is already compiled as a static
+	# library, create a shim target so CMake dependency resolution succeeds.
+	if(NOT TARGET Qt6::GuiPrivate)
+		find_package(Qt6 QUIET COMPONENTS GuiPrivate)
+		if(NOT TARGET Qt6::GuiPrivate)
+			add_library(Qt6::GuiPrivate INTERFACE IMPORTED)
+			set_target_properties(Qt6::GuiPrivate PROPERTIES
+				INTERFACE_LINK_LIBRARIES Qt6::Gui
+			)
+		endif()
+	endif()
+	find_package(KF6KirigamiPlatform REQUIRED)
+	find_package(KF6Kirigami REQUIRED)
 	set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
 	set(BREEZEICONS_DIR mobile-widgets/3rdparty/breeze-icons/)
 
 	SET(QML_IMPORT_PATH ${QML_IMPORT_PATH} ${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src ${CMAKE_SOURCE_DIR}/mobile-widgets/qml)
-	add_subdirectory(mobile-widgets/3rdparty)
-	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src)
-	include(${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/KF5Kirigami2Macros.cmake)
 
 	set(MOBILE_SRC
 		subsurface-mobile-main.cpp
 		subsurface-helper.cpp
 	)
-	if(USINGQT6)
-		qt_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
-		qt_add_resources(MOBILE_RESOURCES profile.qrc)
-		qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
-		qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
-	else()
-		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
-		qt5_add_resources(MOBILE_RESOURCES profile.qrc)
-		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
-		qt5_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/kirigami/src/scenegraph/shaders/shaders.qrc)
-	endif()
+	qt_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
+	qt_add_resources(MOBILE_RESOURCES profile.qrc)
+	qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
 
-	# the following is split across two commands since in cmake 3.12 this would result
-	# in a non-sensical "no sources given to target" error if done all as one set of
-	# arguments to the add_executable() call
-	add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
+	# Embed translation .qm files as Qt resources for Android/iOS
+	# (these platforms load translations from ":/")
+	set(_trans_qrc "${CMAKE_BINARY_DIR}/translations.qrc")
+	file(WRITE ${_trans_qrc} "<RCC>\n  <qresource prefix=\"/\">\n")
+	foreach(_qm ${TRANSLATIONS})
+		get_filename_component(_qm_name "${_qm}" NAME)
+		file(APPEND ${_trans_qrc} "    <file alias=\"${_qm_name}\">${_qm}</file>\n")
+	endforeach()
+	file(APPEND ${_trans_qrc} "  </qresource>\n</RCC>\n")
+	qt_add_resources(MOBILE_RESOURCES ${_trans_qrc})
+
+	if(ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "iOS")
+		qt_add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
+	else()
+		add_executable(${SUBSURFACE_TARGET} ${SUBSURFACE_PKG} ${SUBSURFACE_RESOURCES})
+	endif()
 	target_sources(${SUBSURFACE_TARGET} PUBLIC ${MOBILE_SRC} ${MOBILE_RESOURCES})
+	# ensure .qm files are built before the resource compiler runs
+	add_dependencies(${SUBSURFACE_TARGET} translations)
+	if(USINGQT6)
+		# qt_add_translations() attaches .qm generation commands to both ${SUBSURFACE_TARGET}
+		# and ${PROJECT_NAME}_lrelease; Xcode's "new build system" requires a direct dependency
+		# between them.
+		add_dependencies(${SUBSURFACE_TARGET} ${PROJECT_NAME}_lrelease)
+	endif()
+	# tell qmlimportscanner where to find Kirigami's QML modules
+	set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+		QT_QML_IMPORT_PATH "${Kirigami_INSTALL_PREFIX}/lib/qml"
+	)
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
+		PRIVATE
 		subsurface_mobile
 		subsurface_profile
 		${SUBSURFACE_MAPWIDGET}
@@ -513,9 +679,40 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		subsurface_commands
 		subsurface_corelib
 		subsurface_stats
-		kirigamiplugin
+		KF6::Kirigami
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
+	qt_import_qml_plugins(${SUBSURFACE_TARGET})
+
+	# iOS-specific target properties and resources
+	if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+		target_sources(${SUBSURFACE_TARGET} PRIVATE
+			${CMAKE_SOURCE_DIR}/ios/ios-share.mm
+		)
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			MACOSX_BUNDLE TRUE
+			MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/packaging/ios/Info.plist.in"
+			XCODE_ATTRIBUTE_TARGETED_DEVICE_FAMILY "1,2"
+			XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME "AppIcon"
+			XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym"
+		)
+		set(IOS_ASSET_CATALOG "${CMAKE_SOURCE_DIR}/packaging/ios/storeIcon.xcassets")
+		target_sources(${SUBSURFACE_TARGET} PRIVATE ${IOS_ASSET_CATALOG})
+		set_source_files_properties(${IOS_ASSET_CATALOG} PROPERTIES
+			HEADER_FILE_ONLY OFF
+		)
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			RESOURCE "${IOS_ASSET_CATALOG}"
+		)
+		# Update the bundle's Info.plist version at every build so it stays
+		# in sync with git (the cmake configure-time values go stale)
+		add_custom_command(TARGET ${SUBSURFACE_TARGET} POST_BUILD
+			COMMAND ${CMAKE_SOURCE_DIR}/scripts/update-bundle-version.sh
+				"$<TARGET_BUNDLE_DIR:${SUBSURFACE_TARGET}>/Info.plist"
+			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+			COMMENT "Updating bundle version from git"
+		)
+	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	set(SUBSURFACE_APP
 		subsurface-desktop-main.cpp
@@ -526,6 +723,13 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		add_library(${SUBSURFACE_TARGET} SHARED ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
 	else()
 		add_executable(${SUBSURFACE_TARGET} MACOSX_BUNDLE WIN32 ${SUBSURFACE_PKG} ${SUBSURFACE_APP} ${SUBSURFACE_RESOURCES})
+	endif()
+
+	# Import Qt6 Bluetooth permission plugin on macOS
+	if(USINGQT6 AND APPLE)
+		qt_import_plugins(${SUBSURFACE_TARGET}
+			INCLUDE Qt::QDarwinBluetoothPermissionPlugin
+		)
 	endif()
 
 	target_link_libraries(
@@ -561,9 +765,14 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DownloaderExecutable")
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
+elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "CLI")
+	# CLI executable is created in cli/CMakeLists.txt
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES} ${LIBMTP_LIBRARIES})
 endif()
 
-add_dependencies(subsurface_corelib version)
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
+	add_dependencies(subsurface_corelib version)
+endif()
 
 # add platform specific actions
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -572,9 +781,11 @@ Prefix=.
 ")
 endif()
 
-# build an automated html exporter
-add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp ${SUBSURFACE_RESOURCES})
-target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES})
+# build an automated html exporter (not applicable for mobile cross-builds)
+if(NOT ANDROID AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	add_executable(export-html EXCLUDE_FROM_ALL export-html.cpp ${SUBSURFACE_RESOURCES})
+	target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES})
+endif()
 
 # install Subsurface
 # first some variables with files that need installing
@@ -584,7 +795,8 @@ set(DOCFILES
 	SupportedDivecomputers.txt
 	${CMAKE_BINARY_DIR}/Documentation/user-manual.html
 	${CMAKE_BINARY_DIR}/Documentation/user-manual_es.html
-	${CMAKE_BINARY_DIR}/Documentation/user-manual_fr.html
+        ${CMAKE_BINARY_DIR}/Documentation/user-manual_fr.html
+        ${CMAKE_BINARY_DIR}/Documentation/user-manual_de.html
 )
 
 # add all the translations that we may need
@@ -606,26 +818,81 @@ endforeach()
 
 # now for each platform the install instructions
 if(ANDROID)
-	# Android template directory
-	include(${QT_ANDROID_CMAKE})
-	if((DEFINED ENV{KEYSTORE}) AND (DEFINED ENV{KEYSTORE_PASSWORD}))
-		add_qt_android_apk(${SUBSURFACE_TARGET}.apk ${SUBSURFACE_TARGET}
-			PACKAGE_SOURCES ${CMAKE_BINARY_DIR}/android-mobile DEPENDS ${ANDROID_NATIVE_LIBSSL} ${ANDROID_NATIVE_LIBCRYPT}
-			KEYSTORE $ENV{KEYSTORE} Subsurface-mobile KEYSTORE_PASSWORD $ENV{KEYSTORE_PASSWORD}
-		)
-		message(STATUS "KEYSTORE=$ENV{KEYSTORE} KEYSTORE_PASSWORD=$ENV{KEYSTORE_PASSWORD}")
+	# Qt6 handles Android deployment via androiddeployqt, configured through target properties
+	# libomp.so is needed at runtime by Kirigami (linked against OpenMP);
+	# find it in the NDK toolchain and bundle it into the APK
+	if(CMAKE_ANDROID_NDK)
+		set(_ndk "${CMAKE_ANDROID_NDK}")
 	else()
-		add_qt_android_apk(${SUBSURFACE_TARGET}.apk ${SUBSURFACE_TARGET}
-			PACKAGE_SOURCES ${CMAKE_BINARY_DIR}/android-mobile DEPENDS ${ANDROID_NATIVE_LIBSSL} ${ANDROID_NATIVE_LIBCRYPT}
+		set(_ndk "${ANDROID_NDK_ROOT}")
+	endif()
+	# Map ANDROID_ABI to the NDK library directory prefix
+	if(ANDROID_ABI STREQUAL "arm64-v8a")
+		set(_ndk_arch "aarch64")
+	elseif(ANDROID_ABI STREQUAL "armeabi-v7a")
+		set(_ndk_arch "arm")
+	elseif(ANDROID_ABI STREQUAL "x86_64")
+		set(_ndk_arch "x86_64")
+	elseif(ANDROID_ABI STREQUAL "x86")
+		set(_ndk_arch "i386")
+	else()
+		message(WARNING "Unknown ANDROID_ABI '${ANDROID_ABI}', cannot locate libomp")
+	endif()
+	file(GLOB_RECURSE _libomp_candidates "${_ndk}/toolchains/llvm/prebuilt/*/lib/*/libomp.so")
+	set(ANDROID_LIBOMP "")
+	foreach(_lib ${_libomp_candidates})
+		if(_lib MATCHES "${_ndk_arch}")
+			set(ANDROID_LIBOMP "${_lib}")
+			break()
+		endif()
+	endforeach()
+	set(_extra_libs "${ANDROID_LIBOMP}")
+	# Qt's QSslSocket needs OpenSSL 3.x shared libraries at runtime;
+	# they must be bundled into the APK via QT_ANDROID_EXTRA_LIBS.
+	# CMAKE_FIND_ROOT_PATH is a list; iterate so the glob works per-prefix.
+	foreach(_root ${CMAKE_FIND_ROOT_PATH})
+		file(GLOB _ssl_libs "${_root}/lib/libssl_*.so" "${_root}/lib/libcrypto_*.so")
+		list(APPEND _extra_libs ${_ssl_libs})
+	endforeach()
+	set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+		QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_SOURCE_DIR}/android-mobile"
+	)
+	if(ANDROID_BUILDNR)
+		# the Google Play Store requires monotonous versionCode for any upload
+		# you cannot reuse that number
+		# so we pass in our buildnr (which increases on every push to master)
+		# but also allow for a -DVERSION_CODE_OFFSET=n (with 0 <= n <= 9) so we can do a handful more test .aab's if necessary
+		if(NOT DEFINED VERSION_CODE_OFFSET)
+			set(VERSION_CODE_OFFSET 0)
+		endif()
+		if(VERSION_CODE_OFFSET GREATER 9)
+			message(FATAL_ERROR "VERSION_CODE_OFFSET must be 0-9, got ${VERSION_CODE_OFFSET}")
+		endif()
+		math(EXPR _version_code "${ANDROID_BUILDNR} * 10 + ${VERSION_CODE_OFFSET}")
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			QT_ANDROID_VERSION_CODE "${_version_code}"
 		)
-		message(STATUS "no KEYSTORE")
+	endif()
+	if(ANDROID_VERSION_NAME)
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			QT_ANDROID_VERSION_NAME "${ANDROID_VERSION_NAME}"
+		)
+	endif()
+	if(_extra_libs)
+		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
+			QT_ANDROID_EXTRA_LIBS "${_extra_libs}"
+		)
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(APP_BUNDLE_DIR "${SUBSURFACE_TARGET}.app")
 	# macdeployqt simplifies a lot of this process, but still doesn't get everything right
 	# - it misses a couple of resources and frameworks
 	# - it seems to always deploy the SQL plugins (even though they aren't needed)
-	set(MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Resources/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_SOURCE_DIR}/../install-root/lib")
+	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
+		set(MACDEPLOY_ARGS "-qmldir=${CMAKE_SOURCE_DIR}/mobile-widgets/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_INSTALL_PREFIX}/lib")
+	else()
+		set(MACDEPLOY_ARGS "-qmldir=${APP_BUNDLE_DIR}/Contents/Resources/qml -appstore-compliant -verbose=0 -executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite -libpath=${CMAKE_INSTALL_PREFIX}/lib")
+	endif()
 	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources)
 	set(PLUGINDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns)
 	if(BUILD_DOCS OR INSTALL_DOCS)
@@ -650,8 +917,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		# and finally, for fat binaries, we copy the one that's in the 'logical' spot under the INSTALL_ROOT
 		# this should cover all cases and always get us the correct library
 		install(CODE "execute_process(COMMAND cp ${QT_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
-		install(CODE "execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../install-root/${QT_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
-		install(CODE "execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/../install-root/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
+		install(CODE "execute_process(COMMAND cp ${CMAKE_INSTALL_PREFIX}/${QT_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
+		install(CODE "execute_process(COMMAND cp ${CMAKE_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices ERROR_QUIET)")
 	endif()
 	# this will fail is macdeployqt isn't in the PATH - that seemed to happen in the past, but not recently
 	# also, on M1 macOS systems macdeployqt throws a ton of (apparently harmless) errors. Warn the unsuspecting developer
@@ -680,12 +947,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtQmlWorkerScript.framework)")
 		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/lib/QtQmlWorkerScript.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
 	endif()
-	if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
-		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/qml/QtQuick ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
-		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/qml/QtGraphicalEffects ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
-		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/qml/QtQml ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
-		install(CODE "execute_process(COMMAND cp -a ${QT_INSTALL_PREFIX}/qml/QtPositioning ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
-	endif()
+	install(CODE "execute_process(COMMAND codesign --force --deep --sign - ${APP_BUNDLE_DIR})")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+	# iOS deployment is handled by Xcode signing and archiving
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
 		if(NOT DEFINED OBJCOPY)
@@ -708,6 +972,28 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# "make install", copies everything into a staging area
 	# "make installer", uses makensis to create an installer executable
 	set(WINDOWSSTAGING ${CMAKE_BINARY_DIR}/staging)
+
+	# Set QT_INSTALL_PREFIX from Qt6_DIR or Qt5 variables
+	if(USINGQT6)
+		if(Qt6_DIR)
+			# Qt6_DIR is like /path/to/Qt/lib/cmake/Qt6, go up 3 levels
+			get_filename_component(QT_INSTALL_PREFIX "${Qt6_DIR}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+		elseif(Qt6Core_DIR)
+			# Qt6Core_DIR is like /path/to/Qt/lib/cmake/Qt6Core, go up 3 levels
+			get_filename_component(QT_INSTALL_PREFIX "${Qt6Core_DIR}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+			get_filename_component(QT_INSTALL_PREFIX "${QT_INSTALL_PREFIX}" DIRECTORY)
+		endif()
+	else()
+		set(QT_INSTALL_PREFIX "${_qt5Core_install_prefix}")
+	endif()
+	if(NOT QT_INSTALL_PREFIX OR QT_INSTALL_PREFIX STREQUAL "")
+		message(FATAL_ERROR "Could not determine Qt install prefix. Qt6_DIR=${Qt6_DIR} Qt6Core_DIR=${Qt6Core_DIR}")
+	endif()
+	message(STATUS "Qt install prefix for Windows bundling: ${QT_INSTALL_PREFIX}")
+
 	if(BUILD_DOCS OR INSTALL_DOCS)
 		install(DIRECTORY Documentation/images DESTINATION ${WINDOWSSTAGING}/Documentation)
 		install(FILES ${DOCFILES} DESTINATION ${WINDOWSSTAGING}/Documentation)
@@ -721,19 +1007,277 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
 
 	if(NOT QT_VERSION VERSION_LESS 5.11.0)
-		# hack to work around the fact that we don't process the dependencies of plugins
-		# as of Qt 5.11 this additional DLL is needed and it's only referenced in the qml DLLs
-		install(FILES ${QT_INSTALL_PREFIX}/bin/Qt5PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+		# QtPositioningQuick is required - it's referenced by QML plugins
+		if(USINGQT6)
+			set(_positioning_quick_dll "${QT_INSTALL_PREFIX}/bin/Qt6PositioningQuick.dll")
+		else()
+			set(_positioning_quick_dll "${QT_INSTALL_PREFIX}/bin/Qt5PositioningQuick.dll")
+		endif()
+		if(NOT EXISTS "${_positioning_quick_dll}")
+			message(FATAL_ERROR "QtPositioningQuick DLL not found at ${_positioning_quick_dll}. "
+				"QT_INSTALL_PREFIX=${QT_INSTALL_PREFIX}. Make sure Qt Positioning module is installed.")
+		endif()
+		install(FILES "${_positioning_quick_dll}" DESTINATION ${WINDOWSSTAGING})
 	endif()
 
 	if(NOT DEFINED MAKENSIS)
 		set(MAKENSIS makensis)
 	endif()
 
-	# the script we created above is now added as a command to run at
-	# install time - so this ensures that subsurface.exe has been
-	# built before this is run
-	install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DSUBSURFACE_TARGET=${SUBSURFACE_TARGET} -DSUBSURFACE_SOURCE=${SUBSURFACE_SOURCE} -DSTAGING=${WINDOWSSTAGING} -P ${CMAKE_SOURCE_DIR}/cmake/Modules/dlllist.cmake)")
+	# Copy DLLs at install time
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		# For MSVC builds, use windeployqt to copy Qt dependencies
+		# and copy vcpkg DLLs
+		find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${QT_INSTALL_PREFIX}/bin")
+		if(WINDEPLOYQT_EXECUTABLE)
+			message(STATUS "Found windeployqt: ${WINDEPLOYQT_EXECUTABLE}")
+			install(CODE "
+				message(STATUS \"Running windeployqt on ${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\")
+				execute_process(
+					COMMAND \"${WINDEPLOYQT_EXECUTABLE}\"
+						--verbose 1
+						--no-opengl-sw
+						--no-system-d3d-compiler
+						--qmldir \"${CMAKE_SOURCE_DIR}/mobile-widgets/qml\"
+						--qmldir \"${CMAKE_SOURCE_DIR}/map-widget\"
+						--qmldir \"${CMAKE_SOURCE_DIR}/stats\"
+						\"${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\"
+					WORKING_DIRECTORY \"${WINDOWSSTAGING}\"
+					RESULT_VARIABLE _windeployqt_result
+					OUTPUT_VARIABLE _windeployqt_output
+					ERROR_VARIABLE _windeployqt_error
+				)
+				message(STATUS \"windeployqt result: \${_windeployqt_result}\")
+				if(_windeployqt_output)
+					message(STATUS \"windeployqt output: \${_windeployqt_output}\")
+				endif()
+				if(_windeployqt_error)
+					message(STATUS \"windeployqt errors: \${_windeployqt_error}\")
+				endif()
+				if(NOT _windeployqt_result EQUAL 0)
+					message(WARNING \"windeployqt failed with code \${_windeployqt_result}\")
+				endif()
+			")
+		else()
+			message(WARNING "windeployqt not found - Qt DLLs will not be copied automatically")
+		endif()
+
+		# Manually copy Qt6 core DLLs.
+		# windeployqt requires Qt6ShaderTools.dll (a transitive dependency of Qt6Quick
+		# via Qt6Gui) to walk the full dependency tree, even when that DLL is not actually
+		# needed at runtime. If the qtshadertools module is not installed, windeployqt aborts
+		# before copying a single DLL, leaving the staging directory without any Qt libraries.
+		# To avoid this, we copy the Qt6 DLLs that Subsurface actually uses explicitly.
+		# This list intentionally excludes Qt6WebEngine*.dll (100+ MB each) and debug DLLs.
+		if(USINGQT6)
+			install(CODE "
+				message(STATUS \"Copying Qt6 core DLLs from ${QT_INSTALL_PREFIX}/bin...\")
+				# Core Qt6 libraries required by Subsurface (release builds only)
+				set(_qt6_required_dlls
+					# Qt base
+					Qt6Core Qt6Gui Qt6Widgets Qt6Network Qt6Xml Qt6Sql Qt6Svg
+					Qt6Concurrent Qt6OpenGL Qt6OpenGLWidgets Qt6DBus
+					# QML / Quick
+					Qt6Qml Qt6QmlCore Qt6QmlMeta Qt6QmlModels
+					Qt6QmlNetwork Qt6QmlWorkerScript
+					Qt6Quick Qt6QuickTemplates2 Qt6QuickControls2 Qt6QuickWidgets
+					Qt6QuickControls2Basic Qt6QuickControls2Impl
+					# Subsurface-specific modules
+					Qt6Location Qt6Positioning Qt6PositioningQuick
+					Qt6Bluetooth Qt6WebChannel Qt6Core5Compat
+					Qt6PrintSupport
+				)
+				foreach(_dll_base \${_qt6_required_dlls})
+					set(_dll_path \"${QT_INSTALL_PREFIX}/bin/\${_dll_base}.dll\")
+					if(EXISTS \"\${_dll_path}\")
+						file(COPY \"\${_dll_path}\" DESTINATION \"${WINDOWSSTAGING}\")
+					else()
+						message(STATUS \"  Note: \${_dll_base}.dll not found at ${QT_INSTALL_PREFIX}/bin (optional or not installed)\")
+					endif()
+				endforeach()
+			")
+		endif()
+
+		# Manually copy Qt plugins since windeployqt doesn't always work reliably
+		if(NOT QT_INSTALL_PREFIX OR QT_INSTALL_PREFIX STREQUAL "")
+			message(FATAL_ERROR "QT_INSTALL_PREFIX is not set - cannot copy Qt plugins. Check Qt6_DIR is set correctly.")
+		endif()
+		message(STATUS "Will copy Qt plugins from ${QT_INSTALL_PREFIX}/plugins")
+		install(CODE "
+			message(STATUS \"Copying Qt plugins from ${QT_INSTALL_PREFIX}/plugins...\")
+			# Create plugin directories
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/platforms\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/styles\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/imageformats\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/iconengines\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/tls\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/networkinformation\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/geoservices\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/position\")
+			file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/plugins/generic\")
+
+			# Copy platform plugins (critical - qwindows.dll is required)
+			file(GLOB _platform_plugins \"${QT_INSTALL_PREFIX}/plugins/platforms/qwindows.dll\")
+			foreach(_plugin \${_platform_plugins})
+				file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/platforms\")
+			endforeach()
+
+			# Copy style plugins
+			file(GLOB _style_plugins \"${QT_INSTALL_PREFIX}/plugins/styles/*.dll\")
+			foreach(_plugin \${_style_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/styles\")
+				endif()
+			endforeach()
+
+			# Copy imageformat plugins (skip debug versions ending in 'd.dll')
+			file(GLOB _imgformat_plugins \"${QT_INSTALL_PREFIX}/plugins/imageformats/*.dll\")
+			foreach(_plugin \${_imgformat_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/imageformats\")
+				endif()
+			endforeach()
+
+			# Copy iconengines plugins
+			file(GLOB _iconengine_plugins \"${QT_INSTALL_PREFIX}/plugins/iconengines/*.dll\")
+			foreach(_plugin \${_iconengine_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/iconengines\")
+				endif()
+			endforeach()
+
+			# Copy TLS plugins (for HTTPS support)
+			file(GLOB _tls_plugins \"${QT_INSTALL_PREFIX}/plugins/tls/*.dll\")
+			foreach(_plugin \${_tls_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\" AND NOT _name MATCHES \"openssl\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/tls\")
+				endif()
+			endforeach()
+
+			# Copy networkinformation plugins
+			file(GLOB _netinfo_plugins \"${QT_INSTALL_PREFIX}/plugins/networkinformation/*.dll\")
+			foreach(_plugin \${_netinfo_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/networkinformation\")
+				endif()
+			endforeach()
+
+			# Copy geoservices plugins
+			file(GLOB _geoservices_plugins \"${QT_INSTALL_PREFIX}/plugins/geoservices/*.dll\")
+			foreach(_plugin \${_geoservices_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/geoservices\")
+				endif()
+			endforeach()
+
+			# Copy position plugins
+			file(GLOB _position_plugins \"${QT_INSTALL_PREFIX}/plugins/position/*.dll\")
+			foreach(_plugin \${_position_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/position\")
+				endif()
+			endforeach()
+
+			# Copy generic plugins
+			file(GLOB _generic_plugins \"${QT_INSTALL_PREFIX}/plugins/generic/*.dll\")
+			foreach(_plugin \${_generic_plugins})
+				get_filename_component(_name \"\${_plugin}\" NAME)
+				if(NOT _name MATCHES \"d\\\\.dll$\")
+					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/generic\")
+				endif()
+			endforeach()
+		")
+
+		# Copy vcpkg DLLs from the bin directory
+		install(CODE "
+			message(STATUS \"Copying vcpkg DLLs from ${_VCPKG_PREFIX}/bin...\")
+			file(GLOB _vcpkg_dlls \"${_VCPKG_PREFIX}/bin/*.dll\")
+			foreach(_dll \${_vcpkg_dlls})
+				file(COPY \"\${_dll}\" DESTINATION \"${WINDOWSSTAGING}\")
+			endforeach()
+		")
+
+		# Copy libdivecomputer DLL - derive bin dir from library path
+		if(LIBDIVECOMPUTER_LIBRARIES)
+			get_filename_component(_LIBDC_LIB_DIR "${LIBDIVECOMPUTER_LIBRARIES}" DIRECTORY)
+			get_filename_component(_LIBDC_PREFIX "${_LIBDC_LIB_DIR}" DIRECTORY)
+			install(CODE "
+				message(STATUS \"Copying libdivecomputer DLLs from ${_LIBDC_PREFIX}/bin...\")
+				file(GLOB _libdc_dlls \"${_LIBDC_PREFIX}/bin/*.dll\")
+				foreach(_dll \${_libdc_dlls})
+					file(COPY \"\${_dll}\" DESTINATION \"${WINDOWSSTAGING}\")
+				endforeach()
+			")
+		endif()
+
+		# Qt6PrintSupport is a dependency of qlitehtml but windeployqt doesn't detect it
+		# because it's not directly linked by subsurface.exe
+		if(QLITEHTML_FOUND)
+			install(CODE "
+				if(EXISTS \"${QT_INSTALL_PREFIX}/bin/Qt6PrintSupport.dll\")
+					message(STATUS \"Copying Qt6PrintSupport.dll...\")
+					file(COPY \"${QT_INSTALL_PREFIX}/bin/Qt6PrintSupport.dll\" DESTINATION \"${WINDOWSSTAGING}\")
+				endif()
+			")
+		endif()
+
+		# Copy MSVC runtime DLLs
+		set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
+		include(InstallRequiredSystemLibraries)
+		if(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
+			install(FILES ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION ${WINDOWSSTAGING})
+		endif()
+
+		# Verify that all essential Qt DLLs made it into the staging directory.
+		# If any are missing it means both windeployqt and the manual copy failed,
+		# which would produce a silently-broken installer.  Fail loudly here so CI
+		# produces a red build instead of a green build with a broken artifact.
+		if(USINGQT6)
+			# Qt6Location is optional: only available when map support is enabled.
+			# Resolve this at configure time so the install script has the right list.
+			if(MAPSUPPORT)
+				set(_essential_location_dll "Qt6Location.dll")
+			else()
+				set(_essential_location_dll "")
+			endif()
+			install(CODE "
+				message(STATUS \"Verifying essential Qt6 DLLs in staging directory...\")
+				# _essential_location_dll is expanded at configure time (empty when MAPSUPPORT is OFF)
+				set(_essential_qt6_dlls
+					Qt6Core.dll Qt6Gui.dll Qt6Widgets.dll Qt6Network.dll
+					Qt6Qml.dll Qt6Quick.dll Qt6Positioning.dll
+					${_essential_location_dll}
+				)
+				set(_missing \"\")
+				foreach(_dll \${_essential_qt6_dlls})
+					if(_dll AND NOT EXISTS \"${WINDOWSSTAGING}/\${_dll}\")
+						list(APPEND _missing \"\${_dll}\")
+					endif()
+				endforeach()
+				if(_missing)
+					string(JOIN \"\\n  \" _missing_str \${_missing})
+					message(FATAL_ERROR
+						\"Essential Qt6 DLLs are missing from the staging directory:\\n\"
+						\"  \${_missing_str}\\n\"
+						\"Both windeployqt and the manual copy step failed to provide them.\\n\"
+						\"Check that the Qt installation at '${QT_INSTALL_PREFIX}' is correct\\n\"
+						\"and that all required Qt modules are installed.\")
+				else()
+					message(STATUS \"All essential Qt6 DLLs verified in staging directory.\")
+				endif()
+			")
+		endif()
+	else()
+		# For MinGW/MXE builds, use the existing dlllist.cmake script
+		install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DSUBSURFACE_TARGET=${SUBSURFACE_TARGET} -DSUBSURFACE_SOURCE=${SUBSURFACE_SOURCE} -DSTAGING=${WINDOWSSTAGING} -P ${CMAKE_SOURCE_DIR}/cmake/Modules/dlllist.cmake)")
+	endif()
 
 	# create the subsurface-x.y.z.exe installer - this needs to depend
 	# on the install target but cmake doesn't allow that, so we depend
@@ -753,20 +1297,29 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# the syntax is odd, but this searches for libqtgeoservices_googlemaps.so
 	# in the filesystem below our install-root
 	# different Linux flavors put the plugin in different directories
-	file(GLOB_RECURSE GOOGLEMAPS ${CMAKE_SOURCE_DIR}/../install-root/libqtgeoservices_googlemaps.so)
-	if (NOT GOOGLEMAPS)
-		message(STATUS "Cannot find libqtgeoservices_googlemaps.so")
-	else()
-		add_custom_target(link_googlemaps_plugin ALL COMMAND
-			rm -rf ${CMAKE_BINARY_DIR}/geoservices &&
-			mkdir -p ${CMAKE_BINARY_DIR}/geoservices &&
-			ln -sf ${GOOGLEMAPS} ${CMAKE_BINARY_DIR}/geoservices)
+	# Flatpak installs the plugin under /app and Qt finds it at runtime
+	# through its normal plugin search path, so this symlink step is not needed.
+	if (NOT FLATHUB_BUILD)
+		# CMAKE_INSTALL_PREFIX always points to the correct location.
+		file(GLOB_RECURSE GOOGLEMAPS
+			${CMAKE_INSTALL_PREFIX}/libqtgeoservices_googlemaps.so)
+		if (NOT GOOGLEMAPS)
+			message(STATUS "Cannot find libqtgeoservices_googlemaps.so")
+		else()
+			add_custom_target(link_googlemaps_plugin ALL COMMAND
+				rm -rf ${CMAKE_BINARY_DIR}/geoservices &&
+				mkdir -p ${CMAKE_BINARY_DIR}/geoservices &&
+				ln -sf ${GOOGLEMAPS} ${CMAKE_BINARY_DIR}/geoservices)
+		endif()
 	endif()
 	install(FILES subsurface.debug DESTINATION bin)
 	install(FILES subsurface.desktop DESTINATION share/applications)
 	install(CODE "execute_process(COMMAND sh ${CMAKE_SOURCE_DIR}/scripts/add-version-to-metainfo.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})")
 	install(FILES metainfo/subsurface.metainfo.xml DESTINATION share/metainfo)
 	install(FILES icons/subsurface-icon.svg DESTINATION share/icons/hicolor/scalable/apps)
+	if (FLATHUB_BUILD)
+		install(FILES icons/org.subsurface_divelog.Subsurface.svg DESTINATION share/icons/hicolor/scalable/apps)
+	endif()
 	if(BUILD_DOCS OR INSTALL_DOCS)
 		install(DIRECTORY Documentation/images DESTINATION share/subsurface/Documentation)
 		install(FILES ${DOCFILES} DESTINATION share/subsurface/Documentation)

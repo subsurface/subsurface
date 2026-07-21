@@ -8,29 +8,32 @@
 #include "core/file.h"
 #include "core/import-csv.h"
 #include "core/parse.h"
-#include "core/qthelper.h"
+#include "core/pref.h"
 #include "core/subsurface-string.h"
 #include "core/trip.h"
 #include "core/xmlparams.h"
 #include <QTextStream>
+#include <QXmlStreamReader>
 
 /* We have to use a macro since QCOMPARE
  * can only be called from a test method
  * invoked by the QTest framework
  */
-#define FILE_COMPARE(actual, expected)                    \
-	QFile org(expected);                              \
-	org.open(QFile::ReadOnly);                        \
-	QFile out(actual);                                \
-	out.open(QFile::ReadOnly);                        \
-	QTextStream orgS(&org);                           \
-	QTextStream outS(&out);                           \
-	QStringList readin = orgS.readAll().split("\n");  \
-	QStringList written = outS.readAll().split("\n"); \
-	while (readin.size() && written.size()) {         \
-		QCOMPARE(written.takeFirst().trimmed(),   \
-			 readin.takeFirst().trimmed());   \
-	}
+#define FILE_COMPARE(actual, expected) \
+	do { \
+		QFile org(expected); \
+		org.open(QFile::ReadOnly); \
+		QFile out(actual); \
+		out.open(QFile::ReadOnly); \
+		QTextStream orgS(&org); \
+		QTextStream outS(&out); \
+		QStringList readin = orgS.readAll().split("\n"); \
+		QStringList written = outS.readAll().split("\n"); \
+		while (readin.size() && written.size()) { \
+			QCOMPARE(written.takeFirst().trimmed(), \
+				readin.takeFirst().trimmed()); \
+		} \
+	} while (false)
 
 void TestParse::initTestCase()
 {
@@ -52,7 +55,7 @@ void TestParse::cleanup()
 	sqlite3_close(_sqlite3_handle);
 }
 
-int TestParse::parseCSV(int units, std::string file)
+int TestParse::parseCSV(int units, std::string file, int separatorIndex)
 {
 	// some basic file parsing tests
 	//
@@ -71,10 +74,10 @@ int TestParse::parseCSV(int units, std::string file)
 	xml_params_add_int(&params, "divemasterField", -1);
 	xml_params_add_int(&params, "buddyField", 6);
 	xml_params_add_int(&params, "suitField", 7);
-	xml_params_add_int(&params, "notesField", -1);
+	xml_params_add_int(&params, "notesField", 8);
 	xml_params_add_int(&params, "weightField", -1);
 	xml_params_add_int(&params, "tagsField", -1);
-	xml_params_add_int(&params, "separatorIndex", 0);
+	xml_params_add_int(&params, "separatorIndex", separatorIndex);
 	xml_params_add_int(&params, "units", units);
 	xml_params_add_int(&params, "datefmt", 1);
 	xml_params_add_int(&params, "durationfmt", 2);
@@ -120,9 +123,6 @@ void TestParse::testParse()
 {
 	// On some platforms (Windows) size_t has a different format string.
 	// Let's just cast to int.
-	QCOMPARE(parseCSV(0, SUBSURFACE_TEST_DATA "/dives/test41.csv"), 0);
-	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
-
 	QCOMPARE(parseDivingLog(), 0);
 	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
 
@@ -135,6 +135,30 @@ void TestParse::testParse()
 	QCOMPARE(save_dives("./testout.ssrf"), 0);
 	FILE_COMPARE("./testout.ssrf",
 		     SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
+}
+
+void TestParse::testParseTsv()
+{
+	// On some platforms (Windows) size_t has a different format string.
+	// Let's just cast to int.
+	QCOMPARE(parseCSV(0, SUBSURFACE_TEST_DATA "/dives/test41.tsv", 0), 0);
+	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
+
+	QCOMPARE(save_dives("./testouttsv.ssrf"), 0);
+	FILE_COMPARE("./testouttsv.ssrf",
+		     SUBSURFACE_TEST_DATA "/dives/test-tsv.xml");
+}
+
+void TestParse::testParseCsv()
+{
+	// On some platforms (Windows) size_t has a different format string.
+	// Let's just cast to int.
+	QCOMPARE(parseCSV(0, SUBSURFACE_TEST_DATA "/dives/test41.csv", 1), 0);
+	fprintf(stderr, "number of dives %d \n", static_cast<int>(divelog.dives.size()));
+
+	QCOMPARE(save_dives("./testoutcsv.ssrf"), 0);
+	FILE_COMPARE("./testoutcsv.ssrf",
+		     SUBSURFACE_TEST_DATA "/dives/test-csv.xml");
 }
 
 void TestParse::testParseTankSensors()
@@ -261,7 +285,7 @@ void TestParse::testParseDLD()
 	// Compare output
 	QCOMPARE(save_dives("./testdldout.ssrf"), 0);
 	FILE_COMPARE("./testdldout.ssrf",
-		     SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml")
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml");
 }
 
 void TestParse::testParseMerge()
@@ -336,8 +360,8 @@ void TestParse::exportCSVDiveDetails()
 
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test25.xml", &divelog);
 
-	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2manualcsv.xslt", false);
-	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2manualcsv.xslt", false);
+	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2summarycsv.xslt", false);
+	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2summarycsv.xslt", false);
 
 	if (!divelog.dives.empty())
 		saved_sac = divelog.dives.back()->sac;
@@ -349,27 +373,26 @@ void TestParse::exportCSVDiveDetails()
 	if (!divelog.dives.empty())
 		divelog.dives.back()->sac = saved_sac;
 
-	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt", false);
+	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2summarycsv.xslt", false);
 	FILE_COMPARE("testcsvexportmanual2.csv",
 		     "testcsvexportmanual.csv");
 }
 
 void TestParse::exportSubsurfaceCSV()
 {
-	int saved_sac = 0;
-	xml_params params;
-
 	/* Test SubsurfaceCSV with multiple cylinders */
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog);
 
-	export_dives_xslt("testcsvexportmanual-cyl.csv", 0, 0, "xml2manualcsv.xslt", false);
-	export_dives_xslt("testcsvexportmanualimperial-cyl.csv", 0, 1, "xml2manualcsv.xslt", false);
+	export_dives_xslt("testcsvexportmanual-cyl.csv", 0, 0, "xml2summarycsv.xslt", false);
+	export_dives_xslt("testcsvexportmanualimperial-cyl.csv", 0, 1, "xml2summarycsv.xslt", false);
 
+	int saved_sac = 0;
 	if (!divelog.dives.empty())
 		saved_sac = divelog.dives.back()->sac;
 
 	clear_dive_file_data();
 
+	xml_params params;
 	xml_params_add_int(&params, "separatorIndex", 1);
 	xml_params_add_int(&params, "units", 1);
 	parse_csv_file("testcsvexportmanualimperial-cyl.csv", &params, "SubsurfaceCSV", &divelog);
@@ -378,7 +401,10 @@ void TestParse::exportSubsurfaceCSV()
 	if (!divelog.dives.empty())
 		divelog.dives.back()->sac = saved_sac;
 
-	export_dives_xslt("testcsvexportmanual2-cyl.csv", 0, 0, "xml2manualcsv.xslt", false);
+	QCOMPARE(save_dives("./testcsvexport.ssrf"), 0);
+	FILE_COMPARE("./testcsvexport.ssrf", SUBSURFACE_TEST_DATA "/dives/test42-csv.xml");
+
+	export_dives_xslt("testcsvexportmanual2-cyl.csv", 0, 0, "xml2summarycsv.xslt", false);
 	FILE_COMPARE("testcsvexportmanual2-cyl.csv",
 		     "testcsvexportmanual-cyl.csv");
 }
@@ -405,35 +431,127 @@ int TestParse::parseCSVprofile(int units, std::string file)
 
 void TestParse::exportCSVDiveProfile()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog);
 
-	export_dives_xslt("testcsvexportprofile.csv", 0, 0, "xml2csv.xslt", false);
-	export_dives_xslt("testcsvexportprofileimperial.csv", 0, 1, "xml2csv.xslt", false);
+	export_dives_xslt("testcsvexportprofile.csv", 0, 0, "xml2detailscsv.xslt", false);
+	export_dives_xslt("testcsvexportprofileimperial.csv", 0, 1, "xml2detailscsv.xslt", false);
 
 	clear_dive_file_data();
 
 	parseCSVprofile(1, "testcsvexportprofileimperial.csv");
 
-	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2csv.xslt", false);
+	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2detailscsv.xslt", false);
 	FILE_COMPARE("testcsvexportprofile2.csv",
 		     "testcsvexportprofile.csv");
 }
 
 void TestParse::exportUDDF()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog);
 
 	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt", false);
-	FILE_COMPARE("testuddfexport.uddf", SUBSURFACE_TEST_DATA "/dives/test40.uddf");
+	FILE_COMPARE("testuddfexport.uddf", SUBSURFACE_TEST_DATA "/dives/test42.uddf");
+}
+
+static std::vector<const dive_site *> allDiveSites()
+{
+	std::vector<const dive_site *> sites;
+	sites.reserve(divelog.sites.size());
+	for (const auto &site: divelog.sites)
+		sites.push_back(site.get());
+	return sites;
+}
+
+void TestParse::exportDiveSitesXML()
+{
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog), 0);
+	dive_site *site = divelog.sites.get_by_uuid(0xec2bbc32);
+	QVERIFY(site);
+	site->name = "Lake & Ice";
+	site->description = "Alpine <lake>";
+	site->notes = "Bring a drysuit";
+	taxonomy_set_category(site->taxonomy, TC_COUNTRY, "New Zealand", GEOMANUAL);
+
+	auto result = export_dive_sites_xslt("testdivesites.xml", allDiveSites(), "divesites-export.xslt", false);
+	QCOMPARE(result.first, 0);
+	QVERIFY2(result.second.empty(), result.second.c_str());
+
+	clear_dive_file_data();
+	QCOMPARE(parse_file("testdivesites.xml", &divelog), 0);
+	site = divelog.sites.get_by_uuid(0xec2bbc32);
+	QVERIFY(site);
+	QCOMPARE(site->name, std::string("Lake & Ice"));
+	QCOMPARE(site->description, std::string("Alpine <lake>"));
+	QCOMPARE(site->notes, std::string("Bring a drysuit"));
+	QCOMPARE(site->location.lat.udeg, -43342295);
+	QCOMPARE(site->location.lon.udeg, 171545936);
+	QCOMPARE(taxonomy_get_value(site->taxonomy, TC_COUNTRY), std::string("New Zealand"));
+}
+
+void TestParse::exportKML()
+{
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog), 0);
+	dive_site *site = divelog.sites.get_by_uuid(0xec2bbc32);
+	QVERIFY(site);
+	site->name = "Lake & Ice";
+	site->description = "Alpine <lake>";
+	site->notes = "Bring a drysuit";
+	divelog.sites.create("Site without coordinates");
+
+	auto result = export_dive_sites_xslt("testdivesites.kml", allDiveSites(), "kml-export.xslt", false);
+	QCOMPARE(result.first, 0);
+	QVERIFY2(result.second.empty(), result.second.c_str());
+
+	QFile file("testdivesites.kml");
+	QVERIFY(file.open(QIODevice::ReadOnly));
+	QXmlStreamReader xml(&file);
+	int placemarks = 0;
+	QString name;
+	QString description;
+	QString coordinates;
+	while (!xml.atEnd()) {
+		xml.readNext();
+		if (!xml.isStartElement())
+			continue;
+		if (xml.name() == QStringLiteral("kml"))
+			QCOMPARE(xml.namespaceUri().toString(), QStringLiteral("http://www.opengis.net/kml/2.2"));
+		else if (xml.name() == QStringLiteral("Placemark"))
+			placemarks++;
+		else if (xml.name() == QStringLiteral("name") && placemarks > 0)
+			name = xml.readElementText();
+		else if (xml.name() == QStringLiteral("description"))
+			description = xml.readElementText();
+		else if (xml.name() == QStringLiteral("coordinates"))
+			coordinates = xml.readElementText().trimmed();
+	}
+
+	QVERIFY2(!xml.hasError(), qPrintable(xml.errorString()));
+	QCOMPARE(placemarks, 1);
+	QCOMPARE(name, QStringLiteral("Lake & Ice"));
+	QCOMPARE(description, QStringLiteral("Alpine <lake>\nBring a drysuit"));
+	QCOMPARE(coordinates, QStringLiteral("171.545936,-43.342295,0"));
+
+#if defined(Q_OS_LINUX)
+	result = export_dive_sites_xslt("/dev/full", allDiveSites(), "kml-export.xslt", false);
+	QVERIFY(result.first != 0);
+	QVERIFY(!result.second.empty());
+#endif
 }
 
 void TestParse::importUDDF()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.uddf", &divelog);
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test42.uddf", &divelog);
 
 	QCOMPARE(save_dives("./testuddfimport.xml"), 0);
 	FILE_COMPARE("./testuddfimport.xml",
-		     SUBSURFACE_TEST_DATA "/dives/test-40-uddf-import-reference.xml");
+		     SUBSURFACE_TEST_DATA "/dives/test-42-uddf-import-reference.xml");
+}
+
+void TestParse::exportDiveLogsDE()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
+	export_dives_xslt("testdivelogsexport.divelogs", 0, 0, "divelogs-export.xslt", false);
+	FILE_COMPARE("testdivelogsexport.divelogs", SUBSURFACE_TEST_DATA "/dives/test40.divelogs");
 }
 
 void TestParse::parseDL7()
@@ -538,6 +656,89 @@ void TestParse::importDlfFreedomMix2V2FactoryTest()
 	QCOMPARE(save_dives("./test_import_Freedom_MIX2_header_v2_factory_test_00000001.dlf.xml"), 0);
 	FILE_COMPARE("./test_import_Freedom_MIX2_header_v2_factory_test_00000001.dlf.xml",
 			SUBSURFACE_TEST_DATA "/dives/Freedom_MIX2_header_v2_factory_test_00000001.dlf.xml");
+}
+
+void TestParse::importSuuntoJsonNautic()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
+#endif
+	/* Suunto Nautic, sidemount, two cylinders air, two transmitters.
+	 * Tests the Nautic/Ocean JSON variant (DiveEvents, 0-based GasNumber). */
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/suunto_nautic_sidemount.json", &divelog), 0);
+	QCOMPARE(save_dives("./test_suunto_nautic_sidemount.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_nautic_sidemount.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_nautic_sidemount.xml");
+}
+
+void TestParse::importSuuntoJsonEonCore()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
+#endif
+	/* Suunto EON Core, single cylinder EAN32, 12 L tank, transmitter.
+	 * Tests the EON JSON variant (Events array, 1-based GasNumber). */
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/suunto_eon_core_nitrox.json", &divelog), 0);
+	QCOMPARE(save_dives("./test_suunto_eon_core_nitrox.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_eon_core_nitrox.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_eon_core_nitrox.xml");
+}
+
+void TestParse::importSuuntoJsonOcean()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
+#endif
+	/* Suunto Ocean (codename Porvoo), air dive with tank transmitter on gas 0. */
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_air.json", &divelog), 0);
+	QCOMPARE(save_dives("./test_suunto_ocean_air.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_ocean_air.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_air.xml");
+}
+
+// AI-generated (Claude)
+void TestParse::importSuuntoJsonOceanNoFit()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
+#else
+	/* Regression guard: calling suunto_json_import() directly with an empty
+	 * fit_buffer (i.e. no paired FIT file selected) must behave exactly
+	 * like the plain JSON-only import above, reusing the same reference
+	 * output. This confirms the added parameter didn't change the default
+	 * (no-FIT) behavior. suunto_json_import() itself is only declared for
+	 * !SUBSURFACE_MOBILE (see core/file.h), so this whole body -- not just
+	 * the QSKIP above -- has to be compiled out on mobile. */
+	auto [json_buf, jerr] = readfile(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_air.json");
+	QVERIFY(jerr > 0);
+	QCOMPARE(suunto_json_import(json_buf, std::string(), &divelog), 1);
+	QCOMPARE(save_dives("./test_suunto_ocean_air_no_fit.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_ocean_air_no_fit.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_air.xml");
+#endif
+}
+
+void TestParse::importSuuntoJsonOceanWithFit()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
+#else
+	/* Suunto Ocean, EAN32 dive. The JSON alone has no gas mix (the Ocean's
+	 * JSON export has no Diving.Gases block), so suunto_json_import() is
+	 * given the paired FIT file too, which carries the gas mix (DIVE_GAS)
+	 * and gradient factors (DIVE_SETTINGS) that get patched onto the
+	 * JSON-derived dive. suunto_json_import() is only declared for
+	 * !SUBSURFACE_MOBILE (see core/file.h), so this whole body -- not just
+	 * the QSKIP above -- has to be compiled out on mobile. */
+	auto [json_buf, jerr] = readfile(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_nitrox.json");
+	auto [fit_buf, ferr] = readfile(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_nitrox.fit");
+	QVERIFY(jerr > 0);
+	QVERIFY(ferr > 0);
+	QCOMPARE(suunto_json_import(json_buf, fit_buf, &divelog), 1);
+	QCOMPARE(save_dives("./test_suunto_ocean_nitrox.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_ocean_nitrox.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_nitrox.xml");
+#endif
 }
 
 QTEST_GUILESS_MAIN(TestParse)

@@ -6,7 +6,6 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <git2.h>
 #include <array>
@@ -24,8 +23,9 @@
 #include "format.h"
 #include "git-access.h"
 #include "picture.h"
-#include "qthelper.h"
+#include "pref.h"
 #include "sample.h"
+#include "string-format.h"
 #include "subsurface-string.h"
 #include "subsurface-time.h"
 #include "tag.h"
@@ -225,7 +225,7 @@ static void parse_dive_location(char *, struct git_parser_state *state)
 			ds->name = name.c_str();
 		} else {
 			// and that dive site had a name. that's weird - if our name is different, add it to the notes
-			if (ds->name == name) {
+			if (ds->name != name) {
 				ds->notes += '\n';
 				ds->notes += format_string_std(translate("gettextFromC", "additional name for site: %s\n"), name.c_str());
 			}
@@ -672,11 +672,13 @@ static struct sample *new_sample(struct git_parser_state *state)
 	size_t num_samples = state->active_dc->samples.size();
 	if (num_samples >= 2) {
 		*sample = state->active_dc->samples[num_samples - 2];
-		sample->pressure[0] = 0_bar;
-		sample->pressure[1] = 0_bar;
+		for (int i = 0; i < MAX_SENSORS; i++)
+			sample->pressure[i] = 0_bar;
 	} else {
 		sample->sensor[0] = sanitize_sensor_id(state->active_dive.get(), !state->o2pressure_sensor);
 		sample->sensor[1] = sanitize_sensor_id(state->active_dive.get(), state->o2pressure_sensor);
+		for (int i = 2; i < MAX_SENSORS; i++)
+			sample->sensor[i] = NO_SENSOR;
 	}
 	return sample;
 }

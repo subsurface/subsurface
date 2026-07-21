@@ -9,8 +9,10 @@
 #include "core/divelist.h"
 #include "core/divelog.h"
 #include "core/divesite.h"
+#include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/range.h"
+#include "core/string-format.h"
 #include "qt-models/maplocationmodel.h"
 #include "qt-models/divelocationmodel.h"
 #ifndef SUBSURFACE_MOBILE
@@ -251,12 +253,13 @@ QString MapWidgetHelper::pluginObject()
 {
 	QString lang = getUiLanguage().replace('_', '-');
 	QString cacheFolder = QString::fromStdString(system_default_directory() + "/googlemaps").replace("\\", "/");
-	return QStringLiteral("import QtQuick 2.0;"
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-			      "import QtLocation 6.0;"
+	const char *locationImport = "import QtLocation 6.0;";
 #else
-			      "import QtLocation 5.3;"
+	const char *locationImport = "import QtLocation 5.3;";
 #endif
+	return QStringLiteral("import QtQuick 2.0;"
+			      "%3"
 			      "Plugin {"
 			      "    id: mapPlugin;"
 			      "    name: 'googlemaps';"
@@ -267,5 +270,5 @@ QString MapWidgetHelper::pluginObject()
 			      "            console.warn('MapWidget.qml: cannot find a plugin named: ' + name);"
 			      "        }"
 			      "    }"
-			      "}").arg(lang, cacheFolder);
+			      "}").arg(lang, cacheFolder, QLatin1String(locationImport));
 }

@@ -23,6 +23,7 @@
 #include "commands/command.h"
 #include "core/metadata.h"
 #include "core/range.h"
+#include "core/string-format.h"
 #include "core/tag.h"
 
 void RenumberDialog::buttonClicked(QAbstractButton *button)
@@ -105,6 +106,11 @@ ShiftTimesDialog::ShiftTimesDialog(std::vector<dive *> dives_in, QWidget *parent
 	when(0), dives(std::move(dives_in))
 {
 	ui.setupUi(this);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	ui.timeEdit->setTimeZone(QTimeZone::systemTimeZone());
+#else
+	ui.timeEdit->setTimeSpec(Qt::LocalTime);
+#endif
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
 	connect(ui.timeEdit, SIGNAL(timeChanged(const QTime)), this, SLOT(changeTime()));
 	connect(ui.backwards, SIGNAL(toggled(bool)), this, SLOT(changeTime()));
@@ -139,7 +145,11 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	ui.DCImage->setScene(scene);
 
 	dcImageEpoch = picture_get_timestamp(qPrintable(fileNames.at(0)));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	QDateTime dcDateTime = QDateTime::fromSecsSinceEpoch(dcImageEpoch, QTimeZone::utc());
+#else
 	QDateTime dcDateTime = QDateTime::fromSecsSinceEpoch(dcImageEpoch, Qt::UTC);
+#endif
 	ui.dcTime->setDateTime(dcDateTime);
 	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
 }
@@ -149,7 +159,11 @@ void ShiftImageTimesDialog::dcDateTimeChanged(const QDateTime &newDateTime)
 	QDateTime newtime(newDateTime);
 	if (!dcImageEpoch)
 		return;
-	newtime.setTimeSpec(Qt::UTC);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	newtime = QDateTime(newtime.date(), newtime.time(), QTimeZone(QTimeZone::UTC));
+#else
+	newtime = QDateTime(newtime.date(), newtime.time(), Qt::UTC);
+#endif
 
 	m_amount = dateTimeToTimestamp(newtime) - dcImageEpoch;
 	if (m_amount)
@@ -208,8 +222,13 @@ void ShiftImageTimesDialog::updateInvalid()
 	bool allValid = true;
 	ui.warningLabel->hide();
 	ui.invalidFilesText->hide();
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+	QDateTime time_first = QDateTime::fromSecsSinceEpoch(first_selected_dive()->when, QTimeZone::utc());
+	QDateTime time_last = QDateTime::fromSecsSinceEpoch(last_selected_dive()->when, QTimeZone::utc());
+#else
 	QDateTime time_first = QDateTime::fromSecsSinceEpoch(first_selected_dive()->when, Qt::UTC);
 	QDateTime time_last = QDateTime::fromSecsSinceEpoch(last_selected_dive()->when, Qt::UTC);
+#endif
 	if (first_selected_dive() == last_selected_dive()) {
 		ui.invalidFilesText->setPlainText(tr("Selected dive date/time") + ": " + time_first.toString());
 	} else {

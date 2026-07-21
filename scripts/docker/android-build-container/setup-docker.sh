@@ -13,4 +13,4 @@
 # click through for yourself, and then update the URL in the Dockerfile
 
 # create the container (this takes a while)
-docker build -t android-build .
+docker buildx build -t android-build .

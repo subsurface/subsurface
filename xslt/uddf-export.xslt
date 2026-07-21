@@ -99,7 +99,14 @@
           <xsl:sort select="." />
           <buddy>
             <xsl:attribute name="id">
-              <xsl:value-of select="generate-id(key('tokenkey', .)[1])"/>
+              <xsl:choose>
+                <xsl:when test="string-length($units) = 0 or $units = 0">
+                  <xsl:value-of select="generate-id(key('tokenkey', .)[1])"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="concat('testbuddyid', position())" />
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:attribute>
             <personal>
               <xsl:choose>
@@ -309,7 +316,14 @@
           <xsl:for-each select="xt:node-set($buddies)/token[generate-id() = generate-id(key('tokenkey', .)[1]) and $buddyname = .]">
           <link>
             <xsl:attribute name="ref">
-              <xsl:value-of select="generate-id()"/>
+              <xsl:choose>
+                <xsl:when test="string-length($units) = 0 or $units = 0">
+                  <xsl:value-of select="generate-id(.)" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="concat('testbuddyid', position())" />
+                </xsl:otherwise>
+              </xsl:choose>
             </xsl:attribute>
           </link>
           </xsl:for-each>

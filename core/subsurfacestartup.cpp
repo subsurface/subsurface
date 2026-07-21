@@ -6,6 +6,7 @@
 #include "gettext.h"
 #include "qthelper.h"
 #include "git-access.h"
+#include "libdivecomputer.h"
 #include "pref.h"
 #include "libdivecomputer/version.h"
 
@@ -16,14 +17,24 @@
 extern void show_computer_list();
 
 int quit, force_root, ignore_bt;
+
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 std::string testqml;
 #endif
+
+std::string settings_suffix;
 
 /*
  * track whether we switched to importing dives
  */
 bool imported = false;
+
+#if SUBSURFACE_DOWNLOADER
+// Firmware update CLI options
+std::string firmware_file;
+bool firmware_do_update = false;
+bool firmware_force_update = false;
+#endif
 
 void print_version()
 {
@@ -36,7 +47,7 @@ void print_version()
 	printf("Subsurface v%s,\n", subsurface_canonical_version());
 #endif
 	printf("built with libdivecomputer v%s\n", dc_version(NULL));
-	print_qt_versions();
+	printf("built with Qt Version %s, runtime from Qt Version %s\n", QT_VERSION_STR, qVersion());
 	int git_maj, git_min, git_rev;
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	printf("built with libgit2 %d.%d.%d\n", git_maj, git_min, git_rev);
@@ -83,6 +94,10 @@ static void print_help()
 	printf("\n --dc-vendor=vendor    Set the dive computer to download from");
 	printf("\n --dc-product=product  Set the dive computer to download from");
 	printf("\n --device=device       Set the device to download from");
+	printf("\n --firmware-file=<path>       Path to firmware file for --update-firmware");
+	printf("\n --update-firmware            Update firmware on the configured dive computer");
+	printf("\n --force-update-firmware      Force firmware update (if supported)");
+	printf("\n --libdc-logfile=<path>       Write libdivecomputer log to file");
 #endif
 	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)\n\n");
 }
@@ -153,6 +168,22 @@ void parse_argument(const char *arg)
 			}
 			if (strncmp(arg, "--device=", sizeof("--device=") - 1) == 0) {
 				prefs.dive_computer.device = arg + sizeof("--device=") - 1;
+				return;
+			}
+			if (strncmp(arg, "--firmware-file=", sizeof("--firmware-file=") - 1) == 0) {
+				firmware_file = arg + sizeof("--firmware-file=") - 1;
+				return;
+			}
+			if (strcmp(arg, "--update-firmware") == 0) {
+				firmware_do_update = true;
+				return;
+			}
+			if (strcmp(arg, "--force-update-firmware") == 0) {
+				firmware_force_update = true;
+				return;
+			}
+			if (strncmp(arg, "--libdc-logfile=", sizeof("--libdc-logfile=") - 1) == 0) {
+				logfile_name = arg + sizeof("--libdc-logfile=") - 1;
 				return;
 			}
 			if (strncmp(arg, "--list-dc", sizeof("--list-dc") - 1) == 0) {

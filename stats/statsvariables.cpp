@@ -900,12 +900,7 @@ struct DateQuarterBinner : public SimpleContinuousBinner<DateQuarterBinner, Date
 		utc_mkdate(d->when, &tm);
 
 		int year = tm.tm_year;
-		switch (tm.tm_mon) {
-		case 0 ... 2: return { year, 1 };
-		case 3 ... 5: return { year, 2 };
-		case 6 ... 8: return { year, 3 };
-		default:      return { year, 4 };
-		}
+		return { year, tm.tm_mon / 3 + 1 };
 	}
 	void inc(DateQuarterBin &bin) const {
 		if (++bin.value.second > 4) {
@@ -1974,6 +1969,36 @@ struct VisibilityVariable : public StatsVariableTemplate<StatsVariable::Type::Di
 	}
 };
 
+// ============ Dive computer ==========
+
+static std::vector<QString> dive_computers(const dive *d)
+{
+	std::vector<QString> res;
+	res.reserve(d->dcs.size());
+	for (const auto &dc: d->dcs)
+		add_to_vector_unique(res, QString::fromStdString(dc.model).trimmed());
+	return res;
+}
+
+struct DiveComputerBinner : public StringBinner<DiveComputerBinner, StringBin> {
+	std::vector<QString> to_bin_values(const dive *d) const {
+		return dive_computers(d);
+	}
+};
+
+static DiveComputerBinner dive_computer_binner;
+struct DiveComputerVariable : public StatsVariableTemplate<StatsVariable::Type::Discrete> {
+	QString name() const override {
+		return StatsTranslations::tr("Dive computer");
+	}
+	QString diveCategories(const dive *d) const override {
+		return join_strings(dive_computers(d));
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &dive_computer_binner };
+	}
+};
+
 static DateVariable date_variable;
 static MaxDepthVariable max_depth_variable;
 static MeanDepthVariable mean_depth_variable;
@@ -2001,6 +2026,7 @@ static DayOfWeekVariable day_of_week_variable;
 static MonthOfYearVariable month_of_year_variable;
 static RatingVariable rating_variable;
 static VisibilityVariable visibility_variable;
+static DiveComputerVariable dive_computer_variable;
 
 const std::vector<const StatsVariable *> stats_variables = {
 	&date_variable, &max_depth_variable, &mean_depth_variable, &duration_variable, &sac_variable,
@@ -2009,5 +2035,5 @@ const std::vector<const StatsVariable *> stats_variables = {
 	&dive_mode_variable, &people_variable, &buddy_variable, &dive_guide_variable, &tag_variable,
 	&gas_type_variable, &suit_variable,
 	&weightsystem_variable, &cylinder_type_variable, &location_variable, &trip_variable, &day_of_week_variable,
-	&month_of_year_variable, &rating_variable, &visibility_variable
+	&month_of_year_variable, &rating_variable, &visibility_variable, &dive_computer_variable,
 };

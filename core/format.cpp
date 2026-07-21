@@ -2,6 +2,13 @@
 #include "format.h"
 #include "membuffer.h"
 
+#include <cstddef>
+
+// MSVC doesn't define ssize_t
+#ifdef _MSC_VER
+typedef ptrdiff_t ssize_t;
+#endif
+
 QString qasprintf_loc(const char *cformat, ...)
 {
 	va_list ap;
@@ -69,7 +76,7 @@ static QString fmt_int(T i, vasprintf_flags flags, int field_width, int precisio
 		if (i < 0)
 			++precision;
 		QChar fillChar = '0';
-		QString res = QStringLiteral("%L1").arg(i, precision, base, fillChar);
+		QString res = QStringLiteral("%L1").arg(static_cast<long long>(i), precision, base, fillChar);
 		if (i >= 0 && flags.space)
 			res = ' ' + res;
 		else if (i >= 0 && flags.sign)
@@ -77,16 +84,17 @@ static QString fmt_int(T i, vasprintf_flags flags, int field_width, int precisio
 		return fmt_string(res, flags, field_width, -1);
 	}
 
-	// If we have to prepend a '+' or a space character, remove that from the field width
 	char sign = 0;
-	if (i >= 0 && (flags.space || flags.sign) && field_width > 0) {
+	if (i >= 0 && (flags.space || flags.sign))
 		sign = flags.sign ? '+' : ' ';
+
+	// If we have to prepend a '+' or a space character, remove that from the field width
+	if (sign && field_width > 0)
 		--field_width;
-	}
 	if (flags.left)
 		field_width = -field_width;
 	QChar fillChar = flags.zero && !flags.left ? '0' : ' ';
-	QString res = QStringLiteral("%L1").arg(i, field_width, base, fillChar);
+	QString res = QStringLiteral("%L1").arg(static_cast<long long>(i), field_width, base, fillChar);
 	return sign ? insert_sign(res, sign) : res;
 }
 

@@ -30,6 +30,10 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MapWidget::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::dataReset, this, &MapWidget::reload);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MapWidget::reload);
+	// Previously triggered directly from DiveFilter; now driven via the
+	// notifier to keep core code free of desktop-widget dependencies.
+	connect(&diveListNotifier, &DiveListNotifier::diveSiteFilterModeChanged, this, &MapWidget::reload);
+	connect(&diveListNotifier, &DiveListNotifier::filteredDiveSitesChanged, this, &MapWidget::setSelected);
 	setSource(urlMapWidget);
 }
 
@@ -61,7 +65,7 @@ void MapWidget::centerOnIndex(const QModelIndex& idx)
 {
 	CHECK_IS_READY_RETURN_VOID();
 	dive_site *ds = idx.model()->index(idx.row(), LocationInformationModel::DIVESITE).data().value<dive_site *>();
-	if (!ds || ds == RECENTLY_ADDED_DIVESITE || !ds->has_gps_location())
+	if (!ds || !ds->has_gps_location())
 		m_mapHelper->centerOnSelectedDiveSite();
 	else
 		centerOnDiveSite(ds);

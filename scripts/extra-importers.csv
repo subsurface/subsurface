@@ -1,0 +1,18 @@
+# type, format, extension, info
+#
+# Direct imports not in libdivecomputer
+"direct","Uemis","USB","Zürich SDA"
+#
+# File based imports
+"file","Atomic Aquatics Cobalt DB",".db","Cobalt, Cobalt 2"
+"file","DataTrak/Wlog",".log","Legacy Uwatec models"
+"file","Divesoft",".dlf","Freedom, Liberty"
+"file","DivingLog",".db","Dive logging software by Christian Wiegel"
+"file","Garmin FIT",".fit","Descent Mk1, Descent Mk2(i)/Mk3(i)(S)/G1/G2/X50i"
+"file","Heinrichs Weikamp OSTCtools",".dive","OSTC models"
+"file","Scubapro ASD",".asd","Many Scubapro and legacy Uwatec models"
+"file","Scubapro LogTRAK",".script","Scubapro models that use LogTRAK"
+"file","Seabear CSV",".csv","T1, H3, HUDC"
+"file","Seac SeacSync DB",".db","Seac models that use SeacSync"
+"file","Shearwater Desktop DB",".db","All Shearwater models that use the desktop software"
+"file","Suunto DM",".xml","Suunto models that use DM software"

@@ -77,12 +77,12 @@ enum cylinderuse cylinderuse_from_text(const char *text)
 /* Add a metric or an imperial tank info structure. Copies the passed-in string. */
 static void add_tank_info_metric(std::vector<tank_info> &table, const std::string &name, int ml, int bar)
 {
-	table.push_back(tank_info{ name, .ml = ml, .bar = bar });
+	table.push_back(tank_info{ .name = name, .ml = ml, .bar = bar });
 }
 
 static void add_tank_info_imperial(std::vector<tank_info> &table, const std::string &name, int cuft, int psi)
 {
-	table.push_back(tank_info{ name, .cuft = cuft, .psi = psi });
+	table.push_back(tank_info{ .name = name, .cuft = cuft, .psi = psi });
 }
 
 struct tank_info *get_tank_info(std::vector<tank_info> &table, const std::string &name)
@@ -439,6 +439,37 @@ int first_hidden_cylinder(const struct dive *d)
 	while (res > 0 && !show_cylinder(d, res - 1))
 		--res;
 	return static_cast<int>(res);
+}
+
+// Generate a cylinder-renumber map for use when the n-th cylinder
+// of a dive with count cylinders is removed. It fills an int vector
+// with 0..n, -1, n..count-1. Each entry in the vector represents
+// the new id of the cylinder, whereby <0 means that this particular
+// cylinder does not get any new id.
+// The function assumes that n < count!
+std::vector<int> get_cylinder_map_for_remove(int count, int n)
+{
+	// 1) Fill mapping[0]..mapping[n-1] with 0..n-1
+	// 2) Set mapping[n] to -1
+	// 3) Fill mapping[n+1]..mapping[count-1] with n..count-2
+	std::vector<int> mapping(count);
+	std::iota(mapping.begin(), mapping.begin() + n, 0);
+	mapping[n] = -1;
+	std::iota(mapping.begin() + n + 1, mapping.end(), n);
+	return mapping;
+}
+
+// Generate a cylinder-renumber map for use when a cylinder is added
+// before the n-th cylinder. It fills an int vector with
+// with 0..n-1, n+1..count. Each entry in the vector represents
+// the new id of the cylinder.
+// This function assumes that that n <= count!
+std::vector<int> get_cylinder_map_for_add(int count, int n)
+{
+	std::vector<int> mapping(count);
+	std::iota(mapping.begin(), mapping.begin() + n, 0);
+	std::iota(mapping.begin() + n, mapping.end(), n + 1);
+	return mapping;
 }
 
 #ifdef DEBUG_CYL

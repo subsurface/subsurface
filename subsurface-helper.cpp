@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QQmlEngine>
 #include <QQuickItem>
+#include <QDir>
 
 #ifdef MAP_SUPPORT
 #include "map-widget/qmlmapwidgethelper.h"
@@ -46,11 +47,6 @@ QObject *qqWindowObject = NULL;
 // Forward declaration
 static void register_qml_types(QQmlEngine *);
 static void register_meta_types();
-
-#ifdef SUBSURFACE_MOBILE
-#include <QtPlugin>
-Q_IMPORT_PLUGIN(KirigamiPlugin)
-#endif
 
 void init_ui()
 {
@@ -114,6 +110,35 @@ void run_mobile_ui(double initial_font_size)
 			engine.addImportPath(importPath.replace("MacOS", "Frameworks"));
 	}
 #endif // __APPLE__ not Q_OS_IOS
+#if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
+	// AI-generated (Claude)
+	// For mobile-on-desktop local testing, add QML import and plugin paths
+	// relative to the binary location. QML modules (e.g. Kirigami) are in
+	// ../lib/<gnu-triplet>/qml while Qt plugins (e.g. googlemaps) are in
+	// ../usr/lib/<gnu-triplet>/qt6/plugins. Scan subdirectories to avoid
+	// hardcoding the GNU triplet.
+	{
+		QString binDir = QCoreApplication::applicationDirPath();
+		for (const QString &prefix : { binDir + "/../lib", binDir + "/../usr/lib" }) {
+			QDir libDir(prefix);
+			if (!libDir.exists())
+				continue;
+			const QStringList subdirs = libDir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+			for (const QString &sub : subdirs) {
+				QString qmlPath = libDir.absoluteFilePath(sub + "/qml");
+				if (QDir(qmlPath).exists()) {
+					report_info("Adding QML import path: %s", qPrintable(qmlPath));
+					engine.addImportPath(qmlPath);
+				}
+				QString pluginPath = libDir.absoluteFilePath(sub + "/qt6/plugins");
+				if (QDir(pluginPath).exists()) {
+					report_info("Adding plugin path: %s", qPrintable(pluginPath));
+					QCoreApplication::addLibraryPath(pluginPath);
+				}
+			}
+		}
+	}
+#endif // !Q_OS_ANDROID && !Q_OS_IOS
 	// this is frustrating, but we appear to need different import paths on different OSs
 	engine.addImportPath(":");
 	engine.addImportPath("qrc://imports");

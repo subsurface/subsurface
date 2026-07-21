@@ -3,10 +3,12 @@
 
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
-export DEB_BUILD_OPTIONS+=nocheck
-export DEB_BUILD+OPTIONS+="parallel=12"
+
+# lto causes subsurface to segfault while initializing QApplication
+export DEB_BUILD_MAINT_OPTIONS = optimize=-lto nocheck
+
 export MY_INSTALL_ROOT=$(CURDIR)/install-root
-export QTVERSION=$(shell qmake -query QT_VERSION)
+export QTVERSION=$(shell qmake -query QT_VERSION 2>/dev/null)
 
 %:
 	dh $@ --buildsystem=cmake --builddirectory=subsurface-build --parallel
@@ -60,6 +62,7 @@ override_dh_auto_configure:
 			-DLIBGIT2_DYNAMIC=ON -DLIBGIT2_FROM_PKGCONFIG=ON \
 			-DFORCE_LIBSSH=1 \
 			-DNO_PRINTING=OFF \
+			-DNO_USERMANUAL=OFF \
 			-DBUILD_DOCS=ON \
 			$$(pwd)/.. ; )
 

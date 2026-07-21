@@ -42,7 +42,7 @@ extern int same_gasmix(struct gasmix a, struct gasmix b);
 
 static inline int get_o2(const struct gasmix mix)
 {
-	return mix.o2.permille ?: O2_IN_AIR;
+	return mix.o2.permille ? mix.o2.permille : O2_IN_AIR;
 }
 
 static inline int get_he(const struct gasmix mix)

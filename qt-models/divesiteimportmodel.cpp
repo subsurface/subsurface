@@ -1,7 +1,7 @@
 #include "divesiteimportmodel.h"
 #include "core/divelog.h"
-#include "core/qthelper.h"
 #include "core/range.h"
+#include "core/string-format.h"
 #include "core/taxonomy.h"
 
 DivesiteImportedModel::DivesiteImportedModel(dive_site_table &table, QObject *o) : QAbstractTableModel(o),

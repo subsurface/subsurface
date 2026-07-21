@@ -3,8 +3,10 @@
 #include "maintab.h"
 #include "core/divesite.h"
 #include "core/qthelper.h"
+#include "core/pref.h"
 #include "core/selection.h"
 #include "core/subsurface-string.h"
+#include "core/string-format.h"
 #include "core/tag.h"
 #include "core/trip.h"
 #include "desktop-widgets/mainwindow.h"
@@ -27,6 +29,13 @@ TabDiveNotes::TabDiveNotes(MainTab *parent) : TabBase(parent),
 	currentTrip(0)
 {
 	ui.setupUi(this);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	ui.dateEdit->setTimeZone(QTimeZone::utc());
+	ui.timeEdit->setTimeZone(QTimeZone::utc());
+#else
+	ui.dateEdit->setTimeSpec(Qt::UTC);
+	ui.timeEdit->setTimeSpec(Qt::UTC);
+#endif
 
 	updateDateTimeFields();
 
@@ -104,7 +113,7 @@ void TabDiveNotes::divesChanged(const QVector<dive *> &dives, DiveField field)
 
 	dive *currentDive = parent.currentDive;
 	if (field.duration)
-		ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
+		ui.duration->setText(get_duration_string_short(currentDive->duration));
 	if (field.depth)
 		ui.depth->setText(get_depth_string(currentDive->maxdepth, true));
 	if (field.rating)
@@ -266,7 +275,7 @@ void TabDiveNotes::updateData(const std::vector<dive *> &, dive *currentDive, in
 		ui.diveguide->setText(QString::fromStdString(currentDive->diveguide));
 		ui.buddy->setText(QString::fromStdString(currentDive->buddy));
 	}
-	ui.duration->setText(render_seconds_to_string(currentDive->duration.seconds));
+	ui.duration->setText(get_duration_string_short(currentDive->duration));
 	ui.depth->setText(get_depth_string(currentDive->maxdepth, true));
 
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
@@ -380,9 +389,16 @@ void TabDiveNotes::on_location_diveSiteSelected()
 	if (ignoreInput || !parent.currentDive)
 		return;
 
+	QString name = ui.location->text().trimmed();
+	// editingFinished is also emitted for empty text: interpret that as "remove dive site".
+	if (name.isEmpty()) {
+		divesEdited(Command::editDiveSite(nullptr, false));
+		return;
+	}
+
 	struct dive_site *newDs = ui.location->currDiveSite();
-	if (newDs == RECENTLY_ADDED_DIVESITE)
-		divesEdited(Command::editDiveSiteNew(ui.location->text(), false));
+	if (!newDs)
+		divesEdited(Command::editDiveSiteNew(name, false));
 	else
 		divesEdited(Command::editDiveSite(newDs, false));
 }

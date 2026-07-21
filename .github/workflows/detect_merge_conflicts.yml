@@ -8,9 +8,14 @@ on:
   pull_request_target:
     types: [synchronize]
 
+permissions: read-all
+
 jobs:
   main:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
     steps:
       - name: check if pull requests have merge conflicts
         uses: eps1lon/actions-label-merge-conflict@v3

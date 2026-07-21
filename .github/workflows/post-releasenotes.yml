@@ -7,12 +7,22 @@ on:
     branches:
     - master
 
+env:
+  RELEASE_PUBLISHER: "true"
+
+permissions: read-all
+
 jobs:
   postRelease:
+    outputs:
+      release_tag: v${{ steps.version_number.outputs.version }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
     - name: checkout sources
-      uses: actions/checkout@v5
+      uses: actions/checkout@v7
       with:
         fetch-depth: 0
         submodules: recursive
@@ -32,14 +42,53 @@ jobs:
       run: |
         scripts/create-releasenotes.sh $EVENT_HEAD_COMMIT_ID
 
+    - name: comment on merged pull request with release tag
+      if: github.event_name == 'push' && hashFiles('release_pr_number.txt') != ''
+      env:
+        GH_TOKEN: ${{ github.token }}
+        RELEASE_TAG: v${{ steps.version_number.outputs.version }}
+        BUILD_NUMBER: ${{ steps.version_number.outputs.buildnr }}
+      run: |
+        set -eu
+        pr_number=$(< release_pr_number.txt)
+        marker='<!-- subsurface-release-info -->'
+
+        # Idempotency: skip if a previous run already posted the marker.
+        existing=$(gh pr view "$pr_number" \
+          --repo ${{ github.repository }} \
+          --json comments \
+          --jq ".comments[].body" | grep -F "$marker" || true)
+        if [ -n "$existing" ]; then
+          echo "PR #$pr_number already has release-info comment, skipping."
+          exit 0
+        fi
+
+        release_url="https://github.com/${{ github.repository_owner }}/nightly-builds/releases/tag/${RELEASE_TAG}"
+        gh pr comment "$pr_number" \
+          --repo ${{ github.repository }} \
+          --body "${marker}
+        This pull request first appeared in release [${RELEASE_TAG}](${release_url}) (build ${BUILD_NUMBER})."
+        echo "Posted release-info comment on PR #$pr_number."
+
     # add a file containing the release title so it can be picked up and listed on the release page on our web server
     - name: publish release
       if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
+        draft: true
         prerelease: false
         files: release_content_title.txt
         body_path: gh_release_notes.md
+
+  notify-release-coordinator:
+    permissions:
+      contents: write
+    if: always()
+    needs: postRelease
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.postRelease.outputs.release_tag }}
+      conclusion: ${{ needs.postRelease.result }}

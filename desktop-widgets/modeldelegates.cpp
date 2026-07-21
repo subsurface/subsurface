@@ -15,9 +15,10 @@
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/divetripmodel.h"
 #include "qt-models/divelocationmodel.h"
-#include "core/qthelper.h"
 #include "core/divesite.h"
+#include "core/pref.h"
 #include "core/selection.h"
+#include "core/string-format.h"
 #include "desktop-widgets/simplewidgets.h"
 
 #include <QCompleter>

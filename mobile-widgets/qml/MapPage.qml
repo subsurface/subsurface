@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtPositioning 5.3
+import QtQuick
+import QtPositioning
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Kirigami.Page {
 	id: mapPage

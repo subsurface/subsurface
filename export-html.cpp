@@ -5,6 +5,7 @@
 #include <QCommandLineParser>
 #include <QApplication>
 
+#include "core/pref.h"
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/file.h"
@@ -18,6 +19,13 @@
 #include "core/subsurfacestartup.h"
 #include "core/divelogexportlogic.h"
 #include "core/statistics.h"
+
+// We don't link the undo-code into the html exporter, so we have to provide
+// a placeholder for Command::changesMade(), which is needed by the git
+// code.
+namespace Command {
+	std::string changesMade() { return {}; }
+}
 
 int main(int argc, char **argv)
 {

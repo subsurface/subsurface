@@ -24,7 +24,7 @@
 static std::string system_default_path()
 {
 	// Qt appears to find a working path for us - let's just go with that
-	return QStandardPaths::standardLocations(QStandardPaths::DataLocation).first().toStdString();
+	return QStandardPaths::standardLocations(QStandardPaths::AppLocalDataLocation).first().toStdString();
 }
 
 static std::string make_default_filename()

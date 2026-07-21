@@ -130,9 +130,9 @@ PrintDialog::PrintDialog(dive *singleDive, const QString &filename, QWidget *par
 	setWindowTitle(tr("Print"));
 	setWindowIcon(QIcon(":subsurface-icon"));
 
-	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
+	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
-	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
+	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q), this);
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 
 	// seems to be the most reliable way to track for all sorts of dialog disposal.
@@ -179,7 +179,7 @@ void PrintDialog::createPrinterObj()
 	if (!printer) {
 		qprinter = new QPrinter;
 		qprinter->setResolution(printOptions.resolution);
-		qprinter->setOrientation((QPrinter::Orientation)printOptions.landscape);
+		qprinter->setPageOrientation((QPageLayout::Orientation)printOptions.landscape);
 		printer = new Printer(qprinter, printOptions, templateOptions, Printer::PRINT, singleDive);
 	}
 }
@@ -187,11 +187,18 @@ void PrintDialog::createPrinterObj()
 void PrintDialog::previewClicked()
 {
 	createPrinterObj();
+#ifdef USE_QLITEHTML
+	connect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+	printer->preview();
+	progressBar->setValue(0);
+	disconnect(printer, SIGNAL(progessUpdated(int)), progressBar, SLOT(setValue(int)));
+#else
 	QPrintPreviewDialog previewDialog(qprinter, this, Qt::Window
 		| Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint
 		| Qt::WindowTitleHint);
 	connect(&previewDialog, SIGNAL(paintRequested(QPrinter *)), this, SLOT(onPaintRequested(QPrinter *)));
 	previewDialog.exec();
+#endif
 }
 
 void PrintDialog::exportHtmlClicked()

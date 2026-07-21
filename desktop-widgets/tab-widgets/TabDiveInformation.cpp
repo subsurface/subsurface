@@ -8,9 +8,12 @@
 #include "core/subsurface-string.h"
 #include "core/units.h"
 #include "core/dive.h"
+#include "core/gettextfromc.h"
+#include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/selection.h"
 #include "core/statistics.h"
+#include "core/string-format.h"
 #include "core/divelist.h"
 
 #include <QSignalBlocker>
@@ -37,7 +40,7 @@ TabDiveInformation::TabDiveInformation(MainTab *parent) : TabBase(parent), ui(ne
 	QStringList atmPressTypes { "mbar", get_depth_unit() ,tr("Use DC")};
 	ui->atmPressType->insertItems(0, atmPressTypes);
 	pressTypeIndex = 0;
-	ui->waterTypeCombo->insertItems(0, getWaterTypesAsString());
+	ui->waterTypeCombo->insertItems(0, get_water_types_as_string());
 
 	// This needs to be the same order as enum dive_comp_type in dive.h!
 	QStringList types;

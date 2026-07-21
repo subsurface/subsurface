@@ -32,6 +32,9 @@
 #include <ftdi.h>
 
 #ifdef _WIN32
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
 #include <windows.h>    // Sleep
 #else
 #include <time.h>       // nanosleep

@@ -114,3 +114,8 @@ void set_git_prefs(std::string_view prefs)
 	if (contains(prefs, "PO2_GRAPH"))
 		git_prefs.pp_graphs.po2 = 1;
 }
+
+enum deco_mode pref_deco_mode(bool in_planner)
+{
+	return in_planner ? prefs.planner_deco_mode : prefs.display_deco_mode;
+}

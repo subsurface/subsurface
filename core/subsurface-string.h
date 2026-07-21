@@ -10,16 +10,22 @@
 #include <string_view>
 #include <vector>
 
+// MSVC doesn't have strcasecmp/strncasecmp, use _stricmp/_strnicmp instead
+#ifdef _MSC_VER
+#define strcasecmp _stricmp
+#define strncasecmp _strnicmp
+#endif
+
 // string handling
 
 static inline bool same_string(const char *a, const char *b)
 {
-	return !strcmp(a ?: "", b ?: "");
+	return !strcmp(a ? a : "", b ? b : "");
 }
 
 static inline bool same_string_caseinsensitive(const char *a, const char *b)
 {
-	return !strcasecmp(a ?: "", b ?: "");
+	return !strcasecmp(a ? a : "", b ? b : "");
 }
 
 static inline bool empty_string(const char *s)

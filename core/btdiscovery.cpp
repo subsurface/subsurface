@@ -9,12 +9,15 @@
 #include <QRegularExpression>
 #include <QElapsedTimer>
 #include <QCoreApplication>
+#include <QSet>
 
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
 namespace {
 	QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
+	QSet<QString> btMessages;
 }
+
 BTDiscovery *BTDiscovery::m_instance = NULL;
 
 struct modelPattern {
@@ -36,8 +39,11 @@ static struct modelPattern model[] = {
 	{ 0x4655, "Sherwood", "Wisdom 4" },
 	{ 0x4656, "Oceanic", "Pro Plus 4" },
 	{ 0x4741, "Apeks", "DSX" },
+	{ 0x4742, "Sherwood", "Beacon" },
 	{ 0x4743, "Aqualung", "i470TC" },
 	{ 0x4744, "Aqualung", "i330R" },
+	{ 0x474B, "Oceanic", "Geo Air" },
+	{ 0x474D, "Oceanic", "Geo i330R Console" },
 };
 
 // The Cressi BT interfaces for Goa-style computers advertise names with pattern:
@@ -64,6 +70,7 @@ struct namePattern {
 static struct namePattern name[] = {
 	// Shearwater dive computers
 	{ "Predator", "Shearwater", "Predator" },
+	{ "Perdix 3", "Shearwater", "Perdix 3"},
 	{ "Perdix 2", "Shearwater", "Perdix 2"},
 	{ "Petrel 3", "Shearwater", "Petrel 3"},
 	// both the Petrel and Petrel 2 identify as "Petrel" as BT/BLE device
@@ -93,6 +100,8 @@ static struct namePattern name[] = {
 	// Mares dive computers
 	{ "Mares Genius", "Mares", "Genius" },
 	{ "Sirius", "Mares", "Sirius" },
+	{ "Quad Ci", "Mares", "Quad Ci" },
+	{ "Quad", "Mares", "Quad" },
 	{ "Mares", "Mares", "Quad" }, // we actually don't know and just pick a common one - user needs to fix in UI
 	// Cress dive computers
 	{ "CARESIO_", "Cressi", "Cartesio" },
@@ -117,7 +126,8 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		if (btName.mid(4,1) == "3") product = "OSTC Plus";
 		else if (btName.mid(4,2) == "s#") product = "OSTC Sport";
 		else if (btName.mid(4,2) == "s ") product = "OSTC Sport";
-		else if (btName.mid(4,2) == "4-" || btName.mid(4,2) == "5-") product = "OSTC 4/5";
+		else if (btName.mid(4,2) == "4-") product = "OSTC 4";
+		else if (btName.mid(4,2) == "5-") product = "OSTC 5";
 		else if (btName.mid(4,2) == "2-") product = "OSTC 2N";
 		else if (btName.mid(4,2) == "+ ") product = "OSTC 2";
 		// all BT/BLE enabled OSTCs are HW_FAMILY_OSTC_3, so when we do not know,
@@ -193,6 +203,14 @@ bool matchesKnownDiveComputerNames(QString btName)
 	return getDeviceType(btName) != nullptr;
 }
 
+static bool dedupBtMessages(const QString &msg)
+{
+	if (btMessages.contains(msg))
+		return false;
+	btMessages.insert(msg);
+	return true;
+}
+
 BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
 	m_showNonDiveComputers(false),
 	discoveryAgent(nullptr)
@@ -258,8 +276,11 @@ void BTDiscovery::BTDiscoveryReDiscover()
 #else
 		report_info("starting BT/BLE discovery");
 		discoveryAgent->start();
-		for (int i = 0; i < btPairedDevices.length(); i++)
-			report_info("Paired = %s %s", qPrintable( btPairedDevices[i].name), qPrintable(btPairedDevices[i].address));
+		if (verbose)
+			for (int i = 0; i < btPairedDevices.length(); i++)
+				report_info("Paired = %s %s",
+					qPrintable(btPairedDevices[i].name),
+					qPrintable(btPairedDevices[i].address));
 #endif
 
 #if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
@@ -272,6 +293,7 @@ void BTDiscovery::BTDiscoveryReDiscover()
 		report_info("localBtDevice isn't valid or not connectable");
 		m_btValid = false;
 	}
+	btMessages.clear(); // reset our dedup cache
 }
 
 BTDiscovery::~BTDiscovery()
@@ -332,13 +354,9 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 		report_info("%s", qPrintable(id.toByteArray()));
 	}
 
-#if defined(Q_OS_IOS) || defined(Q_OS_MACOS) || defined(Q_OS_WIN)
-	// on Windows, macOS and iOS we need to scan in order to be able to access a device;
-	// let's remember the information we scanned on this run so we can at least
-	// refer back to it and don't need to open the separate scanning dialog every
-	// time we try to download from a BT/BLE dive computer.
+	// Qt 6 requires a QBluetoothDeviceInfo to create a QLowEnergyController;
+	// save discovered device info so qt_ble_open() can look it up later.
 	saveBtDeviceInfo(btDeviceAddress(&device, false), device);
-#endif
 
 	btDeviceDiscoveredMain(this_d, false);
 }
@@ -373,7 +391,8 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device, bool from
 			newDevice += " ";
 		connectionListModel.addAddress(newDevice + device.address);
 	}
-	report_info("%s not recognized as dive computer", qPrintable(msg));
+	if (dedupBtMessages(msg))
+		report_info("%s not recognized as dive computer", qPrintable(msg));
 }
 
 QList<BTDiscovery::btVendorProduct> BTDiscovery::getBtDcs()
@@ -387,7 +406,7 @@ bool BTDiscovery::btAvailable() const
 
 }
 
-// Android: As Qt is not able to pull the pairing data from a device, i
+// Android: As Qt is not able to pull the pairing data from a device,
 // a lengthy discovery process is needed to see what devices are paired. On
 // https://forum.qt.io/topic/46075/solved-bluetooth-list-paired-devices
 // user s.frings74 does, however, present a solution to this using JNI.
@@ -400,12 +419,12 @@ void BTDiscovery::getBluetoothDevices()
 	// Query via Android Java API.
 
 	// returns a BluetoothAdapter
-	QAndroidJniObject adapter=QAndroidJniObject::callStaticObjectMethod("android/bluetooth/BluetoothAdapter","getDefaultAdapter","()Landroid/bluetooth/BluetoothAdapter;");
+	QJniObject adapter=QJniObject::callStaticObjectMethod("android/bluetooth/BluetoothAdapter","getDefaultAdapter","()Landroid/bluetooth/BluetoothAdapter;");
 	if (checkException("BluetoothAdapter.getDefaultAdapter()", &adapter)) {
 		return;
 	}
 	// returns a Set<BluetoothDevice>
-	QAndroidJniObject pairedDevicesSet=adapter.callObjectMethod("getBondedDevices","()Ljava/util/Set;");
+	QJniObject pairedDevicesSet=adapter.callObjectMethod("getBondedDevices","()Ljava/util/Set;");
 	if (checkException("BluetoothAdapter.getBondedDevices()", &pairedDevicesSet)) {
 		return;
 	}
@@ -413,13 +432,13 @@ void BTDiscovery::getBluetoothDevices()
 	checkException("Set<BluetoothDevice>.size()", &pairedDevicesSet);
 	if (size > 0) {
 		// returns an Iterator<BluetoothDevice>
-		QAndroidJniObject iterator=pairedDevicesSet.callObjectMethod("iterator","()Ljava/util/Iterator;");
+		QJniObject iterator=pairedDevicesSet.callObjectMethod("iterator","()Ljava/util/Iterator;");
 		if (checkException("Set<BluetoothDevice>.iterator()", &iterator)) {
 			return;
 		}
 		for (int i = 0; i < size; i++) {
 			// returns a BluetoothDevice
-			QAndroidJniObject dev=iterator.callObjectMethod("next","()Ljava/lang/Object;");
+			QJniObject dev=iterator.callObjectMethod("next","()Ljava/lang/Object;");
 			if (checkException("Iterator<BluetoothDevice>.next()", &dev)) {
 				continue;
 			}
@@ -440,9 +459,9 @@ void BTDiscovery::getBluetoothDevices()
 	}
 }
 
-bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *obj)
+bool BTDiscovery::checkException(const char* method, const QJniObject *obj)
 {
-	static QAndroidJniEnvironment env;
+	QJniEnvironment env;
 	bool result = false;
 
 	if (env->ExceptionCheck()) {
@@ -483,36 +502,6 @@ void BTDiscovery::stopAgent()
 		return;
 	report_info("---> stopping the discovery agent");
 	discoveryAgent->stop();
-}
-
-bool isBluetoothAddress(const QString &address)
-{
-	return extractBluetoothAddress(address) != QString();
-}
-QString extractBluetoothAddress(const QString &address)
-{
-	QRegularExpression re("(LE:)*([0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}|{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}})",
-			      QRegularExpression::CaseInsensitiveOption);
-	QRegularExpressionMatch m = re.match(address);
-	return m.captured(0);
-}
-
-std::pair<QString, QString> extractBluetoothNameAddress(const QString &address)
-{
-	// sometimes our device text is of the form "name (address)", sometimes it's just "address"
-	// let's simply return the address
-	QString extractedAddress = extractBluetoothAddress(address);
-	if (extractedAddress == address.trimmed())
-		return { address, QString() };
-
-	QRegularExpression re("^([^()]+)\\(([^)]*\\))$");
-	QRegularExpressionMatch m = re.match(address);
-	if (m.hasMatch()) {
-		QString name = m.captured(1).trimmed();
-		return { extractedAddress, name };
-	}
-	report_info("can't parse address %s", qPrintable(address));
-	return { QString(), QString() };
 }
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo)

@@ -141,13 +141,13 @@ bool ConfigureDiveComputer::saveXMLBackup(const QString &fileName, const DeviceD
 	writer.writeTextElement("AlwaysShowppO2", QString::number(details.alwaysShowppO2));
 	writer.writeTextElement("DecoGasConsumption", QString::number(details.decoGasConsumption));
 
-	writer.writeComment("Heinrichs Weikamp OSTC4 only:");
+	writer.writeComment("Heinrichs Weikamp OSTC 4/5 only:");
 	writer.writeTextElement("TravelGasConsumption", QString::number(details.travelGasConsumption));
 	writer.writeTextElement("VPMConservatism", QString::number(details.vpmConservatism));
 	writer.writeTextElement("ButtonSensitivity", QString::number(details.buttonSensitivity));
 	writer.writeTextElement("ButtonBalance", QString::number(details.buttonBalance));
 
-	writer.writeComment("Not used on Heinrichs Weikamp OSTC4:");
+	writer.writeComment("Not used on Heinrichs Weikamp OSTC 4/5:");
 	writer.writeTextElement("BottomGasConsumption", QString::number(details.bottomGasConsumption));
 	writer.writeTextElement("Saturation", QString::number(details.saturation));
 	writer.writeTextElement("Desaturation", QString::number(details.desaturation));
@@ -615,11 +615,15 @@ void ConfigureDiveComputer::dc_close(device_data_t *data)
 	if (data->device)
 		dc_device_close(data->device);
 	data->device = NULL;
+	// Close the iostream before freeing the context: dc_serial_close (and other iostream
+	// close implementations) may call SYSERROR(abstract->context, ...) on error paths
+	// (e.g. tcsetattr/ioctl failing on a disconnected RFCOMM fd). Freeing the context
+	// first causes a use-after-free in those error paths.
+	dc_iostream_close(data->iostream);
+	data->iostream = NULL;
 	if (data->context)
 		dc_context_free(data->context);
 	data->context = NULL;
-	dc_iostream_close(data->iostream);
-	data->iostream = NULL;
 
 	if (data->libdc_logfile)
 		fclose(data->libdc_logfile);

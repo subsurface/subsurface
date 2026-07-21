@@ -10,17 +10,15 @@
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothUuid>
 #include "core/libdivecomputer.h"
+#include "core/bluetoothaddress.h"
 
 #if defined(Q_OS_ANDROID)
-#include <QAndroidJniObject>
-#include <QAndroidJniEnvironment>
+#include <QJniObject>
+#include <QJniEnvironment>
 #endif
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo);
-bool isBluetoothAddress(const QString &address);
 bool matchesKnownDiveComputerNames(QString btName);
-QString extractBluetoothAddress(const QString &address);
-std::pair<QString, QString> extractBluetoothNameAddress(const QString &address); // returns address/name pair
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr);
 
 class BTDiscovery : public QObject {
@@ -67,7 +65,7 @@ private:
 	QList<struct btVendorProduct> btAllDevices;	// all paired BT stuff
 
 #if defined(Q_OS_ANDROID)
-	bool checkException(const char* method, const QAndroidJniObject* obj);
+	bool checkException(const char* method, const QJniObject* obj);
 #endif
 
 	QList<struct btPairedDevice> btPairedDevices;

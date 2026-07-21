@@ -5,7 +5,7 @@
 #include "core/event.h"
 #include "core/errorhelper.h"
 #include "core/planner.h"
-#include "core/qthelper.h"
+#include "core/pref.h"
 #include "core/subsurfacestartup.h"
 #include "core/units.h"
 

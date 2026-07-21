@@ -23,6 +23,9 @@
 #include <libdivecomputer/parser.h>
 #include <libdivecomputer/version.h>
 
+#ifdef _MSC_VER
+#pragma pack(push, 1)
+#endif
 struct uemis_sample
 {
 	uint16_t dive_time;
@@ -50,7 +53,12 @@ struct uemis_sample
 	uint8_t rgt; // (remaining gas time in minutes)
 	uint8_t cns;
 	uint8_t flags[8];
+#ifdef _MSC_VER
+};
+#pragma pack(pop)
+#else
 } __attribute((packed));
+#endif
 
 /*
  * following code is based on code found in at base64.sourceforge.net/b64.c
@@ -121,7 +129,7 @@ static std::vector<uint8_t> convert_base64(std::string_view base64)
 		report_info("suspiciously short data block %d", datalen);
 
 	std::vector<uint8_t> res(datalen);
-	decode((unsigned char *)base64.begin(), res.data(), len);
+	decode((unsigned char *)base64.data(), res.data(), len);
 
 	if (memcmp(res.data(), "Dive\01\00\00", 7))
 		report_info("Missing Dive100 header");
@@ -356,9 +364,9 @@ void uemis::parse_divelog_binary(std::string_view base64, struct dive *dive)
 		dive->dcs[0].duration = sample->time - 1_sec;
 
 	/* get data from the footer */
-	add_extra_data(dc, "FW Version",
+	add_extra_data(dc, STRING_KEY_FIRMWARE_VERSION,
 		       format_string_std("%1u.%02u", data[18], data[17]));
-	add_extra_data(dc, "Serial",
+	add_extra_data(dc, STRING_KEY_SERIAL_NUMBER,
 		       format_string_std("%08x", *(uint32_t *)(data.data() + 9)));
 	add_extra_data(dc, "main battery after dive",
 		       std::to_string(*(uint16_t *)(data.data() + i + 35)));

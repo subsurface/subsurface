@@ -10,7 +10,6 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/selection.h"
 #include "core/subsurface-qt/divelistnotifier.h"
-#include <unistd.h>
 #include <QSettings>
 #include <QKeyEvent>
 #include <QFileDialog>
@@ -18,6 +17,7 @@
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QHeaderView>
+#include <QThread>
 #include "commands/command.h"
 #include "commands/command_base.h"
 #include "core/errorhelper.h"
@@ -46,6 +46,10 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &DiveListView::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveListView::cylinderEdited);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveListView::cylinderEdited);
+	// Previously called directly from DiveFilter::setFilterDiveSite via
+	// MainWindow::instance()->diveList->expandAll().
+	connect(&diveListNotifier, &DiveListNotifier::filteredDiveSitesChanged,
+		this, [this](const std::vector<dive_site *> &) { expandAll(); });
 
 	setSortingEnabled(true);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
@@ -808,10 +812,11 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	}
 
 	// "collapse all" really closes all trips,
-	// "collapse" keeps the trip with the selected dive open
+	// "collapse others" keeps the trip with the selected dive open
 	QAction *actionTaken = popup.exec(event->globalPos());
 	if (actionTaken == collapseAction && collapseAction) {
 		this->setAnimated(false);
+		expand(selectedIndexes().first());
 		scrollTo(selectedIndexes().first());
 		this->setAnimated(true);
 	}
@@ -892,7 +897,7 @@ void DiveListView::loadImagesFromURLs(const QString &urls)
 			QNetworkReply *reply = manager.get(request);
 			while (reply->isRunning()) {
 				loop.processEvents();
-				sleep(1);
+				QThread::sleep(1);
 			}
 			QByteArray imageData = reply->readAll();
 

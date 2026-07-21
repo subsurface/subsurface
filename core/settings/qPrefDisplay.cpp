@@ -5,6 +5,7 @@
 
 #include <QApplication>
 #include <QFont>
+#include <QScreen>
 
 static const QString group = QStringLiteral("Display");
 
@@ -160,7 +161,18 @@ void qPrefDisplay::setCorrectFont()
 	// respect the system default font size if none is explicitly set
 	QFont defaultFont = qPrefPrivate::propValue(keyFromGroupAndName(group, "divelist_font"), prefs.divelist_font).value<QFont>();
 	if (nearly_equal(system_divelist_default_font_size, -1.0)) {
+#if !defined(SUBSURFACE_MOBILE)
+		// pick a sensible default based on screen dimensions
+		QSize screen = QGuiApplication::primaryScreen()->size();
+		if (screen.width() < 1024 || screen.height() < 768)
+			prefs.font_size = 9.0;
+		else if (screen.width() > 2560 && screen.height() > 1440)
+			prefs.font_size = 13.0;
+		else
+			prefs.font_size = 11.0;
+#else
 		prefs.font_size = qApp->font().pointSizeF();
+#endif
 		system_divelist_default_font_size = prefs.font_size; // this way we don't save it on exit
 	}
 

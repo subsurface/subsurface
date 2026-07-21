@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
-import org.kde.kirigami 2.4 as Kirigami
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Window
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
@@ -52,7 +52,7 @@ Item {
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
-		TemplateTextField {
+		SsrfTextField {
 			id: login
 			text: PrefCloudStorage.cloud_storage_email
 			visible: !showPin
@@ -67,7 +67,7 @@ Item {
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
-		TemplateTextField {
+		SsrfTextField {
 			id: password
 			text: PrefCloudStorage.cloud_storage_password
 			visible: !showPin
@@ -82,7 +82,7 @@ Item {
 			text: qsTr("PIN")
 			visible: showPin
 		}
-		TemplateTextField {
+		SsrfTextField {
 			id: pin
 			text: ""
 			Layout.fillWidth: true

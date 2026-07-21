@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
-import QtQuick.Window 2.2
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.3
+import QtQuick
+import QtQuick.Controls as Controls
+import QtQuick.Window
+import QtQuick.Dialogs
+import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami as Kirigami
 
 Kirigami.Page {
 	id: diveComputerDownloadWindow
@@ -379,13 +379,13 @@ Kirigami.Page {
 						var connectionString = comboConnection.currentText
 						// separate BT address and BT name (if applicable)
 						// pattern that matches BT addresses
-						var btAddr = "(LE:)?([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}";
+						var btAddr = "((LE|BT):)?([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}";
 
 						// On iOS we store UUID instead of device address.
 						if (Qt.platform.os === 'ios')
 							btAddr = "(LE:)?\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}";
 
-						var pattern = new RegExp(btAddr);
+						var pattern = new RegExp(btAddr, "i");
 						var devAddress = "";
 						devAddress = pattern.exec(connectionString);
 						if (devAddress !== null) {

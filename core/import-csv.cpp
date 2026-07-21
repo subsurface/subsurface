@@ -2,7 +2,6 @@
 #include <libdivecomputer/parser.h>
 #include <map>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include "dive.h"
 #include "divelist.h"

@@ -25,7 +25,6 @@ void add_picture(picture_table &t, struct picture newpic)
 
 int get_picture_idx(const picture_table &t, const std::string &filename)
 {
-
 	return index_of_if(t, [&filename] (const picture &p)
 			   { return p.filename == filename; });
 }
