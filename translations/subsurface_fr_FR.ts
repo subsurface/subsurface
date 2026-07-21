@@ -13514,7 +13514,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="471"/>
         <source>failed to open email client, please manually create support email to support@subsurface-divelog.org - the logs have been copied to the clipboard and can be pasted into that email.</source>
-        <translation type="unfinished"/>
+        <translation>le courriel ne put servir à la connexion; veuillez contacter l&apos;aide (en anglais) à support@subsurface-divelog.org.  Néanmoins, la plongée a été copiée dans le presse-papier et peut être collée à même le courriel que vous enverrez.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="481"/>
@@ -13534,7 +13534,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="509"/>
         <source>Test busy indicator (toggle)</source>
-        <translation type="unfinished"/>
+        <translation>Tester l&apos;indicateur « Occupé »</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="519"/>
@@ -13550,7 +13550,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="533"/>
         <source>Enable verbose logging (currently: %1)</source>
-        <translation type="unfinished"/>
+        <translation>Activer ou désactiver l&apos;affichage des détails (état actuel: %1)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="535"/>
@@ -13560,17 +13560,17 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="542"/>
         <source>Access local cloud cache dirs</source>
-        <translation type="unfinished"/>
+        <translation>Accéder au cache local correspondant à ce qu&apos;il y a en nuagique</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="581"/>
         <source>Font size likely too big for the display, switching to smaller font suggested</source>
-        <translation type="unfinished"/>
+        <translation>La police semble trop grande pour l&apos;affichage. Nous suggérons la réduire.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="741"/>
         <source>Subsurface-mobile starting up</source>
-        <translation type="unfinished"/>
+        <translation>Démarrage de « Subsurface-mobile »</translation>
     </message>
 </context>
 <context>
