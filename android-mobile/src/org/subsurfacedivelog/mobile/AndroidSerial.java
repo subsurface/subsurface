@@ -269,7 +269,7 @@ public class AndroidSerial {
 			while (toReadFromHwLength > 0 && (startTime + timeout > (new Date()).getTime() || timeout == 0)) {
 				// Read and append to buffer
 				byte[] readFromHwData = new byte[arraylength];
-				int actuallyReadFromHwLength = usbSerialPort.read(readFromHwData, 0); // This behaves differently on different chipsets. CP210x blocks, FTDI seems to return instantly.
+				int actuallyReadFromHwLength = usbSerialPort.read(readFromHwData, timeout); // This behaves differently on different chipsets. CP210x blocks, FTDI seems to return instantly.
 				for (int i = 0; i < actuallyReadFromHwLength; i++ ) {
 					readBuffer.add(readFromHwData[i]);
 				}
