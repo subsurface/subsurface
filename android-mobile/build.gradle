@@ -24,6 +24,8 @@ allprojects {
 
 apply plugin: 'com.android.application'
 
+def subsurfaceDebugBuild = project.findProperty("subsurfaceDebuggable")?.toBoolean() ?: false
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation 'com.github.mik3y:usb-serial-for-android:v3.10.0'
@@ -100,7 +102,33 @@ android {
             // The subsurfaceDebuggable property controls the android:debuggable
             // manifest flag WITHOUT switching to gradle's debug build variant
             // (which uses less aggressive ZIP compression, inflating the APK).
-            debuggable project.findProperty("subsurfaceDebuggable")?.toBoolean() ?: false
+            debuggable subsurfaceDebugBuild
+
+            // PR builds still use the release variant, so Gradle would otherwise
+            // leave their APK unsigned. Use its automatically generated debug
+            // key for these installable test artifacts only.
+            if (subsurfaceDebugBuild) {
+                signingConfig signingConfigs.debug
+            }
+        }
+    }
+}
+
+// androiddeployqt --release assumes that Gradle produced an unsigned APK and
+// unconditionally looks for the corresponding "-release-unsigned.apk" name.
+// A signingConfig makes AGP omit that suffix. Mirror the debug-signed PR APK to
+// the name expected by androiddeployqt so that it can copy the finished package.
+if (subsurfaceDebugBuild) {
+    tasks.matching { it.name == "assembleRelease" }.configureEach {
+        doLast {
+            def apkDirectory = project.layout.buildDirectory.dir("outputs/apk/release").get().asFile
+            def signedApk = new File(apkDirectory, "${project.name}-release.apk")
+            if (!signedApk.exists()) {
+                throw new GradleException("Unable to locate debug-signed release APK at ${signedApk}")
+            }
+            def qtExpectedApk = new File(apkDirectory, "${project.name}-release-unsigned.apk")
+            java.nio.file.Files.copy(signedApk.toPath(), qtExpectedApk.toPath(),
+                    java.nio.file.StandardCopyOption.REPLACE_EXISTING)
         }
     }
 }
