@@ -44,6 +44,10 @@ private:
 	// If we temporarily change a line because the user is selecting a weight type
 	int tempRow;
 	weightsystem_t tempWS;
+	// Re-entry guard: setTempWS emits dataChanged, which causes the view to call
+	// setEditorData → QComboBox::setCurrentIndex → textHighlighted → setModelData
+	// → setTempWS again.  This flag breaks the recursive cycle.
+	bool inSetTempWS = false;
 };
 
 #endif

@@ -1857,21 +1857,34 @@ static void merge_cylinders(struct dive &res, const struct dive &a, const struct
 	}
 }
 
-/* Check whether a weightsystem table contains a given weightsystem */
-static bool has_weightsystem(const weightsystem_table &t, const weightsystem_t &w)
-{
-	return any_of(t.begin(), t.end(), [&w] (auto &w2) { return w == w2; });
-}
-
 static void merge_equipment(struct dive &res, const struct dive &a, const struct dive &b)
 {
-	for (auto &ws: a.weightsystems) {
-		if (!has_weightsystem(res.weightsystems, ws))
-			res.weightsystems.push_back(ws);
+	/* Produce the multiset union of the two weightsystem lists:
+	 * For each distinct weightsystem, include max(count_in_a, count_in_b) copies.
+	 * This means:
+	 * - Weights that exist only in one dive are kept as-is.
+	 * - Weights that are identical in both dives are de-duplicated.
+	 * - If one dive has more copies of a weight than the other, the higher
+	 *   count is kept (rather than adding them all up, which would be wrong).
+	 */
+	// Track which entries in b have already been "consumed" by a match in a.
+	std::vector<bool> b_matched(b.weightsystems.size(), false);
+
+	for (const auto &ws_a: a.weightsystems) {
+		res.weightsystems.push_back(ws_a);
+		// Mark one matching entry in b as consumed, so it doesn't get added again.
+		for (size_t j = 0; j < b.weightsystems.size(); ++j) {
+			if (!b_matched[j] && b.weightsystems[j] == ws_a) {
+				b_matched[j] = true;
+				break;
+			}
+		}
 	}
-	for (auto &ws: b.weightsystems) {
-		if (!has_weightsystem(res.weightsystems, ws))
-			res.weightsystems.push_back(ws);
+	// Add any unmatched entries from b (i.e. those not present in a at all, or
+	// present fewer times in a than in b).
+	for (size_t j = 0; j < b.weightsystems.size(); ++j) {
+		if (!b_matched[j])
+			res.weightsystems.push_back(b.weightsystems[j]);
 	}
 }
 

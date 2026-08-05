@@ -12,6 +12,7 @@ private slots:
 
 	void testMergeEmpty();
 	void testMergeBackwards();
+	void testMergeWeights();
 };
 
 #endif

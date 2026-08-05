@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/weightmodel.h"
 #include "core/subsurface-string.h"
+#include <QScopedValueRollback>
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/qthelper.h"
@@ -78,6 +79,16 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 // Ownership of passed in weight system will be taken. Caller must not use it any longer.
 void WeightModel::setTempWS(int row, weightsystem_t ws)
 {
+	// Guard against re-entrant calls: emitting dataChanged causes the view to
+	// call setEditorData → QComboBox::setCurrentIndex → textHighlighted signal
+	// → testActivationString → setModelData → back into setTempWS.  Without
+	// this guard the recursion is unbounded and crashes the application.
+	// Use QScopedValueRollback so the flag is always cleared when we return,
+	// even if an exception or early return occurs inside.
+	if (inSetTempWS)
+		return;
+	QScopedValueRollback<bool> guard(inSetTempWS, true);
+
 	if (!d || row < 0 || static_cast<size_t>(row) >= d->weightsystems.size()) // Sanity check: row must exist
 		return;
 
@@ -113,15 +124,28 @@ void WeightModel::clearTempWS()
 void WeightModel::commitTempWS()
 {
 #ifndef SUBSURFACE_MOBILE
-	if (tempRow < 0 || !d || static_cast<size_t>(tempRow) > d->weightsystems.size())
+	if (tempRow < 0 || !d || static_cast<size_t>(tempRow) >= d->weightsystems.size()) {
+		// Row is no longer valid (e.g. dive changed or row removed while an
+		// editor was open). Clear the temporary state so the model does not
+		// stay stuck reporting tempWS. Don't emit dataChanged for a row that
+		// may not exist any longer.
+		tempRow = -1;
+		tempWS = weightsystem_t();
 		return;
+	}
 	// Only submit a command if the type changed
 	weightsystem_t ws = d->weightsystems[tempRow];
 	if (ws.description != tempWS.description || gettextFromC::tr(ws.description.c_str()) != QString::fromStdString(tempWS.description)) {
-		int count = Command::editWeight(tempRow, tempWS, false);
+		// Clear tempRow before the command is executed to avoid re-entrant
+		// access via signals emitted during command execution.
+		int row = tempRow;
+		weightsystem_t newWS = std::move(tempWS);
+		tempRow = -1;
+		int count = Command::editWeight(row, std::move(newWS), false);
 		emit divesEdited(count);
+	} else {
+		tempRow = -1;
 	}
-	tempRow = -1;
 #endif
 }
 
