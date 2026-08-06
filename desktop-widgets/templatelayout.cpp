@@ -528,6 +528,8 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 			return QVariant::fromValue(d->when);
 		} else if (property == "location") {
 			return QString::fromStdString(d->get_location());
+		} else if (property == "country") {
+			return QString::fromStdString(d->get_country());
 		} else if (property == "gps") {
 			return formatDiveGPS(d);
 		} else if (property == "gps_decimal") {
