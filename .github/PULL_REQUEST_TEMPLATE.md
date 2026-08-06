@@ -2,10 +2,11 @@
 <!-- Make sure that you have read CONTRIBUTING.md and also the notes in CODINGSTYLE.md. -->
 <!-- If you are a collaborator, please add labels and assign other collaborators for a review. -->
 
-> [!IMPORTANT]
-> Translations are managed through Transifex. Do not open pull requests that
-> directly edit translation files. See the
-> [translation instructions](../blob/HEAD/CONTRIBUTING.md#translate-the-subsurface-application).
+<!--
+Translations are managed through Transifex. Do not open pull requests that
+directly edit translation files. See the
+[translation instructions](../blob/HEAD/CONTRIBUTING.md#translate-the-subsurface-application).
+-->
 
 ### Describe the pull request:
 <!-- Replace [ ] with [x] to select options. -->
