@@ -5317,6 +5317,7 @@ Only a subset of the dive data is exported:
 |date| (*string*) date of the dive
 |time| (*string*) time of the dive
 |location| (*string*) location of the dive
+|country| (*string*) country of the dive location
 |gps| (*string*) GPS coordinates of the dive
 |gps_decimal| (*string*) GPS coordinates of the dive in decimal format
 |duration| (*string*) duration of the dive
