@@ -45,6 +45,7 @@ public:
 	bool isPlanner() const;
 	void createSimpleDive(struct dive *d);
 	Mode currentMode() const;
+	bool planSaveAllowed() const;
 	bool tankInUse(int cylinderid) const;
 	CylindersModel *cylindersModel();
 
@@ -121,6 +122,7 @@ signals:
 	void recreationChanged(bool);
 	void calculatedPlanNotes(QString);
 	void variationsComputed(QString);
+	void planSaveAllowedChanged(bool allowed);
 
 private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
@@ -138,11 +140,13 @@ private:
 	QString computeVariations(const struct diveplan &original_plan, const struct deco_state &ds, int *instance_id);
 	void computeVariationsAsync(struct diveplan plan, struct deco_state ds); // Note: works on copies of plan and ds
 	void computeVariationsDone(QString text);
+	void setPlanSaveAllowed(bool allowed);
 	int analyzeVariations(const std::vector<decostop> &min, const std::vector<decostop> &mid, const std::vector<decostop> &max, const char *unit);
 	struct dive *d;
 	int dcNr;
 	CylindersModel cylinders;
 	Mode mode;
+	bool saveAllowed;
 	QVector<divedatapoint> divepoints;
 	QDateTime startTime;
 	int instanceCounter = 0;

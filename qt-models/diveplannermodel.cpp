@@ -264,6 +264,7 @@ void DivePlannerPointsModel::setPlanMode(Mode m)
 
 void DivePlannerPointsModel::resetPlanState()
 {
+	setPlanSaveAllowed(true);
 	setPlanMode(NOTHING);
 	clear();
 	diveplan.dp.clear();
@@ -274,6 +275,19 @@ void DivePlannerPointsModel::resetPlanState()
 bool DivePlannerPointsModel::isPlanner() const
 {
 	return mode == PLAN;
+}
+
+bool DivePlannerPointsModel::planSaveAllowed() const
+{
+	return saveAllowed;
+}
+
+void DivePlannerPointsModel::setPlanSaveAllowed(bool allowed)
+{
+	if (saveAllowed == allowed)
+		return;
+	saveAllowed = allowed;
+	emit planSaveAllowedChanged(allowed);
 }
 
 int DivePlannerPointsModel::columnCount(const QModelIndex&) const
@@ -539,7 +553,8 @@ int DivePlannerPointsModel::rowCount(const QModelIndex&) const
 DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent),
 	d(nullptr),
 	cylinders(true),
-	mode(NOTHING)
+	mode(NOTHING),
+	saveAllowed(true)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
 	startTime = QDateTime(startTime.date(), startTime.time(), QTimeZone(QTimeZone::UTC));
@@ -1199,12 +1214,16 @@ static bool shouldComputeVariations()
 
 void DivePlannerPointsModel::updateDiveProfile()
 {
-	if (!d)
+	if (!d) {
+		setPlanSaveAllowed(true);
 		return;
+	}
 
 	createTemporaryPlan();
-	if (diveplan.is_empty())
+	if (diveplan.is_empty()) {
+		setPlanSaveAllowed(true);
 		return;
+	}
 
 	// For calculating variations, we need a copy of the plan. We have to copy _before_
 	// calling plan(), because that adds deco stops.
@@ -1216,7 +1235,9 @@ void DivePlannerPointsModel::updateDiveProfile()
 	deco_state_cache cache;
 	struct deco_state plan_deco_state;
 
-	plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, cache, isPlanner(), false, nullptr);
+	// AI-generated (Claude)
+	planner_error_t planError = plan(&plan_deco_state, diveplan, d, dcNr, decotimestep, cache, isPlanner(), false, nullptr);
+	setPlanSaveAllowed(planError != PLAN_ERROR_RECREATIONAL_EXCEEDS_NDL);
 	updateMaxDepth();
 
 	if (doComputeVariations) {
@@ -1400,7 +1421,13 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 	if (shouldComputeVariations())
 		plan_copy = diveplan;
 
-	plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, cache, isPlanner(), true, nullptr);
+	// AI-generated (Claude)
+	// Recalculate at the persistence boundary so stale UI state or direct slot
+	// invocation cannot save an invalid recreational plan.
+	planner_error_t planError = plan(&ds_after_previous_dives, diveplan, d, dcNr, decotimestep, cache, isPlanner(), true, nullptr);
+	setPlanSaveAllowed(planError != PLAN_ERROR_RECREATIONAL_EXCEEDS_NDL);
+	if (!saveAllowed)
+		return;
 
 	if (shouldComputeVariations())
 		computeVariationsAsync(std::move(plan_copy), ds_after_previous_dives);
@@ -1546,10 +1573,12 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	diveplan.vpmb_conservatism = qPrefTechnicalDetails::vpmb_conservatism();
 
 	// Run the planner engine
+	// AI-generated (Claude)
+	planner_error_t planError = PLAN_OK;
 	if (!diveplan.is_empty()) {
 		deco_state_cache cache;
 		struct deco_state plan_deco_state;
-		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, shouldSave, nullptr);
+		planError = plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, shouldSave, nullptr);
 		if (shouldComputeVariations()) {
 			QString variations = computeVariations(plan_copy, plan_deco_state, nullptr);
 			if (!variations.isEmpty()) {
@@ -1572,6 +1601,12 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	results["notes"] = QString::fromStdString(d->notes);
 	results["maxDepth"] = get_depth_string(d->maxdepth, true);
 	results["duration"] = QString::number(d->duration.seconds / 60) + " min";
+	// AI-generated (Claude)
+	// Only flag the recreational no-decompression-limit violation here: other
+	// planner errors are reported as text in the plan notes, and the mobile UI
+	// shows a warning that is specific to the recreational NDL case.
+	const bool exceedsNDL = planError == PLAN_ERROR_RECREATIONAL_EXCEEDS_NDL;
+	results["exceedsNDL"] = exceedsNDL;
 
 	QVariantList profileData;
 	if (d->dcs.size() > 0) {
@@ -1586,7 +1621,10 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 
 	// Save the dive if requested
 	int newDiveId = -1;
-	if (shouldSave) {
+	// AI-generated (Claude)
+	// Keep invalid recreational plans available for preview, but do not persist
+	// them as dive plans that could be mistaken for safe plans.
+	if (shouldSave && !exceedsNDL) {
 		std::unique_ptr<dive> d_to_save = std::make_unique<dive>();
 		copy_dive(d, d_to_save.get());
 		newDiveId = d_to_save->id;

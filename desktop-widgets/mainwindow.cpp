@@ -998,7 +998,7 @@ QString MainWindow::filter_import_dive_sites()
 	return f;
 }
 
-int MainWindow::saveChangesConfirmationBox(QString message)
+int MainWindow::saveChangesConfirmationBox(QString message, bool saveEnabled)
 {
 	QMessageBox response(this);
 
@@ -1009,6 +1009,11 @@ int MainWindow::saveChangesConfirmationBox(QString message)
 	response.setInformativeText(tr("Changes will be lost if you don't save them."));
 	response.setIcon(QMessageBox::Warning);
 	response.setWindowModality(Qt::WindowModal);
+	if (!saveEnabled) {
+		response.button(QMessageBox::Save)->setEnabled(false);
+		response.setDefaultButton(QMessageBox::Cancel);
+		response.setInformativeText(tr("This recreational plan exceeds the no-decompression limit and cannot be saved."));
+	}
 
 	return response.exec();
 }
@@ -1074,18 +1079,25 @@ void MainWindow::writeSettings()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	if (inPlanner()) {
-		int ret = saveChangesConfirmationBox("Do you want to save the changes that you made in the planner into your dive log?");
+		DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+		int ret = saveChangesConfirmationBox(tr("Do you want to save the changes that you made in the planner into your dive log?"),
+						 plannerModel->planSaveAllowed());
 		switch (ret) {
 		case QMessageBox::Save:
-			DivePlannerPointsModel::instance()->savePlan();
-
+			plannerModel->savePlan();
+			// A fresh calculation can still reject the save if the preview state
+			// became stale while closing.
+			if (plannerModel->currentMode() != DivePlannerPointsModel::NOTHING) {
+				event->ignore();
+				return;
+			}
 			break;
 		case QMessageBox::Cancel:
 			event->ignore();
 
 			return;
 		case QMessageBox::Discard:
-			DivePlannerPointsModel::instance()->cancelPlan();
+			plannerModel->cancelPlan();
 
 			break;
 		}

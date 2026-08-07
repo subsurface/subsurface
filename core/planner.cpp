@@ -748,10 +748,10 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 		// entered profile a direct ascent to the surface has to be possible without
 		// violating the decompression ceiling. If it is not, the requested profile
 		// requires decompression stops that recreational mode does not plan for.
-		// In that case we do not extend the bottom time and do not fabricate an
-		// ascent from an extended profile: we display the entered profile as-is
-		// (with the ceiling violation marked on the profile) and flag the plan as
-		// invalid, so that no misleading no-decompression plan is presented as safe.
+		// In that case we do not extend the bottom time. We retain the entered
+		// profile and append the normal direct ascent so that the ceiling violation
+		// is visible, then flag the plan as invalid so that it is not presented as
+		// a safe no-decompression plan.
 		if (trial_ascent(ds, 0, depth, 0_m, avg_depth, bottom_time, dive->get_cylinder(current_cylinder)->gasmix,
 				 po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode)) {
 			// How long can we stay at the current depth and still directly ascent to the surface?
