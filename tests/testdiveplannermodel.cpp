@@ -4,6 +4,8 @@
 #include "core/subsurfacestartup.h"
 #include "commands/command.h"
 #include "core/divelog.h"
+#include "core/pref.h"
+#include "core/units.h"
 #include <QSignalSpy>
 #include <memory>
 #include <vector>
@@ -125,6 +127,51 @@ void TestDivePlannerModel::testSurfaceAirCylinderDataAccess()
 	QCOMPARE(gas.toString(), QStringLiteral("AIR"));
 
 	model->resetPlanState();
+}
+
+// AI-generated (Claude)
+// Recreational plans that require decompression cannot be saved, and become
+// saveable again once the entered profile is within the NDL.
+void TestDivePlannerModel::testRecreationalPlanSaveAllowed()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = RECREATIONAL;
+	prefs.drop_stone_mode = false;
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	diveplan &plan = model->getDiveplan();
+	plan.salinity = 10300;
+	plan.surface_pressure = 1_atm;
+	plan.gfhigh = 100;
+	plan.gflow = 100;
+	plan.bottomsac = prefs.bottomsac;
+	plan.decosac = prefs.decosac;
+	model->createSimpleDive(&plannedDive);
+	QVERIFY(model->planSaveAllowed());
+	QSignalSpy saveAllowedSpy(model, &DivePlannerPointsModel::planSaveAllowedChanged);
+
+	int lastRow = model->rowCount() - 1;
+	model->setData(model->index(0, DivePlannerPointsModel::DEPTH), 50);
+	model->setData(model->index(lastRow, DivePlannerPointsModel::DEPTH), 50);
+	model->setData(model->index(lastRow, DivePlannerPointsModel::RUNTIME), 50);
+	QVERIFY(!model->planSaveAllowed());
+	QCOMPARE(saveAllowedSpy.last().at(0).toBool(), false);
+
+	model->savePlan();
+	QCOMPARE(model->currentMode(), DivePlannerPointsModel::PLAN);
+
+	model->setData(model->index(0, DivePlannerPointsModel::DEPTH), 20);
+	model->setData(model->index(lastRow, DivePlannerPointsModel::DEPTH), 20);
+	model->setData(model->index(lastRow, DivePlannerPointsModel::RUNTIME), 20);
+	QVERIFY(model->planSaveAllowed());
+	QCOMPARE(saveAllowedSpy.last().at(0).toBool(), true);
+
+	model->resetPlanState();
+	prefs = default_prefs;
 }
 
 // Stubs for symbols referenced by libraries linked into TestDivePlannerModel

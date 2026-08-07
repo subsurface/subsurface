@@ -91,6 +91,17 @@ DivePlannerWidget::DivePlannerWidget(const dive &planned_dive, int &dcNr, Planne
 	connect(replanButton, &QAbstractButton::clicked, plannerModel, &DivePlannerPointsModel::saveDuplicatePlan);
 	connect(ui.buttonBox, &QDialogButtonBox::accepted, plannerModel, &DivePlannerPointsModel::savePlan);
 	connect(ui.buttonBox, &QDialogButtonBox::rejected, plannerModel, &DivePlannerPointsModel::cancelPlan);
+	// AI-generated (Claude)
+	auto setSaveEnabled = [this](bool enabled) {
+		ui.buttonBox->button(QDialogButtonBox::Save)->setEnabled(enabled);
+		replanButton->setEnabled(enabled);
+	};
+	connect(plannerModel, &DivePlannerPointsModel::planSaveAllowedChanged, this, setSaveEnabled);
+	// Refresh from the authoritative model state after every calculation as the
+	// button box can otherwise retain a stale disabled state.
+	connect(plannerModel, &DivePlannerPointsModel::calculatedPlanNotes, this,
+		[plannerModel, setSaveEnabled](const QString &) { setSaveEnabled(plannerModel->planSaveAllowed()); });
+	setSaveEnabled(plannerModel->planSaveAllowed());
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::Key_Escape), this);
 	connect(closeKey, &QShortcut::activated, plannerModel, &DivePlannerPointsModel::cancelPlan);
 

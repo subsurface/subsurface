@@ -977,8 +977,9 @@ static diveplan setupPlanRecreational(depth_t depth, int minutes)
 	reset_cylinders(&dive, true);
 
 	int droptime = depth.mm * 60 / m_or_ft(23, 75).mm;
-	plan_add_segment(dp, droptime, depth, 0, 0, 1, OC);
-	plan_add_segment(dp, minutes * 60 - droptime, depth, 0, 0, 1, OC);
+	Q_ASSERT(minutes * 60 >= droptime);
+	plan_add_segment(dp, droptime, depth, 0, 0, true, OC);
+	plan_add_segment(dp, minutes * 60 - droptime, depth, 0, 0, true, OC);
 	return dp;
 }
 
