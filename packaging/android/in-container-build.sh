@@ -158,9 +158,17 @@ LIBDC_HASH=$( ( cd "${SUBSURFACE_SOURCE}/libdivecomputer" && git rev-parse HEAD 
 if [ ! -f "${LIBDC_STAMP}" ] || [ "$(cat "${LIBDC_STAMP}" 2>/dev/null)" != "${LIBDC_HASH}" ]; then
 	echo "=== Building libdivecomputer ==="
 	cd "${SUBSURFACE_SOURCE}"
-	if [ ! -f libdivecomputer/configure ]; then
-		cd libdivecomputer && autoreconf -i && cd ..
-	fi
+	# Always regenerate the autotools files with the container's own automake /
+	# autoconf. libdivecomputer uses AM_INIT_AUTOMAKE without maintainer-mode,
+	# so its generated Makefiles carry "maintainer" rules that re-run aclocal /
+	# automake whenever configure.ac looks newer than the generated files. After
+	# a submodule update (or any git checkout that skews mtimes) that condition
+	# is easily met, and make then tries to invoke the exact automake version
+	# recorded in the committed aclocal.m4 (e.g. aclocal-1.17), which may not be
+	# installed. Running autoreconf -fi up front regenerates everything with the
+	# tools we actually have and ensures the generated files are newer than
+	# their sources, so the maintainer rules never fire during make.
+	( cd libdivecomputer && autoreconf -fi )
 	cd "${BUILDROOT}"
 	mkdir -p libdivecomputer-build && cd libdivecomputer-build
 	CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}" "${SUBSURFACE_SOURCE}"/libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
@@ -206,7 +214,13 @@ fi
 # unconditionally would re-run the configure step every build, which writes
 # out build files with fresh mtimes and forces ninja to rebuild a large
 # number of targets even when nothing has actually changed.
-if [ ! -f CMakeCache.txt ]; then
+#
+# A valid ninja build tree needs both CMakeCache.txt and build.ninja. If a
+# previous configure was interrupted (or the tree was partially wiped) we can
+# end up with CMakeCache.txt present but build.ninja missing, which makes
+# `cmake --build .` below fail with "loading 'build.ninja': No such file or
+# directory". Reconfigure whenever either file is absent.
+if [ ! -f CMakeCache.txt ] || [ ! -f build.ninja ]; then
 	cmake -G Ninja "${BUILDROOT}/src/subsurface" \
 		-DCMAKE_TOOLCHAIN_FILE="${QT_ANDROID_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
 		-DQT_HOST_PATH="${QT_HOST_PATH}" \
