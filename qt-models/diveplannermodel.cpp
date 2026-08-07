@@ -1546,10 +1546,12 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	diveplan.vpmb_conservatism = qPrefTechnicalDetails::vpmb_conservatism();
 
 	// Run the planner engine
+	// AI-generated (Claude)
+	planner_error_t planError = PLAN_OK;
 	if (!diveplan.is_empty()) {
 		deco_state_cache cache;
 		struct deco_state plan_deco_state;
-		plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, shouldSave, nullptr);
+		planError = plan(&plan_deco_state, diveplan, d, dcNr, 60, cache, true, shouldSave, nullptr);
 		if (shouldComputeVariations()) {
 			QString variations = computeVariations(plan_copy, plan_deco_state, nullptr);
 			if (!variations.isEmpty()) {
@@ -1572,6 +1574,11 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	results["notes"] = QString::fromStdString(d->notes);
 	results["maxDepth"] = get_depth_string(d->maxdepth, true);
 	results["duration"] = QString::number(d->duration.seconds / 60) + " min";
+	// AI-generated (Claude)
+	// Only flag the recreational no-decompression-limit violation here: other
+	// planner errors are reported as text in the plan notes, and the mobile UI
+	// shows a warning that is specific to the recreational NDL case.
+	results["exceedsNDL"] = (planError == PLAN_ERROR_RECREATIONAL_EXCEEDS_NDL);
 
 	QVariantList profileData;
 	if (d->dcs.size() > 0) {
