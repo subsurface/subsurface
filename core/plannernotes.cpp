@@ -116,7 +116,7 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 	if (dp.empty())
 		return;
 
-	if (error != PLAN_OK) {
+	if (error != PLAN_OK && error != PLAN_ERROR_RECREATIONAL_EXCEEDS_NDL) {
 		const char *message;
 		switch (error) {
 		case PLAN_ERROR_TIMEOUT:
@@ -146,6 +146,16 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 
 		return;
 	}
+
+	// AI-generated (Claude)
+	// A recreational plan that violates the decompression ceiling is still shown
+	// in full (including the profile), but is prefixed with a warning so that it
+	// is not mistaken for a valid no-decompression plan.
+	if (error == PLAN_ERROR_RECREATIONAL_EXCEEDS_NDL)
+		buf += format_string_std("<span style='color: red;'>%s </span> %s<br/>",
+			translate("gettextFromC", "Warning:"),
+			translate("gettextFromC", "This dive exceeds the no-decompression limit for recreational mode and would require "
+				"decompression stops. Reduce the depth or duration of the dive, or select a decompression planning mode."));
 
 	if (show_disclaimer) {
 		buf += "<div><b>";
