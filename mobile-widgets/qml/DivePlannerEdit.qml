@@ -202,12 +202,16 @@ TemplatePage {
 				id: planDate
 				Layout.fillWidth: true
 				sampleText: "0000-00-00"
+				// prefer a numeric keyboard on mobile while still allowing the date separators
+				inputMethodHints: Qt.ImhPreferNumbers
 				text: Qt.formatDate(new Date(), "yyyy-MM-dd")
 			}
 			SsrfTextField {
 				id: planTime
 				Layout.fillWidth: true
 				sampleText: "00:00:00"
+				// prefer a numeric keyboard on mobile while still allowing the time separators
+				inputMethodHints: Qt.ImhPreferNumbers
 				text: Qt.formatTime(new Date(), "hh:mm:ss")
 			}
 			TemplateLabel {
@@ -332,6 +336,9 @@ TemplatePage {
 					id: mixField
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5
 					sampleText: "32/68"
+					// prefer a numeric keyboard on mobile; not digits-only because
+					// values like "EAN50", "AIR" and the "/" separator must remain typeable
+					inputMethodHints: Qt.ImhPreferNumbers
 					text: mix
 					onTextChanged: {
 						if (text !== mix) {
@@ -376,6 +383,8 @@ TemplatePage {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5
 					sampleText: "3000"
 					text: pressure.toString()
+					// request a numeric keyboard on mobile for this integer-only field
+					inputMethodHints: Qt.ImhDigitsOnly
 					validator: IntValidator { bottom: 0; top: 10000 }
 					onTextChanged: {
 						if (Number(text) !== pressure) {
@@ -475,6 +484,8 @@ TemplatePage {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					sampleText: "900"
 					text: depth.toString()
+					// request a numeric keyboard on mobile for this integer-only field
+					inputMethodHints: Qt.ImhDigitsOnly
 					validator: IntValidator { bottom: 0; top: 900 }
 					onTextChanged: {
 						if (Number(text) !== depth) {
@@ -489,6 +500,8 @@ TemplatePage {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 3
 					sampleText: "999"
 					text: duration.toString()
+					// request a numeric keyboard on mobile for this integer-only field
+					inputMethodHints: Qt.ImhDigitsOnly
 					validator: IntValidator { bottom: 1; top: 999 }
 					onTextChanged: {
 						if (Number(text) !== duration) {
@@ -514,6 +527,8 @@ TemplatePage {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 5
 					sampleText: "00.00"
 					text: cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1 ? (setpoint / 1000.0).toFixed(2) : ""
+					// request a numeric keyboard on mobile; ImhFormattedNumbersOnly allows the decimal separator
+					inputMethodHints: Qt.ImhFormattedNumbersOnly
 					validator: DoubleValidator {
 						bottom: 0.16;
 						top: 2.0;
