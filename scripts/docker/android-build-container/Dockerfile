@@ -17,6 +17,7 @@ RUN apt-get update  && \
 	git \
 	cmake \
 	autoconf \
+	automake \
 	libtool-bin \
 	libegl-dev \
 	libxkbcommon-dev \
