@@ -742,25 +742,40 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 	if (pref_deco_mode(true) == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth.mm >= 10000;
 		track_ascent_gas(depth, dive, current_cylinder, avg_depth, bottom_time, safety_stop, divemode);
-		// How long can we stay at the current depth and still directly ascent to the surface?
-		do {
-			add_segment(ds, dive->depth_to_bar(depth),
-				    dive->get_cylinder(current_cylinder)->gasmix,
-				    timestep, po2, divemode, prefs.bottomsac, true);
-			update_cylinder_pressure(dive, depth.mm, depth.mm, timestep, prefs.bottomsac, dive->get_cylinder(current_cylinder), false, divemode);
-			clock += timestep;
-		} while (trial_ascent(ds, 0, depth, 0_m, avg_depth, bottom_time, dive->get_cylinder(current_cylinder)->gasmix,
-				      po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode) &&
-			 enough_gas(dive, current_cylinder) && clock < 6 * 3600);
 
-		// We did stay one timestep too many.
-		// In the best of all worlds, we would roll back also the last add_segment in terms of caching deco state, but
-		// let's ignore that since for the eventual ascent in recreational mode, nobody looks at the ceiling anymore,
-		// so we don't really have to compute the deco state.
-		update_cylinder_pressure(dive, depth.mm, depth.mm, -timestep, prefs.bottomsac, dive->get_cylinder(current_cylinder), false, divemode);
-		clock -= timestep;
-		plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, true, divemode);
-		previous_point_time = clock;
+		// AI-generated (Claude)
+		// A recreational dive must be a no-decompression dive: at the end of the
+		// entered profile a direct ascent to the surface has to be possible without
+		// violating the decompression ceiling. If it is not, the requested profile
+		// requires decompression stops that recreational mode does not plan for.
+		// In that case we do not extend the bottom time and do not fabricate an
+		// ascent from an extended profile: we display the entered profile as-is
+		// (with the ceiling violation marked on the profile) and flag the plan as
+		// invalid, so that no misleading no-decompression plan is presented as safe.
+		if (trial_ascent(ds, 0, depth, 0_m, avg_depth, bottom_time, dive->get_cylinder(current_cylinder)->gasmix,
+				 po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode)) {
+			// How long can we stay at the current depth and still directly ascent to the surface?
+			do {
+				add_segment(ds, dive->depth_to_bar(depth),
+					    dive->get_cylinder(current_cylinder)->gasmix,
+					    timestep, po2, divemode, prefs.bottomsac, true);
+				update_cylinder_pressure(dive, depth.mm, depth.mm, timestep, prefs.bottomsac, dive->get_cylinder(current_cylinder), false, divemode);
+				clock += timestep;
+			} while (trial_ascent(ds, 0, depth, 0_m, avg_depth, bottom_time, dive->get_cylinder(current_cylinder)->gasmix,
+					      po2, diveplan.surface_pressure.mbar / 1000.0, dive, divemode) &&
+				 enough_gas(dive, current_cylinder) && clock < 6 * 3600);
+
+			// We did stay one timestep too many.
+			// In the best of all worlds, we would roll back also the last add_segment in terms of caching deco state, but
+			// let's ignore that since for the eventual ascent in recreational mode, nobody looks at the ceiling anymore,
+			// so we don't really have to compute the deco state.
+			update_cylinder_pressure(dive, depth.mm, depth.mm, -timestep, prefs.bottomsac, dive->get_cylinder(current_cylinder), false, divemode);
+			clock -= timestep;
+			plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, true, divemode);
+			previous_point_time = clock;
+		} else {
+			error = PLAN_ERROR_RECREATIONAL_EXCEEDS_NDL;
+		}
 		do {
 			/* Ascend to surface */
 			int deltad = ascent_velocity(depth, avg_depth, bottom_time) * base_timestep;

@@ -953,4 +953,76 @@ void TestPlan::testCcrBailoutGasSelection()
 
 }
 
+// AI-generated (Claude)
+// Set up a simple single-cylinder air dive for recreational-mode planning.
+static diveplan setupPlanRecreational(depth_t depth, int minutes)
+{
+	diveplan dp;
+	dp.salinity = 10300;
+	dp.surface_pressure = 1_atm;
+	dp.gfhigh = 100;
+	dp.gflow = 100;
+	dp.bottomsac = prefs.bottomsac;
+	dp.decosac = prefs.decosac;
+
+	struct gasmix air = { 21_percent, 0_percent };
+	// Start from a clean set of cylinders so that leftovers from a previous
+	// test (e.g. CCR diluent / bailout gases) do not affect this OC dive.
+	dive.cylinders.clear();
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cyl0->gasmix = air;
+	cyl0->type.size = 24_l;
+	cyl0->type.workingpressure = 232_bar;
+	cyl0->cylinder_use = OC_GAS;
+	reset_cylinders(&dive, true);
+
+	int droptime = depth.mm * 60 / m_or_ft(23, 75).mm;
+	plan_add_segment(dp, droptime, depth, 0, 0, 1, OC);
+	plan_add_segment(dp, minutes * 60 - droptime, depth, 0, 0, 1, OC);
+	return dp;
+}
+
+// AI-generated (Claude)
+// A conservative recreational dive that stays within the no-decompression
+// limit must produce a valid plan.
+void TestPlan::testRecreationalWithinNDL()
+{
+	deco_state_cache cache;
+
+	setupPrefs();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+	prefs.planner_deco_mode = RECREATIONAL;
+	prefs.reserve_gas = 40000;
+	dive.dcs[0].divemode = OC;
+
+	auto testPlan = setupPlanRecreational(m_or_ft(20, 66), 20);
+
+	planner_error_t error = plan(&test_deco_state, testPlan, &dive, 0, 60, cache, true, false, nullptr);
+
+	QCOMPARE(error, PLAN_OK);
+}
+
+// AI-generated (Claude)
+// A recreational dive that exceeds the no-decompression limit (deep and long)
+// must be flagged as an error rather than silently producing a plan that
+// ascends through the decompression ceiling (issue #4892).
+void TestPlan::testRecreationalExceedingNDL()
+{
+	deco_state_cache cache;
+
+	setupPrefs();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+	prefs.planner_deco_mode = RECREATIONAL;
+	prefs.reserve_gas = 40000;
+	dive.dcs[0].divemode = OC;
+
+	auto testPlan = setupPlanRecreational(m_or_ft(50, 165), 50);
+
+	planner_error_t error = plan(&test_deco_state, testPlan, &dive, 0, 60, cache, true, false, nullptr);
+
+	QCOMPARE(error, PLAN_ERROR_RECREATIONAL_EXCEEDS_NDL);
+}
+
 QTEST_GUILESS_MAIN(TestPlan)

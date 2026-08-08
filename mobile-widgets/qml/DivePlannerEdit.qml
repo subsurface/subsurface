@@ -15,6 +15,8 @@ TemplatePage {
 
 	property string planNotes: ""
 	property var profileData: []
+	// AI-generated (Claude)
+	property bool exceedsNDL: false
 
 	// --- Data Models ---
 	ListModel { id: cylinderListModel }
@@ -107,6 +109,8 @@ TemplatePage {
 				// Handle planResult
 				planNotes = planResult.notes
 				profileData = planResult.profile
+				// AI-generated (Claude)
+				exceedsNDL = planResult.exceedsNDL === true
 			}
 		}
 
@@ -122,6 +126,11 @@ TemplatePage {
 	}
 
 	onProfileDataChanged: {
+		profileCanvas.requestPaint();
+	}
+
+	// AI-generated (Claude)
+	onExceedsNDLChanged: {
 		profileCanvas.requestPaint();
 	}
 
@@ -609,22 +618,55 @@ TemplatePage {
 					ctx.fillText((timeVal / 60).toFixed(0), x, height - padding + 5);
 				}
 
-				ctx.strokeStyle = Kirigami.Theme.highlightColor;
-				ctx.lineWidth = 2;
-				ctx.beginPath();
+				// AI-generated (Claude)
+				// Draw the dive profile. When a recreational dive breaches the
+				// decompression ceiling, the profile is still shown, but filled in
+				// red to flag the problem.
+				var profileColor = exceedsNDL ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.highlightColor;
 				var firstPoint = profileData[0];
 				var startX = padding + (firstPoint.time * xScale);
 				var startY = padding + (firstPoint.depth * yScale);
-				ctx.moveTo(startX, startY);
+				var lastX = startX;
 
+				// Build the filled area under the profile line.
+				ctx.fillStyle = exceedsNDL ? Kirigami.Theme.negativeBackgroundColor : Kirigami.Theme.highlightColor;
+				ctx.globalAlpha = exceedsNDL ? 1.0 : 0.25;
+				ctx.beginPath();
+				ctx.moveTo(startX, padding);
+				ctx.lineTo(startX, startY);
 				for (var j = 1; j < profileData.length; j++) {
 					var point = profileData[j];
 					var x = padding + (point.time * xScale);
 					var y = padding + (point.depth * yScale);
 					ctx.lineTo(x, y);
+					lastX = x;
+				}
+				ctx.lineTo(lastX, padding);
+				ctx.closePath();
+				ctx.fill();
+				ctx.globalAlpha = 1.0;
+
+				// Draw the profile line on top.
+				ctx.strokeStyle = profileColor;
+				ctx.lineWidth = 2;
+				ctx.beginPath();
+				ctx.moveTo(startX, startY);
+				for (var k = 1; k < profileData.length; k++) {
+					var linePoint = profileData[k];
+					var lx = padding + (linePoint.time * xScale);
+					var ly = padding + (linePoint.depth * yScale);
+					ctx.lineTo(lx, ly);
 				}
 				ctx.stroke();
 			}
+		}
+
+		// AI-generated (Claude)
+		Kirigami.InlineMessage {
+			Layout.fillWidth: true
+			visible: exceedsNDL
+			type: Kirigami.MessageType.Error
+			text: qsTr("This dive exceeds the no-decompression limit for recreational mode. See the dive plan summary below for details.")
 		}
 
 		TemplateLabel {
