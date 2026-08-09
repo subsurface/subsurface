@@ -26,8 +26,7 @@ RUN apt-get update  && \
 	pkg-config \
 	ninja-build \
 	python3-pip \
-	python3-venv \
-	p7zip-full && \
+	python3-venv && \
 	apt-get clean
 
 RUN mkdir -p ${ANDROID_SDK_ROOT}/cmdline-tools ${BUILDROOT}/src && \
@@ -59,6 +58,6 @@ RUN python3 -m venv ${BUILDROOT}/.v && ${BUILDROOT}/.v/bin/pip3 install aqtinsta
 	${BUILDROOT}/.v/bin/python3 -m aqt install-qt linux android ${QT_VERSION} android_${OS_TAG} \
 		--autodesktop --outputdir ${BUILDROOT}/Qt --modules qtlocation qtpositioning qtconnectivity qt5compat qtshadertools && \
 	${BUILDROOT}/.v/bin/python3 -m aqt install-qt linux desktop ${QT_VERSION} linux_gcc_64 \
-		--autodesktop --outputdir ${BUILDROOT}/Qt --modules qtshadertools --external 7z
+		--autodesktop --outputdir ${BUILDROOT}/Qt --modules qtshadertools
 
 ENV PATH=${BUILDROOT}/Qt/${QT_VERSION}/gcc_64/bin:${ANDROID_SDK_ROOT}/ndk/${NDK_VERSION}/toolchains/llvm/prebuilt/linux-x86_64/bin:${PATH}

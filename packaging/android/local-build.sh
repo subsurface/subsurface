@@ -111,7 +111,7 @@ else
 fi
 echo "Using container runtime: ${CONTAINER_RT}"
 
-CONTAINER_IMAGE="docker.io/subsurface/android-build:6.10.3-3"
+CONTAINER_IMAGE="docker.io/subsurface/android-build:6.10.3-4"
 CONTAINER_NAME="subsurface-android-build"
 
 # Must match the BUILDROOT value in
