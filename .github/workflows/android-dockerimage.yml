@@ -16,7 +16,7 @@ jobs:
   android-build-container:
     runs-on: ubuntu-latest
     env:
-      VERSION: 6.10.3-3 # the version number is based on the Qt version
+      VERSION: 6.10.3-4 # the version number is based on the Qt version
 
     steps:
     - uses: actions/checkout@v7
