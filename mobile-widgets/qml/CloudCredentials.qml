@@ -86,6 +86,7 @@ Item {
 			id: pin
 			text: ""
 			Layout.fillWidth: true
+			inputMethodHints: Qt.ImhDigitsOnly
 			visible: showPin
 		}
 

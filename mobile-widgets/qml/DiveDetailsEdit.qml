@@ -158,6 +158,7 @@ Item {
 				SsrfTextField {
 					id: txtDate;
 					Layout.preferredWidth: effectiveGridUnit * 10
+					inputMethodHints: Qt.ImhPreferNumbers
 					flickable: detailsEditFlickable
 				}
 			}
@@ -171,6 +172,7 @@ Item {
 					id: txtNumber;
 					sampleText: "0000"
 					Layout.preferredWidth: effectiveGridUnit * 3
+					inputMethodHints: Qt.ImhDigitsOnly
 					flickable: detailsEditFlickable
 				}
 				Item {
@@ -191,6 +193,7 @@ Item {
 					Layout.preferredWidth: effectiveGridUnit * 3
 					sampleText: "200.0ft"
 					id: txtDepth
+					inputMethodHints: Qt.ImhPreferNumbers
 					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 				}
@@ -205,6 +208,7 @@ Item {
 					Layout.preferredWidth: effectiveGridUnit * 3
 					sampleText: "00:00min"
 					id: txtDuration
+					inputMethodHints: Qt.ImhPreferNumbers
 					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 				}
@@ -220,6 +224,7 @@ Item {
 					id: txtAirTemp
 					sampleText: "-10.0\u00B0F"
 					Layout.preferredWidth: effectiveGridUnit * 3
+					inputMethodHints: Qt.ImhPreferNumbers
 					flickable: detailsEditFlickable
 				}
 
@@ -234,6 +239,7 @@ Item {
 					Layout.preferredWidth: effectiveGridUnit * 3
 					sampleText: "-10.0\u00B0F"
 					id: txtWaterTemp
+					inputMethodHints: Qt.ImhPreferNumbers
 					flickable: detailsEditFlickable
 				}
 			}
@@ -271,6 +277,7 @@ Item {
 				SsrfTextField {
 					Layout.preferredWidth: effectiveGridUnit * 16
 					id: txtGps
+					inputMethodHints: Qt.ImhPreferNumbers
 					flickable: detailsEditFlickable
 				}
 			}
@@ -341,6 +348,7 @@ Item {
 					id: txtWeight
 					Layout.preferredWidth: effectiveGridUnit * 12
 					readOnly: text === "cannot edit multiple weight systems"
+					inputMethodHints: Qt.ImhPreferNumbers
 					flickable: detailsEditFlickable
 				}
 			}
@@ -379,6 +387,7 @@ Item {
 						text: usedGas[0] !== undefined ? usedGas[0] : null
 						sampleText: "EAN100"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
@@ -396,6 +405,7 @@ Item {
 						text: startpressure[0] !== undefined ? startpressure[0] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 				}
@@ -412,6 +422,7 @@ Item {
 						text: endpressure[0] !== undefined ? endpressure[0] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 				}
@@ -450,6 +461,7 @@ Item {
 						text: usedGas[1] !== undefined ? usedGas[1] : null
 						sampleText: "EAN100"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
@@ -467,6 +479,7 @@ Item {
 						text: startpressure[1] !== undefined ? startpressure[1] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 				}
@@ -483,6 +496,7 @@ Item {
 						text: endpressure[1] !== undefined ? endpressure[1] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 				}
@@ -522,6 +536,7 @@ Item {
 						text: usedGas[2] !== undefined ? usedGas[2] : null
 						sampleText: "EAN100"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
@@ -539,6 +554,7 @@ Item {
 						text: startpressure[2] !== undefined ? startpressure[2] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 				}
@@ -555,6 +571,7 @@ Item {
 						text: endpressure[2] !== undefined ? endpressure[2] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 				}
@@ -595,6 +612,7 @@ Item {
 						text: usedGas[3] !== undefined ? usedGas[3] : null
 						sampleText: "EAN100"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
@@ -613,6 +631,7 @@ Item {
 						text: startpressure[3] !== undefined ? startpressure[3] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 
@@ -630,6 +649,7 @@ Item {
 						text: endpressure[3] !== undefined ? endpressure[3] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 				}
@@ -671,6 +691,7 @@ Item {
 						text: usedGas[4] !== undefined ? usedGas[4] : null
 						sampleText: "EAN100"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 					}
@@ -689,6 +710,7 @@ Item {
 						text: startpressure[4] !== undefined ? startpressure[4] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 
@@ -706,6 +728,7 @@ Item {
 						text: endpressure[4] !== undefined ? endpressure[4] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
+						inputMethodHints: Qt.ImhPreferNumbers
 						flickable: detailsEditFlickable
 					}
 				}
