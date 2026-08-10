@@ -283,7 +283,7 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 		}
 		if (dp.divemode != type) {
 			type = dp.divemode;
-			if ((dc->divemode == CCR && prefs.allowOcGasAsDiluent && cyl->cylinder_use == OC_GAS) || dc->divemode == PSCR)
+			if ((dc->divemode == CCR && prefs.allowOcGasAsDiluent && is_oc(*cyl)) || dc->divemode == PSCR)
 				add_event(dc, lasttime, SAMPLE_EVENT_BOOKMARK, 0, type, "modechange");
 		}
 

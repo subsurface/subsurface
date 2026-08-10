@@ -52,6 +52,7 @@ public:
 	QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 	bool updateBestMixes();
 	void emitDataChanged();
+	bool isPlanner() const { return inPlanner; }
 
 signals:
 	void divesEdited(int num);

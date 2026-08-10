@@ -62,7 +62,7 @@ weightsystem_t::weightsystem_t(weight_t w, std::string desc, bool auto_filled)
 }
 
 const char *cylinderuse_text[NUM_GAS_USE] = {
-	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
+	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used"), QT_TRANSLATE_NOOP("gettextFromC", "Travel Gas")
 };
 
 enum cylinderuse cylinderuse_from_text(const char *text)
@@ -72,6 +72,12 @@ enum cylinderuse cylinderuse_from_text(const char *text)
 			return static_cast<enum cylinderuse>(i);
 	}
 	return static_cast<enum cylinderuse>(-1);
+}
+
+// AI-generated (Claude)
+bool is_oc(const struct cylinder_t &cyl)
+{
+	return cyl.cylinder_use == OC_GAS || cyl.cylinder_use == TRAVEL_OC;
 }
 
 /* Add a metric or an imperial tank info structure. Copies the passed-in string. */

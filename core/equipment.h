@@ -9,7 +9,7 @@
 
 struct dive;
 
-enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
+enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, TRAVEL_OC, NUM_GAS_USE}; // The different uses for cylinders
 extern const char *cylinderuse_text[NUM_GAS_USE];
 
 struct cylinder_type_t
@@ -41,6 +41,10 @@ struct cylinder_t
 
 	volume_t gas_volume(pressure_t p) const; /* Volume of a cylinder at pressure 'p' */
 };
+
+// True for a cylinder breathed open-circuit, whether or not it is still
+// available for the rest of the dive (OC_GAS or TRAVEL_OC).
+extern bool is_oc(const struct cylinder_t &cyl);
 
 /* Table of cylinders.
  * This is a crazy class: it is basically a std::vector<>, but overrides

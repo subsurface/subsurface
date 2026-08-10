@@ -257,7 +257,7 @@ void TankUseDelegate::setDiveDc(const dive &d, int &dcNr)
 	currentDcNr = &dcNr;
 }
 
-QWidget *TankUseDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &) const
+QWidget *TankUseDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
 	QComboBox *comboBox = new QComboBox(parent);
 	const divecomputer *dc = currentDive->get_dc(*currentDcNr);
@@ -265,11 +265,19 @@ QWidget *TankUseDelegate::createEditor(QWidget *parent, const QStyleOptionViewIt
 		return comboBox;
 	bool isCcrDive = dc->divemode == CCR;
 	bool isFreeDive = dc->divemode == FREEDIVE;
+	// Travel is a planning aid (a gas used only to reach depth, then dropped
+	// for the rest of the dive) - it only makes sense while planning a
+	// decompression dive, not a no-decompression recreational plan.
+	const auto *cylinders = qobject_cast<const CylindersModel *>(index.model());
+	bool hideTravel = !cylinders || !cylinders->isPlanner() || pref_deco_mode(true) == RECREATIONAL;
 	for (int i = 0; i < NUM_GAS_USE; i++) {
 		if (isFreeDive && i != NOT_USED)
 			continue;
 
 		if (!isCcrDive && (i == DILUENT || i == OXYGEN))
+			continue;
+
+		if (i == TRAVEL_OC && hideTravel)
 			continue;
 
 		comboBox->addItem(gettextFromC::tr(cylinderuse_text[i]));
