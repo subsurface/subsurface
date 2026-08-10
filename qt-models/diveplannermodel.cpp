@@ -536,7 +536,7 @@ Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 	case DIVEMODE:
 		{
 			cylinder_t *cyl = real_cylinder_or_null(d, p.cylinderid);
-			if (!((d->get_dc(dcNr)->divemode == CCR && prefs.allowOcGasAsDiluent && cyl && cyl->cylinder_use == OC_GAS) || d->get_dc(dcNr)->divemode == PSCR))
+			if (!((d->get_dc(dcNr)->divemode == CCR && prefs.allowOcGasAsDiluent && cyl && is_oc(*cyl)) || d->get_dc(dcNr)->divemode == PSCR))
 				return QAbstractItemModel::flags(index) & ~Qt::ItemIsEditable & ~Qt::ItemIsEnabled;
 		}
 		break;

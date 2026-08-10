@@ -615,7 +615,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	m.addAction(tr("Split dive into two"), [this, seconds]() { splitDive(seconds); });
 
 	[[maybe_unused]] auto [divemode, cylinder_index, _gasmix] = get_dive_status_at(*d, *currentdc, seconds);
-	if (currentdc->divemode == PSCR || (currentdc->divemode == CCR && prefs.allowOcGasAsDiluent && (cylinder_index == -1 || d->get_cylinder(cylinder_index)->cylinder_use == OC_GAS))) {
+	if (currentdc->divemode == PSCR || (currentdc->divemode == CCR && prefs.allowOcGasAsDiluent && (cylinder_index == -1 || is_oc(*d->get_cylinder(cylinder_index))))) {
 		QMenu *changeMode = m.addMenu(tr("Change divemode"));
 		if (divemode != OC) {
 			changeMode->addAction(gettextFromC::tr(divemode_text_ui[OC]),
