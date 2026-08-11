@@ -31,7 +31,7 @@ jobs:
     # the container version is created in android-dockerimage.yml and is based
     # on the Qt version plus a running count of container builds for that version
     container:
-      image: subsurface/android-build:6.10.3-2
+      image: subsurface/android-build:6.10.3-5
 
     steps:
     - name: checkout sources
