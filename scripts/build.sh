@@ -498,7 +498,14 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 	cd "$GOOGLEMAPS_BUILDDIR"
 	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" "$SRC/googlemaps/googlemaps.pro"
 	make
-	make install
+	# AI-generated (Claude)
+	# googlemaps is a private Qt plugin, not a distro package, so it must
+	# never be installed into the real system Qt plugin directory. qmake's
+	# INSTALL_ROOT= prepends it to the plugin's install path instead - the
+	# same mechanism already used in packaging/copr/subsurface.spec and
+	# packaging/ubuntu/debian/rules. CMakeLists.txt already searches for
+	# libqtgeoservices_googlemaps.so under INSTALL_ROOT.
+	make install INSTALL_ROOT="$INSTALL_ROOT"
 	popd
 fi
 
