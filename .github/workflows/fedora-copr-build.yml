@@ -54,6 +54,15 @@ jobs:
         cd ..
         git clone https://github.com/subsurface/googlemaps
 
+    - name: Checkout qlitehtml
+      # QLiteHtml is the Qt6 replacement for the WebKit-based printing/user-manual
+      # support; it isn't packaged for Fedora, so we vendor it the same way as
+      # googlemaps and build it from source in make-package.sh. It bundles
+      # litehtml as its own submodule, hence --recursive.
+      run: |
+        cd ..
+        git clone --recursive https://github.com/dirkhh/qlitehtml
+
     - name: run the copr build script
       run: |
         cd ..

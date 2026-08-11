@@ -42,22 +42,21 @@ BuildRequires:  openssl-devel
 BuildRequires:  libsqlite3x-devel
 BuildRequires:  libusbx-devel
 BuildRequires:  bluez-libs-devel
-BuildRequires:  qt5-qtbase-devel
-BuildRequires:  qt5-qttools-devel
-BuildRequires:  qt5-qtwebkit-devel
-BuildRequires:  qt5-qtsvg-devel
-BuildRequires:  qt5-qtscript-devel
-BuildRequires:  qt5-qtdeclarative-devel
-BuildRequires:  qt5-qtbase-mysql
-BuildRequires:  qt5-qtbase-postgresql
-BuildRequires:  qt5-qtbase-ibase
-BuildRequires:  qt5-qtbase-odbc
-BuildRequires:  qt5-qtbase-tds
-BuildRequires:  qt5-qtconnectivity-devel
-BuildRequires:  qt5-qtlocation-devel
+BuildRequires:  qt6-qtbase-devel
+BuildRequires:  qt6-qttools-devel
+BuildRequires:  qt6-qtsvg-devel
+BuildRequires:  qt6-qtdeclarative-devel
+BuildRequires:  qt6-qtbase-mysql
+BuildRequires:  qt6-qtbase-postgresql
+BuildRequires:  qt6-qtbase-ibase
+BuildRequires:  qt6-qtbase-odbc
+BuildRequires:  qt6-qtconnectivity-devel
+BuildRequires:  qt6-qtlocation-devel
+BuildRequires:  qt6-qtpositioning-devel
+BuildRequires:  qt6-qt5compat-devel
 BuildRequires:  libappstream-glib
 
-Recommends:     qt5-qttranslations
+Recommends:     qt6-qttranslations
 
 %description
 DESCRIPTION
@@ -79,16 +78,26 @@ mkdir -p install-root
         make %{?_smp_mflags} ; \
         make install)
 ( cd googlemaps ; mkdir -p build ; cd build ; \
-        qmake-qt5 ../googlemaps.pro ; \
+        qmake-qt6 ../googlemaps.pro ; \
         # on Fedora 36 and newer we get the package_notes that break the build - let's rip them out
         sed -i 's/-Wl[^ ]*package_note[^ ]* //g' Makefile
         make -j4 ; \
         make install_target INSTALL_ROOT=%{_builddir}/install-root )
+# QLiteHtml is not packaged for Fedora, so build it from the sources that
+# make-package.sh vendored into the tarball, same as we do for the other
+# private dependencies above. It only supports being configured in its own
+# source tree (no separate build directory).
+( cd qlitehtml ; \
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%{_builddir}/install-root . ; \
+        make %{?_smp_mflags} ; \
+        make install )
 %cmake -DCMAKE_BUILD_TYPE=Release \
-                -DLRELEASE=lrelease-qt5 \
+                -DBUILD_WITH_QT6=ON \
+                -DLRELEASE=lrelease-qt6 \
                 -DLIBDIVECOMPUTER_INCLUDE_DIR=%{_builddir}/install-root/include \
                 -DLIBGIT2_INCLUDE_DIR=%{_builddir}/install-root/include \
                 -DLIBDIVECOMPUTER_LIBRARIES=%{_builddir}/install-root/lib/libdivecomputer.a \
+                -DCMAKE_PREFIX_PATH=%{_builddir}/install-root \
                 -DNO_PRINTING=OFF \
                 -DBUILD_DOCS=ON
 %cmake_build
@@ -96,6 +105,9 @@ mkdir -p install-root
 %install
 mkdir -p %{buildroot}/%{_libdir}
 ( cd googlemaps/build ; make install_target INSTALL_ROOT=%{buildroot} )
+# QLiteHtml isn't a Fedora package, so ship the shared library we built
+# above alongside subsurface rather than relying on the system to have it.
+cp -a %{_builddir}/install-root/lib64/libqlitehtml.so* %{buildroot}%{_libdir}/
 %cmake_install
 install subsurface.debug %{buildroot}%{_bindir}
 install metainfo/subsurface.metainfo.xml %{buildroot}%{_datadir}/metainfo
@@ -115,7 +127,8 @@ desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desk
 %defattr(-,root,root)
 %doc gpl-2.0.txt README.md ReleaseNotes/ReleaseNotes.txt
 %{_bindir}/subsurface*
-%{_libdir}/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so
+%{_libdir}/qt6/plugins/geoservices/libqtgeoservices_googlemaps.so
+%{_libdir}/libqlitehtml.so*
 %{_datadir}/applications/subsurface.desktop
 %dir %{_datadir}/metainfo
 %{_datadir}/metainfo/subsurface.metainfo.xml

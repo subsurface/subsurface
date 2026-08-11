@@ -16,10 +16,14 @@ find_path(QLITEHTML_INCLUDE_DIR
 
 find_path(QLITEHTML_LITEHTML_INCLUDE_DIR
 	NAMES litehtml/master_css.h
-	PATH_SUFFIXES include src/3rdparty/litehtml/include
+	# qlitehtml's own "make install" places litehtml/master_css.h directly
+	# next to qlitehtmlwidget.h, so look there first before falling back to
+	# other layouts (e.g. a system package installing litehtml separately).
 	HINTS
+		${QLITEHTML_INCLUDE_DIR}
 		${CMAKE_PREFIX_PATH}
 		${CMAKE_SOURCE_DIR}/qlitehtml
+	PATH_SUFFIXES include include/qlitehtml src/3rdparty/litehtml/include
 	PATHS
 		${CMAKE_INSTALL_PREFIX}/include
 		/usr/local/include
@@ -29,11 +33,15 @@ find_path(QLITEHTML_LITEHTML_INCLUDE_DIR
 
 find_library(QLITEHTML_LIBRARY
 	NAMES qlitehtml qlitehtml1 libqlitehtml
+	# PATH_SUFFIXES (unlike HINTS/PATHS alone) is applied to every search
+	# directory, so this also covers a CMAKE_PREFIX_PATH entry that installed
+	# into <prefix>/lib64 rather than <prefix>/lib.
 	HINTS ${CMAKE_PREFIX_PATH}
+	PATH_SUFFIXES lib lib64
 	PATHS
-		${CMAKE_INSTALL_PREFIX}/lib
-		/usr/local/lib
-		/usr/lib
+		${CMAKE_INSTALL_PREFIX}
+		/usr/local
+		/usr
 	DOC "QLiteHtml library"
 )
 
