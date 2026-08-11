@@ -154,20 +154,97 @@
      <property name="title">
       <string>Map Display Options</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <layout class="QVBoxLayout" name="verticalLayout_map">
       <item>
-       <widget class="QLabel" name="label_2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Short Names:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBox_map_short_names">
+          <property name="text">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_map_dedup">
         <property name="text">
-         <string>Short Names:</string>
+         <string>Merge markers for nearby dive sites with the same name</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBox_map_short_names">
+       <layout class="QHBoxLayout" name="horizontalLayout_map_dedup_distance">
+        <item>
+         <widget class="QLabel" name="label_map_dedup_distance">
+          <property name="text">
+           <string>Merge distance (m):</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBox_map_dedup_distance">
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>100000</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_map_dedup_distance">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="checkBox_map_only_selected">
         <property name="text">
-         <string notr="true"/>
+         <string>Show only the selected dive site on the map</string>
         </property>
        </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_map_radius">
+        <item>
+         <widget class="QLabel" name="label_map_radius">
+          <property name="text">
+           <string>Also show sites within (km):</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBox_map_radius">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>20000</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_map_radius">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </spacer>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -220,6 +297,18 @@
      <y>276</y>
     </hint>
    </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_map_only_selected</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_map_radius</receiver>
+   <slot>setEnabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>checkBox_map_dedup</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinBox_map_dedup_distance</receiver>
+   <slot>setEnabled(bool)</slot>
   </connection>
  </connections>
 </ui>

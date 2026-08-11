@@ -34,6 +34,12 @@ void PreferencesDefaults::refreshSettings()
 		ui->gridGeneric->setChecked(true);
 
 	ui->checkBox_map_short_names->setChecked(qPrefDisplay::map_short_names());
+	ui->checkBox_map_dedup->setChecked(qPrefDisplay::map_dedup_nearby_sites());
+	ui->spinBox_map_dedup_distance->setValue(qPrefDisplay::map_dedup_distance());
+	ui->spinBox_map_dedup_distance->setEnabled(qPrefDisplay::map_dedup_nearby_sites());
+	ui->checkBox_map_only_selected->setChecked(qPrefDisplay::map_show_only_selected_dive_site());
+	ui->spinBox_map_radius->setValue(qPrefDisplay::map_selected_dive_site_radius());
+	ui->spinBox_map_radius->setEnabled(qPrefDisplay::map_show_only_selected_dive_site());
 }
 
 void PreferencesDefaults::syncSettings()
@@ -43,4 +49,8 @@ void PreferencesDefaults::syncSettings()
 	qPrefDisplay::set_animation_speed(ui->velocitySlider->value());
 	qPrefDisplay::set_three_m_based_grid(ui->grid3MBased->isChecked());
 	qPrefDisplay::set_map_short_names(ui->checkBox_map_short_names->isChecked());
+	qPrefDisplay::set_map_dedup_nearby_sites(ui->checkBox_map_dedup->isChecked());
+	qPrefDisplay::set_map_dedup_distance(ui->spinBox_map_dedup_distance->value());
+	qPrefDisplay::set_map_show_only_selected_dive_site(ui->checkBox_map_only_selected->isChecked());
+	qPrefDisplay::set_map_selected_dive_site_radius(ui->spinBox_map_radius->value());
 }

@@ -27,6 +27,10 @@ class qPrefDisplay : public QObject {
 	Q_PROPERTY(bool singleColumnPortrait READ singleColumnPortrait WRITE set_singleColumnPortrait NOTIFY singleColumnPortraitChanged)
 	Q_PROPERTY(bool three_m_based_grid READ three_m_based_grid WRITE set_three_m_based_grid NOTIFY three_m_based_gridChanged)
 	Q_PROPERTY(bool map_short_names READ map_short_names WRITE set_map_short_names NOTIFY map_short_namesChanged)
+	Q_PROPERTY(bool map_show_only_selected_dive_site READ map_show_only_selected_dive_site WRITE set_map_show_only_selected_dive_site NOTIFY map_show_only_selected_dive_siteChanged)
+	Q_PROPERTY(int map_selected_dive_site_radius READ map_selected_dive_site_radius WRITE set_map_selected_dive_site_radius NOTIFY map_selected_dive_site_radiusChanged)
+	Q_PROPERTY(bool map_dedup_nearby_sites READ map_dedup_nearby_sites WRITE set_map_dedup_nearby_sites NOTIFY map_dedup_nearby_sitesChanged)
+	Q_PROPERTY(int map_dedup_distance READ map_dedup_distance WRITE set_map_dedup_distance NOTIFY map_dedup_distanceChanged)
 
 public:
 	static qPrefDisplay *instance();
@@ -56,6 +60,10 @@ public:
 	static bool singleColumnPortrait() { return st_singleColumnPortrait; }
 	static bool three_m_based_grid() { return prefs.three_m_based_grid; }
 	static bool map_short_names() { return prefs.map_short_names; }
+	static bool map_show_only_selected_dive_site() { return prefs.map_show_only_selected_dive_site; }
+	static int map_selected_dive_site_radius() { return prefs.map_selected_dive_site_radius; }
+	static bool map_dedup_nearby_sites() { return prefs.map_dedup_nearby_sites; }
+	static int map_dedup_distance() { return prefs.map_dedup_distance; }
 
 public slots:
 	static void set_animation_speed(int value);
@@ -77,6 +85,10 @@ public slots:
 	static void set_singleColumnPortrait(bool value);
 	static void set_three_m_based_grid(bool value);
 	static void set_map_short_names(bool value);
+	static void set_map_show_only_selected_dive_site(bool value);
+	static void set_map_selected_dive_site_radius(int value);
+	static void set_map_dedup_nearby_sites(bool value);
+	static void set_map_dedup_distance(int value);
 
 signals:
 	void animation_speedChanged(int value);
@@ -98,6 +110,10 @@ signals:
 	void singleColumnPortraitChanged(bool value);
 	void three_m_based_gridChanged(bool value);
 	void map_short_namesChanged(bool value);
+	void map_show_only_selected_dive_siteChanged(bool value);
+	void map_selected_dive_site_radiusChanged(int value);
+	void map_dedup_nearby_sitesChanged(bool value);
+	void map_dedup_distanceChanged(int value);
 
 private:
 	qPrefDisplay() {}
@@ -111,6 +127,10 @@ private:
 	static void disk_show_developer(bool doSync);
 	static void disk_three_m_based_grid(bool doSync);
 	static void disk_map_short_names(bool doSync);
+	static void disk_map_show_only_selected_dive_site(bool doSync);
+	static void disk_map_selected_dive_site_radius(bool doSync);
+	static void disk_map_dedup_nearby_sites(bool doSync);
+	static void disk_map_dedup_distance(bool doSync);
 
 	// functions to handle class variables
 	static void load_lastDir();

@@ -102,6 +102,10 @@ struct preferences {
 	bool        show_developer;
 	bool        three_m_based_grid;
 	bool        map_short_names;
+	bool        map_show_only_selected_dive_site;
+	int         map_selected_dive_site_radius; // km; 0 means show only the exact selected site
+	bool        map_dedup_nearby_sites; // merge markers for same-named sites that are close together
+	int         map_dedup_distance; // meters; how close same-named sites must be to get merged
 
 	// ********** Equipment tab *******
 	std::string default_cylinder;
