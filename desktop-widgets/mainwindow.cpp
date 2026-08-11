@@ -49,6 +49,7 @@
 #include "desktop-widgets/locationinformation.h"
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/subsurfacewebservices.h"
+#include "desktop-widgets/suuntogasassigndialog.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/updatemanager.h"
 #include "desktop-widgets/simplewidgets.h"
@@ -1331,15 +1332,22 @@ void MainWindow::importFiles(const std::vector<std::string> &fileNames)
 		return;
 
 	struct divelog log;
+	std::vector<suunto_unresolved_gas> unresolvedGases;
 	std::vector<bool> consumed(fileNames.size(), false);
-	suunto_json_fit_pair_import(fileNames, consumed, &log);
+	suunto_json_fit_pair_import(fileNames, consumed, &log, &unresolvedGases);
 
 	for (size_t i = 0; i < fileNames.size(); ++i) {
 		if (consumed[i])
 			continue;
 		std::string encoded = encodeFileName(fileNames[i]);
-		parse_file(encoded.c_str(), &log);
+		parse_file(encoded.c_str(), &log, &unresolvedGases);
 	}
+
+	if (!unresolvedGases.empty()) {
+		SuuntoGasAssignDialog gasAssign(std::move(unresolvedGases), this);
+		gasAssign.exec();
+	}
+
 	QString source = fileNames.size() == 1 ? QString::fromStdString(fileNames[0]) : tr("multiple files");
 	Command::importDives(&log, import_flags::merge_all_trips, source);
 }

@@ -122,6 +122,8 @@ set(SUBSURFACE_INTERFACE
 	starwidget.h
 	subsurfacewebservices.cpp
 	subsurfacewebservices.h
+	suuntogasassigndialog.cpp
+	suuntogasassigndialog.h
 	tab-widgets/TabBase.cpp
 	tab-widgets/TabBase.h
 	tab-widgets/TabDiveNotes.cpp

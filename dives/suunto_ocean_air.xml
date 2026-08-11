@@ -15,7 +15,7 @@
   <extradata key='Serial' value='258828934792' />
   <extradata key='FW Version' value='2.40.56' />
   <extradata key='HW version' value='Seal_RevA3' />
-  <event time='0:00 min' type='11' value='21' name='gaschange' cylinder='0' />
+  <event time='0:00 min' type='25' flags='1' name='gaschange' cylinder='0' />
   <event time='46:12 min' name='safety stop' />
   <sample time='0:00 min' depth='1.92 m' temp='29.24 C' ndl='100:00 min' tts='0:12 min' />
   <sample time='0:00 min' depth='1.92 m' />

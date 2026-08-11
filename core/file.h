@@ -36,8 +36,20 @@ extern struct _wdirent *_wreaddir(_WDIR *dir);
 extern int _wclosedir(_WDIR *dir);
 #endif
 
+struct dive;
 struct divelog;
 struct zip;
+
+// AI-generated (Claude)
+// A cylinder that a Suunto JSON import created because of a mid-dive
+// GasSwitch event, but whose actual gas mix could not be determined (no
+// Header.Diving.Gases entry, and no paired FIT file to patch it in). The
+// desktop import flow collects these across all imported files and can ask
+// the user to fill in the mix before the dives are committed to the log.
+struct suunto_unresolved_gas {
+	struct dive *d;
+	int cylinder_idx;
+};
 
 #if !defined(SUBSURFACE_MOBILE)
 extern int ostctools_import(std::string &buffer, struct divelog *log);
@@ -45,20 +57,23 @@ extern int divesoft_import(const std::string &buffer, struct divelog *log);
 extern int logtrak_import(const std::string &mem, struct divelog *log);
 extern int scubapro_asd_import(const std::string &mem, struct divelog *log);
 extern int fit_file_import(const std::string &buffer, struct divelog *log);
-extern int suunto_json_import(const std::string &buffer, const std::string &fit_buffer, struct divelog *log);
+extern int suunto_json_import(const std::string &buffer, const std::string &fit_buffer, struct divelog *log,
+			       std::vector<suunto_unresolved_gas> *unresolved = nullptr);
 // AI-generated (Claude)
 // Detects .json/.fit pairs sharing a base name among fileNames, as exported
 // together by the Suunto app for one dive, and imports each complete pair as
 // a single dive via suunto_json_import(). Marks consumed[i] for every file
 // that was part of a complete pair; unpaired files are left for the caller's
 // normal per-file import path.
-extern void suunto_json_fit_pair_import(const std::vector<std::string> &fileNames, std::vector<bool> &consumed, struct divelog *log);
+extern void suunto_json_fit_pair_import(const std::vector<std::string> &fileNames, std::vector<bool> &consumed, struct divelog *log,
+					 std::vector<suunto_unresolved_gas> *unresolved = nullptr);
 
 extern int try_to_open_cochran(const char *filename, std::string &mem, struct divelog *log);
 extern int try_to_open_liquivision(const char *filename, std::string &mem, struct divelog *log);
 #endif
 
-extern int parse_file(const char *filename, struct divelog *log);
+extern int parse_file(const char *filename, struct divelog *log,
+		       std::vector<suunto_unresolved_gas> *unresolved = nullptr);
 extern int try_to_open_zip(const char *filename, struct divelog *log);
 
 // Platform specific functions

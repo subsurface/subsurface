@@ -16,7 +16,7 @@
   <extradata key='HW version' value='Seal_RevA3' />
   <extradata key='GF Low' value='40' />
   <extradata key='GF High' value='85' />
-  <event time='0:00 min' type='11' value='32' name='gaschange' cylinder='0' o2='32.0%' />
+  <event time='0:00 min' type='25' flags='1' name='gaschange' cylinder='0' o2='32.0%' />
   <event time='52:05 min' name='safety stop' />
   <event time='53:57 min' name='safety stop' />
   <event time='55:14 min' name='safety stop' />

@@ -13,7 +13,7 @@
   <extradata key='Serial' value='2804271178' />
   <extradata key='FW Version' value='3.0.1102' />
   <extradata key='HW version' value='70.6.0' />
-  <event time='0:00 min' type='11' value='32' name='gaschange' cylinder='0' o2='32.0%' />
+  <event time='0:00 min' type='25' flags='1' name='gaschange' cylinder='0' o2='32.0%' />
   <event time='18:03 min' name='ascent' />
   <event time='18:03 min' name='safety stop' />
   <event time='36:35 min' name='ascent' />

@@ -21,6 +21,7 @@
  * it is not available in the JSON
  */
 
+#include <algorithm>
 #include <climits>
 #include <cmath>
 #include <cstdint>
@@ -53,22 +54,40 @@
  * ActivityType 51 is scuba diving -- skip everything else. */
 static const int SUUNTO_ACTIVITY_SCUBA = 51;
 
+// AI-generated (Claude)
 /* Parse ISO 8601 timestamp with timezone offset, return ms since epoch (UTC).
+ * The fractional-seconds part (".ddd") is optional, and the timezone may be
+ * given as "Z" instead of a "+HH:MM" / "-HH:MM" offset.
  * Returns 0 on parse failure. */
 static int64_t parse_iso8601_ms(const std::string &ts)
 {
 	struct tm tm = {};
 	int ms = 0, tz_h = 0, tz_m = 0;
 	char tz_sign = '+';
-	int n = sscanf(ts.c_str(), "%d-%d-%dT%d:%d:%d.%d%c%d:%d",
+	int consumed = 0;
+	int n = sscanf(ts.c_str(), "%d-%d-%dT%d:%d:%d%n",
 		       &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
-		       &tm.tm_hour, &tm.tm_min, &tm.tm_sec,
-		       &ms, &tz_sign, &tz_h, &tz_m);
-	if (n < 9) {
+		       &tm.tm_hour, &tm.tm_min, &tm.tm_sec, &consumed);
+	if (n < 6) {
 		report_info("Suunto JSON: failed to parse timestamp '%s' (matched %d fields)",
 			    ts.c_str(), n);
 		return 0;
 	}
+
+	const char *rest = ts.c_str() + consumed;
+	if (*rest == '.') {
+		int ms_consumed = 0;
+		if (sscanf(rest, ".%d%n", &ms, &ms_consumed) == 1)
+			rest += ms_consumed;
+	}
+
+	if (*rest == 'Z') {
+		tz_h = tz_m = 0;
+	} else if (sscanf(rest, "%c%d:%d", &tz_sign, &tz_h, &tz_m) != 3) {
+		report_info("Suunto JSON: failed to parse timezone in timestamp '%s'", ts.c_str());
+		return 0;
+	}
+
 	tm.tm_year -= 1900;
 	tm.tm_mon  -= 1;
 	int64_t epoch_s  = utc_mktime(&tm);
@@ -263,10 +282,15 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 			double lon = origin["Longitude"].toDouble(0);
 			if (lat != 0 && lon != 0) {
 				location_t loc = create_location(lat, lon);
-				dive_site *ds = log->sites.create(
-					dc.model + " " +
-					translate("gettextFromC", "dive"),
-					loc);
+
+				/* No place name in the JSON -- fall back to a
+				 * "lat, lon" string, matching the convention used
+				 * for GPS-only downloads in libdivecomputer.cpp. */
+				char location_string[64];
+				snprintf(location_string, sizeof(location_string),
+					 "%.6f, %.6f", lat, lon);
+
+				dive_site *ds = log->sites.create(location_string, loc);
 				d->dive_site = ds;
 			}
 		}
@@ -408,8 +432,8 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 				int gas_num = gs["GasNumber"].toInt(0) - gas_offset;
 				d->get_or_create_cylinder(gas_num);
 				add_event(&dc, elapsed_secs,
-					  SAMPLE_EVENT_GASCHANGE, 0,
-					  gas_num,
+					  SAMPLE_EVENT_GASCHANGE2, gas_num + 1,
+					  0,
 					  QT_TRANSLATE_NOOP("gettextFromC",
 							    "gaschange"));
 			}
@@ -458,8 +482,8 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 					int gas_num = gs["GasNumber"].toInt(0) - gas_offset;
 					d->get_or_create_cylinder(gas_num);
 					add_event(&dc, elapsed_secs,
-						  SAMPLE_EVENT_GASCHANGE, 0,
-						  gas_num,
+						  SAMPLE_EVENT_GASCHANGE2, gas_num + 1,
+						  0,
 						  QT_TRANSLATE_NOOP("gettextFromC",
 								    "gaschange"));
 				}
@@ -521,16 +545,22 @@ static void record_gas(std::vector<int> &gas_switch_order, int gn)
 	gas_switch_order.push_back(gn);
 }
 
-static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
+// AI-generated (Claude)
+/* Returns the cylinder indices that were actually assigned a gas mix from
+ * Header.Diving.Gases, so the caller can tell those apart from cylinders
+ * that were only created by a GasSwitch event and never got mix data. */
+static std::vector<int> parse_gases(const QJsonObject &header, const QJsonArray &samples,
 			struct dive *d, int gas_offset)
 {
+	std::vector<int> resolved;
+
 	QJsonObject diving = header["Diving"].toObject();
 	if (diving.isEmpty())
-		return;
+		return resolved;
 
 	QJsonArray gases = diving["Gases"].toArray();
 	if (gases.isEmpty())
-		return;
+		return resolved;
 
 	// Make an ordered list of unique GasNumbers.
 	std::vector<int> gas_switch_order;
@@ -565,6 +595,7 @@ static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
 		QJsonObject gas = gases[i].toObject();
 		int cyl_idx = gas_switch_order[i];
 		cylinder_t *cyl = d->get_or_create_cylinder(cyl_idx);
+		resolved.push_back(cyl_idx);
 
 		/* Suunto fractions (0.0-1.0), Subsurface permille */
 		double o2_frac = gas["Oxygen"].toDouble(0);
@@ -595,6 +626,8 @@ static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
 		if (end_pa > 0)
 			cyl->end.mbar = lrint(end_pa / 100.0);
 	}
+
+	return resolved;
 }
 
 // AI-generated (Claude)
@@ -608,7 +641,8 @@ static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
  * via the existing generic libdivecomputer/Garmin path and copy just the
  * gas mix and gradient factors onto the JSON-derived dive, which stays
  * the authoritative source for the profile itself. */
-static void patch_from_fit(const std::string &fit_buffer, struct dive *d, struct divelog *log)
+static void patch_from_fit(const std::string &fit_buffer, struct dive *d, struct divelog *log,
+			    std::vector<int> &resolved)
 {
 	if (fit_buffer.empty())
 		return;
@@ -639,6 +673,7 @@ static void patch_from_fit(const std::string &fit_buffer, struct dive *d, struct
 		cylinder_t *cyl = d->get_or_create_cylinder(0);
 		cyl->gasmix = fit_dive->cylinders[0].gasmix;
 		cyl->cylinder_use = fit_dive->cylinders[0].cylinder_use;
+		resolved.push_back(0);
 
 		if (fit_dive->cylinders.size() > 1)
 			report_info("Suunto JSON: paired FIT file has %u gas mixes; only gas 0 "
@@ -662,7 +697,8 @@ static void patch_from_fit(const std::string &fit_buffer, struct dive *d, struct
 }
 
 // Import a Suunto JSON file into the divelog.
-int suunto_json_import(const std::string &buffer, const std::string &fit_buffer, struct divelog *log)
+int suunto_json_import(const std::string &buffer, const std::string &fit_buffer, struct divelog *log,
+			std::vector<suunto_unresolved_gas> *unresolved)
 {
 	QByteArray raw_data = QByteArray::fromRawData(buffer.data(), buffer.size());
 	QJsonDocument doc = QJsonDocument::fromJson(raw_data);
@@ -704,21 +740,35 @@ int suunto_json_import(const std::string &buffer, const std::string &fit_buffer,
 
 	parse_header(header, d.get());
 	parse_samples(header, samples, d.get(), log, gas_offset);
-	parse_gases(header, samples, d.get(), gas_offset);
+	std::vector<int> resolved_gases = parse_gases(header, samples, d.get(), gas_offset);
 
 	/* Divers need air. Add at least one cylinder exists even when no tank pod
 	 * was paired and no GasSwitch event is present in the log. */
 	if (d->cylinders.empty())
 		d->get_or_create_cylinder(0);
 
-	patch_from_fit(fit_buffer, d.get(), log);
+	patch_from_fit(fit_buffer, d.get(), log, resolved_gases);
+
+	/* If this dive switched gases mid-dive but we could not determine the
+	 * mix for one or more of those cylinders (no Diving.Gases entry, no
+	 * FIT patch), let the caller know so it can ask the user instead of
+	 * silently leaving them as air. Single-cylinder dives are left alone --
+	 * air is the reasonable default there, matching prior behavior. */
+	if (unresolved && d->cylinders.size() > 1) {
+		for (size_t i = 0; i < d->cylinders.size(); ++i) {
+			if (std::find(resolved_gases.begin(), resolved_gases.end(),
+				      static_cast<int>(i)) == resolved_gases.end())
+				unresolved->push_back({ d.get(), static_cast<int>(i) });
+		}
+	}
 
 	log->dives.record_dive(std::move(d));
 	return 1;
 }
 
 // AI-generated (Claude)
-void suunto_json_fit_pair_import(const std::vector<std::string> &fileNames, std::vector<bool> &consumed, struct divelog *log)
+void suunto_json_fit_pair_import(const std::vector<std::string> &fileNames, std::vector<bool> &consumed, struct divelog *log,
+				  std::vector<suunto_unresolved_gas> *unresolved)
 {
 	/* The Suunto app exports a .json and a .fit file with the same base
 	 * name for the same dive. If the caller selected both, merge them into
@@ -756,7 +806,7 @@ void suunto_json_fit_pair_import(const std::vector<std::string> &fileNames, std:
 		if (ferr <= 0)
 			report_info("Suunto import: could not read paired FIT file '%s', importing gas mix from JSON as-is",
 				    fileNames[pair.fitIdx].c_str());
-		suunto_json_import(jsonBuf, ferr > 0 ? fitBuf : std::string(), log);
+		suunto_json_import(jsonBuf, ferr > 0 ? fitBuf : std::string(), log, unresolved);
 		consumed[pair.jsonIdx] = true;
 		consumed[pair.fitIdx] = true;
 	}

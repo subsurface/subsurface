@@ -286,7 +286,7 @@ bool remote_repo_uptodate(const char *filename, struct git_info *info)
 	return false;
 }
 
-int parse_file(const char *filename, struct divelog *log)
+int parse_file(const char *filename, struct divelog *log, std::vector<suunto_unresolved_gas> *unresolved)
 {
 	struct git_info info;
 	const char *fmt;
@@ -359,7 +359,7 @@ int parse_file(const char *filename, struct divelog *log)
 
 	/* Suunto JSON device log (from Suunto app export) */
 	if (fmt && (!strcasecmp(fmt + 1, "json")))
-		if (suunto_json_import(mem, std::string(), log) > 0)
+		if (suunto_json_import(mem, std::string(), log, unresolved) > 0)
 			return 0;
 #endif
 

@@ -2,11 +2,11 @@
 <settings>
 </settings>
 <divesites>
-<site uuid='28c4b3f3' name='Suunto Nautic dive' gps='48.332115 7.777142'>
+<site uuid='25a2b30f' name='48.332115, 7.777142' gps='48.332115 7.777142'>
 </site>
 </divesites>
 <dives>
-<dive otu='4' cns='2%' divesiteid='28c4b3f3' date='2025-12-27' time='14:56:17' duration='31:00 min'>
+<dive otu='4' cns='2%' divesiteid='25a2b30f' date='2025-12-27' time='14:56:17' duration='31:00 min'>
   <notes>This is a test note for Suunto Nautic</notes>
   <cylinder />
   <cylinder />
@@ -18,7 +18,7 @@
   <extradata key='Serial' value='288100258646' />
   <extradata key='FW Version' value='2.45.46' />
   <extradata key='HW version' value='GT_RevX' />
-  <event time='0:00 min' type='11' value='21' name='gaschange' cylinder='0' />
+  <event time='0:00 min' type='25' flags='1' name='gaschange' cylinder='0' />
   <event time='2:01 min' name='depth alarm' />
   <event time='5:50 min' name='depth alarm' />
   <event time='25:21 min' name='safety stop' />
