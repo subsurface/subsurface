@@ -43,6 +43,7 @@ BuildRequires:  libsqlite3x-devel
 BuildRequires:  libusbx-devel
 BuildRequires:  bluez-libs-devel
 BuildRequires:  qt6-qtbase-devel
+BuildRequires:  qt6-qtbase-private-devel
 BuildRequires:  qt6-qttools-devel
 BuildRequires:  qt6-qtsvg-devel
 BuildRequires:  qt6-qtdeclarative-devel
@@ -78,7 +79,7 @@ mkdir -p install-root
         make %{?_smp_mflags} ; \
         make install)
 ( cd googlemaps ; mkdir -p build ; cd build ; \
-        qmake-qt6 ../googlemaps.pro ; \
+        qmake6 ../googlemaps.pro ; \
         # on Fedora 36 and newer we get the package_notes that break the build - let's rip them out
         sed -i 's/-Wl[^ ]*package_note[^ ]* //g' Makefile
         make -j4 ; \
