@@ -18,8 +18,16 @@ if [[ ! -d googlemaps ]] ; then
 	echo "checked out in parallel to the Subsurface directory"
 	exit 1;
 fi
+if [[ ! -d qlitehtml ]] ; then
+	echo "Please make sure you have https://github.com/dirkhh/qlitehtml (with its litehtml submodule)"
+	echo "checked out in parallel to the Subsurface directory"
+	exit 1;
+fi
 
 TOPDIR=$(pwd)
+
+# we build against Qt6, which needs the googlemaps plugin's qt6-upstream branch
+(cd googlemaps ; git fetch ; git switch qt6-upstream)
 
 # ensure that the libdivecomputer module is there and current
 cd subsurface
@@ -56,9 +64,12 @@ if [[ ! -d $FOLDER ]]; then
 	(cd "$TOPDIR"/subsurface ; tar cf - . ) | (cd "$FOLDER" ; tar xf - )
 	cd "$FOLDER"
 	cp -a "$TOPDIR"/googlemaps .
+	cp -a "$TOPDIR"/qlitehtml .
 
 	# make sure we only have the files we want (the builds should all be empty when running on GitHub)
 	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
+	# qlitehtml vendors litehtml as its own submodule, so its .git metadata is nested
+	find qlitehtml -depth -name .git -exec rm -rf {} +
 	echo "$BUILDNUMBER" > latest-subsurface-buildnumber
 	echo "$GITDATE" > .gitdate
 	echo "$LIBDCREVISION" > libdivecomputer/revision
