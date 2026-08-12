@@ -104,6 +104,7 @@ jobs:
         draft: true
         prerelease: false
         fail_on_unmatched_files: true
+        overwrite_files: false
         files: |
          ./subsurface*.exe*
          ./smtk2ssrf*.exe
