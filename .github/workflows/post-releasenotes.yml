@@ -80,6 +80,7 @@ jobs:
         token: ${{ secrets.NIGHTLY_BUILDS }}
         draft: true
         prerelease: false
+        overwrite_files: false
         files: release_content_title.txt
         body_path: gh_release_notes.md
 

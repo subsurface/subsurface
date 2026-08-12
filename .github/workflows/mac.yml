@@ -238,6 +238,7 @@ jobs:
         draft: true
         prerelease: false
         fail_on_unmatched_files: true
+        overwrite_files: false
         files: ${{ steps.build.outputs.dmg }}
 
   notify-release-coordinator:

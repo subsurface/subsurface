@@ -154,6 +154,7 @@ jobs:
         draft: true
         prerelease: false
         fail_on_unmatched_files: true
+        overwrite_files: false
         files: |
          ./Subsurface-*.AppImage
 
