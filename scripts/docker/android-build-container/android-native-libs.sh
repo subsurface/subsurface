@@ -134,6 +134,7 @@ cmake -G Ninja \
   -DCMAKE_DISABLE_FIND_PACKAGE_BZip2=TRUE \
   -DZLIB_VERSION_STRING=1.2.7 \
   -DZLIB_LIBRARY=z \
+  -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
   ../libzip/
 ninja && ninja install
 cd "${BUILDROOT}"
