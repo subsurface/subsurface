@@ -34,7 +34,7 @@ BuildRequires:  libxml2-devel
 BuildRequires:  libxslt-devel
 BuildRequires:  libssh2-devel
 BuildRequires:  libcurl-devel
-BuildRequires:  libgit2-devel
+BuildRequires:  pkgconfig(libgit2)
 BuildRequires:  libmtp-devel
 BuildRequires:  LibRaw-devel
 BuildRequires:  netpbm-devel
