@@ -684,6 +684,22 @@ void TestParse::importSuuntoJsonEonCore()
 		SUBSURFACE_TEST_DATA "/dives/suunto_eon_core_nitrox.xml");
 }
 
+// AI-generated (Claude)
+void TestParse::importSuuntoJsonEonCoreMultiGas()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
+#endif
+	/* Regression guard for the gas-switch cylinder mismatch fix: a dive with
+	 * a mid-dive GasSwitch to a second gas whose mix differs from the first
+	 * (EAN21 -> EAN50) must attach the switch event to that second cylinder,
+	 * not misattribute it via the gas-mix-distance fallback. */
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/suunto_eon_core_multigas.json", &divelog), 0);
+	QCOMPARE(save_dives("./test_suunto_eon_core_multigas.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_eon_core_multigas.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_eon_core_multigas.xml");
+}
+
 void TestParse::importSuuntoJsonOcean()
 {
 #if defined(SUBSURFACE_MOBILE)
@@ -738,6 +754,25 @@ void TestParse::importSuuntoJsonOceanWithFit()
 	QCOMPARE(save_dives("./test_suunto_ocean_nitrox.ssrf"), 0);
 	FILE_COMPARE("./test_suunto_ocean_nitrox.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_nitrox.xml");
+#endif
+}
+
+// AI-generated (Claude)
+void TestParse::importSuuntoJsonOceanGf()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
+#else
+	/* Regression guard for reading gradient factors straight from the JSON:
+	 * a cloud-sourced export carries both Diving.Gases and Diving.GfLow/
+	 * GfHigh, so it must import fully self-contained (no paired FIT) with
+	 * "GF Low"/"GF High" extra_data taken directly from the JSON. */
+	auto [json_buf, jerr] = readfile(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_gf.json");
+	QVERIFY(jerr > 0);
+	QCOMPARE(suunto_json_import(json_buf, std::string(), &divelog), 1);
+	QCOMPARE(save_dives("./test_suunto_ocean_gf.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_ocean_gf.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_gf.xml");
 #endif
 }
 
