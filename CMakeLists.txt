@@ -7,6 +7,23 @@ cmake_minimum_required(VERSION 3.16)
 project(Subsurface)
 
 # don't process generated files - this is new in 3.10
+# AI-generated (Claude)
+# CMP0071 is intentionally kept at OLD. Under NEW, AUTOMOC/AUTOUIC also scan
+# GENERATED sources; we add many generated files directly to targets - the
+# qrc_*.cpp emitted by qt_add_resources()/qt5_add_resources() (desktop, mobile
+# and Android/iOS, including the generated translations.qrc), and the ui_*.h
+# produced by qt_wrap_ui() that make up the subsurface_generated_ui library
+# (which has CMAKE_AUTOMOC ON). OLD keeps these out of AUTOMOC/AUTOUIC, matching
+# the current, working behaviour on all platforms. Switching to NEW would change
+# autogen behaviour across desktop and mobile/Android at once and can only be
+# validated with full per-platform builds, so we retain OLD until that is done
+# rather than silence a cosmetic deprecation warning.
+#
+# NOTE: A separate, non-fatal deprecation warning about a
+# cmake_minimum_required() call requesting a compatibility version below 3.10
+# originates in the Android NDK 27.2 toolchain file (build/cmake/flags.cmake),
+# not in this tree. It is out of our control and is expected to clear with a
+# future NDK bump; do not patch it here.
 if (POLICY CMP0071)
 	cmake_policy(SET CMP0071 OLD)
 endif()
