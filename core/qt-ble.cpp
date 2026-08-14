@@ -673,8 +673,14 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 	//
 	// NOTE: this MAC-based fallback must NOT be used on macOS/iOS, where
 	// CoreBluetooth identifies peripherals by UUID rather than MAC address.
+	// On those platforms address() is always null -- only check isValid().
 	//
+	// AI-generated (Claude)
+#if defined(Q_OS_MACOS) || defined(Q_OS_IOS)
+	if (!remoteDevice.isValid()) {
+#else
 	if (!remoteDevice.isValid() || remoteDevice.address().isNull()) {
+#endif
 #if defined(Q_OS_ANDROID)
 		QBluetoothAddress addr{QString(devaddr)};
 		if (addr.isNull()) {
