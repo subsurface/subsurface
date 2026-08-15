@@ -59,6 +59,7 @@ TestCase {
 		property bool spy6 : false
 		property bool spy7 : false
 		property bool spy8 : false
+		property int formatRefreshCount: 0
 
 		Connections {
 			target: PrefLanguage
@@ -70,7 +71,43 @@ TestCase {
 			onTime_formatChanged: {spyCatcher.spy6 = true }
 			onTime_format_overrideChanged: {spyCatcher.spy7 = true }
 			onUse_system_languageChanged: {spyCatcher.spy8 = true }
+			function onDateTimeFormatsChanged() { ++spyCatcher.formatRefreshCount }
 		}
+	}
+
+	// AI-generated (Claude): Exercise the mobile preset choices through the public QML API.
+	function test_mobilePresets() {
+		PrefLanguage.use_system_language = false
+		PrefLanguage.lang_locale = "en_US"
+		PrefLanguage.applyDatePreset("system")
+
+		var refreshCount = spyCatcher.formatRefreshCount
+		PrefLanguage.applyDatePreset("day-first")
+		compare(PrefLanguage.date_format, "dd.MM.yyyy")
+		compare(PrefLanguage.date_format_short, "d.M.yy")
+		compare(PrefLanguage.date_format_override, true)
+		compare(spyCatcher.formatRefreshCount, refreshCount + 1)
+
+		PrefLanguage.applyDatePreset("iso")
+		compare(PrefLanguage.date_format, "yyyy-MM-dd")
+		compare(PrefLanguage.date_format_short, "yy-M-d")
+		PrefLanguage.applyDatePreset("month-first")
+		compare(PrefLanguage.date_format, "MM/dd/yyyy")
+		compare(PrefLanguage.date_format_short, "M/d/yy")
+
+		PrefLanguage.applyTimePreset("24-hour")
+		compare(PrefLanguage.time_format, "hh:mm")
+		compare(PrefLanguage.time_format_override, true)
+		PrefLanguage.applyTimePreset("12-hour")
+		compare(PrefLanguage.time_format, "h:mm AP")
+
+		PrefLanguage.applyDatePreset("system")
+		PrefLanguage.applyTimePreset("system")
+		compare(PrefLanguage.date_format_override, false)
+		compare(PrefLanguage.time_format_override, false)
+		verify(PrefLanguage.date_format.length > 0)
+		verify(PrefLanguage.date_format_short.length > 0)
+		verify(PrefLanguage.time_format.length > 0)
 	}
 
 	function test_signals() {

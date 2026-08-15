@@ -12,11 +12,51 @@ TemplatePage {
 	property alias defaultCylinderModel: defaultCylinderBox.model
 	property alias defaultCylinderIndex: defaultCylinderBox.currentIndex
 	property real contentColumeWidth: width - 2 * Kirigami.Units.gridUnit
+	// AI-generated (Claude): Present the shared date/time presets without exposing Qt format strings.
+	property var datePresetIds: ["system", "day-first", "month-first", "iso"]
+	property var datePresetLabels: [qsTr("System default"), qsTr("Day-month-year"),
+		qsTr("Month-day-year"), qsTr("Year-month-day (ISO)")]
+	property var timePresetIds: ["system", "24-hour", "12-hour"]
+	property var timePresetLabels: [qsTr("System default"), qsTr("24-hour"), qsTr("12-hour")]
 	property var describe: [qsTr("Undefined"),
 		qsTr("Incorrect username/password combination"),
 		qsTr("Credentials need to be verified"),
 		qsTr("Credentials verified"),
 		qsTr("No cloud mode")]
+
+	function datePresetIndex() {
+		if (!PrefLanguage.date_format_override)
+			return 0
+		var presets = PrefLanguage.dateFormatPresets
+		for (var i = 1; i < presets.length; ++i) {
+			if (presets[i].longFormat === PrefLanguage.date_format &&
+			    presets[i].shortFormat === PrefLanguage.date_format_short)
+				return i
+		}
+		return -1
+	}
+
+	function timePresetIndex() {
+		if (!PrefLanguage.time_format_override)
+			return 0
+		var presets = PrefLanguage.timeFormatPresets
+		for (var i = 1; i < presets.length; ++i) {
+			if (presets[i].format === PrefLanguage.time_format)
+				return i
+		}
+		return -1
+	}
+
+	function datePresetPreview() {
+		var index = datePresetIndex()
+		return index >= 0 ? PrefLanguage.dateFormatPresets[index].preview :
+			PrefLanguage.longDatePreview + " / " + PrefLanguage.shortDatePreview
+	}
+
+	function timePresetPreview() {
+		var index = timePresetIndex()
+		return index >= 0 ? PrefLanguage.timeFormatPresets[index].preview : PrefLanguage.timePreview
+	}
 	Column {
 		width: contentColumeWidth
 		TemplateSection {
@@ -407,6 +447,56 @@ TemplatePage {
 			id: sectionUnits
 			title: qsTr("Units")
 			width: parent.width
+			ColumnLayout {
+				visible: sectionUnits.isExpanded
+				width: parent.width
+				spacing: Kirigami.Units.smallSpacing
+
+				TemplateLabel {
+					text: qsTr("Date and time")
+					font.pointSize: subsurfaceTheme.headingPointSize
+					font.weight: Font.Light
+					Layout.topMargin: Kirigami.Units.largeSpacing
+				}
+				TemplateLabel {
+					text: qsTr("Date format")
+				}
+				TemplateComboBox {
+					id: dateFormatBox
+					Layout.fillWidth: true
+					model: datePresetLabels
+					currentIndex: datePresetIndex()
+					onActivated: function(index) {
+						PrefLanguage.applyDatePreset(datePresetIds[index])
+					}
+				}
+				TemplateLabel {
+					Layout.fillWidth: true
+					wrapMode: Text.Wrap
+					text: qsTr("Example: %1").arg(datePresetPreview())
+				}
+				TemplateLabel {
+					text: qsTr("Time format")
+					Layout.topMargin: Kirigami.Units.smallSpacing
+				}
+				TemplateComboBox {
+					id: timeFormatBox
+					Layout.fillWidth: true
+					model: timePresetLabels
+					currentIndex: timePresetIndex()
+					onActivated: function(index) {
+						PrefLanguage.applyTimePreset(timePresetIds[index])
+					}
+				}
+				TemplateLabel {
+					Layout.fillWidth: true
+					wrapMode: Text.Wrap
+					text: qsTr("Example: %1").arg(timePresetPreview())
+				}
+				TemplateLine {
+					Layout.topMargin: Kirigami.Units.largeSpacing
+				}
+			}
 			RowLayout {
 				visible: sectionUnits.isExpanded
 				width: parent.width
