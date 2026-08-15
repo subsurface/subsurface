@@ -198,6 +198,52 @@ void TestQPrefLanguage::test_oldPreferences()
 	TEST(language->date_format_override(), true);
 	TEST(language->use_system_language(), true);
 
+	// AI-generated (Claude): Verify the shared API and stable preset values.
+	language->set_use_system_language(false);
+	language->set_lang_locale("en_US");
+	language->applyDateTimeFormats("ddd, d MMM yyyy", "d/M/yy", "HH:mm", true, true);
+	QCOMPARE(language->effectiveDateFormat(), QStringLiteral("ddd, d MMM yyyy"));
+	QCOMPARE(language->effectiveDateFormatShort(), QStringLiteral("d/M/yy"));
+	QCOMPARE(language->effectiveTimeFormat(), QStringLiteral("HH:mm"));
+	language->load();
+	QCOMPARE(language->date_format(), QStringLiteral("ddd, d MMM yyyy"));
+	QCOMPARE(language->date_format_short(), QStringLiteral("d/M/yy"));
+	QCOMPARE(language->time_format(), QStringLiteral("HH:mm"));
+
+	language->applyDatePreset("month-first");
+	QCOMPARE(language->date_format(), QStringLiteral("MM/dd/yyyy"));
+	QCOMPARE(language->date_format_short(), QStringLiteral("M/d/yy"));
+	language->applyDatePreset("day-first");
+	QCOMPARE(language->date_format(), QStringLiteral("dd.MM.yyyy"));
+	QCOMPARE(language->date_format_short(), QStringLiteral("d.M.yy"));
+	language->applyDatePreset("iso");
+	QCOMPARE(language->date_format(), QStringLiteral("yyyy-MM-dd"));
+	QCOMPARE(language->date_format_short(), QStringLiteral("yy-M-d"));
+	language->applyTimePreset("24-hour");
+	QCOMPARE(language->time_format(), QStringLiteral("hh:mm"));
+	language->applyTimePreset("12-hour");
+	QCOMPARE(language->time_format(), QStringLiteral("h:mm AP"));
+
+	QSignalSpy formatsSpy(language, &qPrefLanguage::dateTimeFormatsChanged);
+	language->restoreDateTimeDefaults();
+	QCOMPARE(language->date_format_override(), false);
+	QCOMPARE(language->time_format_override(), false);
+	const QString defaultLongDate = QLocale("en_US").dateFormat(QLocale::LongFormat).replace("dddd,", "ddd").replace("dddd", "ddd").replace("MMMM", "MMM");
+	const QString defaultShortDate = QLocale("en_US").dateFormat(QLocale::ShortFormat);
+	QCOMPARE(language->date_format(), defaultLongDate);
+	QCOMPARE(language->date_format_short(), defaultShortDate);
+	QCOMPARE(formatsSpy.count(), 1);
+	prefs.date_format = "error";
+	prefs.date_format_short = "error";
+	prefs.date_format_override = true;
+	prefs.time_format = "error";
+	prefs.time_format_override = true;
+	language->load();
+	QCOMPARE(language->date_format(), defaultLongDate);
+	QCOMPARE(language->date_format_short(), defaultShortDate);
+	QCOMPARE(language->date_format_override(), false);
+	QCOMPARE(language->time_format_override(), false);
+
 }
 
 void TestQPrefLanguage::test_signals()

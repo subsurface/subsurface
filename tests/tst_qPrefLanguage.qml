@@ -36,6 +36,16 @@ TestCase {
 		var x8 = PrefLanguage.use_system_language
 		PrefLanguage.use_system_language = true
 		compare(PrefLanguage.use_system_language, true)
+
+		PrefLanguage.applyDateTimeFormats("yyyy/MM/dd", "yy/M/d", "HH:mm", true, true)
+		compare(PrefLanguage.effectiveDateFormat, "yyyy/MM/dd")
+		compare(PrefLanguage.effectiveDateFormatShort, "yy/M/d")
+		compare(PrefLanguage.effectiveTimeFormat, "HH:mm")
+		verify(PrefLanguage.longDatePreview.length > 0)
+		verify(PrefLanguage.shortDatePreview.length > 0)
+		verify(PrefLanguage.timePreview.length > 0)
+		compare(PrefLanguage.dateFormatPresets.length, 4)
+		compare(PrefLanguage.timeFormatPresets.length, 3)
 	}
 
 	Item {

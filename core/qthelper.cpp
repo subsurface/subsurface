@@ -352,10 +352,6 @@ static std::vector<std::string> get_languages(const QLocale &loc)
  */
 void initUiLanguage()
 {
-	QString shortDateFormat;
-	QString dateFormat;
-	QString timeFormat;
-
 	// set loc as system language or selected language
 	loc = QLocale(qPrefLanguage::lang_locale());
 	if (qPrefLanguage::use_system_language() && !QLocale().uiLanguages().isEmpty()) {
@@ -392,30 +388,7 @@ void initUiLanguage()
 
 	prefs.locale.lang_locale = uiLang;
 
-	if (!prefs.date_format_override || prefs.date_format.empty()) {
-		// derive our standard date format from what the locale gives us
-		// the long format uses long weekday and month names, so replace those with the short ones
-		// for time we don't want the time zone designator and don't want leading zeroes on the hours
-		dateFormat = loc.dateFormat(QLocale::LongFormat);
-		dateFormat.replace("dddd,", "ddd").replace("dddd", "ddd").replace("MMMM", "MMM");
-		// special hack for Swedish as our switching from long weekday names to short weekday names
-		// messes things up there
-		dateFormat.replace("'en' 'den' d:'e'", " d");
-		prefs.date_format = dateFormat.toStdString();
-	}
-
-	if (!prefs.date_format_override || prefs.date_format_short.empty()) {
-		// derive our standard date format from what the locale gives us
-		shortDateFormat = loc.dateFormat(QLocale::ShortFormat);
-		prefs.date_format_short = shortDateFormat.toStdString();
-	}
-
-	if (!prefs.time_format_override || prefs.time_format.empty()) {
-		timeFormat = loc.timeFormat();
-		timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
-		timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
-		prefs.time_format = timeFormat.toStdString();
-	}
+	qPrefLanguage::applyLocaleDefaults(loc);
 }
 
 QLocale getLocale()
