@@ -3,7 +3,9 @@
 #define QPREFLANGUAGE_H
 #include "core/pref.h"
 
+#include <QLocale>
 #include <QObject>
+#include <QVariantList>
 
 class qPrefLanguage : public QObject {
 	Q_OBJECT
@@ -15,6 +17,14 @@ class qPrefLanguage : public QObject {
 	Q_PROPERTY(QString time_format READ time_format WRITE set_time_format NOTIFY time_formatChanged)
 	Q_PROPERTY(bool time_format_override READ time_format_override WRITE set_time_format_override NOTIFY time_format_overrideChanged)
 	Q_PROPERTY(bool use_system_language READ use_system_language WRITE set_use_system_language NOTIFY use_system_languageChanged)
+	Q_PROPERTY(QString effectiveDateFormat READ effectiveDateFormat NOTIFY dateTimeFormatsChanged)
+	Q_PROPERTY(QString effectiveDateFormatShort READ effectiveDateFormatShort NOTIFY dateTimeFormatsChanged)
+	Q_PROPERTY(QString effectiveTimeFormat READ effectiveTimeFormat NOTIFY dateTimeFormatsChanged)
+	Q_PROPERTY(QString longDatePreview READ longDatePreview NOTIFY dateTimeFormatsChanged)
+	Q_PROPERTY(QString shortDatePreview READ shortDatePreview NOTIFY dateTimeFormatsChanged)
+	Q_PROPERTY(QString timePreview READ timePreview NOTIFY dateTimeFormatsChanged)
+	Q_PROPERTY(QVariantList dateFormatPresets READ dateFormatPresets NOTIFY dateTimeFormatsChanged)
+	Q_PROPERTY(QVariantList timeFormatPresets READ timeFormatPresets NOTIFY dateTimeFormatsChanged)
 
 public:
 	static qPrefLanguage *instance();
@@ -33,6 +43,25 @@ public:
 	static const QString time_format() { return QString::fromStdString(prefs.time_format); }
 	static bool time_format_override() { return prefs.time_format_override; }
 	static bool use_system_language() { return prefs.locale.use_system_language; }
+
+	// AI-generated (Claude): Shared date/time preference API for all Qt frontends.
+	static QString effectiveDateFormat();
+	static QString effectiveDateFormatShort();
+	static QString effectiveTimeFormat();
+	static QString longDatePreview();
+	static QString shortDatePreview();
+	static QString timePreview();
+	static QVariantList dateFormatPresets();
+	static QVariantList timeFormatPresets();
+
+	Q_INVOKABLE void applyDateTimeFormats(const QString &longDateFormat, const QString &shortDateFormat,
+				      const QString &timeFormat, bool overrideDate, bool overrideTime);
+	Q_INVOKABLE void applyDatePreset(const QString &preset);
+	Q_INVOKABLE void applyTimePreset(const QString &preset);
+	Q_INVOKABLE void restoreDateTimeDefaults();
+
+	// Apply selected-locale defaults during UI locale initialization.
+	static void applyLocaleDefaults(const QLocale &locale);
 
 public slots:
 	static void set_date_format(const QString& value);
@@ -53,9 +82,19 @@ signals:
 	void time_formatChanged(const QString& value);
 	void time_format_overrideChanged(bool value);
 	void use_system_languageChanged(bool value);
+	void dateTimeFormatsChanged();
 
 private:
 	qPrefLanguage() {}
+
+	static QLocale preferenceLocale();
+	static QString defaultDateFormat(const QLocale &locale);
+	static QString defaultShortDateFormat(const QLocale &locale);
+	static QString defaultTimeFormat(const QLocale &locale);
+	static void applyFormats(const QString &longDateFormat, const QString &shortDateFormat,
+				 const QString &timeFormat, bool overrideDate, bool overrideTime);
+	static void storeFormats(const QString &longDateFormat, const QString &shortDateFormat,
+				 const QString &timeFormat, bool overrideDate, bool overrideTime);
 
 	static void disk_date_format(bool doSync);
 	static void disk_date_format_override(bool doSync);
