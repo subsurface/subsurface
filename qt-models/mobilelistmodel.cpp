@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "mobilelistmodel.h"
 #include "core/divefilter.h" // for shown_dives
+#include "core/settings/qPrefLanguage.h"
 
 MobileListModelBase::MobileListModelBase(DiveTripModelBase *sourceIn) : source(sourceIn)
 {
@@ -952,6 +953,10 @@ MobileModels::MobileModels() :
 	lm(&source),
 	sm(&source)
 {
+	// AI-generated (Claude): Date/time preferences only affect presentation, so refresh both
+	// mobile views without modifying dive data or scheduling a cloud save.
+	QObject::connect(qPrefLanguage::instance(), &qPrefLanguage::dateTimeFormatsChanged, &lm, &MobileListModel::invalidate);
+	QObject::connect(qPrefLanguage::instance(), &qPrefLanguage::dateTimeFormatsChanged, &sm, &MobileSwipeModel::invalidate);
 }
 
 MobileListModel *MobileModels::listModel()
