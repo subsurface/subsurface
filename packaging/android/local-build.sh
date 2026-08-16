@@ -167,8 +167,10 @@ fi
 # Start the container (no-op if already running).
 ${CONTAINER_RT} start "${CONTAINER_NAME}" >/dev/null
 
-# Copy the keystore into the running container.
-${CONTAINER_RT} cp "${KEYSTORE_FILE}" "${CONTAINER_NAME}:/tmp/keystore"
+# AI-generated (Claude): unsigned builds do not have a keystore to copy.
+if [ -n "${ANDROID_KEYSTORE_BASE64}" ]; then
+	${CONTAINER_RT} cp "${KEYSTORE_FILE}" "${CONTAINER_NAME}:/tmp/keystore"
+fi
 
 # --- Run the build ---
 # All build logic (compile, strip, gradle, collect artifacts, sign, chown)
