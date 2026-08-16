@@ -466,6 +466,8 @@ TemplatePage {
 					Layout.fillWidth: true
 					model: datePresetLabels
 					currentIndex: datePresetIndex()
+					// AI-generated (Claude): Unknown persisted formats remain visible without becoming presets.
+					displayText: currentIndex >= 0 ? currentText : qsTr("Custom")
 					onActivated: function(index) {
 						PrefLanguage.applyDatePreset(datePresetIds[index])
 					}
@@ -484,6 +486,8 @@ TemplatePage {
 					Layout.fillWidth: true
 					model: timePresetLabels
 					currentIndex: timePresetIndex()
+					// AI-generated (Claude): Unknown persisted formats remain visible without becoming presets.
+					displayText: currentIndex >= 0 ? currentText : qsTr("Custom")
 					onActivated: function(index) {
 						PrefLanguage.applyTimePreset(timePresetIds[index])
 					}
