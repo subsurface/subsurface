@@ -110,6 +110,22 @@ TestCase {
 		verify(PrefLanguage.time_format.length > 0)
 	}
 
+	// AI-generated (Claude): Reading preset data must not replace persisted custom formats.
+	function test_customFormatsRemainUntouched() {
+		PrefLanguage.applyDateTimeFormats("yyyy/MM/dd", "yy/M/d", "HH.mm", true, true)
+
+		compare(PrefLanguage.dateFormatPresets.length, 4)
+		compare(PrefLanguage.timeFormatPresets.length, 3)
+		verify(PrefLanguage.longDatePreview.length > 0)
+		verify(PrefLanguage.shortDatePreview.length > 0)
+		verify(PrefLanguage.timePreview.length > 0)
+		compare(PrefLanguage.date_format, "yyyy/MM/dd")
+		compare(PrefLanguage.date_format_short, "yy/M/d")
+		compare(PrefLanguage.time_format, "HH.mm")
+		compare(PrefLanguage.date_format_override, true)
+		compare(PrefLanguage.time_format_override, true)
+	}
+
 	function test_signals() {
 		PrefLanguage.date_format = "qml"
 		PrefLanguage.date_format_override = ! PrefLanguage.date_format_override
