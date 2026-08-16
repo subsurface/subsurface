@@ -682,23 +682,24 @@ static void patch_from_fit(const std::string &fit_buffer, struct dive *d, struct
 
 	/* Gradient factors: libdivecomputer's Garmin parser surfaces the FIT
 	 * DIVE_SETTINGS gf_low/gf_high as a "Deco model" extra_data string of
-	 * the form "Buhlmann ZHL-16C <low>/<high>". Skip if parse_deco_settings()
-	 * already got these straight from the JSON (cloud-sourced exports) --
-	 * add_extra_data() has no dedup, so applying both would leave two
-	 * "GF Low"/"GF High" entries. */
-	bool have_gf = std::any_of(d->dcs[0].extra_data.begin(), d->dcs[0].extra_data.end(),
-				    [](const extra_data &ed) { return ed.key == "GF Low"; });
-	if (!have_gf) {
-		for (const extra_data &ed : fit_dive->dcs[0].extra_data) {
-			if (ed.key != "Deco model")
-				continue;
-			unsigned gf_low = 0, gf_high = 0;
-			if (sscanf(ed.value.c_str(), "Buhlmann ZHL-16C %u/%u", &gf_low, &gf_high) == 2) {
-				add_extra_data(&d->dcs[0], "GF Low", std::to_string(gf_low));
-				add_extra_data(&d->dcs[0], "GF High", std::to_string(gf_high));
-			}
-			break;
+	 * the form "Buhlmann ZHL-16C <low>/<high>". The FIT's DIVE_SETTINGS
+	 * message is a standardised, multi-manufacturer format, so it takes
+	 * precedence over parse_deco_settings()'s JSON-only Diving.GfLow/
+	 * GfHigh fields when both are present -- drop whatever JSON-derived
+	 * "GF Low"/"GF High" entries exist (add_extra_data() has no dedup)
+	 * before adding the FIT's values. */
+	for (const extra_data &ed : fit_dive->dcs[0].extra_data) {
+		if (ed.key != "Deco model")
+			continue;
+		unsigned gf_low = 0, gf_high = 0;
+		if (sscanf(ed.value.c_str(), "Buhlmann ZHL-16C %u/%u", &gf_low, &gf_high) == 2) {
+			std::erase_if(d->dcs[0].extra_data, [](const extra_data &ed) {
+				return ed.key == "GF Low" || ed.key == "GF High";
+			});
+			add_extra_data(&d->dcs[0], "GF Low", std::to_string(gf_low));
+			add_extra_data(&d->dcs[0], "GF High", std::to_string(gf_high));
 		}
+		break;
 	}
 }
 

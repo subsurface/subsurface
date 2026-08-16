@@ -776,4 +776,26 @@ void TestParse::importSuuntoJsonOceanGf()
 #endif
 }
 
+// AI-generated (Claude)
+void TestParse::importSuuntoJsonOceanGfFitOverride()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
+#else
+	/* Regression guard for GF precedence: when both the JSON's
+	 * Diving.GfLow/GfHigh (10/99) and a paired FIT's DIVE_SETTINGS gradient
+	 * factors (the real suunto_ocean_nitrox.fit encodes 40/85) are present,
+	 * the FIT's values must win, since that's a standardised format shared
+	 * across manufacturers, unlike the proprietary JSON fields. */
+	auto [json_buf, jerr] = readfile(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_gf_fit_override.json");
+	auto [fit_buf, ferr] = readfile(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_nitrox.fit");
+	QVERIFY(jerr > 0);
+	QVERIFY(ferr > 0);
+	QCOMPARE(suunto_json_import(json_buf, fit_buf, &divelog), 1);
+	QCOMPARE(save_dives("./test_suunto_ocean_gf_fit_override.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_ocean_gf_fit_override.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_gf_fit_override.xml");
+#endif
+}
+
 QTEST_GUILESS_MAIN(TestParse)
