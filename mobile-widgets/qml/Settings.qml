@@ -13,11 +13,6 @@ TemplatePage {
 	property alias defaultCylinderIndex: defaultCylinderBox.currentIndex
 	property real contentColumeWidth: width - 2 * Kirigami.Units.gridUnit
 	// AI-generated (Claude): Present the shared date/time presets without exposing Qt format strings.
-	property var datePresetIds: ["system", "day-first", "month-first", "iso"]
-	property var datePresetLabels: [qsTr("System default"), qsTr("Day-month-year"),
-		qsTr("Month-day-year"), qsTr("Year-month-day (ISO)")]
-	property var timePresetIds: ["system", "24-hour", "12-hour"]
-	property var timePresetLabels: [qsTr("System default"), qsTr("24-hour"), qsTr("12-hour")]
 	property var describe: [qsTr("Undefined"),
 		qsTr("Incorrect username/password combination"),
 		qsTr("Credentials need to be verified"),
@@ -45,6 +40,25 @@ TemplatePage {
 				return i
 		}
 		return -1
+	}
+
+	function datePresetLabel(preset) {
+		switch (preset.id) {
+		case "system": return qsTr("System default")
+		case "day-first": return qsTr("Day-month-year")
+		case "month-first": return qsTr("Month-day-year")
+		case "iso": return qsTr("Year-month-day (ISO)")
+		default: return preset.name
+		}
+	}
+
+	function timePresetLabel(preset) {
+		switch (preset.id) {
+		case "system": return qsTr("System default")
+		case "24-hour": return qsTr("24-hour")
+		case "12-hour": return qsTr("12-hour")
+		default: return preset.name
+		}
 	}
 
 	function datePresetPreview() {
@@ -464,12 +478,12 @@ TemplatePage {
 				TemplateComboBox {
 					id: dateFormatBox
 					Layout.fillWidth: true
-					model: datePresetLabels
+					model: PrefLanguage.dateFormatPresets.map(datePresetLabel)
 					currentIndex: datePresetIndex()
 					// AI-generated (Claude): Unknown persisted formats remain visible without becoming presets.
 					displayText: currentIndex >= 0 ? currentText : qsTr("Custom")
 					onActivated: function(index) {
-						PrefLanguage.applyDatePreset(datePresetIds[index])
+						PrefLanguage.applyDatePreset(PrefLanguage.dateFormatPresets[index].id)
 					}
 				}
 				TemplateLabel {
@@ -484,12 +498,12 @@ TemplatePage {
 				TemplateComboBox {
 					id: timeFormatBox
 					Layout.fillWidth: true
-					model: timePresetLabels
+					model: PrefLanguage.timeFormatPresets.map(timePresetLabel)
 					currentIndex: timePresetIndex()
 					// AI-generated (Claude): Unknown persisted formats remain visible without becoming presets.
 					displayText: currentIndex >= 0 ? currentText : qsTr("Custom")
 					onActivated: function(index) {
-						PrefLanguage.applyTimePreset(timePresetIds[index])
+						PrefLanguage.applyTimePreset(PrefLanguage.timeFormatPresets[index].id)
 					}
 				}
 				TemplateLabel {
