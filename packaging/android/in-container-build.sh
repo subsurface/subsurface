@@ -303,13 +303,21 @@ mkdir -p "${OUTPUT_DIR}"
 OUTPUT_APK="${OUTPUT_DIR}/Subsurface-mobile-${VERSION}.apk"
 
 echo "=== Collecting artifacts ==="
-# Use the APK that androiddeployqt produced (during cmake --build).
-APK="${BUILDROOT}/build-android/android-build/subsurface-mobile.apk"
+# AI-generated (Claude): androiddeployqt may apply its debug key even without release credentials.
+if [ -z "${KS_ALIAS}" ]; then
+	APK="${BUILDROOT}/build-android/android-build/build/outputs/apk/release/android-build-release-unsigned.apk"
+else
+	APK="${BUILDROOT}/build-android/android-build/subsurface-mobile.apk"
+fi
 if [ ! -f "${APK}" ]; then
 	echo "Error: Unable to locate APK at ${APK}"
 	exit 1
 fi
-cp "${APK}" "${OUTPUT_APK}"
+if [ -z "${KS_ALIAS}" ]; then
+	"${ANDROID_SDK_ROOT}/build-tools/${SDK_VERSION}/zipalign" -f -P 16 4 "${APK}" "${OUTPUT_APK}"
+else
+	cp "${APK}" "${OUTPUT_APK}"
+fi
 
 if [ "${BUILD_AAB}" = "1" ]; then
 	AAB=$(find "${BUILDROOT}/build-android/android-build" -name '*.aab' | head -1)
@@ -347,4 +355,3 @@ fi
 if [ -n "${HOST_UID}" ] && [ -n "${HOST_GID}" ]; then
 	chown "${HOST_UID}:${HOST_GID}" "${OUTPUT_DIR}"/*
 fi
-
