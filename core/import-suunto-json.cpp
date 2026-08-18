@@ -21,6 +21,7 @@
  * it is not available in the JSON
  */
 
+#include <algorithm>
 #include <climits>
 #include <cmath>
 #include <cstdint>
@@ -407,11 +408,15 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 				QJsonObject gs = events["GasSwitch"].toObject();
 				int gas_num = gs["GasNumber"].toInt(0) - gas_offset;
 				d->get_or_create_cylinder(gas_num);
-				add_event(&dc, elapsed_secs,
-					  SAMPLE_EVENT_GASCHANGE, 0,
-					  gas_num,
-					  QT_TRANSLATE_NOOP("gettextFromC",
-							    "gaschange"));
+				/* Build the event from the cylinder's actual gas mix
+				 * (already set by parse_gases(), which runs first)
+				 * via the same helper real dive computer backends
+				 * use, rather than a raw add_event() with gas_num
+				 * misused as an O2 percentage -- that would leave
+				 * gas.index unset and let the generic gas-mix-
+				 * distance fallback in validate_gaschange() guess
+				 * the wrong cylinder for any gas past the first. */
+				add_gas_switch_event(d, &dc, elapsed_secs, gas_num);
 			}
 
 			if (events.contains("State")) {
@@ -457,11 +462,9 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 					QJsonObject gs = eo["GasSwitch"].toObject();
 					int gas_num = gs["GasNumber"].toInt(0) - gas_offset;
 					d->get_or_create_cylinder(gas_num);
-					add_event(&dc, elapsed_secs,
-						  SAMPLE_EVENT_GASCHANGE, 0,
-						  gas_num,
-						  QT_TRANSLATE_NOOP("gettextFromC",
-								    "gaschange"));
+					/* See the DiveEvents.GasSwitch branch above for
+					 * why add_gas_switch_event() is used here. */
+					add_gas_switch_event(d, &dc, elapsed_secs, gas_num);
 				}
 
 				if (eo.contains("Notify")) {
@@ -598,6 +601,23 @@ static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
 }
 
 // AI-generated (Claude)
+/* The Suunto cloud API's dive header carries gradient factors directly
+ * (DiveHeader.LowGf/HighGf) unlike the app's own manual JSON export, which
+ * has no gradient factor fields at all and requires the paired FIT's
+ * DIVE_SETTINGS message instead (see patch_from_fit() below). Cloud-sourced
+ * JSON exports that were converted to also stash these under
+ * Diving.GfLow/GfHigh (not part of the app's own schema) can therefore
+ * import fully self-contained, without needing a paired FIT file. */
+static void parse_deco_settings(const QJsonObject &header, struct dive *d)
+{
+	QJsonObject diving = header["Diving"].toObject();
+	if (!diving.contains("GfLow") || !diving.contains("GfHigh"))
+		return;
+	add_extra_data(&d->dcs[0], "GF Low", std::to_string(diving["GfLow"].toInt()));
+	add_extra_data(&d->dcs[0], "GF High", std::to_string(diving["GfHigh"].toInt()));
+}
+
+// AI-generated (Claude)
 /* The Suunto app also exports a FIT file (same base name, different
  * extension) alongside the JSON for the same dive. The FIT file carries
  * the gas mix (via the FIT DIVE_GAS message) and gradient factors (via
@@ -640,6 +660,20 @@ static void patch_from_fit(const std::string &fit_buffer, struct dive *d, struct
 		cyl->gasmix = fit_dive->cylinders[0].gasmix;
 		cyl->cylinder_use = fit_dive->cylinders[0].cylinder_use;
 
+		/* parse_samples() already created any gas-switch event onto
+		 * cylinder 0 with whatever mix was known at the time (air, if
+		 * the JSON itself had no Diving.Gases block to patch_gases()
+		 * from). Refresh its cached value/mix now that the real gas
+		 * mix is known, so it doesn't stay stuck showing air. */
+		for (event &ev : d->dcs[0].events) {
+			if (!ev.is_gaschange() || ev.gas.index != 0)
+				continue;
+			struct event fresh = create_gas_switch_event(d, ev.time.seconds, 0);
+			ev.type = fresh.type;
+			ev.value = fresh.value;
+			ev.gas.mix = fresh.gas.mix;
+		}
+
 		if (fit_dive->cylinders.size() > 1)
 			report_info("Suunto JSON: paired FIT file has %u gas mixes; only gas 0 "
 				    "was applied (multi-gas Ocean import is not yet supported)",
@@ -648,12 +682,20 @@ static void patch_from_fit(const std::string &fit_buffer, struct dive *d, struct
 
 	/* Gradient factors: libdivecomputer's Garmin parser surfaces the FIT
 	 * DIVE_SETTINGS gf_low/gf_high as a "Deco model" extra_data string of
-	 * the form "Buhlmann ZHL-16C <low>/<high>". */
+	 * the form "Buhlmann ZHL-16C <low>/<high>". The FIT's DIVE_SETTINGS
+	 * message is a standardised, multi-manufacturer format, so it takes
+	 * precedence over parse_deco_settings()'s JSON-only Diving.GfLow/
+	 * GfHigh fields when both are present -- drop whatever JSON-derived
+	 * "GF Low"/"GF High" entries exist (add_extra_data() has no dedup)
+	 * before adding the FIT's values. */
 	for (const extra_data &ed : fit_dive->dcs[0].extra_data) {
 		if (ed.key != "Deco model")
 			continue;
 		unsigned gf_low = 0, gf_high = 0;
 		if (sscanf(ed.value.c_str(), "Buhlmann ZHL-16C %u/%u", &gf_low, &gf_high) == 2) {
+			std::erase_if(d->dcs[0].extra_data, [](const extra_data &ed) {
+				return ed.key == "GF Low" || ed.key == "GF High";
+			});
 			add_extra_data(&d->dcs[0], "GF Low", std::to_string(gf_low));
 			add_extra_data(&d->dcs[0], "GF High", std::to_string(gf_high));
 		}
@@ -703,8 +745,12 @@ int suunto_json_import(const std::string &buffer, const std::string &fit_buffer,
 		? 0 : 1;
 
 	parse_header(header, d.get());
-	parse_samples(header, samples, d.get(), log, gas_offset);
+	/* parse_gases() runs before parse_samples() so that cylinders already
+	 * carry their real gas mix by the time parse_samples() builds gas
+	 * switch events from them (see the GasSwitch handling below). */
 	parse_gases(header, samples, d.get(), gas_offset);
+	parse_deco_settings(header, d.get());
+	parse_samples(header, samples, d.get(), log, gas_offset);
 
 	/* Divers need air. Add at least one cylinder exists even when no tank pod
 	 * was paired and no GasSwitch event is present in the log. */

@@ -1,0 +1,71 @@
+{
+ "DeviceLog": {
+  "Header": {
+   "ActivityType": 51,
+   "DateTime": "2025-06-01T09:00:00.000+00:00",
+   "Depth": {
+    "Avg": 10.0,
+    "Max": 20.0
+   },
+   "Device": {
+    "Info": {
+     "HW": "Seal_RevA3",
+     "SW": "2.40.56"
+    },
+    "Name": "Porvoo",
+    "SerialNumber": "9876543210"
+   },
+   "Diving": {
+    "Gases": [
+     {
+      "EndPressure": 15000000,
+      "Helium": 0,
+      "Oxygen": 0.21,
+      "StartPressure": 20000000,
+      "TankFillPressure": 20000000,
+      "TankSize": 0.012
+     }
+    ],
+    "GfHigh": 99,
+    "GfLow": 10,
+    "SurfacePressure": 101300
+   },
+   "Duration": 50,
+   "Notes": "Regression test for FIT gradient factors overriding JSON ones"
+  },
+  "Samples": [
+   {
+    "Events": [
+     {"GasSwitch": {"GasNumber": 0}},
+     {"State": {"Active": true, "Type": "Dive Active"}}
+    ],
+    "TimeISO8601": "2025-06-01T09:00:00.000+00:00"
+   },
+   {
+    "Cylinders": [{"GasNumber": 0, "Pressure": 20000000}],
+    "Depth": 10.0,
+    "TimeISO8601": "2025-06-01T09:00:10.000+00:00"
+   },
+   {
+    "Cylinders": [{"GasNumber": 0, "Pressure": 18000000}],
+    "Depth": 20.0,
+    "TimeISO8601": "2025-06-01T09:00:20.000+00:00"
+   },
+   {
+    "Cylinders": [{"GasNumber": 0, "Pressure": 17000000}],
+    "Depth": 20.0,
+    "TimeISO8601": "2025-06-01T09:00:30.000+00:00"
+   },
+   {
+    "Cylinders": [{"GasNumber": 0, "Pressure": 16000000}],
+    "Depth": 10.0,
+    "TimeISO8601": "2025-06-01T09:00:40.000+00:00"
+   },
+   {
+    "Cylinders": [{"GasNumber": 0, "Pressure": 15000000}],
+    "Depth": 0.0,
+    "TimeISO8601": "2025-06-01T09:00:50.000+00:00"
+   }
+  ]
+ }
+}
