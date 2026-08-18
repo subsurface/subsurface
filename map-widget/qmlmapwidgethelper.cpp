@@ -54,7 +54,13 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 void MapWidgetHelper::setSelected(const std::vector<dive_site *> divesites)
 {
 	m_mapLocationModel->setSelected(std::move(divesites));
-	m_mapLocationModel->selectionChanged();
+	// AI-generated (Claude)
+	// A plain selection-flag update (dataChanged on existing rows) is not
+	// enough: a site that was previously merged away by dedup, or hidden
+	// because nothing was selected yet, may now need its own marker since
+	// it just became selected (selected sites are exempt from dedup). Only
+	// a full reload() re-evaluates which sites belong in the model at all.
+	m_mapLocationModel->reload(m_map);
 	updateEditMode();
 }
 

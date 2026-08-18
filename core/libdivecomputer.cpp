@@ -780,7 +780,15 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		snprintf(location_string, sizeof(location_string), "%.6f, %.6f", location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
 
 		unregister_dive_from_dive_site(dive);
-		devdata->log->sites.create(location_string, location)->add_dive(dive);
+		// AI-generated (Claude)
+		// Reuse a nearby existing site (same tolerance as parse-xml.cpp's
+		// GPS-only site matching) instead of always creating a new
+		// coordinate-named site, so repeat dives at essentially the same
+		// spot share one dive site rather than accumulating near-duplicates.
+		dive_site *site = devdata->log->sites.get_by_gps_proximity(location, 20);
+		if (!site)
+			site = devdata->log->sites.create(location_string, location);
+		site->add_dive(dive);
 
 		add_extra_data(&dive->dcs[0], "Start location", location_string);
 		got_location = true;

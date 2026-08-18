@@ -70,6 +70,10 @@ void qPrefDisplay::loadSync(bool doSync)
 	}
 	disk_three_m_based_grid(doSync);
 	disk_map_short_names(doSync);
+	disk_map_show_only_selected_dive_site(doSync);
+	disk_map_selected_dive_site_radius(doSync);
+	disk_map_dedup_nearby_sites(doSync);
+	disk_map_dedup_distance(doSync);
 }
 
 void qPrefDisplay::set_divelist_font(const QString &value)
@@ -154,6 +158,15 @@ HANDLE_PREFERENCE_BOOL(Display, "show_developer", show_developer);
 HANDLE_PREFERENCE_BOOL(Display, "three_m_based_grid", three_m_based_grid);
 
 HANDLE_PREFERENCE_BOOL(Display, "map_short_names", map_short_names);
+
+// AI-generated (Claude)
+HANDLE_PREFERENCE_BOOL(Display, "map_show_only_selected_dive_site", map_show_only_selected_dive_site);
+
+HANDLE_PREFERENCE_INT(Display, "map_selected_dive_site_radius", map_selected_dive_site_radius);
+
+HANDLE_PREFERENCE_BOOL(Display, "map_dedup_nearby_sites", map_dedup_nearby_sites);
+
+HANDLE_PREFERENCE_INT(Display, "map_dedup_distance", map_dedup_distance);
 
 void qPrefDisplay::setCorrectFont()
 {

@@ -20,6 +20,8 @@ preferences::preferences() :
 	show_developer(true),
 	three_m_based_grid(false),
 	map_short_names(false),
+	map_dedup_nearby_sites(true),
+	map_dedup_distance(50),
 	include_unused_tanks(false),
 	display_default_tank_infos(true),
 	auto_recalculate_thumbnails(true),

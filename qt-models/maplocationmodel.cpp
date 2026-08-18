@@ -11,8 +11,19 @@
 #include "desktop-widgets/mapwidget.h"
 #endif
 #include <map>
+#include <QRegularExpression>
 
-#define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
+// AI-generated (Claude)
+// Some dive computer downloads (see core/libdivecomputer.cpp) name a dive
+// site after its own GPS coordinates (e.g. "12.345678, -6.789012") when the
+// device provides a GPS fix but no site name. Such a name carries no real
+// identity -- it is effectively unnamed -- so for map dedup purposes treat
+// it the same as an empty name.
+static bool looksLikeCoordinates(const QString &name)
+{
+	static const QRegularExpression re(QStringLiteral("^-?\\d{1,3}\\.\\d+,\\s*-?\\d{1,3}\\.\\d+$"));
+	return re.match(name).hasMatch();
+}
 
 // MKW If "Map Short Names" preference is set, only return the last component
 // of the full dive site name.
@@ -159,9 +170,34 @@ void MapLocationModel::reload(QObject *map)
 	// of the non-hidden dives. Moreover, the selected dive sites are those
 	// that we filter for.
 	bool diveSiteMode = DiveFilter::instance()->diveSiteMode();
-	if (diveSiteMode)
+#endif
+	if (diveSiteMode) {
+#if !defined(SUBSURFACE_MOBILE) && !defined(SUBSURFACE_DOWNLOADER)
 		m_selectedDs = DiveFilter::instance()->filteredDiveSites();
 #endif
+	} else {
+		// Determine the full set of selected dive sites up front, so that
+		// "only show selected dive site" (below) knows about all of them,
+		// not just the ones encountered so far in the loop.
+		for (const auto &ds: divelog.sites) {
+			if (hasVisibleDive(*ds) && hasSelectedDive(*ds))
+				m_selectedDs.push_back(ds.get());
+		}
+	}
+
+	// AI-generated (Claude)
+	// Optionally hide every dive site except the selected one(s), or restrict
+	// to sites within a given radius of a selected site.
+	bool onlySelected = !diveSiteMode && qPrefDisplay::map_show_only_selected_dive_site();
+	double radius_m = qPrefDisplay::map_selected_dive_site_radius() * 1000.0;
+	std::vector<QGeoCoordinate> selectedCoords;
+	if (onlySelected) {
+		for (const dive_site *sel: m_selectedDs) {
+			if (sel->has_gps_location())
+				selectedCoords.emplace_back(sel->location.lat.udeg * 0.000001, sel->location.lon.udeg * 0.000001);
+		}
+	}
+
 	for (const auto &ds: divelog.sites) {
 		QGeoCoordinate dsCoord;
 
@@ -180,22 +216,44 @@ void MapLocationModel::reload(QObject *map)
 			qreal longitude = ds->location.lon.udeg * 0.000001;
 			dsCoord = QGeoCoordinate(latitude, longitude);
 		}
-		if (!diveSiteMode && hasSelectedDive(*ds) && !range_contains(m_selectedDs, ds.get()))
-			m_selectedDs.push_back(ds.get());
 		QString name = siteMapDisplayName(ds->name);
-		if (!diveSiteMode) {
-			// don't add dive locations with the same name, unless they are
-			// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
-			auto it = locationNameMap.find(name);
-			if (it != locationNameMap.end()) {
-				const MapLocation &existingLocation = m_mapLocations[it->second];
-				QGeoCoordinate coord = existingLocation.coordinate;
-				if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
+		bool isSelected = range_contains(m_selectedDs, ds.get());
+		if (onlySelected && !isSelected) {
+			bool withinRadius = radius_m > 0 &&
+				std::any_of(selectedCoords.begin(), selectedCoords.end(),
+					    [&dsCoord, radius_m](const QGeoCoordinate &c) { return dsCoord.distanceTo(c) <= radius_m; });
+			if (!withinRadius)
+				continue;
+		}
+		if (!diveSiteMode && !isSelected && qPrefDisplay::map_dedup_nearby_sites()) {
+			// Named sites only merge with another site of the exact same
+			// name within map_dedup_distance() meters, so two distinct,
+			// deliberately named sites are never accidentally combined.
+			// Unnamed sites (no name given by the user, or a name that is
+			// just the site's own GPS coordinates) have no identity worth
+			// preserving, so they merge into any nearby marker, named or
+			// not, within the same distance. Never skip the currently
+			// selected dive site, or its marker would be missing from the
+			// map. The toggle and the distance are user preferences.
+			// (AI-generated (Claude))
+			if (name.isEmpty() || looksLikeCoordinates(name)) {
+				bool mergedIntoExisting = std::any_of(m_mapLocations.begin(), m_mapLocations.end(),
+					[&dsCoord](const MapLocation &existingLocation) {
+						return dsCoord.distanceTo(existingLocation.coordinate) < qPrefDisplay::map_dedup_distance();
+					});
+				if (mergedIntoExisting)
 					continue;
+			} else {
+				auto it = locationNameMap.find(name);
+				if (it != locationNameMap.end()) {
+					const MapLocation &existingLocation = m_mapLocations[it->second];
+					QGeoCoordinate coord = existingLocation.coordinate;
+					if (dsCoord.distanceTo(coord) < qPrefDisplay::map_dedup_distance())
+						continue;
+				}
 			}
 		}
-		bool selected = range_contains(m_selectedDs, ds.get());
-		m_mapLocations.emplace_back(ds.get(), dsCoord, name, selected);
+		m_mapLocations.emplace_back(ds.get(), dsCoord, name, isSelected);
 		if (!diveSiteMode)
 			locationNameMap[name] = m_mapLocations.size() - 1;
 	}
