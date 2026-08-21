@@ -63,6 +63,12 @@ double progress_bar_fraction = 0.0;
 static int stoptime, stopdepth, ndl, po2, cns, heartbeat, bearing;
 static bool in_deco, first_temp_is_air;
 static int current_gas_index;
+#ifdef DC_SAMPLE_LOCATION
+static dc_location_t first_location, last_location;
+static bool got_first_location, got_last_location;
+#endif
+static dc_location_t field_location;
+static bool got_field_location;
 
 #define INFO(fmt, ...) report_info("INFO: " fmt, ##__VA_ARGS__)
 #define ERROR(fmt, ...)	report_info("ERROR: " fmt, ##__VA_ARGS__)
@@ -452,6 +458,17 @@ sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata
 		sample.tts.seconds = value.time;
 		break;
 #endif
+#ifdef DC_SAMPLE_LOCATION
+	case DC_SAMPLE_LOCATION:
+		// AI-generated (Claude)
+		if (!got_first_location) {
+			first_location = value.location;
+			got_first_location = true;
+		}
+		last_location = value.location;
+		got_last_location = true;
+		break;
+#endif
 	case DC_SAMPLE_HEARTBEAT:
 		sample.heartbeat = heartbeat = value.heartbeat;
 		break;
@@ -763,26 +780,37 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	if (rc == DC_STATUS_SUCCESS)
 		dive->dcs[0].surface_pressure.mbar = lrint(surface_pressure * 1000.0);
 
-	dc_location_t dc_location;
-	// Currently libdivecomputer only supports one location per dive
-	rc = dc_parser_get_field(parser, DC_FIELD_LOCATION, 0, &dc_location);
+	// AI-generated (Claude)
+	// Collect DC_FIELD_LOCATION as a fallback for when no per-sample GPS fixes are available.
+	// The per-sample fixes are populated by parse_samples() which runs after libdc_header_parser();
+	// dive-site assignment and "Start location" extra-data are therefore finalised in dive_cb()
+	// after parse_samples() returns.  Store the field result in a file-scope static so dive_cb()
+	// can access it alongside got_first_location / got_last_location.
+	rc = dc_parser_get_field(parser, DC_FIELD_LOCATION, 0, &field_location);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
 		download_error(translate("gettextFromC", "Error obtaining location"));
 		return rc;
 	}
 	bool got_location = false;
 	if (rc == DC_STATUS_SUCCESS) {
+		got_field_location = true;
+
+		// Assign the dive site from the field-level fix now so that parse_string_field()
+		// below (which checks got_location to avoid overwriting) behaves correctly.
+		// dive_cb() will override this with per-sample fixes if available.
 		location_t location;
-		location.lat.udeg = lrint(dc_location.latitude * 1000000);
-		location.lon.udeg = lrint(dc_location.longitude * 1000000);
+		location.lat.udeg = lrint(field_location.latitude * 1000000);
+		location.lon.udeg = lrint(field_location.longitude * 1000000);
 
 		char location_string[64];
-		snprintf(location_string, sizeof(location_string), "%.6f, %.6f", location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
+		snprintf(location_string, sizeof(location_string), "%.6f, %.6f",
+			 location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
 
 		unregister_dive_from_dive_site(dive);
 		devdata->log->sites.create(location_string, location)->add_dive(dive);
 
-		add_extra_data(&dive->dcs[0], "Start location", location_string);
+		// "Start location" extra-data is added later in dive_cb() once we know
+		// whether per-sample fixes override this.
 		got_location = true;
 	}
 
@@ -846,6 +874,14 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	ndl = bearing = -1;
 	in_deco = false;
 	current_gas_index = -1;
+#ifdef DC_SAMPLE_LOCATION
+	got_first_location = false;
+	got_last_location = false;
+	memset(&first_location, 0, sizeof(first_location));
+	memset(&last_location, 0, sizeof(last_location));
+#endif
+	got_field_location = false;
+	memset(&field_location, 0, sizeof(field_location));
 
 	import_dive_number++;
 
@@ -874,6 +910,50 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 		download_error(translate("gettextFromC", "Error parsing the samples: %s"), errmsg(rc));
 		goto error_exit;
 	}
+
+	// Finalise GPS location data now that per-sample fixes from parse_samples() are available.
+	// Per-sample fixes (DC_SAMPLE_LOCATION) take priority over DC_FIELD_LOCATION for the dive site
+	// and "Start location". "End location" is always from the last per-sample fix.
+#ifdef DC_SAMPLE_LOCATION
+	if (got_first_location) {
+		location_t entry_location;
+		entry_location.lat.udeg = lrint(first_location.latitude * 1000000);
+		entry_location.lon.udeg = lrint(first_location.longitude * 1000000);
+
+		char start_string[64];
+		snprintf(start_string, sizeof(start_string), "%.6f, %.6f",
+			 entry_location.lat.udeg / 1000000.0, entry_location.lon.udeg / 1000000.0);
+
+		// Per-sample entry fix overrides any DC_FIELD_LOCATION dive-site assignment.
+		unregister_dive_from_dive_site(dive.get());
+		devdata->log->sites.create(start_string, entry_location)->add_dive(dive.get());
+
+		add_extra_data(&dive->dcs[0], "Start location", start_string);
+	} else
+#endif
+	if (got_field_location) {
+		// No per-sample fix available: emit "Start location" from the field-level fix.
+		location_t location;
+		location.lat.udeg = lrint(field_location.latitude * 1000000);
+		location.lon.udeg = lrint(field_location.longitude * 1000000);
+
+		char start_string[64];
+		snprintf(start_string, sizeof(start_string), "%.6f, %.6f",
+			 location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
+
+		add_extra_data(&dive->dcs[0], "Start location", start_string);
+	}
+#ifdef DC_SAMPLE_LOCATION
+	if (got_last_location) {
+		location_t exit_location;
+		exit_location.lat.udeg = lrint(last_location.latitude * 1000000);
+		exit_location.lon.udeg = lrint(last_location.longitude * 1000000);
+		char end_string[64];
+		snprintf(end_string, sizeof(end_string), "%.6f, %.6f",
+			 exit_location.lat.udeg / 1000000.0, exit_location.lon.udeg / 1000000.0);
+		add_extra_data(&dive->dcs[0], "End location", end_string);
+	}
+#endif
 
 	dc_parser_destroy(parser);
 
@@ -1690,6 +1770,20 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const un
 	dc_status_t rc;
 	dc_parser_t *parser = NULL;
 
+	/* reset static data used by sample_cb and libdc_header_parser */
+	stoptime = stopdepth = po2 = cns = heartbeat = 0;
+	ndl = bearing = -1;
+	in_deco = false;
+	current_gas_index = -1;
+#ifdef DC_SAMPLE_LOCATION
+	got_first_location = false;
+	got_last_location = false;
+	memset(&first_location, 0, sizeof(first_location));
+	memset(&last_location, 0, sizeof(last_location));
+#endif
+	got_field_location = false;
+	memset(&field_location, 0, sizeof(field_location));
+
 	switch (dc_descriptor_get_type(data->descriptor)) {
 	case DC_FAMILY_UWATEC_ALADIN:
 	case DC_FAMILY_UWATEC_MEMOMOUSE:
@@ -1726,6 +1820,51 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const un
 		return rc;
 	}
 	dc_parser_destroy(parser);
+
+	// Finalise GPS location data now that per-sample fixes are available.
+	// Per-sample fixes (DC_SAMPLE_LOCATION) take priority over DC_FIELD_LOCATION
+	// for the dive site and "Start location" extra-data.
+#ifdef DC_SAMPLE_LOCATION
+	if (got_first_location) {
+		location_t entry_location;
+		entry_location.lat.udeg = lrint(first_location.latitude * 1000000);
+		entry_location.lon.udeg = lrint(first_location.longitude * 1000000);
+
+		char start_string[64];
+		snprintf(start_string, sizeof(start_string), "%.6f, %.6f",
+			 entry_location.lat.udeg / 1000000.0, entry_location.lon.udeg / 1000000.0);
+
+		// Per-sample entry fix overrides any DC_FIELD_LOCATION dive-site assignment.
+		unregister_dive_from_dive_site(dive);
+		data->log->sites.create(start_string, entry_location)->add_dive(dive);
+
+		add_extra_data(&dive->dcs[0], "Start location", start_string);
+	} else
+#endif
+	if (got_field_location) {
+		// No per-sample fix available: emit "Start location" from the field-level fix.
+		location_t location;
+		location.lat.udeg = lrint(field_location.latitude * 1000000);
+		location.lon.udeg = lrint(field_location.longitude * 1000000);
+
+		char start_string[64];
+		snprintf(start_string, sizeof(start_string), "%.6f, %.6f",
+			 location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
+
+		add_extra_data(&dive->dcs[0], "Start location", start_string);
+	}
+#ifdef DC_SAMPLE_LOCATION
+	if (got_last_location) {
+		location_t exit_location;
+		exit_location.lat.udeg = lrint(last_location.latitude * 1000000);
+		exit_location.lon.udeg = lrint(last_location.longitude * 1000000);
+		char end_string[64];
+		snprintf(end_string, sizeof(end_string), "%.6f, %.6f",
+			 exit_location.lat.udeg / 1000000.0, exit_location.lon.udeg / 1000000.0);
+		add_extra_data(&dive->dcs[0], "End location", end_string);
+	}
+#endif
+
 	return DC_STATUS_SUCCESS;
 }
 
