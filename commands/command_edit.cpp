@@ -1267,6 +1267,7 @@ EditCylinder::EditCylinder(int index, cylinder_t cylIn, EditCylinderType typeIn,
 			cyl[i].gasmix = cylIn.gasmix;
 			cyl[i].bestmix_o2 = cylIn.bestmix_o2;
 			cyl[i].bestmix_he = cylIn.bestmix_he;
+			cyl[i].depth = cylIn.depth;
 			sanitize_gasmix(cyl[i].gasmix);
 			break;
 		}
