@@ -1260,7 +1260,7 @@ int MainWindow::file_save()
 	if (existing_filename.empty())
 		return file_save_as();
 
-	is_cloud = (starts_with(existing_filename, "http") == 0);
+	is_cloud = starts_with(existing_filename, "http");
 	if (is_cloud && !saveToCloudOK())
 		return -1;
 
