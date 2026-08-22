@@ -5,8 +5,8 @@
 </divesites>
 <dives>
 <dive otu='23' cns='8%' date='2023-08-13' time='10:36:41' duration='67:44 min'>
-  <cylinder size='12.0 l' workpressure='200.0 bar' description='unknown' />
-  <cylinder size='12.0 l' workpressure='200.0 bar' description='unknown' o2='50.0%' />
+  <cylinder size='12.0 l' workpressure='200.0 bar' description='unknown' depth='66.0 m' />
+  <cylinder size='12.0 l' workpressure='200.0 bar' description='unknown' o2='50.0%' depth='21.0 m' />
   <divecomputer model='Divesoft Freedom (Imported from file)'>
   <depth max='18.98 m' mean='7.93 m' />
   <temperature water='10.3 C' />

@@ -5,6 +5,7 @@
 #include "commands/command.h"
 #include "core/divelog.h"
 #include "core/pref.h"
+#include "core/string-format.h"
 #include "core/units.h"
 #include <QSignalSpy>
 #include <memory>
@@ -127,6 +128,95 @@ void TestDivePlannerModel::testSurfaceAirCylinderDataAccess()
 	QCOMPARE(gas.toString(), QStringLiteral("AIR"));
 
 	model->resetPlanState();
+}
+
+// AI-generated (Claude)
+void TestDivePlannerModel::testImportMissingCylinderDepth()
+{
+	prefs = default_prefs;
+	dive importedDive;
+	cylinder_t cylinder;
+	cylinder.gasmix.o2 = 50_percent;
+	importedDive.cylinders.push_back(cylinder);
+	depth_t expected = calculate_deco_switch_depth(&importedDive, cylinder.gasmix);
+
+	normalize_imported_cylinder_depths(&importedDive);
+
+	QVERIFY(expected.mm != 0);
+	QCOMPARE(importedDive.cylinders[0].depth.mm, expected.mm);
+	prefs = default_prefs;
+}
+
+// AI-generated (Claude)
+void TestDivePlannerModel::testImportedCylinderDepthPreserved()
+{
+	prefs = default_prefs;
+	dive importedDive;
+	cylinder_t cylinder;
+	cylinder.gasmix.o2 = 50_percent;
+	cylinder.depth = 12_m;
+	importedDive.cylinders.push_back(cylinder);
+
+	normalize_imported_cylinder_depths(&importedDive);
+
+	QCOMPARE(importedDive.cylinders[0].depth.mm, 12000);
+	prefs = default_prefs;
+}
+
+// AI-generated (Claude)
+void TestDivePlannerModel::testCylinderDepthInput()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->createSimpleDive(&plannedDive);
+
+	CylindersModel *cylinders = model->cylindersModel();
+	QModelIndex depthIndex = cylinders->index(0, CylindersModel::DEPTH);
+	cylinder_t *cylinder = plannedDive.get_cylinder(0);
+	depth_t calculatedDepth = calculate_deco_switch_depth(&plannedDive, cylinder->gasmix);
+
+	QVERIFY(cylinders->setData(depthIndex, QStringLiteral("12 m")));
+	QCOMPARE(cylinder->depth.mm, 12000);
+
+	QVERIFY(cylinders->setData(depthIndex, QString()));
+	QCOMPARE(cylinder->depth.mm, calculatedDepth.mm);
+
+	QVERIFY(cylinders->setData(depthIndex, QStringLiteral("12 m")));
+	QVERIFY(cylinders->setData(depthIndex, QStringLiteral("  \t")));
+	QCOMPARE(cylinder->depth.mm, calculatedDepth.mm);
+
+	QVERIFY(cylinders->setData(depthIndex, QStringLiteral("12 m")));
+	QVERIFY(cylinders->setData(depthIndex, QStringLiteral("0")));
+	QCOMPARE(cylinder->depth.mm, 0);
+	QCOMPARE(cylinders->data(depthIndex, Qt::DisplayRole).toString(), get_depth_string(0_m, true));
+
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+
+// AI-generated (Claude)
+void TestDivePlannerModel::testStoredZeroCylinderDepthDisplay()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->createSimpleDive(&plannedDive);
+
+	CylindersModel *cylinders = model->cylindersModel();
+	QModelIndex depthIndex = cylinders->index(0, CylindersModel::DEPTH);
+	plannedDive.cylinders[0].depth = 0_m;
+
+	QCOMPARE(cylinders->data(depthIndex, Qt::DisplayRole).toString(), get_depth_string(0_m, true));
+
+	model->resetPlanState();
+	prefs = default_prefs;
 }
 
 // AI-generated (Claude)
