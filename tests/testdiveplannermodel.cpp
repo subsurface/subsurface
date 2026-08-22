@@ -5,6 +5,7 @@
 #include "commands/command.h"
 #include "core/divelog.h"
 #include "core/pref.h"
+#include "core/string-format.h"
 #include "core/units.h"
 #include <QSignalSpy>
 #include <memory>
@@ -127,6 +128,47 @@ void TestDivePlannerModel::testSurfaceAirCylinderDataAccess()
 	QCOMPARE(gas.toString(), QStringLiteral("AIR"));
 
 	model->resetPlanState();
+}
+
+// AI-generated (Claude)
+// An unset deco switch depth remains a zero sentinel while the model displays
+// the gas's calculated deco MOD. Clearing a manual value restores that state.
+void TestDivePlannerModel::testCylinderDepthDisplayAndClear()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->createSimpleDive(&plannedDive);
+
+	CylindersModel *cylinders = model->cylindersModel();
+	QModelIndex depthIndex = cylinders->index(0, CylindersModel::DEPTH);
+	cylinder_t *cylinder = plannedDive.get_cylinder(0);
+	pressure_t decopo2 = { .mbar = prefs.decopo2 };
+	depth_t calculatedDepth = plannedDive.gas_mod(cylinder->gasmix, decopo2, m_or_ft(1, 1));
+
+	cylinder->depth = 0_m;
+	QCOMPARE(cylinder->depth.mm, 0);
+	QCOMPARE(cylinders->data(depthIndex, Qt::DisplayRole).toString(), get_depth_string(calculatedDepth, true));
+	cylinders->updateDecoDepths(decopo2);
+	QCOMPARE(cylinder->depth.mm, 0);
+
+	QVERIFY(cylinders->setData(depthIndex, QStringLiteral("12 m")));
+	QCOMPARE(cylinder->depth.mm, 12000);
+	QCOMPARE(cylinders->data(depthIndex, Qt::DisplayRole).toString(), get_depth_string(cylinder->depth, true));
+
+	QVERIFY(cylinders->setData(depthIndex, QString()));
+	QCOMPARE(cylinder->depth.mm, 0);
+	QCOMPARE(cylinders->data(depthIndex, Qt::DisplayRole).toString(), get_depth_string(calculatedDepth, true));
+
+	QVERIFY(cylinders->setData(depthIndex, QStringLiteral("12 m")));
+	QVERIFY(cylinders->setData(depthIndex, QStringLiteral("0")));
+	QCOMPARE(cylinder->depth.mm, 0);
+
+	model->resetPlanState();
+	prefs = default_prefs;
 }
 
 // AI-generated (Claude)

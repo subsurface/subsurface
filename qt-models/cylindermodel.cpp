@@ -235,8 +235,11 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			return percent_string(cyl->gasmix.o2);
 		case HE:
 			return percent_string(cyl->gasmix.he);
-		case DEPTH:
-			return get_depth_string(cyl->depth, true);
+		case DEPTH: {
+			pressure_t decopo2 = { .mbar = prefs.decopo2 };
+			depth_t depth = cyl->depth.mm ? cyl->depth : d->gas_mod(cyl->gasmix, decopo2, m_or_ft(1, 1));
+			return get_depth_string(depth, true);
+		}
 		case MOD:
 			if (cyl->bestmix_o2) {
 				return QStringLiteral("*");
@@ -433,10 +436,12 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		cyl.bestmix_he = false;
 		type = Command::EditCylinderType::GASMIX;
 		break;
-	case DEPTH:
-		cyl.depth = string_to_depth(qPrintable(vString));
+	case DEPTH: {
+		depth_t depth = string_to_depth(qPrintable(vString));
+		cyl.depth = depth.mm ? depth : 0_m;
 		type = Command::EditCylinderType::GASMIX;
 		break;
+	}
 	case MOD: {
 			if (QString::compare(qPrintable(vString), "*") == 0) {
 				cyl.bestmix_o2 = true;
