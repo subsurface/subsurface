@@ -14,6 +14,7 @@ private slots:
 	void testInvalidRowIndex();
 	void testNothingModeDataAccess();
 	void testSurfaceAirCylinderDataAccess();
+	void testCylinderDepthDisplayAndClear();
 	// AI-generated (Claude)
 	void testRecreationalPlanSaveAllowed();
 };
