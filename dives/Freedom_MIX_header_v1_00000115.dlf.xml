@@ -5,8 +5,8 @@
 </divesites>
 <dives>
 <dive otu='26' cns='9%' date='2019-02-10' time='10:09:13' duration='55:01 min'>
-  <cylinder description='unknown' />
-  <cylinder description='unknown' o2='50.0%' />
+  <cylinder description='unknown' depth='66.0 m' />
+  <cylinder description='unknown' o2='50.0%' depth='21.0 m' />
   <divecomputer model='Divesoft [unknown model, V1 log] (Imported from file)'>
   <depth max='31.56 m' mean='15.932 m' />
   <temperature water='3.9 C' />

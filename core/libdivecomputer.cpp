@@ -319,6 +319,10 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 			 * dive computer, fill in the default tank information (if set) */
 			fill_default_cylinder(dive, &cyl);
 		}
+		// AI-generated (Claude)
+		// libdivecomputer does not supply switch depths. Apply the deco pO2
+		// depth after default-cylinder metadata, which may have set a bottom MOD.
+		cyl.depth = calculate_deco_switch_depth(dive, cyl.gasmix);
 		/* whatever happens, make sure there is a name for the cylinder */
 		if (cyl.type.description.empty())
 			cyl.type.description = translate("gettextFromC", "unknown");

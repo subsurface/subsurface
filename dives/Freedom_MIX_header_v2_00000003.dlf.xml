@@ -5,9 +5,9 @@
 </divesites>
 <dives>
 <dive date='2023-06-30' time='10:27:49' duration='72:46 min'>
-  <cylinder size='12.0 l' workpressure='200.0 bar' description='unknown' />
-  <cylinder description='unknown' o2='100.0%' use='oxygen' />
-  <cylinder description='unknown' o2='14.0%' he='32.0%' use='diluent' />
+  <cylinder size='12.0 l' workpressure='200.0 bar' description='unknown' depth='66.0 m' />
+  <cylinder description='unknown' o2='100.0%' use='oxygen' depth='6.0 m' />
+  <cylinder description='unknown' o2='14.0%' he='32.0%' use='diluent' depth='105.0 m' />
   <divecomputer model='Divesoft Freedom (Imported from file)' dctype='CCR'>
   <depth max='53.64 m' mean='19.602 m' />
   <temperature water='5.1 C' />

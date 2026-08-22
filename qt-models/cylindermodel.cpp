@@ -433,10 +433,16 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		cyl.bestmix_he = false;
 		type = Command::EditCylinderType::GASMIX;
 		break;
-	case DEPTH:
-		cyl.depth = string_to_depth(qPrintable(vString));
+	case DEPTH: {
+		// AI-generated (Claude)
+		// Clearing the editor requests a calculated value. A parsed zero is an
+		// explicit legacy value and must remain distinguishable from empty input.
+		cyl.depth = vString.trimmed().isEmpty()
+			? calculate_deco_switch_depth(d, cyl.gasmix)
+			: string_to_depth(qPrintable(vString));
 		type = Command::EditCylinderType::GASMIX;
 		break;
+	}
 	case MOD: {
 			if (QString::compare(qPrintable(vString), "*") == 0) {
 				cyl.bestmix_o2 = true;

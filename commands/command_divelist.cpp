@@ -456,6 +456,12 @@ ImportDives::ImportDives(struct divelog *log, int flags, const QString &source)
 {
 	setText(Command::Base::tr("import %n dive(s) from %1", "", log->dives.size()).arg(source));
 
+	// AI-generated (Claude)
+	// Normalise only dives accepted through the external-import command. Native
+	// log loading does not pass through this path and retains legacy zero depths.
+	for (auto &dive: log->dives)
+		normalize_imported_cylinder_depths(dive.get());
+
 	// this only matters if undoit were called before redoit
 	currentDive = nullptr;
 
