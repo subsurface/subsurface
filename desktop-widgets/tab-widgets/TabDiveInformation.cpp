@@ -132,6 +132,7 @@ void TabDiveInformation::updateProfile()
 	auto mean = currentDive->per_cylinder_mean_depth_and_duration(parent.currentDC);
 	volume_t sac;
 	QString gaslist, SACs, separator;
+	bool hasSAC = false;
 
 	for (size_t i = 0; i < currentDive->cylinders.size(); i++) {
 		if (!currentDive->is_cylinder_used(i) || i >= mean.size())
@@ -146,6 +147,7 @@ void TabDiveInformation::updateProfile()
 		if (mean[i].duration.seconds > 0) {
 			sac.mliter = lrint(gases[i].mliter / (currentDive->depth_to_atm(mean[i].depth) * mean[i].duration.seconds / 60));
 			SACs.append(get_volume_string(sac, true).append(tr("/min")));
+			hasSAC = true;
 		}
 	}
 	ui->gasUsedText->setText(volumes);
@@ -154,7 +156,20 @@ void TabDiveInformation::updateProfile()
 	ui->diveTimeText->setText(get_dive_duration_string(currentDive->duration.seconds, tr("h"), tr("min"), tr("sec"),
 			" ", currentDive->dcs[0].divemode == FREEDIVE));
 
-	ui->sacText->setText(!currentDive->cylinders.empty() && mean[0].depth.mm > 0 && currentDive->dcs[0].divemode != CCR ? std::move(SACs) : QString());
+	// AI-generated (Claude)
+	// When per_cylinder_mean_depth_and_duration() returns zeroed depths (e.g. for
+	// sidemount twinsets with identical gas mixes and no gas-change events), the
+	// per-cylinder loop above leaves hasSAC false. Fall back to dive->sac, which
+	// is pre-computed by calculate_sac() / fixup_dive() and handles CCR, missing
+	// pressure data, zero duration, and every other edge case correctly. This
+	// ensures the Information tab shows a SAC value consistent with the dive core.
+	if (!hasSAC && currentDive->dcs[0].divemode != CCR && currentDive->sac > 0) {
+		sac.mliter = currentDive->sac;
+		SACs = get_volume_string(sac, true).append(tr("/min"));
+		hasSAC = true;
+	}
+
+	ui->sacText->setText(hasSAC && currentDive->dcs[0].divemode != CCR ? std::move(SACs) : QString());
 
 	if (currentDive->surface_pressure.mbar == 0) {
 		ui->atmPressVal->clear();			// If no atm pressure for dive then clear text box
