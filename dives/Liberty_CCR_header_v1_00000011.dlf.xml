@@ -19,19 +19,20 @@
   <surface pressure='0.967 bar' />
   <water salinity='1000 g/l' />
   <extradata key='Start location' value='49.792736, 15.577312' />
+  <extradata key='End location' value='49.792736, 15.577312' />
   <event time='0:00 min' type='25' flags='6' name='gaschange' cylinder='5' />
   <event time='37:38 min' type='25' flags='1' name='gaschange' cylinder='0' />
   <event time='43:13 min' type='25' flags='2' name='gaschange' cylinder='1' o2='50.0%' />
   <event time='54:14 min' type='25' flags='3' name='gaschange' cylinder='2' o2='100.0%' />
   <event time='54:23 min' type='25' flags='6' name='gaschange' cylinder='5' />
-  <sample time='0:00 min' depth='0.0 m' pressure4='90.0 bar' pressure5='124.0 bar' ndl='1000:00 min' sensor1='0.467 bar' sensor2='0.449 bar' sensor3='0.457 bar' sensor4='0.444 bar' po2='0.42 bar' />
+  <sample time='0:00 min' depth='0.0 m' pressure4='90.0 bar' pressure5='124.0 bar' sensor1='0.467 bar' sensor2='0.449 bar' sensor3='0.457 bar' sensor4='0.444 bar' po2='0.42 bar' />
   <sample time='0:01 min' depth='0.75 m' />
   <sample time='0:02 min' depth='1.5 m' dc_supplied_ppo2='0.453 bar' />
   <sample time='0:03 min' depth='1.502 m' />
   <sample time='0:04 min' depth='1.505 m' />
   <sample time='0:10 min' depth='1.52 m' />
   <sample time='0:14 min' depth='1.53 m' dc_supplied_ppo2='0.433 bar' />
-  <sample time='0:17 min' depth='1.55 m' temp='19.1 C' tts='1:00 min' dc_supplied_ppo2='0.468 bar' />
+  <sample time='0:17 min' depth='1.55 m' temp='19.1 C' ndl='1000:00 min' tts='1:00 min' dc_supplied_ppo2='0.468 bar' />
   <sample time='0:18 min' depth='1.62 m' tts='0:00 min' dc_supplied_ppo2='0.482 bar' />
   <sample time='0:20 min' depth='1.66 m' dc_supplied_ppo2='0.502 bar' />
   <sample time='0:21 min' depth='1.71 m' temp='19.0 C' tts='1:00 min' dc_supplied_ppo2='0.507 bar' />
