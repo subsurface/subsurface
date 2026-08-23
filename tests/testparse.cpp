@@ -716,6 +716,8 @@ void TestParse::importSuuntoJsonOcean()
 #endif
 	/* Suunto Ocean (codename Porvoo), air dive with tank transmitter on gas 0. */
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/suunto_ocean_air.json", &divelog), 0);
+	QCOMPARE(divelog.dives.size(), 1);
+	QCOMPARE(divelog.dives[0]->dcs[0].when, divelog.dives[0]->when);
 	QCOMPARE(save_dives("./test_suunto_ocean_air.ssrf"), 0);
 	FILE_COMPARE("./test_suunto_ocean_air.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/suunto_ocean_air.xml");
