@@ -14,7 +14,26 @@
 #include "core/subsurface-qt/divelistnotifier.h"
 #include "core/subsurface-string.h"
 #include "core/tanksensormapping.h"
+#include <cmath>
 #include <string>
+
+// AI-generated (Claude)
+static bool validDepthString(const QString &text)
+{
+	if (text.trimmed().isEmpty())
+		return true;
+
+	QByteArray bytes = text.toLocal8Bit();
+	const char *end;
+	double value = permissive_strtod(bytes.constData(), &end);
+	if (end == bytes.constData() || value < 0 || !std::isfinite(value))
+		return false;
+
+	QString rest = QString(end).trimmed();
+	QString localFt = gettextFromC::tr("ft");
+	QString localM = gettextFromC::tr("m");
+	return rest.isEmpty() || rest == "m" || rest == localM || rest == "ft" || rest == localFt;
+}
 
 CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableModel(parent),
 	d(nullptr),
@@ -434,6 +453,8 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		type = Command::EditCylinderType::GASMIX;
 		break;
 	case DEPTH: {
+		if (!validDepthString(vString))
+			return false;
 		// AI-generated (Claude)
 		// Clearing the editor requests a calculated value. A parsed zero is an
 		// explicit legacy value and must remain distinguishable from empty input.

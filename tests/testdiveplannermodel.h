@@ -19,6 +19,10 @@ private slots:
 	void testCylinderDepthInput();
 	void testStoredZeroCylinderDepthDisplay();
 	// AI-generated (Claude)
+	void testDecoSwitchDepthValidation();
+	// AI-generated (Claude)
+	void testZeroDepthExcludesDecoGas();
+	// AI-generated (Claude)
 	void testRecreationalPlanSaveAllowed();
 };
 
