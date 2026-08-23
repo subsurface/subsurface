@@ -53,7 +53,42 @@
  * ActivityType 51 is scuba diving -- skip everything else. */
 static const int SUUNTO_ACTIVITY_SCUBA = 51;
 
-/* Parse ISO 8601 timestamp with timezone offset, return ms since epoch (UTC).
+/* Parse ISO 8601 timestamp (e.g. "2026-08-20T15:27:23.140+02:00").
+ * Returns milliseconds since epoch computed from the local (wall-clock)
+ * time without applying the timezone offset — i.e. utc_mktime(local_tm)
+ * so that the result matches Subsurface's internal convention where d->when
+ * stores local time treated as if it were UTC.
+ * If tz_offset_s is non-null, it is set to the UTC offset in seconds
+ * (positive = east of UTC, e.g. +7200 for UTC+2).
+ * Returns 0 on parse failure. */
+static int64_t parse_iso8601_local_ms(const std::string &ts, int *tz_offset_s = nullptr)
+{
+	struct tm tm = {};
+	int ms = 0, tz_h = 0, tz_m = 0;
+	char tz_sign = '+';
+	int n = sscanf(ts.c_str(), "%d-%d-%dT%d:%d:%d.%d%c%d:%d",
+		       &tm.tm_year, &tm.tm_mon, &tm.tm_mday,
+		       &tm.tm_hour, &tm.tm_min, &tm.tm_sec,
+		       &ms, &tz_sign, &tz_h, &tz_m);
+	if (n < 9) {
+		report_info("Suunto JSON: failed to parse timestamp '%s' (matched %d fields)",
+			    ts.c_str(), n);
+		return 0;
+	}
+	tm.tm_year -= 1900;
+	tm.tm_mon  -= 1;
+	int64_t offset_s = tz_h * 3600LL + tz_m * 60LL;
+	if (tz_offset_s)
+		*tz_offset_s = static_cast<int>(tz_sign == '+' ? offset_s : -offset_s);
+	/* utc_mktime() treats the struct tm fields as wall-clock time (no
+	 * DST adjustment).  Calling it with the local-time fields gives us
+	 * the "local-time-as-UTC" epoch that Subsurface uses for d->when. */
+	return utc_mktime(&tm) * 1000LL + ms;
+}
+
+/* Parse ISO 8601 timestamp with timezone offset, return ms since true UTC
+ * epoch.  Used for sample-to-sample elapsed time calculations where the
+ * absolute epoch is needed to take the difference correctly.
  * Returns 0 on parse failure. */
 static int64_t parse_iso8601_ms(const std::string &ts)
 {
@@ -132,9 +167,22 @@ static void parse_header(const QJsonObject &header, struct dive *d)
 {
 	std::string datetime = header["DateTime"].toString().toStdString();
 	if (!datetime.empty()) {
-		int64_t ms = parse_iso8601_ms(datetime);
+		int tz_offset_s = TIMEZONE_OFFSET_INVALID;
+		/* parse_iso8601_local_ms() returns the local wall-clock time
+		 * as a "UTC" epoch — matching Subsurface's d->when convention
+		 * where times are stored as local time treated as UTC.  The
+		 * timezone offset from the ISO 8601 string is captured
+		 * separately so it can be stored on the divecomputer and
+		 * displayed alongside the time. */
+		int64_t ms = parse_iso8601_local_ms(datetime, &tz_offset_s);
 		if (ms != 0)
 			d->when = ms / 1000;
+		/* add_extra_data() with STRING_KEY_TIMEZONE_OFFSET also
+		 * sets dc.timezone_offset, which TabDiveExtraInfo uses to
+		 * append "(UTC+HH:MM)" to the displayed dive time. */
+		if (tz_offset_s != TIMEZONE_OFFSET_INVALID)
+			add_extra_data(&d->dcs[0], STRING_KEY_TIMEZONE_OFFSET,
+				       std::to_string(tz_offset_s));
 	}
 
 	struct divecomputer &dc = d->dcs[0];
@@ -388,7 +436,10 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 				sam->sac.mliter += lrint(
 					top_ventilation * 60000000.0);
 
-			append_sample(*sam, &dc);
+			/* prepare_sample() already added the sample to
+			 * dc.samples; no append_sample() call is needed.
+			 * (The libdivecomputer pattern: prepare_sample adds
+			 * the entry, subsequent code fills fields in place.) */
 		}
 
 		bool has_dive_events = s.contains("DiveEvents");
