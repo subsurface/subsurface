@@ -430,82 +430,89 @@
         <xsl:for-each select="divecomputer[1]/event | divecomputer[1]/sample">
           <xsl:sort select="substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')" data-type="number" order="ascending"/>
 
-        <xsl:variable name="events">
-          <xsl:value-of select="count(preceding-sibling::event)"/>
-        </xsl:variable>
-
           <xsl:choose>
             <xsl:when test="name() = 'event'">
 
-              <xsl:variable name="position">
-                <xsl:value-of select="position()"/>
-              </xsl:variable>
-
-              <!-- Times of surrounding waypoints -->
-              <xsl:variable name="timefirst">
-                <xsl:choose>
-                  <xsl:when test="../sample[position() = $position - 1 - $events]/@time != ''">
-                    <xsl:call-template name="time2sec">
-                      <xsl:with-param name="time">
-                        <xsl:value-of select="../sample[position() = $position - 1 - $events]/@time"/>
-                      </xsl:with-param>
-                    </xsl:call-template>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="0"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-              <xsl:variable name="timesecond">
-                <xsl:choose>
-                  <xsl:when test="../sample[position() = $position - $events]/@time != ''">
-                    <xsl:call-template name="time2sec">
-                      <xsl:with-param name="time">
-                        <xsl:value-of select="../sample[position() = $position - $events]/@time"/>
-                      </xsl:with-param>
-                    </xsl:call-template>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="0"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-
-              <!-- Depths of surrounding waypoints -->
-              <xsl:variable name="depthfirst">
-                <xsl:choose>
-                  <xsl:when test="../sample[position() = $position - 1 - $events]/@depth != ''">
-                    <xsl:call-template name="depth2mm">
-                      <xsl:with-param name="depth">
-                        <xsl:value-of select="../sample[position() = $position - 1 - $events]/@depth"/>
-                      </xsl:with-param>
-                    </xsl:call-template>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="0"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-              <xsl:variable name="depthsecond">
-                <xsl:choose>
-                  <xsl:when test="../sample[position() = $position - $events]/@depth != ''">
-                    <xsl:call-template name="depth2mm">
-                      <xsl:with-param name="depth">
-                        <xsl:value-of select="../sample[position() = $position - $events]/@depth"/>
-                      </xsl:with-param>
-                    </xsl:call-template>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:value-of select="0"/>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </xsl:variable>
-
+              <!-- Suppress this event waypoint when a sample exists at the
+                   same @time — the sample's waypoint already carries all
+                   data for that timestamp (gas-change / heading are merged
+                   in by the sample branch via preceding-sibling::event).
+                   Using a direct @time string comparison avoids the broken
+                   position() arithmetic that was here before: after an
+                   xsl:sort, position() reflects the sorted order while
+                   preceding-sibling:: axes still walk the original document
+                   tree, making the old "$position - $events" index wrong
+                   whenever events and samples are interleaved. -->
+              <xsl:variable name="evtime" select="@time"/>
               <xsl:variable name="time">
                 <xsl:value-of select="substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')"/>
               </xsl:variable>
 
-              <xsl:if test="$timesecond != $time">
+              <!-- Find the nearest sample at or before the event time (for
+                   depth interpolation). Filter to samples with time_s <=
+                   event time_s, sort descending, take position()=1.
+                   The time is compared using the same arithmetic as the
+                   sort key: MM*60+SS. -->
+              <xsl:variable name="timefirst">
+                <xsl:for-each select="../sample[
+                    (substring-before(@time, ':') * 60 +
+                     substring-before(substring-after(@time, ':'), ' '))
+                    &lt;= $time]">
+                  <xsl:sort select="substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')" data-type="number" order="descending"/>
+                  <xsl:if test="position() = 1">
+                    <xsl:call-template name="time2sec">
+                      <xsl:with-param name="time" select="@time"/>
+                    </xsl:call-template>
+                  </xsl:if>
+                </xsl:for-each>
+              </xsl:variable>
+
+              <!-- Nearest sample at or after the event time -->
+              <xsl:variable name="timesecond">
+                <xsl:for-each select="../sample[
+                    (substring-before(@time, ':') * 60 +
+                     substring-before(substring-after(@time, ':'), ' '))
+                    &gt;= $time]">
+                  <xsl:sort select="substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')" data-type="number" order="ascending"/>
+                  <xsl:if test="position() = 1">
+                    <xsl:call-template name="time2sec">
+                      <xsl:with-param name="time" select="@time"/>
+                    </xsl:call-template>
+                  </xsl:if>
+                </xsl:for-each>
+              </xsl:variable>
+
+              <xsl:variable name="depthfirst">
+                <xsl:for-each select="../sample[
+                    @depth != '' and
+                    (substring-before(@time, ':') * 60 +
+                     substring-before(substring-after(@time, ':'), ' '))
+                    &lt;= $time]">
+                  <xsl:sort select="substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')" data-type="number" order="descending"/>
+                  <xsl:if test="position() = 1">
+                    <xsl:call-template name="depth2mm">
+                      <xsl:with-param name="depth" select="@depth"/>
+                    </xsl:call-template>
+                  </xsl:if>
+                </xsl:for-each>
+              </xsl:variable>
+
+              <xsl:variable name="depthsecond">
+                <xsl:for-each select="../sample[
+                    @depth != '' and
+                    (substring-before(@time, ':') * 60 +
+                     substring-before(substring-after(@time, ':'), ' '))
+                    &gt;= $time]">
+                  <xsl:sort select="substring-before(@time, ':') * 60 + substring-before(substring-after(@time, ':'), ' ')" data-type="number" order="ascending"/>
+                  <xsl:if test="position() = 1">
+                    <xsl:call-template name="depth2mm">
+                      <xsl:with-param name="depth" select="@depth"/>
+                    </xsl:call-template>
+                  </xsl:if>
+                </xsl:for-each>
+              </xsl:variable>
+
+              <xsl:if test="not(../sample[@time = $evtime])">
                 <waypoint>
                   <xsl:variable name="name">
                     <xsl:value-of select="@name"/>
