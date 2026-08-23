@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uddf xmlns="http://www.streit.cc/uddf/3.2/" version="3.2.0">
+  <generator>
+    <name>Subsurface Divelog</name>
+    <manufacturer id="subsurface">
+      <name>Subsurface Team</name>
+      <contact>
+        <homepage>http://subsurface-divelog.org/</homepage>
+      </contact>
+    </manufacturer>
+    <version>3</version>
+  </generator>
+  <mediadata/>
+  <diver>
+    <owner id="owner">
+      <personal>
+        <firstname/>
+        <lastname/>
+      </personal>
+      <equipment>
+        <divecomputer id="test-device">
+          <name>Test computer</name>
+          <model>Test computer</model>
+        </divecomputer>
+      </equipment>
+    </owner>
+  </diver>
+  <divesite>
+    <divebase id="allbase">
+      <name>Subsurface Divebase</name>
+    </divebase>
+  </divesite>
+  <gasdefinitions>
+    <mix id="mix(21/0)">
+      <name>air</name>
+      <o2>0.21</o2>
+      <he>0.00</he>
+    </mix>
+    <mix id="mix(32/0)">
+      <name>EANx 32</name>
+      <o2>0.32</o2>
+      <he>0.00</he>
+    </mix>
+  </gasdefinitions>
+  <profiledata>
+    <repetitiongroup id="testid2">
+      <dive id="testid3">
+        <informationbeforedive>
+          <link ref=""/>
+          <divenumber>1</divenumber>
+          <datetime>2026-08-23T12:00:00</datetime>
+          <equipmentused>
+            <leadquantity>0</leadquantity>
+          </equipmentused>
+        </informationbeforedive>
+        <tankdata>
+          <link ref="mix(21/0)"/>
+          <tankvolume>0.012</tankvolume>
+        </tankdata>
+        <tankdata>
+          <link ref="mix(32/0)"/>
+          <tankvolume>0.012</tankvolume>
+        </tankdata>
+        <samples>
+          <waypoint>
+            <alarm>ascent</alarm>
+            <depth>10</depth>
+            <divetime>30</divetime>
+          </waypoint>
+          <waypoint>
+            <depth>10</depth>
+            <divetime>60</divetime>
+          </waypoint>
+          <waypoint>
+            <depth>15</depth>
+            <divetime>90</divetime>
+            <heading>45</heading>
+          </waypoint>
+          <waypoint>
+            <alarm>ascent</alarm>
+            <depth>20</depth>
+            <divetime>120</divetime>
+            <heading>90</heading>
+            <switchmix ref="mix(32/0)"/>
+          </waypoint>
+          <waypoint>
+            <alarm>error</alarm>
+            <depth>30</depth>
+            <divetime>180</divetime>
+            <heading>180</heading>
+            <switchmix ref="mix(21/0)"/>
+          </waypoint>
+          <waypoint>
+            <alarm>error</alarm>
+            <depth>30</depth>
+            <divetime>240</divetime>
+          </waypoint>
+        </samples>
+        <informationafterdive>
+          <diveduration>240</diveduration>
+          <notes>
+            <para/>
+          </notes>
+        </informationafterdive>
+      </dive>
+    </repetitiongroup>
+  </profiledata>
+  <divetrip/>
+</uddf>

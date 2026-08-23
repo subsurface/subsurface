@@ -1,0 +1,24 @@
+<!-- AI-generated (Claude) -->
+<divelog program='subsurface' version='3'>
+  <settings/>
+  <dives>
+    <dive number='1' date='2026-08-23' time='12:00:00' duration='4:00 min'>
+      <cylinder o2='21.0%' size='12.0 l' workpressure='200.0 bar'/>
+      <cylinder o2='32.0%' size='12.0 l' workpressure='200.0 bar'/>
+      <divecomputer model='Test computer' deviceid='test-device'>
+        <event time='0:30 min' name='ascent'/>
+        <sample time='1:00 min' depth='10.0 m'/>
+        <event time='1:30 min' name='heading' value='45'/>
+        <sample time='2:00 min' depth='20.0 m'/>
+        <event time='2:00 min' name='ascent'/>
+        <event time='2:00 min' name='heading' value='90'/>
+        <event time='2:00 min' name='gaschange' o2='32.0%'/>
+        <event time='3:00 min' name='ceiling'/>
+        <event time='3:00 min' name='heading' value='180'/>
+        <event time='3:00 min' name='gaschange' o2='21.0%'/>
+        <sample time='3:00 min' depth='30.0 m'/>
+        <event time='4:00 min' name='ceiling'/>
+      </divecomputer>
+    </dive>
+  </dives>
+</divelog>
