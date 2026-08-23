@@ -176,7 +176,7 @@ static void parse_header(const QJsonObject &header, struct dive *d)
 		 * displayed alongside the time. */
 		int64_t ms = parse_iso8601_local_ms(datetime, &tz_offset_s);
 		if (ms != 0)
-			d->when = ms / 1000;
+			d->when = d->dcs[0].when = ms / 1000;
 		/* add_extra_data() with STRING_KEY_TIMEZONE_OFFSET also
 		 * sets dc.timezone_offset, which TabDiveExtraInfo uses to
 		 * append "(UTC+HH:MM)" to the displayed dive time. */
