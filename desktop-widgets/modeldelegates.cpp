@@ -67,11 +67,13 @@ void StarWidgetsDelegate::paint(QPainter *painter, const QStyleOptionViewItem &o
 	const QPixmap active = QPixmap::fromImage(StarWidget::starActive());
 	const QPixmap inactive = QPixmap::fromImage(StarWidget::starInactive());
 	const IconMetrics &metrics = defaultIconMetrics();
+	int inactiveDeltaX = (metrics.sz_small - inactive.width()) / 2;
+	int inactiveDeltaY = option.rect.height() / 2 - inactive.height() / 2;
 
 	for (int i = 0; i < rating; i++)
 		painter->drawPixmap(option.rect.x() + i * metrics.sz_small + metrics.spacing, option.rect.y() + deltaY, active);
 	for (int i = rating; i < TOTALSTARS; i++)
-		painter->drawPixmap(option.rect.x() + i * metrics.sz_small + metrics.spacing, option.rect.y() + deltaY, inactive);
+		painter->drawPixmap(option.rect.x() + i * metrics.sz_small + metrics.spacing + inactiveDeltaX, option.rect.y() + inactiveDeltaY, inactive);
 	painter->restore();
 }
 
