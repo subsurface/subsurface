@@ -18,24 +18,6 @@ const QImage& StarWidget::starInactive()
 	return inactiveStar;
 }
 
-QImage focusedImage(const QImage& coloredImg)
-{
-	QImage img = coloredImg;
-	for (int i = 0; i < img.width(); ++i) {
-		for (int j = 0; j < img.height(); ++j) {
-			QRgb rgb = img.pixel(i, j);
-			if (!rgb)
-				continue;
-
-			QColor c(rgb);
-			c = c.darker();
-			img.setPixel(i, j, c.rgb());
-		}
-	}
-
-	return img;
-}
-
 int StarWidget::currentStars() const
 {
 	return current;
@@ -67,17 +49,17 @@ void StarWidget::mouseReleaseEvent(QMouseEvent *event)
 void StarWidget::paintEvent(QPaintEvent*)
 {
 	QPainter p(this);
-	QImage star = hasFocus() ? focusedImage(starActive()) : starActive();
-	QPixmap selected = QPixmap::fromImage(star);
+	QPixmap selected = QPixmap::fromImage(starActive());
 	QPixmap inactive = QPixmap::fromImage(starInactive());
 	const IconMetrics& metrics = defaultIconMetrics();
-
+	int dx = (metrics.sz_small - inactive.width()) / 2;
+	int dy = (metrics.sz_small - inactive.height()) / 2;
 
 	for (int i = 0; i < current; i++)
 		p.drawPixmap(i * metrics.sz_small + metrics.spacing, 0, selected);
 
 	for (int i = current; i < TOTALSTARS; i++)
-		p.drawPixmap(i * metrics.sz_small + metrics.spacing, 0, inactive);
+		p.drawPixmap(i * metrics.sz_small + metrics.spacing + dx, dy, inactive);
 
 	if (hasFocus()) {
 		QStyleOptionFocusRect option;
@@ -103,8 +85,7 @@ static QImage grayImage(const QImage &coloredImg)
 			if (!rgb)
 				continue;
 
-			QColor c(rgb);
-			int gray = 204 + (c.red() + c.green() + c.blue()) / 15;
+			int gray = qGray(rgb) * 2 / 5 + 40;
 			img.setPixel(i, j, qRgb(gray, gray, gray));
 		}
 	}
@@ -128,9 +109,8 @@ StarWidget::StarWidget(QWidget *parent) : QWidget(parent, QFlag(0)),
 		render.render(&painter, QRectF(0, 0, dim, dim));
 		activeStar = renderedStar.toImage();
 	}
-	if (inactiveStar.isNull()) {
-		inactiveStar = grayImage(activeStar);
-	}
+	if (inactiveStar.isNull())
+		inactiveStar = grayImage(activeStar.scaled(dim / 2, dim / 2, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 	setFocusPolicy(Qt::StrongFocus);
 }
 
