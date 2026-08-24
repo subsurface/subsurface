@@ -6,9 +6,12 @@
 	</qresource>
 
 	<qresource prefix="/">
-		<file alias="dive-location-marker-icon">icons/mapwidget-marker.png</file>
-		<file alias="dive-location-marker-inactive-icon">icons/mapwidget-marker-gray.png</file>
-		<file alias="dive-location-marker-selected-icon">icons/mapwidget-marker-selected.png</file>
+		<file alias="dive-location-marker-icon">icons/mapwidget-marker-redwhite.svg</file>
+		<file alias="dive-location-marker-inactive-icon">icons/mapwidget-marker-redwhite-gray.svg</file>
+		<file alias="dive-location-marker-selected-icon">icons/mapwidget-marker-redwhite-selected.svg</file>
+		<file alias="dive-location-marker-alpha-icon">icons/mapwidget-marker-alpha.svg</file>
+		<file alias="dive-location-marker-alpha-inactive-icon">icons/mapwidget-marker-alpha-gray.svg</file>
+		<file alias="dive-location-marker-alpha-selected-icon">icons/mapwidget-marker-alpha-selected.svg</file>
 		<file alias="map-style-map-icon">icons/mapwidget-toggle-street.png</file>
 		<file alias="map-style-photo-icon">icons/mapwidget-toggle-satellite.png</file>
 		<file alias="open-menu-icon">icons/mapwidget-context-menu.png</file>

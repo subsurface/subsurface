@@ -859,6 +859,8 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 		show_utf8(&b, "description ", ds->description.c_str(), "\n");
 		show_utf8(&b, "notes ", ds->notes.c_str(), "\n");
 		put_location(&b, &ds->location, "gps ", "\n");
+		if (ds->alpha_flag)
+			put_string(&b, "marker alpha\n");
 		for (const auto &t: ds->taxonomy) {
 			if (t.category != TC_NONE && !t.value.empty()) {
 				put_format(&b, "geo cat %d origin %d ", t.category, t.origin);
