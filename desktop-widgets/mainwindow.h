@@ -189,6 +189,7 @@ private:
 	void updateCloudOnlineStatus();
 	void showProgressBar();
 	void hideProgressBar();
+	bool saveCloudFile(const std::string &filename);
 	void writeSettings();
 	void refreshDisplay();
 	void updateAutogroup();

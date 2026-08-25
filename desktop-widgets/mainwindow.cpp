@@ -447,14 +447,51 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		report_info("Saving cloud storage to: %s", filename->c_str());
 	mainTab->stealFocus(); // Make sure that any currently edited field is updated before saving.
 
-	showProgressBar();
-	int error = save_dives(filename->c_str());
-	hideProgressBar();
-	if (error)
+	if (!saveCloudFile(*filename))
 		return;
 
 	setCurrentFile(*filename);
 	Command::setClean();
+}
+
+// AI-generated (Claude): Keep the destructive cloud-save decision ahead of
+// every operation that can change the destination cache or remote history.
+bool MainWindow::saveCloudFile(const std::string &filename)
+{
+	git_info info;
+	if (!is_git_repository(filename.c_str(), &info)) {
+		report_error("%s", qPrintable(tr("Unable to inspect cloud storage before saving. Cloud storage was not updated.")));
+		return false;
+	}
+	git_save_kind kind = classify_git_save(&info);
+	if (kind == git_save_kind::error) {
+		report_error("%s", qPrintable(tr("Unable to inspect cloud storage before saving. Cloud storage was not updated.")));
+		return false;
+	}
+	if (kind == git_save_kind::replacement) {
+		QMessageBox confirmation(this);
+		confirmation.setWindowTitle(tr("Replace cloud log?"));
+		confirmation.setIcon(QMessageBox::Warning);
+		confirmation.setText(tr("Replace the existing cloud log?"));
+		confirmation.setInformativeText(tr("The current complete log will replace the existing cloud log. "
+						  "Cloud dives that are not in the current file will be removed."));
+		auto *replaceButton = confirmation.addButton(tr("Replace cloud log"), QMessageBox::DestructiveRole);
+		auto *cancelButton = confirmation.addButton(QMessageBox::Cancel);
+		confirmation.setDefaultButton(cancelButton);
+		confirmation.setEscapeButton(cancelButton);
+		confirmation.setWindowModality(Qt::WindowModal);
+		confirmation.exec();
+		if (confirmation.clickedButton() != replaceButton)
+			return false;
+	}
+	showProgressBar();
+	int error = save_dives(filename.c_str());
+	hideProgressBar();
+	if (error) {
+		report_error("%s", qPrintable(tr("Cloud storage was not updated. The current log remains open with its unsaved changes.")));
+		return false;
+	}
+	return true;
 }
 
 void MainWindow::on_actionCloudOnline_triggered()
@@ -1244,8 +1281,15 @@ int MainWindow::file_save_as()
 	if (filename.isNull() || filename.isEmpty())
 		return report_error("No filename to save into");
 
-	if (save_dives(qPrintable(filename)))
+	git_info info;
+	if (is_git_repository(qPrintable(filename), &info)) {
+		if (info.is_subsurface_cloud && !saveToCloudOK())
+			return -1;
+		if (!saveCloudFile(filename.toStdString()))
+			return -1;
+	} else if (save_dives(qPrintable(filename))) {
 		return -1;
+	}
 
 	setCurrentFile(filename.toStdString());
 	Command::setClean();
@@ -1272,15 +1316,12 @@ int MainWindow::file_save()
 		if (!current_def_dir.exists())
 			current_def_dir.mkpath(current_def_dir.absolutePath());
 	}
-	if (is_cloud)
-		showProgressBar();
-	if (save_dives(existing_filename.c_str())) {
-		if (is_cloud)
-			hideProgressBar();
+	if (is_cloud) {
+		if (!saveCloudFile(existing_filename))
+			return -1;
+	} else if (save_dives(existing_filename.c_str())) {
 		return -1;
 	}
-	if (is_cloud)
-		hideProgressBar();
 	Command::setClean();
 	addRecentFile(QString::fromStdString(existing_filename), true);
 	return 0;
