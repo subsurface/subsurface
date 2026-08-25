@@ -14,6 +14,7 @@
 #include <fcntl.h>
 #include <git2.h>
 #include <memory>
+#include <unordered_set>
 
 #include "commands/command.h"
 #include "dive.h"
@@ -847,11 +848,18 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 {
 	struct dir *subdir;
 	membuffer dirname;
+	// AI-generated (Claude): An empty site still carries referential data when a dive uses its UUID.
+	std::unordered_set<const dive_site *> referenced_sites;
+	for (const auto &dive: divelog.dives) {
+		if (dive->dive_site)
+			referenced_sites.insert(dive->dive_site);
+	}
 	put_format(&dirname, "01-Divesites");
 	subdir = new_directory(repo, tree, &dirname);
 
-	divelog.sites.purge_empty();
 	for (const auto &ds: divelog.sites) {
+		if (ds->is_empty() && !referenced_sites.count(ds.get()))
+			continue;
 		membuffer b;
 		membuffer site_file_name;
 		put_format(&site_file_name, "Site-%08x", ds->uuid);
@@ -941,14 +949,13 @@ static void save_filter_presets(git_repository *repo, struct dir *tree)
 
 static int create_git_tree(git_repository *repo, struct dir *root, bool select_only, bool cached_ok)
 {
+	// AI-generated (Claude): Track serialized trips locally so failed saves do not mutate the log.
+	std::unordered_set<const dive_trip *> saved_trips;
 	git_storage_update_progress(translate("gettextFromC", "Start saving data"));
 	save_settings(repo, root);
 
 	save_divesites(repo, root);
 	save_filter_presets(repo, root);
-
-	for (auto &trip: divelog.trips)
-		trip->saved = false;
 
 	/* save the dives */
 	git_storage_update_progress(translate("gettextFromC", "Start saving dives"));
@@ -972,9 +979,9 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 
 		if (trip) {
 			/* Did we already save this trip? */
-			if (trip->saved)
+			if (saved_trips.count(trip))
 				continue;
-			trip->saved = 1;
+			saved_trips.insert(trip);
 
 			/* Pass that new subdirectory in for save-trip */
 			save_one_trip(repo, tree, trip, &tm, cached_ok);

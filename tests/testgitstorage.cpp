@@ -6,6 +6,7 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
+#include "core/divesite.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/subsurface-string.h"
@@ -391,6 +392,44 @@ void TestGitStorage::testGitSaveClassify()
 	QVERIFY(QDir(QString::fromStdString(deletedCache)).removeRecursively());
 	QVERIFY(classifyGitSave(deletedCacheTarget) == git_save_kind::normal);
 }
+
+// AI-generated (Claude): Empty sites referenced by dives must survive git
+// serialization, while genuinely unused empty sites remain omitted.
+void TestGitStorage::testGitStorageReferencedEmptyDiveSite()
+{
+	QTemporaryDir destinationDir;
+	QVERIFY(destinationDir.isValid());
+	std::string destination = destinationDir.path().toStdString();
+	std::string target = destination + "[main]";
+	git_repository *repo = nullptr;
+	QCOMPARE(git_repository_init(&repo, destination.c_str(), false), 0);
+	git_repository_free(repo);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test10.xml", &divelog), 0);
+	QVERIFY(!divelog.dives.empty());
+
+	dive_site *referenced = divelog.dives.front()->dive_site;
+	QVERIFY(referenced);
+	referenced->name.clear();
+	referenced->description.clear();
+	referenced->notes.clear();
+	referenced->location = {};
+	referenced->taxonomy.clear();
+	uint32_t referencedUuid = referenced->uuid;
+	dive_site *unreferenced = divelog.sites.create(std::string());
+	uint32_t unreferencedUuid = unreferenced->uuid;
+	QCOMPARE(save_dives(target.c_str()), 0);
+
+	clear_dive_file_data();
+	QCOMPARE(parse_file(target.c_str(), &divelog), 0);
+	QVERIFY(!divelog.dives.empty());
+	QVERIFY(divelog.dives.front()->dive_site);
+	QCOMPARE(divelog.dives.front()->dive_site->uuid, referencedUuid);
+	bool foundUnreferenced = false;
+	for (const auto &site: divelog.sites)
+		foundUnreferenced |= site->uuid == unreferencedUuid;
+	QVERIFY(!foundUnreferenced);
+}
+
 void TestGitStorage::testGitStorageCloud()
 {
 	// test writing and reading back from cloud storage
