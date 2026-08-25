@@ -3,6 +3,9 @@ import QtQuick 2.6
 import QtTest 1.2
 TestCase {
 	name: "qPrefLanguage"
+	property date plannerDateTime: new Date(2026, 7, 26, 13, 5, 0)
+	property string plannerDateDisplay: Qt.formatDate(plannerDateTime, PrefLanguage.date_format_short)
+	property string plannerTimeDisplay: Qt.formatTime(plannerDateTime, PrefLanguage.time_format)
 
 	function test_variables() {
 		var x1 = PrefLanguage.date_format
@@ -108,6 +111,51 @@ TestCase {
 		verify(PrefLanguage.date_format.length > 0)
 		verify(PrefLanguage.date_format_short.length > 0)
 		verify(PrefLanguage.time_format.length > 0)
+	}
+
+	// AI-generated (Claude): The planner binds to these preferences while it remains instantiated.
+	function test_plannerDateTimeDisplayFormats() {
+		PrefLanguage.use_system_language = false
+		PrefLanguage.lang_locale = "en_US"
+
+		PrefLanguage.applyDatePreset("day-first")
+		compare(plannerDateDisplay, "26.8.26")
+		PrefLanguage.applyDatePreset("month-first")
+		compare(plannerDateDisplay, "8/26/26")
+		PrefLanguage.applyDatePreset("iso")
+		compare(plannerDateDisplay, "26-8-26")
+		PrefLanguage.applyDateTimeFormats("yyyy-MM-dd", "yyyy-MM-dd", "HH:mm", true, true)
+		compare(plannerDateDisplay, "2026-08-26")
+		compare(plannerTimeDisplay, "13:05")
+
+		PrefLanguage.applyTimePreset("12-hour")
+		compare(plannerTimeDisplay, "1:05 PM")
+		// The time input fields drop the digits-only IME hint when the format
+		// carries a meridiem token, so AM/PM letters stay reachable on Android.
+		verify(/AP|ap/.test(PrefLanguage.time_format))
+		PrefLanguage.applyTimePreset("24-hour")
+		compare(plannerTimeDisplay, "13:05")
+		verify(!/AP|ap/.test(PrefLanguage.time_format))
+	}
+
+	// AI-generated (Claude): Exercise keypad conversion, meridiem changes and safe rejection.
+	function test_mobileDateTimeKeypadRoundTrips() {
+		PrefLanguage.use_system_language = false
+		PrefLanguage.lang_locale = "en_US"
+		PrefLanguage.applyDateTimeFormats("MM/dd/yyyy", "M/d/yy", "h:mm AP", true, true)
+
+		compare(PrefLanguage.timeEditText("1:05 PM"), "1:05 PM")
+		compare(PrefLanguage.toggleMeridiem("1:05 PM", false), "1:05 AM")
+		compare(PrefLanguage.timeDisplayText("1:05 AM"), "1:05 AM")
+		compare(PrefLanguage.dateTimeEditText("8/26/26 1:05 PM"), "8/26/26 1:05 PM")
+		compare(PrefLanguage.toggleMeridiem("8/26/26 1:05 PM", true), "8/26/26 1:05 AM")
+		compare(PrefLanguage.dateTimeDisplayText("8/26/26 1:05 AM"), "8/26/26 1:05 AM")
+
+		PrefLanguage.applyDateTimeFormats("dd.MM.yyyy", "d.M.yy", "HH.mm", true, true)
+		compare(PrefLanguage.dateTimeEditText("26.8.26 13.05"), "26/8/26 13:05")
+		compare(PrefLanguage.dateTimeDisplayText("26/8/26 13:05"), "26.8.26 13.05")
+		compare(PrefLanguage.dateTimeDisplayText("31/2/26 13:05"), "")
+		compare(PrefLanguage.toggleMeridiem("incomplete", false), "incomplete")
 	}
 
 	// AI-generated (Claude): Reading preset data must not replace persisted custom formats.

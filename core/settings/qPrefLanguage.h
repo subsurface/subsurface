@@ -59,6 +59,14 @@ public:
 	Q_INVOKABLE void applyDatePreset(const QString &preset);
 	Q_INVOKABLE void applyTimePreset(const QString &preset);
 	Q_INVOKABLE void restoreDateTimeDefaults();
+	// AI-generated (Claude): Canonical keypad formats keep mobile date/time fields editable.
+	Q_INVOKABLE QString timeEditText(const QString &displayText) const;
+	Q_INVOKABLE QString timeDisplayText(const QString &editText) const;
+	Q_INVOKABLE QString dateTimeEditText(const QString &displayText) const;
+	Q_INVOKABLE QString dateTimeDisplayText(const QString &editText) const;
+	Q_INVOKABLE QString toggleMeridiem(const QString &editText, bool dateTime) const;
+	// AI-generated (Claude): Expose the preference locale so QML parses edits with the same locale used for display.
+	Q_INVOKABLE QString preferenceLocaleName() const;
 
 	// Apply selected-locale defaults during UI locale initialization.
 	static void applyLocaleDefaults(const QLocale &locale);
