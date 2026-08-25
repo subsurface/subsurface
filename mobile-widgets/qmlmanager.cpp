@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qmlmanager.h"
 #include <QUrl>
-#include <QSettings>
 #include <QNetworkAccessManager>
 #include <QAuthenticator>
 #include <QDesktopServices>
@@ -335,9 +334,6 @@ QMLManager::QMLManager() :
 	// present dive site lists sorted by name
 	locationModel.sort(LocationInformationModel::NAME);
 
-	// make sure we know if the current cloud repo has been successfully synced
-	syncLoadFromCloud();
-
 	// Let's set some defaults to be copied so users don't necessarily need
 	// to know how to configure this
 	m_pasteDiveSite = false;
@@ -440,7 +436,6 @@ void QMLManager::openLocalThenRemote(QString url)
 		// if we can load from the cache, we know that we have a valid cloud account
 		// and we know that there was at least one successful sync with the cloud when
 		// that local cache was created - so there is a common ancestor
-		setLoadFromCloud(true);
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_UNKNOWN) {
 			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 			emit passwordStateChanged();
@@ -697,6 +692,13 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		appendTextToLog("saveCloudCredentials: given cloud credentials didn't verify");
 		return;
 	}
+	// AI-generated (Claude): Do not discard unsaved data while switching accounts
+	// if the current log cannot be saved to the repository it was loaded from.
+	if (cloudCredentialsChanged && unsavedChanges() && !saveChangesLocal()) {
+		qPrefCloudStorage::set_cloud_verification_status(m_oldStatus);
+		emit passwordStateChanged();
+		return;
+	}
 	qPrefCloudStorage::set_cloud_storage_email(email);
 	qPrefCloudStorage::set_cloud_storage_password(newPassword);
 
@@ -710,9 +712,6 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		qPrefCloudStorage::cloud_storage_password().isEmpty()) {
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	} else if (cloudCredentialsChanged) {
-		// let's make sure there are no unsaved changes
-		saveChangesLocal();
-		syncLoadFromCloud();
 		manager()->clearAccessCache(); // remove any chached credentials
 		clear_git_id(); // invalidate our remembered GIT SHA
 		clear_dive_file_data();
@@ -850,8 +849,6 @@ void QMLManager::loadDivesWithValidCredentials()
 		}
 		consumeFinishedLoad();
 	}
-
-	setLoadFromCloud(true);
 
 	// if we came from local storage mode, let's merge the local data into the local cache
 	// for the remote data - which then later gets merged with the remote data if necessary
@@ -1589,8 +1586,31 @@ void QMLManager::openNoCloudRepo()
 	openLocalThenRemote(filename);
 }
 
-void QMLManager::saveChangesLocal()
+// AI-generated (Claude)
+// Authorise a mobile cloud save only when the current cache is a safe target:
+// either local-only mode, or the shared classifier confirms a save would not
+// overwrite an unrelated cloud log. Mobile never prompts; it refuses.
+bool QMLManager::cloudDestinationIsSafe() const
 {
+	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD)
+		return true;
+	if (existing_filename.empty())
+		return false;
+	git_info info;
+	if (!is_git_repository(existing_filename.c_str(), &info))
+		return false;
+	return classify_git_save(&info) == git_save_kind::normal;
+}
+
+bool QMLManager::saveChangesLocal()
+{
+	if (!cloudDestinationIsSafe()) {
+		setNotificationText(tr("Cloud sync refused because this cloud log has not been loaded successfully. "
+				       "Open the cloud log before saving changes."));
+		appendTextToLog("Refusing to save cloud data without provenance for the current repository and branch.");
+		return false;
+	}
+
 	if (unsavedChanges()) {
 		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
 			if (existing_filename.empty()) {
@@ -1601,11 +1621,6 @@ void QMLManager::saveChangesLocal()
 				s->set_default_filename(qPrintable(filename));
 				s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 			}
-		} else if (!m_loadFromCloud) {
-			// this seems silly, but you need a common ancestor in the repository in
-			// order to be able to merge che changes later
-			appendTextToLog("Don't save dives without loading from the cloud, first.");
-			return;
 		}
 		bool glo = git_local_only;
 		git_local_only = true;
@@ -1614,7 +1629,7 @@ void QMLManager::saveChangesLocal()
 		if (error) {
 			setNotificationText(consumeError());
 			existing_filename.clear();
-			return;
+			return false;
 		}
 		mark_divelist_changed(false);
 		Command::setClean();
@@ -1622,31 +1637,28 @@ void QMLManager::saveChangesLocal()
 	} else {
 		appendTextToLog("local save requested with no unsaved changes");
 	}
+	return true;
 }
 
-void QMLManager::saveChangesCloud(bool forceRemoteSync)
+bool QMLManager::saveChangesCloud(bool forceRemoteSync)
 {
 	if (!unsavedChanges() && !forceRemoteSync) {
 		appendTextToLog("asked to save changes but no unsaved changes");
-		return;
+		return true;
 	}
 	// first we need to store any unsaved changes to the local repo
 	gitProgressCB("Save changes to local cache");
-	saveChangesLocal();
+	if (!saveChangesLocal())
+		return false;
 	// if the user asked not to push to the cloud we are done
 	if (git_local_only && !forceRemoteSync)
-		return;
-
-	if (!m_loadFromCloud) {
-		setNotificationText(tr("Fatal error: cannot save data file. Please copy log file and report."));
-		appendTextToLog("Don't save dives without loading from the cloud, first.");
-		return;
-	}
+		return true;
 
 	bool glo = git_local_only;
 	git_local_only = false;
 	loadDivesWithValidCredentials();
 	git_local_only = glo;
+	return git_remote_sync_successful;
 }
 
 void QMLManager::undo()
@@ -1764,22 +1776,6 @@ void QMLManager::setVerboseEnabled(bool verboseMode)
 	verbose = verboseMode;
 	appendTextToLog(QStringLiteral("verbose is ") + (verbose ? QStringLiteral("on") : QStringLiteral("off")));
 	emit verboseEnabledChanged();
-}
-
-void QMLManager::syncLoadFromCloud()
-{
-	QSettings s;
-	QString cloudMarker = QLatin1String("loadFromCloud") + QString::fromStdString(prefs.cloud_storage_email);
-	m_loadFromCloud = s.contains(cloudMarker) && s.value(cloudMarker).toBool();
-}
-
-void QMLManager::setLoadFromCloud(bool done)
-{
-	QSettings s;
-	QString cloudMarker = QLatin1String("loadFromCloud") + QString::fromStdString(prefs.cloud_storage_email);
-	s.setValue(cloudMarker, done);
-	m_loadFromCloud = done;
-	emit loadFromCloudChanged();
 }
 
 void QMLManager::setStartPageText(const QString& text)

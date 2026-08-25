@@ -410,8 +410,9 @@ Kirigami.ApplicationWindow {
 					onTriggered: {
 						globalDrawer.close()
 						detailsWindow.endEditMode()
-						manager.saveChangesCloud(true);
-						showPassiveNotification(qsTr("Completed manual sync with cloud\n") + manager.syncState)
+						// AI-generated (Claude): Preserve the manager's refusal notification on failure.
+						if (manager.saveChangesCloud(true))
+							showPassiveNotification(qsTr("Completed manual sync with cloud\n") + manager.syncState)
 						globalDrawer.close()
 					}
 				}

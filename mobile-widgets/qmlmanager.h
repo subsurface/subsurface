@@ -30,7 +30,6 @@ struct DiveSiteChange; // An obscure implementation artifact - remove in due cou
 
 class QMLManager : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool loadFromCloud MEMBER m_loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
 	Q_PROPERTY(QString startPageText MEMBER m_startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled MEMBER m_verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
 	Q_PROPERTY(QString notificationText MEMBER m_notificationText WRITE setNotificationText NOTIFY notificationTextChanged)
@@ -136,9 +135,6 @@ public:
 	bool verboseEnabled() const;
 	void setVerboseEnabled(bool verboseMode);
 
-	void setLoadFromCloud(bool done);
-	void syncLoadFromCloud();
-
 	QString startPageText() const;
 	void setStartPageText(const QString& text);
 
@@ -201,7 +197,7 @@ public slots:
 	void mergeDives(int diveId, int mergeIntoDiveId);
 	void changesNeedSaving(bool fromUndo = false);
 	void openNoCloudRepo();
-	void saveChangesCloud(bool forceRemoteSync);
+	bool saveChangesCloud(bool forceRemoteSync);
 	void selectDive(int id);
 	void deleteDive(int id);
 	void deleteAccount();
@@ -250,7 +246,6 @@ private:
 	bool m_verboseEnabled;
 	bool m_diveListProcessing;
 	bool m_initialized;
-	bool m_loadFromCloud;
 	static QMLManager *m_instance;
 	QString m_notificationText;
 	qreal m_lastDevicePixelRatio;
@@ -290,7 +285,8 @@ private:
 	void consumeFinishedLoad();
 	void mergeLocalRepo();
 	void openLocalThenRemote(QString url);
-	void saveChangesLocal();
+	bool saveChangesLocal();
+	bool cloudDestinationIsSafe() const;
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString appLogFileName;
@@ -308,7 +304,6 @@ signals:
 	void verboseEnabledChanged();
 	void diveListProcessingChanged();
 	void initializedChanged();
-	void loadFromCloudChanged();
 	void startPageTextChanged();
 	void notificationTextChanged();
 	void sendScreenChanged(QScreen *screen);
