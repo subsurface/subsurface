@@ -47,7 +47,11 @@ struct git_info {
 // tip: if the loaded commit is the tip or an ancestor of it the save is a
 // normal same-source save; a new or empty branch is safe initial population;
 // otherwise the save would overwrite unrelated cloud data and needs confirmation.
-enum class git_save_kind { normal, replacement, error };
+enum class git_save_kind {
+	normal,      // same-source save, or new/empty branch: write proceeds directly
+	replacement, // non-empty destination the log is not based on: caller must confirm
+	error,       // could not inspect the destination repository: save must not proceed
+};
 extern git_save_kind classify_git_save(const struct git_info *info);
 
 extern std::string loaded_git_commit;
