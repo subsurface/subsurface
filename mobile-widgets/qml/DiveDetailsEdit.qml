@@ -48,6 +48,91 @@ Item {
 	property int visibility
 	property var usedCyl: []
 
+	// AI-generated (Claude)
+	function gasEditText(gasMix) {
+		if (gasMix === undefined || gasMix === null)
+			return "";
+		var value = gasMix.toString();
+		if (/^AIR$/i.test(value))
+			return "21";
+		var enrichedAir = /^EAN(\d{1,3})$/i.exec(value);
+		return enrichedAir ? enrichedAir[1] : value;
+	}
+
+	function gasDisplayText(text, originalDisplay, originalEdit) {
+		if (text === originalEdit)
+			return originalDisplay;
+		if (text.indexOf("/") !== -1 || text === "")
+			return text;
+		if (/^AIR$/i.test(text))
+			return "AIR";
+		var enrichedAir = /^EAN(\d{1,3})$/i.exec(text);
+		if (enrichedAir)
+			return "EAN" + Number(enrichedAir[1]);
+		var percent = Number(text);
+		// Guard against non-numeric input; never emit an "EANNaN" string.
+		if (isNaN(percent))
+			return text;
+		return percent === 21 ? "AIR" : "EAN" + percent;
+	}
+
+	function numericEditText(text) {
+		if (!text)
+			return "";
+		var match = text.match(/[-+]?\d[\d.,]*/);
+		return match ? match[0] : "";
+	}
+
+	function restoreUnitText(text, originalDisplay, originalEdit, fallbackUnit) {
+		if (text === originalEdit)
+			return originalDisplay;
+		if (text === "")
+			return "";
+		var suffix = originalDisplay.replace(/[-+]?\d[\d.,]*/, "").trim();
+		return text + (suffix !== "" ? suffix : fallbackUnit);
+	}
+
+	function durationEditText(text) {
+		var values = text.match(/\d+/g);
+		if (!values)
+			return "0:00";
+		var minutes = values.length > 1 ? Number(values[0]) * 60 + Number(values[1]) : Number(values[0]);
+		var remainder = minutes % 60;
+		return Math.floor(minutes / 60) + ":" + (remainder < 10 ? "0" : "") + remainder;
+	}
+
+	function durationDisplayText(text) {
+		var match = /^(\d+):([0-5]\d)$/.exec(text);
+		if (!match)
+			return "";
+		var minutes = Number(match[1]) * 60 + Number(match[2]);
+		if (Backend.duration_units === Enums.ALWAYS_HOURS ||
+		    (Backend.duration_units === Enums.MIXED && minutes >= 60)) {
+			var remainder = minutes % 60;
+			return Math.floor(minutes / 60) + ":" + (remainder < 10 ? "0" : "") + remainder + qsTr("h");
+		}
+		return minutes + qsTr("min");
+	}
+
+	function beginNumericEdit(field, duration) {
+		field.displayText = field.text;
+		field.initialEditText = duration ? durationEditText(field.text) : numericEditText(field.text);
+		field.text = field.initialEditText;
+	}
+
+	function finishNumericEdit(field, fallbackUnit) {
+		field.text = restoreUnitText(field.text, field.displayText, field.initialEditText, fallbackUnit);
+	}
+
+	function finishDurationEdit(field) {
+		if (field.text === field.initialEditText) {
+			field.text = field.displayText;
+			return;
+		}
+		var display = durationDisplayText(field.text);
+		field.text = display !== "" ? display : field.displayText;
+	}
+
 	function focusReset() {
 		// set the focus explicitlt (to steal from any other field), then unset
 		editArea.focus = true
@@ -155,11 +240,36 @@ Item {
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Date/Time:")
 				}
+				// AI-generated (Claude): Edit with keypad separators and validate before restoring display format.
 				SsrfTextField {
 					id: txtDate;
+					property string displayText: ""
+					property string initialEditText: ""
 					Layout.preferredWidth: effectiveGridUnit * 10
-					inputMethodHints: Qt.ImhPreferNumbers
+					inputMethodHints: Qt.ImhDate | Qt.ImhTime
 					flickable: detailsEditFlickable
+					onActiveFocusChanged: {
+						if (activeFocus) {
+							displayText = text;
+							var editText = PrefLanguage.dateTimeEditText(text);
+							initialEditText = editText !== "" ? editText : text;
+							text = initialEditText;
+						} else if (text === initialEditText) {
+							text = displayText;
+						} else {
+							var display = PrefLanguage.dateTimeDisplayText(text);
+							text = display !== "" ? display : displayText;
+						}
+					}
+				}
+				TemplateButton {
+					text: qsTr("A/P")
+					visible: txtDate.activeFocus && /AP|ap/.test(PrefLanguage.time_format)
+					fontSize: subsurfaceTheme.smallPointSize
+					padding: 0
+					Layout.alignment: Qt.AlignVCenter
+					focusPolicy: Qt.NoFocus
+					onClicked: txtDate.text = PrefLanguage.toggleMeridiem(txtDate.text, true)
 				}
 			}
 			RowLayout {
@@ -190,12 +300,16 @@ Item {
 					text: qsTr("Depth:")
 				}
 				SsrfTextField {
+					property string displayText: ""
+					property string initialEditText: ""
 					Layout.preferredWidth: effectiveGridUnit * 3
 					sampleText: "200.0ft"
 					id: txtDepth
-					inputMethodHints: Qt.ImhPreferNumbers
+					inputMethodHints: Qt.ImhFormattedNumbersOnly
 					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
+					onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+						Backend.length === Enums.METERS ? qsTr("m") : qsTr("ft"))
 				}
 			}
 			RowLayout {
@@ -204,13 +318,17 @@ Item {
 					horizontalAlignment: Text.AlignRight
 					text: qsTr("Duration:")
 				}
+				// AI-generated (Claude): Duration editing always uses the time keypad's h:mm form.
 				SsrfTextField {
+					property string displayText: ""
+					property string initialEditText: ""
 					Layout.preferredWidth: effectiveGridUnit * 3
-					sampleText: "00:00min"
+					sampleText: "0:00min"
 					id: txtDuration
-					inputMethodHints: Qt.ImhPreferNumbers
+					inputMethodHints: Qt.ImhTime
 					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
+					onActiveFocusChanged: activeFocus ? beginNumericEdit(this, true) : finishDurationEdit(this)
 				}
 
 			}
@@ -222,10 +340,14 @@ Item {
 				}
 				SsrfTextField {
 					id: txtAirTemp
+					property string displayText: ""
+					property string initialEditText: ""
 					sampleText: "-10.0\u00B0F"
 					Layout.preferredWidth: effectiveGridUnit * 3
-					inputMethodHints: Qt.ImhPreferNumbers
+					inputMethodHints: Qt.ImhFormattedNumbersOnly
 					flickable: detailsEditFlickable
+					onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+						Backend.temperature === Enums.CELSIUS ? "°" + qsTr("C") : "°" + qsTr("F"))
 				}
 
 			}
@@ -236,11 +358,15 @@ Item {
 					text: qsTr("Water Temp:")
 				}
 				SsrfTextField {
+					property string displayText: ""
+					property string initialEditText: ""
 					Layout.preferredWidth: effectiveGridUnit * 3
 					sampleText: "-10.0\u00B0F"
 					id: txtWaterTemp
-					inputMethodHints: Qt.ImhPreferNumbers
+					inputMethodHints: Qt.ImhFormattedNumbersOnly
 					flickable: detailsEditFlickable
+					onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+						Backend.temperature === Enums.CELSIUS ? "°" + qsTr("C") : "°" + qsTr("F"))
 				}
 			}
 			RowLayout {
@@ -277,7 +403,6 @@ Item {
 				SsrfTextField {
 					Layout.preferredWidth: effectiveGridUnit * 16
 					id: txtGps
-					inputMethodHints: Qt.ImhPreferNumbers
 					flickable: detailsEditFlickable
 				}
 			}
@@ -346,10 +471,21 @@ Item {
 				}
 				SsrfTextField {
 					id: txtWeight
+					property string displayText: ""
+					property string initialEditText: ""
 					Layout.preferredWidth: effectiveGridUnit * 12
 					readOnly: text === "cannot edit multiple weight systems"
-					inputMethodHints: Qt.ImhPreferNumbers
+					inputMethodHints: Qt.ImhFormattedNumbersOnly
 					flickable: detailsEditFlickable
+					// AI-generated (Claude): A read-only field must not enter numeric-edit mode, which would overwrite the sentinel message.
+					onActiveFocusChanged: {
+						if (readOnly)
+							return;
+						if (activeFocus)
+							beginNumericEdit(this, false);
+						else
+							finishNumericEdit(this, Backend.weight === Enums.KG ? qsTr("kg") : qsTr("lbs"));
+					}
 				}
 			}
 
@@ -384,12 +520,23 @@ Item {
 					}
 					SsrfTextField {
 						id: txtGasMix0
+						property string displayText: ""
+						property string initialEditText: ""
 						text: usedGas[0] !== undefined ? usedGas[0] : null
-						sampleText: "EAN100"
+						sampleText: "20/24"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDate
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: {
+							if (activeFocus) {
+								displayText = text;
+								initialEditText = gasEditText(text);
+								text = initialEditText;
+							} else {
+								text = gasDisplayText(text, displayText, initialEditText);
+							}
+						}
 					}
 				}
 				RowLayout {
@@ -402,11 +549,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtStartPressure0
+						property string displayText: ""
+						property string initialEditText: ""
 						text: startpressure[0] !== undefined ? startpressure[0] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 				}
 				RowLayout {
@@ -419,11 +570,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtEndPressure0
+						property string displayText: ""
+						property string initialEditText: ""
 						text: endpressure[0] !== undefined ? endpressure[0] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 				}
 			}
@@ -458,12 +613,23 @@ Item {
 					}
 					SsrfTextField {
 						id: txtGasMix1
+						property string displayText: ""
+						property string initialEditText: ""
 						text: usedGas[1] !== undefined ? usedGas[1] : null
-						sampleText: "EAN100"
+						sampleText: "20/24"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDate
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: {
+							if (activeFocus) {
+								displayText = text;
+								initialEditText = gasEditText(text);
+								text = initialEditText;
+							} else {
+								text = gasDisplayText(text, displayText, initialEditText);
+							}
+						}
 					}
 				}
 				RowLayout {
@@ -476,11 +642,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtStartPressure1
+						property string displayText: ""
+						property string initialEditText: ""
 						text: startpressure[1] !== undefined ? startpressure[1] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 				}
 				RowLayout {
@@ -493,11 +663,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtEndPressure1
+						property string displayText: ""
+						property string initialEditText: ""
 						text: endpressure[1] !== undefined ? endpressure[1] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 				}
 			}
@@ -533,12 +707,23 @@ Item {
 					}
 					SsrfTextField {
 						id: txtGasMix2
+						property string displayText: ""
+						property string initialEditText: ""
 						text: usedGas[2] !== undefined ? usedGas[2] : null
-						sampleText: "EAN100"
+						sampleText: "20/24"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDate
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: {
+							if (activeFocus) {
+								displayText = text;
+								initialEditText = gasEditText(text);
+								text = initialEditText;
+							} else {
+								text = gasDisplayText(text, displayText, initialEditText);
+							}
+						}
 					}
 				}
 				RowLayout {
@@ -551,11 +736,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtStartPressure2
+						property string displayText: ""
+						property string initialEditText: ""
 						text: startpressure[2] !== undefined ? startpressure[2] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 				}
 				RowLayout {
@@ -568,11 +757,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtEndPressure2
+						property string displayText: ""
+						property string initialEditText: ""
 						text: endpressure[2] !== undefined ? endpressure[2] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 				}
 			}
@@ -609,12 +802,23 @@ Item {
 					}
 					SsrfTextField {
 						id: txtGasMix3
+						property string displayText: ""
+						property string initialEditText: ""
 						text: usedGas[3] !== undefined ? usedGas[3] : null
-						sampleText: "EAN100"
+						sampleText: "20/24"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDate
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: {
+							if (activeFocus) {
+								displayText = text;
+								initialEditText = gasEditText(text);
+								text = initialEditText;
+							} else {
+								text = gasDisplayText(text, displayText, initialEditText);
+							}
+						}
 					}
 
 				}
@@ -628,11 +832,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtStartPressure3
+						property string displayText: ""
+						property string initialEditText: ""
 						text: startpressure[3] !== undefined ? startpressure[3] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 
 				}
@@ -646,11 +854,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtEndPressure3
+						property string displayText: ""
+						property string initialEditText: ""
 						text: endpressure[3] !== undefined ? endpressure[3] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 				}
 			}
@@ -688,12 +900,23 @@ Item {
 					}
 					SsrfTextField {
 						id: txtGasMix4
+						property string displayText: ""
+						property string initialEditText: ""
 						text: usedGas[4] !== undefined ? usedGas[4] : null
-						sampleText: "EAN100"
+						sampleText: "20/24"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDate
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: {
+							if (activeFocus) {
+								displayText = text;
+								initialEditText = gasEditText(text);
+								text = initialEditText;
+							} else {
+								text = gasDisplayText(text, displayText, initialEditText);
+							}
+						}
 					}
 
 				}
@@ -707,11 +930,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtStartPressure4
+						property string displayText: ""
+						property string initialEditText: ""
 						text: startpressure[4] !== undefined ? startpressure[4] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 
 				}
@@ -725,11 +952,15 @@ Item {
 					}
 					SsrfTextField {
 						id: txtEndPressure4
+						property string displayText: ""
+						property string initialEditText: ""
 						text: endpressure[4] !== undefined ? endpressure[4] : null
 						sampleText: "3000psi"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhPreferNumbers
+						inputMethodHints: Qt.ImhDigitsOnly
 						flickable: detailsEditFlickable
+						onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
+							Backend.pressure === Enums.BAR ? qsTr("bar") : qsTr("psi"))
 					}
 				}
 			}

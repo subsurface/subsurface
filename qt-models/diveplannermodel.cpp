@@ -1491,6 +1491,15 @@ void DivePlannerPointsModel::createPlan(bool saveAsNew)
 
 QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersData, const QVariantList &segmentsData, const QString &date, const QString &time, int diveMode, int waterType, bool shouldSave)
 {
+	// AI-generated (Claude): Reject malformed UI input before replacing the last valid plan state.
+	QDateTime plannedDateTime = QDateTime::fromString(date + " " + time, "yyyy-MM-dd hh:mm:ss");
+	if (!plannedDateTime.isValid()) {
+		return {
+			{ QStringLiteral("dateTimeValid"), false },
+			{ QStringLiteral("newDiveId"), -1 }
+		};
+	}
+
 	if (d) {
 		delete d;
 	}
@@ -1505,8 +1514,6 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	make_planner_dc(&d->dcs[dcNr]);
 
 	// Set Date, Time, and Dive Mode from parameters
-	QString dateTimeString = date + " " + time;
-	QDateTime plannedDateTime = QDateTime::fromString(dateTimeString, "yyyy-MM-dd hh:mm:ss");
 #if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
 	plannedDateTime = QDateTime(plannedDateTime.date(), plannedDateTime.time(), QTimeZone(QTimeZone::UTC));
 #else
@@ -1598,6 +1605,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	d->notes = notes_qstr.toStdString();
 	// Build the results map
 	QVariantMap results;
+	results["dateTimeValid"] = true;
 	results["notes"] = QString::fromStdString(d->notes);
 	results["maxDepth"] = get_depth_string(d->maxdepth, true);
 	results["duration"] = QString::number(d->duration.seconds / 60) + " min";
