@@ -371,6 +371,9 @@ void TestGitStorage::testGitSaveClassify()
 	std::string invalidTarget = destinationDir.filePath("missing").toStdString() + "[main]";
 	QVERIFY(classifyGitSave(invalidTarget) == git_save_kind::normal);
 
+	// Case: branch name that git rejects as invalid (GIT_EINVALIDSPEC) -> error.
+	QVERIFY(classifyGitSave(destination + "[invalid branch name]") == git_save_kind::error);
+
 	// Case: absent local repo but with info->repo already open -> normal path via open.
 	// (Covered by the invalidTarget case above which triggers git_repository_open failure
 	// returning GIT_ENOTFOUND -> normal. No need to duplicate.)
