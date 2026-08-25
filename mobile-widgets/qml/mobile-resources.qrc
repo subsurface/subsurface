@@ -30,6 +30,8 @@
 		<file>DivePlannerGasCalculator.qml</file>
 		<file>DiveSummary.qml</file>
 		<file>Export.qml</file>
+		<file>ExportDivePage.qml</file>
+		<file>TzOffsetSelector.qml</file>
 		<file>HintsTextEdit.qml</file>
 		<file>Log.qml</file>
 		<file>main.qml</file>

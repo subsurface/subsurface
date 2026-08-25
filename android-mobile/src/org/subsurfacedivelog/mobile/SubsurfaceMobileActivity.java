@@ -36,7 +36,8 @@ public class SubsurfaceMobileActivity extends QtActivity
 	private static String fileProviderAuthority="org.subsurfacedivelog.mobile.fileprovider";
 
 	// you can share one or two files
-	public boolean shareViaEmail(String subject, String recipient, String body, String path1, String path2) {
+	// AI-generated (Claude)
+	public boolean shareViaEmail(String subject, String recipient, String body, String path1, String path2, String mimeType) {
 		Log.d(TAG + " shareFile - trying to share: ", path1 + " and " + path2 + " to " + recipient);
 
 		// Can't get this to work building my own intent, so let's use the IntentBuilder
@@ -75,7 +76,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 			Log.d(TAG + " shareFile - URI for file: ", uri.toString());
 			attachments.add(uri);
 		}
-		shareFileIntent.setType("text/plain");
+		shareFileIntent.setType(mimeType);
 		shareFileIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
 		shareFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		shareFileIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -86,11 +87,50 @@ public class SubsurfaceMobileActivity extends QtActivity
 		return true;
 	}
 
+	// AI-generated (Claude)
+	// Share an arbitrary number of files. The paths arrive as one
+	// newline-separated string rather than a String[]: building a Java object
+	// array through QJniObject is a lot more code for no benefit, and a
+	// newline cannot occur in the generated file names. Keeping the list
+	// short enough for a single Binder transaction is the caller's job - see
+	// fitShareMaxIndividual in qmlmanager.cpp.
+	public boolean shareFilesViaEmail(String subject, String body, String pathList, String mimeType) {
+		Intent shareFileIntent = new ShareCompat.IntentBuilder(this).getIntent();
+		shareFileIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+		shareFileIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
+		shareFileIntent.putExtra(Intent.EXTRA_TEXT, body);
+
+		ArrayList<Uri> attachments = new ArrayList<Uri>();
+		for (String path : pathList.split("\n")) {
+			if (path.isEmpty())
+				continue;
+			try {
+				attachments.add(FileProvider.getUriForFile(this, fileProviderAuthority, new File(path)));
+			} catch (IllegalArgumentException e) {
+				// a path outside the FileProvider's declared roots; fail the
+				// whole share rather than quietly dropping a dive
+				Log.d(TAG + " shareFiles - cannot get URI for ", path);
+				return false;
+			}
+		}
+		if (attachments.isEmpty()) {
+			Log.d(TAG + " shareFiles - ", "nothing to share");
+			return false;
+		}
+
+		shareFileIntent.setType(mimeType);
+		shareFileIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
+		shareFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+		Log.d(TAG + " shareFiles - sharing ", attachments.size() + " file(s)");
+		this.startActivity(shareFileIntent);
+		return true;
+	}
+
 	public boolean supportEmail(String path1, String path2) {
 		return shareViaEmail("Subsurface-mobile support request",
 				"in-app-support@subsurface-divelog.org",
 				"Please describe your issue here and keep the attached logs.\n\n\n\n",
-				path1, path2);
+				path1, path2, "text/plain");
 	}
 
 	public static boolean isIntentPending;

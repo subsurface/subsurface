@@ -12,6 +12,119 @@ TemplatePage {
 
 	property int selectedExport: ExportType.EX_DIVES_XML
 
+	// AI-generated (Claude)
+	// The remaining export types are website uploads, which need the
+	// credential step instead of a destination.
+	readonly property bool fileBasedExport: selectedExport === ExportType.EX_DIVES_XML ||
+						selectedExport === ExportType.EX_DIVE_SITES_XML ||
+						selectedExport === ExportType.EX_FIT
+
+	// AI-generated (Claude)
+	// A whole-divelog FIT export is many files, so unlike the XML exports it
+	// needs a granularity choice and the same manual timezone correction the
+	// per-dive export offers.
+	readonly property bool fitExport: selectedExport === ExportType.EX_FIT
+	readonly property bool fitAsArchive: fitGranularity.currentIndex === 1
+	// fitBulkDiveCount() has no change notification, so cache it on entry to
+	// the page instead of leaving bindings that go stale after an import.
+	property int fitDiveCount: 0
+	// Warn before the user taps Share rather than failing after they picked a
+	// target app (see fitShareMaxIndividual in qmlmanager.cpp).
+	readonly property bool fitShareTooMany: fitExport && !fitAsArchive &&
+						fitDiveCount > manager.fitShareIndividualLimit()
+
+	// AI-generated (Claude)
+	// Mirrors ExportDivePage's Share/Save split for the whole divelog:
+	// "share" hands a fixed file to the native share sheet, "save" lets the
+	// user pick a destination.
+	function runFileExport(destination) {
+		if (fitExport) {
+			// the text field is only folded into offsetSeconds by commit()
+			var offset = fitTzOffset.commit()
+			if (destination === "share") {
+				if (fitAsArchive)
+					manager.shareFitArchive(offset)
+				else
+					manager.shareFitAll(offset)
+				pageStack.pop()
+			} else if (fitAsArchive) {
+				exportFileDialog.currentFile = manager.exportSuggestedFileName(selectedExport)
+				exportFileDialog.open()
+			} else {
+				// one file per dive: the destination is a directory
+				fitFolderDialog.open()
+			}
+			return
+		}
+		if (destination === "share") {
+			manager.appendTextToLog("Send export of type " + selectedExport + " via share sheet.")
+			manager.shareViaEmail(selectedExport, anonymize.checked)
+			pageStack.pop()
+		} else if (Qt.platform.os !== "android" && Qt.platform.os !== "ios") {
+			saveAsDialog.open()
+		} else {
+			exportFileDialog.currentFile = manager.exportSuggestedFileName(selectedExport)
+			exportFileDialog.open()
+		}
+	}
+
+	// AI-generated (Claude)
+	// exportWindow is a single, pre-instantiated page (main.qml), so the
+	// visibility flags below survive a pageStack.pop(). Without resetting
+	// them, reopening Export lands on the credential pane with no way back
+	// to the export type list.
+	function resetToSelection() {
+		uploadDialog.visible = false
+		exportSelection.visible = true
+		fitDiveCount = manager.fitBulkDiveCount()
+		statusText.text = ""
+		progress.value = 0
+	}
+
+	onVisibleChanged: {
+		if (visible)
+			resetToSelection()
+	}
+
+	FileDialog {
+		id: exportFileDialog
+		fileMode: FileDialog.SaveFile
+		nameFilters: selectedExport === ExportType.EX_FIT ?
+				[ qsTr("ZIP archives") + " (*.zip)" ] :
+			selectedExport === ExportType.EX_DIVES_XML ?
+				[ qsTr("Subsurface files") + " (*.ssrf)" ] : [ qsTr("XML files") + " (*.xml)" ]
+		onAccepted: {
+			if (selectedExport === ExportType.EX_FIT)
+				manager.exportFitArchiveToUrl(selectedFile, fitTzOffset.offsetSeconds)
+			else
+				manager.exportToUrl(selectedExport, selectedFile, anonymize.checked)
+			pageStack.pop()
+		}
+		onRejected: {
+			// a cancelled picker must not have any file side effects
+			pageStack.pop()
+		}
+	}
+
+	// AI-generated (Claude)
+	// Destination for the one-file-per-dive FIT export. On Android this is the
+	// SAF "open document tree" picker; the tree URI it returns goes to QFile
+	// as-is (see exportFitAllToFolder).
+	FolderDialog {
+		id: fitFolderDialog
+		currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
+		onAccepted: {
+			manager.exportFitAllToFolder(selectedFolder, fitTzOffset.offsetSeconds)
+			pageStack.pop()
+			close()
+		}
+		onRejected: {
+			// a cancelled picker must not have any file side effects
+			pageStack.pop()
+			close()
+		}
+	}
+
 	FolderDialog {
 		id: saveAsDialog
 		currentFolder: StandardPaths.writableLocation(StandardPaths.DocumentsLocation)
@@ -104,14 +217,17 @@ TemplatePage {
 		}
 		TemplateButton {
 			text: qsTr("Cancel")
+			// AI-generated (Claude): back to the export type list, not out of
+			// the page
 			onClicked: {
-				pageStack.pop()
+				resetToSelection()
 			}
 		}
 		Connections {
 			target: manager
 			function onUploadFinish(success, text) {
 				if (success) {
+					resetToSelection()
 					pageStack.pop()
 				}
 				statusText.text = text
@@ -123,9 +239,9 @@ TemplatePage {
 		}
 	}
 
-	// given that there is no native file dialog on Android and that access to
-	// the file system is increasingly restrictive in future versions, file based
-	// export really doesn't make sense on Android
+	// On Android the destination is picked through SAF (FileDialog's SaveFile
+	// mode), so file based export offers a "Save" next to the share sheet
+	// rather than being share-only.
 
 	ColumnLayout {
 		id: exportSelection
@@ -147,6 +263,13 @@ TemplatePage {
 			onClicked: {
 				selectedExport = ExportType.EX_DIVE_SITES_XML
 				explain.text = qsTr("Subsurface dive sites native XML format.")
+			}
+		}
+		TemplateRadioButton {
+			text: qsTr("Export all dives as FIT")
+			onClicked: {
+				selectedExport = ExportType.EX_FIT
+				explain.text = qsTr("Garmin FIT activity files, one per dive.")
 			}
 		}
 		TemplateRadioButton {
@@ -178,41 +301,89 @@ TemplatePage {
 			height: Kirigami.Units.gridUnit
 			color: "transparent"
 		}
+		// AI-generated (Claude)
+		// FIT carries no names or dive sites, so "Anonymize" has nothing to
+		// strip there.
 		TemplateCheckBox {
 			id: anonymize
+			visible: !fitExport
 			Layout.fillWidth: true
 			text: qsTr("Anonymize")
 		}
-		TemplateButton {
-			text: qsTr("Next")
-			onClicked: {
-				if (selectedExport === ExportType.EX_DIVELOGS_DE) {
-					textUserID.visible = true
-					fieldUserID.visible = true
-					fieldUserID.text = PrefCloudStorage.divelogde_user
-					textPassword.visible = true
-					fieldPassword.visible = true
-					fieldPassword.text = PrefCloudStorage.divelogde_pass
-					anonymize.visible = false
-					statusText.text = ""
-					exportSelection.visible = false
-					uploadDialog.visible = true
-				} else if (selectedExport === ExportType.EX_DIVESHARE) {
-					textUserID.visible = true
-					fieldUserID.visible = true
-					fieldUserID.text = PrefCloudStorage.diveshare_uid
-					fieldPrivate.visible = true
-					fieldPrivate.checked = PrefCloudStorage.diveshare_private
-					exportSelection.visible = false
-					textPassword.visible = false
-					uploadDialog.visible = true
-				} else if (Qt.platform.os !== "android" && Qt.platform.os !== "ios") {
-					saveAsDialog.open()
-				} else {
-					manager.appendTextToLog("Send export of type " + selectedExport + " via email.")
-					manager.shareViaEmail(selectedExport, anonymize.checked)
-					pageStack.pop()
+
+		// AI-generated (Claude)
+		ColumnLayout {
+			id: fitOptions
+			visible: fitExport
+			Layout.fillWidth: true
+			spacing: Kirigami.Units.smallSpacing * 2
+
+			TemplateLabel {
+				text: qsTr("Files")
+			}
+			TemplateComboBox {
+				id: fitGranularity
+				Layout.fillWidth: true
+				model: [ qsTr("Individual files"), qsTr("ZIP archive") ]
+			}
+			TemplateLabel {
+				Layout.fillWidth: true
+				wrapMode: Text.Wrap
+				text: fitShareTooMany ?
+					qsTr("%1 dives - too many to share as individual files, use a ZIP archive or Save.").arg(fitDiveCount) :
+					qsTr("%1 dives will be exported.").arg(fitDiveCount)
+			}
+			TzOffsetSelector {
+				id: fitTzOffset
+				Layout.fillWidth: true
+			}
+		}
+		RowLayout {
+			Layout.fillWidth: true
+			// AI-generated (Claude)
+			// A website upload needs the credential step, so it keeps the
+			// "Next" button; a file based export goes straight to a
+			// destination.
+			TemplateButton {
+				text: qsTr("Next")
+				visible: !fileBasedExport
+				onClicked: {
+					if (selectedExport === ExportType.EX_DIVELOGS_DE) {
+						textUserID.visible = true
+						fieldUserID.visible = true
+						fieldUserID.text = PrefCloudStorage.divelogde_user
+						textPassword.visible = true
+						fieldPassword.visible = true
+						fieldPassword.text = PrefCloudStorage.divelogde_pass
+						statusText.text = ""
+						exportSelection.visible = false
+						uploadDialog.visible = true
+					} else if (selectedExport === ExportType.EX_DIVESHARE) {
+						textUserID.visible = true
+						fieldUserID.visible = true
+						fieldUserID.text = PrefCloudStorage.diveshare_uid
+						fieldPrivate.visible = true
+						fieldPrivate.checked = PrefCloudStorage.diveshare_private
+						exportSelection.visible = false
+						textPassword.visible = false
+						uploadDialog.visible = true
+					}
 				}
+			}
+			TemplateButton {
+				text: qsTr("Share")
+				visible: fileBasedExport
+				enabled: !fitShareTooMany
+				onClicked: runFileExport("share")
+			}
+			TemplateButton {
+				text: qsTr("Save")
+				visible: fileBasedExport
+				onClicked: runFileExport("save")
+			}
+			TemplateButton {
+				text: qsTr("Cancel")
+				onClicked: pageStack.pop()
 			}
 		}
 	}

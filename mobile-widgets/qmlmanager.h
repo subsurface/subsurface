@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QStringList>
 #include <QNetworkAccessManager>
 #include <QScreen>
 #include <QElapsedTimer>
@@ -81,7 +82,8 @@ public:
 		EX_DIVES_XML,
 		EX_DIVE_SITES_XML,
 		EX_DIVELOGS_DE,
-		EX_DIVESHARE
+		EX_DIVESHARE,
+		EX_FIT
 	};
 	Q_ENUM(export_types)
 #if !defined(Q_OS_ANDROID)
@@ -89,6 +91,24 @@ public:
 #endif
 	Q_INVOKABLE void exportToWEB(export_types type, QString userId, QString password, bool anonymize);
 	Q_INVOKABLE void shareViaEmail(export_types type, bool anonymize);
+	// AI-generated (Claude)
+	Q_INVOKABLE void exportToUrl(export_types type, QString fileUrl, bool anonymize);
+	Q_INVOKABLE QString exportSuggestedFileName(export_types type);
+	Q_INVOKABLE void exportFitForDive(int diveId, QString fileUrl, int tzOffsetSeconds);
+	Q_INVOKABLE int fitDefaultTzOffset(int diveId);
+	Q_INVOKABLE void shareFitForDive(int diveId, int tzOffsetSeconds);
+	Q_INVOKABLE QString fitSuggestedFileName(int diveId);
+
+	// AI-generated (Claude)
+	// Whole-divelog FIT export. Every dive is encoded with the same tz
+	// offset and either written as one file per dive under a picked folder,
+	// or collected into a single ZIP.
+	Q_INVOKABLE int fitBulkDiveCount();
+	Q_INVOKABLE int fitShareIndividualLimit();
+	Q_INVOKABLE void exportFitAllToFolder(QString folderUrl, int tzOffsetSeconds);
+	Q_INVOKABLE void exportFitArchiveToUrl(QString fileUrl, int tzOffsetSeconds);
+	Q_INVOKABLE void shareFitAll(int tzOffsetSeconds);
+	Q_INVOKABLE void shareFitArchive(int tzOffsetSeconds);
 
 	QString DC_vendor() const;
 	void DC_setVendor(const QString& vendor);
@@ -241,6 +261,16 @@ public slots:
 	QString getLatestFirmwareAvailable() const;
 
 private:
+	// AI-generated (Claude)
+	// writeFitFiles() writes one file per dive below dirPrefix (which may be
+	// a SAF tree content:// URI on Android) and appends what it wrote to
+	// writtenPaths; writeFitZip() collects the same set into one ZIP at a
+	// plain filesystem path.
+	int writeFitFiles(const QString &dirPrefix, int tzOffsetSeconds, int &skipped, QStringList *writtenPaths);
+	bool writeFitZip(const QString &zipPath, int tzOffsetSeconds, int &written, int &skipped);
+	QString fitShareStagingDir();
+	void shareFitFiles(const QStringList &paths, const QString &mimeType);
+
 	BuddyCompletionModel buddyModel;
 	SuitCompletionModel suitModel;
 	DiveGuideCompletionModel diveguideModel;
