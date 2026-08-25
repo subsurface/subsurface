@@ -23,9 +23,9 @@
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 #include <QRandomGenerator>
 #endif
+#include <QTemporaryDir>
 
-// provide declarations for two local helper functions in git-access.c
-std::string get_local_dir(const std::string &remote, const std::string &branch);
+// provide a declaration for a local helper function in git-access.cpp
 void delete_remote_branch(git_repository *repo, const std::string &remote, const std::string &branch);
 
 Q_DECLARE_METATYPE(std::string);
@@ -69,6 +69,73 @@ static void localRemoteCleanup()
 
 	// and since this will have created a local repo, remove that one, again so the tests start clean
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
+}
+
+// AI-generated (Claude)
+static git_save_kind classifyGitSave(const std::string &filename)
+{
+	git_info info;
+	if (!is_git_repository(filename.c_str(), &info))
+		return git_save_kind::error;
+	return classify_git_save(&info);
+}
+
+// Create an "other" branch with the same commits as "main", and an "empty"
+// branch whose single commit has an empty tree, for use in classify_git_save
+// tests.
+static void createTestBranches(git_repository *repo)
+{
+	git_reference *mainRef = nullptr;
+	git_commit *mainCommit = nullptr;
+	git_reference *otherRef = nullptr;
+	QCOMPARE(git_branch_lookup(&mainRef, repo, "main", GIT_BRANCH_LOCAL), 0);
+	QCOMPARE(git_reference_peel(reinterpret_cast<git_object **>(&mainCommit), mainRef, GIT_OBJ_COMMIT), 0);
+	QCOMPARE(git_branch_create(&otherRef, repo, "other", mainCommit, 0), 0);
+	git_reference_free(otherRef);
+	git_commit_free(mainCommit);
+	git_reference_free(mainRef);
+
+	git_treebuilder *builder = nullptr;
+	git_oid treeId;
+	git_tree *tree = nullptr;
+	git_signature *signature = nullptr;
+	git_oid commitId;
+	QCOMPARE(git_treebuilder_new(&builder, repo, nullptr), 0);
+	QCOMPARE(git_treebuilder_write(&treeId, builder), 0);
+	QCOMPARE(git_tree_lookup(&tree, repo, &treeId), 0);
+	QCOMPARE(git_signature_now(&signature, "Subsurface test", "test@example.com"), 0);
+	QCOMPARE(git_commit_create_v(&commitId, repo, "refs/heads/empty", signature, signature, nullptr,
+				     "empty tree", tree, 0), 0);
+	git_signature_free(signature);
+	git_tree_free(tree);
+	git_treebuilder_free(builder);
+}
+
+// Advance the local branch tip by one commit using the same tree as its parent.
+// Returns the new commit id as hex string.
+static std::string appendLocalCommit(git_repository *repo)
+{
+	git_reference *head = nullptr;
+	git_commit *parent = nullptr;
+	git_tree *tree = nullptr;
+	git_signature *sig = nullptr;
+	git_oid commitId;
+	std::string result;
+	if (!git_branch_lookup(&head, repo, "main", GIT_BRANCH_LOCAL) &&
+	    !git_reference_peel(reinterpret_cast<git_object **>(&parent), head, GIT_OBJ_COMMIT) &&
+	    !git_commit_tree(&tree, parent) &&
+	    !git_signature_now(&sig, "Subsurface test", "test@example.com") &&
+	    !git_commit_create_v(&commitId, repo, "refs/heads/main", sig, sig, nullptr,
+	                         "advance tip", tree, 1, parent)) {
+		char id[GIT_OID_HEXSZ + 1];
+		git_oid_tostr(id, sizeof(id), &commitId);
+		result = id;
+	}
+	git_signature_free(sig);
+	git_tree_free(tree);
+	git_commit_free(parent);
+	git_reference_free(head);
+	return result;
 }
 
 void TestGitStorage::initTestCase()
@@ -213,6 +280,114 @@ void TestGitStorage::testGitStorageLocal()
 	QCOMPARE(readin, written);
 }
 
+// AI-generated (Claude)
+void TestGitStorage::testGitSaveClassify()
+{
+	QTemporaryDir destinationDir;
+	QTemporaryDir sourceDir;
+	QVERIFY(destinationDir.isValid());
+	QVERIFY(sourceDir.isValid());
+	std::string destination = destinationDir.path().toStdString();
+	std::string source = sourceDir.path().toStdString();
+	std::string mainTarget = destination + "[main]";
+	std::string otherTarget = destination + "[other]";
+	std::string newTarget = destination + "[new]";
+	std::string emptyTarget = destination + "[empty]";
+	std::string sourceTarget = source + "[source]";
+	std::string xmlCopy = destinationDir.filePath("loaded.ssrf").toStdString();
+
+	// Set up destination repo: save dives to main, create other (same tip) and empty branches.
+	git_repository *repo = nullptr;
+	QCOMPARE(git_repository_init(&repo, destination.c_str(), false), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/SampleDivesV2.ssrf", &divelog), 0);
+	QCOMPARE(save_dives(mainTarget.c_str()), 0);
+	createTestBranches(repo);
+
+	// Case: same-source save - loaded commit is the tip of main.
+	clear_dive_file_data();
+	QCOMPARE(parse_file(mainTarget.c_str(), &divelog), 0);
+	QVERIFY(!loaded_git_commit.empty());
+	std::string loadedCommit = loaded_git_commit;
+	QVERIFY(classifyGitSave(mainTarget) == git_save_kind::normal);
+
+	// Case: loaded commit is the tip of "other" (same commit as main tip) -> normal.
+	// (The loaded commit equals the branch tip.)
+	QVERIFY(classifyGitSave(otherTarget) == git_save_kind::normal);
+
+	// Case: new branch (absent) -> normal.
+	QVERIFY(classifyGitSave(newTarget) == git_save_kind::normal);
+
+	// Case: empty branch -> normal.
+	QVERIFY(classifyGitSave(emptyTarget) == git_save_kind::normal);
+
+	// Saving to XML does not touch loaded_git_commit.
+	QCOMPARE(save_dives(xmlCopy.c_str()), 0);
+	QCOMPARE(loaded_git_commit, loadedCommit);
+	QVERIFY(classifyGitSave(mainTarget) == git_save_kind::normal);
+
+	// Case: loaded commit is an ancestor of the advanced tip -> normal.
+	// Advance the main branch tip one commit beyond what we loaded.
+	std::string advancedTip = appendLocalCommit(repo);
+	QVERIFY(!advancedTip.empty());
+	QCOMPARE(loaded_git_commit, loadedCommit); // still the old commit
+	QVERIFY(classifyGitSave(mainTarget) == git_save_kind::normal);
+
+	git_repository_free(repo);
+
+	// Case: unrelated log (loaded from XML, no git commit) vs populated branch -> replacement.
+	clear_dive_file_data();
+	QVERIFY(loaded_git_commit.empty());
+	QCOMPARE(parse_file(xmlCopy.c_str(), &divelog), 0);
+	QVERIFY(loaded_git_commit.empty());
+	QVERIFY(classifyGitSave(mainTarget) == git_save_kind::replacement);
+
+	// git_save_dives must also refuse the unrelated save.
+	std::string oldHead;
+	{
+		git_info info;
+		QVERIFY(is_git_repository(mainTarget.c_str(), &info));
+		QVERIFY(open_git_repository(&info));
+		oldHead = get_sha(info.repo, info.branch);
+	}
+	QVERIFY(save_dives(mainTarget.c_str()) != 0);
+	{
+		git_info info;
+		QVERIFY(is_git_repository(mainTarget.c_str(), &info));
+		QVERIFY(open_git_repository(&info));
+		QCOMPARE(get_sha(info.repo, info.branch), oldHead); // branch unchanged
+	}
+
+	// Case: loaded from a different local repo (different data) -> replacement.
+	clear_dive_file_data();
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test10.xml", &divelog), 0);
+	QCOMPARE(git_repository_init(&repo, source.c_str(), false), 0);
+	git_repository_free(repo);
+	QCOMPARE(save_dives(sourceTarget.c_str()), 0);
+	clear_dive_file_data();
+	QCOMPARE(parse_file(sourceTarget.c_str(), &divelog), 0);
+	QVERIFY(classifyGitSave(mainTarget) == git_save_kind::replacement);
+
+	// Case: absent local repo -> normal (first save).
+	std::string invalidTarget = destinationDir.filePath("missing").toStdString() + "[main]";
+	QVERIFY(classifyGitSave(invalidTarget) == git_save_kind::normal);
+
+	// Case: absent local repo but with info->repo already open -> normal path via open.
+	// (Covered by the invalidTarget case above which triggers git_repository_open failure
+	// returning GIT_ENOTFOUND -> normal. No need to duplicate.)
+
+	// Case: local repo deleted after load -> normal (repo can't be opened, treated as first save).
+	QTemporaryDir deletedCacheDir;
+	QVERIFY(deletedCacheDir.isValid());
+	std::string deletedCache = deletedCacheDir.path().toStdString();
+	std::string deletedCacheTarget = deletedCache + "[main]";
+	QCOMPARE(git_repository_init(&repo, deletedCache.c_str(), false), 0);
+	git_repository_free(repo);
+	QCOMPARE(save_dives(deletedCacheTarget.c_str()), 0);
+	clear_dive_file_data();
+	QCOMPARE(parse_file(deletedCacheTarget.c_str(), &divelog), 0);
+	QVERIFY(QDir(QString::fromStdString(deletedCache)).removeRecursively());
+	QVERIFY(classifyGitSave(deletedCacheTarget) == git_save_kind::normal);
+}
 void TestGitStorage::testGitStorageCloud()
 {
 	// test writing and reading back from cloud storage
@@ -223,6 +398,7 @@ void TestGitStorage::testGitStorageCloud()
 	clear_dive_file_data();
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
 	QCOMPARE(save_dives("./SampleDivesV3viacloud.ssrf"), 0);
+	QVERIFY(classifyGitSave(cloudTestRepo) == git_save_kind::normal);
 	QFile org("./SampleDivesV3.ssrf");
 	org.open(QFile::ReadOnly);
 	QFile out("./SampleDivesV3viacloud.ssrf");
@@ -240,6 +416,8 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	// and then open the remote one again and check that things were propagated correctly
 	// read the local repo from the previous test and add dive 10
 	QCOMPARE(parse_file(cloudTestRepo.c_str(), &divelog), 0);
+	QVERIFY(classifyGitSave(localCacheRepo) == git_save_kind::normal);
+	std::string loadedCommit = loaded_git_commit;
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test10.xml", &divelog), 0);
 	// calling process_loaded_dives() sorts the table, but calling add_imported_dives()
 	// causes it to try to update the window title... let's not do that
@@ -247,6 +425,11 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	// now save only to the local cache but not to the remote server
 	git_local_only = true;
 	QCOMPARE(save_dives(cloudTestRepo.c_str()), 0);
+	QVERIFY(loaded_git_commit != loadedCommit);
+	QVERIFY(classifyGitSave(cloudTestRepo) == git_save_kind::normal);
+	// AI-generated (Claude): Compare serialized offline and online git states.
+	clear_dive_file_data();
+	QCOMPARE(parse_file(localCacheRepo.c_str(), &divelog), 0);
 	QCOMPARE(save_dives("./SampleDivesV3plus10local.ssrf"), 0);
 	clear_dive_file_data();
 	// now pretend that we are online again and open the cloud storage and compare
@@ -323,6 +506,18 @@ void TestGitStorage::testGitStorageCloudMerge()
 	QCOMPARE(parse_file("./SampleDivesV3plus10local.ssrf", &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test11.xml", &divelog), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test12.xml", &divelog), 0);
+	divelog.process_loaded_dives();
+	// AI-generated (Claude): Normalize calculated fields through git before comparing git states.
+	QTemporaryDir referenceDir;
+	QVERIFY(referenceDir.isValid());
+	std::string referenceRepository = referenceDir.path().toStdString();
+	std::string referenceTarget = referenceRepository + "[reference]";
+	git_repository *referenceRepo = nullptr;
+	QCOMPARE(git_repository_init(&referenceRepo, referenceRepository.c_str(), false), 0);
+	git_repository_free(referenceRepo);
+	QCOMPARE(save_dives(referenceTarget.c_str()), 0);
+	clear_dive_file_data();
+	QCOMPARE(parse_file(referenceTarget.c_str(), &divelog), 0);
 	divelog.process_loaded_dives();
 	QCOMPARE(save_dives("./SampleDivesV3plus10-11-12.ssrf"), 0);
 	// then load from the cloud

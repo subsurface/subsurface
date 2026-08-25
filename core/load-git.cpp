@@ -34,7 +34,8 @@
 #include "version.h"
 
 // TODO: Should probably be moved to struct divelog to allow for multi-document
-std::string saved_git_id;
+// AI-generated (Claude)
+std::string loaded_git_commit;
 
 struct git_parser_state {
 	git_repository *repo = nullptr;
@@ -1839,15 +1840,16 @@ static int load_dives_from_tree(git_repository *repo, git_tree *tree, struct git
 
 void clear_git_id()
 {
-	saved_git_id.clear();
+	loaded_git_commit.clear();
 }
 
+// AI-generated (Claude)
 void set_git_id(const struct git_oid *id)
 {
 	char git_id_buffer[GIT_OID_HEXSZ + 1];
 
 	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), id);
-	saved_git_id = git_id_buffer;
+	loaded_git_commit = git_id_buffer;
 }
 
 static int find_commit(git_repository *repo, const char *branch, git_commit **commit_p)
@@ -1861,19 +1863,19 @@ static int find_commit(git_repository *repo, const char *branch, git_commit **co
 	return 0;
 }
 
-static int do_git_load(git_repository *repo, const char *branch, struct git_parser_state *state)
+static int do_git_load(const struct git_info *info, struct git_parser_state *state)
 {
 	int ret;
 	git_commit *commit;
 	git_tree *tree;
 
-	ret = find_commit(repo, branch, &commit);
+	ret = find_commit(info->repo, info->branch.c_str(), &commit);
 	if (ret)
 		return ret;
 	if (git_commit_tree(&tree, commit))
-		return report_error("Could not look up tree of commit in branch '%s'", branch);
+		return report_error("Could not look up tree of commit in branch '%s'", info->branch.c_str());
 	git_storage_update_progress(translate("gettextFromC", "Load dives from local cache"));
-	ret = load_dives_from_tree(repo, tree, state);
+	ret = load_dives_from_tree(info->repo, tree, state);
 	if (!ret) {
 		set_git_id(git_commit_id(commit));
 		git_storage_update_progress(translate("gettextFromC", "Successfully opened dive data"));
@@ -1910,7 +1912,7 @@ int git_load_dives(struct git_info *info, struct divelog *log)
 
 	if (!info->repo)
 		return report_error("Unable to open git repository '%s[%s]'", info->url.c_str(), info->branch.c_str());
-	ret = do_git_load(info->repo, info->branch.c_str(), &state);
+	ret = do_git_load(info, &state);
 	finish_active_dive(&state);
 	finish_active_trip(&state);
 	return ret;
