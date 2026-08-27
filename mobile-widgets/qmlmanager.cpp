@@ -1605,8 +1605,9 @@ bool QMLManager::cloudDestinationIsSafe() const
 bool QMLManager::saveChangesLocal()
 {
 	if (!cloudDestinationIsSafe()) {
-		setNotificationText(tr("Cloud sync refused because this cloud log has not been loaded successfully. "
-				       "Open the cloud log before saving changes."));
+		setNotificationText(tr("This dive log was not opened from your cloud account, so saving it "
+				       "would overwrite unrelated dives in cloud storage. Your changes are kept. "
+				       "Open your cloud log first, then save."));
 		appendTextToLog("Refusing to save cloud data without provenance for the current repository and branch.");
 		return false;
 	}

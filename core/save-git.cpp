@@ -1020,8 +1020,8 @@ git_save_kind classify_git_save(const struct git_info *info)
 		repo = opened;
 	}
 
-	git_reference *ref = nullptr;
-	int ret = git_branch_lookup(&ref, repo, info->branch.c_str(), GIT_BRANCH_LOCAL);
+	git_reference *branch_ref = nullptr;
+	int ret = git_branch_lookup(&branch_ref, repo, info->branch.c_str(), GIT_BRANCH_LOCAL);
 	if (ret == GIT_ENOTFOUND) {
 		if (opened)
 			git_repository_free(opened);
@@ -1035,10 +1035,10 @@ git_save_kind classify_git_save(const struct git_info *info)
 
 	git_commit *tip_commit = nullptr;
 	git_tree *tree = nullptr;
-	ret = git_reference_peel(reinterpret_cast<git_object **>(&tip_commit), ref, GIT_OBJ_COMMIT);
+	ret = git_reference_peel(reinterpret_cast<git_object **>(&tip_commit), branch_ref, GIT_OBJ_COMMIT);
 	if (!ret)
 		ret = git_commit_tree(&tree, tip_commit);
-	git_reference_free(ref);
+	git_reference_free(branch_ref);
 	if (ret) {
 		git_commit_free(tip_commit);
 		if (opened)
