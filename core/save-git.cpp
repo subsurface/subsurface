@@ -1339,7 +1339,7 @@ int git_save_dives(struct git_info *info, bool select_only)
 	// cache is correctly treated as a new/initial save rather than a replacement.
 	git_save_kind kind = classify_git_save(info);
 	if (kind == git_save_kind::replacement)
-		return report_error("%s", translate("gettextFromC", "Saving would replace existing cloud storage data; explicit confirmation is required"));
+		return report_error("%s", translate("gettextFromC", "Saving this log would overwrite unrelated dives in cloud storage. It was not opened from this cloud account; open the cloud log first, then save."));
 	if (kind == git_save_kind::error)
 		return report_error("%s", translate("gettextFromC", "Unable to inspect cloud storage destination"));
 
@@ -1376,7 +1376,7 @@ int git_save_dives(struct git_info *info, bool select_only)
 	// that branch before allowing the save to replace its newly fetched tree.
 	kind = classify_git_save(info);
 	if (kind == git_save_kind::replacement)
-		return report_error("%s", translate("gettextFromC", "Saving would replace existing cloud storage data; explicit confirmation is required"));
+		return report_error("%s", translate("gettextFromC", "Saving this log would overwrite unrelated dives in cloud storage. It was not opened from this cloud account; open the cloud log first, then save."));
 	if (kind == git_save_kind::error)
 		return report_error("%s", translate("gettextFromC", "Unable to inspect cloud storage destination"));
 
