@@ -472,9 +472,9 @@ bool MainWindow::saveCloudFile(const std::string &filename)
 		QMessageBox confirmation(this);
 		confirmation.setWindowTitle(tr("Replace cloud log?"));
 		confirmation.setIcon(QMessageBox::Warning);
-		confirmation.setText(tr("Replace the existing cloud log?"));
-		confirmation.setInformativeText(tr("The current complete log will replace the existing cloud log. "
-						  "Cloud dives that are not in the current file will be removed."));
+		confirmation.setText(tr("This dive log was not opened from your cloud account."));
+		confirmation.setInformativeText(tr("Saving it will replace the existing cloud log, and cloud dives that are not in the current log will be removed. "
+						  "This cannot be undone. Cancel to leave both the current log and cloud storage unchanged."));
 		auto *replaceButton = confirmation.addButton(tr("Replace cloud log"), QMessageBox::DestructiveRole);
 		auto *cancelButton = confirmation.addButton(QMessageBox::Cancel);
 		confirmation.setDefaultButton(cancelButton);
