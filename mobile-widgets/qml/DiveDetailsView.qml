@@ -385,41 +385,36 @@ Item {
 		}
 		// under the profile
 		// -----------------
-		Row {
+		RowLayout {
+			visible: qmlProfile.numDC > 1
+			Layout.columnSpan: 3
+			Layout.fillWidth: true
+			Layout.minimumWidth: 0
+			Item {
+				Layout.fillWidth: true
+			}
 			TemplateButton {
 				id: prevDC
-				visible: qmlProfile.numDC > 1
 				text: qsTr("prev.DC")
 				font.pointSize: subsurfaceTheme.smallPointSize
 				onClicked: {
 					qmlProfile.prevDC()
 				}
 			}
-			TemplateLabel {
-				text: " "
-				width: Kirigami.Units.largeSpacing
-				visible: qmlProfile.numDC > 1
+			Item {
+				Layout.preferredWidth: Kirigami.Units.largeSpacing
 			}
 			TemplateButton {
 				id: nextDC
-				visible: qmlProfile.numDC > 1
 				text: qsTr("next DC")
 				font.pointSize: subsurfaceTheme.smallPointSize
 				onClicked: {
 					qmlProfile.nextDC()
 				}
 			}
-		}
-		// two empty entries
-		TemplateLabel {
-			text: " "
-			width: Kirigami.Units.largeSpacing
-			visible: qmlProfile.numDC > 1
-		}
-		TemplateLabel {
-			text: " "
-			width: Kirigami.Units.largeSpacing
-			visible: qmlProfile.numDC > 1
+			Item {
+				Layout.fillWidth: true
+			}
 		}
 		// first row
 		//-----------
