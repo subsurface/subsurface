@@ -126,6 +126,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 TEST(TestDivePlannerModel testdiveplannermodel.cpp)
 set(TEST_DIVE_PLANNER_MODEL TestDivePlannerModel)
 endif()
+TEST(TestFitExport testfitexport.cpp)
 TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
 # this keeps randomly failing and I don't understand why
@@ -183,6 +184,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestParse
 	TestPlan
 	${TEST_DIVE_PLANNER_MODEL}
+	TestFitExport
 	TestAirPressure
 	TestDiveSiteDuplication
 	TestRenumber
