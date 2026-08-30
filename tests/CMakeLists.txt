@@ -122,6 +122,7 @@ if (BTSUPPORT)
 endif()
 TEST(TestParsePerformance testparseperformance.cpp)
 TEST(TestPlan testplan.cpp)
+TEST(TestFitExport testfitexport.cpp)
 TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
 # this keeps randomly failing and I don't understand why
@@ -178,6 +179,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestGpsCoords
 	TestParse
 	TestPlan
+	TestFitExport
 	TestAirPressure
 	TestDiveSiteDuplication
 	TestRenumber

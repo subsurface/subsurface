@@ -317,6 +317,19 @@ Kirigami.ScrollablePage {
 			mapPage.centerOnDiveSite(currentItem.modelData.diveSite)
 		}
 	}
+	// AI-generated (Claude)
+	// Single Export entry point (T08): same ExportDivePage pushed from DiveDetails (T07),
+	// reused here so the dive-list long-press drawer offers export too.
+	// Uses the pre-instantiated exportDivePageWindow via showPage() -- see
+	// main.qml for why pageStack.push(Qt.resolvedUrl(...)) doesn't work here.
+	property QtObject exportAction: Kirigami.Action {
+		text: qsTr("Export...")
+		visible: currentItem && currentItem.modelData && !currentItem.modelData.isTrip
+		onTriggered: {
+			showPage(exportDivePageWindow)
+			exportDivePageWindow.openFor(currentItem.modelData.id)
+		}
+	}
 	property QtObject tripDetailsEdit: Kirigami.Action {
 		text: qsTr("Edit trip details")
 		icon { name: ":/icons/trip_details.svg" }
@@ -341,7 +354,7 @@ Kirigami.ScrollablePage {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property var contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, mergeWithDiveAboveAction, mergeWithDiveBelowAction, toggleInvalidAction, deleteAction, mapAction, tripDetailsEdit, undoAction, redoAction ]
+	property var contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, mergeWithDiveAboveAction, mergeWithDiveBelowAction, toggleInvalidAction, deleteAction, mapAction, exportAction, tripDetailsEdit, undoAction, redoAction ]
 	property var contextualActions: (Backend.cloud_verification_status === Enums.CS_VERIFIED ||
 	                                  Backend.cloud_verification_status === Enums.CS_NOCLOUD)
 	                                 ? contextactions : []

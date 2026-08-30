@@ -161,6 +161,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	range.h
 	sample.cpp
 	sample.h
+	save-fit.cpp
+	save-fit.h
 	save-git.cpp
 	save-html.cpp
 	save-html.h

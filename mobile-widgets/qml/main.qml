@@ -776,6 +776,14 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	 * 2 (MapForced)   - the map page was forced by this hack
 	 */
 
+	// AI-generated (Claude)
+	// Same 3-state hack as hackToOpenMap above, for the same reason: Kirigami's
+	// PageRow spuriously reverts pageStack.currentItem back to the previous
+	// page a moment after ExportDivePage is pushed from a ContextDrawer action
+	// (found via on-device T09 UAT; DiveDetails.qml/DiveList.qml's exportAction
+	// triggers from within the drawer, same as the map action does).
+	property int hackToOpenExportDivePage: 0 /* Otherpage */
+
 	pageStack.onCurrentItemChanged: {
 		// This is called whenever the user navigates using the breadcrumbs in the header
 
@@ -802,10 +810,27 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				manager.appendTextToLog("pageStack wrong page, switching back to map")
 				pageStack.currentIndex = pageStack.contentItem.contentChildren.length - 1
 				hackToOpenMap = 2 /* MapForced */
+			} else if (pageStack.currentItem.objectName === "ExportDivePage") {
+				// same hack as above, for ExportDivePage (see hackToOpenExportDivePage)
+				if (hackToOpenExportDivePage !== 2 /* Forced */) {
+					manager.appendTextToLog("pageStack switched to ExportDivePage")
+					hackToOpenExportDivePage = 1 /* Selected */
+				} else {
+					manager.appendTextToLog("pageStack forced back to ExportDivePage")
+				}
+				hackToOpenMap = 0 /* Otherpage */
+			} else if (pageStack.currentItem.objectName !== "ExportDivePage" &&
+					   pageStack.lastItem.objectName === "ExportDivePage" &&
+					   hackToOpenExportDivePage === 1 /* Selected */) {
+				manager.appendTextToLog("pageStack wrong page, switching back to ExportDivePage")
+				pageStack.currentIndex = pageStack.contentItem.contentChildren.length - 1
+				hackToOpenExportDivePage = 2 /* Forced */
+				hackToOpenMap = 0 /* Otherpage */
 			} else {
-				// if we picked a different page reset the mapPage hack
+				// if we picked a different page reset both hacks
 				manager.appendTextToLog("pageStack switched to " + pageStack.currentItem.objectName)
 				hackToOpenMap = 0 /* Otherpage */
+				hackToOpenExportDivePage = 0 /* Otherpage */
 			}
 
 			// disable the left swipe to go back when on the map page
@@ -918,6 +943,17 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	DiveDetails {
 		id: detailsWindow
+		visible: false
+	}
+
+	// AI-generated (Claude)
+	// Pre-instantiated and pushed via showPage(), like every other page in
+	// this file -- pageStack.push(Qt.resolvedUrl(...)) left the page
+	// orphaned ("not placed in the graphics scene") and Kirigami silently
+	// popped back to the previous page a moment later (found via on-device
+	// T09 UAT).
+	ExportDivePage {
+		id: exportDivePageWindow
 		visible: false
 	}
 

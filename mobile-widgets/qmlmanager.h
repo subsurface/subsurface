@@ -81,7 +81,8 @@ public:
 		EX_DIVES_XML,
 		EX_DIVE_SITES_XML,
 		EX_DIVELOGS_DE,
-		EX_DIVESHARE
+		EX_DIVESHARE,
+		EX_FIT
 	};
 	Q_ENUM(export_types)
 #if !defined(Q_OS_ANDROID)
@@ -89,6 +90,11 @@ public:
 #endif
 	Q_INVOKABLE void exportToWEB(export_types type, QString userId, QString password, bool anonymize);
 	Q_INVOKABLE void shareViaEmail(export_types type, bool anonymize);
+	// AI-generated (Claude)
+	Q_INVOKABLE void exportFitForDive(int diveId, QString fileUrl, int tzOffsetSeconds);
+	Q_INVOKABLE int fitDefaultTzOffset(int diveId);
+	Q_INVOKABLE void shareFitForDive(int diveId, int tzOffsetSeconds);
+	Q_INVOKABLE QString fitSuggestedFileName(int diveId);
 
 	QString DC_vendor() const;
 	void DC_setVendor(const QString& vendor);

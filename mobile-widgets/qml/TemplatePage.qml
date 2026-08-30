@@ -5,7 +5,12 @@ import org.kde.kirigami as Kirigami
 
 Kirigami.ScrollablePage {
 	width: rootItem.colWidth
-	height: parent.height
+	// parent is still null at construction for pages pushed dynamically via
+	// pageStack.push(Qt.resolvedUrl(...)) -- they're reparented into the
+	// PageRow's ColumnView a tick after creation. Binding straight to
+	// parent.height threw a TypeError that aborted placing the page in the
+	// scene, leaving it permanently invisible (found via on-device T09 UAT).
+	height: parent ? parent.height : 0
 	visible: false
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 }

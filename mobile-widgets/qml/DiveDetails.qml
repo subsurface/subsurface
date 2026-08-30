@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Dialogs
 import QtQuick.Layouts
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami as Kirigami
@@ -155,6 +154,19 @@ Kirigami.Page {
 		visible: currentItem && currentItem.modelData
 		onTriggered: manager.toggleDiveInvalid(currentItem.modelData.id)
 	}
+	// AI-generated (Claude)
+	// Single Export entry point (T07): pushes the T06 export page instead of
+	// instantiating a dialog, so format choice and share-vs-save both live there.
+	// Uses the pre-instantiated exportDivePageWindow via showPage() -- see
+	// main.qml for why pageStack.push(Qt.resolvedUrl(...)) doesn't work here.
+	property QtObject exportAction: Kirigami.Action {
+		text: qsTr("Export...")
+		visible: currentItem && currentItem.modelData
+		onTriggered: {
+			showPage(exportDivePageWindow)
+			exportDivePageWindow.openFor(currentItem.modelData.id)
+		}
+	}
 	property QtObject undoAction: Kirigami.Action {
 		text: qsTr("Undo") + " " + manager.undoText
 		icon { name: ":/icons/undo.svg" }
@@ -167,7 +179,7 @@ Kirigami.Page {
 		enabled: manager.redoText !== ""
 		onTriggered: manager.redo()
 	}
-	property var contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, deleteAction, mapAction, undoAction, redoAction ]
+	property var contextactions: [ removeDiveFromTripAction, createTripForDiveAction, addDiveToTripAboveAction, addDiveToTripBelowAction, toggleInvalidAction, exportAction, deleteAction, mapAction, undoAction, redoAction ]
 	property var contextualActions: contextactions
 
 	states: [

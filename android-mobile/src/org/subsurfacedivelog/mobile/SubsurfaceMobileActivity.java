@@ -36,7 +36,8 @@ public class SubsurfaceMobileActivity extends QtActivity
 	private static String fileProviderAuthority="org.subsurfacedivelog.mobile.fileprovider";
 
 	// you can share one or two files
-	public boolean shareViaEmail(String subject, String recipient, String body, String path1, String path2) {
+	// AI-generated (Claude)
+	public boolean shareViaEmail(String subject, String recipient, String body, String path1, String path2, String mimeType) {
 		Log.d(TAG + " shareFile - trying to share: ", path1 + " and " + path2 + " to " + recipient);
 
 		// Can't get this to work building my own intent, so let's use the IntentBuilder
@@ -75,7 +76,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 			Log.d(TAG + " shareFile - URI for file: ", uri.toString());
 			attachments.add(uri);
 		}
-		shareFileIntent.setType("text/plain");
+		shareFileIntent.setType(mimeType);
 		shareFileIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, attachments);
 		shareFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		shareFileIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
@@ -90,7 +91,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 		return shareViaEmail("Subsurface-mobile support request",
 				"in-app-support@subsurface-divelog.org",
 				"Please describe your issue here and keep the attached logs.\n\n\n\n",
-				path1, path2);
+				path1, path2, "text/plain");
 	}
 
 	public static boolean isIntentPending;
