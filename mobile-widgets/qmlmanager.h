@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QUrl>
 #include <QNetworkAccessManager>
 #include <QScreen>
 #include <QElapsedTimer>
@@ -91,7 +92,7 @@ public:
 	Q_INVOKABLE void exportToWEB(export_types type, QString userId, QString password, bool anonymize);
 	Q_INVOKABLE void shareViaEmail(export_types type, bool anonymize);
 	// AI-generated (Claude)
-	Q_INVOKABLE void exportFitForDive(int diveId, QString fileUrl, int tzOffsetSeconds);
+	Q_INVOKABLE void exportFitForDive(int diveId, QUrl fileUrl, int tzOffsetSeconds);
 	Q_INVOKABLE int fitDefaultTzOffset(int diveId);
 	Q_INVOKABLE void shareFitForDive(int diveId, int tzOffsetSeconds);
 	Q_INVOKABLE QString fitSuggestedFileName(int diveId);
@@ -102,8 +103,8 @@ public:
 	// or collected into a single ZIP.
 	Q_INVOKABLE int fitBulkDiveCount();
 	Q_INVOKABLE int fitShareIndividualLimit();
-	Q_INVOKABLE void exportFitAllToFolder(QString folderUrl, int tzOffsetSeconds);
-	Q_INVOKABLE void exportFitArchiveToUrl(QString fileUrl, int tzOffsetSeconds);
+	Q_INVOKABLE void exportFitAllToFolder(QUrl folderUrl, int tzOffsetSeconds);
+	Q_INVOKABLE void exportFitArchiveToUrl(QUrl fileUrl, int tzOffsetSeconds);
 	Q_INVOKABLE void shareFitAll(int tzOffsetSeconds);
 	Q_INVOKABLE void shareFitArchive(int tzOffsetSeconds);
 

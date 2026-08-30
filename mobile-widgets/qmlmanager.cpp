@@ -68,6 +68,7 @@
 
 #if defined(Q_OS_ANDROID)
 #include <QJniObject>
+#include <QJniEnvironment>
 #include <QCoreApplication>
 #include "core/serial_usb_android.h"
 std::vector<android_usb_serial_device_descriptor> androidSerialDevices;
@@ -2362,8 +2363,90 @@ QString QMLManager::fitSuggestedFileName(int diveId)
 }
 
 // AI-generated (Claude)
-void QMLManager::exportFitForDive(int diveId, QString fileUrl, int tzOffsetSeconds)
+// Open an export destination for writing. A content:// URI cannot go through
+// QFile on Android: Qt's content file engine rebuilds the URI it was handed by
+// running QUrl::toPercentEncoding() over the document id, and the rebuilt
+// spelling is no longer byte-identical to the one Android granted us. Any name
+// holding a character the two spell differently -- a space or parentheses,
+// which is exactly what the SAF picker produces when it resolves a name
+// collision ("dive.fit (1)") -- then fails every resolver call, so the write
+// fails and the empty document the picker created is left behind. Ask the
+// resolver for a file descriptor ourselves, with the URI spelled exactly as
+// the picker returned it.
+static bool openExportTarget(QFile &file, const QString &path)
 {
+#if defined(Q_OS_ANDROID)
+	if (path.startsWith(QStringLiteral("content://"))) {
+		QJniObject context(QNativeInterface::QAndroidApplication::context());
+		QJniObject uri = QJniObject::callStaticObjectMethod("android/net/Uri", "parse",
+				"(Ljava/lang/String;)Landroid/net/Uri;",
+				QJniObject::fromString(path).object<jstring>());
+		QJniObject resolver = context.callObjectMethod("getContentResolver",
+				"()Landroid/content/ContentResolver;");
+		if (!uri.isValid() || !resolver.isValid())
+			return false;
+		// "wt" rather than "w": a plain write does not truncate, so overwriting
+		// a longer file would leave its tail behind.
+		QJniObject pfd = resolver.callObjectMethod("openFileDescriptor",
+				"(Landroid/net/Uri;Ljava/lang/String;)Landroid/os/ParcelFileDescriptor;",
+				uri.object(), QJniObject::fromString(QStringLiteral("wt")).object<jstring>());
+		QJniEnvironment().checkAndClearExceptions();
+		if (!pfd.isValid())
+			return false;
+		int fd = pfd.callMethod<jint>("detachFd");
+		if (fd < 0)
+			return false;
+		return file.open(fd, QIODevice::WriteOnly, QFileDevice::AutoCloseHandle);
+	}
+#endif
+	file.setFileName(path);
+	return file.open(QIODevice::WriteOnly);
+}
+
+// AI-generated (Claude)
+// Drop a destination we could not fill. Same encoding problem as above, so a
+// content:// document is deleted through DocumentsContract rather than QFile.
+static void removeExportTarget(const QString &path)
+{
+#if defined(Q_OS_ANDROID)
+	if (path.startsWith(QStringLiteral("content://"))) {
+		QJniObject context(QNativeInterface::QAndroidApplication::context());
+		QJniObject uri = QJniObject::callStaticObjectMethod("android/net/Uri", "parse",
+				"(Ljava/lang/String;)Landroid/net/Uri;",
+				QJniObject::fromString(path).object<jstring>());
+		QJniObject resolver = context.callObjectMethod("getContentResolver",
+				"()Landroid/content/ContentResolver;");
+		if (uri.isValid() && resolver.isValid())
+			QJniObject::callStaticMethod<jboolean>("android/provider/DocumentsContract",
+					"deleteDocument",
+					"(Landroid/content/ContentResolver;Landroid/net/Uri;)Z",
+					resolver.object(), uri.object());
+		QJniEnvironment().checkAndClearExceptions();
+		return;
+	}
+#endif
+	QFile::remove(path);
+}
+
+// AI-generated (Claude)
+// Normalise a destination handed back by a QML file picker. QML delivers it as
+// a url, and converting that to a QString goes through QUrl::toString(), whose
+// default form decodes percent escapes: when Android's SAF picker resolves a
+// name collision it creates "dive.fit (1)", whose URI carries %20, and the
+// decoded spelling no longer resolves to that document -- Qt's content file
+// engine then tries to create a new one and fails ("parent doesn't exist"),
+// leaving the 0-byte document the picker had already materialised. Keep
+// content:// URIs fully encoded; a desktop file:// destination still needs a
+// plain filesystem path.
+static QString exportTargetPath(const QUrl &url)
+{
+	return url.isLocalFile() ? url.toLocalFile() : url.toString(QUrl::FullyEncoded);
+}
+
+// AI-generated (Claude)
+void QMLManager::exportFitForDive(int diveId, QUrl fileUrl, int tzOffsetSeconds)
+{
+	QString targetPath = exportTargetPath(fileUrl);
 	struct dive *d = divelog.dives.get_by_uniq_id(diveId);
 	if (!d) {
 		appendTextToLog("Export FIT: no such dive");
@@ -2371,7 +2454,7 @@ void QMLManager::exportFitForDive(int diveId, QString fileUrl, int tzOffsetSecon
 		// the SAF SaveFile picker already materialised an empty document at
 		// fileUrl before onAccepted fired; a bare return here (round-3
 		// finding 8) would leave that 0-byte file behind, so remove it.
-		QFile::remove(fileUrl);
+		removeExportTarget(targetPath);
 		return;
 	}
 
@@ -2394,18 +2477,20 @@ void QMLManager::exportFitForDive(int diveId, QString fileUrl, int tzOffsetSecon
 	// SAF content:// targets cannot be opened with subsurface_fopen() (a bare
 	// fopen() on Android, see core/android.cpp); QFile is the only path that
 	// understands the picker-returned content:// URI.
-	QFile file(fileUrl);
-	if (!file.open(QIODevice::WriteOnly)) {
-		appendTextToLog("Export FIT: failed to open target file for writing: " + fileUrl);
+	QFile file;
+	if (!openExportTarget(file, targetPath)) {
+		appendTextToLog("Export FIT: failed to open target file for writing: " + targetPath);
 		setNotificationText(tr("Export FIT failed: could not open target file"));
+		// leave no empty document behind
+		removeExportTarget(targetPath);
 		return;
 	}
 	qint64 written = file.write(buf.buffer, buf.len);
 	file.close();
 	if (written != (qint64)buf.len) {
-		appendTextToLog("Export FIT: short write to target file: " + fileUrl);
+		appendTextToLog("Export FIT: short write to target file: " + targetPath);
 		setNotificationText(tr("Export FIT failed: could not write file"));
-		file.remove();
+		removeExportTarget(targetPath);
 		return;
 	}
 	setNotificationText(tr("Dive exported as FIT"));
@@ -2655,26 +2740,28 @@ static QString fitBulkSummary(int written, int skipped)
 }
 
 // AI-generated (Claude)
-// One .fit per dive under a folder the user picked. On Android, folderUrl is
-// the QString QML hands over for a SAF tree content://.../tree/... FolderDialog
-// result -- the same implicit QUrl-to-QString conversion exportFitForDive
-// already relies on for its single-document fileUrl.
-void QMLManager::exportFitAllToFolder(QString folderUrl, int tzOffsetSeconds)
+// One .fit per dive under a folder the user picked. FolderDialog yields
+// file:///... on the desktop and a SAF tree content://.../tree/... on Android;
+// QFile understands the latter directly but not the file:// form.
+void QMLManager::exportFitAllToFolder(QUrl folderUrl, int tzOffsetSeconds)
 {
+	QString dirPrefix = exportTargetPath(folderUrl);
+
 	int skipped = 0;
-	int written = writeFitFiles(folderUrl, tzOffsetSeconds, skipped, nullptr);
+	int written = writeFitFiles(dirPrefix, tzOffsetSeconds, skipped, nullptr);
 	if (written == 0) {
-		appendTextToLog("Export FIT: no dives written to " + folderUrl);
+		appendTextToLog("Export FIT: no dives written to " + dirPrefix);
 		setNotificationText(tr("Export FIT failed: no dives could be written"));
 		return;
 	}
-	appendTextToLog(QStringLiteral("Export FIT: wrote %1 file(s) to %2, skipped %3").arg(written).arg(folderUrl).arg(skipped));
+	appendTextToLog(QStringLiteral("Export FIT: wrote %1 file(s) to %2, skipped %3").arg(written).arg(dirPrefix).arg(skipped));
 	setNotificationText(fitBulkSummary(written, skipped));
 }
 
 // AI-generated (Claude)
-void QMLManager::exportFitArchiveToUrl(QString fileUrl, int tzOffsetSeconds)
+void QMLManager::exportFitArchiveToUrl(QUrl fileUrl, int tzOffsetSeconds)
 {
+	QString targetPath = exportTargetPath(fileUrl);
 	// Build the archive at a plain path and copy it over with QFile (see
 	// writeFitZip). An explicit path rather than a QTemporaryFile:
 	// zip_close() writes to its own temporary and renames it into place, so
@@ -2686,15 +2773,15 @@ void QMLManager::exportFitArchiveToUrl(QString fileUrl, int tzOffsetSeconds)
 	if (!writeFitZip(stagingPath, tzOffsetSeconds, written, skipped)) {
 		setNotificationText(tr("Export FIT failed: could not build archive"));
 		QFile::remove(stagingPath);
-		// the picker already materialised an empty document at fileUrl
-		QFile::remove(fileUrl);
+		// the picker already materialised an empty document at targetPath
+		removeExportTarget(targetPath);
 		return;
 	}
 	if (written == 0) {
 		appendTextToLog("Export FIT: no dives had dive computer data to encode");
 		setNotificationText(tr("Export FIT failed: no dive computer data to export"));
 		QFile::remove(stagingPath);
-		QFile::remove(fileUrl);
+		removeExportTarget(targetPath);
 		return;
 	}
 
@@ -2703,7 +2790,7 @@ void QMLManager::exportFitArchiveToUrl(QString fileUrl, int tzOffsetSeconds)
 		appendTextToLog("Export FIT: failed to read back staged archive " + stagingPath);
 		setNotificationText(tr("Export FIT failed: could not write file"));
 		QFile::remove(stagingPath);
-		QFile::remove(fileUrl);
+		removeExportTarget(targetPath);
 		return;
 	}
 	QByteArray data = staged.readAll();
@@ -2712,25 +2799,26 @@ void QMLManager::exportFitArchiveToUrl(QString fileUrl, int tzOffsetSeconds)
 	if (data.isEmpty()) {
 		appendTextToLog("Export FIT: staged archive is empty");
 		setNotificationText(tr("Export FIT failed: could not build archive"));
-		QFile::remove(fileUrl);
+		removeExportTarget(targetPath);
 		return;
 	}
 
-	QFile target(fileUrl);
-	if (!target.open(QIODevice::WriteOnly)) {
-		appendTextToLog("Export FIT: failed to open target file for writing: " + fileUrl);
+	QFile target;
+	if (!openExportTarget(target, targetPath)) {
+		appendTextToLog("Export FIT: failed to open target archive for writing: " + targetPath);
 		setNotificationText(tr("Export FIT failed: could not open target file"));
+		removeExportTarget(targetPath);
 		return;
 	}
 	qint64 written_bytes = target.write(data);
 	target.close();
 	if (written_bytes != data.size()) {
-		appendTextToLog("Export FIT: short write to target file: " + fileUrl);
+		appendTextToLog("Export FIT: short write to target archive: " + targetPath);
 		setNotificationText(tr("Export FIT failed: could not write file"));
-		target.remove();
+		removeExportTarget(targetPath);
 		return;
 	}
-	appendTextToLog(QStringLiteral("Export FIT: wrote %1 bytes to %2").arg(written_bytes).arg(fileUrl));
+	appendTextToLog(QStringLiteral("Export FIT: wrote %1 bytes to %2").arg(written_bytes).arg(targetPath));
 	setNotificationText(fitBulkSummary(written, skipped));
 }
 
