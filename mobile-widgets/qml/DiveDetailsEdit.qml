@@ -48,6 +48,13 @@ Item {
 	property int visibility
 	property var usedCyl: []
 
+	// AI-generated (Claude): iOS does not map the date and time hints to a
+	// specialised keyboard. Keep Android's specialised hints while requesting
+	// iOS's number-and-punctuation keyboard for fields with separators.
+	function punctuationInputMethodHints(platformName, androidHints) {
+		return platformName === "ios" ? Qt.ImhPreferNumbers : androidHints
+	}
+
 	// AI-generated (Claude)
 	function gasEditText(gasMix) {
 		if (gasMix === undefined || gasMix === null)
@@ -246,7 +253,7 @@ Item {
 					property string displayText: ""
 					property string initialEditText: ""
 					Layout.preferredWidth: effectiveGridUnit * 10
-					inputMethodHints: Qt.ImhDate | Qt.ImhTime
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate | Qt.ImhTime)
 					flickable: detailsEditFlickable
 					onActiveFocusChanged: {
 						if (activeFocus) {
@@ -305,7 +312,7 @@ Item {
 					Layout.preferredWidth: effectiveGridUnit * 3
 					sampleText: "200.0ft"
 					id: txtDepth
-					inputMethodHints: Qt.ImhFormattedNumbersOnly
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhFormattedNumbersOnly)
 					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 					onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
@@ -325,7 +332,7 @@ Item {
 					Layout.preferredWidth: effectiveGridUnit * 3
 					sampleText: "0:00min"
 					id: txtDuration
-					inputMethodHints: Qt.ImhTime
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhTime)
 					validator: RegularExpressionValidator { regularExpression: /[^-]*/ }
 					flickable: detailsEditFlickable
 					onActiveFocusChanged: activeFocus ? beginNumericEdit(this, true) : finishDurationEdit(this)
@@ -344,7 +351,7 @@ Item {
 					property string initialEditText: ""
 					sampleText: "-10.0\u00B0F"
 					Layout.preferredWidth: effectiveGridUnit * 3
-					inputMethodHints: Qt.ImhFormattedNumbersOnly
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhFormattedNumbersOnly)
 					flickable: detailsEditFlickable
 					onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
 						Backend.temperature === Enums.CELSIUS ? "°" + qsTr("C") : "°" + qsTr("F"))
@@ -363,7 +370,7 @@ Item {
 					Layout.preferredWidth: effectiveGridUnit * 3
 					sampleText: "-10.0\u00B0F"
 					id: txtWaterTemp
-					inputMethodHints: Qt.ImhFormattedNumbersOnly
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhFormattedNumbersOnly)
 					flickable: detailsEditFlickable
 					onActiveFocusChanged: activeFocus ? beginNumericEdit(this, false) : finishNumericEdit(this,
 						Backend.temperature === Enums.CELSIUS ? "°" + qsTr("C") : "°" + qsTr("F"))
@@ -475,7 +482,7 @@ Item {
 					property string initialEditText: ""
 					Layout.preferredWidth: effectiveGridUnit * 12
 					readOnly: text === "cannot edit multiple weight systems"
-					inputMethodHints: Qt.ImhFormattedNumbersOnly
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhFormattedNumbersOnly)
 					flickable: detailsEditFlickable
 					// AI-generated (Claude): A read-only field must not enter numeric-edit mode, which would overwrite the sentinel message.
 					onActiveFocusChanged: {
@@ -523,9 +530,9 @@ Item {
 						property string displayText: ""
 						property string initialEditText: ""
 						text: usedGas[0] !== undefined ? usedGas[0] : null
-						sampleText: "20/24"
+						sampleText: "18/45"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhDate
+						inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 						onActiveFocusChanged: {
@@ -616,9 +623,9 @@ Item {
 						property string displayText: ""
 						property string initialEditText: ""
 						text: usedGas[1] !== undefined ? usedGas[1] : null
-						sampleText: "20/24"
+						sampleText: "18/45"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhDate
+						inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 						onActiveFocusChanged: {
@@ -710,9 +717,9 @@ Item {
 						property string displayText: ""
 						property string initialEditText: ""
 						text: usedGas[2] !== undefined ? usedGas[2] : null
-						sampleText: "20/24"
+						sampleText: "18/45"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhDate
+						inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 						onActiveFocusChanged: {
@@ -805,9 +812,9 @@ Item {
 						property string displayText: ""
 						property string initialEditText: ""
 						text: usedGas[3] !== undefined ? usedGas[3] : null
-						sampleText: "20/24"
+						sampleText: "18/45"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhDate
+						inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 						onActiveFocusChanged: {
@@ -903,9 +910,9 @@ Item {
 						property string displayText: ""
 						property string initialEditText: ""
 						text: usedGas[4] !== undefined ? usedGas[4] : null
-						sampleText: "20/24"
+						sampleText: "18/45"
 						Layout.fillWidth: true
-						inputMethodHints: Qt.ImhDate
+						inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
 						validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 						flickable: detailsEditFlickable
 						onActiveFocusChanged: {

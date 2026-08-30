@@ -19,6 +19,13 @@ TemplatePage {
 	// AI-generated (Claude)
 	property bool exceedsNDL: false
 
+	// AI-generated (Claude): iOS does not map the date and time hints to a
+	// specialised keyboard. Keep Android's specialised hints while requesting
+	// iOS's number-and-punctuation keyboard for fields with separators.
+	function punctuationInputMethodHints(platformName, androidHints) {
+		return platformName === "ios" ? Qt.ImhPreferNumbers : androidHints
+	}
+
 	// --- Data Models ---
 	ListModel { id: cylinderListModel }
 	ListModel { id: segmentListModel }
@@ -291,7 +298,7 @@ TemplatePage {
 				property string editFormat: ""
 				Layout.fillWidth: true
 				sampleText: "0000-00-00"
-				inputMethodHints: Qt.ImhDate
+				inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
 				text: Qt.formatDate(planDateTime, PrefLanguage.date_format_short)
 				onActiveFocusChanged: {
 					if (activeFocus) {
@@ -314,7 +321,7 @@ TemplatePage {
 					property string editFormat: ""
 					Layout.fillWidth: true
 					sampleText: "00:00 PM"
-					inputMethodHints: Qt.ImhTime
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhTime)
 					text: Qt.formatTime(planDateTime, PrefLanguage.time_format)
 					onActiveFocusChanged: {
 						if (activeFocus) {
@@ -463,7 +470,7 @@ TemplatePage {
 					property string initialEditText: ""
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5
 					sampleText: "18/45"
-					inputMethodHints: Qt.ImhDate
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
 					text: mix
 					onTextChanged: {
 						if (text !== mix) {
@@ -662,7 +669,7 @@ TemplatePage {
 					sampleText: "00.00"
 					text: cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1 ? (setpoint / 1000.0).toFixed(2) : ""
 					// request a numeric keyboard on mobile; ImhFormattedNumbersOnly allows the decimal separator
-					inputMethodHints: Qt.ImhFormattedNumbersOnly
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhFormattedNumbersOnly)
 					validator: DoubleValidator {
 						bottom: 0.16;
 						top: 2.0;
