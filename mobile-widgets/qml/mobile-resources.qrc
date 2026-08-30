@@ -42,6 +42,7 @@
 		<file>TripDetails.qml</file>
 		<file>StartPage.qml</file>
 		<file>RecoverCache.qml</file>
+		<file>TzOffsetSelector.qml</file>
 
 		<file>SsrfSwitch.qml</file>
 		<file>SsrfTextField.qml</file>

@@ -13,9 +13,13 @@
 #include <QDateTime>
 #include <QClipboard>
 #include <QFile>
+#include <QDir>
+#include <QFileInfo>
+#include <QSet>
 #include <QtConcurrent>
 #include <QFuture>
 #include <QUndoStack>
+#include <zip.h>
 
 #include <QBluetoothLocalDevice>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
@@ -2476,6 +2480,363 @@ void QMLManager::shareFitForDive(int diveId, int tzOffsetSeconds)
 	iosshare.shareViaEmail(subject, emptyString, body, fileName, emptyString);
 #else
 	appendTextToLog("on a mobile platform this would share " + fileName + " as a FIT file");
+#endif
+}
+
+// AI-generated (Claude)
+// Same vendor lookup exportFitForDive/shareFitForDive use inline, factored out
+// here since the bulk paths below need it once per dive.
+static uint16_t fitManufacturerForDive(const struct dive &d)
+{
+	QString vendor;
+	if (!d.dcs.empty())
+		vendor = QString::fromStdString(d.dcs[0].model).section(' ', 0, 0);
+	return fit_manufacturer_id(vendor.toStdString());
+}
+
+// AI-generated (Claude)
+// A whole-divelog share hands every file to the platform share sheet inside a
+// single Binder transaction (~1MB ceiling) and most receiving apps refuse or
+// silently truncate long EXTRA_STREAM lists, so past this point refuse loudly
+// and point at the ZIP option.
+static const int fitShareMaxIndividual = 50;
+
+// AI-generated (Claude)
+// fitSuggestedFileName() keys on date/time plus dive number, which is unique
+// in practice but not by construction. A collision must not reach the target
+// directory: Android's SAF resolves one by appending a counter AFTER the
+// extension ("....fit (1)"), which tools filtering by extension then reject.
+// Disambiguate here with the always-unique dive id instead.
+static QString uniqueFitName(QSet<QString> &used, const QString &suggested, int diveId)
+{
+	QString name = suggested;
+	if (used.contains(name))
+		name = QStringLiteral("%1_%2.fit").arg(suggested.chopped(4)).arg(diveId);
+	used.insert(name);
+	return name;
+}
+
+// AI-generated (Claude)
+int QMLManager::fitShareIndividualLimit()
+{
+	return fitShareMaxIndividual;
+}
+
+// AI-generated (Claude)
+// How many dives a bulk FIT export produces a file for. Mirrors
+// save_fit_to_buffer()'s precondition (a dive computer with samples) so the
+// count the UI shows matches the number of files that appear.
+int QMLManager::fitBulkDiveCount()
+{
+	int count = 0;
+	for (const auto &dive : divelog.dives) {
+		const struct divecomputer *dc = dive->get_dc(0);
+		if (dc && !dc->samples.empty())
+			count++;
+	}
+	return count;
+}
+
+// AI-generated (Claude)
+int QMLManager::writeFitFiles(const QString &dirPrefix, int tzOffsetSeconds, int &skipped, QStringList *writtenPaths)
+{
+	skipped = 0;
+	int written = 0;
+	int openFailures = 0;
+	QSet<QString> used;
+
+	for (const auto &dive : divelog.dives) {
+		struct membuffer buf;
+		if (save_fit_to_buffer(*dive, tzOffsetSeconds, fitManufacturerForDive(*dive), &buf) != 0) {
+			// no dive computer or no samples -- nothing to encode
+			skipped++;
+			continue;
+		}
+
+		QString path = dirPrefix + "/" + uniqueFitName(used, fitSuggestedFileName(dive->id), dive->id);
+		QFile file(path);
+		if (!file.open(QIODevice::WriteOnly)) {
+			appendTextToLog("Export FIT: failed to open target file for writing: " + path);
+			skipped++;
+			// A destination that rejects the first few files will not accept
+			// the rest either (read-only folder, a SAF tree the content file
+			// engine cannot create documents under). Bail out instead of
+			// logging one failure per dive.
+			if (++openFailures >= 3 && written == 0) {
+				appendTextToLog("Export FIT: destination does not accept new files, aborting");
+				break;
+			}
+			continue;
+		}
+		qint64 n = file.write(buf.buffer, buf.len);
+		file.close();
+		if (n != (qint64)buf.len) {
+			appendTextToLog("Export FIT: short write to target file: " + path);
+			// a truncated .fit is worse than no .fit
+			file.remove();
+			skipped++;
+			continue;
+		}
+		if (writtenPaths)
+			writtenPaths->append(path);
+		written++;
+	}
+	return written;
+}
+
+// AI-generated (Claude)
+// zipPath must be a plain filesystem path: libzip works through stdio and
+// cannot open a SAF content:// URI (core/android.cpp's subsurface_fopen is a
+// bare fopen). Callers that target a picked URI stage through a temp file.
+bool QMLManager::writeFitZip(const QString &zipPath, int tzOffsetSeconds, int &written, int &skipped)
+{
+	written = 0;
+	skipped = 0;
+
+	int ziperr = 0;
+	struct zip *za = zip_open(qPrintable(zipPath), ZIP_CREATE | ZIP_TRUNCATE, &ziperr);
+	if (!za) {
+		appendTextToLog(QStringLiteral("Export FIT: could not create archive %1 (libzip error %2)").arg(zipPath).arg(ziperr));
+		return false;
+	}
+
+	QSet<QString> used;
+	for (const auto &dive : divelog.dives) {
+		struct membuffer buf;
+		if (save_fit_to_buffer(*dive, tzOffsetSeconds, fitManufacturerForDive(*dive), &buf) != 0) {
+			skipped++;
+			continue;
+		}
+
+		// libzip reads the source lazily, at zip_close() time, but membuffer
+		// frees its buffer at the end of this iteration -- so hand libzip its
+		// own malloc'd copy and let it free that (freep = 1).
+		void *copy = malloc(buf.len);
+		if (!copy) {
+			appendTextToLog("Export FIT: out of memory while building archive");
+			zip_discard(za);
+			return false;
+		}
+		memcpy(copy, buf.buffer, buf.len);
+		zip_source_t *src = zip_source_buffer(za, copy, buf.len, 1);
+		if (!src) {
+			free(copy);
+			appendTextToLog(QStringLiteral("Export FIT: could not add dive %1 to archive: %2").arg(dive->id).arg(zip_strerror(za)));
+			zip_discard(za);
+			return false;
+		}
+		QByteArray name = uniqueFitName(used, fitSuggestedFileName(dive->id), dive->id).toUtf8();
+		if (zip_file_add(za, name.constData(), src, ZIP_FL_ENC_UTF_8) < 0) {
+			zip_source_free(src);
+			appendTextToLog(QStringLiteral("Export FIT: could not add %1 to archive: %2").arg(QString(name)).arg(zip_strerror(za)));
+			zip_discard(za);
+			return false;
+		}
+		written++;
+	}
+
+	if (zip_close(za) != 0) {
+		appendTextToLog(QStringLiteral("Export FIT: could not finalise archive: %1").arg(zip_strerror(za)));
+		zip_discard(za);
+		return false;
+	}
+	appendTextToLog(QStringLiteral("Export FIT: archive %1 holds %2 dive(s), %3 skipped, %4 bytes")
+			.arg(zipPath).arg(written).arg(skipped).arg(QFileInfo(zipPath).size()));
+	return true;
+}
+
+// AI-generated (Claude)
+static QString fitBulkSummary(int written, int skipped)
+{
+	QString text = QMLManager::tr("Exported %n dive(s) as FIT", "", written);
+	if (skipped > 0)
+		text += ", " + QMLManager::tr("%n dive(s) skipped (no dive computer data)", "", skipped);
+	return text;
+}
+
+// AI-generated (Claude)
+// One .fit per dive under a folder the user picked. On Android, folderUrl is
+// the QString QML hands over for a SAF tree content://.../tree/... FolderDialog
+// result -- the same implicit QUrl-to-QString conversion exportFitForDive
+// already relies on for its single-document fileUrl.
+void QMLManager::exportFitAllToFolder(QString folderUrl, int tzOffsetSeconds)
+{
+	int skipped = 0;
+	int written = writeFitFiles(folderUrl, tzOffsetSeconds, skipped, nullptr);
+	if (written == 0) {
+		appendTextToLog("Export FIT: no dives written to " + folderUrl);
+		setNotificationText(tr("Export FIT failed: no dives could be written"));
+		return;
+	}
+	appendTextToLog(QStringLiteral("Export FIT: wrote %1 file(s) to %2, skipped %3").arg(written).arg(folderUrl).arg(skipped));
+	setNotificationText(fitBulkSummary(written, skipped));
+}
+
+// AI-generated (Claude)
+void QMLManager::exportFitArchiveToUrl(QString fileUrl, int tzOffsetSeconds)
+{
+	// Build the archive at a plain path and copy it over with QFile (see
+	// writeFitZip). An explicit path rather than a QTemporaryFile:
+	// zip_close() writes to its own temporary and renames it into place, so
+	// the file QTemporaryFile created is not the one to read back.
+	QString stagingPath = QDir::tempPath() + "/subsurface_fit_export_staging.zip";
+	QFile::remove(stagingPath);
+
+	int written = 0, skipped = 0;
+	if (!writeFitZip(stagingPath, tzOffsetSeconds, written, skipped)) {
+		setNotificationText(tr("Export FIT failed: could not build archive"));
+		QFile::remove(stagingPath);
+		// the picker already materialised an empty document at fileUrl
+		QFile::remove(fileUrl);
+		return;
+	}
+	if (written == 0) {
+		appendTextToLog("Export FIT: no dives had dive computer data to encode");
+		setNotificationText(tr("Export FIT failed: no dive computer data to export"));
+		QFile::remove(stagingPath);
+		QFile::remove(fileUrl);
+		return;
+	}
+
+	QFile staged(stagingPath);
+	if (!staged.open(QIODevice::ReadOnly)) {
+		appendTextToLog("Export FIT: failed to read back staged archive " + stagingPath);
+		setNotificationText(tr("Export FIT failed: could not write file"));
+		QFile::remove(stagingPath);
+		QFile::remove(fileUrl);
+		return;
+	}
+	QByteArray data = staged.readAll();
+	staged.close();
+	QFile::remove(stagingPath);
+	if (data.isEmpty()) {
+		appendTextToLog("Export FIT: staged archive is empty");
+		setNotificationText(tr("Export FIT failed: could not build archive"));
+		QFile::remove(fileUrl);
+		return;
+	}
+
+	QFile target(fileUrl);
+	if (!target.open(QIODevice::WriteOnly)) {
+		appendTextToLog("Export FIT: failed to open target file for writing: " + fileUrl);
+		setNotificationText(tr("Export FIT failed: could not open target file"));
+		return;
+	}
+	qint64 written_bytes = target.write(data);
+	target.close();
+	if (written_bytes != data.size()) {
+		appendTextToLog("Export FIT: short write to target file: " + fileUrl);
+		setNotificationText(tr("Export FIT failed: could not write file"));
+		target.remove();
+		return;
+	}
+	appendTextToLog(QStringLiteral("Export FIT: wrote %1 bytes to %2").arg(written_bytes).arg(fileUrl));
+	setNotificationText(fitBulkSummary(written, skipped));
+}
+
+// AI-generated (Claude)
+// Where the share paths stage their files. On mobile this has to be the
+// directory the FileProvider exposes (android-mobile/res/xml/filepaths.xml
+// publishes the app's files dir, where appLogFileName lives).
+QString QMLManager::fitShareStagingDir()
+{
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+	return QFileInfo(appLogFileName).absolutePath();
+#else
+	return QString::fromStdString(system_default_directory());
+#endif
+}
+
+// AI-generated (Claude)
+void QMLManager::shareFitArchive(int tzOffsetSeconds)
+{
+	QString fileName = fitShareStagingDir() + "/" + QStringLiteral("subsurface_fit_export.zip");
+	int written = 0, skipped = 0;
+	if (!writeFitZip(fileName, tzOffsetSeconds, written, skipped)) {
+		setNotificationText(tr("Export FIT failed: could not build archive"));
+		QFile::remove(fileName);
+		return;
+	}
+	if (written == 0) {
+		appendTextToLog("Share FIT: no dives had dive computer data to encode");
+		setNotificationText(tr("Share FIT failed: no dive computer data to export"));
+		QFile::remove(fileName);
+		return;
+	}
+
+	setNotificationText(fitBulkSummary(written, skipped));
+	shareFitFiles(QStringList() << fileName, QStringLiteral("application/zip"));
+}
+
+// AI-generated (Claude)
+// One attachment per dive, guarded by fitShareMaxIndividual so a large dive
+// log cannot turn into a silently truncated share.
+void QMLManager::shareFitAll(int tzOffsetSeconds)
+{
+	int count = fitBulkDiveCount();
+	if (count > fitShareMaxIndividual) {
+		appendTextToLog(QStringLiteral("Share FIT: %1 dives exceeds the individual-file share limit of %2").arg(count).arg(fitShareMaxIndividual));
+		setNotificationText(tr("Too many dives (%1) to share as individual files - use the ZIP archive option").arg(count));
+		return;
+	}
+
+	QString dir = fitShareStagingDir();
+	// Names are derived from the dive date, so without this a shorter export
+	// would leave earlier dives behind for the share sheet to pick up.
+	for (const QString &stale : QDir(dir).entryList(QStringList() << QStringLiteral("dive-*.fit"), QDir::Files))
+		QFile::remove(dir + "/" + stale);
+
+	QStringList paths;
+	int skipped = 0;
+	int written = writeFitFiles(dir, tzOffsetSeconds, skipped, &paths);
+	if (written == 0) {
+		appendTextToLog("Share FIT: no dives could be staged in " + dir);
+		setNotificationText(tr("Share FIT failed: no dive computer data to export"));
+		return;
+	}
+
+	setNotificationText(fitBulkSummary(written, skipped));
+	shareFitFiles(paths, QStringLiteral("application/octet-stream"));
+}
+
+// AI-generated (Claude)
+// Hands a list of already-written files to the platform share sheet. The Java
+// side takes the paths as one newline-separated string rather than a String[]:
+// building a Java object array through QJniObject is a lot more code for no
+// benefit, and a newline cannot occur in the generated names.
+void QMLManager::shareFitFiles(const QStringList &paths, const QString &mimeType)
+{
+#if defined(Q_OS_ANDROID)
+	QJniObject activity(QNativeInterface::QAndroidApplication::context());
+	if (!activity.isValid()) {
+		appendTextToLog("Share FIT: no Android activity to share from");
+		return;
+	}
+	QJniObject subject = QJniObject::fromString(QStringLiteral("Subsurface FIT export"));
+	QJniObject bodyString = QJniObject::fromString(QStringLiteral("Subsurface FIT dive export"));
+	QJniObject pathList = QJniObject::fromString(paths.join('\n'));
+	QJniObject mime = QJniObject::fromString(mimeType);
+	bool success = activity.callMethod<jboolean>("shareFilesViaEmail",
+				"(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z",
+				subject.object<jstring>(), bodyString.object<jstring>(),
+				pathList.object<jstring>(), mime.object<jstring>());
+	report_info("%s shareFilesViaEmail %s", __func__, success ? "succeeded" : "failed");
+#elif defined(Q_OS_IOS)
+	Q_UNUSED(mimeType)
+	// iosshare only carries two attachments: the ZIP option works, a
+	// multi-file share has no iOS bridge yet and has to say so.
+	if (paths.size() == 1) {
+		QString subject("Subsurface FIT export");
+		QString emptyString;
+		QString body("Subsurface FIT dive export");
+		iosshare.shareViaEmail(subject, emptyString, body, paths.first(), emptyString);
+	} else {
+		appendTextToLog("Share FIT: multi-file share is not implemented on iOS");
+		setNotificationText(tr("Sharing individual files is not supported here - use the ZIP archive option"));
+	}
+#else
+	Q_UNUSED(mimeType)
+	appendTextToLog(QStringLiteral("on a mobile platform this would share %1 file(s): %2").arg(paths.size()).arg(paths.join(", ")));
 #endif
 }
 

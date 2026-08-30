@@ -31,14 +31,7 @@ TemplatePage {
 	function openFor(id) {
 		diveId = id
 		formatCombo.currentIndex = 0
-		offsetSeconds = manager.fitDefaultTzOffset(id)
-		offsetField.text = offsetSeconds.toString()
-	}
-
-	function clampOffset(value) {
-		if (isNaN(value))
-			return 0
-		return Math.max(-50400, Math.min(50400, value))
+		tzOffset.setOffset(manager.fitDefaultTzOffset(id))
 	}
 
 	function currentFormatKey() {
@@ -47,7 +40,7 @@ TemplatePage {
 	}
 
 	function runExport(destination) {
-		offsetSeconds = clampOffset(parseInt(offsetField.text, 10))
+		offsetSeconds = tzOffset.commit()
 		var key = currentFormatKey()
 		if (key === "fit") {
 			if (destination === "share") {
@@ -103,81 +96,9 @@ TemplatePage {
 			model: exportDivePage.formats.map(function(f) { return f.label })
 		}
 
-		TemplateLabel {
-			text: qsTr("Manual timezone correction (seconds east of UTC)")
-			wrapMode: Text.Wrap
+		TzOffsetSelector {
+			id: tzOffset
 			Layout.fillWidth: true
-		}
-		SsrfTextField {
-			id: offsetField
-			Layout.fillWidth: true
-			inputMethodHints: Qt.ImhFormattedNumbersOnly
-			validator: IntValidator { bottom: -50400; top: 50400 }
-			text: "0"
-		}
-
-		// D012/D013 (user override): most people cannot mentally convert a
-		// duration into seconds, so offer fixed-increment adjustments
-		// alongside the raw seconds field rather than replacing it. D013
-		// replaces D012's single 7-wide row with a 5-column grid (blank
-		// cells reproduce the override's diagram) because a flat row left
-		// each button narrower than its label once the app's font size is
-		// increased; D016 then rebalanced the column widths so the labels
-		// stay legible. Each button only rewrites offsetField.text --
-		// runExport() already re-reads and re-clamps it.
-		GridLayout {
-			id: offsetAdjustGrid
-			Layout.fillWidth: true
-			columns: 5
-			columnSpacing: Kirigami.Units.smallSpacing
-			rowSpacing: Kirigami.Units.smallSpacing
-
-			readonly property var cells: [
-				{ label: qsTr("-1h"), delta: -3600 }, { label: qsTr("-30m"), delta: -1800 }, null, { label: qsTr("+30m"), delta: 1800 }, { label: qsTr("+1h"), delta: 3600 },
-				{ label: qsTr("-15m"), delta: -900 }, { label: qsTr("-5m"), delta: -300 }, null, { label: qsTr("+5m"), delta: 300 }, { label: qsTr("+15m"), delta: 900 },
-				null, { label: qsTr("-1m"), delta: -60 }, { label: qsTr("0"), delta: 0 }, { label: qsTr("+1m"), delta: 60 }, null
-			]
-
-			Repeater {
-				model: offsetAdjustGrid.cells
-				// A Loader per cell so blank grid positions cost nothing and
-				// don't need a dummy zero-delta button. On-device UAT (T09)
-				// found that forcing every column to its button's natural
-				// (unsqueezed) width overflowed the page on a 360dp-wide
-				// phone -- five real-width buttons per row simply don't fit.
-				// A previous attempt divided offsetAdjustGrid.width evenly
-				// across columns via Layout.preferredWidth, but that binds each
-				// column's width to the grid's own resolved width, which
-				// GridLayout derives from those same columns -- a circular
-				// binding that does not reliably settle (device UAT still
-				// showed the same overflow with it in place).
-				// Layout.fillWidth lets GridLayout shrink a column below its
-				// natural size when the row doesn't fit, and TemplateButton's
-				// Text.Fit content item shrinks the label to match, so the row
-				// fits without depending on the grid's own width.
-				//
-				// D016: filling all five columns equally left every label but
-				// "0" shrunk to the point of being hard to read -- the four
-				// wide labels ("-30m", "+15m", ...) each got only a fifth of
-				// the width, while the centre column spent an equal share on
-				// "0" and two blanks. The centre column is therefore sized to
-				// its own content and only the four outer columns share the
-				// remaining width, which is the override's "top two rows
-				// expand to the centre, third row expands to the sides".
-				Loader {
-					Layout.fillWidth: index % offsetAdjustGrid.columns !== 2
-					active: modelData !== null
-					sourceComponent: TemplateButton {
-						text: modelData.label
-						onClicked: {
-							if (modelData.delta === 0)
-								offsetField.text = "0"
-							else
-								offsetField.text = exportDivePage.clampOffset((parseInt(offsetField.text, 10) || 0) + modelData.delta).toString()
-						}
-					}
-				}
-			}
 		}
 
 		Rectangle {

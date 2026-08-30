@@ -96,6 +96,17 @@ public:
 	Q_INVOKABLE void shareFitForDive(int diveId, int tzOffsetSeconds);
 	Q_INVOKABLE QString fitSuggestedFileName(int diveId);
 
+	// AI-generated (Claude)
+	// Whole-divelog FIT export. Every dive is encoded with the same tz
+	// offset and either written as one file per dive under a picked folder,
+	// or collected into a single ZIP.
+	Q_INVOKABLE int fitBulkDiveCount();
+	Q_INVOKABLE int fitShareIndividualLimit();
+	Q_INVOKABLE void exportFitAllToFolder(QString folderUrl, int tzOffsetSeconds);
+	Q_INVOKABLE void exportFitArchiveToUrl(QString fileUrl, int tzOffsetSeconds);
+	Q_INVOKABLE void shareFitAll(int tzOffsetSeconds);
+	Q_INVOKABLE void shareFitArchive(int tzOffsetSeconds);
+
 	QString DC_vendor() const;
 	void DC_setVendor(const QString& vendor);
 
@@ -247,6 +258,16 @@ public slots:
 	QString getLatestFirmwareAvailable() const;
 
 private:
+	// AI-generated (Claude)
+	// writeFitFiles() writes one file per dive below dirPrefix (which may be
+	// a SAF tree content:// URI on Android) and appends what it wrote to
+	// writtenPaths; writeFitZip() collects the same set into one ZIP at a
+	// plain filesystem path.
+	int writeFitFiles(const QString &dirPrefix, int tzOffsetSeconds, int &skipped, QStringList *writtenPaths);
+	bool writeFitZip(const QString &zipPath, int tzOffsetSeconds, int &written, int &skipped);
+	QString fitShareStagingDir();
+	void shareFitFiles(const QStringList &paths, const QString &mimeType);
+
 	BuddyCompletionModel buddyModel;
 	SuitCompletionModel suitModel;
 	DiveGuideCompletionModel diveguideModel;
