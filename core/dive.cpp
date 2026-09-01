@@ -30,6 +30,13 @@
 #include "tanksensormapping.h"
 #include "trip.h"
 
+// AI-generated (Claude)
+/* Set to true by set_informational_units() when a "units" line is parsed from the
+ * data file; reset to false at the start of each load via parse_settings_entry().
+ * Mobile load paths consult this flag before applying git_prefs.unit_system so that
+ * a file with no units line does not clobber the locally-persisted preference. */
+bool git_prefs_units_set = false;
+
 // For user visible text but still not translated
 const char *divemode_text_ui[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "Open circuit"),
@@ -2448,6 +2455,10 @@ bool dive::time_during_dive_with_offset(timestamp_t when, timestamp_t offset) co
  * will need */
 void set_informational_units(const char *units)
 {
+	/* Record that a units line was present in the data file so that mobile
+	 * load paths can distinguish an explicit setting from the default. */
+	git_prefs_units_set = true;
+
 	if (strstr(units, "METRIC")) {
 		git_prefs.unit_system = METRIC;
 	} else if (strstr(units, "IMPERIAL")) {
