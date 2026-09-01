@@ -2,8 +2,16 @@
 #include "pref.h"
 #include "subsurface-string.h"
 #include "git-access.h" // for CLOUD_HOST
+#include <cstring>
 
 struct preferences prefs, git_prefs, default_prefs;
+
+// AI-generated (Claude)
+/* Set to true by set_informational_units() when a "units" line is parsed from the
+ * data file; reset to false at the start of each load via parse_settings_entry().
+ * Mobile load paths consult this flag before applying git_prefs.unit_system so that
+ * a file with no units line does not clobber the locally-persisted preference. */
+bool git_prefs_units_set = false;
 
 preferences::preferences() :
 	animation_speed(500),
@@ -113,6 +121,55 @@ void set_git_prefs(std::string_view prefs)
 		git_prefs.show_ccr_sensors = 1;
 	if (contains(prefs, "PO2_GRAPH"))
 		git_prefs.pp_graphs.po2 = 1;
+}
+
+/* this sets a usually unused copy of the preferences with the units
+ * that were active the last time the dive list was saved to git storage
+ * (this isn't used in XML files); storing the unit preferences in the
+ * data file is usually pointless (that's a setting of the software,
+ * not a property of the data), but it's a great hint of what the user
+ * might expect to see when creating a backend service that visualizes
+ * the dive list without Subsurface running - so this is basically a
+ * functionality for the core library that Subsurface itself doesn't
+ * use but that another consumer of the library (like an HTML exporter)
+ * will need */
+void set_informational_units(const char *units)
+{
+	/* Record that a units line was present in the data file so that mobile
+	 * load paths can distinguish an explicit setting from the default. */
+	git_prefs_units_set = true;
+
+	if (strstr(units, "METRIC")) {
+		git_prefs.unit_system = METRIC;
+	} else if (strstr(units, "IMPERIAL")) {
+		git_prefs.unit_system = IMPERIAL;
+	} else if (strstr(units, "PERSONALIZE")) {
+		git_prefs.unit_system = PERSONALIZE;
+		if (strstr(units, "METERS"))
+			git_prefs.units.length = units::METERS;
+		if (strstr(units, "FEET"))
+			git_prefs.units.length = units::FEET;
+		if (strstr(units, "LITER"))
+			git_prefs.units.volume = units::LITER;
+		if (strstr(units, "CUFT"))
+			git_prefs.units.volume = units::CUFT;
+		if (strstr(units, "BAR"))
+			git_prefs.units.pressure = units::BAR;
+		if (strstr(units, "PSI"))
+			git_prefs.units.pressure = units::PSI;
+		if (strstr(units, "CELSIUS"))
+			git_prefs.units.temperature = units::CELSIUS;
+		if (strstr(units, "FAHRENHEIT"))
+			git_prefs.units.temperature = units::FAHRENHEIT;
+		if (strstr(units, "KG"))
+			git_prefs.units.weight = units::KG;
+		if (strstr(units, "LBS"))
+			git_prefs.units.weight = units::LBS;
+		if (strstr(units, "SECONDS"))
+			git_prefs.units.vertical_speed_time = units::SECONDS;
+		if (strstr(units, "MINUTES"))
+			git_prefs.units.vertical_speed_time = units::MINUTES;
+	}
 }
 
 enum deco_mode pref_deco_mode(bool in_planner)
