@@ -17,6 +17,9 @@ private slots:
 	void test_unit_system();
 	void test_oldPreferences();
 	void test_signals();
+	void test_git_prefs_units_set_on_parse();
+	void test_git_prefs_units_set_unchanged_without_parse();
+	void test_git_prefs_units_set_resets_between_loads();
 };
 
 #endif // TESTQPREFUNITS_H

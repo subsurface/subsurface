@@ -230,5 +230,12 @@ extern void subsurface_OS_pref_setup();
 extern void set_informational_units(const char *units);
 extern void set_git_prefs(std::string_view prefs);
 
+/* True when a "units" line was parsed from the current data file.
+ * Remains false when the file contained no units line, which means
+ * git_prefs.unit_system holds only its default (METRIC) and must NOT
+ * be applied on mobile to avoid clobbering the locally-persisted preference.
+ * Reset to false before each load; set to true inside set_informational_units(). */
+extern bool git_prefs_units_set;
+
 extern enum deco_mode pref_deco_mode(bool in_planner);
 #endif // PREF_H

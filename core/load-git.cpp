@@ -1722,6 +1722,11 @@ static int parse_trip_entry(struct git_parser_state *state, const git_tree_entry
 
 static int parse_settings_entry(struct git_parser_state *state, const git_tree_entry *entry)
 {
+	/* Reset the flag before parsing the settings blob so that a file with
+	 * no "units" line does not carry forward a true value from a previous
+	 * load.  set_informational_units() will set it back to true only when
+	 * an explicit units line is actually present in this file. */
+	git_prefs_units_set = false;
 	git_blob *blob = git_tree_entry_blob(state->repo, entry);
 	if (!blob)
 		return report_error("Unable to read settings file");

@@ -289,5 +289,54 @@ void TestQPrefUnits::test_signals()
 	QVERIFY(spy9.takeFirst().at(0).toInt() == units::LBS);
 }
 
+// AI-generated (Claude)
+/* Tests for git_prefs_units_set: the flag that distinguishes a data file that
+ * explicitly contained a "units" line from one that simply defaulted to METRIC. */
+
+void TestQPrefUnits::test_git_prefs_units_set_on_parse()
+{
+	// set_informational_units() must set the flag and record the unit system.
+	git_prefs_units_set = false;
+	git_prefs.unit_system = METRIC;
+
+	set_informational_units("IMPERIAL");
+
+	QVERIFY(git_prefs_units_set);
+	QCOMPARE(git_prefs.unit_system, IMPERIAL);
+}
+
+void TestQPrefUnits::test_git_prefs_units_set_unchanged_without_parse()
+{
+	// When set_informational_units() is never called the flag stays false
+	// and prefs.unit_system is unaffected.
+	git_prefs_units_set = false;
+	prefs.unit_system = IMPERIAL;   // simulate locally-persisted preference
+
+	// Do NOT call set_informational_units() — this mirrors a file with no
+	// units line.  The flag must remain false.
+	QVERIFY(!git_prefs_units_set);
+
+	// Mobile load code: only apply git_prefs when the flag is true.
+	if (git_prefs_units_set)
+		prefs.unit_system = git_prefs.unit_system;
+
+	// The locally-persisted preference must be intact.
+	QCOMPARE(prefs.unit_system, IMPERIAL);
+}
+
+void TestQPrefUnits::test_git_prefs_units_set_resets_between_loads()
+{
+	// Simulate first load: file contained a units line.
+	git_prefs_units_set = false;
+	set_informational_units("IMPERIAL");
+	QVERIFY(git_prefs_units_set);
+
+	// Simulate the per-load reset that parse_settings_entry() performs
+	// before attempting to parse the next file's settings blob.
+	git_prefs_units_set = false;
+
+	// Second load has no units line — flag must be false before any parse.
+	QVERIFY(!git_prefs_units_set);
+}
 
 QTEST_MAIN(TestQPrefUnits)

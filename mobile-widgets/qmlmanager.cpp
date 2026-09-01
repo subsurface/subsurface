@@ -440,7 +440,13 @@ void QMLManager::openLocalThenRemote(QString url)
 			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 			emit passwordStateChanged();
 		}
-		qPrefUnits::set_unit_system(git_prefs.unit_system);
+		/* Only apply the unit system from git_prefs when the loaded file
+		 * actually contained a "units" line.  If the file had no units
+		 * line, git_prefs.unit_system holds its default value (METRIC)
+		 * and applying it would silently clobber the preference already
+		 * loaded from Qt/Android settings by qPref::load() at startup. */
+		if (git_prefs_units_set)
+			qPrefUnits::set_unit_system(git_prefs.unit_system);
 		qPrefTechnicalDetails::set_tankbar(git_prefs.tankbar);
 		qPrefTechnicalDetails::set_show_ccr_setpoint(git_prefs.show_ccr_setpoint);
 		qPrefTechnicalDetails::set_show_ccr_sensors(git_prefs.show_ccr_sensors);
@@ -906,12 +912,17 @@ void QMLManager::revertToNoCloudIfNeeded()
 
 void QMLManager::consumeFinishedLoad()
 {
-	prefs.unit_system = git_prefs.unit_system;
-	if (git_prefs.unit_system == IMPERIAL)
-		git_prefs.units = IMPERIAL_units;
-	else if (git_prefs.unit_system == METRIC)
-		git_prefs.units = SI_units;
-	prefs.units = git_prefs.units;
+	/* Only apply unit system when the loaded file contained a "units" line.
+	 * Without this guard, git_prefs.unit_system defaults to METRIC and would
+	 * clobber the correct preference already loaded from Qt/Android settings. */
+	if (git_prefs_units_set) {
+		prefs.unit_system = git_prefs.unit_system;
+		if (git_prefs.unit_system == IMPERIAL)
+			git_prefs.units = IMPERIAL_units;
+		else if (git_prefs.unit_system == METRIC)
+			git_prefs.units = SI_units;
+		prefs.units = git_prefs.units;
+	}
 	prefs.tankbar = git_prefs.tankbar;
 	prefs.show_ccr_setpoint = git_prefs.show_ccr_setpoint;
 	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
