@@ -1243,6 +1243,27 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 					devinfo->model, dc_descriptor_get_model(devdata->descriptor));
 			}
 		}
+		/* Hardware-id sub-model refinement (best-effort, generic).
+		 * If the device reported a hardware identifier, ask libdc whether it maps
+		 * to a more specific descriptor than the coarse model alone provides.
+		 * Falls back silently to the coarse model when hw_id is 0 or unknown. */
+		if (devinfo->devinfo_hw_id != 0) {
+			dc_descriptor_t *refined = dc_descriptor_find_by_hw_id(
+				dc_descriptor_get_type(devdata->descriptor),
+				devinfo->devinfo_hw_id);
+			if (refined != NULL) {
+				report_info("Hardware id 0x%04x refines product to %s %s",
+					devinfo->devinfo_hw_id,
+					dc_descriptor_get_vendor(refined),
+					dc_descriptor_get_product(refined));
+				devdata->descriptor = refined;
+				devdata->vendor  = dc_descriptor_get_vendor(refined)  ?: "";
+				devdata->product = dc_descriptor_get_product(refined) ?: "";
+				devdata->model   = devdata->vendor + " " + devdata->product;
+				/* dc_descriptor_find_by_hw_id() returns a pointer into a
+				 * static table; dc_descriptor_free() is a no-op on it. */
+			}
+		}
 		dev_info(translate("gettextFromC", "model=%s firmware=%u serial=%u"),
 			 devdata->product.c_str(), devinfo->firmware, devinfo->serial);
 		if (devdata->libdc_logfile) {
