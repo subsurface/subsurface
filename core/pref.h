@@ -234,7 +234,9 @@ extern void set_git_prefs(std::string_view prefs);
  * Remains false when the file contained no units line, which means
  * git_prefs.unit_system holds only its default (METRIC) and must NOT
  * be applied on mobile to avoid clobbering the locally-persisted preference.
- * Reset to false before each load; set to true inside set_informational_units(). */
+ * Reset to false at the start of git settings parsing (parse_settings_entry
+ * in load-git.cpp); XML loads do not reset this flag.
+ * Set to true inside set_informational_units(). */
 extern bool git_prefs_units_set;
 
 extern enum deco_mode pref_deco_mode(bool in_planner);
