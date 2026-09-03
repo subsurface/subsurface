@@ -1247,18 +1247,20 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		 * If the device reported a hardware identifier, ask libdc whether it maps
 		 * to a more specific descriptor than the coarse model alone provides.
 		 * Falls back silently to the coarse model when hw_id is 0 or unknown. */
-		if (devinfo->devinfo_hw_id != 0) {
+		if (devinfo->hw_id != 0) {
 			dc_descriptor_t *refined = dc_descriptor_find_by_hw_id(
 				dc_descriptor_get_type(devdata->descriptor),
-				devinfo->devinfo_hw_id);
+				devinfo->hw_id);
 			if (refined != NULL) {
+				const char *refined_vendor  = dc_descriptor_get_vendor(refined)  ?: "";
+				const char *refined_product = dc_descriptor_get_product(refined) ?: "";
 				report_info("Hardware id 0x%04x refines product to %s %s",
-					devinfo->devinfo_hw_id,
-					dc_descriptor_get_vendor(refined),
-					dc_descriptor_get_product(refined));
+					devinfo->hw_id,
+					refined_vendor,
+					refined_product);
 				devdata->descriptor = refined;
-				devdata->vendor  = dc_descriptor_get_vendor(refined)  ?: "";
-				devdata->product = dc_descriptor_get_product(refined) ?: "";
+				devdata->vendor  = refined_vendor;
+				devdata->product = refined_product;
 				devdata->model   = devdata->vendor + " " + devdata->product;
 				/* dc_descriptor_find_by_hw_id() returns a pointer into a
 				 * static table; dc_descriptor_free() is a no-op on it. */
