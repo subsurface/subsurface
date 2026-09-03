@@ -35,6 +35,7 @@
 #   -release           Build release APK (default; no version downgrade allowed)
 #   -build-aab         Also build Android App Bundle (.aab) in addition to APK
 #   -secrets <file>    Path to .secrets file (default: ./.secrets)
+#   -clean             Wipe build artifacts inside container to force a full rebuild
 
 set -e
 
@@ -44,6 +45,8 @@ cd "${SUBSURFACE_SOURCE}"
 SECRETS_FILE="${SUBSURFACE_SOURCE}/.secrets"
 BUILD_AAB="0"
 BUILD_TYPE="release"
+# AI-generated (Claude)
+CLEAN_BUILD="0"
 
 while [ $# -gt 0 ]; do
 	arg="$1"
@@ -61,9 +64,13 @@ while [ $# -gt 0 ]; do
 		-release)
 			BUILD_TYPE="release"
 			;;
+		# AI-generated (Claude)
+		-clean)
+			CLEAN_BUILD="1"
+			;;
 		*)
 			echo "Unknown command line argument $arg"
-			echo "Usage: ${BASH_SOURCE[0]} [-secrets <secrets filename>] [-build-aab] [-debug | -release]"
+			echo "Usage: ${BASH_SOURCE[0]} [-secrets <secrets filename>] [-build-aab] [-debug | -release] [-clean]"
 			exit 1
 			;;
 	esac
@@ -166,6 +173,27 @@ fi
 
 # Start the container (no-op if already running).
 ${CONTAINER_RT} start "${CONTAINER_NAME}" >/dev/null
+
+# AI-generated (Claude)
+# If -clean was requested, wipe build artifacts and cache stamps inside the
+# container to force a full rebuild. This removes build trees and hash stamps
+# that control whether mobilecomponents.sh and libdivecomputer are rebuilt,
+# but keeps the container and the pre-built native libraries in install-root.
+if [ "${CLEAN_BUILD}" = "1" ]; then
+	echo "=== Cleaning build artifacts inside container ==="
+	${CONTAINER_RT} exec "${CONTAINER_NAME}" rm -rf \
+		"${BUILDROOT}/build-android" \
+		"${BUILDROOT}/src/kirigami-build" \
+		"${BUILDROOT}/src/googlemaps-build" \
+		"${BUILDROOT}/src/googlemaps" \
+		"${BUILDROOT}/libdivecomputer-build"
+	# The install-root path is arm64-v8a-specific; that is the only ABI
+	# the current image supports and ANDROID_BUILD_ABI is a container ENV
+	# not available here.
+	${CONTAINER_RT} exec "${CONTAINER_NAME}" rm -f \
+		"${BUILDROOT}/src/install-root-arm64-v8a/.mobilecomponents-hash" \
+		"${BUILDROOT}/src/install-root-arm64-v8a/.libdivecomputer-hash"
+fi
 
 # AI-generated (Claude): unsigned builds do not have a keystore to copy.
 if [ -n "${ANDROID_KEYSTORE_BASE64}" ]; then
