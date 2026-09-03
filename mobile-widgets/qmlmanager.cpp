@@ -331,9 +331,6 @@ QMLManager::QMLManager() :
 	progress_callback = &progressCallback;
 	set_git_update_cb(&gitProgressCB);
 
-	// present dive site lists sorted by name
-	locationModel.sort(LocationInformationModel::NAME);
-
 	// Let's set some defaults to be copied so users don't necessarily need
 	// to know how to configure this
 	m_pasteDiveSite = false;

@@ -221,6 +221,7 @@ bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2)
 DiveSiteSortedModel::DiveSiteSortedModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
 	setSourceModel(LocationInformationModel::instance());
+	setDynamicSortFilter(true);
 }
 
 QStringList DiveSiteSortedModel::allSiteNames() const
