@@ -1252,8 +1252,10 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				dc_descriptor_get_type(devdata->descriptor),
 				devinfo->hw_id);
 			if (refined != NULL) {
-				const char *refined_vendor  = dc_descriptor_get_vendor(refined)  ?: "";
-				const char *refined_product = dc_descriptor_get_product(refined) ?: "";
+				const char *rv = dc_descriptor_get_vendor(refined);
+				const char *rp = dc_descriptor_get_product(refined);
+				const char *refined_vendor  = rv ? rv : "";
+				const char *refined_product = rp ? rp : "";
 				report_info("Hardware id 0x%04x refines product to %s %s",
 					devinfo->hw_id,
 					refined_vendor,
