@@ -94,8 +94,25 @@ MC_HASH=$(cat \
 	mobile-widgets/3rdparty/00*.patch \
 	| sha256sum | awk '{print $1}')
 
+# AI-generated (Claude)
+# Determine whether mobilecomponents.sh needs to run. Rebuild if:
+#   - the stamp file is missing or its hash doesn't match (inputs changed)
+#   - the stamp matches but required outputs are missing (partial/failed build)
+MC_NEEDS_REBUILD=0
+MC_REBUILD_REASON=""
 if [ ! -f "${MC_STAMP}" ] || [ "$(cat "${MC_STAMP}" 2>/dev/null)" != "${MC_HASH}" ]; then
-	echo "=== Building Kirigami / ECM (mobilecomponents.sh) ==="
+	MC_NEEDS_REBUILD=1
+	MC_REBUILD_REASON="inputs changed"
+elif [ ! -f "${SUBSURFACE_SOURCE}/mobile-widgets/3rdparty/ECM/cmake/ECMConfig.cmake" ]; then
+	MC_NEEDS_REBUILD=1
+	MC_REBUILD_REASON="ECM output missing"
+elif [ ! -f "${ANDROID_INSTALL_PREFIX}/lib/libKF6Kirigami.so" ]; then
+	MC_NEEDS_REBUILD=1
+	MC_REBUILD_REASON="Kirigami output missing"
+fi
+
+if [ "${MC_NEEDS_REBUILD}" = "1" ]; then
+	echo "=== Building Kirigami / ECM (${MC_REBUILD_REASON}) ==="
 	KIRIGAMI_BUILDDIR="${BUILDROOT}/src/kirigami-build" \
 	KIRIGAMI_INSTALL_PREFIX="${ANDROID_INSTALL_PREFIX}" \
 	bash ./scripts/mobilecomponents.sh \
@@ -108,7 +125,7 @@ if [ ! -f "${MC_STAMP}" ] || [ "$(cat "${MC_STAMP}" 2>/dev/null)" != "${MC_HASH}
 		-DCMAKE_SHARED_LINKER_FLAGS="-Wl,-z,max-page-size=16384"
 	echo "${MC_HASH}" > "${MC_STAMP}"
 else
-	echo "=== Skipping mobilecomponents.sh (inputs unchanged) ==="
+	echo "=== Skipping mobilecomponents.sh (cache complete and unchanged) ==="
 fi
 
 # build googlemaps geoservices plugin (shared library for Android)
