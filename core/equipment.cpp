@@ -496,18 +496,19 @@ std::vector<int> get_cylinder_map_for_add(int count, int n)
 void dump_cylinders(struct dive *dive, bool verbose)
 {
 	printf("Cylinder list:\n");
-	for (int i = 0; i < dive->cylinders; i++) {
-		cylinder_t *cyl = dive->get_cylinder(i);
+	int i = 0;
+	for (cylinder_t &cyl: dive->cylinders) {
+		i++;
 
-		printf("%02d: Type     %s, %3.1fl, %3.0fbar\n", i, cyl->type.description.c_str(), cyl->type.size.mliter / 1000.0, cyl->type.workingpressure.mbar / 1000.0);
-		printf("    Gasmix   O2 %2.0f%% He %2.0f%%\n", cyl->gasmix.o2.permille / 10.0, cyl->gasmix.he.permille / 10.0);
-		printf("    Pressure Start %3.0fbar End %3.0fbar Sample start %3.0fbar Sample end %3.0fbar\n", cyl->start.mbar / 1000.0, cyl->end.mbar / 1000.0, cyl->sample_start.mbar / 1000.0, cyl->sample_end.mbar / 1000.0);
+		printf("%02d: Type     %s, %3.1fl, %3.0fbar\n", i, cyl.type.description.c_str(), cyl.type.size.mliter / 1000.0, cyl.type.workingpressure.mbar / 1000.0);
+		printf("    Gasmix   O2 %2.0f%% He %2.0f%%\n", cyl.gasmix.o2.permille / 10.0, cyl.gasmix.he.permille / 10.0);
+		printf("    Pressure Start %3.0fbar End %3.0fbar Sample start %3.0fbar Sample end %3.0fbar\n", cyl.start.mbar / 1000.0, cyl.end.mbar / 1000.0, cyl.sample_start.mbar / 1000.0, cyl.sample_end.mbar / 1000.0);
 		if (verbose) {
-			printf("    Depth    %3.0fm\n", cyl->depth.mm / 1000.0);
-			printf("    Added    %s\n", (cyl->manually_added ? "manually" : ""));
-			printf("    Gas used Bottom %5.0fl Deco %5.0fl\n", cyl->gas_used.mliter / 1000.0, cyl->deco_gas_used.mliter / 1000.0);
-			printf("    Use      %d\n", cyl->cylinder_use);
-			printf("    Bestmix  %s %s\n", (cyl->bestmix_o2 ? "O2" : "  "), (cyl->bestmix_he ? "He" : "  "));
+			printf("    Depth    %3.0fm\n", cyl.depth.mm / 1000.0);
+			printf("    Added    %s\n", (cyl.manually_added ? "manually" : ""));
+			printf("    Gas used Bottom %5.0fl Deco %5.0fl\n", cyl.gas_used.mliter / 1000.0, cyl.deco_gas_used.mliter / 1000.0);
+			printf("    Use      %d\n", cyl.cylinder_use);
+			printf("    Bestmix  %s %s\n", (cyl.bestmix_o2 ? "O2" : "  "), (cyl.bestmix_he ? "He" : "  "));
 		}
 	}
 }
