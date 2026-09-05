@@ -1177,7 +1177,7 @@ static void fill_o2_values(const struct dive *dive, const struct divecomputer *d
  * for plotting. This function called by: create_plot_info_new() */
 {
 	int i, j;
-	pressure_t last_sensor[3], o2pressure;
+	pressure_t last_sensor[MAX_O2_SENSORS], o2pressure;
 	pressure_t amb_pressure;
 
 	for (i = 0; i < pi.nr; i++) {
