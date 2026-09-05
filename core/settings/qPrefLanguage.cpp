@@ -3,6 +3,8 @@
 #include "qPrefPrivate.h"
 
 #include <QDate>
+#include <QDateTime>
+#include <QRegularExpression>
 #include <QTime>
 #include <QVariantMap>
 
@@ -10,6 +12,46 @@ static const QString group = QStringLiteral("Language");
 
 static const QDate previewDate(2000, 12, 31);
 static const QTime previewTime(13, 45);
+
+// AI-generated (Claude): Replace display punctuation with separators available
+// on Android's specialised date and time keyboards, without reordering fields.
+static QString keypadDateFormat(const QString &format)
+{
+	QRegularExpression component(QStringLiteral("d+|M+|y+"));
+	QRegularExpressionMatchIterator matches = component.globalMatch(format);
+	QStringList result;
+	while (matches.hasNext()) {
+		QString value = matches.next().captured();
+		if (value.startsWith(QLatin1Char('d')) && value.size() > 2)
+			value = QStringLiteral("d");
+		else if (value.startsWith(QLatin1Char('M')) && value.size() > 2)
+			value = QStringLiteral("M");
+		result.append(value);
+	}
+	return result.join(QLatin1Char('/'));
+}
+
+static QString keypadTimeFormat(const QString &format)
+{
+	QRegularExpression component(QStringLiteral("AP|ap|h+|H+|m+|s+"));
+	QRegularExpressionMatchIterator matches = component.globalMatch(format);
+	QStringList timeComponents;
+	QString designator;
+	bool designatorFirst = false;
+	while (matches.hasNext()) {
+		const QString value = matches.next().captured();
+		if (value == QLatin1String("AP") || value == QLatin1String("ap")) {
+			designator = value;
+			designatorFirst = timeComponents.isEmpty();
+		} else {
+			timeComponents.append(value);
+		}
+	}
+	QString result = timeComponents.join(QLatin1Char(':'));
+	if (!designator.isEmpty())
+		result = designatorFirst ? designator + QLatin1Char(' ') + result : result + QLatin1Char(' ') + designator;
+	return result;
+}
 
 qPrefLanguage *qPrefLanguage::instance()
 {
@@ -223,6 +265,61 @@ void qPrefLanguage::applyTimePreset(const QString &preset)
 void qPrefLanguage::restoreDateTimeDefaults()
 {
 	applyFormats(QString(), QString(), QString(), false, false);
+}
+
+QString qPrefLanguage::timeEditText(const QString &displayText) const
+{
+	const QLocale locale = preferenceLocale();
+	const QTime time = locale.toTime(displayText, effectiveTimeFormat());
+	return time.isValid() ? locale.toString(time, keypadTimeFormat(effectiveTimeFormat())) : QString();
+}
+
+QString qPrefLanguage::timeDisplayText(const QString &editText) const
+{
+	const QLocale locale = preferenceLocale();
+	const QTime time = locale.toTime(editText, keypadTimeFormat(effectiveTimeFormat()));
+	return time.isValid() ? locale.toString(time, effectiveTimeFormat()) : QString();
+}
+
+QString qPrefLanguage::dateTimeEditText(const QString &displayText) const
+{
+	const QLocale locale = preferenceLocale();
+	const QString displayFormat = effectiveDateFormatShort() + QLatin1Char(' ') + effectiveTimeFormat();
+	const QDateTime dateTime = locale.toDateTime(displayText, displayFormat);
+	const QString editFormat = keypadDateFormat(effectiveDateFormatShort()) + QLatin1Char(' ') + keypadTimeFormat(effectiveTimeFormat());
+	return dateTime.isValid() ? locale.toString(dateTime, editFormat) : QString();
+}
+
+QString qPrefLanguage::dateTimeDisplayText(const QString &editText) const
+{
+	const QLocale locale = preferenceLocale();
+	const QString editFormat = keypadDateFormat(effectiveDateFormatShort()) + QLatin1Char(' ') + keypadTimeFormat(effectiveTimeFormat());
+	const QDateTime dateTime = locale.toDateTime(editText, editFormat);
+	const QString displayFormat = effectiveDateFormatShort() + QLatin1Char(' ') + effectiveTimeFormat();
+	return dateTime.isValid() ? locale.toString(dateTime, displayFormat) : QString();
+}
+
+QString qPrefLanguage::toggleMeridiem(const QString &editText, bool dateTime) const
+{
+	const QLocale locale = preferenceLocale();
+	const QString timeFormat = keypadTimeFormat(effectiveTimeFormat());
+	if (!timeFormat.contains(QLatin1String("AP")) && !timeFormat.contains(QLatin1String("ap")))
+		return editText;
+	if (dateTime) {
+		const QString format = keypadDateFormat(effectiveDateFormatShort()) + QLatin1Char(' ') + timeFormat;
+		QDateTime value = locale.toDateTime(editText, format);
+		if (!value.isValid())
+			return editText;
+		value.setTime(value.time().addSecs(12 * 60 * 60));
+		return locale.toString(value, format);
+	}
+	QTime value = locale.toTime(editText, timeFormat);
+	return value.isValid() ? locale.toString(value.addSecs(12 * 60 * 60), timeFormat) : editText;
+}
+
+QString qPrefLanguage::preferenceLocaleName() const
+{
+	return preferenceLocale().name();
 }
 
 void qPrefLanguage::applyLocaleDefaults(const QLocale &locale)

@@ -15,8 +15,16 @@ TemplatePage {
 
 	property string planNotes: ""
 	property var profileData: []
+	property date planDateTime: new Date()
 	// AI-generated (Claude)
 	property bool exceedsNDL: false
+
+	// AI-generated (Claude): iOS does not map the date and time hints to a
+	// specialised keyboard. Keep Android's specialised hints while requesting
+	// iOS's number-and-punctuation keyboard for fields with separators.
+	function punctuationInputMethodHints(platformName, androidHints) {
+		return platformName === "ios" ? Qt.ImhPreferNumbers : androidHints
+	}
 
 	// --- Data Models ---
 	ListModel { id: cylinderListModel }
@@ -32,6 +40,84 @@ TemplatePage {
 			newList.push(qsTr("Gas %1").arg(i + 1));
 		}
 		gasNumberModel = newList;
+	}
+
+	// AI-generated (Claude)
+	function dateInputFormat(format) {
+		var components = format.match(/d+|M+|y+/g);
+		if (!components)
+			return format;
+		for (var i = 0; i < components.length; ++i) {
+			if (components[i].indexOf("d") === 0 && components[i].length > 2)
+				components[i] = "d";
+			if (components[i].indexOf("M") === 0 && components[i].length > 2)
+				components[i] = "M";
+		}
+		return components.join("/");
+	}
+
+	function updateDateTimeDisplay() {
+		if (!planDate.activeFocus)
+			planDate.text = Qt.formatDate(planDateTime, PrefLanguage.date_format_short);
+		if (!planTime.activeFocus)
+			planTime.text = Qt.formatTime(planDateTime, PrefLanguage.effectiveTimeFormat);
+	}
+
+	function applyDateInput(text, format) {
+		var loc = Qt.locale(PrefLanguage.preferenceLocaleName());
+		var parsed = Date.fromLocaleDateString(loc, text, dateInputFormat(format));
+		if (isNaN(parsed.getTime()))
+			return false;
+		var yearToken = format.match(/y+/);
+		if (yearToken && yearToken[0].length <= 2) {
+			var century = Math.floor(planDateTime.getFullYear() / 100) * 100;
+			parsed.setFullYear(century + parsed.getFullYear() % 100);
+		}
+		var updated = new Date(planDateTime.getTime());
+		updated.setFullYear(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
+		if (updated.getFullYear() !== parsed.getFullYear() || updated.getMonth() !== parsed.getMonth() ||
+		    updated.getDate() !== parsed.getDate())
+			return false;
+		planDateTime = updated;
+		return true;
+	}
+
+	function applyTimeInput(text, format) {
+		var displayText = PrefLanguage.timeDisplayText(text);
+		if (displayText === "")
+			return false;
+		var loc = Qt.locale(PrefLanguage.preferenceLocaleName());
+		var parsed = Date.fromLocaleTimeString(loc, displayText, format);
+		if (isNaN(parsed.getTime()))
+			return false;
+		var updated = new Date(planDateTime.getTime());
+		updated.setHours(parsed.getHours(), parsed.getMinutes(), parsed.getSeconds(), 0);
+		planDateTime = updated;
+		return true;
+	}
+
+	function gasEditText(text) {
+		if (/^AIR$/i.test(text))
+			return "21";
+		var enrichedAir = /^EAN(\d{1,3})$/i.exec(text);
+		return enrichedAir ? enrichedAir[1] : text;
+	}
+
+	function gasDisplayText(text, originalDisplay, originalEdit) {
+		if (text === originalEdit)
+			return originalDisplay;
+		if (text.indexOf("/") !== -1 || text === "")
+			return text;
+		if (/^AIR$/i.test(text))
+			return "AIR";
+		var enrichedAir = /^EAN(\d{1,3})$/i.exec(text);
+		if (enrichedAir)
+			return "EAN" + Number(enrichedAir[1]);
+		var percent = Number(text);
+		// Guard against non-numeric input; never emit an "EANNaN" string.
+		if (isNaN(percent))
+			return text;
+		return percent === 21 ? "AIR" : "EAN" + percent;
 	}
 
 	function generatePlan(savePlan = false) {
@@ -96,9 +182,12 @@ TemplatePage {
 			}
 
 			var planResult = Backend.divePlannerPointsModel.calculatePlan(
-				cylinderData, segmentData, planDate.text, planTime.text,
+				cylinderData, segmentData,
+				Qt.formatDate(planDateTime, "yyyy-MM-dd"), Qt.formatTime(planDateTime, "hh:mm:ss"),
 				overallDivemode.currentIndex, salinity, savePlan
 			)
+			if (planResult.dateTimeValid === false)
+				return;
 			// AI-generated (Claude)
 			// Always update the preview so that a refused save still explains why
 			// the recreational plan is invalid.
@@ -139,7 +228,7 @@ TemplatePage {
 		Backend.planner_gfhigh = PrefTechnicalDetails.gfhigh;
 		cylinderListModel.append({
 			"type": PrefEquipment.default_cylinder ? PrefEquipment.default_cylinder : "AL80",
-			"mix": "21/0",
+			"mix": "AIR",
 			"pressure": (Backend.pressure === Enums.BAR) ? 200 : 3000,
 			"use": 0 // Default to OC_GAS
 		});
@@ -175,6 +264,11 @@ TemplatePage {
 		}
 	}
 
+	Connections {
+		target: PrefLanguage
+		function onDateTimeFormatsChanged() { updateDateTimeDisplay(); }
+	}
+
 	ColumnLayout {
 		width: parent.width
 		spacing: Kirigami.Units.gridUnit
@@ -200,19 +294,57 @@ TemplatePage {
 			}
 			SsrfTextField {
 				id: planDate
+				property string initialEditText: ""
+				property string editFormat: ""
 				Layout.fillWidth: true
 				sampleText: "0000-00-00"
-				// prefer a numeric keyboard on mobile while still allowing the date separators
-				inputMethodHints: Qt.ImhPreferNumbers
-				text: Qt.formatDate(new Date(), "yyyy-MM-dd")
+				inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
+				text: Qt.formatDate(planDateTime, PrefLanguage.date_format_short)
+				onActiveFocusChanged: {
+					if (activeFocus) {
+						editFormat = PrefLanguage.date_format_short;
+						initialEditText = Qt.formatDate(planDateTime, dateInputFormat(editFormat));
+						text = initialEditText;
+					} else {
+						if (text !== initialEditText)
+							applyDateInput(text, editFormat);
+						updateDateTimeDisplay();
+					}
+				}
 			}
-			SsrfTextField {
-				id: planTime
+			// AI-generated (Claude): Keep the time keypad while exposing meridiem selection.
+			RowLayout {
 				Layout.fillWidth: true
-				sampleText: "00:00:00"
-				// prefer a numeric keyboard on mobile while still allowing the time separators
-				inputMethodHints: Qt.ImhPreferNumbers
-				text: Qt.formatTime(new Date(), "hh:mm:ss")
+				SsrfTextField {
+					id: planTime
+					property string initialEditText: ""
+					property string editFormat: ""
+					Layout.fillWidth: true
+					sampleText: "00:00 PM"
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhTime)
+					text: Qt.formatTime(planDateTime, PrefLanguage.effectiveTimeFormat)
+					onActiveFocusChanged: {
+						if (activeFocus) {
+							editFormat = PrefLanguage.effectiveTimeFormat;
+							var editText = PrefLanguage.timeEditText(text);
+							initialEditText = editText !== "" ? editText : text;
+							text = initialEditText;
+						} else {
+							if (text !== initialEditText)
+								applyTimeInput(text, editFormat);
+							updateDateTimeDisplay();
+						}
+					}
+				}
+				TemplateButton {
+					text: qsTr("A/P")
+					visible: planTime.activeFocus && /AP|ap/.test(PrefLanguage.effectiveTimeFormat)
+					fontSize: subsurfaceTheme.smallPointSize
+					padding: 0
+					Layout.alignment: Qt.AlignVCenter
+					focusPolicy: Qt.NoFocus
+					onClicked: planTime.text = PrefLanguage.toggleMeridiem(planTime.text, false)
+				}
 			}
 			TemplateLabel {
 				text: qsTr("Dive Mode")
@@ -265,7 +397,7 @@ TemplatePage {
 					onClicked: {
 						cylinderListModel.append({
 							"type": PrefEquipment.default_cylinder ? PrefEquipment.default_cylinder : "AL80",
-							"mix": "21/0",
+							"mix": "AIR",
 							"pressure": (Backend.pressure === Enums.BAR) ? 200 : 3000,
 							"use": 0 // Default to OC_GAS
 						});
@@ -334,11 +466,11 @@ TemplatePage {
 				}
 				SsrfTextField {
 					id: mixField
+					property string displayText: ""
+					property string initialEditText: ""
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 2.5
-					sampleText: "32/68"
-					// prefer a numeric keyboard on mobile; not digits-only because
-					// values like "EAN50", "AIR" and the "/" separator must remain typeable
-					inputMethodHints: Qt.ImhPreferNumbers
+					sampleText: "18/45"
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
 					text: mix
 					onTextChanged: {
 						if (text !== mix) {
@@ -365,7 +497,16 @@ TemplatePage {
 						}
 					}
 					validator: RegularExpressionValidator { regularExpression: /(EAN100|EAN\d\d|AIR|100|\d{0,2}|\d{0,2}\/\d{0,2})/i }
-					onActiveFocusChanged: cylinderListView.interactive = !activeFocus
+					onActiveFocusChanged: {
+						cylinderListView.interactive = !activeFocus;
+						if (activeFocus) {
+							displayText = text;
+							initialEditText = gasEditText(text);
+							text = initialEditText;
+						} else {
+							text = gasDisplayText(text, displayText, initialEditText);
+						}
+					}
 				}
 				TemplateCheckBox {
 					Layout.preferredWidth: Kirigami.Units.gridUnit * 1.5
@@ -528,7 +669,7 @@ TemplatePage {
 					sampleText: "00.00"
 					text: cylinderListModel.get(gas) && cylinderListModel.get(gas).use === 1 ? (setpoint / 1000.0).toFixed(2) : ""
 					// request a numeric keyboard on mobile; ImhFormattedNumbersOnly allows the decimal separator
-					inputMethodHints: Qt.ImhFormattedNumbersOnly
+					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhFormattedNumbersOnly)
 					validator: DoubleValidator {
 						bottom: 0.16;
 						top: 2.0;
