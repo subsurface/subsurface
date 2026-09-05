@@ -65,12 +65,13 @@ bash packaging/android/local-build.sh -clean
 
 This removes build trees (build-android, kirigami-build, googlemaps-build,
 googlemaps, libdivecomputer-build) and cache stamps (.mobilecomponents-hash,
-.libdivecomputer-hash) inside the container, forcing a full recompile of
-mobilecomponents, libdivecomputer, and Subsurface on the next build. However,
-it keeps the container itself and the pre-built native libraries in
-install-root, so it is faster than removing the container entirely
-(`docker rm -f subsurface-android-build`). The source checkout and
-`output/android` directory on the host remain unchanged.
+.libdivecomputer-hash) inside the container, forcing a full rebuild of
+mobilecomponents (Kirigami/ECM), libdivecomputer, and Subsurface on the next
+run. The container and the image-seeded base libraries in install-root
+(OpenSSL, SQLite, libxml2, libxslt, libzip, libgit2) are kept, so there is no
+need to re-seed from the image -- which is why this is faster than removing the
+container entirely (`docker rm -f subsurface-android-build`). The source
+checkout and `output/android` directory on the host remain unchanged.
 
 If you provide a `.secrets` file in the Subsurface source directory (or a
 location specified in the -secrets argument) with the encoded signing key,
