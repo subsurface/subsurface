@@ -317,6 +317,13 @@ static void parse_site_gps(char *line, struct git_parser_state *state)
 	parse_location(line, &state->active_site->location);
 }
 
+static void parse_site_marker(char *line, struct git_parser_state *state)
+{
+	while (*line == ' ')
+		line++;
+	state->active_site->alpha_flag = strcmp(line, "alpha") == 0;
+}
+
 static void parse_site_geo(char *line, struct git_parser_state *state)
 {
 	int origin;
@@ -1103,7 +1110,7 @@ static void dive_parser(char *line, struct git_parser_state *state)
 static const std::array site_action {
 #undef D
 #define D(x) keyword_action { #x, parse_site_ ## x }
-	D(description), D(geo), D(gps), D(name), D(notes)
+	D(description), D(geo), D(gps), D(marker), D(name), D(notes)
 };
 
 static void site_parser(char *line, struct git_parser_state *state)

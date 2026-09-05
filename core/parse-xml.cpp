@@ -1442,6 +1442,11 @@ static void try_to_fill_dive_site(struct parser_state *state, const char *name, 
 		return;
 	if (MATCH("gps", gps_location, ds.get()))
 		return;
+	std::string marker;
+	if (MATCH("marker", utf8_string_std, &marker)) {
+		ds->alpha_flag = marker == "alpha";
+		return;
+	}
 	if (MATCH("cat.geo", get_index, &state->taxonomy_category))
 		return;
 	if (MATCH("origin.geo", get_index, &state->taxonomy_origin))
