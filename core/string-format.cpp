@@ -1,5 +1,6 @@
 #include "string-format.h"
 #include "dive.h"
+#include "settings/qPrefLanguage.h"
 #include "divecomputer.h"
 #include "divelist.h"
 #include "divelog.h"
@@ -257,8 +258,17 @@ QString formatDiveTime(const dive *d)
 QString formatDiveDateTime(const dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
-	return QStringLiteral("%1 %2").arg(localTime.date().toString(QString::fromStdString(prefs.date_format_short)),
-					   localTime.time().toString(QString::fromStdString(prefs.time_format)));
+	// AI-generated (Claude): Use effectiveTimeFormat/effectiveDateFormatShort
+	// rather than raw prefs values. prefs.time_format is empty when "system
+	// default" is selected with no override, so toString("") fell back to Qt's
+	// internal ISO 8601 24-hour format. The effective helpers resolve to the
+	// system-locale format, which correctly reflects the iOS 12/24-hour toggle.
+	// Use QLocale() for toString() so AM/PM strings match what the edit
+	// parsing functions produce.
+	const QLocale locale;
+	return QStringLiteral("%1 %2").arg(
+		locale.toString(localTime.date(), qPrefLanguage::effectiveDateFormatShort()),
+		locale.toString(localTime.time(), qPrefLanguage::effectiveTimeFormat()));
 }
 
 QString formatDiveGasString(const dive *d)
