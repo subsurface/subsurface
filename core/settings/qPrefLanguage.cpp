@@ -110,7 +110,14 @@ QString qPrefLanguage::defaultShortDateFormat(const QLocale &locale)
 
 QString qPrefLanguage::defaultTimeFormat(const QLocale &locale)
 {
-	QString format = locale.timeFormat();
+	// AI-generated (Claude): On iOS the 12/24-hour preference is a system
+	// setting independent of the UI language. QLocale() (no arguments) reads
+	// it correctly; a locale constructed from a language tag (e.g. "en") uses
+	// Qt's built-in default for that language and may disagree with the iOS
+	// toggle. Use the system locale for the time format pattern and the
+	// preference locale only for non-time formatting.
+	Q_UNUSED(locale)
+	QString format = QLocale().timeFormat();
 	format.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 	format.replace(".ss", "").replace(":ss", "").replace("ss", "");
 	return format;
