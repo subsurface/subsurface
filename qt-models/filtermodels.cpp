@@ -28,6 +28,18 @@ void MultiFilterSortModel::resetModel(DiveTripModelBase::Layout layout)
 	setSourceModel(model.get());
 	connect(model.get(), &DiveTripModelBase::divesSelected, this, &MultiFilterSortModel::divesSelectedSlot);
 	connect(model.get(), &DiveTripModelBase::tripSelected, this, &MultiFilterSortModel::tripSelectedSlot);
+	// Work around QTBUG-141830: same Qt 6.10 re-entrancy bug as in
+	// DiveSiteSortedModel. See that constructor for a full explanation.
+	// Fixed in Qt 6.10.3 / 6.11.0. Remove once minimum Qt version is 6.10.3+.
+	connect(model.get(), &QAbstractItemModel::modelAboutToBeReset, this, [this]() {
+		m_savedSortColumn = sortColumn();
+		m_savedSortOrder = sortOrder();
+		sort(-1);
+	});
+	connect(model.get(), &QAbstractItemModel::modelReset, this, [this]() {
+		if (m_savedSortColumn >= 0)
+			sort(m_savedSortColumn, m_savedSortOrder);
+	});
 	model->initSelection();
 	LocationInformationModel::instance()->update();
 }
