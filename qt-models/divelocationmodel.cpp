@@ -221,7 +221,31 @@ bool DiveSiteSortedModel::lessThan(const QModelIndex &i1, const QModelIndex &i2)
 DiveSiteSortedModel::DiveSiteSortedModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
 	setSourceModel(LocationInformationModel::instance());
+	// Work around QTBUG-141830: Qt 6.10.0-6.10.2 re-entrancy bug in
+	// QSortFilterProxyModel on static iOS builds with QtQuick. When the
+	// source model fires endResetModel() and the proxy has an active sort
+	// column (sortColumn() >= 0), _q_sourceReset -> create_mapping ->
+	// sort_source_rows -> stable_sort -> comparator -> insertRows re-enters
+	// create_mapping() infinitely, causing a stack overflow. The only
+	// reliable guard is to clear the active sort column (sort(-1)) before
+	// the reset and restore it afterwards. Fixed in Qt 6.10.3 / 6.11.0.
+	// Remove this workaround once the minimum Qt version is updated to 6.10.3+.
+	connect(LocationInformationModel::instance(), &QAbstractItemModel::modelAboutToBeReset,
+		this, &DiveSiteSortedModel::onSourceAboutToReset);
+	connect(LocationInformationModel::instance(), &QAbstractItemModel::modelReset,
+		this, &DiveSiteSortedModel::onSourceReset);
 	setDynamicSortFilter(true);
+	sort(LocationInformationModel::NAME);
+}
+
+void DiveSiteSortedModel::onSourceAboutToReset()
+{
+	sort(-1);
+}
+
+void DiveSiteSortedModel::onSourceReset()
+{
+	sort(LocationInformationModel::NAME);
 }
 
 QStringList DiveSiteSortedModel::allSiteNames() const

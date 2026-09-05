@@ -26,6 +26,8 @@ private slots:
 private:
 	MultiFilterSortModel(QObject *parent = 0);
 	std::unique_ptr<DiveTripModelBase> model;
+	int m_savedSortColumn = -1;
+	Qt::SortOrder m_savedSortOrder = Qt::AscendingOrder;
 };
 
 #endif

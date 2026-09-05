@@ -46,6 +46,9 @@ private:
 #ifndef SUBSURFACE_MOBILE
 	bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 #endif // SUBSURFACE_MOBILE
+private slots:
+	void onSourceAboutToReset();
+	void onSourceReset();
 public:
 	DiveSiteSortedModel(QObject *parent = nullptr);
 	QStringList allSiteNames() const;
