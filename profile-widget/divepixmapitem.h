@@ -33,6 +33,7 @@ public:
 	void setPixmap(const QPixmap& pix);
 	void setBaseZValue(double z);
 	void setFileUrl(const QString& s);
+	void setAllowRemove(bool allowRemove);
 signals:
 	void removePicture(const QString &fileUrl);
 public slots:
@@ -46,6 +47,7 @@ private:
 	QGraphicsRectItem *shadow;
 	CloseButtonItem *button;
 	double baseZValue;
+	bool allowRemove;
 };
 
 #endif // DIVEPIXMAPITEM_H
