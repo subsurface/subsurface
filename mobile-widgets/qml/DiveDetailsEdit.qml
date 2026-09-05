@@ -271,7 +271,7 @@ Item {
 				}
 				TemplateButton {
 					text: qsTr("A/P")
-					visible: txtDate.activeFocus && /AP|ap/.test(PrefLanguage.time_format)
+					visible: txtDate.activeFocus && /AP|ap/.test(PrefLanguage.effectiveTimeFormat)
 					fontSize: subsurfaceTheme.smallPointSize
 					padding: 0
 					Layout.alignment: Qt.AlignVCenter
