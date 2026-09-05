@@ -55,6 +55,14 @@ Item {
 		return platformName === "ios" ? Qt.ImhPreferNumbers : androidHints
 	}
 
+	// AI-generated (Claude): temporary debug label - remove before merge
+	TemplateLabel {
+		text: "FMT:[" + PrefLanguage.effectiveTimeFormat + "]\nSYS:[" + Qt.locale().timeFormat(Locale.ShortFormat) + "]"
+		color: "red"
+		wrapMode: Text.Wrap
+		z: 100
+	}
+
 	// AI-generated (Claude)
 	function gasEditText(gasMix) {
 		if (gasMix === undefined || gasMix === null)
