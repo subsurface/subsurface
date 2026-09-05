@@ -228,10 +228,13 @@ void TestQPrefLanguage::test_oldPreferences()
 	language->restoreDateTimeDefaults();
 	QCOMPARE(language->date_format_override(), false);
 	QCOMPARE(language->time_format_override(), false);
-	const QString defaultLongDate = QLocale("en_US").dateFormat(QLocale::LongFormat).replace("dddd,", "ddd").replace("dddd", "ddd").replace("MMMM", "MMM");
-	const QString defaultShortDate = QLocale("en_US").dateFormat(QLocale::ShortFormat);
-	QCOMPARE(language->date_format(), defaultLongDate);
-	QCOMPARE(language->date_format_short(), defaultShortDate);
+	// When no override is active, the stored format is empty; the effective
+	// format is resolved dynamically from the system locale at call time.
+	// AI-generated (Claude): updated to match new behaviour where prefs store
+	// empty string for system-default formats.
+	QCOMPARE(language->date_format(), QString());
+	QCOMPARE(language->date_format_short(), QString());
+	QCOMPARE(language->time_format(), QString());
 	QCOMPARE(formatsSpy.count(), 1);
 	prefs.date_format = "error";
 	prefs.date_format_short = "error";
@@ -239,8 +242,8 @@ void TestQPrefLanguage::test_oldPreferences()
 	prefs.time_format = "error";
 	prefs.time_format_override = true;
 	language->load();
-	QCOMPARE(language->date_format(), defaultLongDate);
-	QCOMPARE(language->date_format_short(), defaultShortDate);
+	QCOMPARE(language->date_format(), QString());
+	QCOMPARE(language->date_format_short(), QString());
 	QCOMPARE(language->date_format_override(), false);
 	QCOMPARE(language->time_format_override(), false);
 
