@@ -60,7 +60,7 @@ TemplatePage {
 		if (!planDate.activeFocus)
 			planDate.text = Qt.formatDate(planDateTime, PrefLanguage.date_format_short);
 		if (!planTime.activeFocus)
-			planTime.text = Qt.formatTime(planDateTime, PrefLanguage.time_format);
+			planTime.text = Qt.formatTime(planDateTime, PrefLanguage.effectiveTimeFormat);
 	}
 
 	function applyDateInput(text, format) {
@@ -322,10 +322,10 @@ TemplatePage {
 					Layout.fillWidth: true
 					sampleText: "00:00 PM"
 					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhTime)
-					text: Qt.formatTime(planDateTime, PrefLanguage.time_format)
+					text: Qt.formatTime(planDateTime, PrefLanguage.effectiveTimeFormat)
 					onActiveFocusChanged: {
 						if (activeFocus) {
-							editFormat = PrefLanguage.time_format;
+							editFormat = PrefLanguage.effectiveTimeFormat;
 							var editText = PrefLanguage.timeEditText(text);
 							initialEditText = editText !== "" ? editText : text;
 							text = initialEditText;
@@ -338,7 +338,7 @@ TemplatePage {
 				}
 				TemplateButton {
 					text: qsTr("A/P")
-					visible: planTime.activeFocus && /AP|ap/.test(PrefLanguage.time_format)
+					visible: planTime.activeFocus && /AP|ap/.test(PrefLanguage.effectiveTimeFormat)
 					fontSize: subsurfaceTheme.smallPointSize
 					padding: 0
 					Layout.alignment: Qt.AlignVCenter
