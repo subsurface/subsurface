@@ -115,12 +115,18 @@ QString qPrefLanguage::defaultTimeFormat(const QLocale &locale)
 	// setting independent of the UI language. QLocale() (no arguments) reads
 	// it correctly; a locale constructed from a language tag (e.g. "en") uses
 	// Qt's built-in default for that language and may disagree with the iOS
-	// toggle. Use the system locale for the time format pattern and the
-	// preference locale only for non-time formatting.
+	// toggle. Use the system locale for the time format pattern.
+	//
+	// Qt on iOS returns "h:mm Ap" — mixed-case AM/PM token. Qt's C++ date/time
+	// formatting only recognises "AP" (uppercase) or "ap" (lowercase); "Ap" is
+	// treated as literals, causing toString() to produce 24-hour output and
+	// toDateTime() to fail to parse. Normalise any "Ap" or "aP" to "AP".
 	Q_UNUSED(locale)
 	QString format = QLocale().timeFormat();
 	format.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 	format.replace(".ss", "").replace(":ss", "").replace("ss", "");
+	// Normalise mixed-case AM/PM token to uppercase "AP"
+	format.replace("Ap", "AP").replace("aP", "AP");
 	return format;
 }
 
