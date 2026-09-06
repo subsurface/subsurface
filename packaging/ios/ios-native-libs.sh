@@ -7,6 +7,7 @@
 # Configurable environment variables:
 #   SUBSURFACE_SOURCE  - path to subsurface source tree (default: auto-detected)
 #   ARCH               - target architecture (default: arm64)
+#   TARGET_SDK         - iphoneos or iphonesimulator (default: iphoneos)
 #   IOS_DEPLOYMENT_TARGET - minimum iOS version (default: 17.0)
 #   BUILD_DIR          - directory for all build artefacts (default: ../build)
 #
