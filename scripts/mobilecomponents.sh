@@ -43,10 +43,10 @@ fi
 
 # add our patches to Kirigami
 cd "$MOBILE_COMPONENTS_DIR"
-PATCHES=$(echo "$SRC"/subsurface/mobile-widgets/3rdparty/00*.patch)
+PATCHES=("$SRC"/subsurface/mobile-widgets/3rdparty/00*.patch)
 cd "$MOBILE_COMPONENTS_DIR/kirigami"
 git am --abort 2>/dev/null || true
-for i in $PATCHES
+for i in "${PATCHES[@]}"
 do
 	git am "$i"
 done
