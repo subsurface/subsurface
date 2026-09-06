@@ -6,7 +6,6 @@
 #include <QDateTime>
 #include <QRegularExpression>
 #include <QTime>
-#include <QDebug>
 #include <QVariantMap>
 
 static const QString group = QStringLiteral("Language");
@@ -142,12 +141,7 @@ QString qPrefLanguage::effectiveDateFormatShort()
 
 QString qPrefLanguage::effectiveTimeFormat()
 {
-	const QString result = time_format_override() && !time_format().isEmpty() ? time_format() : defaultTimeFormat(preferenceLocale());
-	qDebug() << "effectiveTimeFormat: override=" << time_format_override()
-	         << "stored=" << time_format()
-	         << "QLocale().timeFormat()=" << QLocale().timeFormat()
-	         << "result=" << result;
-	return result;
+	return time_format_override() && !time_format().isEmpty() ? time_format() : defaultTimeFormat(preferenceLocale());
 }
 
 QString qPrefLanguage::longDatePreview()
@@ -309,15 +303,9 @@ QString qPrefLanguage::timeDisplayText(const QString &editText) const
 QString qPrefLanguage::dateTimeEditText(const QString &displayText) const
 {
 	const QLocale locale = preferenceLocale();
-	const QString timeFormat = effectiveTimeFormat();
-	const QString displayFormat = effectiveDateFormatShort() + QLatin1Char(' ') + timeFormat;
+	const QString displayFormat = effectiveDateFormatShort() + QLatin1Char(' ') + effectiveTimeFormat();
 	const QDateTime dateTime = locale.toDateTime(displayText, displayFormat);
-	const QString editFormat = keypadDateFormat(effectiveDateFormatShort()) + QLatin1Char(' ') + keypadTimeFormat(timeFormat);
-	qDebug() << "dateTimeEditText: input=" << displayText
-	         << "displayFormat=" << displayFormat
-	         << "parsed=" << dateTime
-	         << "editFormat=" << editFormat
-	         << "result=" << (dateTime.isValid() ? locale.toString(dateTime, editFormat) : QString("PARSE FAILED"));
+	const QString editFormat = keypadDateFormat(effectiveDateFormatShort()) + QLatin1Char(' ') + keypadTimeFormat(effectiveTimeFormat());
 	return dateTime.isValid() ? locale.toString(dateTime, editFormat) : QString();
 }
 
