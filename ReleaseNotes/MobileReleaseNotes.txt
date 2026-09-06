@@ -30,7 +30,6 @@ app is available, there are no ads, no one is monetizing your data, etc).
 
 _Subsurface-mobile_ allows a more accessible dive log on the go. For example, you can prove dive
 experience on a dive trip to dive shops or review previous dives while on a dive boat.
-_Subsurface-mobile_ also allows the gathering of GPS locations where dives are performed.
 Assuming you have a dive computer that is supported by the mobile OS of your choice,
 _Subsurface-mobile_ even supports the downloading of dives from your dive computer.
 

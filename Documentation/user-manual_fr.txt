@@ -849,9 +849,9 @@ Once the dive location data have been saved, the dive on the Dive List has a
 globe icon immediately to the left of the location name of a particular
 dive.
 
-*(3):* Obtenir les coordonnées en utilisant l'application _Subsurface-Mobile_ avec un 
-périphérique Android ou un iPhone avec GPS et si les coordonnées du site de plongée ont été stockées 
-en utilisant une de ces applications. 
+[[S_GPS]]
+*(3):* Importer les coordonnées depuis une trace GPS. Importez une trace GPS
+au format _GPX_ pour associer ses coordonnées aux plongées.
 
 [WARNING]
 Les coordonnées GPS d'un site de plongée sont liées au nom de lieu - ainsi,
@@ -1487,107 +1487,6 @@ file might cause problems. Importing 100 dives at a time (_CSV dive
 details_) works, but larger files might exceed the limits of the parser
 used. When encountering problems with _CSV_ imports, first try with a
 smaller file to make sure everything works.
-
-=== Importation des coordonnées de plongée depuis un appareil mobile avec GPS.
-
-Un smartphone avec GPS peut être utilisé pour stocker les lieux de
-plongées. Ceci est réalisé comme suit:
-
-Taking the mobile device along on the dive boat / liveabord while
-automatically collecting dive site coordinate information.
-
-2) Adding collected coordinate information to the dives using the
-   _Subsurface-mobile_ app.
-
-3) Syncronising the logbook with the _Subsurface_ cloud using the
-   _Subsurface-mobile_ app.
-
-Existing users might still be using the legacy _Companion app_. However, the
-Companion App hasn't been under development in several years and has now
-been removed from both Android and iOS app stores. The functionality is
-fully integrated into _Subsurface-mobile_.  Please note that the old GPS fix
-internet service will be shut down by the end 2018 at which point the
-_Companion app_ will no longer be usable. Please switch to
-_Subsurface-mobile_ instead.
-
-==== Storing and and using GPS locations using  _Subsurface-mobile_
-
-===== Install _Subsurface-mobile_
-
-Find _Subsurface-mobile_ on Google Play and install it on an Android
-device. The app is free. The iOS version is currently
-experimental. _Subsurface-mobile_ has an extensive
-https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user
-manual] accessible from within that app.
-
-===== Create a _Subsurface-mobile_ account
-
-This topic is discussed at length in the _Subsurface-mobile_ user manual. In
-the Credentials screen of _Subsurface-mobile_ provide an e-mail address and
-a user password that enables subsequent access. A PIN number is e-mailed
-from the _Subsurface_ Internet server to the e-mail address that has been
-provided.  Type the PIN into the appropriate text field in the Credentials
-screen (see image below).  The _Subsurface_ Internet server notifies the
-user that a new user has been registered.
-
-*N.B.:* To successfully create a user account, the mobile device must have Internet connectivity,
-either through the cellular network or via wifi.
-
-image::images/MobileCredentials.jpg["FIGURE: Subsurface-mobile, credentials screen", align="center"]
-
-
-===== Configure auto-collecting of GPS coordinates
-
-Activate the main menu of _Subsurface-mobile_ by selecting the "hamburger"
-menu button at the bottom left of the _Subsurface-mobile_ screen (see image
-above), then select _GPS_ -> _Preferences_ (see image below). The collection
-of GPS locations is done in the background and automatically, using two
-settings:
-
-- _Time threshold._ (minutes). The app will try to get a location every X
-  minutes
-
-- _Distance threshold._ (meters). Minimum distance between two locations.
-
-*How are GPS coordinates collected?* Assuming the diver sets 5 minutes and 50
-meters in the settings above, the app will start by recording a location at the current
-location, followed by another one at every 5 minutes *or* every time you move 50 m
-from previous location, whichever happens first.
-If subsequent locations are within a radius of 50 meters from the previous one,
-a new location is not saved. If the diver is not moving, only one location is
-saved, at least until the _Time-threshold_ period has elapsed.
-If the diver moves, a trace of the route is obtained by saving a location every 50 meters.
-
-===== Activate the automated recording of GPS locations
-
-The _Subsurface-mobile_ GPS menu has an option at the bottom labled _Run
-location service_ (see image below). Selecting this starts the automated
-recording of GPS positions.
-
-image::images/MobileGpsMenu.jpg["FIGURE: Subsurface-mobile GPS menu", align="center"]
-
-===== After the dive, stop the automated recording of GPS locations
-
-Select the menu option _Disable location service_ at the bottom of the
-_Subsurface-mobile_ GPS menu.
-
-
-===== Apply the stored GPS locations to dives on the _Subsurface_ dive list.
-
-_Subsurface_ collects the first GPS location recorded after the start of a
-dive (obtained within _Subsurface_ from either the dive computer or from the
-manually-entered dive information) and before the end of a dive. These
-coordinates are shown in the _Coordinates_ field of the dive site panel for
-each dive. Within the dive site panel, provide a name for the coordinates
-that have been assigned to the dive, following the instructions under the
-heading above xref:S_locations[_Location_ management].
-
-The
-https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[user
-manual for _Subsurface-mobile_] (accessible from within that app)  contains
-detailed instructions for performing the collection of GPS data and for
-managing, uploading and synchronising this information.
-
 
 [[S_LoadImage]]
 === Ajouter des photos ou des vidéos aux plongées

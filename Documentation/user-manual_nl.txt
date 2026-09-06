@@ -701,9 +701,9 @@ image::images/Globe_image3.jpg["FIGUUR:Locatie aanmaak panel",align="center"]
 Op moment dat de duikplek is opgeslagen verschijnt het globe symbool in de duiklijst
 (voor de duiken op deze duikplek).
 
-*(3):* Gebruik de _Subsurface-mobile App_ op een
-Android of iPhone op de duiklocatie om met de GPS van de telefoon de locatie op
-te slaan.
+[[S_GPS]]
+*(3):* Importeer coördinaten uit een GPS-track. Importeer een GPS-track in
+_GPX_-formaat om de coördinaten aan duiken te koppelen.
 
 [WARNING]
 GPS coördinaten van duik locaties zijn gekoppeld
@@ -1242,100 +1242,6 @@ te gebruiken als er niet-ASCII karakters in staan. Daarnaast kan de maat van
 de _CSV_ problemen veroorzaken. 100 duiken (zonder profiel) heeft gewerkt,
 maar grotere bestanden kan de limieten van de programmatuur overstijgen.
 Probeer eerst een kleine _CSV_ import om zeker te stellen dat het werkt.
-
-
-=== Coördinaten van duikplekken importeren van een apparaat met GPS.
-
-Een smartphone met GPS kan worden gebruikt om locaties van duikplekken
-vast te leggen. Dit werkt ruwweg op de volgende wijze:
-
-1) Neem de smartphone mee naar de duikplek, duikboot, live-aboard, en leg de
-posities (automatisch) vast.
-
-2) Voeg coördinaten met behulp van de _Subsurface-mobile_ app toe aan de duiklocaties.
-
-3) Synchroniseer met logboek via de _Subsurface_ cloud met de desktop applicatie.
-
-Bestaande gebruikers gebruiken mogelijk nog de verouderde _Companion app_. Deze app
-wordt reeds jaren niet meer actief ontwikkeld, en is inmiddels uit de Android en iOS
-app stores verwijderd. De functionaliteit is volledig in Subsurface-mobile_ opgenomen.
-Merk op dat de oude GPS webservice eind 2018 zal worden uitgezet, met als gevolg dat
-dan de _Companion app_ niet meer te gebruiken is. Gebruik aub. de opvolger _Subsurface-mobile_.
-
-
-==== Opslaan en gebruiken van coördinaten met _Subsurface-mobile_
-
-===== Installeer _Subsurface-mobile_
-
-Zoek de _Subsurface-mobile_ op Google en installeer hem op een Android apparaat.
-De app is gratis. Ook in de Apple App Store is een (nog experimentele) versie iOS
-versie beschikbaar. _Subsurface-mobile_ gheeft een eigen, uitgebreide
-https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[gebruikershandleiding]
-die ook bereikbaar is vanuit de app.
-
-===== Maak een _Subsurface-mobile_ account aan
-
-Dit onderwerp wordt uitgebreid besproken in de _Subsurface-mobile_ gebruikershandleiding.
-Geef een email adres en wachtwoord op in het _Cloud rechten_ scherm van _Subsurface-mobile_.
-Een PIN code wordt naar het opgegeven email adres gestuurd vanaf de
-_Subsurface_ Internet server. Voer deze PIN code in het juiste veld (zie figuur beneden).
-De _Subsurface_ Internet server meldt achtereenvolgens dat er een nieuwe gebruiker
-is aangemaakt.
-
-Uiteraard is er een dataverbinding nodig om een gebruiksaccount aan te maken, via de provider
-of wifi maakt geen verschil.
-
-image::images/MobileCredentials.jpg["Figuur: Subsurface-mobile, Cloud rechten scherm",align="center"]
-
-
-===== Automatisch verzamelen van GPS coördinaten instellen
-
-Ga naar het hoofdmenu, via het "hamburger" menu linksonder (zie figuur hierboven), en
-selecteer _GPS_ -> _Instellingen_ (zie figuur hieronder). Het automatisch verzamelen
-van GPS coördinaten wordt beïnvloed door twee instellingen:
-
-- _Tijdsdrempel._ (minuten). De app probeert iedere X minuten een coördinaat vast
-te leggen.
-- _Afstandsdrempel._ (meters). Minimale afstand tussen twee coördinaten.
-
-*Hoe worden de GPS coördinaten verzameld?* Neem aan dat de gebruiker de drempels
-op 5 minuten en 50 meter zet. De app legt dan een coördinaat vast op de huidige
-locatie, gevolgd door een nieuwe coördinaat iedere 5 minuten *of* als er 50
-meter wordt verplaatst. De eerste overschrijding van een drempel telt. Als
-er binnen een radius van 50 meter wordt bewogen, wordt er geen nieuwe
-coördinaat vastgelegd. Als er niet wordt bewogen, wordt er één coördinaat
-vastgelegd, in ieder geval totdat de tijdsdrempel wordt overschreden. Als er
-wordt bewogen, ontstaat er een reeks coördinaten die de route iedere 50 meter
-vastlegt.
-
-
-===== Automatisch verzamelen van GPS coördinaten aanzetten
-
-Het GPS menu van _Subsurface-mobile_ heeft onderaan een optie
-_Draai locatie service_ (zie figuur hieronder). Op moment dat deze wordt
-geselecteerd, start het automatisch verzamelen van GPS coördinaten.
-
-image::images/MobileGpsMenu.jpg["Figuur: Subsurface-mobile GPS menu",align="center"]
-
-
-===== Automatisch verzamelen van GPS coördinaten uitzetten na de duik
-
-Kies de optie _Stop locatie service_ onderaan het _Subsurface-mobile_ GPS menu.
-
-
-===== Voeg de GPS coördinaten toe aan duiken in de _Subsurface_ Duiklijst.
-
-_Subsurface_ gebruikt de eerste GPS coördinaat die is vastgelegd na de start
-van de duik (op basis van tijd, zoals bij de duik is vastgelegd), en voor
-het eind van de duik.
-
-De coördinaat wordt getoond op het duiklocatie paneel. Hier kan dan ook de
-naam van de duiklocatie worden ingevoerd, zie verder
-xref:S_locations[_Locatie_ beheer].
-
-De https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[gebruikershandleiding voor _Subsurface-mobile_]
-is (ook) toegankelijk vanuit de app en bevat gedetailleerde informatie over de verzameling,
-behandeling, uploaden en synchroniseren van deze data.
 
 
 [[S_LoadImage]]

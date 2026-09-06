@@ -32,8 +32,7 @@ sites de plongées où un ordinateur n'est pas utile. Alors que la version de
 _Subsurface_ pour ordinateur affiche bien plus d'informations détaillées
 pour chaque plongée, la version mobile permet un accès facilité lors sur un
 voyage de plongées, utile pour prouver une experience de plongées aux clubs
-ou pour revoir les plongées précédentes. _Subsurface-mobile_ permet
-également de collecter des positions GPS où sont effectuées les plongées.
+ou pour revoir les plongées précédentes.
 
 Les utilisateurs de _Subsurface-mobile_ utilisent habituellement
 l'application mobile en tant que compagnon de la version de _Subsurface_
@@ -53,9 +52,7 @@ _Subsurface-mobile_ permet de :
   de plongées.
 - Modifier de nombreux champs des données de plongées, comme le moniteur, le
   binôme, l'équipement ou les notes relatives à la plongée.
-- Enregistrer, stocker et appliquer des positions GPS des plongées.
-- Visualiser les positions des points GPS enregistrés et des plongées sur une
-  carte.
+- Visualiser les sites de plongée sur une carte.
 
 Ces points sont détaillés dans la suite du manuel. _Subsurface-mobile_ ne
 supporte pas le téléchargement des données de plongées depuis tous les
@@ -69,10 +66,8 @@ les ordinateurs de plongées basés sur le Bluetooth LE sont supportés.
 == Installer _Subsurface-mobile_  sur votre périphérique nomade
 
 Vous trouverez _Subsurface-mobile_  dans _Google Play Store_ ou sur _iTunes
-Store_ d'où vous pourrez les installer. Veuillez boter que les deux
-contiennent également l'ancienne application '_Subsurface_ companion'
-(utilisée uniquement pour enregistrer les points GPS). Vérifiez que vous
-installez bien  _Subsurface-mobile_.
+Store_ d'où vous pourrez les installer. Vérifiez que vous installez bien
+_Subsurface-mobile_.
 
 == Utiliser _Subsurface-mobile_ pour la première fois
 
@@ -365,10 +360,6 @@ xref:S_Add_Dive[Manually adding a new dive to the dive list].
 This is described above under the section dealing with
 xref:S_Download[Download dives from a dive computer].
 
-=== Apply GPS fixes
-
-This is described in the following main section, below.
-
 === Manually sync the dive log with the _Subsurface_ cloud storage
 
 Upload the dives contained on the mobile device to the _Subsurface_ cloud
@@ -389,80 +380,6 @@ server. Selecting _Enable cloud auto sync_ causes the local dive log to be
 synchronized with the copy in the cloud every time that _Subsurface-mobile_
 is closed. This option is a switch that allows auto sync to be either
 activated or to be switched off.
-
-== Recording dive locations using GPS
-
-The fact that most smartphones have GPS facilities allows
-_Subsurface-mobile_ to record the locations of dives. If the smartphone is
-taken on the dive boat during a dive, locations will be automatically
-recorded at regular intervals.  These locations can then be applied to dives
-in the dive list. Here is how it's done:
-
-[[S_ConfigureGPS]]
-=== Configuring the GPS service
-
-From the Main menu, select _Settings_. The Settings screen has a section for
-configuring the GPS service (image below). GPS location data are collected
-at regular intervals, e.g. every 5 minutes, or at regular distances,
-e.g. after the boat has moved more than 200m, or a combination of both of
-these approaches. Provide the appropriate information and tap the _Back_
-button. The program is now ready to collect GPS positions.
-
-image::mobile-images/GPS-config.jpg["FIGURE: GPS configure", align="center"]
-
-=== Collecting GPS positions
-
-Ensure that the GPS on the mobile device has been activated and that you
-have given the app permission to access your location data.  Open the Main
-Menu and select _GPS -> Run location service_. This activates the recording
-of GPS locations.
-
-image::mobile-images/GPSstart.jpg["FIGURE: GPS start", align="center"]
-
-_Subsurface-mobile_ starts to collect GPS locations automatically, following
-the preferences specified as described above. While the GPS location service
-is running, all menus have a GPS symbol at the bottom of the menu,
-indicating that the service is active. After return from the dive trip,
-deactivate the collection of GPS data by tapping the option _Disable
-location service_. The GPS symbol at the bottom of all manus disappears.
-
-=== Storing the GPS data on the _Subsurface_ cloud
-
-Activate the main menu and select the _GPS_ option that brings up the
-submenu of GPS-related actions. Tap _Upload GPS data_ that saves the GPS
-data on the _Subsurface_ cloud server. These GPS data are saved *separately*
-from the other dive log data. All collected GPS data are kept on the Android
-device, independent of whether they have been uploaded or not.
-
-=== Downloading GPS data from the _Subsurface_ cloud
-
-Download the GPS data that have been saved on the cloud (possibly by a
-different device) by selecting _Download GPS Data_ from the GPS sub-panel.
-
-=== Viewing GPS data
-
-From the GPS submenu select _Show GPS fixes_. This brings up a list of GPS
-positions obtained by the location service (image below). Two actions are
-possible for each of the locations, enabled by dragging the handle (the
-dotted matrix on the right below) to the left. This exposes two
-options. Tapping the dustbin deletes this particular GPS location. Tapping
-the teardrop-shaped icon (actually a Google Maps pin) opens up Google Maps
-with a pin indicating the exact map position of the GPS record being
-viewed. The two above options can be hidden by drawing the GPS record to the
-right, again using the handle.
-
-image::mobile-images/gpsmanagement.jpg["FIGURE: GPS management", align="center"]
-
-=== Applying GPS data to dives in the dive log
-
-Assuming that all the dives have been entered into the dive log or have been
-downloaded from the _Subsurface_ cloud, apply the GPS positions to these
-dives. GPS positions can therefore only be applied to dives in the dive
-list.  From the _Dive management_ sub-panel, tap _Apply GPS fixes_. The dive
-list contains the start and end times of each dive. Now, _Subsurface-mobile_
-applies the first GPS position that falls within the dive period of each
-dive. This results in a GPS position for each dive that is saved as part of
-the dive log.
 
 == Utilisation des paramètres pour _Subsurface-mobile_.
 
@@ -490,12 +407,6 @@ colors. Change to a pink or a dark color scheme by opening the main menu,
 tap _Settings_, and scroll to the section with heading _Theme_ (see image
 above).  Select the appropriate color theme by dragging the appropriate
 slider on the righthand.
-
-=== Configuring the GPS webservice
-
-The Settings screen allows one to set up the way in which GPS positions are
-collected during dives. See the section on xref:S_ConfigureGPS[Configuring
-the GPS service].
 
 === Saving a detailed dive computer dive log
 
@@ -536,5 +447,4 @@ found in the root directory of the local storage of the mobile device.
 This option provides a wealth of information about the screen
 characteristics of the mobile device and the font characteristics used by
 _Subsurface-mobile_.
-
 

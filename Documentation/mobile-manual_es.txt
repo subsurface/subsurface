@@ -39,9 +39,7 @@ la versión para ordenador muestra una información mucho más detallada de cada
 inmersión, la versión para móvil nos permite tener esta información más
 accesible durante un viaje, lo que puede resultar util para demostrar nuestra
 experiencia de buceo en tiendas o centros, o simplemente revisar inmersiones
-anteriores. _Subsurface-mobile_ para Android permite la recogida de posiciones
-GPS en el mismo lugar del buceo (Subsurface-mobile para iOS aún no tiene la
-funcionalidad completa).
+anteriores.
 
 Los usuarios de _Subsurface-mobile_ habitualmente usan la app como accesorio
 de la versión de ordenador de _Subsurface_, compartiendo información entre las
@@ -57,8 +55,7 @@ _Subsurface-mobile_ nos permite:
   dive-master, el compañero, las anotaciones, etc.
 - Crear y añadir nuevas inmersiones a nuestro divelog. Guardar el divelog
   actualizado en Internet.
-- Registrar y aplicar las posiciones GPS de las inmersiones (solo Android).
-- Visualizar las localizaciones de las posiciones GPS en un mapa.
+- Visualizar los puntos de buceo en un mapa.
 
 Todas estas posibilidades se comentan con más detalle en el texto siguiente.
 
@@ -70,9 +67,7 @@ accederse desde _Subsurface-mobile_.
 == Instalar _Subsurface-mobile_ en tu dispositivo Android
 
 Encuentra _Subsurface-mobile_ en el _Play Store_ de Google o en el _iTunes
-Store_  e instálalo. Hay que tener en cuenta que ambos repositorios también
-contienen la app _Subsurface companion_ (utilizada sola para recoger las
-posiciones GPS). Asegúrate de que instalas _Subsurface-mobile_.
+Store_  e instálalo. Asegúrate de que instalas _Subsurface-mobile_.
 
 == Utilizar _Subsurface-mobile_ por primera vez
 
@@ -349,10 +344,6 @@ Se ha descrito anteriormente en la sección xref:S_Add_Dive[Añadir manualmente 
 
 Se ha descrito anteriormente en la sección xref:S_Download[Descargar inmersiones desde un ordenador de buceo].
 
-=== Aplicar posiciones GPS
-
-Se describirá a continuación en la próxima sección principal.
-
 === Sincronización manual con la nube
 
 Sube las inmersiones guardadas en el dispositivo móvil al almacenamiento en la
@@ -373,86 +364,6 @@ otra manera, puede parecer que _Subsurface-mobile_ se cuelga entre operaciones
 mientras intenta conectarse al servidor de la nube. Seleccionar _Activar
 sincronizado automático con la nube_ hace que el divelog local se sincronice
 con la copia en la nube cada vez que se cierra _Subsurface-mobile_.
-
-== Registrar puntos de buceo usando el GPS (solo Android)
-
-El hecho de que la mayoría de smartphones dispongan de GPS nos permite
-registrar las ubicaciones de las inmersiones. Se puede llevar el teléfono en
-el barco de buceo durante la inmersión y se registrarán automáticamente
-posiciones a intervalos regulares.
-Estas posiciones pueden ser aplicadas a inmersiones de la lista. A
-continuación se explica como:
-
-[[S_ConfigureGPS]]
-=== Configurar el servicio GPS
-
-Desde el menú principal pulsa _Ajustes_. La pantalla de ajustes tiene una
-sección  para configurar el servicio GPS (imagen a continuación). Los datos de
-posiciones GPS se recogen a intervalos regulares, p.e. cada 10 minutos, o a
-distancias regulares, p.e. después de que el barco se haya desplazado más de
-200 metros, o una combinación de ambas opciones. Introduce los parámetros
-deseados y pulsa el botón "Retroceder" de Android. La app está preparada para
-recoger posiciones GPS.
-
-image::mobile-images/GPS-config.jpg["FIGURA: Configuración del GPS",align="center"]
-
-=== Recoger posiciones GPS
-
-Asegúrate de que el GPS del dispositivo Android está activado.
-Abre el menú principal y selecciona _GPS -> Activar el servicio de
-posicionamiento_. Con ello se inicia la grabación de posiciones GPS.
-
-image::mobile-images/GPSstart.jpg["FIGURA: Inicio del GPS",align="center"]
-
-_Subsurface-mobile_ comenzará a tomar lecturas de las posiciones GPS siguiendo
-las indicaciones guardadas en las preferencias, como se ha indicado
-anteriormente. Mientras se esté ejecutando el servicio, todos los menús tienen
-un símbolo de GPS en la parte de debajo del menú indicando que el servicio
-está activo. Al regresar del viaje de buceo, desactiva la recogida de datos
-pulsando la opción _Deshabilitar servicio de posicionamiento_. El símbolo de
-GPS en la parte inferior de los menús desaparecerá.
-
-=== Guardar los datos del GPS en la nube de _Subsurface_
-
-Activa el menú principal y selecciona la opción _GPS_ que despliega el menú de
-acciones relacionadas con el GPS . Pulsa _Subir datos GPS_ con ello, los datos
-recogidos en el dispositivo móvil se guardarán en la nube de _Subsurface_.
-Estas posiciones GPS se guardan *separadamente* del resto de datos del divelog.
-Todas las posiciones GPS recogidas se conservan en el dispositivo móvil,
-independientemente de que se hayan subido o no.
-
-=== Descargar datos GPS de la nube de _Subsurface_
-
-Descarga los datos GPS que se hayan guardado en la nube (posiblemente desde
-un dispositivo diferente) seleccionando _Descargar datos GPS_ en el subpanel
-GPS.
-
-=== Visualizar datos GPS
-
-Desde el menú GPS selecciona _Mostrar posiciones GPS_.
-Esto mostrará una lista de posiciones GPS recogidas usando en servicio de
-ubicación (imagen a continuación). Se pueden efectuar dos acciones
-para cada una de las posiciones, habilitadas arrastrando el asa (la matriz de
-puntos de la derecha). Esta acción muestra dos opciones. Pulsar la papelera
-borra esta posición GPS en concreto. Pulsar el icono con forma de lágrima (un
-pin de Google maps) abre Google Maps en el navegador con un pin que indica la
-posición exacta en el mapa de las coordenadas GPS que se están visualizando.
-Las dos opciones indicadas, pueden ocultarse de nuevo arrastrando el asa hacia
-la derecha.
-
-image::mobile-images/gpsmanagement.jpg["FIGURA: Gestión del GPS",align="center"]
-
-=== Aplicar los datos GPS a las inmersiones del divelog
-
-Suponiendo que se hayan introducido a mano o descargado desde la nube de
-_Subsurface_ todas las inmersiones del divelog, se pueden aplicar las
-posiciones GPS a dichas inmersiones. Las posiciones GPS solo pueden aplicarse
-a inmersiones que estén en la lista de inmersiones.
-Desde el subpanel _Gestión de inmersiones_, pulsar _Aplicar posiciones GPSs_.
-La lista de inmersiones contiene la hora de inicio y fin de cada inmersión.
-_Subsurface-mobile_ aplicará la primera posición que se encuentre dentro del
-periodo de duración del buceo, o la inmediatamente anterior al inicio si no
-hubiera ninguna dentro del periodo.
 
 == Usar los ajustes de _Subsurface-mobile_
 
@@ -480,12 +391,6 @@ es el azul. Cambia al esquema rosa o al oscuro pulsando _Ajustes_ en el menú
 principal y desplazándote a la sección con el encabezamiento _Tema_ (ver
 imagen anterior). Selecciona el esquema de colores que prefieras arrastrando
 el deslizador de la derecha que corresponda.
-
-=== Configurar el servicio web de GPS
-
-La pantalla de ajustes permite configurar la forma en que se recogen las
-posiciones GPS durante el buceo. Visita la sección
-xref:S_ConfigureGPS[Configurar el servicio GPS] de este manual.
 
 === Guardar un registro detallado del ordenador de buceo
 
@@ -527,5 +432,4 @@ registro de la app puede encontrarse en la carpeta raíz del dispositivo móvil.
 Esta opción proporciona un cúmulo de información acerca de las características
 de la pantalla del dispositivo móvil y de las fuentes de texto usadas por
 _Subsurface-mobile_
-
 

@@ -799,9 +799,9 @@ del nombre del lugar en la pestaña *Notas*.
 
 image::images/Globe_image3.jpg["FIGURA:Panel de creación de posición",align="center"]
 
-*(3):* Obtener las coordenadas usando la app _Subsurface-mobile_ en un
-dispositivo Android o iPhone con GPS, si las coordenadas del punto de buceo
-se guardaron utilizando esta app.
+[[S_GPS]]
+*(3):* Importar las coordenadas desde un recorrido GPS. Importa un recorrido
+GPS en formato _GPX_ para asociar sus coordenadas a las inmersiones.
 
 [WARNING]
 Las coordenadas GPS de un punto están unidas a un nombre, por
@@ -1545,99 +1545,6 @@ inmersiones.
 Arriba a la izquierda en el panel de gestión de inmersiones hay un botón
 "Purgar puntos de buceo no usados". Al pulsar este botón se borran todos los
 puntos de buceo que no tengan inmersiones asociadas.
-
-=== Importar coordenadas de buceo desde un dispositivo movil con GPS
-
-Un smartphone con GPS incorporado puede utilizarse para guardar las
-ubicaciones de las inmersiones. Esto se hace como sigue:
-
-1) Llevar el dispositivo móvil en el barco de buceo o vida abordo, para
-recoger automáticamente coordenadas.
-
-2) Añadir las coordenadas recogidas a las inmersiones usando la app
-_Subsurface-mobile_.
-3) Sincronizar el divelog con la nube de _Subsurface_ usando la app
-_Subsurface-mobile_.
-
-Los usuarios puede que usen todavía la anticuada app _Companion_. Sin embargo,
-esta app no se ha desarrollado en varios años y ha sido eliminada de los
-repositorios de Android e iOS. Su funcionalidad está totalmente integrada en
-_Subsurface-mobile_.
-El antiguo servicio de posiciones GPS en internet se cerrará a finales de 2018
-y a partir de ese momento, la app _Companion_ ya no se podrá utilizar. Por
-favor, usa la app _Subsurface-mobile_ en su lugar.
-
-==== Guardar y utilizar coordenadas GPS utilizando _Subsurface-mobile_
-
-===== Instalar _Subsurface-mobile_
-
-Busca _Subsurface-mobile_ en Google Play e instálala en el dispositivo
-Android. La app is gratuita. La versión para iOS es experimental, actualmente.
-_Subsurface-mobile_ tiene un extenso manual de usuario accesible desde la app.
-
-===== Crear una cuenta de _Subsurface-mobile_
-
-Este tópico se explica en profundidaad en el manual de _Subsurface-mobile_. En
-la pantalla de credenciales de _Subsurface-mobile_ introduce una dirección de
-correo electrónico y la clave de usuario que habilita el acceso.  Se remitirá
-un PIN desde el servidor de Subsurface al correo electrónico facilitado.
-Introduce el PIN en el campo de texto correspondiente de la pantalla
-Credenciales (ver imagen a continuación).  El servidor de internet de
-_Subsurface_ notificará al usuario que ha quedado registrado.
-
-*N.B.:*  Para poder crear una cuenta de usuario, el dispositivo movil debe
-tener acceso a internet a través de internet o de una red telefónica.
-
-image::images/MobileCredentials.jpg["FIGURA: Subsurface-mobile, pantalla de credenciales",align="center"]
-
-===== Configurar la recogida automástica de coordenadas
-
-Activar el menú principal de _Subsurface-mobile_ seleccionando el botón
-"hamburguesa" en la parte inferior izquierda de la pantalla (ver imagen
-anterior), luego seleccionar _GPS_->_Preferencias_ (ver imagen a
-continuación). La recogida de posiciones se efectua en segundo plano
-utilzando dos ajustes:
-
-- _Tiempo límite_ (minutos). La app intentará obtener una posición cada X
-minutos.
-
-- _Distancia límite_ (metros). Distancia mínima entre dos posiciones.
-
-*¿Como se recogen las coordenadas GPS?*  Suponiendo que el buceador ajusta 5
-minutos y 50 metros en la pantalla de preferencias, la app tomará una posición
-en el punto actual, seguida por otra cada 5 minutos *o* cada vez que nos
-desplacemos más de 50 metros de la posición anterior, lo que ocurra primero.
-Si las siguientes posiciones se encuentran en el radio de 50 metros indicado,
-las posiciones no se guardan. Si el buceador no se mueve, solo se guardará la
-primera posición. Si el buceador se mueve, se obtendrá una traza de la ruta
-seguida, al guardarse las posiciones cada 50 metros.
-
-===== Activar la recogida automática de posiciones GPS
-
-El menú GPS de _Subsurface-mobile_ tiene una opción en la parte inferior
-etiquetada "Activar servicio de posicionamiento" (ver imagen a continuación).
-Al seleccionar la opción, el servicio se inicia y comienza la recogida
-automática de posiciones.
-
-image::images/MobileGpsMenu.jpg["FIGURA: Menú GPS de Subsurface-mobile",align="center"]
-
-===== Después de la inmersión, detener la grabación automática de GPS
-
-Selecciona la opción _Deshabilitar el servicio de posicionamiento_ en la parte
-inferior del menú GPS de _Subsurface-mobile_.
-
-===== Aplicar las posiciones guardadas a las inmersiones de la lista
-
-_Subsurface_ aplica la primera posición GPS recogida tras el comienzo de la
-inmersión (hora que se obtiene del ordenador de buceo o de la información
-introducida a mano) y antes del fin de la inmersión. Estas coordenadas se
-muestran en el campo correspondiente del panel de Lugar de Inmersión, para
-cada buceo.
-
-El https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[manual de usuario de  _Subsurface-mobile_]
-(accesible desde la app) contiene instrucciones detalladas para efectuar la
-recogida, subida, gestión y sincronizado de estas información.
-
 
 [[S_LoadImage]]
 
