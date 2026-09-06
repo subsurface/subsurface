@@ -627,7 +627,8 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	# set up Kirigami using KDE ECM
 	# that's available as kde-extra-cmake-modules on Homebrew, on all Linux flavors
 	# Windows build of Subsurface-mobile isn't supported
-	find_package(ECM REQUIRED CONFIG PATHS ${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty/ECM)
+	set(MOBILE_COMPONENTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/mobile-widgets/3rdparty" CACHE PATH "Directory containing mobile component sources")
+	find_package(ECM REQUIRED CONFIG PATHS ${MOBILE_COMPONENTS_DIR}/ECM)
 	# KF6KirigamiPlatform declares a dependency on Qt6::GuiPrivate, but some distros
 	# (e.g. Debian) don't ship the CMake config for private modules even when the
 	# private headers are installed. Since Kirigami is already compiled as a static
@@ -644,9 +645,9 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	find_package(KF6KirigamiPlatform REQUIRED)
 	find_package(KF6Kirigami REQUIRED)
 	set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/ ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
-	set(BREEZEICONS_DIR mobile-widgets/3rdparty/breeze-icons/)
+	set(BREEZEICONS_DIR ${MOBILE_COMPONENTS_DIR}/breeze-icons/)
 
-	SET(QML_IMPORT_PATH ${QML_IMPORT_PATH} ${CMAKE_SOURCE_DIR}/mobile-widgets/3rdparty/kirigami/src ${CMAKE_SOURCE_DIR}/mobile-widgets/qml)
+	SET(QML_IMPORT_PATH ${QML_IMPORT_PATH} ${MOBILE_COMPONENTS_DIR}/kirigami/src ${CMAKE_SOURCE_DIR}/mobile-widgets/qml)
 
 	set(MOBILE_SRC
 		subsurface-mobile-main.cpp
@@ -654,7 +655,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	)
 	qt_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
 	qt_add_resources(MOBILE_RESOURCES profile.qrc)
-	qt_add_resources(MOBILE_RESOURCES mobile-widgets/3rdparty/icons.qrc)
+	qt_add_resources(MOBILE_RESOURCES ${MOBILE_COMPONENTS_DIR}/icons.qrc)
 
 	# Embed translation .qm files as Qt resources for Android/iOS
 	# (these platforms load translations from ":/")
