@@ -27,6 +27,7 @@ The script accepts several environment variables to override defaults:
 | `ARCH` | `arm64` | Target architecture |
 | `TARGET_SDK` | `iphoneos` | `iphoneos` or `iphonesimulator` |
 | `BUILD_TYPE` | `Release` | `Release` or `Debug` |
+| `BUILD_DIR` | `<repo>/../build` | Directory for all iOS dependency sources and build artefacts |
 
 Example for a simulator build:
 
@@ -34,15 +35,34 @@ Example for a simulator build:
 TARGET_SDK=iphonesimulator ARCH=arm64 ./ios-build-subsurface.sh
 ```
 
-The build output (an Xcode project and app bundle) ends up in
-`<repo>/../build-ios/`.
+`BUILD_DIR` follows the desktop build convention: by default, it is a sibling
+of the source checkout rather than a directory in it. To use a different
+location, set it when invoking the script, for example:
+
+```
+BUILD_DIR="$HOME/subsurface-ios-build" ./ios-build-subsurface.sh
+```
+
+The resulting layout is:
+
+```
+<BUILD_DIR>/
+  googlemaps/
+  kirigami/                 # Kirigami, Breeze Icons and ECM sources
+  kirigami-build/
+  install-root/ios/<ARCH>/
+  build-ios/subsurface-mobile.xcodeproj
+```
+
+The Xcode project and app bundle are under
+`<BUILD_DIR>/build-ios/`.
 
 ## Signing and distribution
 
 The build script disables code signing (`CODE_SIGNING_ALLOWED=NO`) so that it
 works without an Apple Developer account. To sign and distribute:
 
-1. Open `<repo>/../build-ios/subsurface-mobile.xcodeproj` in Xcode.
+1. Open `<BUILD_DIR>/build-ios/subsurface-mobile.xcodeproj` in Xcode.
 2. Select the Subsurface-mobile target and configure your signing team and
    bundle identifier.
 3. Build an archive from Xcode for distribution.

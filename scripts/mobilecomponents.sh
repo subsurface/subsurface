@@ -14,36 +14,41 @@ if [ ! -d "$SRC/subsurface" ] || [ ! -d "mobile-widgets" ] || [ ! -d "core" ] ; 
 	exit 1
 fi
 
-# Callers can set KIRIGAMI_BUILDDIR and KIRIGAMI_INSTALL_PREFIX to control
-# where the Kirigami build artifacts and installed files end up. This keeps
-# platform-specific output out of the source tree and allows building for
-# multiple targets without cleaning.
+# Callers can set MOBILE_COMPONENTS_DIR, KIRIGAMI_BUILDDIR and
+# KIRIGAMI_INSTALL_PREFIX to control where the Kirigami source, build
+# artifacts and installed files end up. This keeps platform-specific output
+# out of the source tree and allows building for multiple targets without
+# cleaning.
+MOBILE_COMPONENTS_DIR="${MOBILE_COMPONENTS_DIR:-$SRC/subsurface/mobile-widgets/3rdparty}"
 KIRIGAMI_BUILDDIR="${KIRIGAMI_BUILDDIR:-$SRC/kirigami-build}"
 KIRIGAMI_INSTALL_PREFIX="${KIRIGAMI_INSTALL_PREFIX:-$SRC/install-root}"
 
 # fetch/update the source checkouts
-./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty kirigami
-./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty breeze-icons
-./scripts/get-dep-lib.sh single "$SRC"/subsurface/mobile-widgets/3rdparty extra-cmake-modules
+./scripts/get-dep-lib.sh single "$MOBILE_COMPONENTS_DIR" kirigami
+./scripts/get-dep-lib.sh single "$MOBILE_COMPONENTS_DIR" breeze-icons
+./scripts/get-dep-lib.sh single "$MOBILE_COMPONENTS_DIR" extra-cmake-modules
 
 # now install the ECM to keep things more contained, install into 3rdparty/ECM
 # clear CMAKE_PREFIX_PATH so ECM doesn't pick up a cross-compiled Qt
 # always start clean to avoid stale CMakeCache.txt when the source tree is
 # mounted at a different path (e.g. inside a Docker container)
-rm -rf "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
-mkdir -p "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
-cd "$SRC"/subsurface/mobile-widgets/3rdparty/ECM
+rm -rf "$MOBILE_COMPONENTS_DIR/ECM"
+mkdir -p "$MOBILE_COMPONENTS_DIR/ECM"
+cd "$MOBILE_COMPONENTS_DIR/ECM"
 CMAKE_PREFIX_PATH="" cmake -G Ninja -DSHARE_INSTALL_DIR=.. ../extra-cmake-modules
 cmake --build . --target install
+if [ "$MOBILE_COMPONENTS_DIR" != "$SRC/subsurface/mobile-widgets/3rdparty" ]; then
+	cp "$SRC"/subsurface/mobile-widgets/3rdparty/icons.qrc "$MOBILE_COMPONENTS_DIR"
+fi
 
 # add our patches to Kirigami
-cd "$SRC"/subsurface/mobile-widgets/3rdparty
-PATCHES=$(echo 00*.patch)
-cd kirigami
+cd "$MOBILE_COMPONENTS_DIR"
+PATCHES=$(echo "$SRC"/subsurface/mobile-widgets/3rdparty/00*.patch)
+cd "$MOBILE_COMPONENTS_DIR/kirigami"
 git am --abort 2>/dev/null || true
 for i in $PATCHES
 do
-	git am ../$i
+	git am "$i"
 done
 
 # finally, build and install Kirigami
@@ -58,7 +63,7 @@ fi
 
 cmake -G Ninja -B "$KIRIGAMI_BUILDDIR" -DBUILD_SHARED_LIBS=ON \
 	-DCMAKE_INSTALL_PREFIX="$KIRIGAMI_INSTALL_PREFIX" \
-	-DECM_DIR="$SRC"/subsurface/mobile-widgets/3rdparty/ECM/cmake \
+	-DECM_DIR="$MOBILE_COMPONENTS_DIR/ECM/cmake" \
 	-DUSE_DBUS=OFF "$@"
 cmake --build "$KIRIGAMI_BUILDDIR" -j"${NUM_CORES}"
 cmake --install "$KIRIGAMI_BUILDDIR"

@@ -8,9 +8,9 @@
 #   SUBSURFACE_SOURCE  - path to subsurface source tree (default: auto-detected)
 #   ARCH               - target architecture (default: arm64)
 #   IOS_DEPLOYMENT_TARGET - minimum iOS version (default: 17.0)
+#   BUILD_DIR          - directory for all build artefacts (default: ../build)
 #
-# The script expects the dependency sources to already be present in
-# the parent directory of SUBSURFACE_SOURCE (fetched by get-dep-lib.sh).
+# Dependency sources are fetched into BUILD_DIR by get-dep-lib.sh.
 
 set -xe
 
@@ -22,6 +22,9 @@ pushd "$(dirname "$0")/../../"
 SUBSURFACE_SOURCE="${SUBSURFACE_SOURCE:-$PWD}"
 popd
 PARENT_DIR="$(cd "${SUBSURFACE_SOURCE}/.."; pwd)"
+BUILD_DIR="${BUILD_DIR:-${PARENT_DIR}/build}"
+mkdir -p "${BUILD_DIR}"
+BUILD_DIR="$(cd "${BUILD_DIR}"; pwd)"
 
 # select SDK based on architecture / target
 if [ "${TARGET_SDK}" = "iphonesimulator" ]; then
@@ -40,9 +43,12 @@ export CFLAGS="-arch ${ARCH} -isysroot ${SDK_DIR} -miphoneos-version-min=${IOS_D
 export CXXFLAGS="${CFLAGS}"
 export LDFLAGS="${CFLAGS}"
 
-IOS_INSTALL_PREFIX="${PARENT_DIR}/install-root/ios/${ARCH}"
+IOS_INSTALL_PREFIX="${BUILD_DIR}/install-root/ios/${ARCH}"
 mkdir -p "${IOS_INSTALL_PREFIX}"/{include,lib/pkgconfig}
+unset PKG_CONFIG_PATH PKG_CONFIG_LIBDIR PKG_CONFIG_SYSROOT_DIR
+unset PKG_CONFIG_SYSTEM_INCLUDE_PATH PKG_CONFIG_SYSTEM_LIBRARY_PATH
 export PKG_CONFIG_PATH="${IOS_INSTALL_PREFIX}/lib/pkgconfig"
+export PKG_CONFIG_LIBDIR="${IOS_INSTALL_PREFIX}/lib/pkgconfig"
 PREFIX="${IOS_INSTALL_PREFIX}"
 
 # Use all available cores
@@ -52,14 +58,14 @@ export MAKEFLAGS="-j${NUM_CORES}"
 echo "Building iOS native libraries for ${ARCH} (SDK: ${SDK_NAME}, deployment target: ${IOS_DEPLOYMENT_TARGET})"
 
 # download source dependencies
-"${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" ios "${PARENT_DIR}"
+"${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" ios "${BUILD_DIR}"
 
-cd "${PARENT_DIR}"
+cd "${BUILD_DIR}"
 
 # --- libxml2 (cmake) ---
 if [ ! -f "${PKG_CONFIG_PATH}/libxml-2.0.pc" ]; then
 	mkdir -p libxml2-build-ios-"${ARCH}" && cd libxml2-build-ios-"${ARCH}"
-	cmake "${PARENT_DIR}/libxml2" \
+	cmake "${BUILD_DIR}/libxml2" \
 		-DBUILD_SHARED_LIBS=OFF \
 		-DCMAKE_SYSTEM_NAME=iOS \
 		-DCMAKE_OSX_ARCHITECTURES="${ARCH}" \
@@ -74,13 +80,13 @@ if [ ! -f "${PKG_CONFIG_PATH}/libxml-2.0.pc" ]; then
 		-DLIBXML2_WITH_TESTS=OFF \
 		-DLIBXML2_WITH_PROGRAMS=OFF
 	make && make install
-	cd "${PARENT_DIR}"
+	cd "${BUILD_DIR}"
 fi
 
 # --- libxslt (cmake) ---
 if [ ! -f "${PKG_CONFIG_PATH}/libxslt.pc" ]; then
 	mkdir -p libxslt-build-ios-"${ARCH}" && cd libxslt-build-ios-"${ARCH}"
-	cmake "${PARENT_DIR}/libxslt" \
+	cmake "${BUILD_DIR}/libxslt" \
 		-DBUILD_SHARED_LIBS=OFF \
 		-DCMAKE_SYSTEM_NAME=iOS \
 		-DCMAKE_OSX_ARCHITECTURES="${ARCH}" \
@@ -95,18 +101,18 @@ if [ ! -f "${PKG_CONFIG_PATH}/libxslt.pc" ]; then
 		-DLIBXSLT_WITH_PYTHON=OFF \
 		-DLIBXSLT_WITH_TESTS=OFF
 	make && make install
-	cd "${PARENT_DIR}"
+	cd "${BUILD_DIR}"
 fi
 
 # --- libzip (cmake) ---
 # The old libzip version doesn't have BUILD_TOOLS options, so we strip
 # the tool/test/example subdirectories from CMakeLists.txt before building
 if [ ! -f "${PKG_CONFIG_PATH}/libzip.pc" ]; then
-	pushd "${PARENT_DIR}/libzip"
+	pushd "${BUILD_DIR}/libzip"
 	sed -i.bak 's/ADD_SUBDIRECTORY(src)//;s/ADD_SUBDIRECTORY(examples)//;s/ADD_SUBDIRECTORY(man)//;s/ADD_SUBDIRECTORY(regress)//' CMakeLists.txt
 	popd
 	mkdir -p libzip-build-ios-"${ARCH}" && cd libzip-build-ios-"${ARCH}"
-	cmake "${PARENT_DIR}/libzip" \
+	cmake "${BUILD_DIR}/libzip" \
 		-DBUILD_SHARED_LIBS=OFF \
 		-DCMAKE_SYSTEM_NAME=iOS \
 		-DCMAKE_OSX_ARCHITECTURES="${ARCH}" \
@@ -119,9 +125,9 @@ if [ ! -f "${PKG_CONFIG_PATH}/libzip.pc" ]; then
 		-DENABLE_GNUTLS=FALSE \
 		-DCMAKE_POLICY_VERSION_MINIMUM=3.5
 	make && make install
-	cd "${PARENT_DIR}"
+	cd "${BUILD_DIR}"
 	# restore the original CMakeLists.txt
-	pushd "${PARENT_DIR}/libzip"
+	pushd "${BUILD_DIR}/libzip"
 	mv CMakeLists.txt.bak CMakeLists.txt
 	popd
 fi
@@ -129,7 +135,7 @@ fi
 # --- libgit2 (cmake, uses SecureTransport for HTTPS) ---
 if [ ! -f "${PKG_CONFIG_PATH}/libgit2.pc" ]; then
 	mkdir -p libgit2-build-ios-"${ARCH}" && cd libgit2-build-ios-"${ARCH}"
-	cmake "${PARENT_DIR}/libgit2" \
+	cmake "${BUILD_DIR}/libgit2" \
 		-DBUILD_SHARED_LIBS=OFF \
 		-DCMAKE_SYSTEM_NAME=iOS \
 		-DCMAKE_OSX_ARCHITECTURES="${ARCH}" \
@@ -155,7 +161,7 @@ if [ ! -f "${PKG_CONFIG_PATH}/libgit2.pc" ]; then
 	make && make install
 	# patch away pkg-config dependency on zlib (it's in the SDK)
 	perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' "${PKG_CONFIG_PATH}/libgit2.pc"
-	cd "${PARENT_DIR}"
+	cd "${BUILD_DIR}"
 fi
 
 echo "iOS native libraries built successfully in ${PREFIX}"
