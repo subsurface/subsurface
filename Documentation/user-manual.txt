@@ -3932,8 +3932,11 @@ image::images/PlannerWindow1.png["FIGURE: Dive planner startup window",align="ce
   "+" icon to the top right-hand of the dialog.
 
 - The _Available Gases_ table includes three gas depth fields, labelled:
- ** Deco switch at: the switch depth for deco gases. Unless overridden by the user, this will be
-    automatically calculated based on the Deco pO~2~ preference (default 1.6 bar)
+ ** Deco switch at: for an _OC Gas_, this is the depth at which the desktop planner makes
+    that gas available for an automatically calculated open-circuit ascent or decompression
+    switch. A newly calculated value is based on the Deco pO~2~ preference (default 1.6 bar),
+    and a non-zero value entered by the diver is retained and used as that switch depth. It is
+    not a switch for a _Travel Gas_ or for a diluent.
  ** Bot. MOD: the gas Maximum Operating Depth (MOD) if it is used as a bottom mix. Automatically
     calculated based on the Bottom pO~2~ preference (default 1.4 bar). Editing this field will modify the
     O~2~% according to the depth set. Set to ''*'' to calculate the best O~2~% for the dive maximum depth.
@@ -3941,6 +3944,39 @@ image::images/PlannerWindow1.png["FIGURE: Dive planner startup window",align="ce
     preference (default 30m / 98 ft). Editing this field will modify the He% according to the depth set.
     Set to ''*'' to calculate the best He% for the dive maximum depth. Depending on the checkbox, oxygen
     is considered narcotic (the END is used) or not (the EAD is used).
+
+==== Cylinder use and automatic gas selection
+
+Set the _Use_ column deliberately. It describes the role of a cylinder; it does
+not by itself add a gas change to an entered part of the profile.
+
+* _OC Gas_ is an open-circuit breathing gas. Use it for bottom, bailout, or
+  decompression gas that the desktop planner may select automatically during an
+  OC ascent. A non-zero _Deco switch at_ makes it available at the specified
+  depth for the calculated ascent and decompression. Select it in _Used gas_
+  for any entered segment that is to breathe it.
+* _Diluent_ is the gas for CCR segments. It is used when an entered segment is
+  in CCR mode and is not automatically selected as an OC decompression gas.
+* _Oxygen_ identifies a CCR oxygen supply. It is not automatically selected for
+  planner profile segments or decompression.
+* _Not Used_ records a cylinder that is not a planner breathing gas. The
+  planner does not select it automatically.
+* _Travel Gas_ is an open-circuit gas for explicitly entered travel segments.
+  Select it in _Used gas_ for the relevant descent, ascent, or other travel
+  segment. It is not automatically selected for a later ascent or
+  decompression, regardless of its depth fields.
+
+*Legacy compatibility:* A stored _Deco switch at: 0_ is retained for existing
+plans, but does not make a gas an automatic decompression candidate. Do not use
+it to configure a new plan. Choose _OC Gas_ with a non-zero switch depth for an
+automatic OC decompression gas, or choose _Travel Gas_ and enter every intended
+travel segment explicitly.
+
+This section describes the desktop planner. The mobile application also has a
+dive planner. Its cylinder form lets you choose only _OC Gas_ or _Diluent_; it
+creates automatic gas candidates only for _OC Gas_ cylinders at their
+calculated Deco pO~2~ MOD. The mobile planner does not expose _Deco switch at_,
+so it cannot use a stored switch depth.
 
 - The profile of the planned dive can be created in two ways:
  *  Drag the waypoints
@@ -4169,26 +4205,32 @@ the dive is planned, use the _Planner_ / _Add reverse profile_ menu action to cr
 Show any changes in gas cylinder used by indicating gas changes as explained
 in the section <<S_CreateProfile,hand-creating a dive profile>>. These changes should
 reflect the cylinders and gas compositions defined in the table with _Available Gases_.
-If two or more gases are used, automatic gas switches will be planned during the ascent to
-the surface.
+Only _OC Gas_ cylinders with a non-zero _Deco switch at_ are candidates for
+automatic desktop-planner gas switches during the ascent. Add every other gas
+change, including a _Travel Gas_ change, as an explicit segment.
 
 Cylinders used for the plan need to be entered in the table of _Available gases_. In the column
 _Type_ select the appropriate cylinder size by using the dropdown list that appears when
 double-clicking a cell in this column. By default, a large number of sizes are listed,
 and a new cylinder size can be created by typing this into the text box. The cylinder size, start pressure
 and default switch depths are initialized automatically. Specify the gas composition
-(e.g. helium and oxygen content) and - in the case of planning a CCR dive, the intended use as diluent or OC bailout gas.
-When planning CCR dives, a segment is calculated as a closed circuit segment if the gas that is used is a _diluent_, and as an open circuit segment if the gas is an _OC-gas_. If the user enables the _Allow open circuit gas to be used as bailout_ option in the _Tech setup_ preferences, then an additional column will be shown allowing the user to select the _Dive mode_ for each segment dived on an _OC-gas_.
+(e.g. helium and oxygen content) and its intended use. In a CCR plan, a segment
+using a _Diluent_ is calculated as closed circuit, while a segment using _OC Gas_
+or _Travel Gas_ is open circuit. If the user enables the _Allow open circuit gas
+to be used as bailout_ option in the _Tech setup_ preferences, an additional
+column allows the user to select the _Dive mode_ for a segment using an
+open-circuit gas.
 
 image::images/Planner_OC_gas_for_CCR.png["FIGURE: Planning a dive: OC as CCR",align="center"]
 
 For CCR dives, an additional column is shown in the _Dive planner points_ table, allowing the user to specify the _Setpoint_ for each closed circuit segment.
-If the last manually entered
-segment is a closed circuit segment, the decompression phase is computed assuming the diver
-uses a CCR with the specified set-point. If the last segment (however
-short) is on open circuit the
-decompression is computed in OC mode and the planner only considers gas
-changes in OC mode.
+If the last manually entered segment is a closed circuit segment, the
+decompression phase is computed assuming CCR at the specified setpoint;
+diluents and CCR oxygen supplies are not automatically selected as decompression
+gases. If the last segment, however short, is open circuit, decompression is
+computed in OC mode. In that case the desktop planner can automatically use
+only _OC Gas_ cylinders with a non-zero _Deco switch at_; _Travel Gas_ remains
+limited to explicitly entered segments.
 
 Enter dive profile segments in the _Dive planner points_ table by providing a time duration for
 a segment as well as its final depth. If more than one cylinder is used during the dive, ensure that
