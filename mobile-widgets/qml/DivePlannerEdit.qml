@@ -58,7 +58,7 @@ TemplatePage {
 
 	function updateDateTimeDisplay() {
 		if (!planDate.activeFocus)
-			planDate.text = Qt.formatDate(planDateTime, PrefLanguage.date_format_short);
+			planDate.text = Qt.formatDate(planDateTime, PrefLanguage.effectiveDateFormatShort);
 		if (!planTime.activeFocus)
 			planTime.text = Qt.formatTime(planDateTime, PrefLanguage.effectiveTimeFormat);
 	}
@@ -299,10 +299,10 @@ TemplatePage {
 				Layout.fillWidth: true
 				sampleText: "0000-00-00"
 				inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
-				text: Qt.formatDate(planDateTime, PrefLanguage.date_format_short)
+				text: Qt.formatDate(planDateTime, PrefLanguage.effectiveDateFormatShort)
 				onActiveFocusChanged: {
 					if (activeFocus) {
-						editFormat = PrefLanguage.date_format_short;
+						editFormat = PrefLanguage.effectiveDateFormatShort;
 						initialEditText = Qt.formatDate(planDateTime, dateInputFormat(editFormat));
 						text = initialEditText;
 					} else {
