@@ -129,6 +129,11 @@ void editDiveSiteTaxonomy(dive_site *ds, taxonomy_data &value)
 	execute(new EditDiveSiteTaxonomy(ds, value));
 }
 
+void editDiveSiteMarker(dive_site *ds, bool alpha_flag)
+{
+	execute(new EditDiveSiteMarker(ds, alpha_flag));
+}
+
 void addDiveSite(const QString &name)
 {
 	execute(new AddDiveSite(name));
