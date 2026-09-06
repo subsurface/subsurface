@@ -246,13 +246,16 @@ QString formatDiveGPS(const dive *d)
 QString formatDiveDate(const dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
-	return localTime.date().toString(QString::fromStdString(prefs.date_format_short));
+	// AI-generated (Claude): use effective format so system-default (empty stored
+	// pref) resolves to the locale default rather than Qt's internal ISO format.
+	return QLocale().toString(localTime.date(), qPrefLanguage::effectiveDateFormatShort());
 }
 
 QString formatDiveTime(const dive *d)
 {
 	QDateTime localTime = timestampToDateTime(d->when);
-	return localTime.time().toString(QString::fromStdString(prefs.time_format));
+	// AI-generated (Claude): same rationale as formatDiveDate.
+	return QLocale().toString(localTime.time(), qPrefLanguage::effectiveTimeFormat());
 }
 
 QString formatDiveDateTime(const dive *d)

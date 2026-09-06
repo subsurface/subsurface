@@ -4,8 +4,8 @@ import QtTest 1.2
 TestCase {
 	name: "qPrefLanguage"
 	property date plannerDateTime: new Date(2026, 7, 26, 13, 5, 0)
-	property string plannerDateDisplay: Qt.formatDate(plannerDateTime, PrefLanguage.date_format_short)
-	property string plannerTimeDisplay: Qt.formatTime(plannerDateTime, PrefLanguage.time_format)
+	property string plannerDateDisplay: Qt.formatDate(plannerDateTime, PrefLanguage.effectiveDateFormatShort)
+	property string plannerTimeDisplay: Qt.formatTime(plannerDateTime, PrefLanguage.effectiveTimeFormat)
 
 	function test_variables() {
 		var x1 = PrefLanguage.date_format
@@ -108,9 +108,13 @@ TestCase {
 		PrefLanguage.applyTimePreset("system")
 		compare(PrefLanguage.date_format_override, false)
 		compare(PrefLanguage.time_format_override, false)
-		verify(PrefLanguage.date_format.length > 0)
-		verify(PrefLanguage.date_format_short.length > 0)
-		verify(PrefLanguage.time_format.length > 0)
+		// System-default stores empty strings; effective* resolve to locale defaults.
+		compare(PrefLanguage.date_format, "")
+		compare(PrefLanguage.date_format_short, "")
+		compare(PrefLanguage.time_format, "")
+		verify(PrefLanguage.effectiveDateFormat.length > 0)
+		verify(PrefLanguage.effectiveDateFormatShort.length > 0)
+		verify(PrefLanguage.effectiveTimeFormat.length > 0)
 	}
 
 	// AI-generated (Claude): The planner binds to these preferences while it remains instantiated.
@@ -132,10 +136,10 @@ TestCase {
 		compare(plannerTimeDisplay, "1:05 PM")
 		// The time input fields drop the digits-only IME hint when the format
 		// carries a meridiem token, so AM/PM letters stay reachable on Android.
-		verify(/AP|ap/.test(PrefLanguage.time_format))
+		verify(/AP|ap/.test(PrefLanguage.effectiveTimeFormat))
 		PrefLanguage.applyTimePreset("24-hour")
 		compare(plannerTimeDisplay, "13:05")
-		verify(!/AP|ap/.test(PrefLanguage.time_format))
+		verify(!/AP|ap/.test(PrefLanguage.effectiveTimeFormat))
 	}
 
 	// AI-generated (Claude): Exercise keypad conversion, meridiem changes and safe rejection.
