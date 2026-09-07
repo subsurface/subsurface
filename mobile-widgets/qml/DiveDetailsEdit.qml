@@ -84,12 +84,13 @@ Item {
 		var state =  diveDetailsPage.state
 		diveDetailsPage.state = "view" // run the transition
 		// join cylinder info from separate string into a list.
-		if (usedCyl[0] !== undefined) {
-			usedCyl[0] = cylinderBox0.currentText
-			usedGas[0] = txtGasMix0.text
-			startpressure[0] = txtStartPressure0.text
-			endpressure[0] = txtEndPressure0.text
-		}
+		// Cylinder 0 is always collected unconditionally: the first-cylinder row
+		// is always visible in the edit form, so there is always data to save,
+		// even for dives that previously had no used cylinders.
+		usedCyl[0] = cylinderBox0.currentText
+		usedGas[0] = txtGasMix0.text
+		startpressure[0] = txtStartPressure0.text
+		endpressure[0] = txtEndPressure0.text
 		if (usedCyl[1] !== undefined) {
 			usedCyl[1] = cylinderBox1.currentText
 			usedGas[1] = txtGasMix1.text

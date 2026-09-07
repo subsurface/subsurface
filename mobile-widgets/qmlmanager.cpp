@@ -1291,27 +1291,53 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		startpressure = QStringList();
 	if (endpressure == QStringList(QString()))
 		endpressure = QStringList();
+	if (gasmix == QStringList(QString()))
+		gasmix = QStringList();
+	if (usedCylinder == QStringList(QString()))
+		usedCylinder = QStringList();
+	// Determine whether any cylinder in the dive is currently "used".
+	// A dive with no used cylinders (e.g. downloaded without pressure
+	// integration, or a zero-cylinder manual-import dive) must not have its
+	// incoming data filtered by is_cylinder_used, so we write positionally.
+	// A dive that has at least one used cylinder (normal multi-cylinder case)
+	// uses the used-cylinder filter so that gaps (unused cylinders in the
+	// middle of the array) are skipped and the QML compressed list index
+	// maps to the correct physical cylinder.
+	bool anyUsed = false;
+	for (size_t idx = 0; idx < d->cylinders.size(); idx++) {
+		if (d->is_cylinder_used(idx)) {
+			anyUsed = true;
+			break;
+		}
+	}
 	if (formatStartPressure(d) != startpressure || formatEndPressure(d) != endpressure) {
 		diveChanged = true;
-		for ( int i = 0, j = 0 ; j < startpressure.length() && j < endpressure.length() ; i++ ) {
-			if (state != "add" && !d->is_cylinder_used(i))
+		for (int i = 0, j = 0; j < startpressure.length() && j < endpressure.length(); i++) {
+			if (anyUsed && !d->is_cylinder_used(i)) {
+				if (anyUsed && (size_t)i >= d->cylinders.size())
+					break;
 				continue;
-
+			}
 			cylinder_t *cyl = d->get_or_create_cylinder(i);
 			cyl->start.mbar = parsePressureToMbar(startpressure[j]);
 			cyl->end.mbar = parsePressureToMbar(endpressure[j]);
 			if (cyl->end.mbar > cyl->start.mbar)
 				cyl->end.mbar = cyl->start.mbar;
-
 			j++;
 		}
 	}
 	// gasmix for first cylinder
 	if (formatFirstGas(d) != gasmix) {
-		for ( int i = 0, j = 0 ; j < gasmix.length() ; i++ ) {
-			if (state != "add" && !d->is_cylinder_used(i))
+		for (int i = 0, j = 0; j < gasmix.length(); i++) {
+			if (anyUsed && !d->is_cylinder_used(i)) {
+				if (anyUsed && (size_t)i >= d->cylinders.size())
+					break;
 				continue;
-
+			}
+			if (gasmix[j].isEmpty()) {
+				j++;
+				continue;
+			}
 			int o2 = parseGasMixO2(gasmix[j]);
 			int he = parseGasMixHE(gasmix[j]);
 			// the QML code SHOULD only accept valid gas mixes, but just to make sure
@@ -1328,11 +1354,17 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 	// info for first cylinder
 	if (formatGetCylinder(d) != usedCylinder) {
 		diveChanged = true;
-		int size = 0, wp = 0, j = 0, k = 0;
-		for (j = 0; k < usedCylinder.length(); j++) {
-			if (state != "add" && !d->is_cylinder_used(j))
+		for (int i = 0, k = 0; k < usedCylinder.length(); i++) {
+			if (anyUsed && !d->is_cylinder_used(i)) {
+				if (anyUsed && (size_t)i >= d->cylinders.size())
+					break;
 				continue;
-
+			}
+			if (usedCylinder[k].isEmpty()) {
+				k++;
+				continue;
+			}
+			int size = 0, wp = 0;
 			for (const tank_info &ti: tank_info_table) {
 				if (ti.name == usedCylinder[k].toStdString()) {
 					if (ti.ml > 0){
@@ -1345,9 +1377,9 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 					break;
 				}
 			}
-			d->get_or_create_cylinder(j)->type.description = usedCylinder[k].toStdString();
-			d->get_cylinder(j)->type.size.mliter = size;
-			d->get_cylinder(j)->type.workingpressure.mbar = wp;
+			d->get_or_create_cylinder(i)->type.description = usedCylinder[k].toStdString();
+			d->get_cylinder(i)->type.size.mliter = size;
+			d->get_cylinder(i)->type.workingpressure.mbar = wp;
 			k++;
 		}
 	}
