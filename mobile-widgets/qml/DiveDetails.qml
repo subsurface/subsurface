@@ -424,6 +424,14 @@ Kirigami.Page {
 		endpressure = modelData.endPressure
 		usedGas = modelData.firstGas
 		usedCyl = modelData.getCylinder
+		// For dives with no previously-used cylinders the model roles return
+		// empty lists, leaving usedCyl[0] (and friends) undefined.  The edit
+		// form always shows a cylinder-0 row, so initialise slot 0 to an empty
+		// string here so that saveData can collect it unconditionally.
+		if (usedCyl[0] === undefined)      usedCyl[0]      = ""
+		if (startpressure[0] === undefined) startpressure[0] = ""
+		if (endpressure[0] === undefined)   endpressure[0]   = ""
+		if (usedGas[0] === undefined)       usedGas[0]       = ""
 		cylinderIndex0 = modelData.cylinderList.indexOf(usedCyl[0])
 		cylinderIndex1 = modelData.cylinderList.indexOf(usedCyl[1])
 		cylinderIndex2 = modelData.cylinderList.indexOf(usedCyl[2])

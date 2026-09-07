@@ -1306,25 +1306,22 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		endpressure = QStringList();
 	if (formatStartPressure(d) != startpressure || formatEndPressure(d) != endpressure) {
 		diveChanged = true;
-		for ( int i = 0, j = 0 ; j < startpressure.length() && j < endpressure.length() ; i++ ) {
-			if (state != "add" && !d->is_cylinder_used(i))
-				continue;
-
-			cylinder_t *cyl = d->get_or_create_cylinder(i);
+		// Row j in the incoming list maps directly to cylinder index j in the dive.
+		// Do not filter by is_cylinder_used: the user may be adding pressures to a
+		// cylinder that had none before (e.g. a dive downloaded without pressure
+		// integration, or a zero-cylinder manual-import dive).
+		for (int j = 0; j < startpressure.length() && j < endpressure.length(); j++) {
+			cylinder_t *cyl = d->get_or_create_cylinder(j);
 			cyl->start.mbar = parsePressureToMbar(startpressure[j]);
 			cyl->end.mbar = parsePressureToMbar(endpressure[j]);
 			if (cyl->end.mbar > cyl->start.mbar)
 				cyl->end.mbar = cyl->start.mbar;
-
-			j++;
 		}
 	}
 	// gasmix for first cylinder
 	if (formatFirstGas(d) != gasmix) {
-		for ( int i = 0, j = 0 ; j < gasmix.length() ; i++ ) {
-			if (state != "add" && !d->is_cylinder_used(i))
-				continue;
-
+		// Same direct positional mapping as the pressure loops above.
+		for (int j = 0; j < gasmix.length(); j++) {
 			int o2 = parseGasMixO2(gasmix[j]);
 			int he = parseGasMixHE(gasmix[j]);
 			// the QML code SHOULD only accept valid gas mixes, but just to make sure
@@ -1332,20 +1329,17 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 				he >= 0 && he <= 1000 &&
 				o2 + he <= 1000) {
 				diveChanged = true;
-				d->get_or_create_cylinder(i)->gasmix.o2.permille = o2;
-				d->get_cylinder(i)->gasmix.he.permille = he;
+				d->get_or_create_cylinder(j)->gasmix.o2.permille = o2;
+				d->get_cylinder(j)->gasmix.he.permille = he;
 			}
-			j++;
 		}
 	}
 	// info for first cylinder
 	if (formatGetCylinder(d) != usedCylinder) {
 		diveChanged = true;
-		int size = 0, wp = 0, j = 0, k = 0;
-		for (j = 0; k < usedCylinder.length(); j++) {
-			if (state != "add" && !d->is_cylinder_used(j))
-				continue;
-
+		// Same direct positional mapping: list index k == cylinder index k.
+		for (int k = 0; k < usedCylinder.length(); k++) {
+			int size = 0, wp = 0;
 			for (const tank_info &ti: tank_info_table) {
 				if (ti.name == usedCylinder[k].toStdString()) {
 					if (ti.ml > 0){
@@ -1358,10 +1352,9 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 					break;
 				}
 			}
-			d->get_or_create_cylinder(j)->type.description = usedCylinder[k].toStdString();
-			d->get_cylinder(j)->type.size.mliter = size;
-			d->get_cylinder(j)->type.workingpressure.mbar = wp;
-			k++;
+			d->get_or_create_cylinder(k)->type.description = usedCylinder[k].toStdString();
+			d->get_cylinder(k)->type.size.mliter = size;
+			d->get_cylinder(k)->type.workingpressure.mbar = wp;
 		}
 	}
 	if (d->suit != suit.toStdString()) {
