@@ -202,9 +202,9 @@ void TestQPrefLanguage::test_oldPreferences()
 	language->set_use_system_language(false);
 	language->set_lang_locale("en_US");
 	language->applyDateTimeFormats("ddd, d MMM yyyy", "d/M/yy", "HH:mm", true, true);
-	QCOMPARE(language->effectiveDateFormat(), QStringLiteral("ddd, d MMM yyyy"));
-	QCOMPARE(language->effectiveDateFormatShort(), QStringLiteral("d/M/yy"));
-	QCOMPARE(language->effectiveTimeFormat(), QStringLiteral("HH:mm"));
+	QCOMPARE(language->date_format(), QStringLiteral("ddd, d MMM yyyy"));
+	QCOMPARE(language->date_format_short(), QStringLiteral("d/M/yy"));
+	QCOMPARE(language->time_format(), QStringLiteral("HH:mm"));
 	language->load();
 	QCOMPARE(language->date_format(), QStringLiteral("ddd, d MMM yyyy"));
 	QCOMPARE(language->date_format_short(), QStringLiteral("d/M/yy"));
@@ -228,13 +228,12 @@ void TestQPrefLanguage::test_oldPreferences()
 	language->restoreDateTimeDefaults();
 	QCOMPARE(language->date_format_override(), false);
 	QCOMPARE(language->time_format_override(), false);
-	// When no override is active, the stored format is empty; the effective
-	// format is resolved dynamically from the system locale at call time.
-	// AI-generated (Claude): updated to match new behaviour where prefs store
-	// empty string for system-default formats.
-	QCOMPARE(language->date_format(), QString());
-	QCOMPARE(language->date_format_short(), QString());
-	QCOMPARE(language->time_format(), QString());
+	// AI-generated (Claude): restoreDateTimeDefaults() calls applyFormats with
+	// empty strings which resolves and stores the locale-derived format, so the
+	// stored pref is non-empty (not "").
+	QVERIFY(!language->date_format().isEmpty());
+	QVERIFY(!language->date_format_short().isEmpty());
+	QVERIFY(!language->time_format().isEmpty());
 	QCOMPARE(formatsSpy.count(), 1);
 	prefs.date_format = "error";
 	prefs.date_format_short = "error";
@@ -242,8 +241,8 @@ void TestQPrefLanguage::test_oldPreferences()
 	prefs.time_format = "error";
 	prefs.time_format_override = true;
 	language->load();
-	QCOMPARE(language->date_format(), QString());
-	QCOMPARE(language->date_format_short(), QString());
+	QVERIFY(!language->date_format().isEmpty());
+	QVERIFY(!language->date_format_short().isEmpty());
 	QCOMPARE(language->date_format_override(), false);
 	QCOMPARE(language->time_format_override(), false);
 

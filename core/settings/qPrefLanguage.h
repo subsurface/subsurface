@@ -17,9 +17,6 @@ class qPrefLanguage : public QObject {
 	Q_PROPERTY(QString time_format READ time_format WRITE set_time_format NOTIFY time_formatChanged)
 	Q_PROPERTY(bool time_format_override READ time_format_override WRITE set_time_format_override NOTIFY time_format_overrideChanged)
 	Q_PROPERTY(bool use_system_language READ use_system_language WRITE set_use_system_language NOTIFY use_system_languageChanged)
-	Q_PROPERTY(QString effectiveDateFormat READ effectiveDateFormat NOTIFY dateTimeFormatsChanged)
-	Q_PROPERTY(QString effectiveDateFormatShort READ effectiveDateFormatShort NOTIFY dateTimeFormatsChanged)
-	Q_PROPERTY(QString effectiveTimeFormat READ effectiveTimeFormat NOTIFY dateTimeFormatsChanged)
 	Q_PROPERTY(QString longDatePreview READ longDatePreview NOTIFY dateTimeFormatsChanged)
 	Q_PROPERTY(QString shortDatePreview READ shortDatePreview NOTIFY dateTimeFormatsChanged)
 	Q_PROPERTY(QString timePreview READ timePreview NOTIFY dateTimeFormatsChanged)
@@ -45,9 +42,6 @@ public:
 	static bool use_system_language() { return prefs.locale.use_system_language; }
 
 	// AI-generated (Claude): Shared date/time preference API for all Qt frontends.
-	static QString effectiveDateFormat();
-	static QString effectiveDateFormatShort();
-	static QString effectiveTimeFormat();
 	static QString longDatePreview();
 	static QString shortDatePreview();
 	static QString timePreview();

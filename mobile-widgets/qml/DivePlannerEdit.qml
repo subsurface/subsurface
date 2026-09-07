@@ -58,9 +58,9 @@ TemplatePage {
 
 	function updateDateTimeDisplay() {
 		if (!planDate.activeFocus)
-			planDate.text = Qt.formatDate(planDateTime, PrefLanguage.effectiveDateFormatShort);
+			planDate.text = Qt.formatDate(planDateTime, PrefLanguage.date_format_short);
 		if (!planTime.activeFocus)
-			planTime.text = Qt.formatTime(planDateTime, PrefLanguage.effectiveTimeFormat);
+			planTime.text = Qt.formatTime(planDateTime, PrefLanguage.time_format);
 	}
 
 	function applyDateInput(text, format) {
@@ -299,10 +299,10 @@ TemplatePage {
 				Layout.fillWidth: true
 				sampleText: "0000-00-00"
 				inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhDate)
-				text: Qt.formatDate(planDateTime, PrefLanguage.effectiveDateFormatShort)
+				text: Qt.formatDate(planDateTime, PrefLanguage.date_format_short)
 				onActiveFocusChanged: {
 					if (activeFocus) {
-						editFormat = PrefLanguage.effectiveDateFormatShort;
+						editFormat = PrefLanguage.date_format_short;
 						initialEditText = Qt.formatDate(planDateTime, dateInputFormat(editFormat));
 						text = initialEditText;
 					} else {
@@ -322,10 +322,10 @@ TemplatePage {
 					Layout.fillWidth: true
 					sampleText: "00:00 PM"
 					inputMethodHints: punctuationInputMethodHints(Qt.platform.os, Qt.ImhTime)
-					text: Qt.formatTime(planDateTime, PrefLanguage.effectiveTimeFormat)
+					text: Qt.formatTime(planDateTime, PrefLanguage.time_format)
 					onActiveFocusChanged: {
 						if (activeFocus) {
-							editFormat = PrefLanguage.effectiveTimeFormat;
+							editFormat = PrefLanguage.time_format;
 							var editText = PrefLanguage.timeEditText(text);
 							initialEditText = editText !== "" ? editText : text;
 							text = initialEditText;
@@ -338,7 +338,7 @@ TemplatePage {
 				}
 				TemplateButton {
 					text: qsTr("A/P")
-					visible: planTime.activeFocus && /AP|ap/.test(PrefLanguage.effectiveTimeFormat)
+					visible: planTime.activeFocus && /AP|ap/.test(PrefLanguage.time_format)
 					fontSize: subsurfaceTheme.smallPointSize
 					padding: 0
 					Layout.alignment: Qt.AlignVCenter

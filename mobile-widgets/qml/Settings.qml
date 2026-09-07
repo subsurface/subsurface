@@ -511,6 +511,17 @@ TemplatePage {
 					wrapMode: Text.Wrap
 					text: qsTr("Example: %1").arg(timePresetPreview())
 				}
+				// AI-generated (Claude): On iOS the system 12/24-hour toggle is a device
+				// setting independent of the UI language; it only takes effect after a cold
+				// restart of the app.
+				TemplateLabel {
+					visible: Qt.platform.os === "ios" && !PrefLanguage.time_format_override
+					Layout.fillWidth: true
+					wrapMode: Text.Wrap
+					font.italic: true
+					color: subsurfaceTheme.secondaryTextColor
+					text: qsTr("The system time format will be applied on the next restart of Subsurface.")
+				}
 				TemplateLine {
 					Layout.topMargin: Kirigami.Units.largeSpacing
 				}

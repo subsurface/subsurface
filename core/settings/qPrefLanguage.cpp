@@ -129,34 +129,19 @@ QString qPrefLanguage::defaultTimeFormat(const QLocale &locale)
 	return format;
 }
 
-QString qPrefLanguage::effectiveDateFormat()
-{
-	return date_format_override() && !date_format().isEmpty() ? date_format() : defaultDateFormat(preferenceLocale());
-}
-
-QString qPrefLanguage::effectiveDateFormatShort()
-{
-	return date_format_override() && !date_format_short().isEmpty() ? date_format_short() : defaultShortDateFormat(preferenceLocale());
-}
-
-QString qPrefLanguage::effectiveTimeFormat()
-{
-	return time_format_override() && !time_format().isEmpty() ? time_format() : defaultTimeFormat(preferenceLocale());
-}
-
 QString qPrefLanguage::longDatePreview()
 {
-	return preferenceLocale().toString(previewDate, effectiveDateFormat());
+	return preferenceLocale().toString(previewDate, date_format());
 }
 
 QString qPrefLanguage::shortDatePreview()
 {
-	return preferenceLocale().toString(previewDate, effectiveDateFormatShort());
+	return preferenceLocale().toString(previewDate, date_format_short());
 }
 
 QString qPrefLanguage::timePreview()
 {
-	return preferenceLocale().toString(previewTime, effectiveTimeFormat());
+	return preferenceLocale().toString(previewTime, time_format());
 }
 
 QVariantList qPrefLanguage::dateFormatPresets()
@@ -202,15 +187,14 @@ QVariantList qPrefLanguage::timeFormatPresets()
 void qPrefLanguage::applyFormats(const QString &longDateFormat, const QString &shortDateFormat,
 				 const QString &timeFormat, bool overrideDate, bool overrideTime)
 {
-	// AI-generated (Claude): Store the resolved format only when an override is
-	// active; store empty string otherwise. This ensures that when "system default"
-	// is selected, prefs.time_format / date_format_short remain empty, and
-	// effectiveTimeFormat() / effectiveDateFormatShort() fall back to the system
-	// locale at call time — correctly picking up the iOS 12/24-hour device toggle
-	// rather than a format string baked in at settings-apply time.
-	const QString storedLongDate = overrideDate && !longDateFormat.isEmpty() ? longDateFormat : QString();
-	const QString storedShortDate = overrideDate && !shortDateFormat.isEmpty() ? shortDateFormat : QString();
-	const QString storedTime = overrideTime && !timeFormat.isEmpty() ? timeFormat : QString();
+	// AI-generated (Claude): Store the resolved locale format rather than an empty
+	// string when no override is active. This ensures prefs.date_format* are always
+	// valid format strings, so raw-pref consumers work correctly without going
+	// through the effective*() helpers.
+	const QLocale locale = preferenceLocale();
+	const QString storedLongDate  = overrideDate && !longDateFormat.isEmpty()  ? longDateFormat  : defaultDateFormat(locale);
+	const QString storedShortDate = overrideDate && !shortDateFormat.isEmpty() ? shortDateFormat : defaultShortDateFormat(locale);
+	const QString storedTime      = overrideTime && !timeFormat.isEmpty()      ? timeFormat      : defaultTimeFormat(locale);
 	storeFormats(storedLongDate, storedShortDate, storedTime, overrideDate, overrideTime);
 }
 
@@ -263,7 +247,7 @@ void qPrefLanguage::applyDatePreset(const QString &preset)
 		const QVariantMap values = entry.toMap();
 		if (values["id"].toString() == preset) {
 			applyFormats(values["longFormat"].toString(), values["shortFormat"].toString(),
-				     effectiveTimeFormat(), preset != QStringLiteral("system"), time_format_override());
+				     time_format(), preset != QStringLiteral("system"), time_format_override());
 			return;
 		}
 	}
@@ -274,7 +258,7 @@ void qPrefLanguage::applyTimePreset(const QString &preset)
 	for (const QVariant &entry: timeFormatPresets()) {
 		const QVariantMap values = entry.toMap();
 		if (values["id"].toString() == preset) {
-			applyFormats(effectiveDateFormat(), effectiveDateFormatShort(), values["format"].toString(),
+			applyFormats(date_format(), date_format_short(), values["format"].toString(),
 				     date_format_override(), preset != QStringLiteral("system"));
 			return;
 		}
@@ -289,43 +273,43 @@ void qPrefLanguage::restoreDateTimeDefaults()
 QString qPrefLanguage::timeEditText(const QString &displayText) const
 {
 	const QLocale locale = preferenceLocale();
-	const QTime time = locale.toTime(displayText, effectiveTimeFormat());
-	return time.isValid() ? locale.toString(time, keypadTimeFormat(effectiveTimeFormat())) : QString();
+	const QTime time = locale.toTime(displayText, time_format());
+	return time.isValid() ? locale.toString(time, keypadTimeFormat(time_format())) : QString();
 }
 
 QString qPrefLanguage::timeDisplayText(const QString &editText) const
 {
 	const QLocale locale = preferenceLocale();
-	const QTime time = locale.toTime(editText, keypadTimeFormat(effectiveTimeFormat()));
-	return time.isValid() ? locale.toString(time, effectiveTimeFormat()) : QString();
+	const QTime time = locale.toTime(editText, keypadTimeFormat(time_format()));
+	return time.isValid() ? locale.toString(time, time_format()) : QString();
 }
 
 QString qPrefLanguage::dateTimeEditText(const QString &displayText) const
 {
 	const QLocale locale = preferenceLocale();
-	const QString displayFormat = effectiveDateFormatShort() + QLatin1Char(' ') + effectiveTimeFormat();
+	const QString displayFormat = date_format_short() + QLatin1Char(' ') + time_format();
 	const QDateTime dateTime = locale.toDateTime(displayText, displayFormat);
-	const QString editFormat = keypadDateFormat(effectiveDateFormatShort()) + QLatin1Char(' ') + keypadTimeFormat(effectiveTimeFormat());
+	const QString editFormat = keypadDateFormat(date_format_short()) + QLatin1Char(' ') + keypadTimeFormat(time_format());
 	return dateTime.isValid() ? locale.toString(dateTime, editFormat) : QString();
 }
 
 QString qPrefLanguage::dateTimeDisplayText(const QString &editText) const
 {
 	const QLocale locale = preferenceLocale();
-	const QString editFormat = keypadDateFormat(effectiveDateFormatShort()) + QLatin1Char(' ') + keypadTimeFormat(effectiveTimeFormat());
+	const QString editFormat = keypadDateFormat(date_format_short()) + QLatin1Char(' ') + keypadTimeFormat(time_format());
 	const QDateTime dateTime = locale.toDateTime(editText, editFormat);
-	const QString displayFormat = effectiveDateFormatShort() + QLatin1Char(' ') + effectiveTimeFormat();
+	const QString displayFormat = date_format_short() + QLatin1Char(' ') + time_format();
 	return dateTime.isValid() ? locale.toString(dateTime, displayFormat) : QString();
 }
 
 QString qPrefLanguage::toggleMeridiem(const QString &editText, bool dateTime) const
 {
 	const QLocale locale = preferenceLocale();
-	const QString timeFormat = keypadTimeFormat(effectiveTimeFormat());
+	const QString timeFormat = keypadTimeFormat(time_format());
 	if (!timeFormat.contains(QLatin1String("AP")) && !timeFormat.contains(QLatin1String("ap")))
 		return editText;
 	if (dateTime) {
-		const QString format = keypadDateFormat(effectiveDateFormatShort()) + QLatin1Char(' ') + timeFormat;
+		const QString format = keypadDateFormat(date_format_short()) + QLatin1Char(' ') + timeFormat;
 		QDateTime value = locale.toDateTime(editText, format);
 		if (!value.isValid())
 			return editText;
@@ -343,13 +327,14 @@ QString qPrefLanguage::preferenceLocaleName() const
 
 void qPrefLanguage::applyLocaleDefaults(const QLocale &locale)
 {
-	// AI-generated (Claude): When no override is active, store empty string so
-	// the effective* helpers resolve dynamically from the system locale at call
-	// time, rather than baking in a format string that may not reflect the iOS
-	// 12/24-hour device toggle.
-	const QString longDate = date_format_override() && !date_format().isEmpty() ? date_format() : QString();
-	const QString shortDate = date_format_override() && !date_format_short().isEmpty() ? date_format_short() : QString();
-	const QString time = time_format_override() && !time_format().isEmpty() ? time_format() : QString();
+	// AI-generated (Claude): Store the resolved locale format rather than an
+	// empty string when no override is active. On iOS, defaultTimeFormat()
+	// always uses QLocale() (the device system locale) rather than the
+	// UI-language locale, so the 12/24-hour device toggle is honoured on
+	// the next cold start.
+	const QString longDate  = date_format_override() && !date_format().isEmpty()       ? date_format()       : defaultDateFormat(locale);
+	const QString shortDate = date_format_override() && !date_format_short().isEmpty() ? date_format_short() : defaultShortDateFormat(locale);
+	const QString time      = time_format_override() && !time_format().isEmpty()       ? time_format()       : defaultTimeFormat(locale);
 	storeFormats(longDate, shortDate, time, date_format_override(), time_format_override());
 }
 
