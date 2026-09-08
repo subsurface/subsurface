@@ -50,32 +50,48 @@ ARCH="${ARCH}" TARGET_SDK="${TARGET_SDK}" IOS_DEPLOYMENT_TARGET="${IOS_DEPLOYMEN
 	bash "${SUBSURFACE_SOURCE}/packaging/ios/ios-native-libs.sh"
 
 # 2. Build mobile components (ECM, Kirigami) with iOS cross-compilation
-echo "=== Building mobile components (ECM, Kirigami) ==="
-cd "${SUBSURFACE_SOURCE}"
-# ECM needs qtpaths6 (host tool) in PATH and via cmake to query Qt install directories
-export PATH="${QT_HOST_PATH}/bin:${PATH}"
-MOBILE_COMPONENTS_DIR="${BUILD_DIR}/kirigami" \
-KIRIGAMI_BUILDDIR="${BUILD_DIR}/kirigami-build" \
-KIRIGAMI_INSTALL_PREFIX="${IOS_INSTALL_PREFIX}" \
-bash ./scripts/mobilecomponents.sh \
-	-DCMAKE_TOOLCHAIN_FILE="${QT_IOS_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
-	-DQT_HOST_PATH="${QT_HOST_PATH}" \
-	-DQt6CoreTools_DIR="${QT_HOST_PATH}/lib/cmake/Qt6CoreTools" \
-	-DQt6LinguistTools_DIR="${QT_HOST_PATH}/lib/cmake/Qt6LinguistTools" \
-	-DBUILD_SHARED_LIBS=OFF
+# Guard: skip if the installed Kirigami version and patch set are unchanged.
+KIRIGAMI_VERSION=$(grep '^CURRENT_KIRIGAMI=' "${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" | cut -d= -f2 | tr -d '"')
+PATCH_HASH=$(find "${SUBSURFACE_SOURCE}/mobile-widgets/3rdparty" -name '00*.patch' | sort | xargs shasum -a 256 | shasum -a 256 | cut -c1-16)
+KIRIGAMI_MARKER="${KIRIGAMI_VERSION} ${PATCH_HASH}"
+KIRIGAMI_MARKER_FILE="${BUILD_DIR}/kirigami-build/kirigami.installed"
+
+if [ -f "${KIRIGAMI_MARKER_FILE}" ] && [ "$(cat "${KIRIGAMI_MARKER_FILE}")" = "${KIRIGAMI_MARKER}" ]; then
+	echo "=== Skipping mobile components (Kirigami ${KIRIGAMI_VERSION}, patches unchanged) ==="
+else
+	echo "=== Building mobile components (ECM, Kirigami) ==="
+	cd "${SUBSURFACE_SOURCE}"
+	# ECM needs qtpaths6 (host tool) in PATH and via cmake to query Qt install directories
+	export PATH="${QT_HOST_PATH}/bin:${PATH}"
+	MOBILE_COMPONENTS_DIR="${BUILD_DIR}/kirigami" \
+	KIRIGAMI_BUILDDIR="${BUILD_DIR}/kirigami-build" \
+	KIRIGAMI_INSTALL_PREFIX="${IOS_INSTALL_PREFIX}" \
+	bash ./scripts/mobilecomponents.sh \
+		-DCMAKE_TOOLCHAIN_FILE="${QT_IOS_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
+		-DQT_HOST_PATH="${QT_HOST_PATH}" \
+		-DQt6CoreTools_DIR="${QT_HOST_PATH}/lib/cmake/Qt6CoreTools" \
+		-DQt6LinguistTools_DIR="${QT_HOST_PATH}/lib/cmake/Qt6LinguistTools" \
+		-DBUILD_SHARED_LIBS=OFF
+	echo "${KIRIGAMI_MARKER}" > "${KIRIGAMI_MARKER_FILE}"
+fi
 
 # 2b. Build googlemaps plugin (static, for iOS)
-echo "=== Building googlemaps plugin ==="
-"${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" single "${BUILD_DIR}" googlemaps
-cd "${BUILD_DIR}/googlemaps"
-git fetch --quiet
-git checkout qt6-upstream --quiet 2>/dev/null || git switch qt6-upstream --quiet
-mkdir -p ios-build
-cd ios-build
-"${QT_IOS_PATH}/bin/qmake" "CONFIG+=release" "CONFIG+=static" ../googlemaps.pro
-make -j"${NUM_CORES}"
-mkdir -p "${IOS_INSTALL_PREFIX}/plugins/geoservices"
-cp libqtgeoservices_googlemaps.a "${IOS_INSTALL_PREFIX}/plugins/geoservices/"
+# Guard: skip if the installed plugin library is already present.
+if [ -f "${IOS_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.a" ]; then
+	echo "=== Skipping googlemaps plugin (already built) ==="
+else
+	echo "=== Building googlemaps plugin ==="
+	"${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" single "${BUILD_DIR}" googlemaps
+	cd "${BUILD_DIR}/googlemaps"
+	git fetch --quiet
+	git checkout qt6-upstream --quiet 2>/dev/null || git switch qt6-upstream --quiet
+	mkdir -p ios-build
+	cd ios-build
+	"${QT_IOS_PATH}/bin/qmake" "CONFIG+=release" "CONFIG+=static" ../googlemaps.pro
+	make -j"${NUM_CORES}"
+	mkdir -p "${IOS_INSTALL_PREFIX}/plugins/geoservices"
+	cp libqtgeoservices_googlemaps.a "${IOS_INSTALL_PREFIX}/plugins/geoservices/"
+fi
 
 # 3. Build libdivecomputer
 echo "=== Building libdivecomputer ==="
