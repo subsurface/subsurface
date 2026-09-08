@@ -9,6 +9,7 @@
 #   ARCH          - target architecture (default: arm64)
 #   TARGET_SDK    - iphoneos or iphonesimulator (default: iphoneos)
 #   BUILD_TYPE    - Release or Debug (default: Release)
+#   IOS_BUNDLE_ID - override bundle identifier (default: org.subsurface-divelog.subsurface-mobile)
 #   BUILD_DIR     - directory for all build artefacts (default: ../build)
 
 set -xe
@@ -128,6 +129,16 @@ if [ "${CURRENT_SHA}" != "${PREVIOUS_SHA}" ]; then
 fi
 
 # 4. Write version header
+# If IOS_BUNDLE_ID is set and differs from what is cached, clear the cmake cache
+# so the next configure picks up the new bundle identifier.
+if [ -n "${IOS_BUNDLE_ID}" ] && [ -f "${BUILD_DIR}/build-ios/CMakeCache.txt" ]; then
+    CACHED_ID=$(grep '^MACOSX_BUNDLE_GUI_IDENTIFIER:' "${BUILD_DIR}/build-ios/CMakeCache.txt" | cut -d= -f2 || true)
+    if [ -n "${CACHED_ID}" ] && [ "${CACHED_ID}" != "${IOS_BUNDLE_ID}" ]; then
+        echo "Bundle ID changed (${CACHED_ID} -> ${IOS_BUNDLE_ID}), clearing cmake cache"
+        rm -rf "${BUILD_DIR}/build-ios"
+    fi
+fi
+
 echo "=== Configuring build ==="
 mkdir -p "${BUILD_DIR}/build-ios"
 cd "${BUILD_DIR}/build-ios"
@@ -155,7 +166,8 @@ cmake -G Xcode "${SUBSURFACE_SOURCE}" \
 	-DNO_DOCS=ON \
 	-DBUILD_TESTS=OFF \
 	-DBUILD_WITH_QT6=ON \
-	-DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO
+	-DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED=NO \
+	${IOS_BUNDLE_ID:+-DMACOSX_BUNDLE_GUI_IDENTIFIER="${IOS_BUNDLE_ID}"}
 
 # CMake names the generated project after the top-level project. Keep the
 # documented mobile project name available for Xcode users.
