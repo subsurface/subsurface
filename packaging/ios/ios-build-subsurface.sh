@@ -51,13 +51,21 @@ ARCH="${ARCH}" TARGET_SDK="${TARGET_SDK}" IOS_DEPLOYMENT_TARGET="${IOS_DEPLOYMEN
 	bash "${SUBSURFACE_SOURCE}/packaging/ios/ios-native-libs.sh"
 
 # 2. Build mobile components (ECM, Kirigami) with iOS cross-compilation
-# Guard: skip if the installed Kirigami version and patch set are unchanged.
+# Guard: skip if the installed Kirigami version, Breeze icons version, patch
+# set, and icons.qrc are all unchanged.
 KIRIGAMI_VERSION=$(grep '^CURRENT_KIRIGAMI=' "${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" | cut -d= -f2 | tr -d '"')
+BREEZE_VERSION=$(grep '^CURRENT_BREEZE_ICONS=' "${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" | cut -d= -f2 | tr -d '"')
 PATCH_HASH=$(find "${SUBSURFACE_SOURCE}/mobile-widgets/3rdparty" -name '00*.patch' | sort | xargs shasum -a 256 | shasum -a 256 | cut -c1-16)
-KIRIGAMI_MARKER="${KIRIGAMI_VERSION} ${PATCH_HASH}"
-KIRIGAMI_MARKER_FILE="${BUILD_DIR}/kirigami-build/kirigami.installed"
+ICONS_HASH=$(shasum -a 256 "${SUBSURFACE_SOURCE}/mobile-widgets/3rdparty/icons.qrc" | cut -c1-16)
+KIRIGAMI_MARKER="${KIRIGAMI_VERSION} ${BREEZE_VERSION} ${PATCH_HASH} ${ICONS_HASH}"
+KIRIGAMI_MARKER_FILE="${BUILD_DIR}/kirigami-build/kirigami.marker"
 
-if [ -f "${KIRIGAMI_MARKER_FILE}" ] && [ "$(cat "${KIRIGAMI_MARKER_FILE}")" = "${KIRIGAMI_MARKER}" ]; then
+PREVIOUS_KIRIGAMI_MARKER=""
+if [ -f "${KIRIGAMI_MARKER_FILE}" ]; then
+	PREVIOUS_KIRIGAMI_MARKER=$(cat "${KIRIGAMI_MARKER_FILE}")
+fi
+
+if [ "${KIRIGAMI_MARKER}" = "${PREVIOUS_KIRIGAMI_MARKER}" ]; then
 	echo "=== Skipping mobile components (Kirigami ${KIRIGAMI_VERSION}, patches unchanged) ==="
 else
 	echo "=== Building mobile components (ECM, Kirigami) ==="
@@ -73,6 +81,7 @@ else
 		-DQt6CoreTools_DIR="${QT_HOST_PATH}/lib/cmake/Qt6CoreTools" \
 		-DQt6LinguistTools_DIR="${QT_HOST_PATH}/lib/cmake/Qt6LinguistTools" \
 		-DBUILD_SHARED_LIBS=OFF
+	mkdir -p "$(dirname "${KIRIGAMI_MARKER_FILE}")"
 	echo "${KIRIGAMI_MARKER}" > "${KIRIGAMI_MARKER_FILE}"
 fi
 
@@ -151,9 +160,15 @@ cat > ssrf-version.h <<VEOF
 VEOF
 
 # 5. Configure with cmake using Qt's iOS toolchain
-# Point pkg-config at our cross-compiled iOS libraries, not Homebrew
-PKG_CONFIG_PATH="${IOS_INSTALL_PREFIX}/lib/pkgconfig" \
-PKG_CONFIG_LIBDIR="${IOS_INSTALL_PREFIX}/lib/pkgconfig" \
+# Point pkg-config at our cross-compiled iOS libraries, not Homebrew.
+# Unset host pkg-config env vars that might leak Homebrew metadata into the
+# cross-compilation (mirrors the same treatment applied to the libdivecomputer
+# configure call at step 3).
+env -u PKG_CONFIG_SYSROOT_DIR \
+	-u PKG_CONFIG_SYSTEM_INCLUDE_PATH \
+	-u PKG_CONFIG_SYSTEM_LIBRARY_PATH \
+	PKG_CONFIG_PATH="${IOS_INSTALL_PREFIX}/lib/pkgconfig" \
+	PKG_CONFIG_LIBDIR="${IOS_INSTALL_PREFIX}/lib/pkgconfig" \
 cmake -G Xcode "${SUBSURFACE_SOURCE}" \
 	-DCMAKE_TOOLCHAIN_FILE="${QT_IOS_PATH}/lib/cmake/Qt6/qt.toolchain.cmake" \
 	-DQT_HOST_PATH="${QT_HOST_PATH}" \
