@@ -6,8 +6,8 @@ set -e
 #
 # quite a few variables are set up in the build container env:
 # ENV NDK_VERSION=27.2.12479018
-# ENV SDK_LEVEL=35
-# ENV SDK_VERSION=35.0.0
+# ENV SDK_LEVEL=36
+# ENV SDK_VERSION=36.0.0
 # ENV ANDROID_PLATFORM=24
 # ENV ANDROID_BUILD_ABI=arm64-v8a
 # ENV QT_VERSION=<matches the version of the container image>
