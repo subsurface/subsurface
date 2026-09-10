@@ -2,8 +2,8 @@ FROM ubuntu:26.04 AS base
 
 # set the basic information and paths that everything else is based on
 ENV NDK_VERSION=27.2.12479018
-ENV SDK_LEVEL=35
-ENV SDK_VERSION=35.0.0
+ENV SDK_LEVEL=36
+ENV SDK_VERSION=36.0.0
 ENV ANDROID_PLATFORM=28
 ENV ANDROID_BUILD_ABI=arm64-v8a
 ENV QT_VERSION=6.10.3
