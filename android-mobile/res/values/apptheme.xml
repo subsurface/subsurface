@@ -6,8 +6,12 @@
         <item name="android:statusBarColor">#ff303F9f</item>
         <item name="android:navigationBarColor">#ff000000</item>
         <!-- Android 15 (API 35) enforces edge-to-edge when targetSdk >= 35.
-             Opt out so the app content stays within the safe area.
-             Ignored on pre-35 devices. -->
+             This flag opts out on API 35. On API 36 (Android 16) the flag is
+             silently ignored: edge-to-edge is mandatory. Safe-area insets are
+             handled by WindowCompat.setDecorFitsSystemWindows(true) in
+             SubsurfaceMobileActivity.onCreate(), keeping app content within
+             the safe area on both API 35 and API 36+. Keeping this flag in
+             the theme ensures it still takes effect on pre-36 devices. -->
         <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>
