@@ -27,6 +27,7 @@ private slots:
 	void testParseHUDC();
 	void testParseNewFormat();
 	void testParseDLD();
+	void testImportOSTCTools();
 	void testParseMerge();
 	void testParseMergeTankSensors();
 

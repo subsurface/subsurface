@@ -85,10 +85,7 @@ int ostctools_import(std::string &buffer, struct divelog *log)
 		model = 0;
 		break;
 	default:
-		if (serial > 10000)
-			model = 0x12; //Sport
-		else
-			model = 0x0A; //OSTC3
+		model = 0;
 	}
 
 	// Prepare data to pass to libdivecomputer.
