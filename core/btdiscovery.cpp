@@ -55,7 +55,8 @@ static QMap<int, QString> cressiModelNumToProduct{
 	{ 2, "Goa"},
 	{ 3, "Leonardo 2.0"},
 	{ 4, "Donatello"},
-        { 5, "Michelangelo"},
+	{ 5, "Michelangelo"},
+	{ 6, "Raffaello"},
 	{ 9, "Neon"},
 	{10, "Nepto"}
 };
