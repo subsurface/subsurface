@@ -303,7 +303,9 @@ void TestParse::testImportOSTCTools()
 
 	for (unsigned int i = 0; i < sizeof(samples) / sizeof(samples[0]); ++i) {
 		QString filename = QString::fromLatin1(SUBSURFACE_TEST_DATA "/dives/") + samples[i];
-		QVERIFY(parse_file(filename.toLatin1().data(), &divelog) > 0);
+		auto [buffer, error] = readfile(filename.toLatin1().data());
+		QVERIFY(error > 0);
+		QVERIFY(ostctools_import(buffer, &divelog) > 0);
 		QCOMPARE(divelog.dives.size(), i + 1);
 		QCOMPARE(QString::fromStdString(divelog.dives[i]->dcs[0].model), expected_model);
 	}
