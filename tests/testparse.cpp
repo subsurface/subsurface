@@ -292,6 +292,20 @@ void TestParse::testParseDLD()
 		     SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml");
 }
 
+void TestParse::testImportOSTCTools()
+{
+	const char *samples[] = {
+		"ostc_00087_04-05-2014_043m_032min.dive",
+		"ostc_00173_17-08-2013_027m_043min.dive",
+	};
+
+	for (unsigned int i = 0; i < sizeof(samples) / sizeof(samples[0]); ++i) {
+		QString filename = QString::fromLatin1(SUBSURFACE_TEST_DATA "/dives/") + samples[i];
+		QVERIFY(parse_file(filename.toLatin1().data(), &divelog) > 0);
+		QCOMPARE(divelog.dives.size(), i + 1);
+	}
+}
+
 void TestParse::testParseMerge()
 {
 	/*
