@@ -298,11 +298,14 @@ void TestParse::testImportOSTCTools()
 		"ostc_00087_04-05-2014_043m_032min.dive",
 		"ostc_00173_17-08-2013_027m_043min.dive",
 	};
+	const QString expected_model =
+		QStringLiteral("Heinrichs Weikamp OSTC 2N (Imported from OSTCTools)");
 
 	for (unsigned int i = 0; i < sizeof(samples) / sizeof(samples[0]); ++i) {
 		QString filename = QString::fromLatin1(SUBSURFACE_TEST_DATA "/dives/") + samples[i];
 		QVERIFY(parse_file(filename.toLatin1().data(), &divelog) > 0);
 		QCOMPARE(divelog.dives.size(), i + 1);
+		QCOMPARE(QString::fromStdString(divelog.dives[i]->dcs[0].model), expected_model);
 	}
 }
 

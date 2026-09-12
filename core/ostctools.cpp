@@ -68,8 +68,9 @@ int ostctools_import(std::string &buffer, struct divelog *log)
 		}
 	}
 
-	// Try to determine the model based on serial number
+	// Select the parser descriptor. hwOS logs do not contain a model ID.
 	int model;
+	const char *import_model = NULL;
 	switch (dc_fam) {
 	case DC_FAMILY_HW_OSTC:
 		if (serial > 7000)
@@ -86,6 +87,9 @@ int ostctools_import(std::string &buffer, struct divelog *log)
 		break;
 	default:
 		model = 0;
+		// Preserve the historical import label without treating it as
+		// detected hardware.
+		import_model = serial > 10000 ? "OSTC Sport" : "OSTC 3";
 	}
 
 	// Prepare data to pass to libdivecomputer.
@@ -94,7 +98,8 @@ int ostctools_import(std::string &buffer, struct divelog *log)
 	int ret = prepare_device_descriptor(model, dc_fam, devdata);
 	if (ret == 0)
 		return report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
-	ostcdive->dcs[0].model = devdata.vendor + " " + devdata.model + " (Imported from OSTCTools)";
+	std::string display_model = import_model ? import_model : devdata.model;
+	ostcdive->dcs[0].model = devdata.vendor + " " + display_model + " (Imported from OSTCTools)";
 
 	// Parse the dive data
 	dc_status_t rc = libdc_buffer_parser(ostcdive.get(), &devdata, (unsigned char *)buffer.data(), buffer.size());
