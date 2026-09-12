@@ -309,6 +309,35 @@ void TestParse::testImportOSTCTools()
 		QCOMPARE(divelog.dives.size(), i + 1);
 		QCOMPARE(QString::fromStdString(divelog.dives[i]->dcs[0].model), expected_model);
 	}
+
+	// AI-generated (Claude): Minimal valid hwOS v0x23 records test the imported display labels.
+	struct hwos_sample {
+		unsigned int serial;
+		const char *model;
+	};
+	const hwos_sample hwos_samples[] = {
+		{10000, "OSTC 3"},
+		{10001, "OSTC Sport"},
+	};
+	for (unsigned int i = 0; i < sizeof(hwos_samples) / sizeof(hwos_samples[0]); ++i) {
+		std::string buffer(456 + 256 + 2, '\0');
+		buffer[265] = hwos_samples[i].serial & 0xff;
+		buffer[266] = hwos_samples[i].serial >> 8;
+		buffer[456 + 8] = 0x23;
+		buffer[456 + 12] = 24;
+		buffer[456 + 13] = 1;
+		buffer[456 + 14] = 1;
+		for (unsigned int gas = 0; gas < 5; ++gas) {
+			buffer[456 + 28 + 4 * gas] = 21;
+			buffer[456 + 31 + 4 * gas] = 1;
+		}
+		buffer[456 + 256] = 0xFD;
+		buffer[456 + 257] = 0xFD;
+		QVERIFY(ostctools_import(buffer, &divelog) > 0);
+		QCOMPARE(divelog.dives.size(), i + sizeof(samples) / sizeof(samples[0]) + 1);
+		QCOMPARE(QString::fromStdString(divelog.dives.back()->dcs[0].model),
+			 QStringLiteral("Heinrichs Weikamp %1 (Imported from OSTCTools)").arg(hwos_samples[i].model));
+	}
 }
 
 void TestParse::testParseMerge()
