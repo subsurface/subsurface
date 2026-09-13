@@ -58,6 +58,7 @@ private slots:
 	void importSuuntoJsonOcean();
 	void importSuuntoJsonOceanNoFit();
 	void importSuuntoJsonOceanWithFit();
+	void importGarminFit();
 private:
 	sqlite3 *_sqlite3_handle = NULL;
 };
