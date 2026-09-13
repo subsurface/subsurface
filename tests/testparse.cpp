@@ -820,6 +820,7 @@ void TestParse::importSuuntoJsonOceanWithFit()
 #endif
 }
 
+#ifndef SUBSURFACE_MOBILE
 // AI-generated (Claude)
 void TestParse::importGarminFit()
 {
@@ -830,5 +831,6 @@ void TestParse::importGarminFit()
 	QCOMPARE(QString::fromStdString(divelog.dives[0]->dcs[0].model),
 		QString::fromUtf8("Garmin Descent™ Mk1 (Imported from file)"));
 }
+#endif
 
 QTEST_GUILESS_MAIN(TestParse)
