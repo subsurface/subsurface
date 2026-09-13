@@ -62,24 +62,31 @@ Kirigami.ApplicationWindow {
 		function onPrimaryColorChanged() { manager.setStatusbarColor(subsurfaceTheme.primaryColor) }
 	}
 
+	// Parented to the window's overlay (like Kirigami's drawers and passive
+	// notifications) rather than left as a default child, since default
+	// children land inside contentItem - which is offset below the header
+	// and not the same coordinate space as the physical window - so they
+	// would never actually reach the real top/bottom edges of the screen.
 	Rectangle {
+		parent: rootItem.overlay
 		visible: Qt.platform.os === "android"
 		color: subsurfaceTheme.primaryColor
 		x: 0
 		y: 0
-		width: parent.width
+		width: parent ? parent.width : 0
 		height: SafeArea.margins.top
-		z: 9999
+		z: 1
 	}
 
 	Rectangle {
+		parent: rootItem.overlay
 		visible: Qt.platform.os === "android"
 		color: subsurfaceTheme.primaryColor
 		x: 0
-		y: parent.height - SafeArea.margins.bottom
-		width: parent.width
+		y: parent ? parent.height - SafeArea.margins.bottom : 0
+		width: parent ? parent.width : 0
 		height: SafeArea.margins.bottom
-		z: 9999
+		z: 1
 	}
 
 	// Force Kirigami's Material theme sync after QML initialization.
