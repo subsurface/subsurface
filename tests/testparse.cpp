@@ -820,4 +820,15 @@ void TestParse::importSuuntoJsonOceanWithFit()
 #endif
 }
 
+// AI-generated (Claude)
+void TestParse::importGarminFit()
+{
+	auto [buffer, err] = readfile(SUBSURFACE_TEST_DATA "/dives/garmin_2023-10-21-12-13-38.fit");
+	QVERIFY(err > 0);
+	QCOMPARE(fit_file_import(buffer, &divelog), 1);
+	QCOMPARE(divelog.dives.size(), 1);
+	QCOMPARE(QString::fromStdString(divelog.dives[0]->dcs[0].model),
+		QString::fromUtf8("Garmin Descent™ Mk1 (Imported from file)"));
+}
+
 QTEST_GUILESS_MAIN(TestParse)
