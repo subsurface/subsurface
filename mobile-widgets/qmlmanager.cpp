@@ -1988,6 +1988,7 @@ void QMLManager::setStatusbarColor(QColor color)
 	// scrim shows through instead of "color" below, so the icon appearance
 	// has to be derived from the same color to stay readable either way.
 	bool darkIcons = color.lightnessF() > 0.5;
+	report_info("setStatusbarColor: color=%08x lightness=%f darkIcons=%d", color.rgba(), color.lightnessF(), darkIcons);
 	QNativeInterface::QAndroidApplication::runOnAndroidMainThread([color, darkIcons]() {
 		QJniObject activity = QJniObject(QNativeInterface::QAndroidApplication::context());
 		QJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");

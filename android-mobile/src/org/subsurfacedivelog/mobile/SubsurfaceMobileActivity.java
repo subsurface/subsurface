@@ -110,10 +110,29 @@ public class SubsurfaceMobileActivity extends QtActivity
 	// is painting behind the bars.
 	public void setStatusBarIconAppearance(boolean darkIcons)
 	{
-		androidx.core.view.WindowInsetsControllerCompat controller =
-			androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
-		controller.setAppearanceLightStatusBars(darkIcons);
-		controller.setAppearanceLightNavigationBars(darkIcons);
+		// Calls into this method come from JNI (QMLManager::setStatusbarColor);
+		// an uncaught exception there gets silently swallowed on the C++
+		// side, so log defensively until this is confirmed working across
+		// devices.
+		//
+		// The very first call happens during startup, before the decor view
+		// has gone through its first layout pass; WindowInsetsController
+		// calls made that early can be silently overridden by Android's own
+		// default appearance assignment right after. Posting to the decor
+		// view defers the call until after that pass, so our value always
+		// wins instead of racing it.
+		final android.view.View decorView = getWindow().getDecorView();
+		decorView.post(() -> {
+			try {
+				Log.d(TAG + " setStatusBarIconAppearance", "darkIcons=" + darkIcons);
+				androidx.core.view.WindowInsetsControllerCompat controller =
+					androidx.core.view.WindowCompat.getInsetsController(getWindow(), decorView);
+				controller.setAppearanceLightStatusBars(darkIcons);
+				controller.setAppearanceLightNavigationBars(darkIcons);
+			} catch (Exception e) {
+				Log.e(TAG + " setStatusBarIconAppearance", "failed", e);
+			}
+		});
 	}
 
 	// we need to provide two endpoints:
