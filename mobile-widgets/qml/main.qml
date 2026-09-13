@@ -51,6 +51,37 @@ Kirigami.ApplicationWindow {
 	// can redraw if settings are changed
 	signal settingsChanged()
 
+	// AI-generated (Claude)
+	// Android edge-to-edge (mandatory since API 36) makes the system status
+	// and navigation bar backgrounds transparent, so our own content shows
+	// through them. Paint the safe-area strips in our app theme's primary
+	// color instead of leaving them to whatever happens to be underneath,
+	// and tell Android to pick matching (dark or light) icon colors.
+	Connections {
+		target: subsurfaceTheme
+		function onPrimaryColorChanged() { manager.setStatusbarColor(subsurfaceTheme.primaryColor) }
+	}
+
+	Rectangle {
+		visible: Qt.platform.os === "android"
+		color: subsurfaceTheme.primaryColor
+		x: 0
+		y: 0
+		width: parent.width
+		height: SafeArea.margins.top
+		z: 9999
+	}
+
+	Rectangle {
+		visible: Qt.platform.os === "android"
+		color: subsurfaceTheme.primaryColor
+		x: 0
+		y: parent.height - SafeArea.margins.bottom
+		width: parent.width
+		height: SafeArea.margins.bottom
+		z: 9999
+	}
+
 	// Force Kirigami's Material theme sync after QML initialization.
 	// The ThemeInterface constructor fires color signals before QML is loaded,
 	// so the Material style onSync handler never sees the initial values.
@@ -59,6 +90,7 @@ Kirigami.ApplicationWindow {
 	Component.onCompleted: {
 		Qt.callLater(function() {
 			subsurfaceTheme.currentTheme = subsurfaceTheme.currentTheme
+			manager.setStatusbarColor(subsurfaceTheme.primaryColor)
 		})
 	}
 

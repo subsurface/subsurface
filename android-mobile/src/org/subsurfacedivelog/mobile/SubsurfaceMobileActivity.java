@@ -100,6 +100,22 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public static native void restartDownload(UsbDevice usbDevice);
 	private static Context appContext;
 
+	// AI-generated (Claude)
+	// On API 36 the system forces edge-to-edge, so the status/navigation bar
+	// backgrounds are always transparent and our app's own content shows
+	// through them. That means the OS can no longer pick readable icon
+	// colors for us (it falls back to the system light/dark setting, which
+	// can clash with our own app theme), so we set icon appearance
+	// explicitly to match whatever color QMLManager::setStatusbarColor()
+	// is painting behind the bars.
+	public void setStatusBarIconAppearance(boolean darkIcons)
+	{
+		androidx.core.view.WindowInsetsControllerCompat controller =
+			androidx.core.view.WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+		controller.setAppearanceLightStatusBars(darkIcons);
+		controller.setAppearanceLightNavigationBars(darkIcons);
+	}
+
 	// we need to provide two endpoints:
 	// onNewIntent if we receive an Intent while running
 	// onCreate    if we were started by an Intent
