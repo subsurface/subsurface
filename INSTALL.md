@@ -56,12 +56,13 @@ Subsurface or trying to understand what we have done relative to their
 respective upstreams.
 
 
-### Getting Qt5
+### Getting Qt
 
-We use Qt5 in order to only maintain one UI across platforms.
+We use Qt in order to only maintain one UI across platforms.
 
 Qt5.9.1 is the oldest version supported if ONLY building Subsurface
-Qt5.12 is the oldest version supported if also building Subsurface-mobile
+Qt6.8 is the oldest version supported if building Subsurface-mobile on desktop or for iOS
+Qt6.9 is the oldest version supported for Android
 
 Most Linux distributions include a new enough version of Qt (and if you are on
 a distro that still ships with an older Qt, likely your C compiler is also not

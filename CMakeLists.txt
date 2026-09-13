@@ -277,6 +277,13 @@ include_directories(.
 # decide what to do about Qt
 # this is messy because we want to support older Qt5 versions, newer Qt5 versions,
 # and Qt6 when enabled / available.
+#
+# The mobile QML UI (mobile-widgets/qml) already uses a Qt6-only Kirigami version
+# so mobile builds always need Qt6 - select it automatically instead of requiring
+# the user to also pass -DBUILD_WITH_QT6=ON.
+if(SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
+	set(BUILD_WITH_QT6 ON)
+endif()
 if(BUILD_WITH_QT6)
 	set(CHECK_QT6 "Qt6")
 endif()
@@ -384,6 +391,26 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		endif()
 	endif()
 elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
+	# Qt6 is selected automatically above; this only catches the case where
+	# Qt6 itself isn't installed and find_package() fell back to Qt5.
+	if(NOT USINGQT6)
+		message(FATAL_ERROR "Building Subsurface-mobile requires Qt6, but only Qt5 was found.")
+	endif()
+	# The Kirigami version we use requires Qt 6.8.0, and the edge-to-edge handling
+	# that we need on devices (but not on desktop) relies on SafeArea.margins,
+	# which only exists from Qt 6.9 onward - so for Android and iOS 6.9.0
+	# is our real floor. Enforce it here so the failure is reported against
+	# Subsurface's own configure step instead of failing confusingly later.
+	if(QT_VERSION VERSION_LESS 6.8.0)
+		message(FATAL_ERROR "Building Subsurface-mobile requires Qt 6.8.0 or newer, found ${QT_VERSION}.")
+	endif()
+	if(ANDROID AND QT_VERSION VERSION_LESS 6.9.0)
+		message(FATAL_ERROR "Building Subsurface-mobile for Android requires Qt 6.9.0 or newer, found ${QT_VERSION}.")
+	endif()
+	if(NOT (ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "iOS"))
+		# add definition to seperate mobile for devices and for desktop
+		add_definitions(-DSUBSURFACE_MOBILE_DESKTOP)
+	endif()
 	if(APPLE)
 		set(SUBSURFACE_TARGET Subsurface-mobile)
 	else()
@@ -392,9 +419,6 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	list(APPEND QT_EXTRA_COMPONENTS QuickControls2)
 	list(APPEND QT_EXTRA_COMPONENTS QuickWidgets)
 	add_definitions(-DSUBSURFACE_MOBILE)
-
-	# add definition to seperate mobile for devices and for desktop
-	add_definitions(-DSUBSURFACE_MOBILE_DESKTOP)
 
 	message(STATUS "Building Subsurface-mobile requires BT support")
 	set(BTSUPPORT ON)
