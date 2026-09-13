@@ -152,6 +152,14 @@ public class SubsurfaceMobileActivity extends QtActivity
 		// behavior, only set this value for earlier versions (pre API 35)
 		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), Build.VERSION.SDK_INT < 35);
 
+		// AI-generated (Claude)
+		// On API 29+ Android enforces contrast by drawing a scrim over the
+		// navigation bar (most visible with three-button navigation), which
+		// would otherwise hide the color QMLManager::setStatusbarColor()
+		// paints behind it. Disable that so our own color actually shows.
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+			getWindow().setNavigationBarContrastEnforced(false);
+
 		appContext = getApplicationContext();
 
 		// now we're checking if the App was started from another Android App via Intent
