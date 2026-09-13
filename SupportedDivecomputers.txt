@@ -16,7 +16,7 @@ Dive Rite: NiTek Q, NiTek Trio
 DiveSystem: Orca, iDive DAN, iDive Deep, iDive Easy, iDive Free, iDive Pro, iDive Reb, iDive Stealth, iDive Tech, iDive X3M
 Divesoft: Freedom, Liberty
 FIT: File import
-Garmin: Descent Mk1, Descent Mk2(i)/Mk3(i)(S)/G1/G2/X50i
+Garmin: Descent™ G1 / G1 Solar, Descent™ G2, Descent™ Mk1, Descent™ Mk1 APAC, Descent™ Mk2 S, Descent™ Mk2 S APAC, Descent™ Mk2(i), Descent™ Mk2(i) APAC, Descent™ Mk3(i) 43mm, Descent™ Mk3(i) 51mm, Descent™ X50i, fēnix® 8 43mm, fēnix® 8 47mm / 51mm / tactix® 8 47mm / 51mm / quatix® 8 47mm / 51mm, fēnix® 8 47mm / 51mm / tactix® 8 47mm / 51mm / quatix® 8 47mm / 51mm APAC, fēnix® 8 Pro 47mm / 51mm / MicroLED / quatix® 8 Pro 47mm / 51mm, fēnix® 8 Solar 47mm, fēnix® 8 Solar 51mm / tactix® 8 Solar 51mm, fēnix® 8 Solar 51mm / tactix® 8 Solar 51mm APAC
 Genesis: Centauri, React Pro, React Pro White
 Halcyon: Symbios HUD, Symbios Handset
 Heinrichs Weikamp: Frog, OSTC, OSTC 2, OSTC 2 TR, OSTC 2C, OSTC 2N, OSTC 3, OSTC 4, OSTC 5, OSTC Mk2, OSTC Nano, OSTC Plus, OSTC Sport, OSTC cR
