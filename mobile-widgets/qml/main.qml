@@ -51,6 +51,12 @@ Kirigami.ApplicationWindow {
 	// can redraw if settings are changed
 	signal settingsChanged()
 
+	// SafeArea is a QtQuick attached type only since Qt 6.9. We still build Subsurface-mobile
+	// against Qt 6.8 for desktop test builds, where it runs in a window (so there are no insets
+	// to work around) and for iOS where this isn't needed - so simply fake it as zero margins
+	// in Qt 6.8 builds where it doesn't exist.
+	readonly property var safeAreaMargins: (typeof SafeArea !== "undefined") ? SafeArea.margins : ({ top: 0, bottom: 0 })
+
 	// AI-generated (Claude)
 	// Android edge-to-edge (mandatory since API 36) makes the system status
 	// and navigation bar backgrounds transparent, so our own content shows
@@ -74,7 +80,7 @@ Kirigami.ApplicationWindow {
 		x: 0
 		y: 0
 		width: parent ? parent.width : 0
-		height: SafeArea.margins.top
+		height: safeAreaMargins.top
 		z: 1
 	}
 
@@ -83,9 +89,9 @@ Kirigami.ApplicationWindow {
 		visible: Qt.platform.os === "android"
 		color: subsurfaceTheme.primaryColor
 		x: 0
-		y: parent ? parent.height - SafeArea.margins.bottom : 0
+		y: parent ? parent.height - safeAreaMargins.bottom : 0
 		width: parent ? parent.width : 0
-		height: SafeArea.margins.bottom
+		height: safeAreaMargins.bottom
 		z: 1
 	}
 
