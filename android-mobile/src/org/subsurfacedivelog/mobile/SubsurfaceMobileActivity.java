@@ -125,10 +125,13 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Log.i(TAG + " onCreate", "onCreate SubsurfaceMobileActivity");
 		super.onCreate(savedInstanceState);
 
+		// AI-generated (Claude)
 		// Ensure app content does not draw behind system bars.
-		// The theme sets windowOptOutEdgeToEdgeEnforcement for Android 15+;
-		// this call handles pre-Android 15 devices.
-		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+		// For Android 16 edge-to-edgevis mandatory - the system always makes
+		// the status/navigation bar backgrounds transparent and always extends
+		// content underneath them. And since Android 15 also supports this
+		// behavior, only set this value for earlier versions (pre API 35)
+		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), Build.VERSION.SDK_INT < 35);
 
 		appContext = getApplicationContext();
 
