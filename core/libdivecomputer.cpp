@@ -1768,19 +1768,19 @@ std::string do_libdivecomputer_import(device_data_t *data)
  */
 int prepare_device_descriptor(int data_model, dc_family_t dc_fam, device_data_t &dev_data)
 {
+	dc_descriptor_t *data_descriptor = get_descriptor(dc_fam, data_model);
+	if (!data_descriptor)
+		return 0;
+
+	if (dev_data.descriptor)
+		dc_descriptor_free(dev_data.descriptor);
 	dev_data.device = NULL;
 	dev_data.context = NULL;
-
-	dc_descriptor_t *data_descriptor = get_descriptor(dc_fam, data_model);
-	if (data_descriptor) {
-		dev_data.descriptor = data_descriptor;
-		const char *vendor = dc_descriptor_get_vendor(data_descriptor);
-		const char *model = dc_descriptor_get_product(data_descriptor);
-		dev_data.vendor = vendor ? vendor : "";
-		dev_data.model = model ? model : "";
-	} else {
-		return 0;
-	}
+	dev_data.descriptor = data_descriptor;
+	const char *vendor = dc_descriptor_get_vendor(data_descriptor);
+	const char *model = dc_descriptor_get_product(data_descriptor);
+	dev_data.vendor = vendor ? vendor : "";
+	dev_data.model = model ? model : "";
 
 	return 1;
 }
