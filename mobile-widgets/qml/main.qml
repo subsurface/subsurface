@@ -55,7 +55,7 @@ Kirigami.ApplicationWindow {
 	// against Qt 6.8 for desktop test builds, where it runs in a window (so there are no insets
 	// to work around) and for iOS where this isn't needed - so simply fake it as zero margins
 	// in Qt 6.8 builds where it doesn't exist.
-	readonly property var safeAreaMargins: (typeof SafeArea !== "undefined") ? SafeArea.margins : ({ top: 0, bottom: 0 })
+	readonly property var safeAreaMargins: (typeof SafeArea !== "undefined") ? SafeArea.margins : ({ top: 0, bottom: 0, left: 0, right: 0 })
 
 	// AI-generated (Claude)
 	// Android edge-to-edge (mandatory since API 36) makes the system status
@@ -92,6 +92,32 @@ Kirigami.ApplicationWindow {
 		y: parent ? parent.height - safeAreaMargins.bottom : 0
 		width: parent ? parent.width : 0
 		height: safeAreaMargins.bottom
+		z: 1
+	}
+
+	// In landscape, Android's three-button navigation area can sit on a
+	// side instead of the bottom, reported via safeAreaMargins.left/right;
+	// paint those strips too so nav icons never end up over unrelated page
+	// content that isn't primaryColor.
+	Rectangle {
+		parent: rootItem.overlay
+		visible: Qt.platform.os === "android"
+		color: subsurfaceTheme.primaryColor
+		x: 0
+		y: 0
+		width: safeAreaMargins.left
+		height: parent ? parent.height : 0
+		z: 1
+	}
+
+	Rectangle {
+		parent: rootItem.overlay
+		visible: Qt.platform.os === "android"
+		color: subsurfaceTheme.primaryColor
+		x: parent ? parent.width - safeAreaMargins.right : 0
+		y: 0
+		width: safeAreaMargins.right
+		height: parent ? parent.height : 0
 		z: 1
 	}
 
