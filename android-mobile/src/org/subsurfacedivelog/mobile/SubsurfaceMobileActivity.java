@@ -145,11 +145,10 @@ public class SubsurfaceMobileActivity extends QtActivity
 		super.onCreate(savedInstanceState);
 
 		// AI-generated (Claude)
-		// Ensure app content does not draw behind system bars.
-		// For Android 16 edge-to-edgevis mandatory - the system always makes
-		// the status/navigation bar backgrounds transparent and always extends
-		// content underneath them. And since Android 15 also supports this
-		// behavior, only set this value for earlier versions (pre API 35)
+		// Let app content draw under the system bars from API 35 (Android 15) onward.
+		// Opt in to edge-to-edge starting at 35, and rely on the safe-area strips painted
+		// in main.qml (plus setStatusBarIconAppearance() below) to keep content readable
+		// behind the bars. Pre-35 devices keep the normal, non-edge-to-edge layout.
 		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), Build.VERSION.SDK_INT < 35);
 
 		// AI-generated (Claude)
