@@ -397,10 +397,10 @@ elseif (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 		message(FATAL_ERROR "Building Subsurface-mobile requires Qt6, but only Qt5 was found.")
 	endif()
 	# The Kirigami version we use requires Qt 6.8.0, and the edge-to-edge handling
-	# that we need on devices (but not on desktop) relies on SafeArea.margins,
-	# which only exists from Qt 6.9 onward - so for Android and iOS 6.9.0
-	# is our real floor. Enforce it here so the failure is reported against
-	# Subsurface's own configure step instead of failing confusingly later.
+	# that we need on Android devices (but not on iOS / desktop) relies on SafeArea.margins,
+	# which only exists from Qt 6.9 onward - so for Android Qt 6.9.0 is our real floor.
+	# Enforce it here so the failure is reported against Subsurface's own configure step \
+	# instead of failing confusingly later.
 	if(QT_VERSION VERSION_LESS 6.8.0)
 		message(FATAL_ERROR "Building Subsurface-mobile requires Qt 6.8.0 or newer, found ${QT_VERSION}.")
 	endif()
