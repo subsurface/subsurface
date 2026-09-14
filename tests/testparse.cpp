@@ -294,6 +294,9 @@ void TestParse::testParseDLD()
 
 void TestParse::testImportOSTCTools()
 {
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing OSTCTools import on SUBSURFACE_MOBILE");
+#else
 	const char *samples[] = {
 		"ostc_00087_04-05-2014_043m_032min.dive",
 		"ostc_00173_17-08-2013_027m_043min.dive",
@@ -338,6 +341,7 @@ void TestParse::testImportOSTCTools()
 		QCOMPARE(QString::fromStdString(divelog.dives.back()->dcs[0].model),
 			 QStringLiteral("Heinrichs Weikamp %1 (Imported from OSTCTools)").arg(hwos_samples[i].model));
 	}
+#endif
 }
 
 void TestParse::testParseMerge()
