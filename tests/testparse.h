@@ -55,9 +55,12 @@ private slots:
 
 	void importSuuntoJsonNautic();
 	void importSuuntoJsonEonCore();
+	void importSuuntoJsonEonCoreMultiGas();
 	void importSuuntoJsonOcean();
 	void importSuuntoJsonOceanNoFit();
 	void importSuuntoJsonOceanWithFit();
+	void importSuuntoJsonOceanGf();
+	void importSuuntoJsonOceanGfFitOverride();
 private:
 	sqlite3 *_sqlite3_handle = NULL;
 };

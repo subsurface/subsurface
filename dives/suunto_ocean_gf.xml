@@ -1,0 +1,32 @@
+<divelog program='subsurface' version='3'>
+<settings>
+</settings>
+<divesites>
+</divesites>
+<dives>
+<dive sac='288.493 l/min' date='2025-06-01' time='09:00:00' duration='0:50 min'>
+  <notes>Regression test for reading gradient factors straight from JSON</notes>
+  <cylinder size='12.0 l' workpressure='200.0 bar' description='AL84' end='150.0 bar' />
+  <divecomputer model='Suunto Ocean' deviceid='1656d69c'>
+  <depth max='20.0 m' mean='12.0 m' />
+  <surface pressure='1.013 bar' />
+  <extradata key='Serial' value='9876543210' />
+  <extradata key='FW Version' value='2.40.56' />
+  <extradata key='HW version' value='Seal_RevA3' />
+  <extradata key='GF Low' value='30' />
+  <extradata key='GF High' value='85' />
+  <event time='0:00 min' type='11' value='21' name='gaschange' cylinder='0' />
+  <sample time='0:10 min' depth='10.0 m' pressure0='200.0 bar' />
+  <sample time='0:10 min' depth='10.0 m' />
+  <sample time='0:20 min' depth='20.0 m' pressure0='180.0 bar' />
+  <sample time='0:20 min' depth='20.0 m' />
+  <sample time='0:30 min' depth='20.0 m' pressure0='170.0 bar' />
+  <sample time='0:30 min' depth='20.0 m' />
+  <sample time='0:40 min' depth='10.0 m' pressure0='160.0 bar' />
+  <sample time='0:40 min' depth='10.0 m' />
+  <sample time='0:50 min' depth='0.0 m' pressure0='150.0 bar' />
+  <sample time='0:50 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
