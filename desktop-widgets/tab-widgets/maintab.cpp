@@ -16,6 +16,8 @@
 
 #include "core/selection.h"
 #include "qt-models/diveplannermodel.h"
+#include "qt-models/gasblendermodel.h"
+
 
 #include <QShortcut>
 
