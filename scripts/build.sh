@@ -117,11 +117,12 @@ while [[ $# -gt 0 ]] ; do
 			BUILD_WITH_QT6="1"
 			;;
 		-mobile)
-			# we are building Subsurface-mobile
+			# we are building Subsurface-mobile (which requires Qt 6)
 			# Note that this will run natively on the host OS.
 			# To cross build for Android or iOS (including simulator)
 			# use the scripts in packaging/xxx
 			BUILD_MOBILE="1"
+			BUILD_WITH_QT6="1"
 			;;
 		-desktop)
 			# we are building Subsurface
@@ -136,9 +137,10 @@ while [[ $# -gt 0 ]] ; do
 			BUILD_CLI="1"
 			;;
 		-both)
-			# we are building Subsurface and Subsurface-mobile
+			# we are building Subsurface and Subsurface-mobile (so we need Qt 6)
 			BUILD_MOBILE="1"
 			BUILD_DESKTOP="1"
+			BUILD_WITH_QT6="1"
 			;;
 		-all)
 			# we are building Subsurface, Subsurface-mobile, and Subsurface-downloader
@@ -146,6 +148,7 @@ while [[ $# -gt 0 ]] ; do
 			BUILD_MOBILE="1"
 			BUILD_DESKTOP="1"
 			BUILD_DOWNLOADER="1"
+			BUILD_WITH_QT6="1"
 			;;
 		-ftdi)
 			# make sure we include the user space FTDI drivers

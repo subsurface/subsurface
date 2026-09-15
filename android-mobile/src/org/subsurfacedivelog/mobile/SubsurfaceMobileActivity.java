@@ -100,6 +100,41 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public static native void restartDownload(UsbDevice usbDevice);
 	private static Context appContext;
 
+	// AI-generated (Claude)
+	// On API 36 the system forces edge-to-edge, so the status/navigation bar
+	// backgrounds are always transparent and our app's own content shows
+	// through them. That means the OS can no longer pick readable icon
+	// colors for us (it falls back to the system light/dark setting, which
+	// can clash with our own app theme), so we set icon appearance
+	// explicitly to match whatever color QMLManager::setStatusbarColor()
+	// is painting behind the bars.
+	public void setStatusBarIconAppearance(boolean darkIcons)
+	{
+		// Calls into this method come from JNI (QMLManager::setStatusbarColor);
+		// an uncaught exception there gets silently swallowed on the C++
+		// side, so log defensively until this is confirmed working across
+		// devices.
+		//
+		// The very first call happens during startup, before the decor view
+		// has gone through its first layout pass; WindowInsetsController
+		// calls made that early can be silently overridden by Android's own
+		// default appearance assignment right after. Posting to the decor
+		// view defers the call until after that pass, so our value always
+		// wins instead of racing it.
+		final android.view.View decorView = getWindow().getDecorView();
+		decorView.post(() -> {
+			try {
+				Log.d(TAG + " setStatusBarIconAppearance", "darkIcons=" + darkIcons);
+				androidx.core.view.WindowInsetsControllerCompat controller =
+					androidx.core.view.WindowCompat.getInsetsController(getWindow(), decorView);
+				controller.setAppearanceLightStatusBars(darkIcons);
+				controller.setAppearanceLightNavigationBars(darkIcons);
+			} catch (Exception e) {
+				Log.e(TAG + " setStatusBarIconAppearance", "failed", e);
+			}
+		});
+	}
+
 	// we need to provide two endpoints:
 	// onNewIntent if we receive an Intent while running
 	// onCreate    if we were started by an Intent
@@ -109,10 +144,20 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Log.i(TAG + " onCreate", "onCreate SubsurfaceMobileActivity");
 		super.onCreate(savedInstanceState);
 
-		// Ensure app content does not draw behind system bars.
-		// The theme sets windowOptOutEdgeToEdgeEnforcement for Android 15+;
-		// this call handles pre-Android 15 devices.
-		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), true);
+		// AI-generated (Claude)
+		// Let app content draw under the system bars from API 35 (Android 15) onward.
+		// Opt in to edge-to-edge starting at 35, and rely on the safe-area strips painted
+		// in main.qml (plus setStatusBarIconAppearance() below) to keep content readable
+		// behind the bars. Pre-35 devices keep the normal, non-edge-to-edge layout.
+		androidx.core.view.WindowCompat.setDecorFitsSystemWindows(getWindow(), Build.VERSION.SDK_INT < 35);
+
+		// AI-generated (Claude)
+		// On API 29+ Android enforces contrast by drawing a scrim over the
+		// navigation bar (most visible with three-button navigation), which
+		// would otherwise hide the color QMLManager::setStatusbarColor()
+		// paints behind it. Disable that so our own color actually shows.
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+			getWindow().setNavigationBarContrastEnforced(false);
 
 		appContext = getApplicationContext();
 

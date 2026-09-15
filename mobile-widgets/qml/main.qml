@@ -51,6 +51,76 @@ Kirigami.ApplicationWindow {
 	// can redraw if settings are changed
 	signal settingsChanged()
 
+	// SafeArea is a QtQuick attached type only since Qt 6.9. We still build Subsurface-mobile
+	// against Qt 6.8 for desktop test builds, where it runs in a window (so there are no insets
+	// to work around) and for iOS where this isn't needed - so simply fake it as zero margins
+	// in Qt 6.8 builds where it doesn't exist.
+	readonly property var safeAreaMargins: (typeof SafeArea !== "undefined") ? SafeArea.margins : ({ top: 0, bottom: 0, left: 0, right: 0 })
+
+	// AI-generated (Claude)
+	// Android edge-to-edge (mandatory since API 36) makes the system status
+	// and navigation bar backgrounds transparent, so our own content shows
+	// through them. Paint the safe-area strips in our app theme's primary
+	// color instead of leaving them to whatever happens to be underneath,
+	// and tell Android to pick matching (dark or light) icon colors.
+	Connections {
+		target: subsurfaceTheme
+		function onPrimaryColorChanged() { manager.setStatusbarColor(subsurfaceTheme.primaryColor) }
+	}
+
+	// Parented to the window's overlay (like Kirigami's drawers and passive
+	// notifications) rather than left as a default child, since default
+	// children land inside contentItem - which is offset below the header
+	// and not the same coordinate space as the physical window - so they
+	// would never actually reach the real top/bottom edges of the screen.
+	Rectangle {
+		parent: rootItem.overlay
+		visible: Qt.platform.os === "android"
+		color: subsurfaceTheme.primaryColor
+		x: 0
+		y: 0
+		width: parent ? parent.width : 0
+		height: safeAreaMargins.top
+		z: 1
+	}
+
+	Rectangle {
+		parent: rootItem.overlay
+		visible: Qt.platform.os === "android"
+		color: subsurfaceTheme.primaryColor
+		x: 0
+		y: parent ? parent.height - safeAreaMargins.bottom : 0
+		width: parent ? parent.width : 0
+		height: safeAreaMargins.bottom
+		z: 1
+	}
+
+	// In landscape, Android's three-button navigation area can sit on a
+	// side instead of the bottom, reported via safeAreaMargins.left/right;
+	// paint those strips too so nav icons never end up over unrelated page
+	// content that isn't primaryColor.
+	Rectangle {
+		parent: rootItem.overlay
+		visible: Qt.platform.os === "android"
+		color: subsurfaceTheme.primaryColor
+		x: 0
+		y: 0
+		width: safeAreaMargins.left
+		height: parent ? parent.height : 0
+		z: 1
+	}
+
+	Rectangle {
+		parent: rootItem.overlay
+		visible: Qt.platform.os === "android"
+		color: subsurfaceTheme.primaryColor
+		x: parent ? parent.width - safeAreaMargins.right : 0
+		y: 0
+		width: safeAreaMargins.right
+		height: parent ? parent.height : 0
+		z: 1
+	}
+
 	// Force Kirigami's Material theme sync after QML initialization.
 	// The ThemeInterface constructor fires color signals before QML is loaded,
 	// so the Material style onSync handler never sees the initial values.
@@ -59,6 +129,7 @@ Kirigami.ApplicationWindow {
 	Component.onCompleted: {
 		Qt.callLater(function() {
 			subsurfaceTheme.currentTheme = subsurfaceTheme.currentTheme
+			manager.setStatusbarColor(subsurfaceTheme.primaryColor)
 		})
 	}
 

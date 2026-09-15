@@ -1981,17 +1981,22 @@ void QMLManager::writeToAppLogFile(const std::string &logText)
 // WindowManager.LayoutParams
 #define FLAG_TRANSLUCENT_STATUS 0x04000000
 #define FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS 0x80000000
-// View
-#define SYSTEM_UI_FLAG_LIGHT_STATUS_BAR 0x00002000
 
 void QMLManager::setStatusbarColor(QColor color)
 {
-	QNativeInterface::QAndroidApplication::runOnAndroidMainThread([color]() {
-		QJniObject window = QJniObject(QNativeInterface::QAndroidApplication::context()).callObjectMethod("getWindow", "()Landroid/view/Window;");
+	// On API 36+ the bar backgrounds are forced transparent and our QML
+	// scrim shows through instead of "color" below, so the icon appearance
+	// has to be derived from the same color to stay readable either way.
+	bool darkIcons = color.lightnessF() > 0.5;
+	report_info("setStatusbarColor: color=%08x lightness=%f darkIcons=%d", color.rgba(), color.lightnessF(), darkIcons);
+	QNativeInterface::QAndroidApplication::runOnAndroidMainThread([color, darkIcons]() {
+		QJniObject activity = QJniObject(QNativeInterface::QAndroidApplication::context());
+		QJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
 		window.callMethod<void>("addFlags", "(I)V", FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 		window.callMethod<void>("clearFlags", "(I)V", FLAG_TRANSLUCENT_STATUS);
 		window.callMethod<void>("setStatusBarColor", "(I)V", color.rgba());
 		window.callMethod<void>("setNavigationBarColor", "(I)V", color.rgba());
+		activity.callMethod<void>("setStatusBarIconAppearance", "(Z)V", darkIcons);
 	});
 }
 #else
