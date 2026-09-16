@@ -1,0 +1,44 @@
+<divelog program='subsurface' version='3'>
+<settings>
+</settings>
+<divesites>
+</divesites>
+<dives>
+<dive sac='202.331 l/min' date='2025-06-01' time='09:00:00' duration='1:50 min'>
+  <notes>Regression test for gas switch cylinder assignment</notes>
+  <cylinder size='12.0 l' workpressure='200.0 bar' description='AL84' />
+  <cylinder size='10.0 l' workpressure='200.0 bar' description='AL70' o2='50.0%' end='178.0 bar' />
+  <divecomputer model='Suunto EON Core' deviceid='ac07b301'>
+  <depth max='20.0 m' mean='9.636 m' />
+  <surface pressure='1.013 bar' />
+  <extradata key='Serial' value='1234567890' />
+  <extradata key='FW Version' value='3.0.1102' />
+  <extradata key='HW version' value='70.6.0' />
+  <event time='0:00 min' type='11' value='21' name='gaschange' cylinder='0' />
+  <event time='1:10 min' type='11' value='50' name='gaschange' cylinder='1' o2='50.0%' />
+  <sample time='0:10 min' depth='5.0 m' pressure0='200.0 bar' />
+  <sample time='0:10 min' depth='5.0 m' />
+  <sample time='0:20 min' depth='10.0 m' pressure0='190.0 bar' />
+  <sample time='0:20 min' depth='10.0 m' />
+  <sample time='0:30 min' depth='15.0 m' pressure0='180.0 bar' />
+  <sample time='0:30 min' depth='15.0 m' />
+  <sample time='0:40 min' depth='20.0 m' pressure0='170.0 bar' />
+  <sample time='0:40 min' depth='20.0 m' />
+  <sample time='0:50 min' depth='20.0 m' pressure0='160.0 bar' />
+  <sample time='0:50 min' depth='20.0 m' />
+  <sample time='1:00 min' depth='15.0 m' pressure0='150.0 bar' />
+  <sample time='1:00 min' depth='15.0 m' />
+  <sample time='1:10 min' depth='6.0 m' pressure1='200.0 bar' />
+  <sample time='1:10 min' depth='6.0 m' />
+  <sample time='1:20 min' depth='6.0 m' pressure1='190.0 bar' />
+  <sample time='1:20 min' depth='6.0 m' />
+  <sample time='1:30 min' depth='6.0 m' pressure1='185.0 bar' />
+  <sample time='1:30 min' depth='6.0 m' />
+  <sample time='1:40 min' depth='3.0 m' pressure1='180.0 bar' />
+  <sample time='1:40 min' depth='3.0 m' />
+  <sample time='1:50 min' depth='0.0 m' pressure1='178.0 bar' />
+  <sample time='1:50 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
