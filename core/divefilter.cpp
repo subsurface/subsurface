@@ -192,10 +192,20 @@ bool DiveFilter::diveSiteMode() const
 QString DiveFilter::shownText() const
 {
 	size_t num = divelog.dives.size();
-	if (diveSiteMode() || filterData.validFilter())
+
+	if (diveSiteMode() || filterData.validFilter()) {
 		return gettextFromC::tr("%L1/%L2 shown").arg(shown_dives).arg(num);
-	else
-		return gettextFromC::tr("%L1 dives").arg(num);
+	} else {
+		size_t invalid = 0;
+		if (!prefs.display_invalid_dives)
+			invalid = invalidDives().size();
+
+		if (invalid) {
+			return gettextFromC::tr("%L1 dives)(%L2 shown").arg(num).arg(num-invalid);
+		} else {
+			return gettextFromC::tr("%L1 dives").arg(num);
+		}
+	}
 }
 
 int DiveFilter::shownDives() const
@@ -219,6 +229,17 @@ std::vector<dive *> DiveFilter::visibleDives() const
 
 	for (auto &d: divelog.dives) {
 		if (!d->hidden_by_filter)
+			res.push_back(d.get());
+	}
+	return res;
+}
+
+std::vector<dive *> DiveFilter::invalidDives() const
+{
+	std::vector<dive *> res;
+
+	for (auto &d: divelog.dives) {
+		if (d->invalid)
 			res.push_back(d.get());
 	}
 	return res;
