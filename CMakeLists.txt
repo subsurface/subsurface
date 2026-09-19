@@ -260,7 +260,34 @@ if(NOT ANDROID AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS" AND NOT SUBSURFACE_TARGE
 			set(LIBRAW_FOUND TRUE)
 			LIST(APPEND SUBSURFACE_LINK_LIBRARIES libraw::raw_r)
 		endif()
-		# libmtp is not available via vcpkg, skip for now
+		set(LIBMTP_FOUND FALSE)
+ 		unset(LIBMTP_LIBRARIES)
+
+		find_path(LIBMTP_INCLUDE_DIR libmtp.h
+			PATHS "${_VCPKG_PREFIX}/include"
+			NO_DEFAULT_PATH)
+		find_library(LIBMTP_LIBRARY_RELEASE
+			NAMES libmtp mtp
+			PATHS "${_VCPKG_PREFIX}/lib"
+			NO_DEFAULT_PATH)
+		find_library(LIBMTP_LIBRARY_DEBUG
+			NAMES libmtp mtp
+			PATHS "${_VCPKG_PREFIX}/debug/lib"
+			NO_DEFAULT_PATH)
+		if(LIBMTP_INCLUDE_DIR AND (LIBMTP_LIBRARY_RELEASE OR LIBMTP_LIBRARY_DEBUG))
+			set(LIBMTP_FOUND TRUE)
+			unset(LIBMTP_LIBRARIES)
+			if(LIBMTP_LIBRARY_RELEASE AND LIBMTP_LIBRARY_DEBUG)
+				list(APPEND LIBMTP_LIBRARIES optimized "${LIBMTP_LIBRARY_RELEASE}" debug "${LIBMTP_LIBRARY_DEBUG}")
+			elseif(LIBMTP_LIBRARY_RELEASE)
+				list(APPEND LIBMTP_LIBRARIES "${LIBMTP_LIBRARY_RELEASE}")
+			else()
+				list(APPEND LIBMTP_LIBRARIES "${LIBMTP_LIBRARY_DEBUG}")
+			endif()
+			list(APPEND LIBMTP_LIBRARIES ole32 portabledeviceguids propsys)
+			include_directories(${LIBMTP_INCLUDE_DIR})
+			message(STATUS "libmtp found: ${LIBMTP_LIBRARIES}")
+		endif()
 	else()
 		pkg_config_library(LIBUSB libusb-1.0 QUIET)
 		pkg_config_library(LIBMTP libmtp QUIET)

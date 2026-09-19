@@ -81,7 +81,9 @@ jobs:
       - name: Install vcpkg dependencies
         shell: pwsh
         run: |
-          # Install all the C/C++ library dependencies Subsurface needs
+          # Install all the C/C++ library dependencies Subsurface needs.
+          # libmtp is installed via a custom overlay port that provides an
+          # MSVC-compatible stub implementation of the MTP symbols.
           C:\vcpkg\vcpkg.exe install `
             libxml2 `
             libxslt `
@@ -94,7 +96,9 @@ jobs:
             libusb `
             hidapi `
             libraw `
-            --triplet x64-windows
+            libmtp `
+            --triplet x64-windows `
+            --overlay-ports="${{ github.workspace }}\packaging\windows-msvc\overlay-ports"
 
           # Print installed packages for debugging
           C:\vcpkg\vcpkg.exe list
@@ -108,7 +112,7 @@ jobs:
 
       - name: load the documentation from cache
         id: load-cache
-        uses: actions/cache@v6
+        uses: actions/cache/restore@v6
         with:
           path: Documentation/output
           key: ${{ needs.build-documentation.outputs.cache-key }}
@@ -178,7 +182,7 @@ jobs:
           # Suppress C4996 warnings/errors about deprecated POSIX names (strdup -> _strdup, etc.)
           # /WX- disables treating warnings as errors, /wd4996 disables warning 4996
           $env:CL = "/WX- /wd4996 /D_CRT_NONSTDC_NO_WARNINGS /D_CRT_SECURE_NO_WARNINGS"
-          msbuild -m -p:Platform=x64 -p:Configuration=${{ env.BUILD_TYPE }} `
+          msbuild -m -p:Platform=x64 -p:Configuration=${{ env.BUILD_TYPE }} -p:EnableLibmtp=true `
             libdivecomputer/contrib/msvc/libdivecomputer.vcxproj
 
           # Copy the built files to install directory
