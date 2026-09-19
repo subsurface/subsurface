@@ -82,6 +82,40 @@ function Test-Command {
     return $?
 }
 
+function Update-PathEnvironment {
+    [CmdletBinding(SupportsShouldProcess)]
+    param()
+
+    $pathVariables = @(
+        [System.Environment]::GetEnvironmentVariables('Process').GetEnumerator() |
+            Where-Object { [string]::Equals([string]$_.Key, 'Path', [System.StringComparison]::OrdinalIgnoreCase) }
+    )
+
+    if ($pathVariables.Count -le 1) {
+        return
+    }
+
+    $pathEntries = New-Object System.Collections.Generic.List[string]
+    $seenPathEntries = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+    foreach ($variable in $pathVariables) {
+        foreach ($entry in ([string]$variable.Value -split ';')) {
+            if ($entry -and $seenPathEntries.Add($entry)) {
+                $pathEntries.Add($entry)
+            }
+        }
+    }
+
+    if (-not $PSCmdlet.ShouldProcess("process environment Path", "deduplicate case-variant variables")) {
+        return
+    }
+
+    foreach ($variable in $pathVariables) {
+        [System.Environment]::SetEnvironmentVariable([string]$variable.Key, $null, 'Process')
+    }
+
+    [System.Environment]::SetEnvironmentVariable('Path', ($pathEntries -join ';'), 'Process')
+}
+
 # ---------------------------------------------------------------
 # Determine paths
 # ---------------------------------------------------------------
@@ -298,19 +332,35 @@ if (-not $SkipLibdivecomputer) {
         exit 1
     }
 
-    # Set up include/lib paths for vcpkg
-    $env:INCLUDE = "$vcpkgInstalled\include;$env:INCLUDE"
-    $env:LIB = "$vcpkgInstalled\lib;$env:LIB"
+    $savedInclude = $env:INCLUDE
+    $savedLib = $env:LIB
+    $savedCl = $env:CL
+    $savedVcpkgRoot = $env:VCPKG_ROOT
+    $msbuildExitCode = 0
+    try {
+        # Set up include/lib paths for vcpkg
+        $env:VCPKG_ROOT = $VcpkgRoot
+        $env:INCLUDE = "$vcpkgInstalled\include;$env:INCLUDE"
+        $env:LIB = "$vcpkgInstalled\lib;$env:LIB"
 
-    # Suppress deprecation warnings
-    $env:CL = "/WX- /wd4996 /D_CRT_NONSTDC_NO_WARNINGS /D_CRT_SECURE_NO_WARNINGS"
+        # Suppress deprecation warnings.
+        $env:CL = "/WX- /wd4996 /D_CRT_NONSTDC_NO_WARNINGS /D_CRT_SECURE_NO_WARNINGS"
 
-    Write-Host "Building with msbuild..."
-    msbuild -m -p:Platform=x64 -p:Configuration=$BuildType $libdcProj
+        Write-Host "Building with msbuild..."
+        Update-PathEnvironment
+        msbuild -m -p:Platform=x64 -p:Configuration=$BuildType -p:EnableLibmtp=true $libdcProj
 
-    if ($LASTEXITCODE -ne 0) {
+        $msbuildExitCode = $LASTEXITCODE
+    } finally {
+        $env:INCLUDE = $savedInclude
+        $env:LIB = $savedLib
+        $env:CL = $savedCl
+        $env:VCPKG_ROOT = $savedVcpkgRoot
+    }
+
+    if ($msbuildExitCode -ne 0) {
         Write-Error "libdivecomputer build failed"
-        exit $LASTEXITCODE
+        exit $msbuildExitCode
     }
 
     # Copy built files
