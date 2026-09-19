@@ -26,9 +26,9 @@ This guide explains how to build Subsurface natively on Windows using Microsoft 
 5. **NSIS** (for creating installers)
    - Download from https://nsis.sourceforge.io/Download
    - Add to PATH: `C:\Program Files (x86)\NSIS`
-```powershell
-[Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files (x86)\NSIS", "User")
-```
+   ```powershell
+   [Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files (x86)\NSIS", "User")
+   ```
 
 ### Installing vcpkg
 

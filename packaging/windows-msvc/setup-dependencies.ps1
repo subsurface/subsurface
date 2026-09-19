@@ -73,7 +73,8 @@ $dependencies = @(
     "openssl",
     "libusb",
     "hidapi",
-    "libraw"
+    "libraw",
+    "libmtp"
 )
 
 Write-Host "Installing dependencies:" -ForegroundColor Green
@@ -81,7 +82,8 @@ $dependencies | ForEach-Object { Write-Host "  - $_" }
 Write-Host ""
 
 # Install dependencies
-$args = @("install") + $dependencies + @("--triplet", $Triplet)
+$overlayPorts = Join-Path $PSScriptRoot "overlay-ports"
+$args = @("install") + $dependencies + @("--triplet", $Triplet) + @("--overlay-ports=$overlayPorts")
 Write-Host "Running: vcpkg $($args -join ' ')" -ForegroundColor Yellow
 Write-Host ""
 
