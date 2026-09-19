@@ -44,12 +44,18 @@ parts:
     - INSTALL_ROOT=${CRAFT_PART_INSTALL}
     build-packages:
     - qtbase5-dev
-    - wget
+    - curl
     override-pull: |
       craftctl default
       export QT_SELECT=5
       export QT_VERSION=$( qmake -query QT_VERSION )
       mkdir -p QtHeaders/QtLocation/private QtHeaders/QtPositioning/private
+      # AI-generated (Claude)
+      download_header() {
+        curl --fail --location --remote-name \
+          --connect-timeout 15 \
+          --retry 5 --retry-all-errors --retry-delay 2 "$1"
+      }
       cd QtHeaders/QtLocation/private
       for HEADER in \
           qlocationglobal \
@@ -70,7 +76,7 @@ parts:
           maps/qgeotilespec \
           places/unsupportedreplies
       do
-        wget --no-verbose --content-disposition \
+        download_header \
           https://raw.githubusercontent.com/qt/qtlocation/refs/tags/v5.15.3-lts-lgpl/src/location/${HEADER}_p.h
       done
       cd -
@@ -81,7 +87,7 @@ parts:
           qdoublevector3d \
           qpositioningglobal
       do
-        wget --no-verbose --content-disposition \
+        download_header \
           https://raw.githubusercontent.com/qt/qtlocation/refs/tags/v5.15.3-lts-lgpl/src/positioning/${HEADER}_p.h
       done
     override-build: |

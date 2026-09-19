@@ -8,7 +8,7 @@ index 9f34d0169..0d5a89fd9 100644
      build-packages:
 +    - ccache
      - qtbase5-dev
-     - wget
+     - curl
      override-pull: |
 @@ -79,6 +80,7 @@ parts:
      override-build: |
