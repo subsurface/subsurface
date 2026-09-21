@@ -51,6 +51,7 @@ jobs:
             qtconnectivity
             qtlocation
             qtpositioning
+            qtshadertools
             qt5compat
             qtwebchannel
             qtwebengine
