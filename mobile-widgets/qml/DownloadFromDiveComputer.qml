@@ -32,6 +32,10 @@ Kirigami.Page {
 
 		onDownloadFinished : {
 			progressBar.visible = false
+			// AI-generated (Claude)
+			// DC_EVENT_DEVINFO may have corrected DC_product during the download.
+			// Create the checker from that detected product, not the selection.
+			manager.createFirmwareUpdater(manager.DC_product)
 			if (rowCount() > 0) {
 				manager.appendTextToLog(rowCount() + " dive downloaded")
 				divesDownloaded = true
@@ -344,8 +348,6 @@ Kirigami.Page {
 				manager.appendTextToLog(message)
 				progressBar.visible = true
 				divesDownloaded = false // this allows the progressMessage to be displayed
-
-				manager.createFirmwareUpdater(manager.DC_product)
 
 				// Make sure the setting is applied to the configuration data for the current download
 				Backend.sync_dc_time = syncTimeWithDiveComputer.checked

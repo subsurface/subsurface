@@ -14,6 +14,8 @@
 #include <QFile>
 #include <QNetworkReply>
 
+#include <algorithm>
+
 QStringList vendorList;
 QHash<QString, QStringList> productList;
 static QHash<QString, QStringList> mobileProductList; // BT, BLE or FTDI supported DCs for mobile
@@ -414,7 +416,7 @@ int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText)
 #define OSTC4_VERSION_MASK 0x001F
 #define OSTC4_VERSION_BETA_MASK 0x0001
 
-OstcFirmwareCheck::OstcFirmwareCheck(const QString &product)
+OstcFirmwareCheck::OstcFirmwareCheck(const QString &product) : product(product)
 {
 	QUrl url;
 	devData = device_data_t();
@@ -441,16 +443,83 @@ void OstcFirmwareCheck::parseOstcFwVersion(QNetworkReply *reply)
 	QString parse = reply->readAll();
 	int firstOpenBracket = parse.indexOf('[');
 	int firstCloseBracket = parse.indexOf(']');
-	latestFirmwareAvailable = parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket - 1);
-	report_info("Found latest OSTC firmware version: %s.", qPrintable(latestFirmwareAvailable));
+	QString latestFirmware = firstOpenBracket >= 0 && firstCloseBracket > firstOpenBracket ?
+		parse.mid(firstOpenBracket + 1, firstCloseBracket - firstOpenBracket - 1).trimmed() : QString();
+	if (isFirmwareVersionValid(product, latestFirmware)) {
+		latestFirmwareAvailable = latestFirmware;
+		report_info("Found latest OSTC firmware version: %s.", qPrintable(latestFirmwareAvailable));
+	} else {
+		latestFirmwareAvailable.clear();
+		report_info("Could not parse latest OSTC firmware version information.");
+	}
 
 	reply->close();
 	disconnect(&manager, &QNetworkAccessManager::finished, this, &OstcFirmwareCheck::parseOstcFwVersion);
 }
 
+// AI-generated (Claude)
+bool OstcFirmwareCheck::isFirmwareVersionValid(const QString &product, const QString &firmwareVersion)
+{
+	const bool isOstc4 = product == "OSTC 4" || product == "OSTC 5";
+	QStringList fwParts = firmwareVersion.split('.', Qt::KeepEmptyParts);
+	const int expectedParts = isOstc4 ? 3 : 2;
+	if (fwParts.size() != expectedParts)
+		return false;
+
+	const unsigned int maximumPart = isOstc4 ? OSTC4_VERSION_MASK : 0xff;
+	for (const QString &part: fwParts) {
+		if (part.isEmpty() || std::any_of(part.cbegin(), part.cend(), [](QChar character) { return !character.isDigit(); }))
+			return false;
+		bool ok;
+		unsigned int value = part.toUInt(&ok);
+		if (!ok || value > maximumPart)
+			return false;
+	}
+	return true;
+}
+
+bool OstcFirmwareCheck::firmwareUpdateAvailable(const QString &product, unsigned int firmwareOnDevice,
+						 const QString &latestFirmware, QString *firmwareOnDeviceString)
+{
+	const bool isOstc4 = product == "OSTC 4" || product == "OSTC 5";
+	QStringList fwParts = latestFirmware.split('.', Qt::KeepEmptyParts);
+	const int expectedParts = isOstc4 ? 3 : 2;
+	if (!isFirmwareVersionValid(product, latestFirmware))
+		return false;
+
+	unsigned int latestParts[3] = {};
+	for (int i = 0; i < expectedParts; i++)
+		latestParts[i] = fwParts[i].toUInt();
+
+	if (isOstc4) {
+		unsigned char first = (firmwareOnDevice >> OSTC4_VERSION_MAJOR_SHIFT) & OSTC4_VERSION_MASK;
+		unsigned char second = (firmwareOnDevice >> OSTC4_VERSION_MINOR_SHIFT) & OSTC4_VERSION_MASK;
+		unsigned char third = (firmwareOnDevice >> OSTC4_VERSION_PATCH_SHIFT) & OSTC4_VERSION_MASK;
+		bool beta = firmwareOnDevice & OSTC4_VERSION_BETA_MASK;
+		if (firmwareOnDeviceString)
+			*firmwareOnDeviceString = QString("%1.%2.%3%4").arg(first).arg(second).arg(third).arg(beta ? "-beta" : "");
+		unsigned int latestFirmwareNumber = (latestParts[0] << OSTC4_VERSION_MAJOR_SHIFT) +
+			(latestParts[1] << OSTC4_VERSION_MINOR_SHIFT) + (latestParts[2] << OSTC4_VERSION_PATCH_SHIFT);
+		unsigned int firmwareWithoutBeta = firmwareOnDevice & ~OSTC4_VERSION_BETA_MASK;
+		return firmwareWithoutBeta < latestFirmwareNumber ||
+			(firmwareWithoutBeta == latestFirmwareNumber && beta);
+	}
+
+	if (firmwareOnDeviceString)
+		*firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
+	unsigned int latestFirmwareNumber = latestParts[0] * 256 + latestParts[1];
+	return firmwareOnDevice < latestFirmwareNumber;
+}
+
 bool OstcFirmwareCheck::checkLatest(device_data_t *data)
 {
 	devData = *data;
+	if (QString::fromStdString(data->product) != product) {
+		report_info("Skipping OSTC firmware check because the detected product changed from %s to %s.",
+			qPrintable(product), data->product.c_str());
+		emit checkCompleted();
+		return true;
+	}
 	// If we didn't find a current firmware version stop this whole thing here.
 	if (latestFirmwareAvailable.isEmpty()) {
 		emit checkCompleted();
@@ -458,34 +527,11 @@ bool OstcFirmwareCheck::checkLatest(device_data_t *data)
 		return true;
 	}
 
-	// libdivecomputer gives us the firmware on device as an integer
-	// for the OSTC that means highbyte.lowbyte is the version number
-	// For OSTC 4/5 it is stored as XXXX XYYY YYZZ ZZZB, -> X.Y.Z-beta?
-
-	int firmwareOnDevice = devData.devinfo.firmware;
-	// Convert the latestFirmwareAvailable to a integer we can compare with
-	QStringList fwParts = latestFirmwareAvailable.split(".");
-
-	bool canBeUpdated = false;
-	if (data->product == "OSTC 4" || data->product == "OSTC 5") {
-		unsigned char first = (firmwareOnDevice >> OSTC4_VERSION_MAJOR_SHIFT) & OSTC4_VERSION_MASK;
-		unsigned char second = (firmwareOnDevice >> OSTC4_VERSION_MINOR_SHIFT) & OSTC4_VERSION_MASK;
-		unsigned char third = (firmwareOnDevice >> OSTC4_VERSION_PATCH_SHIFT) & OSTC4_VERSION_MASK;
-		bool beta = firmwareOnDevice & OSTC4_VERSION_BETA_MASK;
-		firmwareOnDeviceString = QString("%1.%2.%3%4").arg(first).arg(second).arg(third).arg(beta ? "-beta" : "");
-		int latestFirmwareAvailableNumber = (fwParts[0].toInt() << OSTC4_VERSION_MAJOR_SHIFT) + (fwParts[1].toInt() << OSTC4_VERSION_MINOR_SHIFT) + (fwParts[2].toInt() << OSTC4_VERSION_PATCH_SHIFT);
-		int firmwareOnDeviceWithoutBeta = firmwareOnDevice & ~OSTC4_VERSION_BETA_MASK;
-		if (firmwareOnDeviceWithoutBeta < latestFirmwareAvailableNumber || (firmwareOnDeviceWithoutBeta == latestFirmwareAvailableNumber && beta))
-			canBeUpdated = true;
-	} else { // OSTC 3, Sport, Cr
-		firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
-		int latestFirmwareAvailableNumber = fwParts[0].toInt() * 256 + fwParts[1].toInt();
-		if (firmwareOnDevice < latestFirmwareAvailableNumber)
-			canBeUpdated = true;
-	}
+	bool canBeUpdated = firmwareUpdateAvailable(product, devData.devinfo.firmware,
+		latestFirmwareAvailable, &firmwareOnDeviceString);
 
 	if (canBeUpdated)
-		report_info("Found %s that can be updated from %s to %s.", data->product.c_str(), qPrintable(firmwareOnDeviceString), qPrintable(latestFirmwareAvailable));
+		report_info("Found %s that can be updated from %s to %s.", product.toStdString().c_str(), qPrintable(firmwareOnDeviceString), qPrintable(latestFirmwareAvailable));
 
 	return !canBeUpdated;
 }

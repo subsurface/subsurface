@@ -166,6 +166,7 @@ TEST(TestQPrefProxy testqPrefProxy.cpp)
 TEST(TestQPrefTechnicalDetails testqPrefTechnicalDetails.cpp)
 TEST(TestQPrefUnits testqPrefUnits.cpp)
 TEST(TestQPrefUpdateManager testqPrefUpdateManager.cpp)
+TEST(TestOstcFirmware testostcfirmware.cpp)
 TEST(TestformatDiveGasString testformatDiveGasString.cpp)
 TEST(TestRuler testruler.cpp)
 TEST(TestMobileCylinderEdit testmobilecylinderedit.cpp)
@@ -207,6 +208,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefTechnicalDetails
 	TestQPrefUnits
 	TestQPrefUpdateManager
+	TestOstcFirmware
 	TestQML
 	TestRuler
 	TestMobileCylinderEdit

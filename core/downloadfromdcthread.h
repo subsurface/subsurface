@@ -97,6 +97,9 @@ class OstcFirmwareCheck : public QObject {
 	Q_OBJECT
 public:
 	explicit OstcFirmwareCheck(const QString &product);
+	static bool isFirmwareVersionValid(const QString &product, const QString &firmwareVersion);
+	static bool firmwareUpdateAvailable(const QString &product, unsigned int firmwareOnDevice,
+					    const QString &latestFirmware, QString *firmwareOnDeviceString);
 	bool checkLatest(device_data_t *data);
 	QString getLatestFirmwareFileName();
 	QString getLatestFirmwareAvailable();
@@ -112,6 +115,7 @@ signals:
 
 private:
 	device_data_t devData;
+	QString product;
 	QUrl latestFirmwareHexFile;
 	QString latestFirmwareAvailable;
 	QString firmwareOnDeviceString;
