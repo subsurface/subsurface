@@ -1097,38 +1097,37 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		# For MSVC builds, use windeployqt to copy Qt dependencies
 		# and copy vcpkg DLLs
 		find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${QT_INSTALL_PREFIX}/bin")
-		if(WINDEPLOYQT_EXECUTABLE)
-			message(STATUS "Found windeployqt: ${WINDEPLOYQT_EXECUTABLE}")
-			install(CODE "
-				message(STATUS \"Running windeployqt on ${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\")
-				execute_process(
-					COMMAND \"${WINDEPLOYQT_EXECUTABLE}\"
-						--verbose 1
-						--no-opengl-sw
-						--no-system-d3d-compiler
-						--qmldir \"${CMAKE_SOURCE_DIR}/mobile-widgets/qml\"
-						--qmldir \"${CMAKE_SOURCE_DIR}/map-widget\"
-						--qmldir \"${CMAKE_SOURCE_DIR}/stats\"
-						\"${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\"
-					WORKING_DIRECTORY \"${WINDOWSSTAGING}\"
-					RESULT_VARIABLE _windeployqt_result
-					OUTPUT_VARIABLE _windeployqt_output
-					ERROR_VARIABLE _windeployqt_error
-				)
-				message(STATUS \"windeployqt result: \${_windeployqt_result}\")
-				if(_windeployqt_output)
-					message(STATUS \"windeployqt output: \${_windeployqt_output}\")
-				endif()
-				if(_windeployqt_error)
-					message(STATUS \"windeployqt errors: \${_windeployqt_error}\")
-				endif()
-				if(NOT _windeployqt_result EQUAL 0)
-					message(WARNING \"windeployqt failed with code \${_windeployqt_result}\")
-				endif()
-			")
-		else()
-			message(WARNING "windeployqt not found - Qt DLLs will not be copied automatically")
+		if(NOT WINDEPLOYQT_EXECUTABLE)
+			message(FATAL_ERROR "windeployqt was not found. Expected it under ${QT_INSTALL_PREFIX}/bin; install Qt's deployment tools.")
 		endif()
+		message(STATUS "Found windeployqt: ${WINDEPLOYQT_EXECUTABLE}")
+		install(CODE "
+			message(STATUS \"Running windeployqt on ${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\")
+			execute_process(
+				COMMAND \"${WINDEPLOYQT_EXECUTABLE}\"
+					--verbose 1
+					--no-opengl-sw
+					--no-system-d3d-compiler
+					--qmldir \"${CMAKE_SOURCE_DIR}/mobile-widgets/qml\"
+					--qmldir \"${CMAKE_SOURCE_DIR}/map-widget\"
+					--qmldir \"${CMAKE_SOURCE_DIR}/stats\"
+					\"${WINDOWSSTAGING}/${SUBSURFACE_TARGET}.exe\"
+				WORKING_DIRECTORY \"${WINDOWSSTAGING}\"
+				RESULT_VARIABLE _windeployqt_result
+				OUTPUT_VARIABLE _windeployqt_output
+				ERROR_VARIABLE _windeployqt_error
+			)
+			if(NOT _windeployqt_result EQUAL 0)
+				message(FATAL_ERROR
+					\"windeployqt failed with code \${_windeployqt_result}.\\n\"
+					\"Output:\\n\${_windeployqt_output}\\n\"
+					\"Error output:\\n\${_windeployqt_error}\")
+			endif()
+			message(STATUS \"windeployqt output:\\n\${_windeployqt_output}\")
+			if(_windeployqt_error)
+				message(STATUS \"windeployqt error output:\\n\${_windeployqt_error}\")
+			endif()
+		")
 
 		# Manually copy Qt6 core DLLs.
 		# windeployqt requires Qt6ShaderTools.dll (a transitive dependency of Qt6Quick
@@ -1138,6 +1137,11 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		# To avoid this, we copy the Qt6 DLLs that Subsurface actually uses explicitly.
 		# This list intentionally excludes Qt6WebEngine*.dll (100+ MB each) and debug DLLs.
 		if(USINGQT6)
+			if(MAPSUPPORT)
+				set(_required_map_qt6_dlls Qt6Location Qt6Positioning Qt6PositioningQuick)
+			else()
+				set(_required_map_qt6_dlls "")
+			endif()
 			install(CODE "
 				message(STATUS \"Copying Qt6 core DLLs from ${QT_INSTALL_PREFIX}/bin...\")
 				# Core Qt6 libraries required by Subsurface (release builds only)
@@ -1150,8 +1154,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 					Qt6QmlNetwork Qt6QmlWorkerScript
 					Qt6Quick Qt6QuickTemplates2 Qt6QuickControls2 Qt6QuickWidgets
 					Qt6QuickControls2Basic Qt6QuickControls2Impl
-					# Subsurface-specific modules
-					Qt6Location Qt6Positioning Qt6PositioningQuick
+					# Subsurface-specific modules that are not map-only
 					Qt6Bluetooth Qt6WebChannel Qt6Core5Compat
 					Qt6PrintSupport
 				)
@@ -1163,7 +1166,32 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 						message(STATUS \"  Note: \${_dll_base}.dll not found at ${QT_INSTALL_PREFIX}/bin (optional or not installed)\")
 					endif()
 				endforeach()
+				# AI-generated (Claude)
+				# Map QML plugins link these libraries, so a map-enabled installer
+				# cannot function without all of them.
+				foreach(_dll_base ${_required_map_qt6_dlls})
+					set(_dll_path \"${QT_INSTALL_PREFIX}/bin/\${_dll_base}.dll\")
+					if(NOT EXISTS \"\${_dll_path}\")
+						message(FATAL_ERROR \"Required map DLL is missing: \${_dll_path}\")
+					endif()
+					file(COPY \"\${_dll_path}\" DESTINATION \"${WINDOWSSTAGING}\")
+				endforeach()
 			")
+			if(MAPSUPPORT)
+				# AI-generated (Claude)
+				# Copy these complete trees independently of windeployqt: it can omit
+				# QML metadata and plugin DLLs that runtime module loading requires.
+				install(CODE "
+					foreach(_qml_module QtLocation QtPositioning)
+						set(_qml_module_source \"${QT_INSTALL_PREFIX}/qml/\${_qml_module}\")
+						if(NOT IS_DIRECTORY \"\${_qml_module_source}\")
+							message(FATAL_ERROR \"Required map QML module directory is missing: \${_qml_module_source}\")
+						endif()
+						file(MAKE_DIRECTORY \"${WINDOWSSTAGING}/qml\")
+						file(COPY \"\${_qml_module_source}\" DESTINATION \"${WINDOWSSTAGING}/qml\")
+					endforeach()
+				")
+			endif()
 		endif()
 
 		# Manually copy Qt plugins since windeployqt doesn't always work reliably
@@ -1308,20 +1336,20 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		# which would produce a silently-broken installer.  Fail loudly here so CI
 		# produces a red build instead of a green build with a broken artifact.
 		if(USINGQT6)
-			# Qt6Location is optional: only available when map support is enabled.
+			# Map Qt DLLs are required only when map support is enabled.
 			# Resolve this at configure time so the install script has the right list.
 			if(MAPSUPPORT)
-				set(_essential_location_dll "Qt6Location.dll")
+				set(_essential_map_dlls "Qt6Location.dll Qt6Positioning.dll Qt6PositioningQuick.dll")
 			else()
-				set(_essential_location_dll "")
+				set(_essential_map_dlls "")
 			endif()
 			install(CODE "
 				message(STATUS \"Verifying essential Qt6 DLLs in staging directory...\")
-				# _essential_location_dll is expanded at configure time (empty when MAPSUPPORT is OFF)
+				# _essential_map_dlls is expanded at configure time (empty when MAPSUPPORT is OFF)
 				set(_essential_qt6_dlls
 					Qt6Core.dll Qt6Gui.dll Qt6Widgets.dll Qt6Network.dll
-					Qt6Qml.dll Qt6Quick.dll Qt6Positioning.dll
-					${_essential_location_dll}
+					Qt6Qml.dll Qt6Quick.dll
+					${_essential_map_dlls}
 				)
 				set(_missing \"\")
 				foreach(_dll \${_essential_qt6_dlls})
