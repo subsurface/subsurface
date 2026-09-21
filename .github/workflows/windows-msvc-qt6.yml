@@ -364,6 +364,14 @@ jobs:
           ninja install
           Pop-Location
 
+      # AI-generated (Claude)
+      - name: Validate staged Qt map payload
+        shell: pwsh
+        run: |
+          Push-Location "${{ github.workspace }}\build"
+          ninja validate_windows_msvc_stage
+          Pop-Location
+
       - name: Build installer
         shell: pwsh
         run: |

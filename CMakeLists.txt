@@ -1384,10 +1384,26 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		DEPENDS ${SUBSURFACE_TARGET}
 	)
 
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND USINGQT6 AND MAPSUPPORT)
+		# AI-generated (Claude)
+		# Keep NSIS behind an explicit, reusable validation target. This also
+		# prevents direct local `ninja installer` invocations from packaging an
+		# incomplete map runtime payload.
+		add_custom_target(
+			validate_windows_msvc_stage
+			COMMAND "${CMAKE_COMMAND}" -DSTAGING=${WINDOWSSTAGING}
+				-P "${CMAKE_SOURCE_DIR}/cmake/Modules/ValidateWindowsMsvcStage.cmake"
+			DEPENDS fake_install
+		)
+		set(_installer_dependencies validate_windows_msvc_stage)
+	else()
+		set(_installer_dependencies fake_install)
+	endif()
+
 	add_custom_target(
 		installer
 		COMMAND ${MAKENSIS} ${WINDOWSSTAGING}/subsurface.nsi
-		DEPENDS fake_install
+		DEPENDS ${_installer_dependencies}
 	)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	# the syntax is odd, but this searches for libqtgeoservices_googlemaps.so
