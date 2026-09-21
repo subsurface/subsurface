@@ -473,18 +473,10 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	previousLast = static_cast<int>(divelog.dives.size());
 	diveImportedModel->startDownload();
 
-	// FIXME: We should get the _actual_ device info instead of whatever
-	// the user entered in the dropdown.
-	// You can enter "OSTC 3" and download just fine from a "OSTC Sport", but
-	// this check will compair apples and oranges, firmware wise, then.
-	QString product(ui.product->currentText());
-	//
-	// We shouldn't do this for memory dumps.
-	if (!data->saveDump()) {
-		ostcFirmwareCheck.reset(getOstcFirmwareCheck(product));
-	} else {
-		ostcFirmwareCheck.reset();
-	}
+	// AI-generated (Claude)
+	// Wait for DC_EVENT_DEVINFO to correct the selected product before starting
+	// a firmware check. A firmware response must match the imported device.
+	ostcFirmwareCheck.reset();
 }
 
 bool DownloadFromDCWidget::preferDownloaded()
@@ -548,9 +540,12 @@ void DownloadFromDCWidget::onDownloadThreadFinished()
 	showRememberedDCs();
 
 	if (currentState == DOWNLOADING) {
-		if (diveImportedModel->thread.successful)
+		if (diveImportedModel->thread.successful) {
+			auto data = diveImportedModel->thread.data();
+			if (!data->saveDump())
+				ostcFirmwareCheck.reset(getOstcFirmwareCheck(data->product()));
 			updateState(DONE);
-		else
+		} else
 			updateState(ERRORED);
 	} else if (currentState == CANCELLING) {
 		updateState(DONE);
