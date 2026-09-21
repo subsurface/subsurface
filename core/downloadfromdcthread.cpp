@@ -461,7 +461,11 @@ void OstcFirmwareCheck::parseOstcFwVersion(QNetworkReply *reply)
 bool OstcFirmwareCheck::isFirmwareVersionValid(const QString &product, const QString &firmwareVersion)
 {
 	const bool isOstc4 = product == "OSTC 4" || product == "OSTC 5";
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+	QStringList fwParts = firmwareVersion.split('.', QString::KeepEmptyParts);
+#else
 	QStringList fwParts = firmwareVersion.split('.', Qt::KeepEmptyParts);
+#endif
 	const int expectedParts = isOstc4 ? 3 : 2;
 	if (fwParts.size() != expectedParts)
 		return false;
@@ -482,7 +486,11 @@ bool OstcFirmwareCheck::firmwareUpdateAvailable(const QString &product, unsigned
 						 const QString &latestFirmware, QString *firmwareOnDeviceString)
 {
 	const bool isOstc4 = product == "OSTC 4" || product == "OSTC 5";
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+	QStringList fwParts = latestFirmware.split('.', QString::KeepEmptyParts);
+#else
 	QStringList fwParts = latestFirmware.split('.', Qt::KeepEmptyParts);
+#endif
 	const int expectedParts = isOstc4 ? 3 : 2;
 	if (!isFirmwareVersionValid(product, latestFirmware))
 		return false;
