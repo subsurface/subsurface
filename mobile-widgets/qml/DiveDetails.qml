@@ -346,9 +346,20 @@ Kirigami.Page {
 			} else if (state === "add") {
 				endEditMode() // endEditMode() already calls pageStack.pop() for "add"
 				event.accepted = true;
+			} else if (state === "view" && rootItem.pageIndex(mapPage) !== -1) {
+				// On Android with predictive back the system may pre-navigate from
+				// the map page to dive details before delivering Key_Back. If mapPage
+				// is still in the stack, pop it so we stay on dive details instead
+				// of jumping all the way back to the dive list.
+				// Use MapPopped state so onCurrentItemChanged guards against the
+				// Kirigami scroll-back anomaly scrolling past us to diveList.
+				rootItem.hackToOpenMap = 3 /* MapPopped */
+				pageStack.pop()
+				event.accepted = true;
 			}
 		}
-		// if we were in view mode and no menus are open, don't accept the event and pop the page
+		// if we were in view mode (with no map above us) and no menus are open,
+		// don't accept the event so Kirigami pops us back to the dive list
 	}
 
 	onCurrentItemChanged: {

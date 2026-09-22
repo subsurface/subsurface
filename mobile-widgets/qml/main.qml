@@ -843,9 +843,14 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	property int hackToOpenMap: 0 /* Otherpage */
 	/* I really want an enum, but those are painful in QML, so let's use numbers
-	 * 0 (Otherpage)   - the last page selected was a non-map page
-	 * 1 (MapSelected) - the map page was selected by the user
-	 * 2 (MapForced)   - the map page was forced by this hack
+	 * 0 (Otherpage)          - the last page selected was a non-map page
+	 * 1 (MapSelected)        - the map page was selected by the user
+	 * 2 (MapForced)          - the map page was forced by this hack (open direction)
+	 * 3 (MapPopped)          - mapPage was intentionally popped; guard against
+	 *                          Kirigami scrolling past detailsWindow to diveList
+	 * 4 (MapPoppedOnDetails) - first onCurrentItemChanged after map pop correctly
+	 *                          landed on DiveDetails; watch for a second spurious
+	 *                          event that scrolls further back to diveList
 	 */
 
 	pageStack.onCurrentItemChanged: {
@@ -874,6 +879,43 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				manager.appendTextToLog("pageStack wrong page, switching back to map")
 				pageStack.currentIndex = pageStack.contentItem.contentChildren.length - 1
 				hackToOpenMap = 2 /* MapForced */
+			} else if (hackToOpenMap === 3 /* MapPopped */) {
+				// mapPage was just popped intentionally. The first onCurrentItemChanged
+				// after the pop should land on the page beneath the map (detailsWindow
+				// or diveList depending on how the map was opened). Kirigami then fires
+				// a second spurious change that scrolls further back — the same
+				// scroll-back anomaly that affects the open direction. Guard against it:
+				// if detailsWindow is in the stack and we land there, that's correct;
+				// move to state 4 to watch for the spurious second firing.
+				// if we drift further to diveList, force back to detailsWindow.
+				// If detailsWindow is not in the stack (map opened from dive list),
+				// diveList is the correct destination and we just clear state.
+				var ddIdx = pageIndex(detailsWindow)
+				if (pageStack.currentItem.objectName === "DiveDetails") {
+					manager.appendTextToLog("pageStack returned to DiveDetails after map pop, watching for spurious scroll-back")
+					hackToOpenMap = 4 /* MapPoppedOnDetails */
+				} else if (ddIdx !== -1) {
+					manager.appendTextToLog("pageStack wrong page after map pop, forcing back to DiveDetails")
+					pageStack.currentIndex = ddIdx
+					// leave hackToOpenMap = 3 so the forced-correct firing also passes
+					// through here and clears state once we confirm we are on DiveDetails
+				} else {
+					// Map was opened from the dive list; landing on diveList is correct.
+					manager.appendTextToLog("pageStack returned to DiveList after map pop")
+					hackToOpenMap = 0 /* Otherpage */
+				}
+			} else if (hackToOpenMap === 4 /* MapPoppedOnDetails */) {
+				// We correctly landed on DiveDetails after the map pop. This second
+				// firing is the spurious Kirigami scroll-back. If we are now on
+				// diveList but detailsWindow is still in the stack, force back.
+				var ddIdx2 = pageIndex(detailsWindow)
+				if (pageStack.currentItem.objectName === "DiveList" && ddIdx2 !== -1) {
+					manager.appendTextToLog("pageStack spurious scroll-back to DiveList after map pop, forcing back to DiveDetails")
+					pageStack.currentIndex = ddIdx2
+				} else {
+					manager.appendTextToLog("pageStack stable after map pop, currentItem=" + pageStack.currentItem.objectName)
+				}
+				hackToOpenMap = 0 /* Otherpage */
 			} else {
 				// if we picked a different page reset the mapPage hack
 				manager.appendTextToLog("pageStack switched to " + pageStack.currentItem.objectName)
