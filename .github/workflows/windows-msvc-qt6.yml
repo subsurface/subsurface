@@ -27,22 +27,9 @@ jobs:
     uses: ./.github/workflows/documentation-build.yml
 
   compute-version:
-    runs-on: ubuntu-24.04
-    outputs:
-      version: ${{ steps.version_number.outputs.version }}
-      version_4: ${{ steps.version_number.outputs.version_4 }}
-      release_tag: v${{ steps.version_number.outputs.version }}
-    steps:
-      - name: checkout sources
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: set the version information
-        id: version_number
-        uses: ./.github/actions/manage-version
-        with:
-          nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
+    uses: ./.github/workflows/compute-version.yml
+    secrets:
+      nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
   build:
     needs: [build-documentation, compute-version]

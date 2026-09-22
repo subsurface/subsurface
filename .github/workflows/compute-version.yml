@@ -1,0 +1,39 @@
+name: Compute version number
+
+on:
+  workflow_call:
+    secrets:
+      nightly-builds-secret:
+        description: 'Secret token for the nightly-builds repository (required for push events)'
+        required: false
+    outputs:
+      version:
+        description: 'Long-form version string (e.g. 6.0.5547-CICD-release)'
+        value: ${{ jobs.compute-version.outputs.version }}
+      version_4:
+        description: '4-part version string (e.g. 6.0.5547.0)'
+        value: ${{ jobs.compute-version.outputs.version_4 }}
+      release_tag:
+        description: 'Release tag (e.g. v6.0.5547-CICD-release)'
+        value: ${{ jobs.compute-version.outputs.release_tag }}
+
+permissions: read-all
+
+jobs:
+  compute-version:
+    runs-on: ubuntu-24.04
+    outputs:
+      version: ${{ steps.version_number.outputs.version }}
+      version_4: ${{ steps.version_number.outputs.version_4 }}
+      release_tag: v${{ steps.version_number.outputs.version }}
+    steps:
+      - name: checkout sources
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: set the version information
+        id: version_number
+        uses: ./.github/actions/manage-version
+        with:
+          nightly-builds-secret: ${{ secrets.nightly-builds-secret }}
