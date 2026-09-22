@@ -322,7 +322,7 @@ Kirigami.Page {
 			}
 			SsrfToolButton {
 				visible: diveDetailsPage.state === "edit" || diveDetailsPage.state === "add"
-				iconSource: "qrc:/icons/dialog-cancel.svg"
+				iconSource: "qrc:/icons/undo.svg"
 				onClicked: endEditMode()
 			}
 		}
