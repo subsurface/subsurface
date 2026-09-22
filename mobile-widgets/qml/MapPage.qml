@@ -14,6 +14,16 @@ Kirigami.Page {
 	bottomPadding: 0
 	property bool firstRun: true
 	width: rootItem.colWidth
+
+	onBackRequested: function(event) {
+		// Signal to onCurrentItemChanged in main.qml that this pop is
+		// intentional so it can guard against Kirigami's scroll-back
+		// anomaly scrolling past detailsWindow all the way to diveList.
+		rootItem.hackToOpenMap = 3 /* MapPopped */
+		pageStack.pop()
+		event.accepted = true
+	}
+
 	MapWidget {
 		id: mapWidget
 		anchors.fill: parent
