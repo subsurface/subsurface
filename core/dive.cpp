@@ -59,7 +59,7 @@ dive::~dive() = default;
  * A negative number returned indicates that a match could not be found.
  * Call parameters: dive = the dive being processed
  *		  cylinder_use_type = an enum, one of {oxygen, diluent, bailout} */
-static int get_cylinder_idx_by_use(const struct dive &dive, enum cylinderuse cylinder_use_type)
+int get_cylinder_idx_by_use(const struct dive &dive, enum cylinderuse cylinder_use_type)
 {
 	auto it = std::find_if(dive.cylinders.begin(), dive.cylinders.end(), [cylinder_use_type]
 			       (auto &cyl) { return cyl.cylinder_use == cylinder_use_type; });
