@@ -90,12 +90,6 @@ jobs:
         enableCrossOsArchive: true
         fail-on-cache-miss: true
 
-    - name: set the version information
-      id: version_number
-      uses: ./.github/actions/manage-version
-      with:
-        nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
-
     - name: get install-root absolute path
       id: get-install-root
       run: |
@@ -212,7 +206,7 @@ jobs:
       if: github.event_name == 'pull_request'
       uses: actions/upload-artifact@v7
       with:
-        name: Subsurface-MacOS-${{ matrix.arch }}-qt-${{ matrix.qtversion }}-${{ steps.version_number.outputs.version }}
+        name: Subsurface-MacOS-${{ matrix.arch }}-qt-${{ matrix.qtversion }}-${{ needs.compute-version.outputs.version }}
         path: ${{ steps.build.outputs.dmg }}
         compression-level: 0
 
@@ -221,7 +215,7 @@ jobs:
       if: github.event_name == 'push'
       uses: softprops/action-gh-release@v3
       with:
-        tag_name: v${{ steps.version_number.outputs.version }}
+        tag_name: v${{ needs.compute-version.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
         token: ${{ secrets.NIGHTLY_BUILDS }}
         draft: true
