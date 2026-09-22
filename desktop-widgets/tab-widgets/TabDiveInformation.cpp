@@ -133,6 +133,9 @@ void TabDiveInformation::updateProfile()
 	volume_t sac;
 	QString gaslist, SACs, separator;
 	bool hasSAC = false;
+	const struct divecomputer *dc = parent.currentDive->get_dc(parent.currentDC);
+	const bool is_ccr = dc ? dc->divemode == CCR : false;
+	ui->gasUsedText->setToolTip(QString()); // clear previous tooltip, if set by CCR oxygen calculation
 
 	for (size_t i = 0; i < currentDive->cylinders.size(); i++) {
 		if (!currentDive->is_cylinder_used(i) || i >= mean.size())
@@ -140,7 +143,12 @@ void TabDiveInformation::updateProfile()
 		gaslist.append(separator); volumes.append(separator); SACs.append(separator);
 		separator = "\n";
 
-		gaslist.append(QString::fromStdString(currentDive->get_cylinder(i)->gasmix.name()));
+		const cylinder_t *currentcyl = currentDive->get_cylinder(i);
+
+		if (!currentcyl)
+			continue;
+
+		gaslist.append(QString::fromStdString(currentcyl->gasmix.name()));
 		if (!gases[i].mliter)
 			continue;
 		volumes.append(get_volume_string(gases[i], true));
@@ -148,6 +156,37 @@ void TabDiveInformation::updateProfile()
 			sac.mliter = lrint(gases[i].mliter / (currentDive->depth_to_atm(mean[i].depth) * mean[i].duration.seconds / 60));
 			SACs.append(get_volume_string(sac, true).append(tr("/min")));
 			hasSAC = true;
+		}
+
+		// On CCR dives, show oxygen consumption rate.
+		// Only count oxygen usage when diluent is active, so not in a BO mode
+		// this depends on per_cylinder_mean_depth_and_duration() to calculate valid
+		// time for the diluent. It may fail if there are unused cylinders with pressure data.
+		// PSCR is intentionally not handled here: PSCR dives don't use a separate
+		// oxygen-supply cylinder in the same way CCR dives do.
+		if (is_ccr && currentcyl->cylinder_use == OXYGEN) {
+			// Only calculate if we can determine loop time unambiguously:
+			// - allowOcGasAsDiluent off (OC-tagged cylinders may be loop or OC segments,
+			//   requiring a full event walk to separate)
+			// - exactly one DILUENT-tagged cylinder (multiple diluents need the same walk)
+			if (prefs.allowOcGasAsDiluent)
+				continue;
+			int dil = get_cylinder_idx_by_use(*currentDive, DILUENT);
+			if (dil < 0 || dil >= static_cast<int>(mean.size()) || mean[dil].duration.seconds <= 0)
+				continue;
+			auto diluent_count = std::count_if(currentDive->cylinders.begin(), currentDive->cylinders.end(),
+			                                   [](const cylinder_t &c) { return c.cylinder_use == DILUENT; });
+			if (diluent_count != 1)
+				continue;
+
+			auto lpm = (gases[i].mliter * 60) / mean[dil].duration.seconds;
+			if (lpm <= 0)
+				continue;
+			volumes.append(" (");
+			volumes.append(get_volume_string(lpm, true).append(tr("/min")));
+			volumes.append(")");
+			ui->gasUsedText->setToolTip(tr("Estimated from tank pressure and gas use; "
+							"cannot distinguish from metabolic rate."));
 		}
 	}
 	ui->gasUsedText->setText(volumes);
