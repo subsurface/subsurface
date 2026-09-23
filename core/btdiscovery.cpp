@@ -104,6 +104,10 @@ static struct namePattern name[] = {
 	{ "Quad Ci", "Mares", "Quad Ci" },
 	{ "Quad", "Mares", "Quad" },
 	{ "Mares", "Mares", "Quad" }, // we actually don't know and just pick a common one - user needs to fix in UI
+	{ "Puck4", "Mares", "Puck 4"},
+	{ "Puck Lite", "Mares", "Puck Lite"},
+	{ "Puck Pro U", "Mares", "Puck Pro Ultra"},
+	{ "Puck", "Mares", "Puck Pro EZ"},
 	// Cress dive computers
 	{ "CARESIO_", "Cressi", "Cartesio" },
 	{ "GOA_", "Cressi", "Goa" },
