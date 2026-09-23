@@ -156,7 +156,13 @@ Item {
 				map.zoomLevel += Math.log2(delta)
 				map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
 			}
-			grabPermissions: PointerHandler.TakeOverForbidden
+			// CanTakeOverFromAnything lets this handler grab the two-finger
+			// pinch even when the native map surface plugin has already
+			// consumed the touch points.  TakeOverForbidden caused pinch-to-
+			// zoom to fail silently on Android because the QtLocation plugin's
+			// native touch handler grabbed first and the QML handler was never
+			// activated.
+			grabPermissions: PointerHandler.CanTakeOverFromAnything
 		}
 		TapHandler {
 			acceptedButtons: Qt.LeftButton
