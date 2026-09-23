@@ -15,6 +15,7 @@ my $outfi = $ARGV[0];
 my ($type) = $outfi =~ /\.([^.]+)$/;
 
 my $infi = "libdivecomputer/src/descriptor.c";
+my $garminfi = "libdivecomputer/src/garmin-models.h";
 
 open(my $fh, "<", $infi) || croak "can't open $infi: $!";
 open(STDOUT, ">", $outfi) || croak "can't open $outfi: $!";
@@ -56,6 +57,17 @@ while (<$fh>) {
 	if (/^\s*{\s*"([^\,]*)"\s*,\s*"([^\,]*)"\s*,\s*([^\,]*).*}/) {
 		push(@descriptors, "$1,$2");
 	}
+}
+
+# Read Garmin model names from garmin-models.h (GARMIN_MODEL_LIST macro entries).
+# Descriptor.c expands these via a macro so they are invisible to the struct regex above.
+if (open(my $gfh, "<", $garminfi)) {
+	while (<$gfh>) {
+		if (/^\s*MODEL\("([^"]*)"\s*,/) {
+			push(@descriptors, "Garmin,$1");
+		}
+	}
+	close $gfh;
 }
 
 # Read extra descriptors from CSV
