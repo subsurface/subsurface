@@ -228,6 +228,41 @@ Item {
 		}
 	}
 
+	Canvas {
+		id: centreCrosshair
+		anchors.centerIn: parent
+		width: 80
+		height: 80
+		enabled: false
+		onPaint: {
+			var ctx = getContext("2d")
+			ctx.clearRect(0, 0, width, height)
+			var cx = width / 2
+			var cy = height / 2
+			var arm = 30
+			var gap = 6
+			// Dark outline pass
+			ctx.strokeStyle = "rgba(0, 0, 0, 0.6)"
+			ctx.lineWidth = 3
+			ctx.lineCap = "round"
+			ctx.beginPath()
+			ctx.moveTo(cx - arm, cy); ctx.lineTo(cx - gap, cy)
+			ctx.moveTo(cx + gap, cy); ctx.lineTo(cx + arm, cy)
+			ctx.moveTo(cx, cy - arm); ctx.lineTo(cx, cy - gap)
+			ctx.moveTo(cx, cy + gap); ctx.lineTo(cx, cy + arm)
+			ctx.stroke()
+			// White inner pass
+			ctx.strokeStyle = "rgba(255, 255, 255, 0.85)"
+			ctx.lineWidth = 1.5
+			ctx.beginPath()
+			ctx.moveTo(cx - arm, cy); ctx.lineTo(cx - gap, cy)
+			ctx.moveTo(cx + gap, cy); ctx.lineTo(cx + arm, cy)
+			ctx.moveTo(cx, cy - arm); ctx.lineTo(cx, cy - gap)
+			ctx.moveTo(cx, cy + gap); ctx.lineTo(cx, cy + arm)
+			ctx.stroke()
+		}
+	}
+
 	Rectangle {
 		id: editMessage
 		radius: padding
