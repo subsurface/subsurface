@@ -33,7 +33,8 @@ bash -ex ../subsurface/packaging/windows/mxe-based-build.sh ${BUILD_EXTRA_ARGS} 
 # in the publish step of the GitHub Action
 mv subsurface/subsurface.exe* ${OUTPUT_DIR}/
 fullname=$(cd subsurface ; ls subsurface-*.exe)
-mv subsurface/"$fullname" ${OUTPUT_DIR}/"${fullname%.exe}-installer.exe"
+noprefix="${fullname#subsurface-}"
+mv subsurface/"$fullname" ${OUTPUT_DIR}/Subsurface-"${noprefix%.exe}"-installer.exe
 
 # build Subsurface for smtk2ssrf
 
