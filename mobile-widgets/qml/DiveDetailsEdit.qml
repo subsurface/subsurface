@@ -229,7 +229,7 @@ Item {
 	// adapt layout when, given the font, the editArea is too narrow for our default layout
 	property bool narrow: editArea.width < effectiveGridUnit * 28
 	height: editArea.height + effectiveGridUnit * 3
-	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding - Kirigami.Units.smallSpacing * 2
+	width: diveDetailsPage.width - detailsEditFlickable.leftMargin - detailsEditFlickable.rightMargin
 	Item {
 		// there is a maximum width above which this becomes less pleasant to use. 42 gridUnits
 		// allows for two of the large drop downs or four of the text fields or all of a cylinder
