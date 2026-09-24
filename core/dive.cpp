@@ -629,7 +629,7 @@ static void fixup_duration(struct dive &dive)
 
 	bool logged = dive.is_logged();
 	for (auto &dc: dive.dcs) {
-		if (logged || !is_dc_planner(&dc))
+		if (!logged || !is_dc_planner(&dc))
 			duration.seconds = std::max(duration.seconds, dc.duration.seconds);
 	}
 	dive.duration = duration;
