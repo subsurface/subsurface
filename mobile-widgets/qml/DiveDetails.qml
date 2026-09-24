@@ -587,8 +587,8 @@ Kirigami.Page {
 	Flickable {
 		id: detailsEditFlickable
 		anchors.fill: parent
-		leftMargin: Kirigami.Units.smallSpacing
-		rightMargin: Kirigami.Units.smallSpacing
+		leftMargin: Kirigami.Units.smallSpacing + rootItem.safeAreaMargins.left
+		rightMargin: Kirigami.Units.smallSpacing + rootItem.safeAreaMargins.right
 		bottomMargin: Kirigami.Units.gridUnit * 4
 		contentHeight: detailsEdit.height
 		// start invisible and scaled down, to get the transition
