@@ -572,9 +572,9 @@ static void save_one_fingerprint(struct membuffer *b, const fingerprint_record &
 		   fp.model, fp.serial, fp.fdeviceid, fp.fdiveid, fp.get_data().c_str());
 }
 
-int save_dives(const char *filename)
+int save_dives(const char *filename, bool allow_replacement)
 {
-	return save_dives_logic(filename, false, false);
+	return save_dives_logic(filename, false, false, allow_replacement);
 }
 
 static void save_filter_presets(struct membuffer *b)
@@ -747,7 +747,7 @@ static void try_to_backup(const char *filename)
 	}
 }
 
-int save_dives_logic(const char *filename, const bool select_only, bool anonymize)
+int save_dives_logic(const char *filename, const bool select_only, bool anonymize, bool allow_replacement)
 {
 	membuffer buf;
 	struct git_info info;
@@ -755,7 +755,7 @@ int save_dives_logic(const char *filename, const bool select_only, bool anonymiz
 	int error = 0;
 
 	if (is_git_repository(filename, &info)) {
-		error = git_save_dives(&info, select_only);
+		error = git_save_dives(&info, select_only, allow_replacement);
 		return error;
 	}
 

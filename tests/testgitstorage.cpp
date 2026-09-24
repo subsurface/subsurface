@@ -367,6 +367,22 @@ void TestGitStorage::testGitSaveClassify()
 	clear_dive_file_data();
 	QCOMPARE(parse_file(sourceTarget.c_str(), &divelog), 0);
 	QVERIFY(classifyGitSave(mainTarget) == git_save_kind::replacement);
+	// An explicit replacement confirmation must reach the git save path, which
+	// otherwise rejects the unrelated source commit as a parent mismatch.
+	{
+		git_info info;
+		QVERIFY(is_git_repository(mainTarget.c_str(), &info));
+		QVERIFY(open_git_repository(&info));
+		oldHead = get_sha(info.repo, info.branch);
+	}
+	QCOMPARE(save_dives(mainTarget.c_str(), true), 0);
+	{
+		git_info info;
+		QVERIFY(is_git_repository(mainTarget.c_str(), &info));
+		QVERIFY(open_git_repository(&info));
+		QVERIFY(get_sha(info.repo, info.branch) != oldHead);
+	}
+	QVERIFY(classifyGitSave(mainTarget) == git_save_kind::normal);
 
 	// Case: absent local repo -> normal (first save).
 	std::string invalidTarget = destinationDir.filePath("missing").toStdString() + "[main]";

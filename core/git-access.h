@@ -61,9 +61,9 @@ extern bool is_git_repository(const char *filename, struct git_info *info);
 extern bool open_git_repository(struct git_info *info);
 extern bool remote_repo_uptodate(const char *filename, struct git_info *info);
 extern int sync_with_remote(struct git_info *);
-extern int git_save_dives(struct git_info *, bool select_only);
+extern int git_save_dives(struct git_info *, bool select_only, bool allow_replacement = false);
 extern int git_load_dives(struct git_info *, struct divelog *log);
-extern int do_git_save(struct git_info *, bool select_only, bool create_empty);
+extern int do_git_save(struct git_info *, bool select_only, bool create_empty, bool allow_replacement = false);
 extern int git_create_local_repo(const std::string &filename);
 
 #endif // GITACCESS_H
