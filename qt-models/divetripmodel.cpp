@@ -78,9 +78,12 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 {
 	if (!trip)
 		return QString();
-	QString numDives = tr("(%n dive(s))", "", static_cast<int>(trip->dives.size()));
+	int total = static_cast<int>(trip->dives.size());
 	int shown = trip->shown_dives();
-	QString shownDives = shown != !trip->dives.empty() ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
+	int hidden = total - shown;
+	QString numDives = hidden > 0
+		? tr("(%n dive(s) (%1 hidden))", "", total).arg(hidden)
+		: tr("(%n dive(s))", "", total);
 	QString title = QString::fromStdString(trip->location);
 
 	if (title.isEmpty()) {
@@ -98,7 +101,7 @@ QString DiveTripModelBase::tripTitle(const dive_trip *trip)
 		else
 			title = firstMonth + " " + firstYear + " - " + lastMonth + " " + lastYear;
 	}
-	return QStringLiteral("%1 %2%3").arg(title, numDives, shownDives);
+	return QStringLiteral("%1 %2").arg(title, numDives);
 }
 
 QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role)
@@ -123,12 +126,15 @@ QVariant DiveTripModelBase::tripData(const dive_trip *trip, int column, int role
 
 	if (role == Qt::DisplayRole) {
 		switch (column) {
-		case DiveTripModelBase::NR:
-			QString shownText;
+		case DiveTripModelBase::NR: {
+			int total = static_cast<int>(trip->dives.size());
 			int countShown = trip->shown_dives();
-			if (countShown < static_cast<int>(trip->dives.size()))
-				shownText = tr("(%1 shown)").arg(countShown);
-			return formatTripTitleWithDives(*trip) + " " + shownText;
+			int countHidden = total - countShown;
+			QString numDives = countHidden > 0
+				? tr("(%n dive(s) (%1 hidden))", "", total).arg(countHidden)
+				: tr("(%n dive(s))", "", total);
+			return formatTripTitle(*trip) + " " + numDives;
+		}
 		}
 	}
 
