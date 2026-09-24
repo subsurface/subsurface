@@ -434,6 +434,7 @@ jobs:
           tag_name: v${{ steps.version_number.outputs.version }}
           repository: ${{ github.repository_owner }}/nightly-builds
           token: ${{ secrets.NIGHTLY_BUILDS }}
+          draft: true
           prerelease: false
           fail_on_unmatched_files: true
           files: ${{ github.workspace }}/build/${{ steps.installer-name.outputs.installer }}
