@@ -181,8 +181,10 @@ struct dive_paste_data {
 
 extern std::unique_ptr<dive> clone_make_first_dc(const struct dive &d, int dc_number);
 
-extern int save_dives(const char *filename);
-extern int save_dives_logic(const char *filename, bool select_only, bool anonymize);
+// allow_replacement is set only after the desktop user confirms replacing an
+// unrelated git-backed log.
+extern int save_dives(const char *filename, bool allow_replacement = false);
+extern int save_dives_logic(const char *filename, bool select_only, bool anonymize, bool allow_replacement = false);
 extern int save_dive(FILE *f, const struct dive &dive, bool anonymize);
 extern std::pair<int, std::string> export_dives_xslt(const char *filename, bool selected, const int units, const char *export_xslt, bool anonymize);
 extern std::pair<int, std::string> export_dive_sites_xslt(const char *filename, const std::vector<const dive_site *> &sites,

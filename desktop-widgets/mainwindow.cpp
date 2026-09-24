@@ -468,6 +468,7 @@ bool MainWindow::saveCloudFile(const std::string &filename)
 		report_error("%s", qPrintable(tr("Unable to inspect cloud storage before saving. Cloud storage was not updated.")));
 		return false;
 	}
+	bool allow_replacement = false;
 	if (kind == git_save_kind::replacement) {
 		QMessageBox confirmation(this);
 		confirmation.setWindowTitle(tr("Replace cloud log?"));
@@ -483,9 +484,10 @@ bool MainWindow::saveCloudFile(const std::string &filename)
 		confirmation.exec();
 		if (confirmation.clickedButton() != replaceButton)
 			return false;
+		allow_replacement = true;
 	}
 	showProgressBar();
-	int error = save_dives(filename.c_str());
+	int error = save_dives(filename.c_str(), allow_replacement);
 	hideProgressBar();
 	if (error) {
 		report_error("%s", qPrintable(tr("Cloud storage was not updated. The current log remains open with its unsaved changes.")));

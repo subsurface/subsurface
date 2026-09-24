@@ -1167,7 +1167,7 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 		report_info("Commit message:\n\n%s\n", mb_cstring(msg));
 }
 
-static int create_new_commit(struct git_info *info, git_oid *tree_id, bool create_empty)
+static int create_new_commit(struct git_info *info, git_oid *tree_id, bool create_empty, bool allow_replacement)
 {
 	int ret;
 	git_reference *ref;
@@ -1191,7 +1191,7 @@ static int create_new_commit(struct git_info *info, git_oid *tree_id, bool creat
 		if (git_reference_peel(&parent, ref, GIT_OBJ_COMMIT))
 			return report_error("Unable to look up parent in branch '%s'", info->branch.c_str());
 
-		if (!loaded_git_commit.empty()) {
+		if (!allow_replacement && !loaded_git_commit.empty()) {
 			if (!existing_filename.empty() && verbose)
 				report_info("existing filename %s\n", existing_filename.c_str());
 			const git_oid *id = git_commit_id((const git_commit *) parent);
@@ -1294,7 +1294,7 @@ static int write_git_tree(git_repository *repo, const struct dir *tree, git_oid 
 	return ret;
 }
 
-int do_git_save(struct git_info *info, bool select_only, bool create_empty)
+int do_git_save(struct git_info *info, bool select_only, bool create_empty, bool allow_replacement)
 {
 	struct dir tree;
 	git_oid id;
@@ -1331,7 +1331,7 @@ int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 		return report_error("git tree write failed");
 
 	/* And save the tree! */
-	if (create_new_commit(info, &id, create_empty))
+	if (create_new_commit(info, &id, create_empty, allow_replacement))
 		return report_error("creating commit failed");
 
 	/* now sync the tree with the remote server */
@@ -1340,12 +1340,12 @@ int do_git_save(struct git_info *info, bool select_only, bool create_empty)
 	return 0;
 }
 
-int git_save_dives(struct git_info *info, bool select_only)
+int git_save_dives(struct git_info *info, bool select_only, bool allow_replacement)
 {
 	// AI-generated (Claude): Classify before opening the repo so an absent local
 	// cache is correctly treated as a new/initial save rather than a replacement.
 	git_save_kind kind = classify_git_save(info);
-	if (kind == git_save_kind::replacement)
+	if (kind == git_save_kind::replacement && !allow_replacement)
 		return report_error("%s", translate("gettextFromC", "Saving this log would overwrite unrelated dives in cloud storage. It was not opened from this cloud account; open the cloud log first, then save."));
 	if (kind == git_save_kind::error)
 		return report_error("%s", translate("gettextFromC", "Unable to inspect cloud storage destination"));
@@ -1366,7 +1366,7 @@ int git_save_dives(struct git_info *info, bool select_only)
 	 * case something goes wrong.
 	 */
 	if (!git_repository_open(&info->repo, info->localdir.c_str()))
-		return do_git_save(info, select_only, false);
+		return do_git_save(info, select_only, false, allow_replacement);
 
 	/*
 	 * Ok, so there was something wrong with the local
@@ -1382,10 +1382,10 @@ int git_save_dives(struct git_info *info, bool select_only)
 	// AI-generated (Claude): A missing cache may have been populated from an existing remote. Inspect
 	// that branch before allowing the save to replace its newly fetched tree.
 	kind = classify_git_save(info);
-	if (kind == git_save_kind::replacement)
+	if (kind == git_save_kind::replacement && !allow_replacement)
 		return report_error("%s", translate("gettextFromC", "Saving this log would overwrite unrelated dives in cloud storage. It was not opened from this cloud account; open the cloud log first, then save."));
 	if (kind == git_save_kind::error)
 		return report_error("%s", translate("gettextFromC", "Unable to inspect cloud storage destination"));
 
-	return do_git_save(info, select_only, false);
+	return do_git_save(info, select_only, false, allow_replacement);
 }
