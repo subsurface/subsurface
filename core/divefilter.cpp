@@ -201,7 +201,7 @@ QString DiveFilter::shownText() const
 			invalid = invalidDives().size();
 
 		if (invalid) {
-			return gettextFromC::tr("%L1 dives)(%L2 shown").arg(num).arg(num-invalid);
+			return gettextFromC::tr("%L1 dives (%L2 hidden)").arg(num).arg(invalid);
 		} else {
 			return gettextFromC::tr("%L1 dives").arg(num);
 		}
