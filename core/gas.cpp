@@ -8,6 +8,9 @@
 #include <string.h>
 #include <QtGlobal> // for QT_TRANSLATE_NOOP
 
+/* As some computers report oxygen as 99%, consider anything >= 99% as pure oxygen */
+#define PURE_OXYGEN_PERMILLE 990
+
 /* Perform isobaric counterdiffusion calculations for gas changes in trimix dives.
  * Here we use the rule-of-fifths where, during a change involving trimix gas, the increase in nitrogen
  * should not exceed one fifth of the decrease in helium.
@@ -161,7 +164,7 @@ enum gastype gasmix_to_type(struct gasmix mix)
 {
 	if (gasmix_is_air(mix))
 		return GASTYPE_AIR;
-	if (get_o2(mix) >= 980)
+	if (get_o2(mix) >= PURE_OXYGEN_PERMILLE)
 		return GASTYPE_OXYGEN;
 	if (get_he(mix) == 0)
 		return get_o2(mix) >= 230 ? GASTYPE_NITROX : GASTYPE_AIR;
@@ -191,11 +194,11 @@ std::string gasmix::name() const
 	if (get_he(*this) < 0 || get_o2(*this) < 0)
 		return translate("gettextFromC", "invalid gas");
 	else if (gasmix_is_air(*this))
-		return translate("gettextFromC", "air");
-	else if (get_he(*this) == 0 && get_o2(*this) < 1000)
+		return gastype_name(GASTYPE_AIR);
+	else if (gasmix_is_oxygen(*this))
+		return gastype_name(GASTYPE_OXYGEN);
+	else if (get_he(*this) == 0)
 		return format_string_std(translate("gettextFromC", "EAN%d"), (get_o2(*this) + 5) / 10);
-	else if (get_he(*this) == 0 && get_o2(*this) == 1000)
-		return translate("gettextFromC", "oxygen");
 	else
 		return format_string_std("(%d/%d)", (get_o2(*this) + 5) / 10, (get_he(*this) + 5) / 10);
 }
