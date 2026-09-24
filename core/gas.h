@@ -71,5 +71,9 @@ extern bool gasmix_is_invalid(struct gasmix mix);
 extern enum gastype gasmix_to_type(struct gasmix mix);
 extern const char *gastype_name(enum gastype type);
 extern fraction_t make_fraction(int f);
+static inline bool gasmix_is_oxygen(struct gasmix gasmix)
+{
+	return gasmix_to_type(gasmix) == GASTYPE_OXYGEN;
+}
 
 #endif

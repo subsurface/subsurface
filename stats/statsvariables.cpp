@@ -1529,7 +1529,7 @@ struct gas_bin_t bin_gasmix(struct gasmix mix, int size)
 {
 	if (gasmix_is_air(mix))
 		return gas_bin_t::air();
-	if (get_o2(mix) == 1000)
+	if (gasmix_is_oxygen(mix))
 		return gas_bin_t::oxygen();
 	return get_he(mix) == 0 ?
 		gas_bin_t::ean(get_o2(mix) / 10 / size * size) :
