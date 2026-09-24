@@ -94,6 +94,7 @@ jobs:
         fi
 
         pending=0
+        failed=0
 
         while IFS= read -r row; do
           name=$(jq -r '.name' <<< "$row")
@@ -151,10 +152,19 @@ jobs:
             continue
           fi
 
+          if [ "$conclusion" != "success" ] && [ "$conclusion" != "skipped" ]; then
+            echo "Failed: $name completed with conclusion '$conclusion'."
+            failed=1
+            continue
+          fi
+
           echo "Completed: $name ($conclusion)."
         done < <(jq -c '.[]' <<< "$required_workflows")
 
-        if [ "$pending" -eq 1 ]; then
+        if [ "$failed" -eq 1 ]; then
+          echo "One or more required workflows completed with a non-success conclusion; refusing to publish."
+          echo "ready=false" >> "$GITHUB_OUTPUT"
+        elif [ "$pending" -eq 1 ]; then
           echo "ready=false" >> "$GITHUB_OUTPUT"
         else
           echo "ready=true" >> "$GITHUB_OUTPUT"
