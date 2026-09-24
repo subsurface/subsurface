@@ -191,11 +191,11 @@ std::string gasmix::name() const
 	if (get_he(*this) < 0 || get_o2(*this) < 0)
 		return translate("gettextFromC", "invalid gas");
 	else if (gasmix_is_air(*this))
-		return translate("gettextFromC", "air");
-	else if (get_he(*this) == 0 && get_o2(*this) < 1000)
+		return gastype_name(GASTYPE_AIR);
+	else if (gasmix_is_oxygen(*this))
+		return gastype_name(GASTYPE_OXYGEN);
+	else if (get_he(*this) == 0 && get_o2(*this) < 980)
 		return format_string_std(translate("gettextFromC", "EAN%d"), (get_o2(*this) + 5) / 10);
-	else if (get_he(*this) == 0 && get_o2(*this) == 1000)
-		return translate("gettextFromC", "oxygen");
 	else
 		return format_string_std("(%d/%d)", (get_o2(*this) + 5) / 10, (get_he(*this) + 5) / 10);
 }

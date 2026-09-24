@@ -50,7 +50,7 @@ void TankItem::createBar(int startTime, int stopTime, struct gasmix gas)
 		rect->setBrush(air);
 	else if (gas.he.permille)
 		rect->setBrush(trimix);
-	else if (gas.o2.permille == 1000)
+	else if (gasmix_is_oxygen(gas))
 		rect->setBrush(oxygen);
 	else
 		rect->setBrush(nitrox);

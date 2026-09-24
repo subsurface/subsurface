@@ -126,7 +126,7 @@ void TestDivePlannerModel::testSurfaceAirCylinderDataAccess()
 
 	QVariant gas = model->data(gasIndex, Qt::DisplayRole);
 	QVERIFY(gas.isValid());
-	QCOMPARE(gas.toString(), QStringLiteral("AIR"));
+	QCOMPARE(gas.toString(), QStringLiteral("Air"));
 
 	model->resetPlanState();
 }
