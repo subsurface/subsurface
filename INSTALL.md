@@ -109,7 +109,10 @@ ccmake .
 in your build directory.
 
 
-### Building the development version of Subsurface under Linux
+### Building the development version of Subsurface under Linux (Qt5, deprecated)
+
+Note: Qt5 support is deprecated and will be dropped in the not too distant
+future. New builds should use the Qt6 instructions below.
 
 On Fedora you need
 
@@ -262,7 +265,48 @@ su -c "apt-get install -y autoconf automake cmake gcc-c++ git libtool \
     lib64ssh2-devel lib64usb1.0-devel lib64zip-devel qttools5 qttranslations5"
 ```
 
-In order to build Subsurface, use the supplied build script. This should
+### Building Subsurface under Linux with Qt6
+
+Qt6 builds are supported on recent distributions that ship Qt 6.8 or newer.
+
+On Fedora 42 you need
+
+```
+sudo dnf install autoconf automake bluez-libs-devel cmake gcc-c++ git-core \
+    libcurl-devel libsqlite3x-devel libssh2-devel libtool libudev-devel \
+    libusbx-devel libxml2-devel libxslt-devel make which \
+    qt6-qtbase-devel qt6-qtconnectivity-devel qt6-qtdeclarative-devel \
+    qt6-qtlocation-devel qt6-qtsvg-devel \
+    qt6-qttools-devel redhat-rpm-config \
+    libxkbcommon-devel qt6-qt5compat-devel \
+    qt6-qtbase-private-devel \
+    bluez-libs-devel libgit2-devel libzip-devel libmtp-devel LibRaw-devel
+```
+
+On Debian trixie and Ubuntu 25.10 you need
+
+```
+sudo apt install \
+    autoconf automake bzip2 cmake ninja-build g++ git libcrypto++-dev libcurl4-gnutls-dev \
+    libgit2-dev libsqlite3-dev libssh2-1-dev libssl-dev \
+    libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
+    pkg-config libbluetooth-dev libmtp-dev libraw-dev mdbtools-dev \
+    libqt6qml6 libqt6quick6 qt6-svg-dev libqt6svg6 qt6-5compat-dev \
+    qml6-module-qtpositioning qml6-module-qtlocation \
+    qmake6 qt6-location-dev qt6-connectivity-dev qt6-base-private-dev \
+    qml6-module-qtquick qt6-declarative-dev qt6-tools-dev qt6-tools-dev-tools \
+    qt6-positioning-dev qt6-declarative-private-dev qt6-shadertools-dev
+```
+
+To build with Qt6, pass the `-build-with-qt6` flag to the build script:
+
+```
+cd ~/src
+bash subsurface/scripts/build.sh -desktop -build-with-qt6
+```
+
+
+In order to build Subsurface with Qt5, use the supplied build script. This should
 work on most systems that have all the prerequisite packages installed.
 
 You should have Subsurface sources checked out in a sane place, something
