@@ -11,6 +11,7 @@ on:
     # Manual trigger - allows running from GitHub Actions UI
 
 env:
+  RELEASE_PUBLISHER: "true"
   # Qt version - use 6.8.x which is an LTS release (promised until 2029) and
   # includes Positioning and Location modules
   QT_VERSION: "6.8"
@@ -436,3 +437,13 @@ jobs:
           prerelease: false
           fail_on_unmatched_files: true
           files: ${{ github.workspace }}/build/${{ steps.installer-name.outputs.installer }}
+
+  notify-release-coordinator:
+    permissions:
+      contents: write
+    if: always()
+    needs: [compute-version, build]
+    uses: ./.github/workflows/notify-release-coordinator.yml
+    with:
+      release_tag: ${{ needs.compute-version.outputs.release_tag }}
+      conclusion: ${{ needs.build.result }}
