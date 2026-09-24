@@ -402,8 +402,8 @@ jobs:
 
           Write-Host "Found installer: $($oldInstaller.Name)"
 
-          # Create new name with qt-6 identifier
-          $newName = "subsurface-qt-6-${{ steps.version_number.outputs.version }}.exe"
+          # Create new name consistent with other platform artifacts (title-case, -installer suffix)
+          $newName = "Subsurface-${{ steps.version_number.outputs.version }}-qt6-installer.exe"
           $newPath = Join-Path $buildDir $newName
 
           # Rename the installer

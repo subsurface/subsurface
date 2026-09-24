@@ -90,7 +90,8 @@ jobs:
       with:
         name: Subsurface-Windows-${{ steps.version_number.outputs.version }}
         path: |
-         subsurface*.exe*
+         subsurface.exe*
+         Subsurface-*.exe
          smtk2ssrf*.exe
 
     # only publish a 'release' on push events (those include merging a PR)
@@ -106,7 +107,8 @@ jobs:
         fail_on_unmatched_files: true
         overwrite_files: false
         files: |
-         ./subsurface*.exe*
+         ./subsurface.exe*
+         ./Subsurface-*.exe
          ./smtk2ssrf*.exe
 
   notify-release-coordinator:
