@@ -69,7 +69,7 @@ void DiveEventItem::setupPixmap(const struct gasmix lastgasmix, divemode_t lastd
 				setPixmap(pixmaps.gaschangeAirICD);
 			else
 				setPixmap(pixmaps.gaschangeAir);
-		} else if (mix.o2.permille == 1000) {
+		} else if (gasmix_is_oxygen(mix)) {
 			if (icd)
 				setPixmap(pixmaps.gaschangeOxygenICD);
 			else
