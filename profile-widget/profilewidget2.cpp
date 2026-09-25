@@ -179,6 +179,11 @@ void ProfileWidget2::replot()
 	plotDive(d, dc);
 }
 
+void ProfileWidget2::replotPreservePictures()
+{
+	plotDive(d, dc, RenderFlags::DontRecreatePictures);
+}
+
 void ProfileWidget2::setupSceneAndFlags()
 {
 	setScene(profileScene.get());
@@ -234,7 +239,7 @@ void ProfileWidget2::plotDive(const struct dive *dIn, int dcIn, int flags)
 	}
 
 	// On zoom / pan don't recreate the picture thumbnails, only change their position.
-	if (flags & RenderFlags::DontRecalculatePlotInfo)
+	if (flags & (RenderFlags::DontRecalculatePlotInfo | RenderFlags::DontRecreatePictures))
 		updateThumbnails();
 	else
 		plotPicturesInternal(d, flags & RenderFlags::Instant);
@@ -316,7 +321,7 @@ void ProfileWidget2::divePlannerHandlerReleased()
 	if (currentState == EDIT)
 		emit stopMoved(1);
 	shouldCalculateMax = true;
-	replot();
+	replotPreservePictures();
 }
 
 void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
@@ -328,7 +333,7 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 	}
 	if (currentState == PLAN || currentState == EDIT) {
 		shouldCalculateMax = true;
-		replot();
+		replotPreservePictures();
 	}
 }
 #endif
@@ -841,8 +846,8 @@ void ProfileWidget2::editName(DiveEventItem *item)
 
 void ProfileWidget2::connectPlannerModel()
 {
-	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
-	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
+	connect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replotPreservePictures);
+	connect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replotPreservePictures);
 	connect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
 	connect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
 	connect(plannerModel, &DivePlannerPointsModel::rowsRemoved, this, &ProfileWidget2::pointsRemoved);
@@ -854,8 +859,8 @@ void ProfileWidget2::disconnectPlannerModel()
 {
 #if defined(SUBSURFACE_DESKTOP)
 	if (plannerModel) {
-		disconnect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replot);
-		disconnect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replot);
+		disconnect(plannerModel, &DivePlannerPointsModel::dataChanged, this, &ProfileWidget2::replotPreservePictures);
+		disconnect(plannerModel, &DivePlannerPointsModel::cylinderModelEdited, this, &ProfileWidget2::replotPreservePictures);
 
 		disconnect(plannerModel, &DivePlannerPointsModel::modelReset, this, &ProfileWidget2::pointsReset);
 		disconnect(plannerModel, &DivePlannerPointsModel::rowsInserted, this, &ProfileWidget2::pointInserted);
@@ -1160,7 +1165,11 @@ ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const std::string 
 	QImage img = Thumbnailer::instance()->fetchThumbnail(QString::fromStdString(filename), synchronous).scaled(size, size, Qt::KeepAspectRatio);
 	thumbnail->setPixmap(QPixmap::fromImage(img));
 	thumbnail->setFileUrl(QString::fromStdString(filename));
-	connect(thumbnail.get(), &DivePictureItem::removePicture, profile, &ProfileWidget2::removePicture);
+	// Profile edit mode plots a copy of the dive; don't delete media from it.
+	if (profile->currentState == EDIT)
+		thumbnail->setAllowRemove(false);
+	else
+		connect(thumbnail.get(), &DivePictureItem::removePicture, profile, &ProfileWidget2::removePicture);
 }
 
 // Define a default sort order for picture-entries: sort lexicographically by timestamp and filename.
@@ -1249,7 +1258,9 @@ void ProfileWidget2::plotPictures()
 void ProfileWidget2::plotPicturesInternal(const struct dive *d, bool synchronous)
 {
 	pictures.clear();
-	if (currentState == EDIT || currentState == PLAN)
+	// The planner has no media. Keep pictures in EDIT: manual dives auto-enter that mode
+	// so hiding them here made media vanish from those profiles after the first replot
+	if (currentState == PLAN)
 		return;
 
 	if (!d)
@@ -1331,6 +1342,10 @@ void ProfileWidget2::profileChanged(dive *dive)
 void ProfileWidget2::dropEvent(QDropEvent *event)
 {
 #if defined(SUBSURFACE_DESKTOP)
+	if (currentState == EDIT || currentState == PLAN) {
+		event->ignore();
+		return;
+	}
 	if (event->mimeData()->hasFormat("application/x-subsurfaceimagedrop") && d) {
 		QByteArray itemData = event->mimeData()->data("application/x-subsurfaceimagedrop");
 		QDataStream dataStream(&itemData, QIODevice::ReadOnly);
@@ -1426,6 +1441,10 @@ void ProfileWidget2::pictureOffsetChanged(dive *dIn, QString filenameIn, offset_
 
 void ProfileWidget2::dragEnterEvent(QDragEnterEvent *event)
 {
+	if (currentState == EDIT || currentState == PLAN) {
+		event->ignore();
+		return;
+	}
 	if (event->mimeData()->hasFormat("application/x-subsurfaceimagedrop")) {
 		if (event->source() == this) {
 			event->setDropAction(Qt::MoveAction);
@@ -1440,6 +1459,10 @@ void ProfileWidget2::dragEnterEvent(QDragEnterEvent *event)
 
 void ProfileWidget2::dragMoveEvent(QDragMoveEvent *event)
 {
+	if (currentState == EDIT || currentState == PLAN) {
+		event->ignore();
+		return;
+	}
 	if (event->mimeData()->hasFormat("application/x-subsurfaceimagedrop")) {
 		if (event->source() == this) {
 			event->setDropAction(Qt::MoveAction);
