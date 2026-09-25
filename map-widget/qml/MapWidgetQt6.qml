@@ -14,6 +14,7 @@ Item {
 	id: rootItem
 	property alias mapHelper: mapHelper
 	property alias map: map
+	property real safeAreaRight: 0
 
 	signal selectedDivesChanged(var list)
 
@@ -451,7 +452,7 @@ Item {
 
 	MapWidgetContextMenu {
 		id: contextMenu
-		y: 10; x: map.width - y
+		y: 10; x: map.width - y - rootItem.safeAreaRight
 		onActionSelected: {
 			switch (action) {
 			case contextMenu.actions.OPEN_LOCATION_IN_GOOGLE_MAPS:
