@@ -11,6 +11,7 @@
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/subsurface-string.h"
 #include "qt-models/diveplannermodel.h"
+#include "qt-models/gasblendermodel.h"
 
 #include <QToolBar>
 #include <QHBoxLayout>

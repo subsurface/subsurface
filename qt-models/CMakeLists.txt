@@ -15,6 +15,8 @@ set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 	divelocationmodel.h
 	diveplannermodel.cpp
 	diveplannermodel.h
+	gasblendermodel.h
+	gasblendermodel.cpp
 	divetripmodel.cpp
 	divetripmodel.h
 	filterconstraintmodel.cpp
