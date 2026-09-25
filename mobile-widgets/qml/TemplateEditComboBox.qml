@@ -16,7 +16,4 @@ TemplateComboBox {
 	onAccepted: {
 		focus = false
 	}
-	onEditTextChanged: { // this allows us to set the initial text in DiveDetails / startEditMode()
-		displayText = editText
-	}
 }
