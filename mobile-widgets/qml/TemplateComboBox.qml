@@ -70,6 +70,7 @@ ComboBox {
 		flickable: cb.flickable
 		leftPadding: Kirigami.Units.smallSpacing
 		rightPadding: Kirigami.Units.smallSpacing
+		inputMethodHints: cb.inputMethodHints
 		text: readOnly ? cb.displayText : cb.editText
 		font: cb.font
 		color: subsurfaceTheme.textColor
