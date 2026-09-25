@@ -315,6 +315,29 @@ void EditDiveSiteTaxonomy::undo()
 	redo();
 }
 
+EditDiveSiteMarker::EditDiveSiteMarker(dive_site *dsIn, bool alpha_flag) : ds(dsIn),
+	value(alpha_flag)
+{
+	setText(Command::Base::tr("Edit dive site marker"));
+}
+
+bool EditDiveSiteMarker::workToBeDone()
+{
+	return value != ds->alpha_flag;
+}
+
+void EditDiveSiteMarker::redo()
+{
+	std::swap(value, ds->alpha_flag);
+	emit diveListNotifier.diveSiteChanged(ds, LocationInformationModel::MARKER);
+}
+
+void EditDiveSiteMarker::undo()
+{
+	// Undo and redo do the same
+	redo();
+}
+
 MergeDiveSites::MergeDiveSites(dive_site *dsIn, const QVector<dive_site *> &sites) : ds(dsIn)
 {
 	setText(Command::Base::tr("merge dive sites"));

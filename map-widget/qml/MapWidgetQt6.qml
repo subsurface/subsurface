@@ -68,6 +68,11 @@ Item {
 				sourceItem: Image {
 					id: mapItemImage
 					source: model.pixmap
+					width: 48
+					height: 48
+					sourceSize.width: 48
+					sourceSize.height: 48
+					smooth: true
 					SequentialAnimation {
 						id: mapItemImageAnimation
 						PropertyAnimation { target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120 }
