@@ -27,6 +27,7 @@ Kirigami.Page {
 	MapWidget {
 		id: mapWidget
 		anchors.fill: parent
+		safeAreaRight: rootItem.safeAreaMargins.right
 		onSelectedDivesChanged: {
 			if (list.length === 0) {
 				console.warn("main.qml: onSelectedDivesChanged(): received empty list!")
