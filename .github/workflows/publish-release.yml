@@ -101,7 +101,7 @@ jobs:
           path=$(jq -r '.path' <<< "$row")
 
           if [ -n "$TRIGGER_WORKFLOW" ] && [ "$name" = "$TRIGGER_WORKFLOW" ] && [ -n "$TRIGGER_CONCLUSION" ] && [ "$TRIGGER_CONCLUSION" != "missing" ]; then
-            if [ "$TRIGGER_CONCLUSION" != "success" ]; then
+            if [ "$TRIGGER_CONCLUSION" != "success" ] && [ "$TRIGGER_CONCLUSION" != "skipped" ]; then
               echo "Failed (dispatch): $name ($TRIGGER_CONCLUSION)."
               failed=1
               continue
@@ -157,7 +157,7 @@ jobs:
             continue
           fi
 
-          if [ "$conclusion" != "success" ]; then
+          if [ "$conclusion" != "success" ] && [ "$conclusion" != "skipped" ]; then
             echo "Failed: $name completed with conclusion '$conclusion'."
             failed=1
             continue
