@@ -35,6 +35,10 @@ ComboBox {
 			verticalAlignment: Text.AlignVCenter
 		}
 		highlighted: cb.highlightedIndex === index
+		onClicked: {
+			if (cb.editable)
+				cb.editText = cb.textAt(index)
+		}
 	}
 
 	indicator: Canvas {
@@ -75,6 +79,17 @@ ComboBox {
 		font: cb.font
 		color: subsurfaceTheme.textColor
 		verticalAlignment: Text.AlignVCenter
+
+		onTextEdited: {
+			const prefixLength = cursorPosition
+			const prefixText = text
+			Qt.callLater(function() {
+				if (Qt.platform.os !== "android" || !activeFocus || !text.startsWith(prefixText) ||
+				    prefixLength >= text.length || cb.find(text, Qt.MatchFixedString) < 0)
+					return
+				select(prefixLength, text.length)
+			})
+		}
 
 		onPressed: {
 			if (readOnly) {
