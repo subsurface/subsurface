@@ -84,7 +84,8 @@ ComboBox {
 			const prefixLength = cursorPosition
 			const prefixText = text
 			Qt.callLater(function() {
-				if (Qt.platform.os !== "android" || !activeFocus || !text.startsWith(prefixText) ||
+				if (Qt.platform.os !== "android" || !activeFocus ||
+				    !text.toLowerCase().startsWith(prefixText.toLowerCase()) ||
 				    prefixLength >= text.length || cb.find(text, Qt.MatchFixedString) < 0)
 					return
 				select(prefixLength, text.length)
