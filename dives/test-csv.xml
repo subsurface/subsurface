@@ -8,7 +8,7 @@
   <buddy>Dirk, Linus</buddy>
   <notes>nice dive</notes>
   <suit>wet, 5mm</suit>
-  <divecomputer model='csv' last-manual-time='45:00 min'>
+  <divecomputer model='csv' last-manual-time='45:00 min' deviceid='ffffffff'>
   <depth max='18.0 m' mean='16.0 m' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='2:00 min' depth='18.0 m' />
@@ -24,7 +24,7 @@
 - stone fish "fred"
 - turtle</notes>
   <suit>wet, 3mm "shorty"</suit>
-  <divecomputer model='csv' last-manual-time='41:00 min'>
+  <divecomputer model='csv' last-manual-time='41:00 min' deviceid='ffffffff'>
   <depth max='16.2 m' mean='13.5 m' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='1:48 min' depth='16.2 m' />
@@ -38,7 +38,7 @@
   <buddy>Tomaz</buddy>
   <notes>snorkeling</notes>
   <suit>none</suit>
-  <divecomputer model='csv' last-manual-time='48:00 min'>
+  <divecomputer model='csv' last-manual-time='48:00 min' deviceid='ffffffff'>
   <depth max='13.3 m' mean='11.5 m' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='1:29 min' depth='13.3 m' />
@@ -52,7 +52,7 @@
   <buddy>Don</buddy>
   <notes>cold water, visibility 3m</notes>
   <suit>dry, Whites Fusion</suit>
-  <divecomputer model='csv' last-manual-time='34:00 min'>
+  <divecomputer model='csv' last-manual-time='34:00 min' deviceid='ffffffff'>
   <depth max='24.9 m' mean='20.1 m' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='2:46 min' depth='24.9 m' />
