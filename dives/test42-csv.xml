@@ -18,7 +18,7 @@ Lake
   <cylinder size='11.1 l' start='207.0 bar' end='200.0 bar' />
   <weightsystem weight='2.0 kg' description='unknown' />
   <divetemperature air='12.2 C' water='4.3 C'/>
-  <divecomputer model='SubsurfaceCSV' last-manual-time='77:54 min' dctype='CCR'>
+  <divecomputer model='SubsurfaceCSV' last-manual-time='77:54 min' deviceid='ffffffff' dctype='CCR'>
   <depth max='38.99 m' mean='17.721 m' />
   <sample time='0:00 min' depth='0.0 m' />
   <sample time='4:20 min' depth='38.99 m' />
