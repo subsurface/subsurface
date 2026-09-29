@@ -748,6 +748,45 @@ void TestParse::importSuuntoJsonNautic()
 		SUBSURFACE_TEST_DATA "/dives/suunto_nautic_sidemount.xml");
 }
 
+void TestParse::importSuuntoJsonNauticMultigas()
+{
+#if defined(SUBSURFACE_MOBILE)
+	QSKIP("Not testing Suunto JSON import on SUBSURFACE_MOBILE");
+#endif
+	/* Suunto Nautic, two gases (air and EAN50), one tank pod per gas and
+	 * a gas change in the middle of the dive. The test data is derived
+	 * from suunto_nautic_sidemount.json, trimmed to the first 1800
+	 * samples and given a second gas with a second tank pod.
+	 *
+	 * The gas mix, tank size and pressures have to end up in the
+	 * cylinder with the matching gas number, and the gas change event
+	 * has to refer to that same cylinder. */
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/suunto_nautic_multigas.json", &divelog), 0);
+	QCOMPARE(divelog.dives.size(), 1);
+
+	auto &dive = divelog.dives[0];
+	QCOMPARE(dive->cylinders.size(), 2);
+
+	/* air on the first cylinder */
+	QCOMPARE(dive->cylinders[0].gasmix.o2.permille, 0);
+	QCOMPARE(dive->cylinders[0].type.size.mliter, 12000);
+	QCOMPARE(dive->cylinders[0].type.workingpressure.mbar, 200000);
+
+	/* EAN50 on the second cylinder */
+	QCOMPARE(dive->cylinders[1].gasmix.o2.permille, 500);
+	QCOMPARE(dive->cylinders[1].type.size.mliter, 11000);
+	QCOMPARE(dive->cylinders[1].type.workingpressure.mbar, 232000);
+
+	/* the gas change in the middle of the dive has to refer to the
+	 * second cylinder */
+	QCOMPARE(dive->dcs[0].events[3].time.seconds, 454);
+	QCOMPARE(dive->dcs[0].events[3].gas.index, 1);
+
+	QCOMPARE(save_dives("./test_suunto_nautic_multigas.ssrf"), 0);
+	FILE_COMPARE("./test_suunto_nautic_multigas.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/suunto_nautic_multigas.xml");
+}
+
 void TestParse::importSuuntoJsonEonCore()
 {
 #if defined(SUBSURFACE_MOBILE)

@@ -54,6 +54,7 @@ private slots:
 	void importDlfFreedomMix2V2FactoryTest();
 
 	void importSuuntoJsonNautic();
+	void importSuuntoJsonNauticMultigas();
 	void importSuuntoJsonEonCore();
 	void importSuuntoJsonOcean();
 	void importSuuntoJsonOceanNoFit();
