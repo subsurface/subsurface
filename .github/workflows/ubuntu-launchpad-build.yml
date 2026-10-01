@@ -1,4 +1,9 @@
 name: Ubuntu Launchpad Build
+
+concurrency:
+  group: launchpad-ppa-upload
+  cancel-in-progress: false
+
 on:
   push:
     paths-ignore:

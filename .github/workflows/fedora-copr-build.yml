@@ -1,4 +1,9 @@
 name: Fedora Copr Build
+
+concurrency:
+  group: copr-build-upload
+  cancel-in-progress: false
+
 on:
   push:
     paths-ignore:
