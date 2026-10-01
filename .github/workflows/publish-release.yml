@@ -6,7 +6,7 @@ on:
       - release-artifact-finished
 
 concurrency:
-  group: publish-release-${{ github.event.client_payload.sha }}
+  group: publish-release-${{ github.event.client_payload.tag }}
   cancel-in-progress: false
 
 permissions: read-all
