@@ -1,0 +1,75 @@
+name: Supersede Orphaned Draft Releases
+
+concurrency:
+  group: supersede-draft-releases-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  push:
+    paths-ignore:
+    - scripts/docker/**
+    branches:
+    - master
+
+permissions: read-all
+
+jobs:
+  supersede-drafts:
+    name: Delete orphaned draft releases in nightly-builds
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Delete draft releases not belonging to this commit
+      env:
+        GH_TOKEN: ${{ secrets.NIGHTLY_BUILDS_SECRET }}
+      run: |
+        set -eu
+
+        CURRENT_SHA="${{ github.sha }}"
+        TARGET_REPO="subsurface/nightly-builds"
+
+        echo "Current SHA: $CURRENT_SHA"
+        echo "Listing draft releases in $TARGET_REPO..."
+
+        releases=$(gh api repos/$TARGET_REPO/releases --paginate 2>/dev/null || echo '[]')
+
+        total=$(echo "$releases" | jq 'length')
+        echo "Total releases found: $total"
+
+        if [ "$total" -eq 0 ]; then
+          echo "No releases found; nothing to clean up."
+          exit 0
+        fi
+
+        drafts=$(echo "$releases" | jq -c '[.[] | select(.draft == true and (.tag_name | test("-CICD-release$")))]')
+        draft_count=$(echo "$drafts" | jq 'length')
+        echo "Draft CICD-release releases found: $draft_count"
+
+        if [ "$draft_count" -eq 0 ]; then
+          echo "No orphaned draft releases to clean up."
+          exit 0
+        fi
+
+        deleted=0
+        kept=0
+
+        while IFS= read -r release; do
+          id=$(echo "$release" | jq -r '.id')
+          tag=$(echo "$release" | jq -r '.tag_name')
+          commitish=$(echo "$release" | jq -r '.target_commitish')
+
+          if [ "$commitish" = "$CURRENT_SHA" ]; then
+            echo "Keeping draft '$tag' (target_commitish matches current SHA)."
+            kept=$((kept + 1))
+          else
+            echo "Deleting orphaned draft '$tag' (target_commitish=$commitish, expected $CURRENT_SHA)."
+            if gh api --method DELETE repos/$TARGET_REPO/releases/$id; then
+              echo "  Deleted release ID $id."
+              deleted=$((deleted + 1))
+            else
+              echo "  Warning: failed to delete release ID $id; continuing."
+            fi
+          fi
+        done < <(echo "$drafts" | jq -c '.[]')
+
+        echo "Done. Deleted: $deleted, kept: $kept."
