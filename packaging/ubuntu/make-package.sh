@@ -158,8 +158,7 @@ for f in "${FOLDER}-${rev}"~*.changes; do
 	attempt=1
 	while : ; do
 		rm -f ~/.dput.log
-		dput_output=$(dput "$PPA" "$f" 2>&1)
-		dput_status=$?
+		dput_output=$(dput "$PPA" "$f" 2>&1) && dput_status=0 || dput_status=$?
 		echo "$dput_output"
 		if [ $dput_status -eq 0 ]; then
 			break

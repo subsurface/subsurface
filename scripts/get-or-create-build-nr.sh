@@ -42,10 +42,22 @@ else
     echo $latest > latest-subsurface-buildnumber
     git commit -a -m "record latest build number in main branch"
     if ! git push origin main; then
-      echo "push to main failed - retrying with rebase"
+      echo "push to main failed - rebasing and retrying with next build number"
       git pull --rebase origin main
+      # After rebase, main holds the other committer's number; take the next one.
+      latest=$(<latest-subsurface-buildnumber)
+      latest=$((latest + 1))
+      echo "updated build number is $latest"
+      # Update the SHA-specific branch with the new number (amend + force-push).
+      git switch "$SHA_BRANCH"
+      echo $latest > latest-subsurface-buildnumber
+      git commit -a --amend --no-edit
+      git push --force-with-lease origin "$SHA_BRANCH"
+      git switch main
+      echo $latest > latest-subsurface-buildnumber
+      git commit -a -m "record latest build number in main branch"
       if ! git push origin main; then
-        echo "push to main failed after rebase - continuing anyway (build number is on SHA branch)"
+        echo "push to main failed after second attempt - continuing anyway (build number is on SHA branch)"
       fi
     fi
   else
