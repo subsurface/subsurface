@@ -138,6 +138,11 @@ void DiveListView::calculateInitialColumnWidth(int col)
 	int sw = 0;
 	switch (col) {
 	case DiveTripModelBase::NR:
+		// Add the tree indentation offset so dive numbers remain visible for
+		// child rows (dives inside a trip), where Qt indents the cell content
+		// before rendering text.
+		sw = 8*zw + indentation();
+		break;
 	case DiveTripModelBase::DURATION:
 		sw = 8*zw;
 		break;
