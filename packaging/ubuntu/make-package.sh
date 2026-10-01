@@ -158,7 +158,17 @@ for f in "${FOLDER}-${rev}"~*.changes; do
 	attempt=1
 	while : ; do
 		rm -f ~/.dput.log
-		if dput "$PPA" "$f"; then
+		dput_output=$(dput "$PPA" "$f" 2>&1)
+		dput_status=$?
+		echo "$dput_output"
+		if [ $dput_status -eq 0 ]; then
+			break
+		fi
+		# Permanent Launchpad rejections (file already uploaded) are not
+		# transient; retrying will not help and wastes all remaining attempts.
+		if echo "$dput_output" | grep -qiE "File already exists|already exists in Primary|rejected"; then
+			echo "WARNING: dput permanently rejected $f (already uploaded or rejected) - skipping retries"
+			failed="$failed $f"
 			break
 		fi
 		if [ "$attempt" -ge "$max_attempts" ]; then

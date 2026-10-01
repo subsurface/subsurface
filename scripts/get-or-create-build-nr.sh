@@ -41,10 +41,12 @@ else
     git switch main
     echo $latest > latest-subsurface-buildnumber
     git commit -a -m "record latest build number in main branch"
-    if ! git push origin main
-    then
-      echo "push to main failed - we'll lose monotonic property"
-      exit 1
+    if ! git push origin main; then
+      echo "push to main failed - retrying with rebase"
+      git pull --rebase origin main
+      if ! git push origin main; then
+        echo "push to main failed after rebase - continuing anyway (build number is on SHA branch)"
+      fi
     fi
   else
     # someone else was faster - get the number they wrote
