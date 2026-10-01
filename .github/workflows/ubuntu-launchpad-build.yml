@@ -2,7 +2,7 @@ name: Ubuntu Launchpad Build
 
 concurrency:
   group: launchpad-ppa-upload
-  cancel-in-progress: false
+  queue: max
 
 on:
   push:

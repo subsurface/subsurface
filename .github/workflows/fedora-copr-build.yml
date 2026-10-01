@@ -2,7 +2,7 @@ name: Fedora Copr Build
 
 concurrency:
   group: copr-build-upload
-  cancel-in-progress: false
+  queue: max
 
 on:
   push:
