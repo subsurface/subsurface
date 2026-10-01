@@ -131,6 +131,8 @@ jobs:
 
     - name: build Subsurface
       id: build
+      env:
+        CANONICALVERSION: ${{ needs.compute-version.outputs.version }}
       run: |
         BUILD_EXTRA_ARGS=""
         if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
