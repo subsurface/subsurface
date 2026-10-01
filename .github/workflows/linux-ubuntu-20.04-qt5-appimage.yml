@@ -1,5 +1,9 @@
 name: Ubuntu 20.04 / Qt 5 for AppImage
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 on:
   push:
     paths-ignore:
