@@ -31,6 +31,20 @@ private slots:
 	void testMobilePlannerSurfacePressureRetainedWithSave();
 	// AI-generated (Claude)
 	void testMobilePlannerAboveSeaLevelPressure();
+	// AI-generated (Claude)
+	void testMobilePlannerAltitudeMatchesDesktop();
+	// AI-generated (Claude)
+	void testMobilePlannerDescentMatchesDesktop();
+	// AI-generated (Claude)
+	void testMobilePlannerUsesPreferenceVpmbConservatism();
+	// AI-generated (Claude)
+	void testMobilePlannerDecoGasSwitchDepthMatchesDesktop();
+	// AI-generated (Claude)
+	void testDesktopPlannerCylinderDepthsUpdatedOnPressureChange();
+	// AI-generated (Claude)
+	void testExplicitZeroCylinderDepthSurvivesPressureChange();
+	// AI-generated (Claude)
+	void testCylindersModelRefreshedOnPressureChange();
 };
 
 #endif // TESTDIVEPLANNERMODEL_H
