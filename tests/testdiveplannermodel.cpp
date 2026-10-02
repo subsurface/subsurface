@@ -359,6 +359,165 @@ void TestDivePlannerModel::testRecreationalPlanSaveAllowed()
 	prefs = default_prefs;
 }
 
+// AI-generated (Claude)
+// Verify that calculatePlan() honours a pre-set non-sea-level surface pressure
+// and does not replace it with 1 atm (the old behaviour for a fresh dive object).
+// Also verify that the diveplan carries the correct pressure so that a saved
+// copy of the dive inherits it (d->surface_pressure = diveplan.surface_pressure).
+void TestDivePlannerModel::testMobilePlannerSurfacePressureRetained()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = false;
+
+	// Simulate the mobile session boundary reset (surface_pressure = 0 means
+	// "use sea level") before setting the test pressure.
+	model->setSurfacePressure({ .mbar = 0 });
+
+	// Set an 800 mbar surface pressure before calling calculatePlan.
+	pressure_t testPressure = { .mbar = 800 };
+	model->setSurfacePressure(testPressure);
+	QCOMPARE(model->getSurfacePressure().mbar, 800);
+
+	// Minimal cylinder: AL80 filled with air at 200 bar.
+	QVariantList cylinders;
+	QVariantMap cyl;
+	cyl["type"] = QStringLiteral("AL80");
+	cyl["mix"] = QStringLiteral("AIR");
+	cyl["pressure"] = 200;
+	cyl["use"] = 0;
+	cylinders.append(cyl);
+
+	// A single 20-minute segment at 14 m.
+	QVariantList segments;
+	QVariantMap seg;
+	seg["depth"] = 14;
+	seg["duration"] = 20;
+	seg["gas"] = 0;
+	seg["setpoint"] = 0;
+	seg["divemode"] = 0;
+	segments.append(seg);
+
+	QVariantMap result = model->calculatePlan(
+		cylinders, segments,
+		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
+		0 /* OC */, 10300 /* sea water */, false /* don't save */
+	);
+
+	QVERIFY(result.value(QStringLiteral("dateTimeValid")).toBool());
+
+	// The surface pressure stored in the model must still be 800 mbar.
+	QCOMPARE(model->getSurfacePressure().mbar, 800);
+
+	// getMobilePlannerSurfacePressure() must also return 800 mbar (not the 1013
+	// sea-level fallback) because the stored value is non-zero.
+	QCOMPARE(model->getMobilePlannerSurfacePressure(), 800);
+
+	// The diveplan itself must carry 800 mbar.  calculatePlan() sets
+	// d->surface_pressure = diveplan.surface_pressure before the save step,
+	// so confirming diveplan.surface_pressure is sufficient to prove that the
+	// saved dive would inherit the correct value.  (Command::addDive is a
+	// stub in this test binary, so we cannot observe the saved dive directly.)
+	QCOMPARE(model->getDiveplan().surface_pressure.mbar, 800);
+
+	// The plan notes must be non-empty (plan ran successfully).
+	QVERIFY(!result.value(QStringLiteral("notes")).toString().isEmpty());
+
+	model->setSurfacePressure({ .mbar = 0 }); // reset for other tests
+	prefs = default_prefs;
+}
+
+// AI-generated (Claude)
+// Exercise the shouldSave=true code path in calculatePlan() to verify that
+// the surface pressure is preserved through to diveplan even when the planner
+// is asked to persist the result.  Command::addDive is stubbed out in this
+// test binary, so we cannot inspect the saved dive record, but we can confirm
+// that (a) the call does not crash, (b) the result is valid, and (c)
+// diveplan.surface_pressure still carries the pre-set value after the call
+// (it is set before the plan() invocation, so a regression in the save path
+// would not reset it, but any future bug that cleared it would be caught here).
+void TestDivePlannerModel::testMobilePlannerSurfacePressureRetainedWithSave()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = false;
+
+	model->setSurfacePressure({ .mbar = 0 });
+
+	pressure_t testPressure = { .mbar = 800 };
+	model->setSurfacePressure(testPressure);
+
+	QVariantList cylinders;
+	QVariantMap cyl;
+	cyl["type"] = QStringLiteral("AL80");
+	cyl["mix"] = QStringLiteral("AIR");
+	cyl["pressure"] = 200;
+	cyl["use"] = 0;
+	cylinders.append(cyl);
+
+	QVariantList segments;
+	QVariantMap seg;
+	seg["depth"] = 14;
+	seg["duration"] = 20;
+	seg["gas"] = 0;
+	seg["setpoint"] = 0;
+	seg["divemode"] = 0;
+	segments.append(seg);
+
+	// shouldSave=true exercises the copy_dive + Command::addDive path.
+	// Command::addDive is a stub here; the test verifies the plan completes
+	// without crashing and the pressure is preserved in diveplan.
+	QVariantMap result = model->calculatePlan(
+		cylinders, segments,
+		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
+		0 /* OC */, 10300 /* sea water */, true /* save */
+	);
+
+	QVERIFY(result.value(QStringLiteral("dateTimeValid")).toBool());
+	QCOMPARE(model->getDiveplan().surface_pressure.mbar, 800);
+	QVERIFY(!result.value(QStringLiteral("notes")).toString().isEmpty());
+
+	model->setSurfacePressure({ .mbar = 0 }); // reset for other tests
+	prefs = default_prefs;
+}
+
+// AI-generated (Claude)
+// Verify that an above-sea-level surface pressure (1050 mbar, within the
+// 689–1100 mbar desktop range) is accepted without clamping, that the
+// corresponding altitude value the mobile UI would display is 0 (clamped from
+// the negative altitude that pressure_to_altitude() returns for > 1013 mbar),
+// and that setMobilePlannerAltitudeDisplay/getMobilePlannerAltitudeDisplay round-trip.
+void TestDivePlannerModel::testMobilePlannerAboveSeaLevelPressure()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	// Set 1050 mbar via the clamped setter.
+	model->setMobilePlannerSurfacePressure(1050);
+	QCOMPARE(model->getMobilePlannerSurfacePressure(), 1050);
+
+	// pressure_to_altitude(1050 mbar) is negative; getMobilePlannerAltitudeDisplay()
+	// must clamp that to 0.
+	QCOMPARE(model->getMobilePlannerAltitudeDisplay(), 0);
+
+	// Altitude round-trip: set 1000 m (metric), read back the altitude in display
+	// units.  The setter converts m → mm → mbar; the getter converts back.
+	// Due to the discrete barometric formula the round-trip may be ±1 display unit.
+	prefs.units.length = units::METERS;
+	model->setMobilePlannerAltitudeDisplay(1000);
+	int rtAlt = model->getMobilePlannerAltitudeDisplay();
+	QVERIFY(rtAlt >= 999 && rtAlt <= 1001);
+
+	model->setSurfacePressure({ .mbar = 0 }); // reset for other tests
+}
+
 // Stubs for symbols referenced by libraries linked into TestDivePlannerModel
 // but not available without the full desktop-widgets and commands libraries.
 

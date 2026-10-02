@@ -87,6 +87,10 @@ class QMLInterface : public QObject {
 	Q_PROPERTY(DivePlannerPointsModel *divePlannerPointsModel READ divePlannerPointsModel CONSTANT);
 	Q_PROPERTY(CylindersModel *cylindersModel READ cylindersModel CONSTANT);
 
+	// AI-generated (Claude): per-plan surface pressure and derived altitude for the mobile planner
+	Q_PROPERTY(int mobilePlannerSurfacePressure READ mobilePlannerSurfacePressure WRITE set_mobilePlannerSurfacePressure NOTIFY mobilePlannerSurfacePressureChanged)
+	Q_PROPERTY(int mobilePlannerAltitude READ mobilePlannerAltitude WRITE set_mobilePlannerAltitude NOTIFY mobilePlannerSurfacePressureChanged)
+
 public:
 	// function to do the needed setup
 	static void setup(QQmlContext *ct);
@@ -227,6 +231,9 @@ public:
 	DivePlannerPointsModel *divePlannerPointsModel() { return DivePlannerPointsModel::instance(); }
 	CylindersModel *cylindersModel() { return DivePlannerPointsModel::instance()->cylindersModel(); }
 
+	int mobilePlannerSurfacePressure() { return DivePlannerPointsModel::instance()->getMobilePlannerSurfacePressure(); }
+	int mobilePlannerAltitude()         { return DivePlannerPointsModel::instance()->getMobilePlannerAltitudeDisplay(); }
+
 public slots:
 	void set_cloud_verification_status(CLOUD_STATUS value) {  qPrefCloudStorage::set_cloud_verification_status(value); }
 	void set_duration_units(DURATION value) { qPrefUnits::set_duration_units((units::DURATION)value); }
@@ -281,6 +288,19 @@ public slots:
 		qPrefDiveComputer::set_sync_dc_time(value);
 		DCDeviceData::instance()->setSyncTime(value);
 	}
+	void set_mobilePlannerSurfacePressure(int mbar) {
+		DivePlannerPointsModel::instance()->setMobilePlannerSurfacePressure(mbar);
+		emit mobilePlannerSurfacePressureChanged(DivePlannerPointsModel::instance()->getMobilePlannerSurfacePressure());
+	}
+	// Reset to "unset" (0); getMobilePlannerSurfacePressure() returns 1013 mbar for 0.
+	void resetMobilePlannerSurfacePressure() {
+		DivePlannerPointsModel::instance()->setSurfacePressure({ .mbar = 0 });
+		emit mobilePlannerSurfacePressureChanged(1013);
+	}
+	void set_mobilePlannerAltitude(int displayAlt) {
+		DivePlannerPointsModel::instance()->setMobilePlannerAltitudeDisplay(displayAlt);
+		emit mobilePlannerSurfacePressureChanged(DivePlannerPointsModel::instance()->getMobilePlannerSurfacePressure());
+	}
 	QString firstDiveDate() { return get_first_dive_date_string(); }
 	QString lastDiveDate() { return get_last_dive_date_string(); }
 
@@ -333,6 +353,8 @@ signals:
 	void default_setpointChanged(int value);
 
 	void sync_dc_timeChanged(bool value);
+	// AI-generated (Claude): emitted when either the pressure or the derived altitude changes
+	void mobilePlannerSurfacePressureChanged(int mbar);
 private:
 	QMLInterface();
 };
