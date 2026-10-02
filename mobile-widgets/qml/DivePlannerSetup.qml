@@ -15,6 +15,8 @@ TemplatePage {
 	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr("L/min") : qsTr("cuft/min")
 	property string pressureUnit: (Backend.pressure === Enums.BAR) ? qsTr("bar") : qsTr("psi")
 	property string depthUnit: (Backend.length === Enums.METERS) ? qsTr("m") : qsTr("ft")
+	// AI-generated (Claude): altitude unit matches the active length preference
+	property string altitudeUnit: (Backend.length === Enums.METERS) ? qsTr("m") : qsTr("ft")
 
 	Connections {
 		target: Backend
@@ -25,6 +27,11 @@ TemplatePage {
 			spinAscratelast6m.value = Backend.ascratelast6m
 			spinDescrate.value = Backend.descrate
 			spinBestmixend.value = Backend.bestmixend
+			// Reinstall the declarative binding rather than assigning a plain
+			// value: a plain assignment would permanently destroy the binding,
+			// so subsequent mobilePlannerSurfacePressureChanged signals would
+			// no longer update the altitude display.
+			spinAltitude.value = Qt.binding(() => Math.max(0, Backend.mobilePlannerAltitude))
 		}
 		function onVolumeChanged() {
 			spinBottomsac.value = Backend.bottomsac
@@ -139,6 +146,61 @@ TemplatePage {
 				}
 			}
 		}
+		// AI-generated (Claude): altitude and surface pressure controls for non-sea-level dives
+		TemplateSection {
+			id: altpressure
+			title: qsTr("Altitude / Surface pressure")
+
+			GridLayout {
+				columns: 2
+				rowSpacing: Kirigami.Units.smallSpacing * 2
+				columnSpacing: Kirigami.Units.smallSpacing
+				visible: altpressure.isExpanded
+
+				TemplateLabel {
+					text: qsTr("Altitude [%1]").arg(altitudeUnit)
+				}
+				TemplateSpinBox {
+					id: spinAltitude
+					from: 0
+					// Upper bound: highest step whose altitude_to_pressure() result is
+					// >= 689 mbar (the minimum allowed surface pressure).
+					// 3000 m → 689 mbar ✓; 3050 m → 685 mbar < 689 ✗ (spinner would jump).
+					// 9750 ft → 692 mbar ✓; 9900 ft → 688 mbar < 689 ✗ (spinner would jump).
+					to: (Backend.length === Enums.METERS) ? 3000 : 9750
+					stepSize: (Backend.length === Enums.METERS) ? 50 : 150
+					// Declarative binding: re-evaluates automatically whenever
+					// Backend emits mobilePlannerSurfacePressureChanged.
+					// Pressures above 1013 mbar map to negative altitudes; clamp at 0.
+					value: Math.max(0, Backend.mobilePlannerAltitude)
+					onValueModified: {
+						Backend.set_mobilePlannerAltitude(value)
+						rootItem.settingsChanged()
+					}
+				}
+
+				TemplateLabel {
+					text: qsTr("Surface pressure [mbar]")
+				}
+				TemplateSpinBox {
+					id: spinSurfacePressure
+					// Range matches the desktop planner (689–1100 mbar).
+					// Pressures above 1013 mbar map to negative altitudes; the
+					// altitude spinner clamps those to 0 (sea level display).
+					from: 689
+					to: 1100
+					stepSize: 1
+					// Declarative binding: re-evaluates automatically whenever
+					// Backend emits mobilePlannerSurfacePressureChanged.
+					value: Backend.mobilePlannerSurfacePressure
+					onValueModified: {
+						Backend.set_mobilePlannerSurfacePressure(value)
+						rootItem.settingsChanged()
+					}
+				}
+			}
+		}
+
 		TemplateSection {
 			id: planning
 			title: qsTr("Planning")
