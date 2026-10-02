@@ -43,21 +43,30 @@ else
     git commit -a -m "record latest build number in main branch"
     if ! git push origin main; then
       echo "push to main failed - rebasing and retrying with next build number"
-      git pull --rebase origin main
-      # After rebase, main holds the other committer's number; take the next one.
-      latest=$(<latest-subsurface-buildnumber)
-      latest=$((latest + 1))
-      echo "updated build number is $latest"
-      # Update the SHA-specific branch with the new number (amend + force-push).
-      git switch "$SHA_BRANCH"
-      echo $latest > latest-subsurface-buildnumber
-      git commit -a --amend --no-edit
-      git push --force-with-lease origin "$SHA_BRANCH"
-      git switch main
-      echo $latest > latest-subsurface-buildnumber
-      git commit -a -m "record latest build number in main branch"
-      if ! git push origin main; then
-        echo "push to main failed after second attempt - continuing anyway (build number is on SHA branch)"
+      if ! git pull --rebase origin main; then
+        echo "rebase failed - aborting rebase; build number is already on SHA branch"
+        git rebase --abort 2>/dev/null || true
+        # $latest is still valid on the SHA branch; skip the main-branch update.
+        git switch "$SHA_BRANCH"
+        latest=$(<latest-subsurface-buildnumber)
+      else
+        # After rebase, main holds the other committer's number; take the next one.
+        latest=$(<latest-subsurface-buildnumber)
+        latest=$((latest + 1))
+        echo "updated build number is $latest"
+        # Update the SHA-specific branch with the new number (amend + force-push).
+        git switch "$SHA_BRANCH"
+        echo $latest > latest-subsurface-buildnumber
+        git commit -a --amend --no-edit
+        if ! git push --force-with-lease origin "$SHA_BRANCH"; then
+          echo "force-push to $SHA_BRANCH failed - continuing anyway (build number may be inconsistent)"
+        fi
+        git switch main
+        echo $latest > latest-subsurface-buildnumber
+        git commit -a -m "record latest build number in main branch"
+        if ! git push origin main; then
+          echo "push to main failed after second attempt - continuing anyway (build number is on SHA branch)"
+        fi
       fi
     fi
   else
