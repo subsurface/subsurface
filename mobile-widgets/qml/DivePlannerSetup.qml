@@ -15,6 +15,8 @@ TemplatePage {
 	property string volumeUnit: (Backend.volume === Enums.LITER) ? qsTr("L/min") : qsTr("cuft/min")
 	property string pressureUnit: (Backend.pressure === Enums.BAR) ? qsTr("bar") : qsTr("psi")
 	property string depthUnit: (Backend.length === Enums.METERS) ? qsTr("m") : qsTr("ft")
+	// AI-generated (Claude): altitude unit matches the active length preference
+	property string altitudeUnit: (Backend.length === Enums.METERS) ? qsTr("m") : qsTr("ft")
 
 	Connections {
 		target: Backend
@@ -25,6 +27,8 @@ TemplatePage {
 			spinAscratelast6m.value = Backend.ascratelast6m
 			spinDescrate.value = Backend.descrate
 			spinBestmixend.value = Backend.bestmixend
+			// AI-generated (Claude): re-read altitude in the new display unit
+			spinAltitude.value = Backend.mobilePlannerAltitude
 		}
 		function onVolumeChanged() {
 			spinBottomsac.value = Backend.bottomsac
@@ -139,6 +143,51 @@ TemplatePage {
 				}
 			}
 		}
+		// AI-generated (Claude): altitude and surface pressure controls for non-sea-level dives
+		TemplateSection {
+			id: altpressure
+			title: qsTr("Altitude / Surface pressure")
+
+			GridLayout {
+				columns: 2
+				rowSpacing: Kirigami.Units.smallSpacing * 2
+				columnSpacing: Kirigami.Units.smallSpacing
+				visible: altpressure.isExpanded
+
+				TemplateLabel {
+					text: qsTr("Altitude [%1]").arg(altitudeUnit)
+				}
+				TemplateSpinBox {
+					id: spinAltitude
+					from: 0
+					to: (Backend.length === Enums.METERS) ? 5000 : 16400
+					stepSize: (Backend.length === Enums.METERS) ? 50 : 150
+					value: Backend.mobilePlannerAltitude
+					onValueModified: {
+						Backend.set_mobilePlannerAltitude(value)
+						spinSurfacePressure.value = Backend.mobilePlannerSurfacePressure
+						rootItem.settingsChanged()
+					}
+				}
+
+				TemplateLabel {
+					text: qsTr("Surface pressure [mbar]")
+				}
+				TemplateSpinBox {
+					id: spinSurfacePressure
+					from: 600
+					to: 1100
+					stepSize: 1
+					value: Backend.mobilePlannerSurfacePressure
+					onValueModified: {
+						Backend.set_mobilePlannerSurfacePressure(value)
+						spinAltitude.value = Backend.mobilePlannerAltitude
+						rootItem.settingsChanged()
+					}
+				}
+			}
+		}
+
 		TemplateSection {
 			id: planning
 			title: qsTr("Planning")

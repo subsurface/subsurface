@@ -24,6 +24,8 @@ private slots:
 	void testZeroDepthExcludesDecoGas();
 	// AI-generated (Claude)
 	void testRecreationalPlanSaveAllowed();
+	// AI-generated (Claude)
+	void testMobilePlannerSurfacePressureRetained();
 };
 
 #endif // TESTDIVEPLANNERMODEL_H

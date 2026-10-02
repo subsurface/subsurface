@@ -1576,7 +1576,13 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	diveplan.gfhigh = gfHigh();
 	diveplan.bottomsac = qPrefDivePlanner::bottomsac();
 	diveplan.decosac = qPrefDivePlanner::decosac();
-	diveplan.surface_pressure = d->get_surface_pressure();
+	// Preserve the per-plan surface pressure set by the mobile UI (e.g. for
+	// altitude dives).  Only fall back to 1 atm when no pressure has been
+	// stored, which is the case for a brand-new plan.
+	if (diveplan.surface_pressure.mbar == 0)
+		diveplan.surface_pressure = 1_atm;
+	// Propagate to the dive record so the saved dive carries the correct pressure.
+	d->surface_pressure = diveplan.surface_pressure;
 	diveplan.vpmb_conservatism = qPrefTechnicalDetails::vpmb_conservatism();
 
 	// Run the planner engine

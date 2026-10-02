@@ -359,6 +359,61 @@ void TestDivePlannerModel::testRecreationalPlanSaveAllowed()
 	prefs = default_prefs;
 }
 
+// AI-generated (Claude)
+// Verify that calculatePlan() honours a pre-set non-sea-level surface pressure
+// and does not replace it with 1 atm (the old behaviour for a fresh dive object).
+void TestDivePlannerModel::testMobilePlannerSurfacePressureRetained()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = false;
+
+	// Set an 800 mbar surface pressure before calling calculatePlan.
+	pressure_t testPressure = { .mbar = 800 };
+	model->setSurfacePressure(testPressure);
+	QCOMPARE(model->getSurfacePressure().mbar, 800);
+
+	// Minimal cylinder: AL80 filled with air at 200 bar.
+	QVariantList cylinders;
+	QVariantMap cyl;
+	cyl["type"] = QStringLiteral("AL80");
+	cyl["mix"] = QStringLiteral("AIR");
+	cyl["pressure"] = 200;
+	cyl["use"] = 0;
+	cylinders.append(cyl);
+
+	// A single 20-minute segment at 14 m.
+	QVariantList segments;
+	QVariantMap seg;
+	seg["depth"] = 14;
+	seg["duration"] = 20;
+	seg["gas"] = 0;
+	seg["setpoint"] = 0;
+	seg["divemode"] = 0;
+	segments.append(seg);
+
+	QVariantMap result = model->calculatePlan(
+		cylinders, segments,
+		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
+		0 /* OC */, 10300 /* sea water */, false /* don't save */
+	);
+
+	QVERIFY(result.value(QStringLiteral("dateTimeValid")).toBool());
+
+	// The surface pressure stored in the model must still be 800 mbar.
+	QCOMPARE(model->getSurfacePressure().mbar, 800);
+
+	// The plan notes must be non-empty (plan ran successfully).
+	QVERIFY(!result.value(QStringLiteral("notes")).toString().isEmpty());
+
+	model->setSurfacePressure({ .mbar = 0 }); // reset for other tests
+	prefs = default_prefs;
+}
+
 // Stubs for symbols referenced by libraries linked into TestDivePlannerModel
 // but not available without the full desktop-widgets and commands libraries.
 
