@@ -21,7 +21,7 @@ jobs:
     steps:
     - name: Delete draft releases not belonging to this commit
       env:
-        GH_TOKEN: ${{ secrets.NIGHTLY_BUILDS_SECRET }}
+        GH_TOKEN: ${{ secrets.NIGHTLY_BUILDS }}
       run: |
         set -eu
 
