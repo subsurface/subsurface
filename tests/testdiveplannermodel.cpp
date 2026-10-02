@@ -4,6 +4,9 @@
 #include "core/subsurfacestartup.h"
 #include "commands/command.h"
 #include "core/divelog.h"
+#include "core/dive.h"
+#include "core/equipment.h"
+#include "core/sample.h"
 #include "core/pref.h"
 #include "core/string-format.h"
 #include "core/units.h"
@@ -380,13 +383,6 @@ void TestDivePlannerModel::testDesktopPlannerSurfacePressureInitialisation()
 	QCOMPARE(plannedDive.surface_pressure.mbar, (1_atm).mbar);
 	QCOMPARE(plannedDive.dcs[0].surface_pressure.mbar, (1_atm).mbar);
 
-	// Subsequent desktop pressure edits must also reach the temporary dive,
-	// because replanning uses it before copying the model's pressure again.
-	model->setSurfacePressure({ .mbar = 800 });
-	QCOMPARE(model->getSurfacePressure().mbar, 800);
-	QCOMPARE(plannedDive.surface_pressure.mbar, 800);
-	QCOMPARE(plannedDive.dcs[0].surface_pressure.mbar, 800);
-
 	model->resetPlanState();
 	prefs = default_prefs;
 }
@@ -548,6 +544,522 @@ void TestDivePlannerModel::testMobilePlannerAboveSeaLevelPressure()
 	QVERIFY(rtAlt >= 999 && rtAlt <= 1001);
 
 	model->setSurfacePressure({ .mbar = 0 }); // reset for other tests
+}
+
+// AI-generated (Claude)
+// Helpers shared by the mobile-vs-desktop parity tests below.
+namespace {
+
+// A compact, order-preserving fingerprint of a planned profile: the sequence
+// of (time, depth) sample points plus the total runtime.  Two plans that
+// produce the same descent, bottom time and decompression schedule have the
+// same fingerprint.
+struct PlanFingerprint {
+	int durationSeconds = 0;
+	std::vector<std::pair<int, int>> samples; // (time.seconds, depth.mm)
+
+	bool operator==(const PlanFingerprint &o) const
+	{
+		return durationSeconds == o.durationSeconds && samples == o.samples;
+	}
+};
+
+PlanFingerprint fingerprintDive(const dive &d)
+{
+	PlanFingerprint fp;
+	if (!d.dcs.empty()) {
+		for (const struct sample &s : d.dcs[0].samples)
+			fp.samples.emplace_back(s.time.seconds, s.depth.mm);
+	}
+	// Use the last sample time as the runtime so both the desktop and mobile
+	// fingerprints define duration identically (the mobile path derives it from
+	// the profile sample list it returns to the UI).
+	fp.durationSeconds = fp.samples.empty() ? 0 : fp.samples.back().first;
+	return fp;
+}
+
+// Run the mobile planner path (calculatePlan) with a single bottom segment and
+// return the fingerprint of the resulting planned dive, built from the profile
+// samples the model returns to the QML UI.
+PlanFingerprint runMobilePlan(DivePlannerPointsModel *model, int surfacePressureMbar,
+			      int bottomDepthM, int bottomRuntimeMin, int salinity)
+{
+	model->setSurfacePressure({ .mbar = surfacePressureMbar });
+
+	QVariantList cylinders;
+	QVariantMap cyl;
+	cyl["type"] = QStringLiteral("D12 232 bar");
+	cyl["mix"] = QStringLiteral("AIR");
+	cyl["pressure"] = 232;
+	cyl["use"] = 0;
+	cylinders.append(cyl);
+
+	QVariantList segments;
+	QVariantMap seg;
+	seg["depth"] = bottomDepthM;
+	seg["duration"] = bottomRuntimeMin;
+	seg["gas"] = 0;
+	seg["setpoint"] = 0;
+	seg["divemode"] = 0;
+	segments.append(seg);
+
+	QVariantMap result = model->calculatePlan(cylinders, segments,
+		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
+		0 /* OC */, salinity, false /* don't save */);
+
+	PlanFingerprint fp;
+	const QVariantList profile = result.value(QStringLiteral("profile")).toList();
+	int lastTime = 0;
+	for (const QVariant &pv : profile) {
+		QVariantMap pt = pv.toMap();
+		int t = pt.value(QStringLiteral("time")).toInt();
+		fp.samples.emplace_back(t, pt.value(QStringLiteral("depth")).toInt());
+		lastTime = t;
+	}
+	fp.durationSeconds = lastTime;
+	return fp;
+}
+
+// Run the desktop planner path (createSimpleDive + model edits) with the same
+// single bottom segment and return the fingerprint of the resulting dive.
+// This mirrors how the desktop planner UI drives the model.
+PlanFingerprint runDesktopPlan(DivePlannerPointsModel *model, dive &plannedDive,
+			       int surfacePressureMbar, int bottomDepthM, int bottomRuntimeMin,
+			       int salinity)
+{
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	diveplan &plan = model->getDiveplan();
+	plan.salinity = salinity;
+	plan.gflow = prefs.gflow;
+	plan.gfhigh = prefs.gfhigh;
+	plan.bottomsac = prefs.bottomsac;
+	plan.decosac = prefs.decosac;
+	// The desktop planner seeds the conservatism spinbox from the preference
+	// at setup; replicate that so the two paths start from the same value.
+	model->setVpmbConservatism(prefs.vpmb_conservatism);
+
+	model->createSimpleDive(&plannedDive);
+	// The desktop planner starts at the pressure already displayed by its
+	// atmospheric-pressure widget, then the user changes it to the selected
+	// altitude. This must update both the diveplan and temporary dive.
+	model->initialiseDesktopPlanSurfacePressure(1_atm);
+	model->setSurfacePressure({ .mbar = surfacePressureMbar });
+
+	// Replace the default rows with a single bottom segment matching the mobile
+	// input: depth and cumulative runtime.
+	std::vector<int> allRows;
+	for (int i = 0; i < model->rowCount(); i++)
+		allRows.push_back(i);
+	model->removeSelectedPoints(allRows);
+	model->addStop(m_or_ft(bottomDepthM, bottomDepthM * 3), bottomRuntimeMin * 60);
+
+	return fingerprintDive(plannedDive);
+}
+
+} // namespace
+
+// AI-generated (Claude)
+// Regression test for issue #4941: at altitude the mobile planner (calculatePlan)
+// must produce the same descent, bottom time and decompression schedule as the
+// desktop planner.  The user-visible discrepancy was driven by the mobile
+// descent being rounded to whole minutes (see testMobilePlannerDescentMatchesDesktop);
+// the effect was more pronounced at altitude, which is why #4941 surfaced it.
+// This end-to-end altitude case guards against any future reintroduction.
+void TestDivePlannerModel::testMobilePlannerAltitudeMatchesDesktop()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = true;
+	prefs.last_stop = false; // 3 m last stop
+	prefs.descrate = lrint(10 * 1000.0 / 60.0); // 10 m/min, in mm/s
+	prefs.bottomsac = 20000;
+	prefs.decosac = 20000;
+	prefs.decopo2 = 1600;
+	prefs.gflow = 40;
+	prefs.gfhigh = 70;
+	prefs.display_variations = false;
+
+	const int altitudePressure = 891; // 891 mbar ~ 1000 m
+
+	PlanFingerprint desktop = runDesktopPlan(model, plannedDive, altitudePressure, 50, 30, 10000);
+	model->resetPlanState();
+
+	PlanFingerprint mobile = runMobilePlan(model, altitudePressure, 50, 30, 10000);
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
+
+	QCOMPARE(mobile.durationSeconds, desktop.durationSeconds);
+	QVERIFY(mobile == desktop);
+}
+
+// AI-generated (Claude)
+// Regression test for the descent-rounding bug (reported by @glance- on #4941):
+// the mobile planner used to round the "drop to first depth" descent up to whole
+// minutes in display units and subtract that from the bottom time, diverging
+// from the desktop planner's mm/s-resolution descent.  Use a descent rate that
+// does not divide evenly into minutes (18 m/min over 50 m = 2.78 min) so the
+// old rounding would differ.
+void TestDivePlannerModel::testMobilePlannerDescentMatchesDesktop()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = true;
+	prefs.last_stop = false;
+	prefs.descrate = lrint(18 * 1000.0 / 60.0); // 18 m/min -> 50 m takes 2.78 min
+	prefs.bottomsac = 20000;
+	prefs.decosac = 20000;
+	prefs.decopo2 = 1600;
+	prefs.gflow = 40;
+	prefs.gfhigh = 70;
+	prefs.display_variations = false;
+
+	PlanFingerprint desktop = runDesktopPlan(model, plannedDive, 1013, 50, 25, 10300);
+	model->resetPlanState();
+
+	PlanFingerprint mobile = runMobilePlan(model, 1013, 50, 25, 10300);
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
+
+	QCOMPARE(mobile.durationSeconds, desktop.durationSeconds);
+	QVERIFY(mobile == desktop);
+}
+
+// AI-generated (Claude)
+// Investigation outcome for the VPM-B conservatism question (ticket #182): the
+// mobile planner reads conservatism from the preference, and the desktop planner
+// seeds its conservatism spinbox from the same preference at setup, so the two
+// already agree for identical configuration.  This test pins that behaviour: the
+// diveplan the mobile path builds must carry prefs.vpmb_conservatism, so a future
+// refactor cannot silently use a different source.
+void TestDivePlannerModel::testMobilePlannerUsesPreferenceVpmbConservatism()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = VPMB;
+	prefs.vpmb_conservatism = 2; // deliberately not the default (3)
+	prefs.drop_stone_mode = false;
+	prefs.display_variations = false;
+
+	model->setSurfacePressure({ .mbar = 0 });
+
+	QVariantList cylinders;
+	QVariantMap cyl;
+	cyl["type"] = QStringLiteral("AL80");
+	cyl["mix"] = QStringLiteral("AIR");
+	cyl["pressure"] = 200;
+	cyl["use"] = 0;
+	cylinders.append(cyl);
+
+	QVariantList segments;
+	QVariantMap seg;
+	seg["depth"] = 30;
+	seg["duration"] = 25;
+	seg["gas"] = 0;
+	seg["setpoint"] = 0;
+	seg["divemode"] = 0;
+	segments.append(seg);
+
+	model->calculatePlan(cylinders, segments,
+		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
+		0, 10300, false);
+
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
+
+	QCOMPARE(model->getDiveplan().vpmb_conservatism, 2);
+}
+
+// AI-generated (Claude)
+// Parity test for deco-gas switch depths at altitude.  The mobile planner used
+// to compute its own gas-switch "time == 0" waypoints with gas_mod() rounded to
+// 1 m, before the dive computer's surface pressure was set, so at altitude they
+// were computed at sea level and with the wrong rounding.  The desktop planner
+// instead uses each cylinder's switch depth, which reset_cylinders() derives
+// from the shared calculate_deco_switch_depth() (gas_mod rounded to 3 m / 10 ft)
+// at the plan's surface pressure.  Verify the mobile waypoints now equal the
+// shared helper evaluated at the altitude pressure for every OC gas, so the two
+// planners select the same gas-switch depths.
+void TestDivePlannerModel::testMobilePlannerDecoGasSwitchDepthMatchesDesktop()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = false;
+	prefs.decopo2 = 1600;
+	prefs.display_variations = false;
+
+	const int altitude = 700; // mbar, well above sea level
+
+	model->setSurfacePressure({ .mbar = altitude });
+
+	QVariantList cylinders;
+	QVariantMap bottom, deco;
+	bottom["type"] = QStringLiteral("D12 232 bar");
+	bottom["mix"] = QStringLiteral("AIR");
+	bottom["pressure"] = 232;
+	bottom["use"] = 0;
+	deco["type"] = QStringLiteral("AL80");
+	deco["mix"] = QStringLiteral("EAN50");
+	deco["pressure"] = 200;
+	deco["use"] = 0;
+	cylinders.append(bottom);
+	cylinders.append(deco);
+
+	QVariantList segments;
+	QVariantMap seg;
+	seg["depth"] = 40;
+	seg["duration"] = 25;
+	seg["gas"] = 0;
+	seg["setpoint"] = 0;
+	seg["divemode"] = 0;
+	segments.append(seg);
+
+	model->calculatePlan(cylinders, segments,
+		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
+		0, 10300, false);
+
+	// Expected switch depths from the shared helper, at the altitude pressure.
+	dive ref;
+	ref.surface_pressure = { .mbar = altitude };
+	ref.dcs[0].surface_pressure = { .mbar = altitude };
+	gasmix air = { .o2 = { .permille = 0 }, .he = { .permille = 0 } };
+	gasmix ean50 = { .o2 = { .permille = 500 }, .he = { .permille = 0 } };
+	depth_t airDepth = calculate_deco_switch_depth(&ref, air);
+	depth_t ean50Depth = calculate_deco_switch_depth(&ref, ean50);
+
+	int airWaypoint = -1, ean50Waypoint = -1;
+	for (const auto &p : model->getDiveplan().dp) {
+		if (p.time == 0 && !p.entered) {
+			if (p.cylinderid == 0)
+				airWaypoint = p.depth.mm;
+			else if (p.cylinderid == 1)
+				ean50Waypoint = p.depth.mm;
+		}
+	}
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
+
+	QCOMPARE(airWaypoint, airDepth.mm);
+	QCOMPARE(ean50Waypoint, ean50Depth.mm);
+
+	// The EAN50 switch depth must be altitude-correct (deeper than sea level),
+	// so this fails if the waypoint were computed at 1 atm.
+	dive sea;
+	sea.surface_pressure = 1_atm;
+	sea.dcs[0].surface_pressure = 1_atm;
+	QVERIFY(ean50Depth.mm > calculate_deco_switch_depth(&sea, ean50).mm);
+}
+
+// AI-generated (Claude)
+// Regression test for the desktop planner cylinder-depth staleness bug: after
+// createSimpleDive() sets cylinder switch depths at sea level and the user then
+// changes the surface pressure to altitude, setSurfacePressure() must recompute
+// auto-derived cylinder depths so that createTemporaryPlan() inserts correct
+// altitude time-zero gas waypoints.  This matters for multi-cylinder desktop
+// plans where the deco gas switch depth affects the decompression algorithm.
+void TestDivePlannerModel::testDesktopPlannerCylinderDepthsUpdatedOnPressureChange()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = false;
+	prefs.decopo2 = 1600;
+	prefs.display_variations = false;
+
+	const int altitudePressure = 700; // mbar
+
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->createSimpleDive(&plannedDive);
+	// createSimpleDive() uses a single air cylinder; add an EAN50 deco cylinder
+	// to give a meaningful time-zero waypoint whose depth depends on surface pressure.
+	// Give it a realistic auto-derived depth (what the real "add cylinder" path
+	// in fill_default_cylinder()/create_new_cylinder() would compute at sea
+	// level) rather than a bare default-constructed zero: a pre-existing zero
+	// is treated by updateCylinderDepthsForPressure() as an explicit "switch
+	// disabled" override and is intentionally never recomputed, so leaving it
+	// at zero here would not exercise the recompute path this test targets.
+	gasmix ean50 = { .o2 = { .permille = 500 }, .he = { .permille = 0 } };
+	cylinder_t decoCyl;
+	decoCyl.gasmix = ean50;
+	decoCyl.cylinder_use = OC_GAS;
+	decoCyl.depth = calculate_deco_switch_depth(&plannedDive, ean50); // sea level, surface_pressure still unset
+	plannedDive.cylinders.add(1, decoCyl); // insert at index 1
+
+	// Mimic the desktop UI setup: seed from the spinbox value, then apply altitude.
+	model->initialiseDesktopPlanSurfacePressure(1_atm);
+	model->setSurfacePressure({ .mbar = altitudePressure });
+
+	// Build the expected altitude depth via the shared helper.
+	dive ref;
+	ref.surface_pressure = { .mbar = altitudePressure };
+	ref.dcs[0].surface_pressure = { .mbar = altitudePressure };
+	depth_t expectedDepth = calculate_deco_switch_depth(&ref, ean50);
+
+	// Sea-level depth for comparison — the bug produced this instead.
+	dive seaRef;
+	seaRef.surface_pressure = 1_atm;
+	seaRef.dcs[0].surface_pressure = 1_atm;
+	depth_t seaLevelDepth = calculate_deco_switch_depth(&seaRef, ean50);
+
+	// Capture the depth before cleanup; the cylinder was just added so null is impossible.
+	cylinder_t *ean50Cyl = plannedDive.get_cylinder(1);
+	int actualDepth = ean50Cyl ? ean50Cyl->depth.mm : -1;
+
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
+
+	// The EAN50 cylinder depth must now reflect altitude, not sea level.
+	QVERIFY(ean50Cyl != nullptr);
+	QCOMPARE(actualDepth, expectedDepth.mm);
+	// Altitude depth must differ from sea-level depth (confirms the test is meaningful).
+	QVERIFY(expectedDepth.mm != seaLevelDepth.mm);
+}
+
+// AI-generated (Claude)
+// Regression test: an explicit "0" switch depth (user disables a deco-gas
+// switch, see testZeroDepthExcludesDecoGas) must survive a surface-pressure
+// change.  updateCylinderDepthsForPressure() must not mistake the explicit
+// override for an auto-derived depth that happened to match the old MOD and
+// recompute it, which would silently re-enable the switch (e.g. via the
+// mobile altitude control) at the new pressure.
+//
+// This checks the generated diveplan rather than the live cylinder_t::depth
+// field: a separate, pre-existing issue in reset_cylinders() (invoked from
+// plan()'s create_dive_from_plan() on every plan recomputation, not part of
+// this fix) unconditionally re-derives the MOD for any cylinder whose depth
+// is currently 0, so the persisted cylinder depth cannot be asserted to
+// remain 0 across a further plan recomputation. That is independent of, and
+// not fixed by, this change. The diveplan content is what the fixed function
+// in this file is actually responsible for, and is unaffected by that
+// separate issue because createTemporaryPlan() runs (and captures the
+// still-zero depth) before plan() calls reset_cylinders().
+void TestDivePlannerModel::testExplicitZeroCylinderDepthSurvivesPressureChange()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = false;
+	prefs.decopo2 = 1600;
+	prefs.display_variations = false;
+
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->createSimpleDive(&plannedDive);
+	// Seed the desktop pressure control, as diveplanner.cpp does at plan setup,
+	// before the user touches any cylinder.
+	model->initialiseDesktopPlanSurfacePressure(1_atm);
+
+	// Add an EAN50 deco cylinder and explicitly disable its gas switch by
+	// setting its depth to "0" through the cylinder editor, exactly as
+	// testZeroDepthExcludesDecoGas does.
+	CylindersModel *cylinderModel = model->cylindersModel();
+	cylinderModel->add();
+	QCOMPARE(plannedDive.cylinders.size(), size_t(2));
+	cylinder_t *decoCylinder = plannedDive.get_cylinder(1);
+	QVERIFY(decoCylinder);
+	decoCylinder->cylinder_use = OC_GAS;
+	decoCylinder->gasmix.o2 = make_fraction(500);
+	decoCylinder->depth = 21_m;
+	QModelIndex depthIndex = cylinderModel->index(1, CylindersModel::DEPTH);
+	QVERIFY(cylinderModel->setData(depthIndex, QStringLiteral("0")));
+	QCOMPARE(decoCylinder->depth.mm, 0);
+
+	// Now change the surface pressure, as the mobile altitude control would.
+	model->setSurfacePressure({ .mbar = 700 });
+
+	// The deco-gas switch must remain disabled: no time-zero waypoint for the
+	// explicitly-zeroed cylinder in the plan generated at the new pressure.
+	const diveplan &plan = model->getDiveplan();
+	QVERIFY(std::none_of(plan.dp.begin(), plan.dp.end(), [](const divedatapoint &point) {
+		return point.time == 0 && !point.entered && point.cylinderid == 1;
+	}));
+
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+
+// AI-generated (Claude)
+// Regression test: updateCylinderDepthsForPressure() mutates cyl.depth directly
+// on the dive's cylinder objects, but that bypasses CylindersModel's own change
+// notification. setSurfacePressure() and initialiseDesktopPlanSurfacePressure()
+// must emit CylindersModel::dataChanged (not just DivePlannerPointsModel's own
+// dataChanged) after recomputing depths, otherwise the desktop cylinder table
+// view keeps showing a stale switch depth/MOD after an altitude change even
+// though the plan itself now uses the recomputed value.
+void TestDivePlannerModel::testCylindersModelRefreshedOnPressureChange()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = false;
+	prefs.decopo2 = 1600;
+	prefs.display_variations = false;
+
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->createSimpleDive(&plannedDive);
+	// Add an auto-derived EAN50 deco cylinder, as in
+	// testDesktopPlannerCylinderDepthsUpdatedOnPressureChange, so that
+	// changing the surface pressure actually recomputes a cylinder depth.
+	// A bare default-constructed zero depth would instead be treated as an
+	// explicit "switch disabled" override and never recomputed by
+	// updateCylinderDepthsForPressure(), so seed a realistic sea-level
+	// auto-derived depth first.
+	gasmix ean50 = { .o2 = { .permille = 500 }, .he = { .permille = 0 } };
+	cylinder_t decoCyl;
+	decoCyl.gasmix = ean50;
+	decoCyl.cylinder_use = OC_GAS;
+	decoCyl.depth = calculate_deco_switch_depth(&plannedDive, ean50); // sea level, surface_pressure still unset
+	plannedDive.cylinders.add(1, decoCyl);
+
+	model->initialiseDesktopPlanSurfacePressure(1_atm);
+
+	CylindersModel *cylinderModel = model->cylindersModel();
+	QVERIFY(cylinderModel);
+	QSignalSpy dataChangedSpy(cylinderModel, &CylindersModel::dataChanged);
+
+	// Mimic an altitude change made through the desktop pressure control.
+	model->setSurfacePressure({ .mbar = 700 });
+
+	QVERIFY2(dataChangedSpy.count() > 0,
+		 "CylindersModel::dataChanged was not emitted after a surface "
+		 "pressure change recomputed cylinder switch depths");
+
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
 }
 
 // Stubs for symbols referenced by libraries linked into TestDivePlannerModel

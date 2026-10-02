@@ -143,6 +143,7 @@ private:
 	void createPlan(bool replanCopy);
 	void updateDiveProfile(); // Creates a temporary plan and updates the dive profile with it.
 	void createTemporaryPlan();
+	void updateCylinderDepthsForPressure(pressure_t newPressure);
 	struct diveplan diveplan;
 	QString computeVariations(const struct diveplan &original_plan, const struct deco_state &ds, int *instance_id);
 	void computeVariationsAsync(struct diveplan plan, struct deco_state ds); // Note: works on copies of plan and ds

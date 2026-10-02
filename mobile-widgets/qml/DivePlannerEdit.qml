@@ -133,34 +133,13 @@ TemplatePage {
 				})
 			}
 
+			// Pass the entered segments through unmodified.  The "drop to
+			// first depth" descent (drop_stone_mode) is applied in
+			// calculatePlan() using the same mm/s-resolution descent-rate
+			// arithmetic as the desktop planner, so the mobile and desktop
+			// planners produce identical profiles.
 			var segmentData = []
-			var start_index = 0
-			if (Backend.drop_stone_mode && segmentListModel.count > 0) {
-				start_index = 1
-				var descentRate = Backend.descrate;
-				var firstSegment = segmentListModel.get(0)
-				var descentDuration = 1
-				if (descentRate > 0) {
-					descentDuration = Math.ceil(firstSegment.depth / descentRate);
-				}
-				segmentData.push({
-					"depth": firstSegment.depth,
-					"duration": descentDuration,
-					"gas": firstSegment.gas,
-					"setpoint": firstSegment.setpoint,
-					"divemode": firstSegment.divemode,
-				})
-				if (descentDuration < firstSegment.duration) {
-					segmentData.push({
-						"depth": firstSegment.depth, // Stays at the same depth
-						"duration": firstSegment.duration - descentDuration,
-						"gas": firstSegment.gas,
-						"setpoint": firstSegment.setpoint,
-						"divemode": firstSegment.divemode,
-					});
-				}
-			}
-			for (var j = start_index; j < segmentListModel.count; j++) {
+			for (var j = 0; j < segmentListModel.count; j++) {
 				var item = segmentListModel.get(j)
 				segmentData.push({
 					"depth": item.depth,
