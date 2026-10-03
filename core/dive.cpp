@@ -1105,7 +1105,8 @@ void dive::fixup_dive()
 	fixup_airtemp(*this);
 	for (auto &cyl: cylinders) {
 		add_cylinder_description(cyl.type);
-		if (same_rounded_pressure(cyl.sample_start, cyl.start))
+		if (!cyl.start_pressure_is_explicit &&
+		    same_rounded_pressure(cyl.sample_start, cyl.start))
 			cyl.start = 0_bar;
 		if (same_rounded_pressure(cyl.sample_end, cyl.end))
 			cyl.end = 0_bar;
