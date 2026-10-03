@@ -160,7 +160,9 @@ TemplatePage {
 				TemplateSpinBox {
 					id: spinAltitude
 					from: 0
-					to: (Backend.length === Enums.METERS) ? 5000 : 16400
+					// Upper bound matches the 600 mbar lower pressure clamp
+					// (600 mbar ≈ 4085 m / 13403 ft); round down to step size.
+					to: (Backend.length === Enums.METERS) ? 4050 : 13350
 					stepSize: (Backend.length === Enums.METERS) ? 50 : 150
 					value: Backend.mobilePlannerAltitude
 					onValueModified: {
