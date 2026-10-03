@@ -298,9 +298,10 @@ public slots:
 		qPrefDiveComputer::set_sync_dc_time(value);
 		DCDeviceData::instance()->setSyncTime(value);
 	}
-	// AI-generated (Claude): store surface pressure per-plan; clamp to plausible mbar range
+	// AI-generated (Claude): store surface pressure per-plan; clamp to the same
+	// range as the desktop ATMPressure spinbox (689–1100 mbar).
 	void set_mobilePlannerSurfacePressure(int mbar) {
-		mbar = qBound(600, mbar, 1013);
+		mbar = qBound(689, mbar, 1100);
 		pressure_t p = { .mbar = mbar };
 		DivePlannerPointsModel::instance()->setSurfacePressure(p);
 		emit mobilePlannerSurfacePressureChanged(mbar);
@@ -313,11 +314,14 @@ public slots:
 		DivePlannerPointsModel::instance()->setSurfacePressure({ .mbar = 0 });
 		emit mobilePlannerSurfacePressureChanged(1013);
 	}
-	// AI-generated (Claude): accept altitude in the active length display unit, convert to pressure
+	// AI-generated (Claude): accept altitude in the active length display unit, convert to
+	// pressure; clamp result to the desktop range (689–1100 mbar).  The altitude spinner
+	// only covers positive altitudes (0 m = 1013 mbar), so computed pressures are always
+	// ≤ 1013 mbar; the lower clamp of 689 mbar covers the maximum altitude the spinner allows.
 	void set_mobilePlannerAltitude(int displayAlt) {
 		depth_t altMm = units_to_depth((double)displayAlt);
 		pressure_t p = altitude_to_pressure(altMm.mm);
-		p.mbar = qBound(600, p.mbar, 1013);
+		p.mbar = qBound(689, p.mbar, 1100);
 		DivePlannerPointsModel::instance()->setSurfacePressure(p);
 		emit mobilePlannerSurfacePressureChanged(p.mbar);
 	}

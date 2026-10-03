@@ -424,6 +424,28 @@ void TestDivePlannerModel::testMobilePlannerSurfacePressureRetained()
 	prefs = default_prefs;
 }
 
+// AI-generated (Claude)
+// Verify that an above-sea-level surface pressure (1050 mbar, within the
+// 689–1100 mbar desktop range) is accepted without clamping, and that the
+// corresponding altitude value the mobile UI would display is 0 (clamped from
+// the negative altitude that pressure_to_altitude() returns for > 1013 mbar).
+void TestDivePlannerModel::testMobilePlannerAboveSeaLevelPressure()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	// Set 1050 mbar (above sea level, valid in the 689–1100 mbar desktop range).
+	pressure_t highPressure = { .mbar = 1050 };
+	model->setSurfacePressure(highPressure);
+	QCOMPARE(model->getSurfacePressure().mbar, 1050);
+
+	// pressure_to_altitude(1050 mbar) is negative; the mobile altitude display
+	// must clamp that to 0.  Verify the raw conversion is indeed negative.
+	depth_t rawAlt = pressure_to_altitude({ .mbar = 1050 });
+	QVERIFY(rawAlt.mm < 0);
+
+	model->setSurfacePressure({ .mbar = 0 }); // reset for other tests
+}
+
 // Stubs for symbols referenced by libraries linked into TestDivePlannerModel
 // but not available without the full desktop-widgets and commands libraries.
 

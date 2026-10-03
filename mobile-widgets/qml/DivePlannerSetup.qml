@@ -160,13 +160,14 @@ TemplatePage {
 				TemplateSpinBox {
 					id: spinAltitude
 					from: 0
-					// Upper bound matches the 600 mbar lower pressure clamp
-					// (600 mbar ≈ 4085 m / 13403 ft); round down to step size.
-					to: (Backend.length === Enums.METERS) ? 4050 : 13350
+					// Upper bound corresponds to the 689 mbar minimum pressure
+					// (689 mbar ≈ 3006 m / 9863 ft); round down to step size.
+					to: (Backend.length === Enums.METERS) ? 3000 : 9750
 					stepSize: (Backend.length === Enums.METERS) ? 50 : 150
 					value: Backend.mobilePlannerAltitude
 					onValueModified: {
 						Backend.set_mobilePlannerAltitude(value)
+						// Pressure > 1013 mbar maps to negative altitude; clamp at 0.
 						spinSurfacePressure.value = Backend.mobilePlannerSurfacePressure
 						rootItem.settingsChanged()
 					}
@@ -177,16 +178,17 @@ TemplatePage {
 				}
 				TemplateSpinBox {
 					id: spinSurfacePressure
-					from: 600
-					// Upper bound is sea level (1013 mbar); pressures above sea level
-					// correspond to negative altitudes that the altitude spinner cannot
-					// represent, so the two controls would fall out of sync.
-					to: 1013
+					// Range matches the desktop planner (689–1100 mbar).
+					// Pressures above 1013 mbar map to negative altitudes; the
+					// altitude spinner clamps those to 0 (sea level display).
+					from: 689
+					to: 1100
 					stepSize: 1
 					value: Backend.mobilePlannerSurfacePressure
 					onValueModified: {
 						Backend.set_mobilePlannerSurfacePressure(value)
-						spinAltitude.value = Backend.mobilePlannerAltitude
+						// Clamp altitude display to 0 for above-sea-level pressures.
+						spinAltitude.value = Math.max(0, Backend.mobilePlannerAltitude)
 						rootItem.settingsChanged()
 					}
 				}

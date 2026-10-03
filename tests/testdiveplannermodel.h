@@ -26,6 +26,8 @@ private slots:
 	void testRecreationalPlanSaveAllowed();
 	// AI-generated (Claude)
 	void testMobilePlannerSurfacePressureRetained();
+	// AI-generated (Claude)
+	void testMobilePlannerAboveSeaLevelPressure();
 };
 
 #endif // TESTDIVEPLANNERMODEL_H
