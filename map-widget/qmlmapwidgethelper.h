@@ -23,6 +23,7 @@ class MapWidgetHelper : public QObject {
 	Q_PROPERTY(MapLocationModel *model MEMBER m_mapLocationModel NOTIFY modelChanged)
 	Q_PROPERTY(bool editMode MEMBER m_editMode NOTIFY editModeChanged)
 	Q_PROPERTY(QString pluginObject READ pluginObject NOTIFY pluginObjectChanged)
+	Q_PROPERTY(bool showCentreCrosshair READ showCentreCrosshair CONSTANT)
 
 public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
@@ -39,6 +40,7 @@ public:
 	void setSelected(const std::vector<dive_site *> divesites);
 	QString pluginObject();
 	bool editMode() const;
+	bool showCentreCrosshair() const;
 
 private:
 	void updateEditMode();

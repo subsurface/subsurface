@@ -249,6 +249,15 @@ bool MapWidgetHelper::editMode() const
 	return m_editMode;
 }
 
+bool MapWidgetHelper::showCentreCrosshair() const
+{
+#ifdef SUBSURFACE_MOBILE
+	return true;
+#else
+	return false;
+#endif
+}
+
 QString MapWidgetHelper::pluginObject()
 {
 	QString lang = getUiLanguage().replace('_', '-');
