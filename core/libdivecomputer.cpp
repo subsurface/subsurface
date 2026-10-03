@@ -1268,6 +1268,34 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				 * static table; dc_descriptor_free() is a no-op on it. */
 			}
 		}
+		/* Product-name sub-model refinement (Mares Icon HD family).
+		 * For device families that share a coarse model number across multiple
+		 * marketed products, the device version packet may supply a product-name
+		 * string that uniquely identifies the marketed variant. Ask libdc to map
+		 * that string to the best-matching descriptor. Falls back silently to the
+		 * current descriptor when product_name is empty or unrecognised. */
+		if (devinfo->product_name[0] != '\0') {
+			dc_descriptor_t *refined = dc_descriptor_find_by_product_name(
+				dc_descriptor_get_type(devdata->descriptor),
+				dc_descriptor_get_model(devdata->descriptor),
+				devinfo->product_name);
+			if (refined != NULL) {
+				const char *rv = dc_descriptor_get_vendor(refined);
+				const char *rp = dc_descriptor_get_product(refined);
+				const char *refined_vendor  = rv ? rv : "";
+				const char *refined_product = rp ? rp : "";
+				report_info("Product name \"%s\" refines product to %s %s",
+					devinfo->product_name,
+					refined_vendor,
+					refined_product);
+				devdata->descriptor = refined;
+				devdata->vendor  = refined_vendor;
+				devdata->product = refined_product;
+				devdata->model   = devdata->vendor + " " + devdata->product;
+				/* dc_descriptor_find_by_product_name() returns a pointer into a
+				 * static table; dc_descriptor_free() is a no-op on it. */
+			}
+		}
 		dev_info(translate("gettextFromC", "model=%s firmware=%u serial=%u"),
 			 devdata->product.c_str(), devinfo->firmware, devinfo->serial);
 		if (devdata->libdc_logfile) {
