@@ -127,7 +127,7 @@
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Depth line intevals.</string>
+         <string>Depth line intervals</string>
         </property>
        </widget>
       </item>
