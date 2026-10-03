@@ -1277,7 +1277,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		if (devinfo->product_name[0] != '\0') {
 			dc_descriptor_t *refined = dc_descriptor_find_by_product_name(
 				dc_descriptor_get_type(devdata->descriptor),
-				dc_descriptor_get_model(devdata->descriptor),
+				devinfo->model,
 				devinfo->product_name);
 			if (refined != NULL) {
 				const char *rv = dc_descriptor_get_vendor(refined);
