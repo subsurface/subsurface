@@ -570,6 +570,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Dive Planner")
 					onTriggered: {
 						globalDrawer.close()
+						// Reset surface pressure to sea level for each new planner
+						// session.  Done here rather than in DivePlannerEdit's
+						// onVisibleChanged so that returning from the setup page does
+						// not discard a pressure the user just configured there.
+						Backend.resetMobilePlannerSurfacePressure()
 						showPageFromDrawer(divePlannerEditWindow)
 					}
 				}

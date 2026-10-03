@@ -209,10 +209,6 @@ TemplatePage {
 	onVisibleChanged: {
 		// This code runs every time the page becomes visible
 		if (visible) {
-			// Reset surface pressure to sea level at the start of each mobile
-			// planner session so that a pressure set in a previous session does
-			// not leak into this one.
-			Backend.resetMobilePlannerSurfacePressure()
 			cylinderTypesModel = manager.cylinderListInit;
 			generatePlan()
 		}
