@@ -1569,8 +1569,6 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		plan_add_segment(diveplan, map["duration"].toInt() * 60, units_to_depth(map["depth"].toInt()), cylinderId, map["setpoint"].toInt(), true, divemode);
 	}
 
-	struct diveplan plan_copy = diveplan;
-
 	// Load ALL current settings from the correct preference classes
 	diveplan.gflow = gfLow();
 	diveplan.gfhigh = gfHigh();
@@ -1584,6 +1582,11 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	// Propagate to the dive record so the saved dive carries the correct pressure.
 	d->surface_pressure = diveplan.surface_pressure;
 	diveplan.vpmb_conservatism = qPrefTechnicalDetails::vpmb_conservatism();
+
+	// Snapshot the fully-configured plan for computeVariations().  Taken here,
+	// after surface_pressure and all other settings are finalised, so that
+	// variation plans run with the same pressure as the primary plan.
+	struct diveplan plan_copy = diveplan;
 
 	// Run the planner engine
 	// AI-generated (Claude)
