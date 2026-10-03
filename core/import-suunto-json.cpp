@@ -243,12 +243,31 @@ static void parse_header(const QJsonObject &header, struct dive *d)
 	dc.divemode = OC;
 }
 
+static void record_gas(std::vector<int> &gas_indices, int gn)
+{
+	if (gn < 0)
+		return;
+	for (int existing : gas_indices)
+		if (existing == gn)
+			return;
+	gas_indices.push_back(gn);
+}
+
+static bool is_recorded(const std::vector<int> &gas_indices, int gn)
+{
+	for (int existing : gas_indices)
+		if (existing == gn)
+			return true;
+	return false;
+}
+
 /* Two-pass sample parsing. First pass collects all temperature readings
  * (for later matching), dive start time (for elapsed time calculation),
  * GPS location and surface pressure. Returns the start of the dive in
  * ms since epoch, or 0 if it could not be determined. */
 static int64_t parse_samples(const QJsonObject &header, const QJsonArray &samples,
-			     struct dive *d, struct divelog *log, int gas_offset)
+			     struct dive *d, struct divelog *log, int gas_offset,
+			     std::vector<int> &reported_cylinders)
 {
 	struct divecomputer &dc = d->dcs[0];
 	double surface_pressure_pa = 0;
@@ -407,6 +426,8 @@ static int64_t parse_samples(const QJsonObject &header, const QJsonArray &sample
 						if (pressure_pa > 0) {
 							d->get_or_create_cylinder(
 								sensor);
+							record_gas(reported_cylinders,
+								   sensor);
 							int mbar = lrint(
 								pressure_pa
 								/ 100.0);
@@ -425,6 +446,7 @@ static int64_t parse_samples(const QJsonObject &header, const QJsonArray &sample
 						cyl["Ventilation"].toDouble(0);
 					if (ventilation > 0) {
 						d->get_or_create_cylinder(gas_num);
+						record_gas(reported_cylinders, gas_num);
 						sam->sac.mliter += lrint(
 							ventilation * 60000000.0);
 					}
@@ -548,24 +570,6 @@ static int64_t parse_samples(const QJsonObject &header, const QJsonArray &sample
  * don't repeat the gas number in the Gases array, there the position
  * in the array is the gas number.) */
 
-static void record_gas(std::vector<int> &gas_switch_order, int gn)
-{
-	if (gn < 0)
-		return;
-	for (int existing : gas_switch_order)
-		if (existing == gn)
-			return;
-	gas_switch_order.push_back(gn);
-}
-
-static bool is_recorded(const std::vector<int> &gas_switch_order, int gn)
-{
-	for (int existing : gas_switch_order)
-		if (existing == gn)
-			return true;
-	return false;
-}
-
 /* Add a gas change to the given cylinder. The event refers to the
  * cylinder by index and carries its gas mix, so it can only be added
  * once the gas data has been imported. */
@@ -584,7 +588,8 @@ static void add_gas_switch(struct dive *d, int elapsed_secs, int gas_num)
 }
 
 static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
-			struct dive *d, int gas_offset)
+			struct dive *d, int gas_offset,
+			const std::vector<int> &reported_cylinders)
 {
 	QJsonObject diving = header["Diving"].toObject();
 
@@ -626,18 +631,18 @@ static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
 
 	for (int i = 0; i < gases.size(); ++i) {
 		QJsonObject gas = gases[i].toObject();
-		int gas_num = gas.contains("GasNumber")
+		bool gas_number_explicit = gas.contains("GasNumber");
+		int gas_num = gas_number_explicit
 			? gas["GasNumber"].toInt(i + gas_offset) - gas_offset
 			: i;
 		if (gas_num < 0)
 			continue;
 
-		/* The Gases array also holds the gases that are merely
-		 * configured on the computer, but were not used on this
-		 * dive. Only add a cylinder for those if a tank was
-		 * actually reported for them. */
+		/* The Gases array also holds gases merely configured on the
+		 * computer, but not used on this dive. Import only gases used
+		 * in a switch or explicitly reported by pressure or ventilation. */
 		if (!is_recorded(gas_switch_order, gas_num) &&
-		    static_cast<size_t>(gas_num) >= d->cylinders.size())
+		    !is_recorded(reported_cylinders, gas_num))
 			continue;
 
 		cylinder_t *cyl = d->get_or_create_cylinder(gas_num);
@@ -663,8 +668,10 @@ static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
 
 		/* Suunto Pa, Subsurface mbar */
 		double start_pa = gas["StartPressure"].toDouble(0);
-		if (start_pa > 0)
+		if (start_pa > 0) {
 			cyl->start.mbar = lrint(start_pa / 100.0);
+			cyl->start_pressure_is_explicit = gas_number_explicit;
+		}
 
 		/* Suunto Pa, Subsurface mbar */
 		double end_pa = gas["EndPressure"].toDouble(0);
@@ -833,8 +840,10 @@ int suunto_json_import(const std::string &buffer, const std::string &fit_buffer,
 		? 0 : 1;
 
 	parse_header(header, d.get());
-	int64_t dive_start_ms = parse_samples(header, samples, d.get(), log, gas_offset);
-	parse_gases(header, samples, d.get(), gas_offset);
+	std::vector<int> reported_cylinders;
+	int64_t dive_start_ms = parse_samples(header, samples, d.get(), log,
+						 gas_offset, reported_cylinders);
+	parse_gases(header, samples, d.get(), gas_offset, reported_cylinders);
 
 	/* Divers need air. Add at least one cylinder exists even when no tank pod
 	 * was paired and no GasSwitch event is present in the log. */

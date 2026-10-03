@@ -45,20 +45,31 @@
     "DiveMode": "Nitrox",
     "Gases": [
      {
-      "EndPressure": 6000000,
-      "Helium": 0.0,
-      "Oxygen": 0.21,
-      "StartPressure": 20000000,
-      "TankFillPressure": 20000000,
-      "TankSize": 0.012
-     },
-     {
       "EndPressure": 22000000,
+      "GasNumber": 2,
       "Helium": 0.0,
       "Oxygen": 0.5,
       "StartPressure": 23200000,
       "TankFillPressure": 23200000,
       "TankSize": 0.011
+     },
+     {
+      "EndPressure": 15000000,
+      "GasNumber": 1,
+      "Helium": 0.0,
+      "Oxygen": 0.32,
+      "StartPressure": 20000000,
+      "TankFillPressure": 20000000,
+      "TankSize": 0.012
+     },
+     {
+      "EndPressure": 6000000,
+      "GasNumber": 0,
+      "Helium": 0.0,
+      "Oxygen": 0.21,
+      "StartPressure": 20000000,
+      "TankFillPressure": 20000000,
+      "TankSize": 0.012
      }
     ],
     "SurfacePressure": 101325
@@ -251,7 +262,7 @@
       "Ventilation": 0
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 23153333,
       "Ventilation": 0.0
@@ -366,7 +377,7 @@
       "Ventilation": null
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 23080000,
       "Ventilation": 0.0
@@ -629,7 +640,7 @@
       "Ventilation": null
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 22906666,
       "Ventilation": 0.0
@@ -878,7 +889,7 @@
       "Ventilation": null
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 22746666,
       "Ventilation": 0.0
@@ -1127,7 +1138,7 @@
       "Ventilation": null
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 22586666,
       "Ventilation": 0.0
@@ -1376,7 +1387,7 @@
       "Ventilation": 0.000404
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 22426666,
       "Ventilation": 0.0
@@ -1619,7 +1630,7 @@
       "Ventilation": 0.000459
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 22273333,
       "Ventilation": 0.0
@@ -1868,7 +1879,7 @@
       "Ventilation": 0.000455
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 22113333,
       "Ventilation": 0.0
@@ -2117,7 +2128,7 @@
       "Ventilation": 0.000461
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 21953333,
       "Ventilation": 0.0
@@ -2374,7 +2385,7 @@
       "Ventilation": 0.000499
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 21786666,
       "Ventilation": 0.0
@@ -2617,7 +2628,7 @@
       "Ventilation": 0.000533
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 21633333,
       "Ventilation": 0.0
@@ -2866,7 +2877,7 @@
       "Ventilation": 0.000568
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 21473333,
       "Ventilation": 0.0
@@ -3115,7 +3126,7 @@
       "Ventilation": 0.000613
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 21313333,
       "Ventilation": 0.0
@@ -3185,7 +3196,7 @@
       "Ventilation": 0
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 21280000,
       "Ventilation": 0.0
@@ -3231,7 +3242,7 @@
       "Ventilation": 0
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 21260000,
       "Ventilation": 0.0
@@ -3440,7 +3451,7 @@
       "Ventilation": 0.00064
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 21126666,
       "Ventilation": 0.0
@@ -3518,7 +3529,7 @@
       "Ventilation": 0.000619
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 21086666,
       "Ventilation": 0.0
@@ -3727,7 +3738,7 @@
       "Ventilation": 0.000603
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 20953333,
       "Ventilation": 0.0
@@ -3970,7 +3981,7 @@
       "Ventilation": 0.000584
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 20800000,
       "Ventilation": 0.0
@@ -4219,7 +4230,7 @@
       "Ventilation": 0.000557
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 20640000,
       "Ventilation": 0.0
@@ -4476,7 +4487,7 @@
       "Ventilation": 0.000505
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 20473333,
       "Ventilation": 0.0
@@ -4725,7 +4736,7 @@
       "Ventilation": 0.00049
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 20313333,
       "Ventilation": 0.0
@@ -4974,7 +4985,7 @@
       "Ventilation": 0.000451
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 20153333,
       "Ventilation": 0.0
@@ -5223,7 +5234,7 @@
       "Ventilation": 0.000377
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 19993333,
       "Ventilation": 0.0
@@ -5466,7 +5477,7 @@
       "Ventilation": 0.000357
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 19840000,
       "Ventilation": 0.0
@@ -5715,7 +5726,7 @@
       "Ventilation": 0.000345
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 19680000,
       "Ventilation": 0.0
@@ -5964,7 +5975,7 @@
       "Ventilation": 0.000315
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 19520000,
       "Ventilation": 0.0
@@ -6215,7 +6226,7 @@
       "Ventilation": 0.000295
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 19360000,
       "Ventilation": 0.0
@@ -6473,7 +6484,7 @@
       "Ventilation": 0.000295
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 19193333,
       "Ventilation": 0.0
@@ -6502,7 +6513,7 @@
       "Ventilation": 0.000294
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 19186666,
       "Ventilation": 0.0
@@ -6760,7 +6771,7 @@
       "Ventilation": 0.000292
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 19020000,
       "Ventilation": 0.0
@@ -6789,7 +6800,7 @@
       "Ventilation": 0
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 19013333,
       "Ventilation": 0.0
@@ -7038,7 +7049,7 @@
       "Ventilation": 0.000301
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 18853333,
       "Ventilation": 0.0
@@ -7287,7 +7298,7 @@
       "Ventilation": 0.000295
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 18693333,
       "Ventilation": 0.0
@@ -7530,7 +7541,7 @@
       "Ventilation": 0.000312
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 18540000,
       "Ventilation": 0.0
@@ -7779,7 +7790,7 @@
       "Ventilation": 0.000335
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 18380000,
       "Ventilation": 0.0
@@ -8036,7 +8047,7 @@
       "Ventilation": 0.000341
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 18213333,
       "Ventilation": 0.0
@@ -8285,7 +8296,7 @@
       "Ventilation": 0.000352
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 18053333,
       "Ventilation": 0.0
@@ -8534,7 +8545,7 @@
       "Ventilation": 0.000354
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 17893333,
       "Ventilation": 0.0
@@ -8777,7 +8788,7 @@
       "Ventilation": 0.000353
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 17740000,
       "Ventilation": 0.0
@@ -9026,7 +9037,7 @@
       "Ventilation": 0.000349
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 17580000,
       "Ventilation": 0.0
@@ -9076,7 +9087,7 @@
       "Ventilation": 0
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 17560000,
       "Ventilation": 0.0
@@ -9114,7 +9125,7 @@
       "Ventilation": 0
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 17546666,
       "Ventilation": 0.0
@@ -9351,7 +9362,7 @@
       "Ventilation": 0.000334
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 17393333,
       "Ventilation": 0.0
@@ -9401,7 +9412,7 @@
       "Ventilation": 0
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 17373333,
       "Ventilation": 0.0
@@ -9638,7 +9649,7 @@
       "Ventilation": 0.00033
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 17220000,
       "Ventilation": 0.0
@@ -9881,7 +9892,7 @@
       "Ventilation": 0.000304
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 17066666,
       "Ventilation": 0.0
@@ -10144,7 +10155,7 @@
       "Ventilation": 0.000281
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 16893333,
       "Ventilation": 0.0
@@ -10387,7 +10398,7 @@
       "Ventilation": 0.000292
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 16740000,
       "Ventilation": 0.0
@@ -10636,7 +10647,7 @@
       "Ventilation": 0.000285
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 16580000,
       "Ventilation": 0.0
@@ -10885,7 +10896,7 @@
       "Ventilation": 0.000274
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 16420000,
       "Ventilation": 0.0
@@ -11128,7 +11139,7 @@
       "Ventilation": 0.000267
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 16266666,
       "Ventilation": 0.0
@@ -11377,7 +11388,7 @@
       "Ventilation": 0.000259
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 16106666,
       "Ventilation": 0.0
@@ -11626,7 +11637,7 @@
       "Ventilation": 0.000268
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 15946666,
       "Ventilation": 0.0
@@ -11752,7 +11763,7 @@
    {
     "DiveEvents": {
      "GasSwitch": {
-      "GasNumber": 1
+      "GasNumber": 2
      }
     },
     "DiveRoute": {
@@ -11888,7 +11899,7 @@
       "Ventilation": 0.00028
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 15780000,
       "Ventilation": 0.0
@@ -12137,7 +12148,7 @@
       "Ventilation": 0.000276
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 15620000,
       "Ventilation": 0.0
@@ -12380,7 +12391,7 @@
       "Ventilation": 0.00027
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 15466666,
       "Ventilation": 0.0
@@ -12629,7 +12640,7 @@
       "Ventilation": 0.000267
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 15306666,
       "Ventilation": 0.0
@@ -12878,7 +12889,7 @@
       "Ventilation": 0.000252
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 15146666,
       "Ventilation": 0.0
@@ -13127,7 +13138,7 @@
       "Ventilation": 0.000256
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 14986666,
       "Ventilation": 0.0
@@ -13370,7 +13381,7 @@
       "Ventilation": 0.000249
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 14833333,
       "Ventilation": 0.0
@@ -13627,7 +13638,7 @@
       "Ventilation": 0.000215
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 14666666,
       "Ventilation": 0.0
@@ -13876,7 +13887,7 @@
       "Ventilation": 0.000211
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 14506666,
       "Ventilation": 0.0
@@ -14125,7 +14136,7 @@
       "Ventilation": 0.000202
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 14346666,
       "Ventilation": 0.0
@@ -14374,7 +14385,7 @@
       "Ventilation": 0.000198
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 14186666,
       "Ventilation": 0.0
@@ -14617,7 +14628,7 @@
       "Ventilation": 0.0002
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 14033333,
       "Ventilation": 0.0
@@ -14866,7 +14877,7 @@
       "Ventilation": 0.00019
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 13873333,
       "Ventilation": 0.0
@@ -15115,7 +15126,7 @@
       "Ventilation": 0.000187
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 13713333,
       "Ventilation": 0.0
@@ -15364,7 +15375,7 @@
       "Ventilation": 0.000203
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 13553333,
       "Ventilation": 0.0
@@ -15621,7 +15632,7 @@
       "Ventilation": 0.000204
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 13386666,
       "Ventilation": 0.0
@@ -15864,7 +15875,7 @@
       "Ventilation": 0.000208
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 13233333,
       "Ventilation": 0.0
@@ -16113,7 +16124,7 @@
       "Ventilation": 0.000209
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 13073333,
       "Ventilation": 0.0
@@ -16362,7 +16373,7 @@
       "Ventilation": 0.000202
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 12913333,
       "Ventilation": 0.0
@@ -16611,7 +16622,7 @@
       "Ventilation": 0.000203
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 12753333,
       "Ventilation": 0.0
@@ -16854,7 +16865,7 @@
       "Ventilation": 0.000202
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 12600000,
       "Ventilation": 0.0
@@ -17103,7 +17114,7 @@
       "Ventilation": 0.000197
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 12440000,
       "Ventilation": 0.0
@@ -17360,7 +17371,7 @@
       "Ventilation": 0.000178
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 12273333,
       "Ventilation": 0.0
@@ -17609,7 +17620,7 @@
       "Ventilation": 0.000183
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 12113333,
       "Ventilation": 0.0
@@ -17858,7 +17869,7 @@
       "Ventilation": 0.000183
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 11953333,
       "Ventilation": 0.0
@@ -18101,7 +18112,7 @@
       "Ventilation": 0.000192
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 11800000,
       "Ventilation": 0.0
@@ -18350,7 +18361,7 @@
       "Ventilation": 0.000217
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 11640000,
       "Ventilation": 0.0
@@ -18599,7 +18610,7 @@
       "Ventilation": 0.000219
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 11480000,
       "Ventilation": 0.0
@@ -18848,7 +18859,7 @@
       "Ventilation": 0.000239
      },
      {
-      "GasNumber": 1,
+      "GasNumber": 2,
       "GasTime": 0,
       "Pressure": 11320000,
       "Ventilation": 0.0

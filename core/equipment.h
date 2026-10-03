@@ -26,6 +26,8 @@ struct cylinder_t
 	pressure_t start, end, sample_start, sample_end;
 	depth_t depth;
 	bool manually_added = false;
+	/* Do not replace an explicitly reported start pressure with a sample. */
+	bool start_pressure_is_explicit = false;
 	volume_t gas_used;
 	volume_t deco_gas_used;
 	enum cylinderuse cylinder_use = OC_GAS;
