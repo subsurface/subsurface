@@ -27,8 +27,11 @@ TemplatePage {
 			spinAscratelast6m.value = Backend.ascratelast6m
 			spinDescrate.value = Backend.descrate
 			spinBestmixend.value = Backend.bestmixend
-			// AI-generated (Claude): re-read altitude in the new display unit
-			spinAltitude.value = Backend.mobilePlannerAltitude
+			// Reinstall the declarative binding rather than assigning a plain
+			// value: a plain assignment would permanently destroy the binding,
+			// so subsequent mobilePlannerSurfacePressureChanged signals would
+			// no longer update the altitude display.
+			spinAltitude.value = Qt.binding(() => Math.max(0, Backend.mobilePlannerAltitude))
 		}
 		function onVolumeChanged() {
 			spinBottomsac.value = Backend.bottomsac
