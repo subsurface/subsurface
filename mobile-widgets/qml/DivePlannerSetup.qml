@@ -164,11 +164,12 @@ TemplatePage {
 					// (689 mbar ≈ 3006 m / 9863 ft); round down to step size.
 					to: (Backend.length === Enums.METERS) ? 3000 : 9750
 					stepSize: (Backend.length === Enums.METERS) ? 50 : 150
-					value: Backend.mobilePlannerAltitude
+					// Declarative binding: re-evaluates automatically whenever
+					// Backend emits mobilePlannerSurfacePressureChanged.
+					// Pressures above 1013 mbar map to negative altitudes; clamp at 0.
+					value: Math.max(0, Backend.mobilePlannerAltitude)
 					onValueModified: {
 						Backend.set_mobilePlannerAltitude(value)
-						// Pressure > 1013 mbar maps to negative altitude; clamp at 0.
-						spinSurfacePressure.value = Backend.mobilePlannerSurfacePressure
 						rootItem.settingsChanged()
 					}
 				}
@@ -184,11 +185,11 @@ TemplatePage {
 					from: 689
 					to: 1100
 					stepSize: 1
+					// Declarative binding: re-evaluates automatically whenever
+					// Backend emits mobilePlannerSurfacePressureChanged.
 					value: Backend.mobilePlannerSurfacePressure
 					onValueModified: {
 						Backend.set_mobilePlannerSurfacePressure(value)
-						// Clamp altitude display to 0 for above-sea-level pressures.
-						spinAltitude.value = Math.max(0, Backend.mobilePlannerAltitude)
 						rootItem.settingsChanged()
 					}
 				}
