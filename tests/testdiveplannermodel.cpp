@@ -362,6 +362,8 @@ void TestDivePlannerModel::testRecreationalPlanSaveAllowed()
 // AI-generated (Claude)
 // Verify that calculatePlan() honours a pre-set non-sea-level surface pressure
 // and does not replace it with 1 atm (the old behaviour for a fresh dive object).
+// Also verify that the diveplan carries the correct pressure so that a saved
+// copy of the dive inherits it (d->surface_pressure = diveplan.surface_pressure).
 void TestDivePlannerModel::testMobilePlannerSurfacePressureRetained()
 {
 	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
@@ -371,6 +373,10 @@ void TestDivePlannerModel::testMobilePlannerSurfacePressureRetained()
 	prefs.units = SI_units;
 	prefs.planner_deco_mode = BUEHLMANN;
 	prefs.drop_stone_mode = false;
+
+	// Simulate the mobile session boundary reset (surface_pressure = 0 means
+	// "use sea level") before setting the test pressure.
+	model->setSurfacePressure({ .mbar = 0 });
 
 	// Set an 800 mbar surface pressure before calling calculatePlan.
 	pressure_t testPressure = { .mbar = 800 };
@@ -406,6 +412,10 @@ void TestDivePlannerModel::testMobilePlannerSurfacePressureRetained()
 
 	// The surface pressure stored in the model must still be 800 mbar.
 	QCOMPARE(model->getSurfacePressure().mbar, 800);
+
+	// The diveplan itself must carry 800 mbar so that the saved dive copy
+	// (d->surface_pressure = diveplan.surface_pressure) carries the right value.
+	QCOMPARE(model->getDiveplan().surface_pressure.mbar, 800);
 
 	// The plan notes must be non-empty (plan ran successfully).
 	QVERIFY(!result.value(QStringLiteral("notes")).toString().isEmpty());

@@ -300,16 +300,24 @@ public slots:
 	}
 	// AI-generated (Claude): store surface pressure per-plan; clamp to plausible mbar range
 	void set_mobilePlannerSurfacePressure(int mbar) {
-		mbar = qBound(600, mbar, 1100);
+		mbar = qBound(600, mbar, 1013);
 		pressure_t p = { .mbar = mbar };
 		DivePlannerPointsModel::instance()->setSurfacePressure(p);
 		emit mobilePlannerSurfacePressureChanged(mbar);
+	}
+	// AI-generated (Claude): reset pressure to "unset" (0) at the start of each mobile planner
+	// session; mobilePlannerSurfacePressure() returns 1013 mbar when the stored value is 0.
+	// This keeps the shared resetPlanState() free of mobile-specific logic so the desktop
+	// planner's ATMPressure widget stays in sync with the model.
+	void resetMobilePlannerSurfacePressure() {
+		DivePlannerPointsModel::instance()->setSurfacePressure({ .mbar = 0 });
+		emit mobilePlannerSurfacePressureChanged(1013);
 	}
 	// AI-generated (Claude): accept altitude in the active length display unit, convert to pressure
 	void set_mobilePlannerAltitude(int displayAlt) {
 		depth_t altMm = units_to_depth((double)displayAlt);
 		pressure_t p = altitude_to_pressure(altMm.mm);
-		p.mbar = qBound(600, p.mbar, 1100);
+		p.mbar = qBound(600, p.mbar, 1013);
 		DivePlannerPointsModel::instance()->setSurfacePressure(p);
 		emit mobilePlannerSurfacePressureChanged(p.mbar);
 	}

@@ -178,7 +178,10 @@ TemplatePage {
 				TemplateSpinBox {
 					id: spinSurfacePressure
 					from: 600
-					to: 1100
+					// Upper bound is sea level (1013 mbar); pressures above sea level
+					// correspond to negative altitudes that the altitude spinner cannot
+					// represent, so the two controls would fall out of sync.
+					to: 1013
 					stepSize: 1
 					value: Backend.mobilePlannerSurfacePressure
 					onValueModified: {

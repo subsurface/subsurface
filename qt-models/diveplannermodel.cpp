@@ -268,10 +268,6 @@ void DivePlannerPointsModel::resetPlanState()
 	setPlanMode(NOTHING);
 	clear();
 	diveplan.dp.clear();
-	// Clear surface pressure so that a new planner session always starts at
-	// sea level.  The mobile UI reads mobilePlannerSurfacePressure() which
-	// returns 1013 mbar when the stored value is 0.
-	diveplan.surface_pressure = { .mbar = 0 };
 	d = nullptr;
 	dcNr = 0;
 }
