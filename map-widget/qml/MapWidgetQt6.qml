@@ -277,6 +277,7 @@ Item {
 	Canvas {
 		id: centreCrosshair
 		anchors.centerIn: parent
+		visible: mapHelper.showCentreCrosshair
 		width: 80
 		height: 80
 		enabled: false
