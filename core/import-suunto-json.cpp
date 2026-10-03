@@ -245,9 +245,10 @@ static void parse_header(const QJsonObject &header, struct dive *d)
 
 /* Two-pass sample parsing. First pass collects all temperature readings
  * (for later matching), dive start time (for elapsed time calculation),
- * GPS location and surface pressure. */
-static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
-			   struct dive *d, struct divelog *log, int gas_offset)
+ * GPS location and surface pressure. Returns the start of the dive in
+ * ms since epoch, or 0 if it could not be determined. */
+static int64_t parse_samples(const QJsonObject &header, const QJsonArray &samples,
+			     struct dive *d, struct divelog *log, int gas_offset)
 {
 	struct divecomputer &dc = d->dcs[0];
 	double surface_pressure_pa = 0;
@@ -330,7 +331,7 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 
 	if (dive_start_ms == 0) {
 		report_info("Suunto JSON: could not determine dive start time");
-		return;
+		return 0;
 	}
 
 	/* Skip duplicate timestamps -- Subsurface allows one sample per
@@ -454,16 +455,9 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 		if (has_dive_events) {
 			QJsonObject events = s["DiveEvents"].toObject();
 
-			if (events.contains("GasSwitch")) {
-				QJsonObject gs = events["GasSwitch"].toObject();
-				int gas_num = gs["GasNumber"].toInt(0) - gas_offset;
-				d->get_or_create_cylinder(gas_num);
-				add_event(&dc, elapsed_secs,
-					  SAMPLE_EVENT_GASCHANGE, 0,
-					  gas_num,
-					  QT_TRANSLATE_NOOP("gettextFromC",
-							    "gaschange"));
-			}
+			/* The GasSwitch events are added by
+			 * parse_gas_switches(), once the gas mixes
+			 * are known. */
 
 			if (events.contains("State")) {
 				QJsonObject state = events["State"].toObject();
@@ -503,17 +497,6 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 			QJsonArray events = s["Events"].toArray();
 			for (const QJsonValue &ev : events) {
 				QJsonObject eo = ev.toObject();
-
-				if (eo.contains("GasSwitch")) {
-					QJsonObject gs = eo["GasSwitch"].toObject();
-					int gas_num = gs["GasNumber"].toInt(0) - gas_offset;
-					d->get_or_create_cylinder(gas_num);
-					add_event(&dc, elapsed_secs,
-						  SAMPLE_EVENT_GASCHANGE, 0,
-						  gas_num,
-						  QT_TRANSLATE_NOOP("gettextFromC",
-								    "gaschange"));
-				}
 
 				if (eo.contains("Notify")) {
 					QJsonObject notify = eo["Notify"].toObject();
@@ -555,12 +538,15 @@ static void parse_samples(const QJsonObject &header, const QJsonArray &samples,
 			}
 		}
 	}
+	return dive_start_ms;
 }
 
 /* Suunto puts gas mix, tank size, and pressures all in one "Gases"
- * array. Multiple cylinders can share the same gas. Assign each gas
- * to a Subsurface cylinder by looking at the order of GasSwitch
- * events during the dive. */
+ * array. A gas is identified by its gas number, the same number the
+ * Cylinders entries and the GasSwitch events use, so the gas data is
+ * stored in the cylinder with the matching index. (The EON/D5 exports
+ * don't repeat the gas number in the Gases array, there the position
+ * in the array is the gas number.) */
 
 static void record_gas(std::vector<int> &gas_switch_order, int gn)
 {
@@ -572,16 +558,35 @@ static void record_gas(std::vector<int> &gas_switch_order, int gn)
 	gas_switch_order.push_back(gn);
 }
 
+static bool is_recorded(const std::vector<int> &gas_switch_order, int gn)
+{
+	for (int existing : gas_switch_order)
+		if (existing == gn)
+			return true;
+	return false;
+}
+
+/* Add a gas change to the given cylinder. The event refers to the
+ * cylinder by index and carries its gas mix, so it can only be added
+ * once the gas data has been imported. */
+static void add_gas_switch(struct dive *d, int elapsed_secs, int gas_num)
+{
+	cylinder_t *cyl = d->get_or_create_cylinder(gas_num);
+	if (!cyl)
+		return;
+
+	/* A gas that Suunto doesn't report a mix for is its default gas,
+	 * i.e. air. */
+	if (!cyl->gasmix.o2.permille && !cyl->gasmix.he.permille)
+		cyl->gasmix = gasmix_air;
+
+	add_gas_switch_event(d, &d->dcs[0], elapsed_secs, gas_num);
+}
+
 static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
 			struct dive *d, int gas_offset)
 {
 	QJsonObject diving = header["Diving"].toObject();
-	if (diving.isEmpty())
-		return;
-
-	QJsonArray gases = diving["Gases"].toArray();
-	if (gases.isEmpty())
-		return;
 
 	// Make an ordered list of unique GasNumbers.
 	std::vector<int> gas_switch_order;
@@ -612,10 +617,30 @@ static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
 		}
 	}
 
-	for (int i = 0; i < gases.size() && i < static_cast<int>(gas_switch_order.size()); ++i) {
+	if (diving.isEmpty())
+		return;
+
+	QJsonArray gases = diving["Gases"].toArray();
+	if (gases.isEmpty())
+		return;
+
+	for (int i = 0; i < gases.size(); ++i) {
 		QJsonObject gas = gases[i].toObject();
-		int cyl_idx = gas_switch_order[i];
-		cylinder_t *cyl = d->get_or_create_cylinder(cyl_idx);
+		int gas_num = gas.contains("GasNumber")
+			? gas["GasNumber"].toInt(i + gas_offset) - gas_offset
+			: i;
+		if (gas_num < 0)
+			continue;
+
+		/* The Gases array also holds the gases that are merely
+		 * configured on the computer, but were not used on this
+		 * dive. Only add a cylinder for those if a tank was
+		 * actually reported for them. */
+		if (!is_recorded(gas_switch_order, gas_num) &&
+		    static_cast<size_t>(gas_num) >= d->cylinders.size())
+			continue;
+
+		cylinder_t *cyl = d->get_or_create_cylinder(gas_num);
 
 		/* Suunto fractions (0.0-1.0), Subsurface permille */
 		double o2_frac = gas["Oxygen"].toDouble(0);
@@ -645,6 +670,60 @@ static void parse_gases(const QJsonObject &header, const QJsonArray &samples,
 		double end_pa = gas["EndPressure"].toDouble(0);
 		if (end_pa > 0)
 			cyl->end.mbar = lrint(end_pa / 100.0);
+	}
+}
+
+/* The gas changes are added in a separate pass, as they need the gas
+ * mix of the cylinder they refer to. */
+static void parse_gas_switches(const QJsonArray &samples, struct dive *d,
+			       int gas_offset, int64_t dive_start_ms)
+{
+	if (dive_start_ms == 0)
+		return;
+
+	/* Suunto often logs more than one sample per second, so ignore
+	 * repeated gas changes within the same second. */
+	int last_elapsed_secs = -1;
+
+	for (const QJsonValue &val : samples) {
+		QJsonObject s = val.toObject();
+
+		int64_t sample_ms = parse_timestamp_ms(s);
+		if (sample_ms == 0)
+			continue;
+
+		/* Keep pre-dive switches at t=0, matching the sample parser's
+		 * handling of timestamp rounding around the start of a dive. */
+		int elapsed_secs = sample_ms < dive_start_ms
+			? 0 : static_cast<int>((sample_ms - dive_start_ms) / 1000);
+		if (elapsed_secs == last_elapsed_secs)
+			continue;
+
+		// DiveEvents.GasSwitch (Nautic)
+		if (s.contains("DiveEvents")) {
+			QJsonObject events = s["DiveEvents"].toObject();
+			if (events.contains("GasSwitch")) {
+				add_gas_switch(d, elapsed_secs,
+					events["GasSwitch"].toObject()
+					["GasNumber"].toInt(-1) - gas_offset);
+				last_elapsed_secs = elapsed_secs;
+			}
+		}
+
+		// Events[].GasSwitch (EON)
+		if (s.contains("Events")) {
+			QJsonArray events = s["Events"].toArray();
+			for (const QJsonValue &ev : events) {
+				QJsonObject eo = ev.toObject();
+				if (eo.contains("GasSwitch")) {
+					add_gas_switch(d, elapsed_secs,
+						eo["GasSwitch"].toObject()
+						["GasNumber"].toInt(-1)
+						- gas_offset);
+					last_elapsed_secs = elapsed_secs;
+				}
+			}
+		}
 	}
 }
 
@@ -754,7 +833,7 @@ int suunto_json_import(const std::string &buffer, const std::string &fit_buffer,
 		? 0 : 1;
 
 	parse_header(header, d.get());
-	parse_samples(header, samples, d.get(), log, gas_offset);
+	int64_t dive_start_ms = parse_samples(header, samples, d.get(), log, gas_offset);
 	parse_gases(header, samples, d.get(), gas_offset);
 
 	/* Divers need air. Add at least one cylinder exists even when no tank pod
@@ -763,6 +842,10 @@ int suunto_json_import(const std::string &buffer, const std::string &fit_buffer,
 		d->get_or_create_cylinder(0);
 
 	patch_from_fit(fit_buffer, d.get(), log);
+
+	/* The gas changes are added last, as they need the gas mix of the
+	 * cylinder they refer to. */
+	parse_gas_switches(samples, d.get(), gas_offset, dive_start_ms);
 
 	log->dives.record_dive(std::move(d));
 	return 1;
