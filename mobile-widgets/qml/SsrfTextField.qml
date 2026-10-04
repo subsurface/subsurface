@@ -91,12 +91,17 @@ Controls.TextField {
 				return
 			}
 			// make sure there's enough space for the input field above the keyboard and action button (and that it's not too far up, either)
+			// On Android 16+ the window no longer shrinks when the keyboard appears
+			// (edge-to-edge opt-in killed adjustResize), so use the keyboard height
+			// directly to determine how much of the flickable is actually visible.
+			var keyboardH = Qt.inputMethod.visible ? Qt.inputMethod.keyboardRectangle.height : 0
+			var visibleHeight = flickable.height - keyboardH
 			var positionInFlickable = stf.mapToItem(flickable.contentItem, 0, 0)
 			var stfY = positionInFlickable.y
 			if (manager.verboseEnabled)
-				manager.appendTextToLog("position check: lower edge of view is " + (0 + flickable.contentY + flickable.height) + " and text field is at " + stfY)
-			if (stfY + stf.height > flickable.contentY + flickable.height - 3 * Kirigami.Units.gridUnit || stfY < flickable.contentY)
-				flickable.contentY = Math.max(0, 3 * Kirigami.Units.gridUnit + stfY + stf.height - flickable.height)
+				manager.appendTextToLog("position check: lower edge of view is " + (0 + flickable.contentY + visibleHeight) + " and text field is at " + stfY)
+			if (stfY + stf.height > flickable.contentY + visibleHeight - 3 * Kirigami.Units.gridUnit || stfY < flickable.contentY)
+				flickable.contentY = Math.max(0, 3 * Kirigami.Units.gridUnit + stfY + stf.height - visibleHeight)
 		}
 	}
 }

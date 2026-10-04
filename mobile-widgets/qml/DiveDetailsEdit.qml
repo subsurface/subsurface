@@ -1042,12 +1042,17 @@ Item {
 						var flickable = detailsEditFlickable
 						var positionInFlickable = txtNotes.mapToItem(flickable.contentItem, 0, 0)
 						var taY = positionInFlickable.y + cursorRectangle.y
+						// On Android 16+ the window no longer shrinks when the keyboard appears
+						// (edge-to-edge opt-in killed adjustResize), so use the keyboard height
+						// directly to determine how much of the flickable is actually visible.
+						var keyboardH = Qt.inputMethod.visible ? Qt.inputMethod.keyboardRectangle.height : 0
+						var visibleHeight = flickable.height - keyboardH
 						if (manager.verboseEnabled)
 							manager.appendTextToLog("position check: lower edge of view is " +
-										    (0 + flickable.contentY + flickable.height) +
+										    (0 + flickable.contentY + visibleHeight) +
 										    " and text area is at " + taY)
-						if (taY > flickable.contentY + flickable.height - 4 * effectiveGridUnit)
-							flickable.contentY = Math.max(0, 4 * effectiveGridUnit + taY - flickable.height)
+						if (taY > flickable.contentY + visibleHeight - 4 * effectiveGridUnit)
+							flickable.contentY = Math.max(0, 4 * effectiveGridUnit + taY - visibleHeight)
 						while (taY < flickable.contentY)
 							flickable.contentY -= 2 * effectiveGridUnit
 					}
