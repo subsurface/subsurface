@@ -157,10 +157,14 @@ Kirigami.Page {
 				Layout.minimumHeight: Kirigami.Units.gridUnit * 6
 				selectByMouse: true
 				wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+				property bool firstTime: true
 				onActiveFocusChanged: {
 					tripEditPage.state = "edit"
 				}
-				onPressed: waitForKeyboard.start()
+				onPressed: {
+					firstTime = true
+					waitForKeyboard.start()
+				}
 				onCursorRectangleChanged: ensureVisible()
 				// ensure the cursor stays above the keyboard when editing trip notes
 				function ensureVisible() {
@@ -183,7 +187,10 @@ Kirigami.Page {
 					interval: 300
 					onTriggered: {
 						if (!Qt.inputMethod.visible) {
-							restart()
+							if (tripNotesField.firstTime) {
+								tripNotesField.firstTime = false
+								restart()
+							}
 							return
 						}
 						tripNotesField.ensureVisible()
