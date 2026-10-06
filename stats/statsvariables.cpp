@@ -2,8 +2,10 @@
 #include "statsvariables.h"
 #include "statstranslations.h"
 #include "core/dive.h"
+#include "core/divecomputer.h"
 #include "core/divelog.h"
 #include "core/divemode.h"
+#include "core/sample.h"
 #include "core/divesite.h"
 #include "core/gas.h"
 #include "core/pref.h"
@@ -1999,6 +2001,273 @@ struct DiveComputerVariable : public StatsVariableTemplate<StatsVariable::Type::
 	}
 };
 
+// ============ NDL / Deco time ============
+// Negative values = no-deco (−min_NDL in minutes); positive = deco (total deco time in minutes).
+// Freedives and dives with no NDL/deco data are excluded (return invalid_value<double>()).
+
+static double ndl_deco_toFloat(const dive *d)
+{
+	// Per-DC state
+	struct DcState {
+		bool has_any_deco_data = false;
+		bool in_deco_ever = false;
+		int  min_ndl_sec = std::numeric_limits<int>::max(); // minimum NDL > 0
+		int  total_deco_sec = 0;
+	};
+
+	std::vector<DcState> dc_states;
+	dc_states.reserve(d->dcs.size());
+
+	for (const divecomputer &dc: d->dcs) {
+		if (dc.divemode == FREEDIVE)
+			continue;
+
+		DcState st;
+		int prev_time = 0;
+		bool prev_in_deco = false;
+
+		for (const sample &s: dc.samples) {
+			// Track any NDL/deco data present
+			if (s.ndl.seconds >= 0 || s.in_deco)
+				st.has_any_deco_data = true;
+
+			// Track minimum NDL > 0
+			if (s.ndl.seconds > 0 && s.ndl.seconds < st.min_ndl_sec)
+				st.min_ndl_sec = s.ndl.seconds;
+
+			// Accumulate deco time: the interval [prev_time, s.time.seconds] is
+			// under deco obligation if the previous sample had in_deco = true.
+			if (prev_in_deco)
+				st.total_deco_sec += s.time.seconds - prev_time;
+			if (s.in_deco)
+				st.in_deco_ever = true;
+
+			prev_in_deco = s.in_deco;
+			prev_time = s.time.seconds;
+		}
+
+		dc_states.push_back(st);
+	}
+
+	if (dc_states.empty())
+		return invalid_value<double>();
+
+	// Select the most conservative DC
+	const DcState *best = nullptr;
+	for (const DcState &st: dc_states) {
+		if (!st.has_any_deco_data)
+			continue;
+		if (!best) {
+			best = &st;
+			continue;
+		}
+		if (st.in_deco_ever) {
+			// Prefer the DC with highest total deco time
+			if (!best->in_deco_ever || st.total_deco_sec > best->total_deco_sec)
+				best = &st;
+		} else if (!best->in_deco_ever) {
+			// Both are no-deco: prefer the one with the lowest min NDL
+			if (st.min_ndl_sec < best->min_ndl_sec)
+				best = &st;
+		}
+	}
+
+	if (!best || !best->has_any_deco_data)
+		return invalid_value<double>();
+
+	if (best->in_deco_ever)
+		return best->total_deco_sec / 60.0;
+
+	if (best->min_ndl_sec > 0 && best->min_ndl_sec != std::numeric_limits<int>::max())
+		return -(best->min_ndl_sec / 60.0);
+
+	return invalid_value<double>();
+}
+
+// Bin boundaries in minutes (signed). Each value is the lower bound of a bin.
+// Finer steps near the deco boundary (±2 min) to capture short NDL/deco
+// events; preferred bins are set in preferBin() so axis thinning drops the
+// finer labels first when space is tight.
+static const double deco_margin_boundaries[] = {
+	-120.0, -90.0, -75.0, -60.0, -45.0, -30.0, -20.0, -15.0, -10.0, -5.0, -2.0,
+	   0.0,
+	   2.0,   5.0,  10.0,  15.0,  20.0,  30.0,  45.0,  60.0,  75.0,  90.0, 120.0
+};
+static constexpr int deco_margin_num_bins = (int)std::size(deco_margin_boundaries);
+
+// Bin based on an index into deco_margin_boundaries
+struct DecoMarginBin : public StatsBin {
+	int idx; // index into deco_margin_boundaries
+	explicit DecoMarginBin(int idx) : idx(idx) { }
+	bool operator<(StatsBin &b) const override {
+		return idx < dynamic_cast<DecoMarginBin &>(b).idx;
+	}
+	bool operator==(StatsBin &b) const override {
+		return idx == dynamic_cast<DecoMarginBin &>(b).idx;
+	}
+};
+
+static int deco_margin_bin_for_value(double v)
+{
+	// Find the largest boundary <= v
+	const double *end = deco_margin_boundaries + deco_margin_num_bins;
+	const double *it = std::upper_bound(deco_margin_boundaries, end, v);
+	if (it == deco_margin_boundaries)
+		return 0; // below all boundaries — clamp to first bin
+	--it;
+	return (int)(it - deco_margin_boundaries);
+}
+
+static QString deco_margin_format_lower(int idx)
+{
+	double lo = deco_margin_boundaries[idx];
+	if (lo < 0.0) {
+		int x = (int)std::abs(lo);
+		return StatsTranslations::tr("NDL %1").arg(x);
+	} else if (lo == 0.0) {
+		return StatsTranslations::tr("Deco 0");
+	} else {
+		int x = (int)lo;
+		return StatsTranslations::tr("Deco %1").arg(x);
+	}
+}
+
+struct DecoMarginBinner : public StatsBinner {
+	QString name() const override {
+		return StatsTranslations::tr("NDL / Deco bins");
+	}
+	QString unitSymbol() const override {
+		return StatsTranslations::tr("min");
+	}
+	QString formatWithUnit(const StatsBin &bin) const override {
+		return format(bin);
+	}
+
+	std::vector<StatsBinDives> bin_dives(const std::vector<dive *> &dives, bool fill_empty) const override {
+		// Collect (bin_idx, dives) pairs in sorted order
+		using Pair = std::pair<int, std::vector<dive *>>;
+		std::vector<Pair> value_bins;
+
+		for (dive *d: dives) {
+			double v = ndl_deco_toFloat(d);
+			if (is_invalid_value(v))
+				continue;
+			int idx = deco_margin_bin_for_value(v);
+			// Keep value_bins sorted by idx
+			auto it = std::lower_bound(value_bins.begin(), value_bins.end(), idx,
+						   [](const Pair &p, int val) { return p.first < val; });
+			if (it == value_bins.end() || it->first != idx)
+				it = value_bins.insert(it, { idx, {} });
+			it->second.push_back(d);
+		}
+
+		// Build result, optionally filling empty bins between occupied ones
+		std::vector<StatsBinDives> res;
+		res.reserve(value_bins.size());
+		for (auto &[idx, dvs]: value_bins) {
+			if (fill_empty && !res.empty()) {
+				int prev_idx = dynamic_cast<DecoMarginBin &>(*res.back().bin).idx;
+				for (int i = prev_idx + 1; i < idx; ++i)
+					res.push_back({ std::make_unique<DecoMarginBin>(i), std::vector<dive *>() });
+			}
+			res.push_back({ std::make_unique<DecoMarginBin>(idx), std::move(dvs) });
+		}
+		return res;
+	}
+
+	QString format(const StatsBin &bin) const override {
+		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
+		double lo = deco_margin_boundaries[idx];
+		bool is_last = (idx + 1 >= deco_margin_num_bins);
+		if (is_last) {
+			return deco_margin_format_lower(idx) + "+";
+		}
+		double hi = deco_margin_boundaries[idx + 1];
+		if (lo < 0.0 && hi <= 0.0) {
+			return StatsTranslations::tr("NDL %1–%2").arg((int)std::abs(hi)).arg((int)std::abs(lo));
+		} else if (lo == 0.0) {
+			return StatsTranslations::tr("Deco 0–%1").arg((int)hi);
+		} else {
+			return StatsTranslations::tr("Deco %1–%2").arg((int)lo).arg((int)hi);
+		}
+	}
+
+	QString formatLowerBound(const StatsBin &bin) const override {
+		// Only label the key reference bins on the axis; fine-grained bins
+		// near zero (±2, ±5, ±10, ±15, ±45, ±75) return an empty string so
+		// that the axis thinning logic never renders a crowded label even if
+		// it selects one of those bins via its stride.  format() still
+		// returns the full range description for bar tooltips.
+		if (!preferBin(bin))
+			return QString();
+		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
+		return deco_margin_format_lower(idx);
+	}
+
+	QString formatUpperBound(const StatsBin &bin) const override {
+		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
+		int next = idx + 1;
+		if (next >= deco_margin_num_bins)
+			return deco_margin_format_lower(idx) + "+";
+		return deco_margin_format_lower(next);
+	}
+
+	double lowerBoundToFloat(const StatsBin &bin) const override {
+		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
+		return deco_margin_boundaries[idx];
+	}
+
+	double upperBoundToFloat(const StatsBin &bin) const override {
+		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
+		int next = idx + 1;
+		return next < deco_margin_num_bins ? deco_margin_boundaries[next]
+						   : deco_margin_boundaries[deco_margin_num_bins - 1] + 30.0;
+	}
+
+	bool preferBin(const StatsBin &bin) const override {
+		// Prefer widely-spaced boundaries so axis thinning drops ±2/±5/±10/
+		// ±15/±45/±75 first, while keeping ±20, ±30, ±60, ±90, ±120 and
+		// the zero crossing labelled when space is tight.
+		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
+		double v = deco_margin_boundaries[idx];
+		return v == -120.0 || v == -90.0 || v == -60.0 || v == -30.0 || v == -20.0 ||
+		       v ==    0.0 ||
+		       v ==   20.0 || v ==  30.0  || v ==  60.0 || v ==  90.0 || v == 120.0;
+	}
+
+	std::vector<StatsBinPtr> bins_between(const StatsBin &bin1, const StatsBin &bin2) const override {
+		int idx1 = dynamic_cast<const DecoMarginBin &>(bin1).idx;
+		int idx2 = dynamic_cast<const DecoMarginBin &>(bin2).idx;
+		std::vector<StatsBinPtr> res;
+		for (int i = idx1 + 1; i < idx2; ++i)
+			res.push_back(std::make_unique<DecoMarginBin>(i));
+		return res;
+	}
+};
+
+static DecoMarginBinner deco_margin_binner;
+
+struct NdlDecoTimeVariable : public StatsVariableTemplate<StatsVariable::Type::Numeric> {
+	QString name() const override {
+		return StatsTranslations::tr("NDL / Deco time");
+	}
+	QString unitSymbol() const override {
+		return StatsTranslations::tr("min");
+	}
+	int decimals() const override {
+		return 1;
+	}
+	std::vector<const StatsBinner *> binners() const override {
+		return { &deco_margin_binner };
+	}
+	double toFloat(const dive *d) const override {
+		return ndl_deco_toFloat(d);
+	}
+	std::vector<StatsOperation> supportedOperations() const override {
+		return { StatsOperation::Median, StatsOperation::Mean, StatsOperation::Min, StatsOperation::Max };
+	}
+};
+
 static DateVariable date_variable;
 static MaxDepthVariable max_depth_variable;
 static MeanDepthVariable mean_depth_variable;
@@ -2027,6 +2296,7 @@ static MonthOfYearVariable month_of_year_variable;
 static RatingVariable rating_variable;
 static VisibilityVariable visibility_variable;
 static DiveComputerVariable dive_computer_variable;
+static NdlDecoTimeVariable ndl_deco_time_variable;
 
 const std::vector<const StatsVariable *> stats_variables = {
 	&date_variable, &max_depth_variable, &mean_depth_variable, &duration_variable, &sac_variable,
@@ -2036,4 +2306,5 @@ const std::vector<const StatsVariable *> stats_variables = {
 	&gas_type_variable, &suit_variable,
 	&weightsystem_variable, &cylinder_type_variable, &location_variable, &trip_variable, &day_of_week_variable,
 	&month_of_year_variable, &rating_variable, &visibility_variable, &dive_computer_variable,
+	&ndl_deco_time_variable,
 };
