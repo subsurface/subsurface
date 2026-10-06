@@ -146,7 +146,7 @@ private:
 	std::vector<std::unique_ptr<StatsSeries>> series;
 	std::unique_ptr<StatsGrid> grid;
 	std::vector<ChartItemPtr<QuartileMarker>> quartileMarkers;
-	ChartItemPtr<HistogramMarker> medianMarker, meanMarker;
+	ChartItemPtr<HistogramMarker> medianMarker, meanMarker, zeroMarker;
 	StatsSeries *highlightedSeries;
 	StatsAxis *xAxis, *yAxis;
 	ChartItemPtr<ChartTextItem> title;

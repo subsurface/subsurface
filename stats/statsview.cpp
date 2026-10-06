@@ -24,6 +24,7 @@
 #include <array> // for std::array
 #include <cmath>
 #include <cstddef>
+#include <limits>
 
 // MSVC doesn't define ssize_t
 #ifdef _MSC_VER
@@ -394,6 +395,8 @@ void StatsView::plotAreaChanged(const QSizeF &s)
 		meanMarker->updatePosition();
 	if (medianMarker)
 		medianMarker->updatePosition();
+	if (zeroMarker)
+		zeroMarker->updatePosition();
 	if (legend)
 		legend->resize();
 	updateTitlePos();
@@ -528,6 +531,7 @@ void StatsView::reset()
 	regressionItem.reset();
 	meanMarker.reset();
 	medianMarker.reset();
+	zeroMarker.reset();
 	selectionRect.reset();
 
 	// Mark clean and dirty chart items for deletion
@@ -849,7 +853,7 @@ static void updateMinMax(double &min, double &max, bool &found, const T &v)
 template <typename T>
 static std::pair<double, double> getMinMaxValue(const std::vector<T> &values)
 {
-	double min = 1e14, max = 0.0;
+	double min = 1e14, max = std::numeric_limits<double>::lowest();
 	bool found = false;
 	for (const T &v: values)
 		updateMinMax(min, max, found, v);
@@ -858,7 +862,7 @@ static std::pair<double, double> getMinMaxValue(const std::vector<T> &values)
 
 static std::pair<double, double> getMinMaxValue(const std::vector<StatsBinOp> &bins, StatsOperation op)
 {
-	double min = 1e14, max = 0.0;
+	double min = 1e14, max = std::numeric_limits<double>::lowest();
 	bool found = false;
 	for (auto &[bin, res]: bins) {
 		if (!res.isValid())
@@ -1166,6 +1170,12 @@ void StatsView::plotHistogramCountChart(const std::vector<dive *> &dives,
 		double median = categoryVariable->quartiles(dives).q2;
 		if (!std::isnan(median))
 			medianMarker = createChartItem<HistogramMarker>(median, isHorizontal, currentTheme->medianMarkerColor, xAxis, yAxis);
+
+		// Zero line: show when the category axis spans both negative and positive values.
+		zeroMarker.reset();
+		auto [axisMin, axisMax] = catAxis->minMax();
+		if (axisMin < 0.0 && axisMax > 0.0)
+			zeroMarker = createChartItem<HistogramMarker>(0.0, isHorizontal, currentTheme->borderColor, xAxis, yAxis);
 	}
 }
 
@@ -1193,7 +1203,7 @@ void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 
 	int decimals = valueVariable->decimals();
 	ValueAxis *valAxis = createAxis<ValueAxis>(valueVariable->nameWithUnit(),
-						   0.0, maxValue, decimals, isHorizontal);
+						   std::min(0.0, minValue), maxValue, decimals, isHorizontal);
 
 	if (isHorizontal)
 		setAxes(valAxis, catAxis);
@@ -1217,6 +1227,13 @@ void StatsView::plotHistogramValueChart(const std::vector<dive *> &dives,
 	}
 
 	createSeries<BarSeries>(isHorizontal, categoryVariable->name(), valueVariable, std::move(items));
+
+	if (categoryVariable->type() == StatsVariable::Type::Numeric) {
+		zeroMarker.reset();
+		auto [axisMin, axisMax] = catAxis->minMax();
+		if (axisMin < 0.0 && axisMax > 0.0)
+			zeroMarker = createChartItem<HistogramMarker>(0.0, isHorizontal, currentTheme->borderColor, xAxis, yAxis);
+	}
 }
 
 void StatsView::plotHistogramStackedChart(const std::vector<dive *> &dives,
@@ -1292,6 +1309,13 @@ void StatsView::plotHistogramBoxChart(const std::vector<dive *> &dives,
 		double lowerBound = categoryBinner->lowerBoundToFloat(*bin);
 		double upperBound = categoryBinner->upperBoundToFloat(*bin);
 		series->append(lowerBound, upperBound, q, categoryBinner->formatWithUnit(*bin));
+	}
+
+	if (categoryVariable->type() == StatsVariable::Type::Numeric) {
+		zeroMarker.reset();
+		auto [axisMin, axisMax] = catAxis->minMax();
+		if (axisMin < 0.0 && axisMax > 0.0)
+			zeroMarker = createChartItem<HistogramMarker>(0.0, false, currentTheme->borderColor, xAxis, yAxis);
 	}
 }
 
