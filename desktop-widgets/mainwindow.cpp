@@ -176,6 +176,10 @@ MainWindow::MainWindow() :
 		QIcon::setThemeName("subsurface");
 	}
 	connect(diveList.get(), &DiveListView::divesSelected, this, &MainWindow::divesSelected);
+	m_profileUpdateTimer = new QTimer(this);
+	m_profileUpdateTimer->setSingleShot(true);
+	m_profileUpdateTimer->setInterval(50);
+	connect(m_profileUpdateTimer, &QTimer::timeout, this, &MainWindow::updateProfile);
 	connect(mainTab.get(), &MainTab::dcChangeRequested, this, &MainWindow::selectDC);
 	connect(&diveListNotifier, &DiveListNotifier::settingsChanged, this, &MainWindow::readSettings);
 	for (int i = 0; i < NUM_RECENT_FILES; i++) {
@@ -320,15 +324,23 @@ void MainWindow::updateAutogroup()
 
 void MainWindow::divesSelected(const std::vector<dive *> &selection, dive *currentDive, int currentDC)
 {
+	m_pendingSelection = selection;
+	m_pendingDive = currentDive;
+	m_pendingDC = currentDC;
+	m_profileUpdateTimer->start(); // restarts if already running
+}
+
+void MainWindow::updateProfile()
+{
 	// We call plotDive first, so that the profile can decide which
 	// dive computer to plot. The plotted dive computer is then
 	// used for displaying data in the tab-widgets.
-	profile->plotDive(currentDive, currentDC);
-	mainTab->updateDiveInfo(selection, profile->d, profile->dc);
+	profile->plotDive(m_pendingDive, m_pendingDC);
+	mainTab->updateDiveInfo(m_pendingSelection, profile->d, profile->dc);
 
 	// Activate cursor keys to switch through DCs if there are more than one DC.
-	if (currentDive) {
-		bool nr = currentDive->number_of_computers() > 1;
+	if (m_pendingDive) {
+		bool nr = m_pendingDive->number_of_computers() > 1;
 		enableShortcuts();
 		ui.actionNextDC->setEnabled(nr);
 		ui.actionPreviousDC->setEnabled(nr);

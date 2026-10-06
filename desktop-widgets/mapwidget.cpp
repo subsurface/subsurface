@@ -2,6 +2,7 @@
 #include <QQmlContext>
 #include <QQuickItem>
 #include <QModelIndex>
+#include <QTimer>
 
 #include "mapwidget.h"
 #include "core/divesite.h"
@@ -25,6 +26,9 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 {
 	m_rootItem = nullptr;
 	m_mapHelper = nullptr;
+	m_centerTimer = new QTimer(this);
+	m_centerTimer->setSingleShot(true);
+	m_centerTimer->setInterval(50);
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 	connect(this, &QQuickWidget::statusChanged, this, &MapWidget::doneLoading);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &MapWidget::divesChanged);
@@ -53,6 +57,7 @@ void MapWidget::doneLoading(QQuickWidget::Status status)
 	m_mapHelper = rootObject()->findChild<MapWidgetHelper *>();
 	connect(m_mapHelper, &MapWidgetHelper::selectedDivesChanged, this, &MapWidget::selectedDivesChanged);
 	connect(m_mapHelper, &MapWidgetHelper::coordinatesChanged, this, &MapWidget::coordinatesChanged);
+	connect(m_centerTimer, &QTimer::timeout, m_mapHelper, &MapWidgetHelper::centerOnSelectedDiveSite);
 }
 
 void MapWidget::centerOnDiveSite(struct dive_site *ds)
@@ -65,9 +70,12 @@ void MapWidget::centerOnIndex(const QModelIndex& idx)
 {
 	CHECK_IS_READY_RETURN_VOID();
 	dive_site *ds = idx.model()->index(idx.row(), LocationInformationModel::DIVESITE).data().value<dive_site *>();
-	if (!ds || !ds->has_gps_location())
-		m_mapHelper->centerOnSelectedDiveSite();
-	else
+	if (!ds || !ds->has_gps_location()) {
+		if (isVisible())
+			m_centerTimer->start();
+		else
+			m_pendingCenter = true;
+	} else
 		centerOnDiveSite(ds);
 }
 
@@ -75,7 +83,10 @@ void MapWidget::reload()
 {
 	CHECK_IS_READY_RETURN_VOID();
 	m_mapHelper->reloadMapLocations();
-	m_mapHelper->centerOnSelectedDiveSite();
+	if (isVisible())
+		m_centerTimer->start();
+	else
+		m_pendingCenter = true;
 }
 
 bool MapWidget::editMode() const
@@ -87,7 +98,10 @@ void MapWidget::setSelected(std::vector<dive_site *> divesites)
 {
 	CHECK_IS_READY_RETURN_VOID();
 	m_mapHelper->setSelected(std::move(divesites));
-	m_mapHelper->centerOnSelectedDiveSite();
+	if (isVisible())
+		m_centerTimer->start();
+	else
+		m_pendingCenter = true;
 }
 
 void MapWidget::selectedDivesChanged(const QList<int> &list)
@@ -113,6 +127,24 @@ void MapWidget::divesChanged(const QVector<dive *> &, DiveField field)
 {
 	if (field.divesite)
 		reload();
+}
+
+void MapWidget::hideEvent(QHideEvent *event)
+{
+	if (m_centerTimer->isActive()) {
+		m_centerTimer->stop();
+		m_pendingCenter = true;
+	}
+	QQuickWidget::hideEvent(event);
+}
+
+void MapWidget::showEvent(QShowEvent *event)
+{
+	QQuickWidget::showEvent(event);
+	if (m_pendingCenter) {
+		m_pendingCenter = false;
+		m_centerTimer->start();
+	}
 }
 
 // Sadly, for reasons out of our control, we can't use a normal singleton for the

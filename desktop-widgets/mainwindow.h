@@ -10,10 +10,12 @@
 
 #include <QMainWindow>
 #include <QAction>
+#include <QTimer>
 #include <QUrl>
 #include <QUuid>
 #include <QProgressDialog>
 #include <memory>
+#include <vector>
 
 #include "ui_mainwindow.h"
 #include "ui_plannerDetails.h"
@@ -131,6 +133,7 @@ slots:
 	void on_action_Check_for_Updates_triggered();
 
 	void divesSelected(const std::vector<dive *> &selection, dive *currentDive, int currentDC);
+	void updateProfile();
 	void initialUiSetup();
 
 	void on_actionImportDiveLog_triggered();
@@ -208,6 +211,10 @@ private:
 	void setupSocialNetworkMenu();
 	QDialog *findMovedImagesDialog;
 	dive_paste_data paste_data;
+	QTimer *m_profileUpdateTimer;
+	std::vector<dive *> m_pendingSelection;
+	dive *m_pendingDive = nullptr;
+	int m_pendingDC = -1;
 	QStringList recentFiles;
 	QAction *actionsRecent[NUM_RECENT_FILES];
 
