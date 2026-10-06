@@ -48,12 +48,15 @@ Item {
 		property var newCenter: defaultCenter
 		property real newZoom: 1.0
 		property real newZoomOut: 1.0
+		property real zoomOutDuration: 0
 		property var clickCoord: QtPositioning.coordinate(0, 0)
 		property bool isReady: false
+		property bool updatingZoom: false
+		property bool animating: false
 
 		Component.onCompleted: isReady = true
 		onZoomLevelChanged: {
-			if (isReady)
+			if (!updatingZoom && !animating && isReady)
 				mapHelper.calculateSmallCircleRadius(map.center)
 		}
 
@@ -112,8 +115,13 @@ Item {
 
 		SequentialAnimation {
 			id: mapAnimationZoomIn
+			onRunningChanged: {
+				map.animating = running
+				if (!running && map.isReady)
+					mapHelper.calculateSmallCircleRadius(map.center)
+			}
 			NumberAnimation {
-				target: map; property: "zoomLevel"; to: map.newZoomOut; duration: Math.abs(map.newZoomOut - map.zoomLevel) * 200
+				target: map; property: "zoomLevel"; to: map.newZoomOut; duration: map.zoomOutDuration
 			}
 			ParallelAnimation {
 				CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 2000; easing.type: Easing.OutCubic }
@@ -125,6 +133,11 @@ Item {
 
 		ParallelAnimation {
 			id: mapAnimationClick
+			onRunningChanged: {
+				map.animating = running
+				if (!running && map.isReady)
+					mapHelper.calculateSmallCircleRadius(map.center)
+			}
 			CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 500	}
 			NumberAnimation { target: map; property: "zoomLevel"; to: map.newZoom; duration: 500 }
 		}
@@ -197,9 +210,11 @@ Item {
 		}
 
 		function centerOnCoordinate(coord) {
+			updatingZoom = true
 			stopZoomAnimations()
 			if (!coordIsValid(coord)) {
 				console.warn("MapWidget.qml: centerOnCoordinate(): !coordIsValid()")
+				updatingZoom = false
 				return
 			}
 			var newZoomOutFound = false
@@ -222,13 +237,17 @@ Item {
 			zoomLevel = zoomStored
 			center = centerStored
 			newZoom = zoomStored
+			zoomOutDuration = Math.min(Math.abs(newZoomOut - zoomStored) * 200, 1000)
+			updatingZoom = false
 			mapAnimationZoomIn.restart()
 		}
 
 		function centerOnRectangle(topLeft, bottomRight, centerRect) {
+			updatingZoom = true
 			stopZoomAnimations()
 			if (newCenter.latitude === 0.0 && newCenter.longitude === 0.0) {
 				// Do nothing
+				updatingZoom = false
 				return
 			}
 			var centerStored = QtPositioning.coordinate(center.latitude, center.longitude)
@@ -266,6 +285,8 @@ Item {
 				newZoom = defaultZoomIn
 			zoomLevel = zoomStored
 			center = centerStored
+			zoomOutDuration = Math.min(Math.abs(newZoomOut - zoomStored) * 200, 1000)
+			updatingZoom = false
 			mapAnimationZoomIn.restart()
 		}
 

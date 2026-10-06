@@ -7,10 +7,13 @@
 #include <vector>
 #include <QQuickWidget>
 #include <QList>
+#include <QTimer>
 
 #undef IGNORE
 
 class QResizeEvent;
+class QHideEvent;
+class QShowEvent;
 class QQuickItem;
 class MapWidgetHelper;
 
@@ -35,10 +38,16 @@ public slots:
 	void doneLoading(QQuickWidget::Status status);
 	void divesChanged(const QVector<dive *> &, DiveField field);
 
+protected:
+	void hideEvent(QHideEvent *event) override;
+	void showEvent(QShowEvent *event) override;
+
 private:
 	static MapWidget *m_instance;
 	QQuickItem *m_rootItem;
 	MapWidgetHelper *m_mapHelper;
+	QTimer *m_centerTimer;
+	bool m_pendingCenter = false;
 };
 
 #endif // MAPWIDGET_H
