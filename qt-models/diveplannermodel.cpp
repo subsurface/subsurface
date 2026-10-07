@@ -1644,7 +1644,8 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		}
 		firstSegment = false;
 
-		plan_add_segment(diveplan, duration, depth, cylinderId, setpoint, true, divemode);
+		if (duration > 0)
+			plan_add_segment(diveplan, duration, depth, cylinderId, setpoint, true, divemode);
 	}
 
 	// Load ALL current settings from the correct preference classes.

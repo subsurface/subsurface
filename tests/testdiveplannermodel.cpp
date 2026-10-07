@@ -698,11 +698,10 @@ void TestDivePlannerModel::testMobilePlannerAltitudeMatchesDesktop()
 	PlanFingerprint mobile = runMobilePlan(model, altitudePressure, 50, 30, 10000);
 	model->setSurfacePressure({ .mbar = 0 });
 	model->resetPlanState();
+	prefs = default_prefs;
 
 	QCOMPARE(mobile.durationSeconds, desktop.durationSeconds);
 	QVERIFY(mobile == desktop);
-
-	prefs = default_prefs;
 }
 
 // AI-generated (Claude)
@@ -737,11 +736,10 @@ void TestDivePlannerModel::testMobilePlannerDescentMatchesDesktop()
 	PlanFingerprint mobile = runMobilePlan(model, 1013, 50, 25, 10300);
 	model->setSurfacePressure({ .mbar = 0 });
 	model->resetPlanState();
+	prefs = default_prefs;
 
 	QCOMPARE(mobile.durationSeconds, desktop.durationSeconds);
 	QVERIFY(mobile == desktop);
-
-	prefs = default_prefs;
 }
 
 // AI-generated (Claude)
@@ -786,11 +784,11 @@ void TestDivePlannerModel::testMobilePlannerUsesPreferenceVpmbConservatism()
 		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
 		0, 10300, false);
 
-	QCOMPARE(model->getDiveplan().vpmb_conservatism, 2);
-
 	model->setSurfacePressure({ .mbar = 0 });
 	model->resetPlanState();
 	prefs = default_prefs;
+
+	QCOMPARE(model->getDiveplan().vpmb_conservatism, 2);
 }
 
 // AI-generated (Claude)
@@ -863,6 +861,9 @@ void TestDivePlannerModel::testMobilePlannerDecoGasSwitchDepthMatchesDesktop()
 				ean50Waypoint = p.depth.mm;
 		}
 	}
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
 
 	QCOMPARE(airWaypoint, airDepth.mm);
 	QCOMPARE(ean50Waypoint, ean50Depth.mm);
@@ -873,10 +874,6 @@ void TestDivePlannerModel::testMobilePlannerDecoGasSwitchDepthMatchesDesktop()
 	sea.surface_pressure = 1_atm;
 	sea.dcs[0].surface_pressure = 1_atm;
 	QVERIFY(ean50Depth.mm > calculate_deco_switch_depth(&sea, ean50).mm);
-
-	model->setSurfacePressure({ .mbar = 0 });
-	model->resetPlanState();
-	prefs = default_prefs;
 }
 
 // Stubs for symbols referenced by libraries linked into TestDivePlannerModel
