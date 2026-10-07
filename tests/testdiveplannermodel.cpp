@@ -5,6 +5,7 @@
 #include "commands/command.h"
 #include "core/divelog.h"
 #include "core/dive.h"
+#include "core/equipment.h"
 #include "core/sample.h"
 #include "core/pref.h"
 #include "core/string-format.h"
@@ -786,6 +787,92 @@ void TestDivePlannerModel::testMobilePlannerUsesPreferenceVpmbConservatism()
 		0, 10300, false);
 
 	QCOMPARE(model->getDiveplan().vpmb_conservatism, 2);
+
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+
+// AI-generated (Claude)
+// Parity test for deco-gas switch depths at altitude.  The mobile planner used
+// to compute its own gas-switch "time == 0" waypoints with gas_mod() rounded to
+// 1 m, before the dive computer's surface pressure was set, so at altitude they
+// were computed at sea level and with the wrong rounding.  The desktop planner
+// instead uses each cylinder's switch depth, which reset_cylinders() derives
+// from the shared calculate_deco_switch_depth() (gas_mod rounded to 3 m / 10 ft)
+// at the plan's surface pressure.  Verify the mobile waypoints now equal the
+// shared helper evaluated at the altitude pressure for every OC gas, so the two
+// planners select the same gas-switch depths.
+void TestDivePlannerModel::testMobilePlannerDecoGasSwitchDepthMatchesDesktop()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = false;
+	prefs.decopo2 = 1600;
+	prefs.display_variations = false;
+
+	const int altitude = 700; // mbar, well above sea level
+
+	model->setSurfacePressure({ .mbar = altitude });
+
+	QVariantList cylinders;
+	QVariantMap bottom, deco;
+	bottom["type"] = QStringLiteral("D12 232 bar");
+	bottom["mix"] = QStringLiteral("AIR");
+	bottom["pressure"] = 232;
+	bottom["use"] = 0;
+	deco["type"] = QStringLiteral("AL80");
+	deco["mix"] = QStringLiteral("EAN50");
+	deco["pressure"] = 200;
+	deco["use"] = 0;
+	cylinders.append(bottom);
+	cylinders.append(deco);
+
+	QVariantList segments;
+	QVariantMap seg;
+	seg["depth"] = 40;
+	seg["duration"] = 25;
+	seg["gas"] = 0;
+	seg["setpoint"] = 0;
+	seg["divemode"] = 0;
+	segments.append(seg);
+
+	model->calculatePlan(cylinders, segments,
+		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
+		0, 10300, false);
+
+	// Expected switch depths from the shared helper, at the altitude pressure.
+	dive ref;
+	ref.surface_pressure = { .mbar = altitude };
+	ref.dcs[0].surface_pressure = { .mbar = altitude };
+	gasmix air = { .o2 = { .permille = 0 }, .he = { .permille = 0 } };
+	gasmix ean50 = { .o2 = { .permille = 500 }, .he = { .permille = 0 } };
+	depth_t airDepth = calculate_deco_switch_depth(&ref, air);
+	depth_t ean50Depth = calculate_deco_switch_depth(&ref, ean50);
+
+	int airWaypoint = -1, ean50Waypoint = -1;
+	for (const auto &p : model->getDiveplan().dp) {
+		if (p.time == 0 && !p.entered) {
+			if (p.cylinderid == 0)
+				airWaypoint = p.depth.mm;
+			else if (p.cylinderid == 1)
+				ean50Waypoint = p.depth.mm;
+		}
+	}
+
+	QCOMPARE(airWaypoint, airDepth.mm);
+	QCOMPARE(ean50Waypoint, ean50Depth.mm);
+
+	// The EAN50 switch depth must be altitude-correct (deeper than sea level),
+	// so this fails if the waypoint were computed at 1 atm.
+	dive sea;
+	sea.surface_pressure = 1_atm;
+	sea.dcs[0].surface_pressure = 1_atm;
+	QVERIFY(ean50Depth.mm > calculate_deco_switch_depth(&sea, ean50).mm);
 
 	model->setSurfacePressure({ .mbar = 0 });
 	model->resetPlanState();

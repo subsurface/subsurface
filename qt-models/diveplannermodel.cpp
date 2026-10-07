@@ -1569,17 +1569,6 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 
 	d->dcs[dcNr].divemode = static_cast<enum divemode_t>(diveMode);
 
-	// Initialise surface pressure and salinity before reset_cylinders() and the
-	// OC-gas loop: both call gas_mod() → mbar_to_depth() → rel_mbar_to_depth(),
-	// which reads dcs[dcNr].surface_pressure and dcs[dcNr].salinity for planner
-	// dives.  Without this, pressure is zero (1 atm fallback) and salinity is
-	// zero (seawater fallback), even for altitude or freshwater plans.
-	if (diveplan.surface_pressure.mbar == 0)
-		diveplan.surface_pressure = 1_atm;
-	d->dcs[dcNr].surface_pressure = diveplan.surface_pressure;
-	diveplan.salinity = waterType;
-	d->dcs[dcNr].salinity = waterType;
-
 	// Populate cylinders from QML data
 	for (const QVariant &cylData : cylindersData) {
 		QVariantMap map = cylData.toMap();
@@ -1602,15 +1591,31 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		d->cylinders.add(d->cylinders.size(), newCyl);
 	}
 	this->cylinders.updateDive(d, dcNr);
+
+	// Initialise surface pressure and salinity before reset_cylinders() and the
+	// OC-gas loop: both call gas_mod() → mbar_to_depth() → rel_mbar_to_depth(),
+	// which reads dcs[dcNr].surface_pressure and dcs[dcNr].salinity for planner
+	// dives.  Without this, pressure is zero (1 atm fallback) and salinity is
+	// zero (seawater fallback), producing wrong MOD and deco-switch depths for
+	// altitude or freshwater plans.
+	if (diveplan.surface_pressure.mbar == 0)
+		diveplan.surface_pressure = 1_atm;
+	d->surface_pressure = diveplan.surface_pressure;
+	d->dcs[dcNr].surface_pressure = diveplan.surface_pressure;
+	diveplan.salinity = waterType;
+	d->dcs[dcNr].salinity = waterType;
+
 	reset_cylinders(d, true);
 
-	// Add available OC-gases as "time=0" waypoints for the planner engine
-	pressure_t deco_po2_limit = { .mbar = qPrefDivePlanner::decopo2() };
+	// Add available OC-gases as "time=0" waypoints for the planner engine.
+	// Use each cylinder's switch depth (set by reset_cylinders() via the shared
+	// calculate_deco_switch_depth(), rounded to 3 m / 10 ft), exactly as the
+	// desktop planner's createTemporaryPlan() does, so the two planners pick the
+	// same gas-switch depths.
 	for (size_t i = 0; i < d->cylinders.size(); ++i) {
 		const cylinder_t &cyl = d->cylinders[i];
-		if (cyl.cylinder_use == OC_GAS) {
-			depth_t mod = d->gas_mod(cyl.gasmix, deco_po2_limit, 1_m);
-			divedatapoint point(0, mod, i, 0, false); // time=0, depth=MOD, cylinderid=i
+		if (cyl.depth.mm && cyl.cylinder_use == OC_GAS) {
+			divedatapoint point(0, cyl.depth, i, 0, false); // time=0, depth=switch depth, cylinderid=i
 			diveplan.dp.push_back(point);
 		}
 	}
@@ -1642,13 +1647,13 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		plan_add_segment(diveplan, duration, depth, cylinderId, setpoint, true, divemode);
 	}
 
-	// Load ALL current settings from the correct preference classes
+	// Load ALL current settings from the correct preference classes.
+	// (surface_pressure is set earlier, before reset_cylinders(), so that the
+	// per-gas switch depths are computed at the correct altitude.)
 	diveplan.gflow = gfLow();
 	diveplan.gfhigh = gfHigh();
 	diveplan.bottomsac = qPrefDivePlanner::bottomsac();
 	diveplan.decosac = qPrefDivePlanner::decosac();
-	// Propagate to the dive record so the saved dive carries the correct pressure.
-	d->surface_pressure = diveplan.surface_pressure;
 	diveplan.vpmb_conservatism = qPrefTechnicalDetails::vpmb_conservatism();
 
 	// Snapshot the fully-configured plan for computeVariations().  Taken here,
