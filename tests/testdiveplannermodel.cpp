@@ -4,6 +4,8 @@
 #include "core/subsurfacestartup.h"
 #include "commands/command.h"
 #include "core/divelog.h"
+#include "core/dive.h"
+#include "core/sample.h"
 #include "core/pref.h"
 #include "core/string-format.h"
 #include "core/units.h"
@@ -548,6 +550,246 @@ void TestDivePlannerModel::testMobilePlannerAboveSeaLevelPressure()
 	QVERIFY(rtAlt >= 999 && rtAlt <= 1001);
 
 	model->setSurfacePressure({ .mbar = 0 }); // reset for other tests
+}
+
+// AI-generated (Claude)
+// Helpers shared by the mobile-vs-desktop parity tests below.
+namespace {
+
+// A compact, order-preserving fingerprint of a planned profile: the sequence
+// of (time, depth) sample points plus the total runtime.  Two plans that
+// produce the same descent, bottom time and decompression schedule have the
+// same fingerprint.
+struct PlanFingerprint {
+	int durationSeconds = 0;
+	std::vector<std::pair<int, int>> samples; // (time.seconds, depth.mm)
+
+	bool operator==(const PlanFingerprint &o) const
+	{
+		return durationSeconds == o.durationSeconds && samples == o.samples;
+	}
+};
+
+PlanFingerprint fingerprintDive(const dive &d)
+{
+	PlanFingerprint fp;
+	if (!d.dcs.empty()) {
+		for (const struct sample &s : d.dcs[0].samples)
+			fp.samples.emplace_back(s.time.seconds, s.depth.mm);
+	}
+	// Use the last sample time as the runtime so both the desktop and mobile
+	// fingerprints define duration identically (the mobile path derives it from
+	// the profile sample list it returns to the UI).
+	fp.durationSeconds = fp.samples.empty() ? 0 : fp.samples.back().first;
+	return fp;
+}
+
+// Run the mobile planner path (calculatePlan) with a single bottom segment and
+// return the fingerprint of the resulting planned dive, built from the profile
+// samples the model returns to the QML UI.
+PlanFingerprint runMobilePlan(DivePlannerPointsModel *model, int surfacePressureMbar,
+			      int bottomDepthM, int bottomRuntimeMin, int salinity)
+{
+	model->setSurfacePressure({ .mbar = surfacePressureMbar });
+
+	QVariantList cylinders;
+	QVariantMap cyl;
+	cyl["type"] = QStringLiteral("D12 232 bar");
+	cyl["mix"] = QStringLiteral("AIR");
+	cyl["pressure"] = 232;
+	cyl["use"] = 0;
+	cylinders.append(cyl);
+
+	QVariantList segments;
+	QVariantMap seg;
+	seg["depth"] = bottomDepthM;
+	seg["duration"] = bottomRuntimeMin;
+	seg["gas"] = 0;
+	seg["setpoint"] = 0;
+	seg["divemode"] = 0;
+	segments.append(seg);
+
+	QVariantMap result = model->calculatePlan(cylinders, segments,
+		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
+		0 /* OC */, salinity, false /* don't save */);
+
+	PlanFingerprint fp;
+	const QVariantList profile = result.value(QStringLiteral("profile")).toList();
+	int lastTime = 0;
+	for (const QVariant &pv : profile) {
+		QVariantMap pt = pv.toMap();
+		int t = pt.value(QStringLiteral("time")).toInt();
+		fp.samples.emplace_back(t, pt.value(QStringLiteral("depth")).toInt());
+		lastTime = t;
+	}
+	fp.durationSeconds = lastTime;
+	return fp;
+}
+
+// Run the desktop planner path (createSimpleDive + model edits) with the same
+// single bottom segment and return the fingerprint of the resulting dive.
+// This mirrors how the desktop planner UI drives the model.
+PlanFingerprint runDesktopPlan(DivePlannerPointsModel *model, dive &plannedDive,
+			       int surfacePressureMbar, int bottomDepthM, int bottomRuntimeMin,
+			       int salinity)
+{
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	diveplan &plan = model->getDiveplan();
+	plan.salinity = salinity;
+	plan.surface_pressure = { .mbar = surfacePressureMbar };
+	plan.gflow = prefs.gflow;
+	plan.gfhigh = prefs.gfhigh;
+	plan.bottomsac = prefs.bottomsac;
+	plan.decosac = prefs.decosac;
+	// The desktop planner seeds the conservatism spinbox from the preference
+	// at setup; replicate that so the two paths start from the same value.
+	model->setVpmbConservatism(prefs.vpmb_conservatism);
+
+	model->createSimpleDive(&plannedDive);
+	// The desktop planner carries the surface pressure on the dive record; the
+	// UI's atmospheric-pressure widget sets it before planning.  Replicate that.
+	plannedDive.surface_pressure = { .mbar = surfacePressureMbar };
+
+	// Replace the default rows with a single bottom segment matching the mobile
+	// input: depth and cumulative runtime.
+	std::vector<int> allRows;
+	for (int i = 0; i < model->rowCount(); i++)
+		allRows.push_back(i);
+	model->removeSelectedPoints(allRows);
+	model->addStop(m_or_ft(bottomDepthM, bottomDepthM * 3), bottomRuntimeMin * 60);
+
+	return fingerprintDive(plannedDive);
+}
+
+} // namespace
+
+// AI-generated (Claude)
+// Regression test for issue #4941: at altitude the mobile planner (calculatePlan)
+// must produce the same descent, bottom time and decompression schedule as the
+// desktop planner.  The user-visible discrepancy was driven by the mobile
+// descent being rounded to whole minutes (see testMobilePlannerDescentMatchesDesktop);
+// the effect was more pronounced at altitude, which is why #4941 surfaced it.
+// This end-to-end altitude case guards against any future reintroduction.
+void TestDivePlannerModel::testMobilePlannerAltitudeMatchesDesktop()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = true;
+	prefs.last_stop = false; // 3 m last stop
+	prefs.descrate = lrint(10 * 1000.0 / 60.0); // 10 m/min, in mm/s
+	prefs.bottomsac = 20000;
+	prefs.decosac = 20000;
+	prefs.decopo2 = 1600;
+	prefs.gflow = 40;
+	prefs.gfhigh = 70;
+	prefs.display_variations = false;
+
+	const int altitudePressure = 891; // 891 mbar ~ 1000 m
+
+	PlanFingerprint desktop = runDesktopPlan(model, plannedDive, altitudePressure, 50, 30, 10000);
+	model->resetPlanState();
+
+	PlanFingerprint mobile = runMobilePlan(model, altitudePressure, 50, 30, 10000);
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+
+	QCOMPARE(mobile.durationSeconds, desktop.durationSeconds);
+	QVERIFY(mobile == desktop);
+
+	prefs = default_prefs;
+}
+
+// AI-generated (Claude)
+// Regression test for the descent-rounding bug (reported by @glance- on #4941):
+// the mobile planner used to round the "drop to first depth" descent up to whole
+// minutes in display units and subtract that from the bottom time, diverging
+// from the desktop planner's mm/s-resolution descent.  Use a descent rate that
+// does not divide evenly into minutes (18 m/min over 50 m = 2.78 min) so the
+// old rounding would differ.
+void TestDivePlannerModel::testMobilePlannerDescentMatchesDesktop()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.drop_stone_mode = true;
+	prefs.last_stop = false;
+	prefs.descrate = lrint(18 * 1000.0 / 60.0); // 18 m/min -> 50 m takes 2.78 min
+	prefs.bottomsac = 20000;
+	prefs.decosac = 20000;
+	prefs.decopo2 = 1600;
+	prefs.gflow = 40;
+	prefs.gfhigh = 70;
+	prefs.display_variations = false;
+
+	PlanFingerprint desktop = runDesktopPlan(model, plannedDive, 1013, 50, 25, 10300);
+	model->resetPlanState();
+
+	PlanFingerprint mobile = runMobilePlan(model, 1013, 50, 25, 10300);
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+
+	QCOMPARE(mobile.durationSeconds, desktop.durationSeconds);
+	QVERIFY(mobile == desktop);
+
+	prefs = default_prefs;
+}
+
+// AI-generated (Claude)
+// Investigation outcome for the VPM-B conservatism question (ticket #182): the
+// mobile planner reads conservatism from the preference, and the desktop planner
+// seeds its conservatism spinbox from the same preference at setup, so the two
+// already agree for identical configuration.  This test pins that behaviour: the
+// diveplan the mobile path builds must carry prefs.vpmb_conservatism, so a future
+// refactor cannot silently use a different source.
+void TestDivePlannerModel::testMobilePlannerUsesPreferenceVpmbConservatism()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = VPMB;
+	prefs.vpmb_conservatism = 2; // deliberately not the default (3)
+	prefs.drop_stone_mode = false;
+	prefs.display_variations = false;
+
+	model->setSurfacePressure({ .mbar = 0 });
+
+	QVariantList cylinders;
+	QVariantMap cyl;
+	cyl["type"] = QStringLiteral("AL80");
+	cyl["mix"] = QStringLiteral("AIR");
+	cyl["pressure"] = 200;
+	cyl["use"] = 0;
+	cylinders.append(cyl);
+
+	QVariantList segments;
+	QVariantMap seg;
+	seg["depth"] = 30;
+	seg["duration"] = 25;
+	seg["gas"] = 0;
+	seg["setpoint"] = 0;
+	seg["divemode"] = 0;
+	segments.append(seg);
+
+	model->calculatePlan(cylinders, segments,
+		QStringLiteral("2025-01-01"), QStringLiteral("10:00:00"),
+		0, 10300, false);
+
+	QCOMPARE(model->getDiveplan().vpmb_conservatism, 2);
+
+	model->setSurfacePressure({ .mbar = 0 });
+	model->resetPlanState();
+	prefs = default_prefs;
 }
 
 // Stubs for symbols referenced by libraries linked into TestDivePlannerModel

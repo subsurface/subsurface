@@ -1615,13 +1615,31 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		}
 	}
 
-	// Populate the actual dive plan segments from QML data
+	// Populate the actual dive plan segments from QML data.  When
+	// "drop to first depth" (drop_stone_mode) is active, prepend a descent to
+	// the first entered depth using the same mm/s-resolution arithmetic as the
+	// desktop planner's createTemporaryPlan(), and carve that descent time out
+	// of the first entered segment so the total entered runtime is preserved.
+	// Previously the descent was rounded up to whole minutes in display units on
+	// the QML side, which diverged from the desktop planner (issue #4941).
+	bool firstSegment = true;
 	for (const QVariant &segData : segmentsData) {
 		QVariantMap map = segData.toMap();
 		int cylinderId = map["gas"].toInt();
 		divemode_t divemode = get_local_divemode(d, dcNr, cylinderId, static_cast<divemode_t>(map["divemode"].toInt()));
+		depth_t depth = units_to_depth(map["depth"].toInt());
+		int setpoint = map["setpoint"].toInt();
+		int duration = map["duration"].toInt() * 60;
 
-		plan_add_segment(diveplan, map["duration"].toInt() * 60, units_to_depth(map["depth"].toInt()), cylinderId, map["setpoint"].toInt(), true, divemode);
+		if (firstSegment && prefs.drop_stone_mode && prefs.descrate > 0) {
+			// Descent to the first depth at the configured descent rate.
+			int descentDuration = depth.mm / prefs.descrate;
+			plan_add_segment(diveplan, descentDuration, depth, cylinderId, setpoint, true, divemode);
+			duration -= descentDuration;
+		}
+		firstSegment = false;
+
+		plan_add_segment(diveplan, duration, depth, cylinderId, setpoint, true, divemode);
 	}
 
 	// Load ALL current settings from the correct preference classes
