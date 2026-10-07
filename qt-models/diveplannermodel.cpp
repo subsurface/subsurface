@@ -1,42 +1,56 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "diveplannermodel.h"
+#include "commands/command.h"
 #include "core/color.h"
+#include "core/deco.h"
+#include "core/device.h"
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/divelog.h"
 #include "core/event.h"
 #include "core/format.h"
-#include "core/subsurface-string.h"
-#include "qt-models/cylindermodel.h"
+#include "core/gettextfromc.h"
 #include "core/metrics.h" // For defaultModelFont().
 #include "core/planner.h"
-#include "core/device.h"
 #include "core/qthelper.h"
 #include "core/range.h"
 #include "core/sample.h"
 #include "core/selection.h"
-#include "core/subsurface-time.h"
-#include "core/string-format.h"
 #include "core/settings/qPrefDivePlanner.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefUnit.h"
-#include "commands/command.h"
-#include "core/gettextfromc.h"
-#include "core/deco.h"
+#include "core/string-format.h"
+#include "core/subsurface-string.h"
+#include "core/subsurface-time.h"
+#include "qt-models/cylindermodel.h"
 #include <QApplication>
 #include <QTextDocument>
-#include <QtConcurrent>
 #include <QVariantMap>
+#include <QtConcurrent>
 
 #define VARIATIONS_IN_BACKGROUND 1
 
 static double unit_factor()
 {
-	return prefs.units.length == units::METERS ? 1000.0 / 60.0
-						   : feet_to_mm(1.0) / 60.0;
+	return prefs.units.length == units::METERS ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0;
 }
 
 static constexpr int decotimestep = 60; // seconds
+
+// AI-generated (Claude)
+static bool isImplicitDropStonePoint(const QVector<divedatapoint> &points, DivePlannerPointsModel::Mode mode)
+{
+	if (mode != DivePlannerPointsModel::PLAN || !prefs.drop_stone_mode || points.size() < 2 || prefs.descrate <= 0)
+		return false;
+
+	const divedatapoint &first = points[0];
+	const divedatapoint &second = points[1];
+	if (first.depth.mm != second.depth.mm)
+		return false;
+
+	// Match the exact integer expression used when serializing planner samples.
+	return first.time == first.depth.mm / prefs.descrate;
+}
 
 static cylinder_t *real_cylinder_or_null(struct dive *d, int cylinderId)
 {
@@ -150,7 +164,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	bool hasMarkedSamples = false;
 
 	if (!dc->samples.empty())
-		hasMarkedSamples = dc->samples[0].manually_entered;
+		hasMarkedSamples = std::any_of(dc->samples.begin(), dc->samples.end(), [](const sample &s) { return s.manually_entered; });
 	else
 		fake_dc(dc);
 
@@ -170,7 +184,7 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 			if (s.time.seconds != 0 && (!hasMarkedSamples || s.manually_entered)) {
 				depthsum += s.depth;
 				if (j > 0)
-					last_sp = dc->samples[j-1].setpoint;
+					last_sp = dc->samples[j - 1].setpoint;
 				++samplecount;
 				newtime = s.time;
 			}
@@ -197,6 +211,15 @@ void DivePlannerPointsModel::loadFromDive(dive *dIn, int dcNrIn)
 	[[maybe_unused]] auto [current_divemode, _cylinder_index, _gasmix] = get_dive_status_at(*d, *dc, dc->duration.seconds, &loop_mode, &loop_gas);
 	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
 		addStop(0_m, dc->duration.seconds, cylinderid, last_sp.mbar, true, current_divemode);
+
+	// AI-generated (Claude)
+	// In drop-stone mode, planner serialization stores an implicit descent-end sample
+	// as manually entered. Do not expose it as an extra editable waypoint on reload.
+	if (isImplicitDropStonePoint(divepoints, mode)) {
+		beginRemoveRows(QModelIndex(), 0, 0);
+		divepoints.remove(0);
+		endRemoveRows();
+	}
 	preserved_until = d->duration;
 
 	emitDataChanged();
@@ -215,7 +238,7 @@ void DivePlannerPointsModel::setupCylinders()
 
 		if (!d->cylinders.empty()) {
 			cylinders.updateDive(d, dcNr);
-			return;		// We have at least one cylinder
+			return; // We have at least one cylinder
 		}
 	}
 
@@ -290,7 +313,7 @@ void DivePlannerPointsModel::setPlanSaveAllowed(bool allowed)
 	emit planSaveAllowedChanged(allowed);
 }
 
-int DivePlannerPointsModel::columnCount(const QModelIndex&) const
+int DivePlannerPointsModel::columnCount(const QModelIndex &) const
 {
 	return COLUMNS; // to disable CCSETPOINT subtract one
 }
@@ -332,8 +355,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 
 	const divedatapoint p = divepoints.at(index.row());
 	cylinder_t *cyl_for_check = real_cylinder_or_null(d, p.cylinderid);
-	bool isInappropriateCylinder = cyl_for_check ? !is_cylinder_use_appropriate(*d->get_dc(dcNr), *cyl_for_check, false)
-						     : !is_surface_air_cylinder(d, p.cylinderid);
+	bool isInappropriateCylinder = cyl_for_check ? !is_cylinder_use_appropriate(*d->get_dc(dcNr), *cyl_for_check, false) : !is_surface_air_cylinder(d, p.cylinderid);
 	divemode_t divemode = get_local_divemode(d, dcNr, p.cylinderid, p.divemode);
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 
@@ -421,7 +443,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			i = index.row();
 			int duration = secs;
 			if (i)
-				duration -= divepoints[i-1].time;
+				duration -= divepoints[i - 1].time;
 			// Make sure segments have a minimal duration
 			if (duration <= 0)
 				secs += 10 - duration;
@@ -463,7 +485,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			break;
 		case DIVEMODE:
 			if (value.toInt() < FREEDIVE) {
-				p.divemode = (enum divemode_t) value.toInt();
+				p.divemode = (enum divemode_t)value.toInt();
 			}
 			break;
 		}
@@ -533,28 +555,26 @@ Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 			return QAbstractItemModel::flags(index) & ~Qt::ItemIsEditable & ~Qt::ItemIsEnabled;
 
 		break;
-	case DIVEMODE:
-		{
-			cylinder_t *cyl = real_cylinder_or_null(d, p.cylinderid);
-			if (!((d->get_dc(dcNr)->divemode == CCR && prefs.allowOcGasAsDiluent && cyl && is_oc(*cyl)) || d->get_dc(dcNr)->divemode == PSCR))
-				return QAbstractItemModel::flags(index) & ~Qt::ItemIsEditable & ~Qt::ItemIsEnabled;
-		}
-		break;
+	case DIVEMODE: {
+		cylinder_t *cyl = real_cylinder_or_null(d, p.cylinderid);
+		if (!((d->get_dc(dcNr)->divemode == CCR && prefs.allowOcGasAsDiluent && cyl && is_oc(*cyl)) || d->get_dc(dcNr)->divemode == PSCR))
+			return QAbstractItemModel::flags(index) & ~Qt::ItemIsEditable & ~Qt::ItemIsEnabled;
+	} break;
 	}
 
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-int DivePlannerPointsModel::rowCount(const QModelIndex&) const
+int DivePlannerPointsModel::rowCount(const QModelIndex &) const
 {
 	return divepoints.count();
 }
 
 DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTableModel(parent),
-	d(nullptr),
-	cylinders(true),
-	mode(NOTHING),
-	saveAllowed(true)
+								  d(nullptr),
+								  cylinders(true),
+								  mode(NOTHING),
+								  saveAllowed(true)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
 	startTime = QDateTime(startTime.date(), startTime.time(), QTimeZone(QTimeZone::UTC));
@@ -632,7 +652,7 @@ void DivePlannerPointsModel::setSacFactor(double factor)
 #ifdef SUBSURFACE_MOBILE
 	factor /= 10.0;
 #endif
-	qPrefDivePlanner::set_sacfactor((int) round(factor * 100));
+	qPrefDivePlanner::set_sacfactor((int)round(factor * 100));
 	emitDataChanged();
 }
 
@@ -819,7 +839,7 @@ void DivePlannerPointsModel::setDropStoneMode(bool value)
 	if (divepoints.isEmpty())
 		return;
 	if (prefs.drop_stone_mode) {
-	/* Remove the first entry if we enable drop_stone_mode */
+		/* Remove the first entry if we enable drop_stone_mode */
 		if (rowCount() >= 2) {
 			beginRemoveRows(QModelIndex(), 0, 0);
 			divepoints.remove(0);
@@ -899,7 +919,8 @@ void DivePlannerPointsModel::addStop(depth_t depth, int seconds)
 	emitDataChanged();
 }
 
-void DivePlannerPointsModel::addReverseProfile() {
+void DivePlannerPointsModel::addReverseProfile()
+{
 	if (divepoints.size() <= 1)
 		return;
 
@@ -908,7 +929,7 @@ void DivePlannerPointsModel::addReverseProfile() {
 	beginInsertRows(QModelIndex(), divepoints.size(), 2 * divepoints.size() - (prefs.drop_stone_mode ? 1 : 2));
 	for (int i = divepoints.count() - 2; i >= 0; --i) {
 		divepoints << divepoints[i];
-		runtime += divepoints[i+1].time - divepoints[i].time;
+		runtime += divepoints[i + 1].time - divepoints[i].time;
 		divepoints.back().time = runtime;
 	}
 
@@ -937,7 +958,7 @@ int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_i
 	if (seconds == 0 && depth.mm == 0) {
 		if (row == 0) {
 			depth = m_or_ft(5, 15); // 5m / 15ft
-			seconds = 600;			// 10 min
+			seconds = 600;		// 10 min
 			// Default to the first cylinder
 			cylinderid = 0;
 		} else {
@@ -968,7 +989,7 @@ int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_i
 	// Previous, actually means next as we are typically subdiving a segment and the gas for
 	// the segment is determined by the waypoint at the end.
 	if (usePrevious) {
-		if (row  < divepoints.count()) {
+		if (row < divepoints.count()) {
 			cylinderid = divepoints.at(row).cylinderid;
 			if (divemode == UNDEF_COMP_TYPE)
 				divemode = divepoints.at(row).divemode;
@@ -977,7 +998,7 @@ int DivePlannerPointsModel::addStop(depth_t depth, int seconds, int cylinderid_i
 			cylinderid = divepoints.at(row - 1).cylinderid;
 			if (divemode == UNDEF_COMP_TYPE)
 				divemode = divepoints.at(row - 1).divemode;
-			ccpoint = divepoints.at(row -1).setpoint;
+			ccpoint = divepoints.at(row - 1).setpoint;
 		}
 	}
 	if (divemode == UNDEF_COMP_TYPE)
@@ -1012,12 +1033,10 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	// Note: "time" is moved in the positive direction to avoid
 	// time becoming zero or, worse, negative.
 	while (std::any_of(divepoints.begin(), divepoints.begin() + row,
-			[t = newData.time] (const divedatapoint &data)
-			{ return data.time == t; }))
+			   [t = newData.time](const divedatapoint &data) { return data.time == t; }))
 		newData.time += 10;
 	while (std::any_of(divepoints.begin() + row + 1, divepoints.end(),
-			[t = newData.time] (const divedatapoint &data)
-			{ return data.time == t; }))
+			   [t = newData.time](const divedatapoint &data) { return data.time == t; }))
 		newData.time += 10;
 
 	// Is it ok to change data first and then move the rows?
@@ -1087,13 +1106,13 @@ void DivePlannerPointsModel::removeControlPressed(const QModelIndex &index)
 
 void DivePlannerPointsModel::remove(const QModelIndex &index)
 {
-/* TODO: this seems so wrong.
- * We can't do this here if we plan to use QML on mobile
- * as mobile has no ControlModifier.
- * The correct thing to do is to create a new method
- * remove method that will pass the first and last index of the
- * removed rows, and remove those in a go.
- */
+	/* TODO: this seems so wrong.
+	 * We can't do this here if we plan to use QML on mobile
+	 * as mobile has no ControlModifier.
+	 * The correct thing to do is to create a new method
+	 * remove method that will pass the first and last index of the
+	 * removed rows, and remove those in a go.
+	 */
 	if (QApplication::keyboardModifiers() & Qt::ControlModifier)
 		return removeControlPressed(index);
 
@@ -1182,7 +1201,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	// Get the user-input and calculate the dive info
 	diveplan.dp.clear();
 
-	for (auto [i, cyl]: enumerated_range(d->cylinders)) {
+	for (auto [i, cyl] : enumerated_range(d->cylinders)) {
 		if (cyl.depth.mm && cyl.cylinder_use == OC_GAS)
 			plan_add_segment(diveplan, 0, cyl.depth, i, 0, false, OC);
 	}
@@ -1242,8 +1261,7 @@ void DivePlannerPointsModel::updateDiveProfile()
 
 	if (doComputeVariations) {
 #ifdef VARIATIONS_IN_BACKGROUND
-		(void)QtConcurrent::run([this, plan = std::move(plan_copy), deco = plan_deco_state] ()
-				       { this->computeVariationsAsync(std::move(plan), deco); });
+		(void)QtConcurrent::run([this, plan = std::move(plan_copy), deco = plan_deco_state]() { this->computeVariationsAsync(std::move(plan), deco); });
 #else
 		computeVariationsAsync(std::move(plan_copy), plan_deco_state);
 #endif
@@ -1283,7 +1301,7 @@ int DivePlannerPointsModel::analyzeVariations(const std::vector<decostop> &min, 
 
 #ifdef DEBUG_STOPVAR
 	printf("Total + %d:%02d/%s +- %d s/%s\n\n", FRACTION_TUPLE((leftsum + rightsum) / 2, 60), unit,
-							   (rightsum - leftsum) / 2, unit);
+	       (rightsum - leftsum) / 2, unit);
 #else
 	Q_UNUSED(unit)
 #endif
@@ -1371,8 +1389,8 @@ QString DivePlannerPointsModel::computeVariations(const struct diveplan &origina
 	save.restore(&ds, false);
 
 	std::string buf = format_string_std(", %s: %c %d:%02d /%s %c %d:%02d /min", qPrintable(tr("Stop times")),
-		SIGNED_FRAC_TRIPLET(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
-		SIGNED_FRAC_TRIPLET(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
+					    SIGNED_FRAC_TRIPLET(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
+					    SIGNED_FRAC_TRIPLET(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
 
 	return QString::fromStdString(buf);
 }
@@ -1542,7 +1560,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 	reset_cylinders(d, true);
 
 	// Add available OC-gases as "time=0" waypoints for the planner engine
-	pressure_t deco_po2_limit = { .mbar = qPrefDivePlanner::decopo2() };
+	pressure_t deco_po2_limit = {.mbar = qPrefDivePlanner::decopo2()};
 	for (size_t i = 0; i < d->cylinders.size(); ++i) {
 		const cylinder_t &cyl = d->cylinders[i];
 		if (cyl.cylinder_use == OC_GAS) {
@@ -1670,10 +1688,10 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 
 	QVariantList results;
 	// Calculate for a standard range of pO₂ values
-	double po2_values[] = { 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0 };
+	double po2_values[] = {1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0};
 
 	for (double po2 : po2_values) {
-		pressure_t po2_limit = { .mbar = static_cast<int>(po2 * 1000.0) };
+		pressure_t po2_limit = {.mbar = static_cast<int>(po2 * 1000.0)};
 
 		// Calculate MOD
 		depth_t mod = temp_dive.gas_mod(temp_cyl.gasmix, po2_limit, 1_m);
@@ -1683,12 +1701,13 @@ QVariantList DivePlannerPointsModel::calculateGasInfo(const QString &cylinderTyp
 
 		double p_narcotic = p_amb_at_mod * fNarcotic_permille / 1000.0;
 
-		depth_t narcotic_depth = { .mm = 0 };
+		depth_t narcotic_depth = {.mm = 0};
 		if (fNarcotic_permille > 0) {
 			double divisor = o2_is_narcotic ? 1.0 : 0.79;
 			double ead_atm = p_narcotic / divisor;
 			narcotic_depth.mm = static_cast<int>((ead_atm - 1.0) * 10000.0);
-			if (narcotic_depth.mm < 0) narcotic_depth.mm = 0;
+			if (narcotic_depth.mm < 0)
+				narcotic_depth.mm = 0;
 		}
 
 		QVariantMap row;
