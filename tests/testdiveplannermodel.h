@@ -4,7 +4,8 @@
 
 #include "testbase.h"
 
-class TestDivePlannerModel : public TestBase {
+class TestDivePlannerModel : public TestBase
+{
 	Q_OBJECT
 private slots:
 	void initTestCase();
@@ -16,6 +17,9 @@ private slots:
 	void testSurfaceAirCylinderDataAccess();
 	// AI-generated (Claude)
 	void testRecreationalPlanSaveAllowed();
+	void testSaveLoadCycleStable_data();
+	void testSaveLoadCycleStable();
+	void testDropStoneLoadKeepsUserPoint();
 };
 
 #endif // TESTDIVEPLANNERMODEL_H
