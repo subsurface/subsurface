@@ -1560,13 +1560,16 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 
 	d->dcs[dcNr].divemode = static_cast<enum divemode_t>(diveMode);
 
-	// Initialise surface pressure before reset_cylinders() and the OC-gas loop:
-	// both call gas_mod() → mbar_to_depth(), which reads dcs[dcNr].surface_pressure
-	// for planner dives.  Without this, the pressure is zero and all MOD and deco
-	// switch depths fall back to 1 atm, even for altitude plans.
+	// Initialise surface pressure and salinity before reset_cylinders() and the
+	// OC-gas loop: both call gas_mod() → mbar_to_depth() → rel_mbar_to_depth(),
+	// which reads dcs[dcNr].surface_pressure and dcs[dcNr].salinity for planner
+	// dives.  Without this, pressure is zero (1 atm fallback) and salinity is
+	// zero (seawater fallback), even for altitude or freshwater plans.
 	if (diveplan.surface_pressure.mbar == 0)
 		diveplan.surface_pressure = 1_atm;
 	d->dcs[dcNr].surface_pressure = diveplan.surface_pressure;
+	diveplan.salinity = waterType;
+	d->dcs[dcNr].salinity = waterType;
 
 	// Populate cylinders from QML data
 	for (const QVariant &cylData : cylindersData) {
@@ -1602,7 +1605,6 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 			diveplan.dp.push_back(point);
 		}
 	}
-	diveplan.salinity = waterType;
 
 	// Populate the actual dive plan segments from QML data
 	for (const QVariant &segData : segmentsData) {
