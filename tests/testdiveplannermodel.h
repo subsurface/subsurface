@@ -34,6 +34,8 @@ private slots:
 	void testMobilePlannerDescentMatchesDesktop();
 	// AI-generated (Claude)
 	void testMobilePlannerUsesPreferenceVpmbConservatism();
+	// AI-generated (Claude)
+	void testMobilePlannerDecoGasSwitchDepthMatchesDesktop();
 };
 
 #endif // TESTDIVEPLANNERMODEL_H
