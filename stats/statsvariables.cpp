@@ -2011,7 +2011,7 @@ static double ndl_deco_toFloat(const dive *d)
 	struct DcState {
 		bool has_any_deco_data = false;
 		bool in_deco_ever = false;
-		int  min_ndl_sec = std::numeric_limits<int>::max(); // minimum NDL > 0
+		int  min_ndl_sec = std::numeric_limits<int>::max(); // minimum NDL (0 is valid)
 		int  total_deco_sec = 0;
 	};
 
@@ -2031,8 +2031,8 @@ static double ndl_deco_toFloat(const dive *d)
 			if (s.ndl.seconds >= 0 || s.in_deco)
 				st.has_any_deco_data = true;
 
-			// Track minimum NDL > 0
-			if (s.ndl.seconds > 0 && s.ndl.seconds < st.min_ndl_sec)
+			// Track minimum NDL (including zero, which is a valid "at boundary" reading)
+			if (s.ndl.seconds >= 0 && s.ndl.seconds < st.min_ndl_sec)
 				st.min_ndl_sec = s.ndl.seconds;
 
 			// Accumulate deco time: the interval [prev_time, s.time.seconds] is
@@ -2078,20 +2078,31 @@ static double ndl_deco_toFloat(const dive *d)
 	if (best->in_deco_ever)
 		return best->total_deco_sec / 60.0;
 
-	if (best->min_ndl_sec > 0 && best->min_ndl_sec != std::numeric_limits<int>::max())
+	// min_ndl_sec == 0 maps to the deco boundary (0.0); INT_MAX means no valid NDL was recorded.
+	if (best->min_ndl_sec != std::numeric_limits<int>::max())
 		return -(best->min_ndl_sec / 60.0);
 
 	return invalid_value<double>();
 }
 
 // Bin boundaries in minutes (signed). Each value is the lower bound of a bin.
-// Finer steps near the deco boundary (±2 min) to capture short NDL/deco
-// events; preferred bins are set in preferBin() so axis thinning drops the
-// finer labels first when space is tight.
+// Finer steps near the deco boundary (±2 min) capture short NDL/deco events.
+//
+// The preferred bins (marked in preferBin()) are at array indices 0, 4, 8, 12,
+// and 16, so HistogramAxis derives preferred_step = 4. The thinning algorithm
+// then always selects a step that is a multiple of 4, which lands on preferred
+// boundaries only (-120, -20, 0, +20, +120). Non-preferred bins have an empty
+// formatLowerBound() and appear as unlabelled grid ticks when space is limited.
 static const double deco_margin_boundaries[] = {
-	-120.0, -90.0, -75.0, -60.0, -45.0, -30.0, -20.0, -15.0, -10.0, -5.0, -2.0,
-	   0.0,
-	   2.0,   5.0,  10.0,  15.0,  20.0,  30.0,  45.0,  60.0,  75.0,  90.0, 120.0
+	-120.0,                              // idx  0  preferred
+	 -90.0,  -60.0,  -30.0,             // idx  1–3
+	 -20.0,                              // idx  4  preferred
+	 -10.0,   -5.0,   -2.0,             // idx  5–7
+	   0.0,                              // idx  8  preferred (deco boundary)
+	   2.0,    5.0,   10.0,             // idx  9–11
+	  20.0,                              // idx 12  preferred
+	  30.0,   60.0,   90.0,             // idx 13–15
+	 120.0,                              // idx 16  preferred
 };
 static constexpr int deco_margin_num_bins = (int)std::size(deco_margin_boundaries);
 
@@ -2178,7 +2189,13 @@ struct DecoMarginBinner : public StatsBinner {
 	QString format(const StatsBin &bin) const override {
 		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
 		double lo = deco_margin_boundaries[idx];
+		bool is_first = (idx == 0);
 		bool is_last = (idx + 1 >= deco_margin_num_bins);
+		// First bin is open-ended on the negative side (NDL > lo)
+		if (is_first) {
+			int x = (int)std::abs(lo);
+			return StatsTranslations::tr("NDL %1+").arg(x);
+		}
 		if (is_last) {
 			return deco_margin_format_lower(idx) + "+";
 		}
@@ -2193,14 +2210,17 @@ struct DecoMarginBinner : public StatsBinner {
 	}
 
 	QString formatLowerBound(const StatsBin &bin) const override {
-		// Only label the key reference bins on the axis; fine-grained bins
-		// near zero (±2, ±5, ±10, ±15, ±45, ±75) return an empty string so
-		// that the axis thinning logic never renders a crowded label even if
-		// it selects one of those bins via its stride.  format() still
-		// returns the full range description for bar tooltips.
+		// Only the preferred bins (idx % 4 == 0) carry an axis label.
+		// Non-preferred bins return an empty string so they appear as
+		// unlabelled ticks; format() still returns the full range for tooltips.
 		if (!preferBin(bin))
 			return QString();
 		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
+		// The first bin is open-ended on the negative side; mark it with "+".
+		if (idx == 0) {
+			int x = (int)std::abs(deco_margin_boundaries[0]);
+			return StatsTranslations::tr("NDL %1+").arg(x);
+		}
 		return deco_margin_format_lower(idx);
 	}
 
@@ -2225,14 +2245,12 @@ struct DecoMarginBinner : public StatsBinner {
 	}
 
 	bool preferBin(const StatsBin &bin) const override {
-		// Prefer widely-spaced boundaries so axis thinning drops ±2/±5/±10/
-		// ±15/±45/±75 first, while keeping ±20, ±30, ±60, ±90, ±120 and
-		// the zero crossing labelled when space is tight.
+		// Preferred bins are at array indices 0, 4, 8, 12, 16 (equidistant,
+		// step 4). HistogramAxis derives preferred_step = 4 from the first two
+		// preferred bins, so every thinned step is a multiple of 4 and always
+		// lands on a labelled boundary.
 		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
-		double v = deco_margin_boundaries[idx];
-		return v == -120.0 || v == -90.0 || v == -60.0 || v == -30.0 || v == -20.0 ||
-		       v ==    0.0 ||
-		       v ==   20.0 || v ==  30.0  || v ==  60.0 || v ==  90.0 || v == 120.0;
+		return idx % 4 == 0;
 	}
 
 	std::vector<StatsBinPtr> bins_between(const StatsBin &bin1, const StatsBin &bin2) const override {
