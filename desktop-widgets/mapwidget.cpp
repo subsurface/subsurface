@@ -75,8 +75,11 @@ void MapWidget::centerOnIndex(const QModelIndex& idx)
 			m_centerTimer->start();
 		else
 			m_pendingCenter = true;
-	} else
+	} else {
+		m_centerTimer->stop();
+		m_pendingCenter = false;
 		centerOnDiveSite(ds);
+	}
 }
 
 void MapWidget::reload()

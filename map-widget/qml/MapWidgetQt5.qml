@@ -44,9 +44,17 @@ Item {
 		property var clickCoord: QtPositioning.coordinate(0, 0)
 		property bool isReady: false
 		property bool updatingZoom: false
-		property bool animating: false
+		// Derived: true while either animation is running, so onZoomLevelChanged
+		// never re-enables the radius calculation mid-animation even when the two
+		// animations briefly overlap (e.g. a double-click during a zoom-fit).
+		readonly property bool animating: mapAnimationZoomIn.running || mapAnimationClick.running
 
 		Component.onCompleted: isReady = true
+		onAnimatingChanged: {
+			// Once all animations have finished, recalculate once.
+			if (!animating && isReady)
+				mapHelper.calculateSmallCircleRadius(map.center)
+		}
 		onZoomLevelChanged: {
 			if (!updatingZoom && !animating && isReady)
 				mapHelper.calculateSmallCircleRadius(map.center)
@@ -107,11 +115,6 @@ Item {
 
 		SequentialAnimation {
 			id: mapAnimationZoomIn
-			onRunningChanged: {
-				map.animating = running
-				if (!running && map.isReady)
-					mapHelper.calculateSmallCircleRadius(map.center)
-			}
 			NumberAnimation {
 				target: map; property: "zoomLevel"; to: map.newZoomOut; duration: map.zoomOutDuration
 			}
@@ -125,11 +128,6 @@ Item {
 
 		ParallelAnimation {
 			id: mapAnimationClick
-			onRunningChanged: {
-				map.animating = running
-				if (!running && map.isReady)
-					mapHelper.calculateSmallCircleRadius(map.center)
-			}
 			CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 500	}
 			NumberAnimation { target: map; property: "zoomLevel"; to: map.newZoom; duration: 500 }
 		}
