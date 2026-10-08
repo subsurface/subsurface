@@ -2089,10 +2089,11 @@ static double ndl_deco_toFloat(const dive *d)
 // Finer steps near the deco boundary (±2 min) capture short NDL/deco events.
 //
 // The preferred bins (marked in preferBin()) are at array indices 0, 4, 8, 12,
-// and 16, so HistogramAxis derives preferred_step = 4. The thinning algorithm
-// then always selects a step that is a multiple of 4, which lands on preferred
-// boundaries only (-120, -20, 0, +20, +120). Non-preferred bins have an empty
-// formatLowerBound() and appear as unlabelled grid ticks when space is limited.
+// and 16, so HistogramAxis derives preferred_step = 4 and steers label thinning
+// towards the widely spaced boundaries (-120, -20, 0, +20, +120) when space is
+// limited. Every bin still carries a lower-bound label, so the endpoints of a
+// narrow displayed range remain labelled even when no preferred boundary falls
+// inside that range.
 static const double deco_margin_boundaries[] = {
 	-120.0,                              // idx  0  preferred
 	 -90.0,  -60.0,  -30.0,             // idx  1–3
@@ -2210,11 +2211,12 @@ struct DecoMarginBinner : public StatsBinner {
 	}
 
 	QString formatLowerBound(const StatsBin &bin) const override {
-		// Only the preferred bins (idx % 4 == 0) carry an axis label.
-		// Non-preferred bins return an empty string so they appear as
-		// unlabelled ticks; format() still returns the full range for tooltips.
-		if (!preferBin(bin))
-			return QString();
+		// Every bin carries a real lower-bound label. The axis thinning
+		// (HistogramAxis::updateLabels()) reduces label density when space is
+		// limited; the preferBin() hint steers it towards the widely spaced
+		// boundaries. Returning a label for all bins guarantees that the
+		// endpoints of the displayed range are always labelled, even when the
+		// occupied range does not include a preferred boundary.
 		int idx = dynamic_cast<const DecoMarginBin &>(bin).idx;
 		// The first bin is open-ended on the negative side; mark it with "+".
 		if (idx == 0) {
