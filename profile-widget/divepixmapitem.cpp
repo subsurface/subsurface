@@ -31,7 +31,8 @@ DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 	canvas(new QGraphicsRectItem(this)),
 	shadow(new QGraphicsRectItem(this)),
 	button(new CloseButtonItem(this)),
-	baseZValue(0.0)
+	baseZValue(0.0),
+	allowRemove(true)
 {
 	setFlag(ItemIgnoresTransformations);
 	setAcceptHoverEvents(true);
@@ -83,9 +84,11 @@ void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 	Animations::scaleTo(this, qPrefDisplay::animation_speed(), 1.0);
 	setZValue(baseZValue + 5.0);
 
-	button->setOpacity(0);
-	button->show();
-	Animations::show(button, qPrefDisplay::animation_speed());
+	if (allowRemove) {
+		button->setOpacity(0);
+		button->show();
+		Animations::show(button, qPrefDisplay::animation_speed());
+	}
 }
 
 void DivePictureItem::setFileUrl(const QString &s)
@@ -93,11 +96,19 @@ void DivePictureItem::setFileUrl(const QString &s)
 	fileUrl = s;
 }
 
+void DivePictureItem::setAllowRemove(bool on)
+{
+	allowRemove = on;
+	if (!on)
+		button->hide();
+}
+
 void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 {
 	Animations::scaleTo(this, qPrefDisplay::animation_speed(), 0.2);
 	setZValue(baseZValue);
-	Animations::hide(button, qPrefDisplay::animation_speed());
+	if (allowRemove)
+		Animations::hide(button, qPrefDisplay::animation_speed());
 }
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
