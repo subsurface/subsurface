@@ -204,6 +204,8 @@ void dive_site::merge(dive_site &b)
 
 	if (taxonomy.empty())
 		taxonomy = std::move(b.taxonomy);
+	if (!alpha_flag)
+		alpha_flag = b.alpha_flag;
 }
 
 dive_site *dive_site_table::find_or_create(const std::string &name)

@@ -44,6 +44,7 @@ private slots:
 private:
 	void keyPressEvent(QKeyEvent *e) override;
 	void clearLabels();
+	void updateMarkerButtons();
 	void coordinatesSetWarning(bool warn);
 	GPSLocationInformationModel filter_model;
 	dive_site *diveSite;
