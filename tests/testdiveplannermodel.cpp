@@ -637,7 +637,6 @@ PlanFingerprint runDesktopPlan(DivePlannerPointsModel *model, dive &plannedDive,
 	model->setPlanMode(DivePlannerPointsModel::PLAN);
 	diveplan &plan = model->getDiveplan();
 	plan.salinity = salinity;
-	plan.surface_pressure = { .mbar = surfacePressureMbar };
 	plan.gflow = prefs.gflow;
 	plan.gfhigh = prefs.gfhigh;
 	plan.bottomsac = prefs.bottomsac;
@@ -647,9 +646,11 @@ PlanFingerprint runDesktopPlan(DivePlannerPointsModel *model, dive &plannedDive,
 	model->setVpmbConservatism(prefs.vpmb_conservatism);
 
 	model->createSimpleDive(&plannedDive);
-	// The desktop planner carries the surface pressure on the dive record; the
-	// UI's atmospheric-pressure widget sets it before planning.  Replicate that.
-	plannedDive.surface_pressure = { .mbar = surfacePressureMbar };
+	// The desktop planner starts at the pressure already displayed by its
+	// atmospheric-pressure widget, then the user changes it to the selected
+	// altitude. This must update both the diveplan and temporary dive.
+	model->initialiseDesktopPlanSurfacePressure(1_atm);
+	model->setSurfacePressure({ .mbar = surfacePressureMbar });
 
 	// Replace the default rows with a single bottom segment matching the mobile
 	// input: depth and cumulative runtime.
