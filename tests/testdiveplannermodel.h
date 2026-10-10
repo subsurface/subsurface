@@ -31,6 +31,14 @@ private slots:
 	void testMobilePlannerSurfacePressureRetainedWithSave();
 	// AI-generated (Claude)
 	void testMobilePlannerAboveSeaLevelPressure();
+	// AI-generated (Claude)
+	void testMobilePlannerAltitudeMatchesDesktop();
+	// AI-generated (Claude)
+	void testMobilePlannerDescentMatchesDesktop();
+	// AI-generated (Claude)
+	void testMobilePlannerUsesPreferenceVpmbConservatism();
+	// AI-generated (Claude)
+	void testMobilePlannerDecoGasSwitchDepthMatchesDesktop();
 };
 
 #endif // TESTDIVEPLANNERMODEL_H
