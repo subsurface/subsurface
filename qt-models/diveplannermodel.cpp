@@ -690,17 +690,16 @@ void DivePlannerPointsModel::setVpmbConservatism(int level)
 void DivePlannerPointsModel::setSurfacePressure(pressure_t pressure)
 {
 	diveplan.surface_pressure = pressure;
-	emitDataChanged();
-}
-
-void DivePlannerPointsModel::initialiseDesktopPlanSurfacePressure(pressure_t pressure)
-{
-	diveplan.surface_pressure = pressure;
 	if (d) {
 		d->surface_pressure = pressure;
 		d->dcs[dcNr].surface_pressure = pressure;
 	}
 	emitDataChanged();
+}
+
+void DivePlannerPointsModel::initialiseDesktopPlanSurfacePressure(pressure_t pressure)
+{
+	setSurfacePressure(pressure);
 }
 
 void DivePlannerPointsModel::setSalinity(int salinity)

@@ -380,6 +380,13 @@ void TestDivePlannerModel::testDesktopPlannerSurfacePressureInitialisation()
 	QCOMPARE(plannedDive.surface_pressure.mbar, (1_atm).mbar);
 	QCOMPARE(plannedDive.dcs[0].surface_pressure.mbar, (1_atm).mbar);
 
+	// Subsequent desktop pressure edits must also reach the temporary dive,
+	// because replanning uses it before copying the model's pressure again.
+	model->setSurfacePressure({ .mbar = 800 });
+	QCOMPARE(model->getSurfacePressure().mbar, 800);
+	QCOMPARE(plannedDive.surface_pressure.mbar, 800);
+	QCOMPARE(plannedDive.dcs[0].surface_pressure.mbar, 800);
+
 	model->resetPlanState();
 	prefs = default_prefs;
 }
