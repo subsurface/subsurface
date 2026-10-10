@@ -24,6 +24,7 @@ public:
 	void diveModeChanged(int mode);
 	void setDiveMode(int mode);
 	void disableDecoElements(int mode, divemode_t divemode);
+	void initialiseSurfacePressure();
 public
 slots:
 	void setupStartTime(QDateTime startTime);

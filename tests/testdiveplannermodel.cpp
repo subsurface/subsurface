@@ -359,6 +359,31 @@ void TestDivePlannerModel::testRecreationalPlanSaveAllowed()
 	prefs = default_prefs;
 }
 
+void TestDivePlannerModel::testDesktopPlannerSurfacePressureInitialisation()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+
+	// The mobile and desktop planners share this model. Simulate a previous
+	// mobile altitude plan before starting a desktop plan whose pressure control
+	// still displays the sea-level default.
+	model->setSurfacePressure({ .mbar = 800 });
+	model->createSimpleDive(&plannedDive);
+	model->initialiseDesktopPlanSurfacePressure(1_atm);
+
+	QCOMPARE(model->getSurfacePressure().mbar, (1_atm).mbar);
+	QCOMPARE(plannedDive.surface_pressure.mbar, (1_atm).mbar);
+	QCOMPARE(plannedDive.dcs[0].surface_pressure.mbar, (1_atm).mbar);
+
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+
 // AI-generated (Claude)
 // Verify that calculatePlan() honours a pre-set non-sea-level surface pressure
 // and does not replace it with 1 atm (the old behaviour for a fresh dive object).

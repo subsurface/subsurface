@@ -83,6 +83,7 @@ slots:
 	void setGFLow(const int gflow);
 	void setVpmbConservatism(int level);
 	void setSurfacePressure(pressure_t pressure);
+	void initialiseDesktopPlanSurfacePressure(pressure_t pressure);
 	void setSalinity(int salinity);
 	void setBottomSac(double sac);
 	void setDecoSac(double sac);
