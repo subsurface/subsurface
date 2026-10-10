@@ -160,6 +160,11 @@ void DivePlannerWidget::setSurfacePressure(int surface_pressure)
 	ui.ATMPressure->setValue(surface_pressure);
 }
 
+void DivePlannerWidget::initialiseSurfacePressure()
+{
+	DivePlannerPointsModel::instance()->initialiseDesktopPlanSurfacePressure({ .mbar = ui.ATMPressure->value() });
+}
+
 void DivePlannerWidget::setSalinity(int salinity)
 {
 	bool mapped = false;
@@ -582,6 +587,10 @@ void PlannerWidgets::preparePlanDive(const dive *currentDive, int currentDcNr)
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	// create a simple starting dive, using the first gas from the just copied cylinders
 	DivePlannerPointsModel::instance()->createSimpleDive(planned_dive.get());
+	// The atmospheric-pressure widget retains its displayed value between plan
+	// sessions, while the shared planner model can have been used by mobile.
+	// Initialise the new desktop plan from that authoritative desktop value.
+	plannerWidget.initialiseSurfacePressure();
 	dcNr = 0;
 
 	// plan the dive in the same mode as the currently selected one

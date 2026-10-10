@@ -55,6 +55,12 @@ public:
 	int ascratelast6mDisplay() const;
 	int descrateDisplay() const;
 	pressure_t getSurfacePressure() const;
+	// Mobile-planner helpers: pressure with sea-level fallback, clamped setter,
+	// and altitude expressed in the active display unit.
+	int getMobilePlannerSurfacePressure() const;
+	void setMobilePlannerSurfacePressure(int mbar);
+	int getMobilePlannerAltitudeDisplay() const;
+	void setMobilePlannerAltitudeDisplay(int displayAlt);
 	int gfLow() const;
 	int gfHigh() const;
 
@@ -77,6 +83,7 @@ slots:
 	void setGFLow(const int gflow);
 	void setVpmbConservatism(int level);
 	void setSurfacePressure(pressure_t pressure);
+	void initialiseDesktopPlanSurfacePressure(pressure_t pressure);
 	void setSalinity(int salinity);
 	void setBottomSac(double sac);
 	void setDecoSac(double sac);

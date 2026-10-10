@@ -690,7 +690,16 @@ void DivePlannerPointsModel::setVpmbConservatism(int level)
 void DivePlannerPointsModel::setSurfacePressure(pressure_t pressure)
 {
 	diveplan.surface_pressure = pressure;
+	if (d) {
+		d->surface_pressure = pressure;
+		d->dcs[dcNr].surface_pressure = pressure;
+	}
 	emitDataChanged();
+}
+
+void DivePlannerPointsModel::initialiseDesktopPlanSurfacePressure(pressure_t pressure)
+{
+	setSurfacePressure(pressure);
 }
 
 void DivePlannerPointsModel::setSalinity(int salinity)
@@ -702,6 +711,42 @@ void DivePlannerPointsModel::setSalinity(int salinity)
 pressure_t DivePlannerPointsModel::getSurfacePressure() const
 {
 	return diveplan.surface_pressure;
+}
+
+// Mobile planner: return effective surface pressure in mbar, treating 0 as
+// "not yet set" and substituting 1013 mbar (sea level) in that case.
+int DivePlannerPointsModel::getMobilePlannerSurfacePressure() const
+{
+	int mbar = diveplan.surface_pressure.mbar;
+	return mbar > 0 ? mbar : 1013;
+}
+
+// Mobile planner: clamp mbar to 689–1100 (desktop ATMPressure range) before storing.
+void DivePlannerPointsModel::setMobilePlannerSurfacePressure(int mbar)
+{
+	mbar = qBound(689, mbar, 1100);
+	setSurfacePressure({ .mbar = mbar });
+}
+
+// Mobile planner: return the altitude corresponding to the current surface pressure,
+// expressed in the active display unit (m or ft).  Pressures above 1013 mbar give a
+// negative altitude; clamp to 0 so the altitude spinner never shows below sea level.
+int DivePlannerPointsModel::getMobilePlannerAltitudeDisplay() const
+{
+	pressure_t p = { .mbar = getMobilePlannerSurfacePressure() };
+	depth_t alt = pressure_to_altitude(p);
+	if (alt.mm < 0)
+		alt.mm = 0;
+	return (int)get_depth_units(alt, nullptr, nullptr);
+}
+
+// Mobile planner: accept altitude in the active display unit, convert to pressure,
+// and store it.  Consistent with setAscratelast6mDisplay() and friends in this model.
+void DivePlannerPointsModel::setMobilePlannerAltitudeDisplay(int displayAlt)
+{
+	depth_t altMm = units_to_depth((double)displayAlt);
+	pressure_t p = altitude_to_pressure(altMm.mm);
+	setMobilePlannerSurfacePressure(p.mbar);
 }
 
 void DivePlannerPointsModel::setLastStop6m(bool value)
@@ -1524,6 +1569,17 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 
 	d->dcs[dcNr].divemode = static_cast<enum divemode_t>(diveMode);
 
+	// Initialise surface pressure and salinity before reset_cylinders() and the
+	// OC-gas loop: both call gas_mod() → mbar_to_depth() → rel_mbar_to_depth(),
+	// which reads dcs[dcNr].surface_pressure and dcs[dcNr].salinity for planner
+	// dives.  Without this, pressure is zero (1 atm fallback) and salinity is
+	// zero (seawater fallback), even for altitude or freshwater plans.
+	if (diveplan.surface_pressure.mbar == 0)
+		diveplan.surface_pressure = 1_atm;
+	d->dcs[dcNr].surface_pressure = diveplan.surface_pressure;
+	diveplan.salinity = waterType;
+	d->dcs[dcNr].salinity = waterType;
+
 	// Populate cylinders from QML data
 	for (const QVariant &cylData : cylindersData) {
 		QVariantMap map = cylData.toMap();
@@ -1558,7 +1614,6 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 			diveplan.dp.push_back(point);
 		}
 	}
-	diveplan.salinity = waterType;
 
 	// Populate the actual dive plan segments from QML data
 	for (const QVariant &segData : segmentsData) {
@@ -1569,15 +1624,19 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		plan_add_segment(diveplan, map["duration"].toInt() * 60, units_to_depth(map["depth"].toInt()), cylinderId, map["setpoint"].toInt(), true, divemode);
 	}
 
-	struct diveplan plan_copy = diveplan;
-
 	// Load ALL current settings from the correct preference classes
 	diveplan.gflow = gfLow();
 	diveplan.gfhigh = gfHigh();
 	diveplan.bottomsac = qPrefDivePlanner::bottomsac();
 	diveplan.decosac = qPrefDivePlanner::decosac();
-	diveplan.surface_pressure = d->get_surface_pressure();
+	// Propagate to the dive record so the saved dive carries the correct pressure.
+	d->surface_pressure = diveplan.surface_pressure;
 	diveplan.vpmb_conservatism = qPrefTechnicalDetails::vpmb_conservatism();
+
+	// Snapshot the fully-configured plan for computeVariations().  Taken here,
+	// after surface_pressure and all other settings are finalised, so that
+	// variation plans run with the same pressure as the primary plan.
+	struct diveplan plan_copy = diveplan;
 
 	// Run the planner engine
 	// AI-generated (Claude)
