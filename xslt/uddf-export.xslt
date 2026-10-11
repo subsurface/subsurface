@@ -387,6 +387,22 @@
           </xsl:choose>
         </xsl:variable>
 
+        <!-- AI-generated (Claude) -->
+        <xsl:variable name="sensorbegin">
+          <xsl:call-template name="tankSensorPressure">
+            <xsl:with-param name="dc" select="../divecomputer[1]"/>
+            <xsl:with-param name="cylinder" select="position() - 1"/>
+          </xsl:call-template>
+        </xsl:variable>
+
+        <xsl:variable name="sensorend">
+          <xsl:call-template name="tankSensorPressure">
+            <xsl:with-param name="dc" select="../divecomputer[1]"/>
+            <xsl:with-param name="cylinder" select="position() - 1"/>
+            <xsl:with-param name="last" select="true()"/>
+          </xsl:call-template>
+        </xsl:variable>
+
         <tankdata>
           <link ref="mix({$o2}/{$he})"/>
 
@@ -402,9 +418,9 @@
                 <xsl:value-of select="substring-before(@start, ' ') * 100000"/>
               </tankpressurebegin>
             </xsl:when>
-            <xsl:when test="../divecomputer[1]/sample[@pressure]/@pressure[1]">
+            <xsl:when test="$sensorbegin != ''">
               <tankpressurebegin>
-                <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure]/@pressure[1], ' ') * 100000"/>
+                <xsl:value-of select="substring-before($sensorbegin, ' ') * 100000"/>
               </tankpressurebegin>
             </xsl:when>
           </xsl:choose>
@@ -415,9 +431,9 @@
                 <xsl:value-of select="substring-before(@end, ' ') * 100000"/>
               </tankpressureend>
             </xsl:when>
-            <xsl:when test="../divecomputer[1]/sample[@pressure][last()]/@pressure[1]">
+            <xsl:when test="$sensorend != ''">
               <tankpressureend>
-                <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure[1], ' ') * 100000"/>
+                <xsl:value-of select="substring-before($sensorend, ' ') * 100000"/>
               </tankpressureend>
             </xsl:when>
           </xsl:choose>
@@ -653,9 +669,18 @@
                   <switchmix ref="mix({$o2}/{$he})"/>
                 </xsl:for-each>
 
-                <xsl:if test="./@pressure != ''">
+                <!-- AI-generated (Claude) -->
+                <!-- UDDF import reads a single tankpressure, so export the first cylinder's -->
+                <xsl:variable name="sensor">
+                  <xsl:call-template name="tankSensorId">
+                    <xsl:with-param name="dc" select=".."/>
+                    <xsl:with-param name="cylinder" select="0"/>
+                  </xsl:call-template>
+                </xsl:variable>
+                <xsl:variable name="pressure" select="@*[$sensor != '' and name() = concat('pressure', $sensor)] | @pressure[$sensor = 0]"/>
+                <xsl:if test="$pressure != ''">
                   <tankpressure>
-                    <xsl:value-of select="substring-before(./@pressure, ' ') * 100000"/>
+                    <xsl:value-of select="substring-before($pressure, ' ') * 100000"/>
                   </tankpressure>
                 </xsl:if>
 

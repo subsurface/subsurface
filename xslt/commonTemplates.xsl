@@ -138,6 +138,49 @@
     </xsl:choose>
   </xsl:template>
 
+  <!-- AI-generated (Claude) -->
+  <!-- Id of the pressure sensor feeding cylinder $cylinder (0-based) of
+       divecomputer $dc, or empty if none. Without tanksensormapping
+       elements sensor N feeds cylinder N, a sensorid of -1 means none. -->
+  <xsl:template name="tankSensorId">
+    <xsl:param name="dc"/>
+    <xsl:param name="cylinder"/>
+    <xsl:choose>
+      <xsl:when test="$dc/tanksensormapping">
+        <xsl:value-of select="$dc/tanksensormapping[@cylinderindex = $cylinder and @sensorid &gt;= 0][1]/@sensorid"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$cylinder"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- First (or, with $last, final) sample pressure recorded for cylinder
+       $cylinder (0-based) of divecomputer $dc, e.g. '200.0 bar'. Samples
+       store it as pressureN, N being the sensor id; old logs use pressure. -->
+  <xsl:template name="tankSensorPressure">
+    <xsl:param name="dc"/>
+    <xsl:param name="cylinder"/>
+    <xsl:param name="last" select="false()"/>
+    <xsl:variable name="sensor">
+      <xsl:call-template name="tankSensorId">
+        <xsl:with-param name="dc" select="$dc"/>
+        <xsl:with-param name="cylinder" select="$cylinder"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:if test="$sensor != ''">
+      <xsl:variable name="pressures" select="$dc/sample/@*[name() = concat('pressure', $sensor)] | $dc/sample/@pressure[$sensor = 0]"/>
+      <xsl:choose>
+        <xsl:when test="$last">
+          <xsl:value-of select="$pressures[last()]"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$pressures[1]"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
+
   <!-- Trying to see if we have temperature readings -->
   <xsl:template name="temperatureSamples">
     <xsl:param name="units"/>

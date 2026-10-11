@@ -605,6 +605,27 @@ void TestParse::exportUDDFEvents()
 	QCOMPARE(actual.readAll(), expected.readAll());
 }
 
+// AI-generated (Claude): Tank pressures from sensor samples (pressureN) and tank sensor mappings.
+void TestParse::exportUDDFTankSensors()
+{
+	xmlDoc *input = xmlReadFile(SUBSURFACE_TEST_DATA "/dives/test-uddf-export-sensors.xml", NULL, XML_PARSE_HUGE);
+	QVERIFY(input);
+	xsltStylesheetPtr stylesheet = get_stylesheet("uddf-export.xslt");
+	QVERIFY(stylesheet);
+	const char *params[] = { "units", "'1'", NULL };
+	xmlDoc *output = xsltApplyStylesheet(stylesheet, input, params);
+	QVERIFY(output);
+	QVERIFY(xsltSaveResultToFilename("testuddfsensors.uddf", output, stylesheet, 0) > 0);
+	xmlFreeDoc(output);
+	xsltFreeStylesheet(stylesheet);
+	xmlFreeDoc(input);
+	QFile expected(SUBSURFACE_TEST_DATA "/dives/test-uddf-export-sensors.uddf");
+	QVERIFY(expected.open(QFile::ReadOnly));
+	QFile actual("testuddfsensors.uddf");
+	QVERIFY(actual.open(QFile::ReadOnly));
+	QCOMPARE(actual.readAll(), expected.readAll());
+}
+
 static std::vector<const dive_site *> allDiveSites()
 {
 	std::vector<const dive_site *> sites;

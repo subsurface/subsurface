@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:include href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
   <xsl:param name="units" select="units"/>
   <xsl:output method="text" encoding="utf-8"/>
 
   <xsl:variable name="fs" select="','"/>
-  <xsl:variable name="quote" select="'&quot;'"/>
 
   <xsl:template match="/divelog/dives">
     <xsl:choose>
@@ -64,13 +64,22 @@
       </xsl:if>
 
       <xsl:value-of select="$fs"/>
-      <xsl:if test="@pressure != ''">
+      <!-- AI-generated (Claude) -->
+      <!-- The single pressure column holds the first cylinder's sensor -->
+      <xsl:variable name="sensor">
+        <xsl:call-template name="tankSensorId">
+          <xsl:with-param name="dc" select=".."/>
+          <xsl:with-param name="cylinder" select="0"/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:variable name="pressure" select="@*[$sensor != '' and name() = concat('pressure', $sensor)] | @pressure[$sensor = 0]"/>
+      <xsl:if test="$pressure != ''">
         <xsl:choose>
           <xsl:when test="$units = 1">
-            <xsl:value-of select="concat($quote, format-number((substring-before(@pressure, ' ') * 14.5037738007), '#'), $quote)"/>
+            <xsl:value-of select="concat($quote, format-number((substring-before($pressure, ' ') * 14.5037738007), '#'), $quote)"/>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:value-of select="concat($quote, substring-before(@pressure, ' '), $quote)"/>
+            <xsl:value-of select="concat($quote, substring-before($pressure, ' '), $quote)"/>
           </xsl:otherwise>
         </xsl:choose>
       </xsl:if>
