@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<uddf xmlns="http://www.streit.cc/uddf/3.2/" version="3.2.0">
+  <generator>
+    <name>Subsurface Divelog</name>
+    <manufacturer id="subsurface">
+      <name>Subsurface Team</name>
+      <contact>
+        <homepage>http://subsurface-divelog.org/</homepage>
+      </contact>
+    </manufacturer>
+    <version>3</version>
+  </generator>
+  <mediadata/>
+  <diver>
+    <owner id="owner">
+      <personal>
+        <firstname/>
+        <lastname/>
+      </personal>
+      <equipment/>
+    </owner>
+  </diver>
+  <divesite>
+    <divebase id="allbase">
+      <name>Subsurface Divebase</name>
+    </divebase>
+  </divesite>
+  <gasdefinitions>
+    <mix id="mix(32/0)">
+      <name>EANx 32</name>
+      <o2>0.32</o2>
+      <he>0.00</he>
+    </mix>
+    <mix id="mix(50/0)">
+      <name>EANx 50</name>
+      <o2>0.50</o2>
+      <he>0.00</he>
+    </mix>
+    <mix id="mix(21/0)">
+      <name>air</name>
+      <o2>0.21</o2>
+      <he>0.00</he>
+    </mix>
+  </gasdefinitions>
+  <profiledata>
+    <repetitiongroup id="testid2">
+      <dive id="testid3">
+        <informationbeforedive>
+          <link ref=""/>
+          <divenumber>1</divenumber>
+          <datetime>2026-01-01T10:00:00</datetime>
+          <equipmentused>
+            <leadquantity>0</leadquantity>
+          </equipmentused>
+        </informationbeforedive>
+        <tankdata>
+          <link ref="mix(32/0)"/>
+          <tankvolume>0.012</tankvolume>
+          <tankpressurebegin>20000000</tankpressurebegin>
+          <tankpressureend>10000000</tankpressureend>
+        </tankdata>
+        <tankdata>
+          <link ref="mix(50/0)"/>
+          <tankvolume>0.007</tankvolume>
+          <tankpressurebegin>19000000</tankpressurebegin>
+          <tankpressureend>17000000</tankpressureend>
+        </tankdata>
+        <samples>
+          <waypoint>
+            <depth>0</depth>
+            <divetime>0</divetime>
+            <tankpressure>20000000</tankpressure>
+          </waypoint>
+          <waypoint>
+            <depth>10</depth>
+            <divetime>60</divetime>
+            <tankpressure>15000000</tankpressure>
+          </waypoint>
+          <waypoint>
+            <depth>0</depth>
+            <divetime>120</divetime>
+            <tankpressure>10000000</tankpressure>
+          </waypoint>
+        </samples>
+        <informationafterdive>
+          <greatestdepth>10.0</greatestdepth>
+          <averagedepth>5.0</averagedepth>
+          <diveduration>120</diveduration>
+          <notes>
+            <para/>
+          </notes>
+        </informationafterdive>
+      </dive>
+    </repetitiongroup>
+    <repetitiongroup id="testid2">
+      <dive id="testid3">
+        <informationbeforedive>
+          <link ref=""/>
+          <divenumber>2</divenumber>
+          <datetime>2026-01-02T10:00:00</datetime>
+          <equipmentused>
+            <leadquantity>0</leadquantity>
+          </equipmentused>
+        </informationbeforedive>
+        <tankdata>
+          <link ref="mix(32/0)"/>
+          <tankvolume>0.012</tankvolume>
+          <tankpressurebegin>21000000</tankpressurebegin>
+          <tankpressureend>6000000</tankpressureend>
+        </tankdata>
+        <tankdata>
+          <link ref="mix(50/0)"/>
+          <tankvolume>0.007</tankvolume>
+          <tankpressurebegin>19000000</tankpressurebegin>
+          <tankpressureend>18000000</tankpressureend>
+        </tankdata>
+        <samples>
+          <waypoint>
+            <depth>0</depth>
+            <divetime>0</divetime>
+            <tankpressure>21000000</tankpressure>
+          </waypoint>
+          <waypoint>
+            <depth>0</depth>
+            <divetime>120</divetime>
+            <tankpressure>6000000</tankpressure>
+          </waypoint>
+        </samples>
+        <informationafterdive>
+          <greatestdepth>10.0</greatestdepth>
+          <averagedepth>5.0</averagedepth>
+          <diveduration>120</diveduration>
+          <notes>
+            <para/>
+          </notes>
+        </informationafterdive>
+      </dive>
+    </repetitiongroup>
+    <repetitiongroup id="testid2">
+      <dive id="testid3">
+        <informationbeforedive>
+          <link ref=""/>
+          <divenumber>3</divenumber>
+          <datetime>2026-01-03T10:00:00</datetime>
+          <equipmentused>
+            <leadquantity>0</leadquantity>
+          </equipmentused>
+        </informationbeforedive>
+        <tankdata>
+          <link ref="mix(21/0)"/>
+          <tankvolume>0.012</tankvolume>
+        </tankdata>
+        <samples>
+          <waypoint>
+            <depth>0</depth>
+            <divetime>0</divetime>
+          </waypoint>
+          <waypoint>
+            <depth>0</depth>
+            <divetime>120</divetime>
+          </waypoint>
+        </samples>
+        <informationafterdive>
+          <greatestdepth>10.0</greatestdepth>
+          <averagedepth>5.0</averagedepth>
+          <diveduration>120</diveduration>
+          <notes>
+            <para/>
+          </notes>
+        </informationafterdive>
+      </dive>
+    </repetitiongroup>
+    <repetitiongroup id="testid2">
+      <dive id="testid3">
+        <informationbeforedive>
+          <link ref=""/>
+          <divenumber>4</divenumber>
+          <datetime>2026-01-04T10:00:00</datetime>
+          <equipmentused>
+            <leadquantity>0</leadquantity>
+          </equipmentused>
+        </informationbeforedive>
+        <tankdata>
+          <link ref="mix(21/0)"/>
+          <tankvolume>0.012</tankvolume>
+          <tankpressurebegin>21000000</tankpressurebegin>
+          <tankpressureend>5500000</tankpressureend>
+        </tankdata>
+        <tankdata>
+          <link ref="mix(50/0)"/>
+          <tankvolume>0.007</tankvolume>
+        </tankdata>
+        <samples>
+          <waypoint>
+            <depth>0</depth>
+            <divetime>0</divetime>
+            <tankpressure>20000000</tankpressure>
+          </waypoint>
+          <waypoint>
+            <depth>0</depth>
+            <divetime>120</divetime>
+            <tankpressure>12000000</tankpressure>
+          </waypoint>
+        </samples>
+        <informationafterdive>
+          <greatestdepth>10.0</greatestdepth>
+          <averagedepth>5.0</averagedepth>
+          <diveduration>120</diveduration>
+          <notes>
+            <para/>
+          </notes>
+        </informationafterdive>
+      </dive>
+    </repetitiongroup>
+  </profiledata>
+  <divetrip/>
+</uddf>
