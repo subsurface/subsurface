@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AI-generated (Claude): regression fixture for the uddf.xslt weight/duration
+     XPath-union bug. In XPath 1.0, converting a node-set to a number (as
+     format-number()/value-of do here) uses only the string-value of the FIRST
+     node in the set's document order, while comparing a node-set to a number
+     (the surrounding <xsl:if> tests) is existential across every node in the
+     set. This dive puts a zero-valued alternative earlier in document order
+     than a positive-valued alternative for both the weight union
+     (equipment_used/weight_used|informationbeforedive/.../leadquantity|
+     informationafterdive/.../leadquantity) and the duration union
+     (dive_duration|informationafterdive/diveduration), so a regression that
+     reintroduces picking the first node unconditionally would silently emit
+     the zero value (0.0 kg weight, no/zero duration) instead of the real one. -->
+<uddf xmlns="http://www.streit.cc/uddf/3.2/" version="3.2.0">
+    <generator>
+        <name>Subsurface Test</name>
+        <version>1</version>
+    </generator>
+    <diver>
+        <owner>
+            <personal>
+                <lastname>Test Diver</lastname>
+            </personal>
+            <equipment>
+                <divecomputer id="TESTZBP">
+                    <serialnumber>000000</serialnumber>
+                </divecomputer>
+            </equipment>
+        </owner>
+    </diver>
+    <gasdefinitions>
+        <mix id="air">
+            <name>air</name>
+            <o2>0.21</o2>
+            <n2>0.79</n2>
+        </mix>
+    </gasdefinitions>
+    <profiledata>
+        <repetitiongroup id="rg1">
+            <dive id="dive1">
+                <informationbeforedive>
+                    <divenumber>1</divenumber>
+                    <datetime>2024-05-01T09:00:00</datetime>
+                    <equipmentused>
+                        <leadquantity>0</leadquantity>
+                    </equipmentused>
+                </informationbeforedive>
+                <dive_duration>0</dive_duration>
+                <informationafterdive>
+                    <diveduration>300</diveduration>
+                    <greatestdepth>20.0</greatestdepth>
+                    <equipmentused>
+                        <leadquantity>4</leadquantity>
+                    </equipmentused>
+                </informationafterdive>
+                <samples>
+                    <waypoint>
+                        <depth>0.0</depth>
+                        <divetime>0.0</divetime>
+                    </waypoint>
+                    <waypoint>
+                        <depth>20.0</depth>
+                        <divetime>150.0</divetime>
+                    </waypoint>
+                    <waypoint>
+                        <depth>0.0</depth>
+                        <divetime>300.0</divetime>
+                    </waypoint>
+                </samples>
+            </dive>
+        </repetitiongroup>
+    </profiledata>
+</uddf>
