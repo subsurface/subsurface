@@ -1152,9 +1152,7 @@ void TestDivePlannerModel::testDropStoneTemporaryDisableRestoresOnNewPlan()
 	model->createSimpleDive(&plannedDive);
 	QCOMPARE(model->rowCount(), 2);
 
-	model->resetPlanState();
 	model->setPlanMode(DivePlannerPointsModel::PLAN);
-	model->setDropStoneModeForCurrentPlan(prefs.drop_stone_mode);
 	model->createSimpleDive(&plannedDive);
 
 	QCOMPARE(prefs.drop_stone_mode, true);
