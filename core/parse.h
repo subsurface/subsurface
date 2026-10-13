@@ -17,6 +17,10 @@
 struct xml_params;
 struct divelog;
 struct fingerprint_record;
+// Forward declaration matching libxml2's "typedef struct _xmlDoc xmlDoc;"
+// (libxml/tree.h), so callers that already include that header can pass and
+// receive the same type without this header pulling in all of libxml2.
+typedef struct _xmlDoc xmlDoc;
 
 /*
  * Dive info as it is being built up..
@@ -144,6 +148,13 @@ void nonmatch(const char *type, const char *name, char *buffer);
 void parse_xml_init();
 int parse_xml_buffer(const char *url, const char *buf, int size, struct divelog *log, const struct xml_params *params);
 void parse_xml_exit();
+// Runs the same root-element-sniffing/importer-xslt dispatch (including any
+// namespace normalisation) that parse_xml_buffer() applies before traversing
+// the document, so tests can inspect the transformed-but-not-yet-fixed-up XML
+// that a given importer stylesheet (e.g. uddf.xslt) actually produces. Takes
+// ownership of, and may free, doc; returns the (possibly different) resulting
+// document.
+xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params);
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);
 int parse_seac_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct divelog *log);

@@ -1,0 +1,31 @@
+<divelog program='subsurface' version='3'>
+<settings>
+</settings>
+<divesites>
+</divesites>
+<dives>
+<dive number='1' otu='2' cns='1%' date='2024-05-01' time='09:00:00' duration='4:00 min'>
+  <cylinder description='air' use='diluent' />
+  <cylinder description='18/45' o2='18.0%' he='45.0%' use='diluent' />
+  <cylinder description='EAN50' o2='50.0%' use='diluent' />
+  <cylinder description='18/45 (bailout)' o2='18.0%' he='45.0%' />
+  <cylinder description='EAN50 (bailout)' o2='50.0%' />
+  <divecomputer model='Subsurface Test' deviceid='d0ae84c9' dctype='CCR'>
+  <depth max='20.0 m' mean='12.5 m' />
+  <extradata key='Generator' value='Subsurface Test' />
+  <extradata key='Generator Version' value='1' />
+  <extradata key='Serial' value='000000' />
+  <extradata key='Unit dive number' value='1' />
+  <event time='0:00 min' type='11' value='21' name='gaschange' cylinder='0' />
+  <event time='1:00 min' type='25' value='2949138' name='gaschange' cylinder='1' o2='18.0%' he='45.0%' />
+  <event time='2:00 min' type='11' value='50' name='gaschange' cylinder='4' o2='50.0%' />
+  <event time='3:00 min' type='11' value='50' name='gaschange' cylinder='2' o2='50.0%' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='1:00 min' depth='10.0 m' />
+  <sample time='2:00 min' depth='20.0 m' />
+  <sample time='3:00 min' depth='20.0 m' />
+  <sample time='4:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

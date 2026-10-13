@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- AI-generated (Claude): compact UDDF CCR fixture with a mid-dive mode switch,
+     <switchmix> and a bailout gas, declared in the UDDF 3.2 default namespace.
+     test-uddf-ccr-3.1.uddf is identical except for the xmlns declaration; both
+     must import to test-uddf-ccr-reference.xml. -->
+<uddf xmlns="http://www.streit.cc/uddf/3.2/" version="3.2.0">
+    <generator>
+        <name>Subsurface Test</name>
+        <version>1</version>
+    </generator>
+    <diver>
+        <owner>
+            <personal>
+                <lastname>Test Diver</lastname>
+            </personal>
+            <equipment>
+                <divecomputer id="TESTCCR">
+                    <serialnumber>000000</serialnumber>
+                </divecomputer>
+            </equipment>
+        </owner>
+    </diver>
+    <gasdefinitions>
+        <mix id="diluent_air">
+            <name>air</name>
+            <o2>0.21</o2>
+            <n2>0.79</n2>
+        </mix>
+        <mix id="diluent_tmx">
+            <name>18/45</name>
+            <o2>0.18</o2>
+            <n2>0.37</n2>
+            <he>0.45</he>
+        </mix>
+        <mix id="bailout_ean50">
+            <name>EAN50</name>
+            <o2>0.50</o2>
+            <n2>0.50</n2>
+        </mix>
+    </gasdefinitions>
+    <profiledata>
+        <repetitiongroup id="rg1">
+            <dive id="dive1">
+                <informationbeforedive>
+                    <divenumber>1</divenumber>
+                    <datetime>2024-05-01T09:00:00</datetime>
+                </informationbeforedive>
+                <informationafterdive>
+                    <diveduration>240.0</diveduration>
+                    <greatestdepth>20.0</greatestdepth>
+                </informationafterdive>
+                <samples>
+                    <waypoint>
+                        <depth>0.0</depth>
+                        <divetime>0.0</divetime>
+                        <divemode type="closedcircuit"/>
+                    </waypoint>
+                    <waypoint>
+                        <depth>10.0</depth>
+                        <divetime>60.0</divetime>
+                        <switchmix ref="diluent_tmx"/>
+                    </waypoint>
+                    <waypoint>
+                        <depth>20.0</depth>
+                        <divetime>120.0</divetime>
+                        <switchmix ref="bailout_ean50"/>
+                        <divemode type="opencircuit"/>
+                    </waypoint>
+                    <waypoint>
+                        <depth>20.0</depth>
+                        <divetime>180.0</divetime>
+                        <divemode type="closedcircuit"/>
+                    </waypoint>
+                    <waypoint>
+                        <depth>0.0</depth>
+                        <divetime>240.0</divetime>
+                    </waypoint>
+                </samples>
+            </dive>
+        </repetitiongroup>
+    </profiledata>
+</uddf>
