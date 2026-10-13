@@ -1025,6 +1025,10 @@ diveplan setupPlanPscr30mEan32Ean50O2()
 	struct gasmix ean50 = { 50_percent, 0_percent };
 	struct gasmix oxygen = { 100_percent, 0_percent };
 	pressure_t po2 = 1600_mbar;
+	// Start from a clean set of cylinders so that leftovers from a
+	// previous test (e.g. CCR diluent / bailout gases) do not affect the
+	// gas selection for this dive.
+	dive.cylinders.clear();
 	// Note: we add the highest-index cylinder first, because
 	// pointers to cylinders are not stable when reallocating.
 	// For testing OK - don't do this in actual code!
@@ -1070,6 +1074,25 @@ void TestPlan::testZeroDurationO2SwitchSampleOrder()
 	dive.notes.clear();
 	save_dive(stdout, dive, false);
 #endif
+
+	// Make sure the plan actually exercises the regression it is meant to
+	// guard against: it must contain a genuine zero-duration switch to the
+	// 100% O2 cylinder (id 2), i.e. a waypoint on cylinder 2 at the same
+	// positive time as the preceding waypoint on the previously active
+	// cylinder. Without this check the test would also pass for a plan
+	// that never reaches the O2 switch at all.
+	bool foundZeroDurationO2Switch = false;
+	for (size_t i = 1; i < testPlan.dp.size(); i++) {
+		const auto &prev = testPlan.dp[i - 1];
+		const auto &cur = testPlan.dp[i];
+		if (cur.cylinderid == 2 && prev.cylinderid != 2 &&
+		    cur.time > 0 && cur.time == prev.time) {
+			foundZeroDurationO2Switch = true;
+			break;
+		}
+	}
+	QVERIFY2(foundZeroDurationO2Switch,
+		 "plan did not contain a zero-duration switch to cylinder 2 (100% O2)");
 
 	const auto &samples = dive.dcs[0].samples;
 	QVERIFY(samples.size() > 1);
