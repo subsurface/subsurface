@@ -148,6 +148,36 @@ static struct gasmix get_deeper_gasmix(struct gasmix a, struct gasmix b)
 }
 
 /**
+ * @brief cylinder_use_from_tank_usage derives a cylinder's use from the tank usage the dive computer reported
+ * @param current_use The use already derived from DC_FIELD_GASMIX, or NOT_USED if none was.
+ * @param tank_usage The dc_tank_t::usage value the dive computer reported for this tank.
+ * @param divemode The dive mode of the dive computer.
+ * @param ngases The number of gas mixes reported for the dive.
+ * @param ntanks The number of tank sensors reported for the dive.
+ * @return The cylinder use to apply.
+ */
+enum cylinderuse cylinder_use_from_tank_usage(enum cylinderuse current_use, dc_tank_usage_t tank_usage,
+					      enum divemode_t divemode, unsigned int ngases, unsigned int ntanks)
+{
+	// A tank explicitly excluded from the diver's own gas consumption
+	// (e.g. a watched/buddy transmitter) must never be counted, even if
+	// a DC_FIELD_GASMIX slot already assigned it a use.
+	if (tank_usage == DC_TANK_USAGE_EXCLUDED)
+		return NOT_USED;
+
+	// A tank the dive computer explicitly flags as part of a combined
+	// sidemount bottom gas (single gas mix, two tank sensors) is in use,
+	// even though it has no gas mix of its own. Garmin reports the
+	// sidemount equivalent as DC_TANK_USAGE_INCLUDED on both tank pods.
+	// Never override a cylinder_use already derived from DC_FIELD_GASMIX.
+	if (divemode == OC && ngases == 1 && ntanks == 2 && current_use == NOT_USED &&
+	    (tank_usage == DC_TANK_USAGE_SIDEMOUNT || tank_usage == DC_TANK_USAGE_INCLUDED))
+		return OC_GAS;
+
+	return current_use;
+}
+
+/**
  * @brief parse_gasmixes matches gas mixes with cylinders
  * This function retrieves all tanks and gas mixes reported by libdivecomputer
  * and attepmts to match them. The matching logic assigns the mixes to the
@@ -294,25 +324,8 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 					shown_warning = true;
 					report_error("gasmix %d for tank %d doesn't match", tank.gasmix, i);
 				}
-				// A tank the dive computer explicitly flags as part of a combined
-				// sidemount bottom gas (single gas mix, two tank sensors) is in use,
-				// even though it has no gas mix of its own. Never override a
-				// cylinder_use already derived from DC_FIELD_GASMIX.
-				if (dive->dcs[0].divemode == OC && ngases == 1 && ntanks == 2 &&
-				    tank.usage == DC_TANK_USAGE_SIDEMOUNT && cyl.cylinder_use == NOT_USED)
-					cyl.cylinder_use = OC_GAS;
-				// Garmin reports the sidemount equivalent as DC_TANK_USAGE_INCLUDED
-				// on both tank pods. Same guard shape as the Shearwater case above,
-				// and likewise never overrides a cylinder_use already derived from
-				// DC_FIELD_GASMIX.
-				if (dive->dcs[0].divemode == OC && ngases == 1 && ntanks == 2 &&
-				    tank.usage == DC_TANK_USAGE_INCLUDED && cyl.cylinder_use == NOT_USED)
-					cyl.cylinder_use = OC_GAS;
-				// A tank explicitly excluded from the diver's own gas consumption
-				// (e.g. a watched/buddy transmitter) must never be counted, even if
-				// a DC_FIELD_GASMIX slot already assigned it a use.
-				if (tank.usage == DC_TANK_USAGE_EXCLUDED)
-					cyl.cylinder_use = NOT_USED;
+				cyl.cylinder_use = cylinder_use_from_tank_usage(cyl.cylinder_use, tank.usage,
+								dive->dcs[0].divemode, ngases, ntanks);
 			}
 			if (!nearly_0(tank.volume))
 				no_volume = false;
