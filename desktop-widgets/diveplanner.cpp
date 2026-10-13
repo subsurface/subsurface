@@ -284,7 +284,10 @@ void DivePlannerWidget::hideEvent(QHideEvent *)
 {
 	MainWindow::instance()->menuBar()->removeAction(plannerMenu->menuAction());
 }
-
+void PlannerSettingsWidget::setDropStoneMode(bool enabled)
+{
+	ui.drop_stone_mode->setChecked(enabled);
+}
 void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
 {
 	if (mode == RECREATIONAL) {
@@ -624,6 +627,17 @@ void PlannerWidgets::prepareReplanDive(const dive *currentDive, int currentDcNr)
 
 void PlannerWidgets::replanDive()
 {
+	/*
+	 * We are loading a plan, so we don't want drop a stone mode enabled as we will
+	 * get the 1st point even if it was previously added by this mode from the loaded plan anyway.
+	 * This ensures that the mode is synced with the visible manually placed waypoints.
+	 * (1st point is always loaded from the plan as editable & drop_stone_mode is disabled).
+	 * the user is free to re-enable it if they want to  move the first point to the descent rate again.
+	 * Current behaviour regarding drop_stone_mode is maintained
+	 * (1st point is moved to the descent rate to depth, and made non-editable only if there is more than 1 waypoint, otherwise a waypoint is added.)
+	 */
+	plannerSettingsWidget.setDropStoneMode(false);
+
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 	DivePlannerPointsModel::instance()->loadFromDive(planned_dive.get(), dcNr);
 
