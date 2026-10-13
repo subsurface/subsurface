@@ -21,6 +21,7 @@ private slots:
 	void testMultipleGases();
 	void testCcrBailoutGasSelection();
 	void testZeroDurationO2SwitchSampleOrder();
+	void testZeroDurationO2SwitchPressureAttribution();
 	// AI-generated (Claude)
 	void testRecreationalWithinNDL();
 	void testRecreationalExceedingNDL();
