@@ -294,6 +294,13 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 					shown_warning = true;
 					report_error("gasmix %d for tank %d doesn't match", tank.gasmix, i);
 				}
+				// A tank the dive computer explicitly flags as part of a combined
+				// sidemount bottom gas (single gas mix, two tank sensors) is in use,
+				// even though it has no gas mix of its own. Never override a
+				// cylinder_use already derived from DC_FIELD_GASMIX.
+				if (dive->dcs[0].divemode == OC && ngases == 1 && ntanks == 2 &&
+				    tank.usage == DC_TANK_USAGE_SIDEMOUNT && cyl.cylinder_use == NOT_USED)
+					cyl.cylinder_use = OC_GAS;
 			}
 			if (!nearly_0(tank.volume))
 				no_volume = false;
