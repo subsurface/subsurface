@@ -61,6 +61,8 @@ private slots:
 	void importSuuntoJsonOceanWithFit();
 #ifndef SUBSURFACE_MOBILE
 	void importGarminFit();
+	void importGarminFitSidemountPromotesSecondTank();
+	void importGarminFitExcludedOverridesGasmix();
 #endif
 private:
 	sqlite3 *_sqlite3_handle = NULL;

@@ -20,6 +20,8 @@
 #include <QXmlStreamReader>
 
 #include <algorithm>
+#include <cstdint>
+#include <vector>
 
 /* We have to use a macro since QCOMPARE
  * can only be called from a test method
@@ -874,6 +876,153 @@ void TestParse::importSuuntoJsonOceanWithFit()
 }
 
 #ifndef SUBSURFACE_MOBILE
+namespace {
+
+// AI-generated (Claude)
+// Minimal implementation of the FIT CRC-16 algorithm from the Garmin FIT
+// protocol. libdivecomputer's Garmin parser (src/garmin_parser.c) never
+// checks this value -- it only checks that the file is at least as long as
+// its declared header + data size -- but computing it properly keeps the
+// buffers built below well-formed FIT files in their own right.
+uint16_t fit_crc16(const unsigned char *data, size_t len)
+{
+	static const uint16_t table[16] = {
+		0x0000, 0xCC01, 0xD801, 0x1400, 0xF001, 0x3C00, 0x2800, 0xE401,
+		0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
+	};
+	uint16_t crc = 0;
+	for (size_t i = 0; i < len; ++i) {
+		unsigned char byte = data[i];
+		uint16_t tmp = table[crc & 0xF];
+		crc = (crc >> 4) & 0x0FFF;
+		crc = crc ^ tmp ^ table[byte & 0xF];
+		tmp = table[crc & 0xF];
+		crc = (crc >> 4) & 0x0FFF;
+		crc = crc ^ tmp ^ table[(byte >> 4) & 0xF];
+	}
+	return crc;
+}
+
+struct fit_field { unsigned char num, size, base_type; };
+
+void append_u8(std::vector<unsigned char> &b, unsigned char v)
+{
+	b.push_back(v);
+}
+void append_u16le(std::vector<unsigned char> &b, unsigned short v)
+{
+	b.push_back(v & 0xff);
+	b.push_back((v >> 8) & 0xff);
+}
+void append_u32le(std::vector<unsigned char> &b, unsigned int v)
+{
+	for (int i = 0; i < 4; i++)
+		b.push_back((v >> (8 * i)) & 0xff);
+}
+
+void append_definition(std::vector<unsigned char> &b, unsigned char local_type,
+			unsigned short global_mesg, const std::vector<fit_field> &fields)
+{
+	append_u8(b, 0x40 | local_type);	// definition record (bit 6 set)
+	append_u8(b, 0);			// reserved
+	append_u8(b, 0);			// architecture: little-endian
+	append_u16le(b, global_mesg);
+	append_u8(b, (unsigned char)fields.size());
+	for (const fit_field &f : fields) {
+		append_u8(b, f.num);
+		append_u8(b, f.size);
+		append_u8(b, f.base_type);
+	}
+}
+
+void begin_data_record(std::vector<unsigned char> &b, unsigned char local_type)
+{
+	append_u8(b, local_type);	// normal data record (bits 6 and 7 clear)
+}
+
+// FIT base-type byte values used below. The low 7 bits of each must match
+// the index libdivecomputer's base_type_info[] table (src/garmin_parser.c)
+// uses after masking off bit 7, which is all that parser looks at.
+constexpr unsigned char FIT_ENUM = 0x00;
+constexpr unsigned char FIT_UINT8 = 0x02;
+constexpr unsigned char FIT_UINT16 = 0x84;
+
+// AI-generated (Claude)
+// Builds a minimal, hand-constructed Garmin FIT buffer carrying exactly the
+// messages that libdivecomputer's src/garmin_parser.c decodes into
+// DC_FIELD_GASMIX and DC_FIELD_TANK: one SPORT message (drives
+// DC_FIELD_DIVEMODE), one DIVE_GAS message per entry in gas_o2_percent
+// (open-circuit, enabled gas mixes at message_index 0, 1, ...), and one
+// SENSOR_PROFILE "tank pod" message (sensor_type 28) per entry in
+// tank_used_for_gas_rate, with field 78 (used_for_gas_rate) set to 1
+// (-> DC_TANK_USAGE_INCLUDED) or 0 (-> DC_TANK_USAGE_EXCLUDED). No other
+// record types (samples, GPS, device_info, ...) are included.
+//
+// This is used instead of a downloaded device fixture because no sample
+// under tests/dives, nor any sample in the libdivecomputer test/sample
+// corpus, carries a Garmin SENSOR_PROFILE record with the "used for gas
+// rate" flag combinations this test needs (see the provenance comments on
+// the two tests that call this below). The resulting buffer is fed to the
+// real fit_file_import() entry point, so it exercises parse_gasmixes()'s
+// actual call to cylinder_use_from_tank_usage() in core/libdivecomputer.cpp,
+// not a direct call to that helper.
+std::string build_garmin_fit_buffer(const std::vector<unsigned char> &gas_o2_percent,
+				     const std::vector<unsigned char> &tank_used_for_gas_rate,
+				     unsigned char sub_sport)
+{
+	std::vector<unsigned char> body;
+
+	// SPORT (global mesg 12): sub_sport 53 (single-gas) or 54 (multi-gas)
+	// both map to DC_DIVEMODE_OC in garmin_parser.c's parse_SPORT_sub_sport().
+	append_definition(body, 0, 12, {{1, 1, FIT_ENUM}});
+	begin_data_record(body, 0);
+	append_u8(body, sub_sport);
+
+	// DIVE_GAS (global mesg 259): one open-circuit, enabled gas mix per
+	// entry, identified by the "message_index" field (254).
+	append_definition(body, 1, 259, {
+		{254, 2, FIT_UINT16},	// message_index
+		{0, 1, FIT_UINT8},	// helium percent
+		{1, 1, FIT_UINT8},	// oxygen percent
+		{2, 1, FIT_ENUM},	// status: 1 == enabled
+		{3, 1, FIT_ENUM},	// type: 0 == open circuit
+	});
+	for (size_t i = 0; i < gas_o2_percent.size(); i++) {
+		begin_data_record(body, 1);
+		append_u16le(body, (unsigned short)i);
+		append_u8(body, 0);
+		append_u8(body, gas_o2_percent[i]);
+		append_u8(body, 1);
+		append_u8(body, 0);
+	}
+
+	// SENSOR_PROFILE (global mesg 147): one tank-pod record per entry.
+	append_definition(body, 2, 147, {
+		{52, 1, FIT_ENUM},	// sensor_type: 28 == tank pod
+		{78, 1, FIT_ENUM},	// used_for_gas_rate
+	});
+	for (unsigned char used : tank_used_for_gas_rate) {
+		begin_data_record(body, 2);
+		append_u8(body, 28);
+		append_u8(body, used);
+	}
+
+	std::vector<unsigned char> file;
+	append_u8(file, 12);					// header size
+	append_u8(file, 0x10);					// protocol version
+	append_u16le(file, 0);					// profile version (ignored by this parser)
+	append_u32le(file, (unsigned int)body.size());	// data size
+	file.insert(file.end(), {'.', 'F', 'I', 'T'});
+	file.insert(file.end(), body.begin(), body.end());
+
+	uint16_t crc = fit_crc16(file.data(), file.size());
+	append_u16le(file, crc);
+
+	return std::string(reinterpret_cast<const char *>(file.data()), file.size());
+}
+
+} // namespace
+
 // AI-generated (Claude)
 void TestParse::importGarminFit()
 {
@@ -883,6 +1032,80 @@ void TestParse::importGarminFit()
 	QCOMPARE(divelog.dives.size(), 1);
 	QCOMPARE(QString::fromStdString(divelog.dives[0]->dcs[0].model),
 		QString::fromUtf8("Garmin Descent™ Mk1 (Imported from file)"));
+
+	/* This fixture carries no DC_FIELD_TANK data at all (libdivecomputer
+	 * reports DC_FIELD_TANK_COUNT as unsupported for it), so none of the
+	 * per-tank gas-usage flags (DC_TANK_USAGE_SIDEMOUNT/INCLUDED/EXCLUDED)
+	 * that cylinder_use_from_tank_usage() in core/libdivecomputer.cpp acts
+	 * on are present; cylinder_use below comes solely from the
+	 * DC_FIELD_GASMIX usage field of this CCR dive. Neither the
+	 * sidemount/INCLUDED promotion nor the EXCLUDED demotion in
+	 * parse_gasmixes() fires for this fixture. These assertions pin the
+	 * observed cylinder count and uses to catch an accidental change to
+	 * that. */
+	QCOMPARE(divelog.dives[0]->cylinders.size(), 4u);
+	QCOMPARE(divelog.dives[0]->cylinders[0].cylinder_use, DILUENT);
+	QCOMPARE(divelog.dives[0]->cylinders[1].cylinder_use, OC_GAS);
+	QCOMPARE(divelog.dives[0]->cylinders[2].cylinder_use, OC_GAS);
+	QCOMPARE(divelog.dives[0]->cylinders[3].cylinder_use, DILUENT);
+}
+
+// AI-generated (Claude)
+void TestParse::importGarminFitSidemountPromotesSecondTank()
+{
+	/* Synthetic, hand-built Garmin FIT buffer -- see the provenance
+	 * comment on build_garmin_fit_buffer() above for why. This buffer
+	 * carries a single open-circuit gas mix and two SENSOR_PROFILE tank
+	 * pods, both flagged "used for gas rate" (-> DC_TANK_USAGE_INCLUDED),
+	 * the real-device equivalent of a two-cylinder, single-mix sidemount
+	 * rig. The first tank's cylinder_use already comes from its own
+	 * DC_FIELD_GASMIX; the second tank has no gas mix of its own, so this
+	 * confirms parse_gasmixes() passes its real ngases==1, ntanks==2
+	 * values into cylinder_use_from_tank_usage(), which then promotes it
+	 * from NOT_USED to OC_GAS, and that parse_gasmixes() applies that
+	 * result to the imported cylinder. */
+	std::string buffer = build_garmin_fit_buffer({21}, {1, 1}, 53);
+
+	/* A single gas mix with two tank pods (ngases=1, ntanks=2) is exactly
+	 * the sidemount/INCLUDED-promotion shape parse_gasmixes() is meant to
+	 * handle, but parse_gasmixes() also always logs a "smaller number of
+	 * gases... than cylinders" report_error() whenever ntanks > ngases,
+	 * by design, not as a bug (core/libdivecomputer.cpp). testbase.cpp
+	 * installs a callback that fails the test on any report_error(), so
+	 * swap in a no-op for this one import and restore the normal
+	 * fail-on-error behaviour immediately after. */
+	set_error_cb([](std::string) {});
+	int ret = fit_file_import(buffer, &divelog);
+	set_error_cb(&TestBase::failOnError);
+
+	QCOMPARE(ret, 1);
+	QCOMPARE(divelog.dives.size(), 1);
+	QCOMPARE(divelog.dives[0]->cylinders.size(), 2u);
+	QCOMPARE(divelog.dives[0]->cylinders[0].cylinder_use, OC_GAS);
+	QCOMPARE(divelog.dives[0]->cylinders[1].cylinder_use, OC_GAS);
+}
+
+// AI-generated (Claude)
+void TestParse::importGarminFitExcludedOverridesGasmix()
+{
+	/* Synthetic, hand-built Garmin FIT buffer -- see the provenance
+	 * comment on build_garmin_fit_buffer() above for why. This buffer
+	 * carries two open-circuit gas mixes and two SENSOR_PROFILE tank
+	 * pods, the second one flagged "not used for gas rate"
+	 * (-> DC_TANK_USAGE_EXCLUDED), the real-device equivalent of a
+	 * monitored but not consumption-counted tank (e.g. a buddy/stage
+	 * transmitter). Both tanks get a cylinder_use from their own
+	 * DC_FIELD_GASMIX first; this confirms parse_gasmixes() still passes
+	 * the second tank's real DC_TANK_USAGE_EXCLUDED flag into
+	 * cylinder_use_from_tank_usage(), which demotes it to NOT_USED despite
+	 * that gasmix-derived use, and that parse_gasmixes() applies that
+	 * result rather than keeping the gasmix-derived one. */
+	std::string buffer = build_garmin_fit_buffer({21, 50}, {1, 0}, 54);
+	QCOMPARE(fit_file_import(buffer, &divelog), 1);
+	QCOMPARE(divelog.dives.size(), 1);
+	QCOMPARE(divelog.dives[0]->cylinders.size(), 2u);
+	QCOMPARE(divelog.dives[0]->cylinders[0].cylinder_use, OC_GAS);
+	QCOMPARE(divelog.dives[0]->cylinders[1].cylinder_use, NOT_USED);
 }
 #endif
 
