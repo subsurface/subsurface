@@ -6,6 +6,7 @@
 #include "core/errorhelper.h"
 #include "core/planner.h"
 #include "core/pref.h"
+#include "core/sample.h"
 #include "core/subsurfacestartup.h"
 #include "core/units.h"
 
@@ -1002,6 +1003,82 @@ void TestPlan::testRecreationalWithinNDL()
 	planner_error_t error = plan(&test_deco_state, testPlan, &dive, 0, 60, cache, true, false, nullptr);
 
 	QCOMPARE(error, PLAN_OK);
+}
+
+// AI-generated (Claude)
+// Set up a pSCR technical plan to 30m on EAN32, with deco gases EAN50 and
+// 100% O2, planned with Buehlmann/GF. This is the reported real-world
+// configuration in which the ascent switch to 100% O2 needs no further stop
+// at the switch depth, so the switch waypoint ends up with zero duration
+// (regression test for a backwards/non-monotonic sample timestamp).
+diveplan setupPlanPscr30mEan32Ean50O2()
+{
+	diveplan dp;
+	dp.salinity = 10300;
+	dp.surface_pressure = 1_atm;
+	dp.gflow = 35;
+	dp.gfhigh = 75;
+	dp.bottomsac = prefs.bottomsac;
+	dp.decosac = prefs.decosac;
+
+	struct gasmix ean32 = { 32_percent, 0_percent };
+	struct gasmix ean50 = { 50_percent, 0_percent };
+	struct gasmix oxygen = { 100_percent, 0_percent };
+	pressure_t po2 = 1600_mbar;
+	// Note: we add the highest-index cylinder first, because
+	// pointers to cylinders are not stable when reallocating.
+	// For testing OK - don't do this in actual code!
+	cylinder_t *cyl2 = dive.get_or_create_cylinder(2);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
+	cyl0->gasmix = ean32;
+	cyl0->type.size = 18_l;
+	cyl0->type.workingpressure = 232_bar;
+	cyl1->gasmix = ean50;
+	cyl2->gasmix = oxygen;
+	dive.surface_pressure = 1_atm;
+	reset_cylinders(&dive, true);
+
+	int droptime = m_or_ft(30, 100).mm * 60 / m_or_ft(18, 60).mm;
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, m_or_ft(3, 10)), 1, 0, 1, PSCR);
+	plan_add_segment(dp, 0, dive.gas_mod(oxygen, po2, m_or_ft(3, 10)), 2, 0, 1, PSCR);
+	plan_add_segment(dp, droptime, m_or_ft(30, 100), 0, 0, 1, PSCR);
+	plan_add_segment(dp, 20 * 60 - droptime, m_or_ft(30, 100), 0, 0, 1, PSCR);
+	return dp;
+}
+
+// AI-generated (Claude)
+// Regression test: an ascent gas switch to 100% O2 that needs no further
+// stop at the switch depth must never result in dc samples whose time runs
+// backwards (or even just repeats out of order). create_dive_from_plan()
+// must tolerate a zero-duration switch waypoint.
+void TestPlan::testZeroDurationO2SwitchSampleOrder()
+{
+	deco_state_cache cache;
+
+	setupPrefs();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+	prefs.planner_deco_mode = BUEHLMANN;
+	dive.dcs[0].divemode = PSCR;
+
+	auto testPlan = setupPlanPscr30mEan32Ean50O2();
+
+	plan(&test_deco_state, testPlan, &dive, 0, 60, cache, true, false, nullptr);
+
+#if DEBUG
+	dive.notes.clear();
+	save_dive(stdout, dive, false);
+#endif
+
+	const auto &samples = dive.dcs[0].samples;
+	QVERIFY(samples.size() > 1);
+	for (size_t i = 1; i < samples.size(); i++) {
+		if (samples[i].time.seconds < samples[i - 1].time.seconds)
+			report_error("Sample %zu time %d is earlier than previous sample time %d",
+				     i, samples[i].time.seconds, samples[i - 1].time.seconds);
+		QVERIFY(samples[i].time.seconds >= samples[i - 1].time.seconds);
+	}
 }
 
 // AI-generated (Claude)
