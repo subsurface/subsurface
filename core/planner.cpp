@@ -264,8 +264,15 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 
 		/* Make sure we have the new gas, and create a gas change event */
 		if (dp.cylinderid != lastcylid) {
-			/* need to insert a first sample for the new gas */
-			add_gas_switch_event(dive, dc, lasttime + 1, dp.cylinderid);
+			/* need to insert a first sample for the new gas, but only if the
+			 * switch waypoint actually advances the clock. If dp.time == lasttime
+			 * (e.g. an ascent switch that needs no further stop at that depth),
+			 * inserting a sample at lasttime + 1 would make it later than the
+			 * waypoint's own sample at dp.time below and produce a backwards
+			 * (non-monotonic) sample timestamp. */
+			bool switch_takes_time = dp.time > lasttime;
+			int switch_time = switch_takes_time ? lasttime + 1 : lasttime;
+			add_gas_switch_event(dive, dc, switch_time, dp.cylinderid);
 			cyl = dive->get_cylinder(dp.cylinderid); // FIXME: This actually may get one past the last cylinder for "surface air".
 			if (!cyl) {
 				report_error("Invalid cylinder in create_dive_from_plan(): %d", dp.cylinderid);
@@ -277,7 +284,8 @@ static void create_dive_from_plan(struct diveplan &diveplan, struct dive *dive, 
 				sample->o2sensor[0].mbar = po2;
 			type = get_effective_divemode(*dc, *cyl);
 
-			sample = create_sample(*dc, lasttime + 1, lastdepth, dp.entered);
+			if (switch_takes_time)
+				sample = create_sample(*dc, switch_time, lastdepth, dp.entered);
 
 			lastcylid = dp.cylinderid;
 		}
