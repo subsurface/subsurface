@@ -17,6 +17,7 @@
 #include "qt-models/diveplannermodel.h"
 
 #include <QShortcut>
+#include <QSignalBlocker>
 #ifndef NO_PRINTING
 #include <QPrintDialog>
 #include <QPrinter>
@@ -286,6 +287,7 @@ void DivePlannerWidget::hideEvent(QHideEvent *)
 }
 void PlannerSettingsWidget::setDropStoneMode(bool enabled)
 {
+	QSignalBlocker blocker(ui.drop_stone_mode);
 	ui.drop_stone_mode->setChecked(enabled);
 }
 void PlannerSettingsWidget::disableDecoElements(int mode, divemode_t divemode)
@@ -588,6 +590,7 @@ divemode_t PlannerWidgets::getDiveMode() const
 void PlannerWidgets::preparePlanDive(const dive *currentDive, int currentDcNr)
 {
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+	plannerSettingsWidget.setDropStoneMode(prefs.drop_stone_mode);
 	// create a simple starting dive, using the first gas from the just copied cylinders
 	DivePlannerPointsModel::instance()->createSimpleDive(planned_dive.get());
 	// The atmospheric-pressure widget retains its displayed value between plan
@@ -636,9 +639,9 @@ void PlannerWidgets::replanDive()
 	 * Current behaviour regarding drop_stone_mode is maintained
 	 * (1st point is moved to the descent rate to depth, and made non-editable only if there is more than 1 waypoint, otherwise a waypoint is added.)
 	 */
-	plannerSettingsWidget.setDropStoneMode(false);
-
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
+	DivePlannerPointsModel::instance()->setDropStoneModeForCurrentPlan(false);
+	plannerSettingsWidget.setDropStoneMode(false);
 	DivePlannerPointsModel::instance()->loadFromDive(planned_dive.get(), dcNr);
 
 	plannerWidget.setReplanButton(true);
