@@ -10,6 +10,8 @@
 #include "core/pref.h"
 #include "core/string-format.h"
 #include "core/units.h"
+#include <QCheckBox>
+#include <QSignalBlocker>
 #include <QSignalSpy>
 #include <algorithm>
 #include <memory>
@@ -1062,6 +1064,163 @@ void TestDivePlannerModel::testCylindersModelRefreshedOnPressureChange()
 	prefs = default_prefs;
 }
 
+// AI-generated (GH Copilot)
+void TestDivePlannerModel::testDropStoneSaveLoadRoundTripKeepsPoints()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.drop_stone_mode = true;
+	prefs.display_variations = false;
+
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->setDropStoneModeForCurrentPlan(false);
+	model->createSimpleDive(&plannedDive);
+
+	auto enteredPoints = [model]() {
+		std::vector<divedatapoint> points;
+		for (int row = 0; row < model->rowCount(); ++row) {
+			divedatapoint point = model->at(row);
+			if (point.entered)
+				points.push_back(point);
+		}
+		return points;
+	};
+
+	const std::vector<divedatapoint> expected = enteredPoints();
+	QVERIFY(!expected.empty());
+	QCOMPARE(prefs.drop_stone_mode, true);
+
+	for (int cycle = 0; cycle < 3; ++cycle) {
+		DivePlannerPointsModel::instance()->setDropStoneModeForCurrentPlan(false);
+		model->loadFromDive(&plannedDive, 0);
+		const std::vector<divedatapoint> loaded = enteredPoints();
+		QCOMPARE(loaded.size(), expected.size());
+		for (size_t i = 0; i < expected.size(); ++i) {
+			QCOMPARE(loaded[i].depth.mm, expected[i].depth.mm);
+			QCOMPARE(loaded[i].time, expected[i].time);
+			QCOMPARE(loaded[i].cylinderid, expected[i].cylinderid);
+		}
+
+		model->emitDataChanged();
+	}
+
+	QCOMPARE(prefs.drop_stone_mode, true);
+
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+// AI-generated (GH Copilot)
+void TestDivePlannerModel::testDropStoneTemporaryDisableDoesNotPersistPreference()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.drop_stone_mode = true;
+
+	model->resetPlanState();
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->setDropStoneModeForCurrentPlan(false);
+	model->createSimpleDive(&plannedDive);
+
+	QCOMPARE(prefs.drop_stone_mode, true);
+	QCOMPARE(model->rowCount(), 2);
+
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+// AI-generated (GH Copilot)
+void TestDivePlannerModel::testDropStoneTemporaryDisableRestoresOnNewPlan()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.drop_stone_mode = true;
+
+	model->resetPlanState();
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->setDropStoneModeForCurrentPlan(false);
+	model->createSimpleDive(&plannedDive);
+	QCOMPARE(model->rowCount(), 2);
+
+	model->resetPlanState();
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->setDropStoneModeForCurrentPlan(prefs.drop_stone_mode);
+	model->createSimpleDive(&plannedDive);
+
+	QCOMPARE(prefs.drop_stone_mode, true);
+	QCOMPARE(model->rowCount(), 1);
+
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+// AI-generated (GH Copilot)
+void TestDivePlannerModel::testDropStoneProgrammaticCheckboxSyncDoesNotPersistPreference()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	model->resetPlanState();
+	prefs = default_prefs;
+	prefs.drop_stone_mode = true;
+
+	QCheckBox dropStoneMode;
+	QObject::connect(&dropStoneMode, &QCheckBox::toggled, model, &DivePlannerPointsModel::setDropStoneMode);
+
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->setDropStoneModeForCurrentPlan(false);
+	{
+		QSignalBlocker blocker(&dropStoneMode);
+		dropStoneMode.setChecked(false);
+	}
+
+	QCOMPARE(prefs.drop_stone_mode, true);
+	QCOMPARE(dropStoneMode.isChecked(), false);
+
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+// AI-generated (GH Copilot)
+void TestDivePlannerModel::testDropStoneUserToggleAfterProgrammaticSyncPersistsPreference()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+
+	model->resetPlanState();
+	prefs = default_prefs;
+	prefs.drop_stone_mode = true;
+
+	QCheckBox dropStoneMode;
+	dropStoneMode.setChecked(true);
+	QObject::connect(&dropStoneMode, &QCheckBox::toggled, model, &DivePlannerPointsModel::setDropStoneMode);
+
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->setDropStoneModeForCurrentPlan(false);
+	{
+		QSignalBlocker blocker(&dropStoneMode);
+		dropStoneMode.setChecked(false);
+	}
+
+	QCOMPARE(prefs.drop_stone_mode, true);
+
+	dropStoneMode.setChecked(true);
+	QCOMPARE(prefs.drop_stone_mode, true);
+
+	dropStoneMode.setChecked(false);
+	QCOMPARE(prefs.drop_stone_mode, false);
+
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+
+
 // Stubs for symbols referenced by libraries linked into TestDivePlannerModel
 // but not available without the full desktop-widgets and commands libraries.
 
@@ -1109,4 +1268,4 @@ MainWindow *MainWindow::instance()
 }
 #endif
 
-QTEST_GUILESS_MAIN(TestDivePlannerModel)
+QTEST_MAIN(TestDivePlannerModel)
