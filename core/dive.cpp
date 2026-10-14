@@ -2495,9 +2495,22 @@ bool dive::cache_is_valid() const
 	return git_id != null_id;
 }
 
+/* Surface pressure to use for ambient-pressure and deco calculations (tissue
+ * carry-over between dives, surface GF baseline, ceiling/NDL, etc.) for this
+ * dive. This has to stay in sync with depth_to_mbarf()/mbar_to_depth(): for
+ * downloaded and Planner-built dives, prefer the first dive computer's own
+ * recorded surface pressure, since that is what those functions use for every
+ * ambient-pressure calculation during the dive itself. Manually added dives
+ * have no dc-recorded surface pressure, so keep using the user-entered
+ * dive-level field, as before. Only fall back further to the dive-level
+ * field (and finally to 1 atm) if the relevant dc never recorded a surface
+ * pressure at all. */
 pressure_t dive::get_surface_pressure() const
 {
-	return surface_pressure.mbar > 0 ? surface_pressure : 1_atm;
+	pressure_t res = is_dc_manually_added_dive(&dcs[0]) ? surface_pressure : dcs[0].surface_pressure;
+	if (!res.mbar)
+		res = surface_pressure;
+	return res.mbar > 0 ? res : 1_atm;
 }
 
 /* This returns the conversion factor that you need to multiply
@@ -2532,15 +2545,13 @@ int dive::depth_to_mbar(depth_t depth) const
 
 double dive::depth_to_mbarf(depth_t depth) const
 {
-	// For downloaded and planned dives, use DC's values
-	int salinity = dcs[0].salinity;
-	pressure_t surface_pressure = dcs[0].surface_pressure;
+	// For downloaded and planned dives, use DC's salinity; for manually added
+	// dives (which have no dc-recorded salinity) use the user-entered value.
+	// The surface pressure is resolved by get_surface_pressure(), which
+	// applies the same manually-added-dive distinction.
+	int salinity = is_dc_manually_added_dive(&dcs[0]) ? user_salinity : dcs[0].salinity;
 
-	if (is_dc_manually_added_dive(&dcs[0])) { // For manual dives, salinity and pressure in another place...
-		surface_pressure = this->surface_pressure;
-		salinity = user_salinity;
-	}
-	return calculate_depth_to_mbarf(depth, surface_pressure, salinity);
+	return calculate_depth_to_mbarf(depth, get_surface_pressure(), salinity);
 }
 
 double dive::depth_to_bar(depth_t depth) const
@@ -2572,15 +2583,8 @@ depth_t dive::rel_mbar_to_depth(int mbar) const
 
 depth_t dive::mbar_to_depth(int mbar) const
 {
-	// For downloaded and planned dives, use DC's pressure. Manual dives, use user's pressure
-	pressure_t surface_pressure = is_dc_manually_added_dive(&dcs[0])
-		? this->surface_pressure
-		: dcs[0].surface_pressure;
-
-	if (!surface_pressure.mbar)
-		surface_pressure = 1_atm;
-
-	return rel_mbar_to_depth(mbar - surface_pressure.mbar);
+	// Resolved the same way as depth_to_mbarf(), see get_surface_pressure().
+	return rel_mbar_to_depth(mbar - get_surface_pressure().mbar);
 }
 
 /* MOD rounded to multiples of roundto mm */

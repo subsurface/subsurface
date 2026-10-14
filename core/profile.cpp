@@ -860,7 +860,16 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 				       const struct divecomputer *dc, struct plot_info &pi)
 {
 	int i, count_iteration = 0;
-	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : dive->get_surface_pressure().mbar) / 1000.0;
+	// Use the same surface pressure as the rest of the dive's ambient-pressure
+	// math (entry.ambpressure below is computed via dive->depth_to_bar(),
+	// which is always based on the dive's first dive computer). Using the
+	// viewed dc's own surface pressure here instead (which can be a different
+	// dive computer for multi-dc dives, or can be out of sync with the first
+	// dc after a manual edit of the dive's "Atm. pressure" field) would give
+	// the surface-GF baseline a different reference pressure than the one
+	// ambient pressures are measured against, causing a Surface GF
+	// discontinuity at the next dive.
+	double surface_pressure = dive->get_surface_pressure().mbar / 1000.0;
 	bool first_iteration = true;
 	int prev_deco_time = 10000000, time_deep_ceiling = 0;
 	bool in_planner = planner_ds != NULL;
@@ -889,6 +898,35 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 
 		gasmix_loop loop_gas(*dive, *dc);
 		divemode_loop loop_mode(*dc);
+
+		/* The loop below starts at i = 1, so pi.entry[0] - the extra, empty
+		 * point inserted at the very start of the dive (see the comment on
+		 * create_plot_info_new()) - never gets its surface_gf/current_gf
+		 * computed and is left at the plot_data default of 0.0, no matter
+		 * what tissue state was carried over from previous dives. Since
+		 * pi.entry[0] is always at the surface (depth 0) before any of this
+		 * dive's own samples have been processed, ds already holds exactly
+		 * the tissue state that applies here; populate ambpressure and the
+		 * GF values for this point the same way the loop below does for
+		 * every other point. */
+		{
+			struct plot_data &entry0 = pi.entry[0];
+			entry0.ambpressure = dive->depth_to_bar(entry0.depth);
+			tissue_tolerance_calc(ds, dive, entry0.ambpressure, in_planner);
+			entry0.surface_gf = 0.0;
+			entry0.current_gf = 0.0;
+			for (int j = 0; j < 16; j++) {
+				double m_value = ds->buehlmann_inertgas_a[j] + entry0.ambpressure / ds->buehlmann_inertgas_b[j];
+				double surface_m_value = ds->buehlmann_inertgas_a[j] + surface_pressure / ds->buehlmann_inertgas_b[j];
+				double current_gf = (ds->tissue_inertgas_saturation[j] - entry0.ambpressure) / (m_value - entry0.ambpressure);
+				if (current_gf > entry0.current_gf)
+					entry0.current_gf = current_gf;
+				double surface_gf = 100.0 * (ds->tissue_inertgas_saturation[j] - surface_pressure) / (surface_m_value - surface_pressure);
+				if (surface_gf > entry0.surface_gf)
+					entry0.surface_gf = surface_gf;
+			}
+		}
+
 		for (i = 1; i < pi.nr; i++) {
 			struct plot_data &entry = pi.entry[i];
 			struct plot_data &prev = pi.entry[i - 1];
