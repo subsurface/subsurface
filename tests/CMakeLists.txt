@@ -118,6 +118,7 @@ TEST(TestGpsCoords testgpscoords.cpp)
 TEST(TestParse testparse.cpp)
 TEST(TestAirPressure testAirPressure.cpp)
 TEST(TestSurfaceGf testsurfacegf.cpp)
+TEST(TestOtuCns testotucns.cpp)
 if (BTSUPPORT)
 	TEST(TestHelper testhelper.cpp)
 endif()
@@ -188,6 +189,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	${TEST_DIVE_PLANNER_MODEL}
 	TestAirPressure
 	TestSurfaceGf
+	TestOtuCns
 	TestDiveSiteDuplication
 	TestRenumber
 	${TEST_PICTURE}

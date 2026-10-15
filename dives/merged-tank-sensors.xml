@@ -4,7 +4,7 @@
 <divesites>
 </divesites>
 <dives>
-<dive number='2' otu='38' cns='4%' date='2025-03-11' time='20:46:51' duration='27:22 min'>
+<dive number='2' otu='36' cns='4%' date='2025-03-11' time='20:46:51' duration='27:22 min'>
   <notes>no sensors mapped</notes>
   <cylinder description='first' o2='50.0%' depth='22.086 m' />
   <cylinder description='second' depth='66.249 m' />
@@ -56,7 +56,7 @@
   <sample time='27:22 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive number='3' otu='42' cns='4%' date='2025-03-11' time='20:47:03' duration='29:58 min'>
+<dive number='3' otu='40' cns='4%' date='2025-03-11' time='20:47:03' duration='29:58 min'>
   <notes>default mapping, single tank</notes>
   <cylinder description='first' o2='50.0%' use='diluent' depth='22.086 m' />
   <cylinder description='first_2' o2='45.0%' use='diluent' depth='22.086 m' />
@@ -105,7 +105,7 @@
   <sample time='29:58 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive number='4' otu='62' cns='4%' date='2025-03-11' time='20:47:27' duration='41:58 min'>
+<dive number='4' otu='58' cns='4%' date='2025-03-11' time='20:47:27' duration='41:58 min'>
   <notes>sensors swapped</notes>
   <cylinder description='first' o2='50.0%' depth='22.086 m' />
   <cylinder description='second' depth='66.249 m' />
@@ -165,7 +165,7 @@
   <sample time='41:58 min' depth='0.0 m' />
   </divecomputer>
 </dive>
-<dive number='5' otu='84' cns='4%' date='2025-03-11' time='20:47:33' duration='54:58 min'>
+<dive number='5' otu='77' cns='4%' date='2025-03-11' time='20:47:33' duration='54:58 min'>
   <notes>default mapping</notes>
   <cylinder description='first' o2='50.0%' depth='22.086 m' />
   <cylinder description='second' depth='66.249 m' />
