@@ -6,6 +6,7 @@
 #include "core/divelog.h"
 #include "core/equipment.h"
 #include "core/gas.h"
+#include "core/po2.h"
 #include "core/pref.h"
 #include "core/profile.h"
 #include "core/sample.h"
@@ -337,6 +338,51 @@ void TestSurfaceGf::testCcrPo2CarryoverSensorless()
 	// The whole point: no_o2sensors == 0 must ignore whatever happens to be
 	// in o2sensor[], exactly like before this fix.
 	QCOMPARE(withStrayData, withoutStrayData);
+}
+
+/* Regression test for a sensor-index/sensor-number mix-up in the bubble sort
+ * inside sort_o2_pressures() (core/po2.cpp): the swap used to store the raw
+ * loop position into sensorn[i] instead of the sensor number that was
+ * actually found at that position. For a sparse (non-identity) sensorn[],
+ * such as a sensor that has not yet reported a reading, this could make the
+ * sort hand the voting logic a sensor index that was never populated as a
+ * valid reading in the first place.
+ *
+ * This drives ccr_po2_loop::next() - the only public entry point into the
+ * buggy sort - directly, with four O2 sensors of which sensor 1 never
+ * reports a value (stays 0 mbar, as a never-connected/never-read sensor
+ * would). Sensors 0, 2 and 3 report 1000, 700 and 900 mbar: with at least
+ * three valid readings, the Shearwater-style voting logic votes the
+ * outlier (700 mbar) out and averages the remaining two (900 and 1000),
+ * giving 950 mbar.
+ *
+ * With the index/sensor-number mix-up, the sort could instead splice the
+ * never-reporting sensor 1 (0 mbar) into the sorted list in place of sensor
+ * 2, which got "voted out" for free (subtracting 0 from the running sum)
+ * while still shrinking the divisor - inflating the result to 1300 mbar,
+ * higher than every sensor actually reported.
+ */
+void TestSurfaceGf::testCcrPo2VotingSparseSensors()
+{
+	struct divecomputer dc;
+	dc.divemode = CCR;
+	dc.no_o2sensors = 4;
+
+	pressure_t o2sensor[MAX_O2_SENSORS] = {};
+	o2sensor[0].mbar = 1000;
+	o2sensor[1].mbar = 0; // never reports a reading
+	o2sensor[2].mbar = 700;
+	o2sensor[3].mbar = 900;
+
+	ccr_po2_loop loop(dc);
+	pressure_t po2 = loop.next(o2sensor, 0_mbar, 3000_mbar);
+
+	// The never-reporting sensor must never be admitted into the vote: the
+	// result has to stay within the range of the sensors that actually
+	// reported (700..1000 mbar), not be inflated beyond all of them.
+	QVERIFY(po2.mbar >= 700);
+	QVERIFY(po2.mbar <= 1000);
+	QCOMPARE(po2.mbar, 950);
 }
 
 QTEST_GUILESS_MAIN(TestSurfaceGf)

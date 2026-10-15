@@ -12,6 +12,7 @@ private slots:
 	void testSurfaceGfCarryover();
 	void testCcrPo2CarryoverSensorVsSetpoint();
 	void testCcrPo2CarryoverSensorless();
+	void testCcrPo2VotingSparseSensors();
 };
 
 #endif

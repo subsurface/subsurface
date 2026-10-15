@@ -28,7 +28,7 @@ static void sort_o2_pressures(int *sensorn, int np, const pressure_t o2sensor[MA
 				smallest = o2sensor[sensorn[j]].mbar;
 			}
 		old = sensorn[i];
-		sensorn[i] = position;
+		sensorn[i] = sensorn[position];
 		sensorn[position] = old;
 	}
 }
