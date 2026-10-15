@@ -19,6 +19,7 @@
 #include "gaspressures.h"
 #include "deco.h"
 #include "errorhelper.h"
+#include "po2.h"
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 #include "membuffer.h"
@@ -1087,73 +1088,6 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 	unlock_planner();
 }
 
-/* Sort the o2 pressure values. There are so few that a simple bubble sort
- * will do */
-
-static void sort_o2_pressures(int *sensorn, int np, const struct plot_data &entry)
-{
-	int smallest, position, old;
-
-	for (int i = 0; i < np - 1; i++) {
-		position = i;
-		smallest = entry.o2sensor[sensorn[i]].mbar;
-		for (int j = i+1; j < np; j++)
-			if (entry.o2sensor[sensorn[j]].mbar < smallest) {
-				position = j;
-				smallest = entry.o2sensor[sensorn[j]].mbar;
-			}
-		old = sensorn[i];
-		sensorn[i] = position;
-		sensorn[position] = old;
-	}
-}
-
-/* Function calculate_ccr_po2: This function takes information from one plot_data structure (i.e. one point on
- * the dive profile), containing the oxygen sensor values of a CCR system and, for that plot_data structure,
- * calculates the po2 value from the sensor data. If there are at least 3 sensors, sensors are voted out until
- * their span is within diff_limit.
- */
-static int calculate_ccr_po2(struct plot_data &entry, const struct divecomputer *dc)
-{
-	int sump = 0, minp = 0, maxp = 0;
-	int sensorn[MAX_O2_SENSORS];
-	int i, np = 0;
-
-	for (i = 0; i < dc->no_o2sensors && i < MAX_O2_SENSORS; i++)
-		if (entry.o2sensor[i].mbar) { // Valid reading
-			sensorn[np++] = i;
-			sump += entry.o2sensor[i].mbar;
-		}
-	if (np == 0)
-		return entry.o2pressure.mbar;
-	else if (np == 1)
-		return entry.o2sensor[sensorn[0]].mbar;
-
-	maxp = np - 1;
-	sort_o2_pressures(sensorn, np, entry);
-
-	// This is the Shearwater voting logic: If there are still at least three sensors and one
-	// differs by more than 20% from the closest it is voted out.
-	while (maxp - minp > 1) {
-		if (entry.o2sensor[sensorn[minp + 1]].mbar - entry.o2sensor[sensorn[minp]].mbar >
-		    sump / (maxp - minp + 1) / 5) {
-			sump -= entry.o2sensor[sensorn[minp]].mbar;
-			++minp;
-			continue;
-		}
-		if (entry.o2sensor[sensorn[maxp]].mbar - entry.o2sensor[sensorn[maxp - 1]].mbar >
-		    sump / (maxp - minp +1) / 5) {
-			sump -= entry.o2sensor[sensorn[maxp]].mbar;
-			--maxp;
-			continue;
-		}
-		break;
-	}
-
-	return sump / (maxp - minp + 1);
-
-}
-
 static double gas_density(const struct gas_pressures &pressures)
 {
 	return (pressures.o2 * O2_DENSITY + pressures.he * HE_DENSITY + pressures.n2 * N2_DENSITY) / 1000.0;
@@ -1214,27 +1148,18 @@ static void fill_o2_values(const struct dive *dive, const struct divecomputer *d
  * last known values so that the oxygen sensor data are complete and ready
  * for plotting. This function called by: create_plot_info_new() */
 {
-	int i, j;
-	pressure_t last_sensor[MAX_O2_SENSORS], o2pressure;
-	pressure_t amb_pressure;
+	ccr_po2_loop loop(*dc);
 
-	for (i = 0; i < pi.nr; i++) {
+	for (int i = 0; i < pi.nr; i++) {
 		struct plot_data &entry = pi.entry[i];
 
-		if (dc->divemode == CCR || (dc->divemode == PSCR && dc->no_o2sensors)) {
-			if (i == 0) { // For 1st iteration, initialise the last_sensor values
-				for (j = 0; j < dc->no_o2sensors; j++)
-					last_sensor[j] = entry.o2sensor[j];
-			} else { // Now re-insert the missing oxygen pressure values
-				for (j = 0; j < dc->no_o2sensors; j++)
-					if (entry.o2sensor[j].mbar)
-						last_sensor[j] = entry.o2sensor[j];
-					else
-						entry.o2sensor[j] = last_sensor[j];
-			} // having initialised the empty o2 sensor values for this point on the profile,
-			amb_pressure.mbar = dive->depth_to_mbar(entry.depth);
-			o2pressure.mbar = calculate_ccr_po2(entry, dc); // ...calculate the po2 based on the sensor data
-			entry.o2pressure.mbar = std::min(o2pressure.mbar, amb_pressure.mbar);
+		if (loop.uses_sensors()) {
+			pressure_t ambient;
+			ambient.mbar = dive->depth_to_mbar(entry.depth);
+			// fallback is entry.o2pressure, i.e. the setpoint as possibly
+			// overridden by "SP change" events (check_setpoint_events(),
+			// which has already run by the time this is called).
+			entry.o2pressure = loop.next(entry.o2sensor.data(), entry.o2pressure, ambient);
 		} else {
 			entry.o2pressure = 0_bar; // initialise po2 to zero for dctype = OC
 		}
