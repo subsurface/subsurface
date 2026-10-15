@@ -113,6 +113,174 @@ static int active_o2(const struct dive &dive, const struct divecomputer *dc, dur
 	return get_o2(gas);
 }
 
+/* Does this dc's own sample stream carry any actual cell data at all, on
+ * any channel, regardless of the declared no_o2sensors count? This widens
+ * the previous, channel-0-only proxy to match segment_use_sensors()'s own
+ * per-segment check below, which already accepts a fresh reading on any
+ * channel: a dc that declares several sensors can have a dead or unlogged
+ * channel 0 while other channels keep reporting real data, and that data
+ * must not be ignored just because it is not on channel 0.
+ * otu_cns_po2_resolver below needs this unconditionally: a dc's declared
+ * no_o2sensors count is not a reliable guide to whether its samples
+ * actually carry cell data, in either direction (a dc can declare
+ * no_o2sensors == 0 while still carrying stray, non-zero readings, or
+ * declare a non-zero count while its samples never actually report on
+ * any of those channels). */
+static bool has_any_cell_data(const struct divecomputer &dc)
+{
+	for (const auto &s: dc.samples)
+		for (int k = 0; k < MAX_O2_SENSORS; k++)
+			if (s.o2sensor[k].mbar)
+				return true;
+	return false;
+}
+
+/* Shared PO2-resolution state for calculate_otu() and calculate_cns_dive():
+ * both functions need the exact same per-dc setup (which divecomputer
+ * stand-in and ccr_po2_loop to resolve CCR/PSCR PO2 through, whether the
+ * sensor branch applies at all, and the seed value for the pairwise segment
+ * loop below) and the same per-segment decision of whether to use that
+ * sensor branch for a given segment. Keeping this in one place means the
+ * two functions cannot silently drift apart on these rules; calculate_cns()
+ * additionally averages the two resolved endpoints, which is left to the
+ * caller since calculate_otu() does not do that. */
+struct otu_cns_po2_resolver {
+	struct divecomputer po2_dc;
+	ccr_po2_loop loop_po2;
+	bool use_sensors;
+	int po2_end;
+
+	explicit otu_cns_po2_resolver(const struct dive &dive, const struct divecomputer &dc) :
+		loop_po2(po2_dc)
+	{
+		// Resolve CCR/PSCR sample PO2 through the same rule as the deco
+		// carry-over path (add_dive_to_deco()) and the live profile: per-
+		// sensor carry-forward, Shearwater-style voting, clamped to
+		// ambient, falling back to the commanded setpoint when no cell
+		// has reported.
+		//
+		// Whether to use the sensor branch at all is decided by whether
+		// this dc's samples actually carry O2 cell data on any channel
+		// (o2sensor[k].mbar != 0 somewhere in the stream, for any
+		// k < MAX_O2_SENSORS), not by the declared no_o2sensors count,
+		// checked unconditionally in either direction: a CCR/PSCR dc
+		// can declare no_o2sensors == 0 while its samples still carry
+		// stray, non-zero o2sensor[] readings (a real, live data shape,
+		// not a hypothetical one), and equally a dc can declare a
+		// non-zero no_o2sensors while its samples never actually report
+		// on any of those channels, in which case there is no cell data
+		// to use regardless of what was declared. Gating on
+		// no_o2sensors > 0 instead (matching add_dive_to_deco()) would
+		// silently move every such dive's OTU/CNS onto the wrong
+		// branch, with no way to tell how many stored logs look like
+		// either shape. add_dive_to_deco() is unaffected by this
+		// choice: it keeps its own, separately-justified
+		// no_o2sensors > 0 guard (see its comment).
+		bool has_cell_data = has_any_cell_data(dc);
+
+		// ccr_po2_loop itself (core/po2.cpp) only ever looks at
+		// o2sensor[0 .. dc.no_o2sensors-1], so with dc.no_o2sensors == 0
+		// it would discard that same stray data again, from the inside,
+		// even though has_cell_data above says to use it. Resolve PO2
+		// through a divecomputer stand-in whose no_o2sensors is widened
+		// to cover every channel instead, but only for CCR dcs whose
+		// declared no_o2sensors == 0: PSCR's own no_o2sensors == 0 ->
+		// pscr_o2() rule, encoded in ccr_po2_loop::uses_sensors(), is a
+		// different, unrelated rule and stays untouched, and a dc that
+		// already declares a non-zero sensor count keeps using that
+		// declared count for voting -- widening it further is untested
+		// and out of scope here. Channels that never actually report
+		// stay at 0 mbar and are simply skipped by
+		// calculate_ccr_po2()'s own "if (o2sensor[i].mbar)" check, so
+		// widening no_o2sensors here cannot invent data that was never
+		// there; it only lets the already-shared
+		// voting/carry-forward/ambient-clamp logic see data that was
+		// already present. ccr_po2_loop only ever reads dc.divemode and
+		// dc.no_o2sensors (never dc.samples), so this stand-in
+		// deliberately leaves samples empty rather than copying dive's
+		// full (potentially large) sample vector just to borrow those
+		// two fields.
+		po2_dc.divemode = dc.divemode;
+		po2_dc.no_o2sensors = dc.divemode == CCR && dc.no_o2sensors == 0 && has_cell_data ? MAX_O2_SENSORS : dc.no_o2sensors;
+		use_sensors = loop_po2.uses_sensors() && has_cell_data;
+
+		// ccr_po2_loop::next() is stateful (per-sensor carry-forward) and
+		// documented to be called strictly in increasing time order,
+		// exactly once per sample. Both calculate_otu() and
+		// calculate_cns_dive() iterate pairwise_range(dc.samples), where
+		// every sample is visited twice (as the start of one segment and
+		// the end of the next), so resolve() must only be called once
+		// per sample: resolve sample 0 here to seed the loop, then each
+		// segment resolves only its own END sample and reuses the
+		// previous segment's result as its own start value.
+		//
+		// This deliberately diverges from add_dive_to_deco(), which only
+		// ever resolves PO2 from a pair's end sample, so sample 0's own
+		// readings never enter its carry-forward state: OTU/CNS
+		// integrate between two endpoints and need a PO2 at sample 0 too
+		// (the previous code already read sample 0's own sensor data
+		// directly), and each ccr_po2_loop instance keeps its own,
+		// independent carry-forward state, so seeding here cannot affect
+		// the deco path's state.
+		po2_end = use_sensors && !dc.samples.empty() ? resolve(dive, dc.samples[0]) : 0;
+	}
+
+	int resolve(const struct dive &dive, const struct sample &s)
+	{
+		pressure_t o2sensor[MAX_O2_SENSORS];
+		for (int k = 0; k < MAX_O2_SENSORS; k++)
+			o2sensor[k].mbar = s.o2sensor[k].mbar;
+		pressure_t fallback;
+		fallback.mbar = s.setpoint.mbar;
+		pressure_t ambient;
+		ambient.mbar = dive.depth_to_mbar(s.depth);
+		// The ambient clamp is inherent to ccr_po2_loop::next() (it is
+		// applied unconditionally, with no opt-out), so this necessarily
+		// clamps any cell/setpoint reading above this sample's own
+		// ambient pressure down to it.
+		return loop_po2.next(o2sensor, fallback, ambient).mbar;
+	}
+
+	// Decide whether this particular segment should use the sensor
+	// branch. use_sensors above is a dc-level decision and is never
+	// re-checked per segment by itself; this additionally handles a CCR
+	// dc that does a real OC bailout (a cylinder switch to an
+	// OC_GAS/TRAVEL_OC cylinder): get_dive_status_at() resolves this
+	// segment's own divemode as OC (get_effective_divemode(),
+	// core/dive.cpp) even though dc.divemode stays CCR for the whole dc.
+	// If the CCR cells also stop reporting once the loop is isolated for
+	// the bailout (as is common), ccr_po2_loop's carry-forward
+	// (last_sensor[], core/po2.cpp) would otherwise keep substituting the
+	// last known pre-bailout reading -- clamped to the ever-changing
+	// ambient pressure, not the bailout gas's own PO2 -- for the entire
+	// rest of the bailout. Detect exactly that case (OC for this segment,
+	// and no fresh/raw cell reading on this segment's own end sample, as
+	// opposed to the carry-forward-completed values resolve()/
+	// ccr_po2_loop::next() would produce) so the caller can fall through
+	// to the mode-aware OC/CCR/PSCR branch instead, same as any other
+	// non-sensor segment. This deliberately leaves the single transition
+	// segment (whose end sample may still carry the last real
+	// pre-bailout reading) on the sensor branch, exactly as the
+	// pre-ccr_po2_loop code did (see testCcrSensor0Dropout()); only the
+	// fully-silent segments after it are affected. A bailout segment
+	// whose cells keep reporting live data is unaffected and still uses
+	// the sensor branch regardless of this segment's own divemode -
+	// that mismatch is pre-existing and out of scope here.
+	bool segment_use_sensors(const struct sample &sample, divemode_t divemode) const
+	{
+		if (!use_sensors)
+			return false;
+		bool segment_has_raw_cells = false;
+		for (int k = 0; k < po2_dc.no_o2sensors && k < MAX_O2_SENSORS; k++) {
+			if (sample.o2sensor[k].mbar) {
+				segment_has_raw_cells = true;
+				break;
+			}
+		}
+		return !(divemode == OC && !segment_has_raw_cells);
+	}
+};
+
 /* Calculate OTU for a dive - this only takes the first divecomputer into account.
    Implement the protocol in Erik Baker's document "Oxygen Toxicity Calculations". This code
    implements a third-order continuous approximation of Baker's Eq. 2 and enables OTU
@@ -126,21 +294,35 @@ static int calculate_otu(const struct dive &dive)
 	const struct divecomputer &dc = dive.dcs[0];
 	gasmix_loop loop_gas(dive, dc);
 	divemode_loop loop_mode(dc);
+	otu_cns_po2_resolver resolver(dive, dc);
+
 	for (auto [psample, sample]: pairwise_range(dc.samples)) {
 		int po2i, po2f;
 		double pm;
 		int t = (sample.time - psample.time).seconds;
 		depth_t depth = sample.depth;
 		depth_t pdepth = psample.depth;
-		// if there is sensor data use sensor[0]
-		if ((dc.divemode == CCR || dc.divemode == PSCR) && psample.o2sensor[0].mbar) {
-			po2i = psample.o2sensor[0].mbar;
-			if (sample.o2sensor[0].mbar)
-				po2f = sample.o2sensor[0].mbar;
-			else
-				po2f = po2i;	// ... use data from the first o2 sensor
+
+		// get_dive_status_at() is needed for every segment, not just a
+		// non-sensor one: segment_use_sensors() below needs this
+		// segment's own per-sample divemode even when the dc-level
+		// sensor branch applies overall. The calling discipline
+		// (increasing time order, once per segment) is unchanged.
+		[[maybe_unused]] auto [divemode, _cylinder_index, gasmix] = get_dive_status_at(dive, dc, psample.time.seconds, &loop_mode, &loop_gas);
+
+		if (resolver.segment_use_sensors(sample, divemode)) {
+			po2i = resolver.po2_end;
+			po2f = resolver.resolve(dive, sample);
 		} else {
-			[[maybe_unused]] auto [divemode, _cylinder_index, gasmix] = get_dive_status_at(dive, dc, psample.time.seconds, &loop_mode, &loop_gas);
+			// dc.divemode vs. per-sample divemode is left as it was:
+			// the sensor branch above is keyed on the dc as a whole
+			// (via otu_cns_po2_resolver::use_sensors), so on a CCR dc
+			// with an OC bailout segment whose cells keep reporting
+			// live, non-zero data, the sensor branch still applies
+			// regardless of this segment's own divemode. That mismatch
+			// is pre-existing and not addressed here (only the
+			// already-silent-cells sub-case, handled by
+			// segment_use_sensors() above, is).
 			if (divemode == CCR) {
 				po2i = std::min((int) psample.setpoint.mbar,
 						 dive.depth_to_mbar(pdepth));
@@ -159,6 +341,26 @@ static int calculate_otu(const struct dive &dive)
 				}
 			}
 		}
+		// Keep po2_end tracking the most recently computed po2f for this
+		// dc regardless of which branch produced it (this is only
+		// reachable at all while the dc-level use_sensors is true, since
+		// po2_end is otherwise unused). This way, if sensor data resumes
+		// later in the same dc, the sensor branch's carried-over po2i
+		// resumes from the last real, physically-meaningful PO2 (the
+		// bailout gas's own value) rather than being frozen at a stale
+		// pre-bailout sensor reading or left at an uninitialised 0.
+		// ccr_po2_loop's own last_sensor[] state is deliberately left
+		// untouched while a segment is skipped this way: resolve()/
+		// loop_po2.next() is simply not called for a skipped segment, so
+		// last_sensor[] stays exactly as it was when the bailout began,
+		// and next() already overwrites any stale per-channel value the
+		// instant that channel reports fresh data again
+		// ("if (o2sensor[j].mbar) last_sensor[j] = o2sensor[j]; else
+		// o2sensor[j] = last_sensor[j];", core/po2.cpp) -- there is
+		// nothing to reset, the staleness is simply never consulted
+		// while cells stay silent.
+		if (resolver.use_sensors)
+			resolver.po2_end = po2f;
 		if ((po2i > 500) || (po2f > 500)) {			// If PO2 in segment is above 500 mbar then calculate otu
 			if (po2i <= 500) {				// For descent segment with po2i <= 500 mbar ..
 				t = t * (po2f - 500) / (po2f - po2i);	// .. only consider part with PO2 > 500 mbar
@@ -188,27 +390,37 @@ static int calculate_otu(const struct dive &dive)
    to the end of the segment, assuming a constant rate of change in po2 (i.e. depth) with time. */
 static double calculate_cns_dive(const struct dive &dive)
 {
+	// This copies dcs[0] by value, unlike calculate_otu()'s reference.
+	// Left as-is to keep this PO2-resolution refactor focused on one
+	// purpose; worth fixing separately.
 	const struct divecomputer dc = dive.dcs[0];
 	double cns = 0.0;
 	double rate;
 	gasmix_loop loop_gas(dive, dc);
 	divemode_loop loop_mode(dc);
+	otu_cns_po2_resolver resolver(dive, dc);
+
 	/* Calculate the CNS for each sample in this dive and sum them */
 	for (auto [psample, sample]: pairwise_range(dc.samples)) {
 		int t = (sample.time - psample.time).seconds;
-		int po2i, po2f, po2;
-		// Use sensor[0] if available
+		int po2i, po2f = 0, po2;
 		depth_t depth = sample.depth;
 		depth_t pdepth = psample.depth;
 		[[maybe_unused]] auto [divemode, _cylinder_index, _gasmix] = get_dive_status_at(dive, dc, psample.time.seconds, &loop_mode, &loop_gas);
-		if ((dc.divemode == CCR || dc.divemode == PSCR) && psample.o2sensor[0].mbar) {
-			po2i = psample.o2sensor[0].mbar;
-			if (sample.o2sensor[0].mbar)
-				po2f = sample.o2sensor[0].mbar;
-			else
-				po2f = po2i;	// then use data from the first o2 sensor
+
+		if (resolver.segment_use_sensors(sample, divemode)) {
+			po2i = resolver.po2_end;
+			po2f = resolver.resolve(dive, sample);
+			// Average the two endpoints here, same as the OC/PSCR branch
+			// below; only the dc.divemode == CCR setpoint branch
+			// immediately below stays non-averaged, unchanged.
 			po2 = (po2f + po2i) / 2;
 		} else if (divemode == CCR) {
+			// Kept keyed on the per-sample divemode from
+			// get_dive_status_at(), not dc.divemode -- pre-existing and
+			// unchanged for the live-data case; see calculate_otu() for
+			// detail. The already-silent-cells sub-case is instead
+			// routed here by resolver.segment_use_sensors() above.
 			po2 = std::min((int) psample.setpoint.mbar,
 					dive.depth_to_mbar(pdepth));
 		} else {
@@ -224,6 +436,14 @@ static double calculate_cns_dive(const struct dive &dive)
 			}
 			po2 = (po2i + po2f) / 2;
 		}
+
+		// See calculate_otu() for the po2_end carry-across-skipped-
+		// segments and last_sensor[] non-reset rationale. Must run
+		// before the po2 <= 500 "continue" below, or a skipped
+		// (sub-threshold) segment would leave po2_end stale for the next
+		// sensor-branch segment.
+		if (resolver.use_sensors)
+			resolver.po2_end = po2f;
 
 		/* Don't increase CNS when po2 below 500 matm */
 		if (po2 <= 500)
