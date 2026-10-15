@@ -322,6 +322,18 @@ void fixup_dc_duration(struct divecomputer &dc)
 	}
 }
 
+int dc_totaltime(const struct divecomputer &dc)
+{
+	int time = dc.duration.seconds;
+
+	for (auto it = dc.samples.rbegin(); it != dc.samples.rend(); ++it) {
+		time = it->time.seconds;
+		if (it->depth.mm >= SURFACE_THRESHOLD)
+			break;
+	}
+	return time;
+}
+
 static bool operator<(const event &ev1, const event &ev2)
 {
 	return std::tie(ev1.time.seconds, ev1.name) <

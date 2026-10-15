@@ -126,6 +126,115 @@ static std::unique_ptr<dive> makeCcrSquareDive(int number, timestamp_t when, pre
 	return d;
 }
 
+/* Append extraTailSamples additional trailing surface (depth 0) samples,
+ * tailInterval seconds apart, after a dive's existing last sample (which
+ * must already be a surface sample, e.g. the final sample produced by
+ * makeSquareDive()/makeCcrSquareDive()). Real dive computers routinely keep
+ * logging like this for a while after the diver has actually surfaced;
+ * dc_totaltime()/dive::totaltime() deliberately discard all but the first
+ * of these, so varying extraTailSamples alone must never change anything
+ * derived from this dive's own end time - including what gets carried over
+ * to the next dive.
+ */
+static void appendTrailingSurfaceTail(struct dive &d, int extraTailSamples, int tailInterval)
+{
+	struct divecomputer &dc = d.dcs[0];
+	int lastTime = dc.samples.back().time.seconds;
+	for (int i = 1; i <= extraTailSamples; i++) {
+		struct sample *s = prepare_sample(&dc);
+		s->time.seconds = lastTime + i * tailInterval;
+		s->depth.mm = 0;
+	}
+}
+
+/* Regression test for the upstream report's underlying time-accounting bug:
+ * add_dive_to_deco() used to walk every raw sample of a dive, with no
+ * notion of where the dive "really" ends, while init_decompression() -
+ * right afterwards, for the very same dive - separately works out the
+ * surface interval before the next dive from dive::endtime() (which, via
+ * dc_totaltime(), deliberately discards all but the first of a dive
+ * computer's trailing surface samples). Whenever a dive computer kept
+ * logging for a while after the diver surfaced, that trailing tail was
+ * simulated twice: once (in full) by add_dive_to_deco(), and again as part
+ * of the surface segment, double-counting it as extra off-gassing applied
+ * right after surfacing - where it has the largest, and understating,
+ * effect on the Surface GF carried into the next dive.
+ *
+ * This drives the invariant directly: with a fixed real surface interval
+ * (dive 2 always starts the same fixed time after dive 1 starts), growing
+ * dive 1's trailing surface tail must not change dive 2's starting Surface
+ * GF at all, since neither dive::endtime() nor the true elapsed time
+ * between the dives depends on that tail's length.
+ */
+void TestSurfaceGf::testSurfaceTailLengthInvarianceOc()
+{
+	auto run = [&](int extraTailSamples) {
+		clear_dive_file_data();
+		prefs = default_prefs;
+		prefs.planner_deco_mode = BUEHLMANN;
+		set_gf(30, 70);
+
+		// Last in-water sample at 5390s, first (bridging) surface sample at
+		// 5400s - mirroring the shape of the upstream report's file, just
+		// with round numbers.
+		auto d1 = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 5390, 5400);
+		appendTrailingSurfaceTail(*d1, extraTailSamples, 10);
+		divelog.dives.record_dive(std::move(d1));
+
+		// Dive 2 starts a fixed 400s after dive 1 ends (per dive 1's own,
+		// tail-independent end time), regardless of how long dive 1's
+		// trailing tail is.
+		timestamp_t dive2When = divelog.dives[0]->endtime() + 400;
+		auto d2 = makeSquareDive(2, dive2When, 1013_mbar, 10_m, 30, 270, 300);
+		divelog.dives.record_dive(std::move(d2));
+
+		struct plot_info pi2 = create_plot_info_new(divelog.dives[1].get(), &divelog.dives[1]->dcs[0], nullptr);
+		return pi2.entry[0].surface_gf;
+	};
+
+	double shortTail = run(0);
+	double longTail = run(29); // adds 290s of trailing surface samples
+
+	// Sanity check: this profile has to produce meaningful residual
+	// nitrogen loading, or the regression below would pass trivially.
+	QVERIFY(shortTail > 1.0);
+	// The actual regression: the length of dive 1's trailing surface tail
+	// must not affect dive 2's starting Surface GF at all.
+	QCOMPARE(longTail, shortTail);
+}
+
+/* CCR companion to testSurfaceTailLengthInvarianceOc(): the same invariant,
+ * to pin that the fix is not divemode-specific. */
+void TestSurfaceGf::testSurfaceTailLengthInvarianceCcr()
+{
+	pressure_t setpoint = 1300_mbar;
+
+	auto run = [&](int extraTailSamples) {
+		clear_dive_file_data();
+		prefs = default_prefs;
+		prefs.planner_deco_mode = BUEHLMANN;
+		set_gf(30, 70);
+
+		auto d1 = makeCcrSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 5390, 5400,
+					     setpoint, 0, nullptr);
+		appendTrailingSurfaceTail(*d1, extraTailSamples, 10);
+		divelog.dives.record_dive(std::move(d1));
+
+		timestamp_t dive2When = divelog.dives[0]->endtime() + 400;
+		auto d2 = makeSquareDive(2, dive2When, 1013_mbar, 10_m, 30, 270, 300);
+		divelog.dives.record_dive(std::move(d2));
+
+		struct plot_info pi2 = create_plot_info_new(divelog.dives[1].get(), &divelog.dives[1]->dcs[0], nullptr);
+		return pi2.entry[0].surface_gf;
+	};
+
+	double shortTail = run(0);
+	double longTail = run(29);
+
+	QVERIFY(shortTail > 1.0);
+	QCOMPARE(longTail, shortTail);
+}
+
 /* Reproduces the exact scenario from the upstream bug report: the dive is not
  * manually added (it was downloaded, or built in the Planner), so ambient
  * pressure during the dive is, and always was, based on dcs[0]'s own recorded
