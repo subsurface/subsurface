@@ -187,6 +187,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestPlan
 	${TEST_DIVE_PLANNER_MODEL}
 	TestAirPressure
+	TestSurfaceGf
 	TestDiveSiteDuplication
 	TestRenumber
 	${TEST_PICTURE}
@@ -210,6 +211,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefUnits
 	TestQPrefUpdateManager
 	TestOstcFirmware
+	TestformatDiveGasString
 	TestQML
 	TestRuler
 	TestMobileCylinderEdit
