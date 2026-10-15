@@ -161,6 +161,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	planner.cpp
 	planner.h
 	plannernotes.cpp
+	po2.cpp
+	po2.h
 	pref.h
 	pref.cpp
 	profile.cpp
