@@ -58,6 +58,73 @@ static std::unique_ptr<dive> makeSquareDive(int number, timestamp_t when, pressu
 	return d;
 }
 
+/* Build a CCR square-profile dive directly on dcs[0]: a constant commanded
+ * setpoint throughout, and (whenever tailSensorValue is non-null) explicit
+ * per-sample O2 sensor readings tracking that setpoint, except at the final
+ * (surfaced) sample, where the readings diverge to *tailSensorValue - the
+ * way an upstream report showed a CCR loop's actually measured PO2 falling
+ * well below the still-logged commanded setpoint once the loop was no
+ * longer being actively driven. Sensor readings are stamped into the sample
+ * stream regardless of noO2Sensors, so this can also build a fixture where
+ * raw (and in reality: stray/unused) sensor data is present even though the
+ * dive computer declared no_o2sensors == 0. */
+static std::unique_ptr<dive> makeCcrSquareDive(int number, timestamp_t when, pressure_t surfacePressure,
+						depth_t depth, int descentSeconds, int bottomEndSeconds, int totalSeconds,
+						pressure_t setpoint, int noO2Sensors, const pressure_t *tailSensorValue)
+{
+	auto d = std::make_unique<dive>();
+	d->number = number;
+	d->when = when;
+
+	cylinder_t *cyl0 = d->get_or_create_cylinder(0); // diluent
+	cyl0->gasmix = gasmix_air;
+	cyl0->type.size = 3_l;
+	cyl0->type.workingpressure = 200_bar;
+	cyl0->cylinder_use = DILUENT;
+	reset_cylinders(d.get(), true);
+
+	struct divecomputer &dc = d->dcs[0];
+	dc.model = "subsurface test ccr dc";
+	dc.when = when;
+	dc.surface_pressure = surfacePressure;
+	dc.divemode = CCR;
+	dc.no_o2sensors = noO2Sensors;
+
+	auto stampSensors = [](struct sample *s, pressure_t value) {
+		for (int i = 0; i < 3; i++)
+			s->o2sensor[i].mbar = value.mbar;
+	};
+
+	struct sample *s;
+	s = prepare_sample(&dc);
+	s->time.seconds = 0;
+	s->depth.mm = 0;
+	s->setpoint.mbar = setpoint.mbar;
+	if (tailSensorValue)
+		stampSensors(s, setpoint);
+	s = prepare_sample(&dc);
+	s->time.seconds = descentSeconds;
+	s->depth.mm = depth.mm;
+	s->setpoint.mbar = setpoint.mbar;
+	if (tailSensorValue)
+		stampSensors(s, setpoint);
+	s = prepare_sample(&dc);
+	s->time.seconds = bottomEndSeconds;
+	s->depth.mm = depth.mm;
+	s->setpoint.mbar = setpoint.mbar;
+	if (tailSensorValue)
+		stampSensors(s, setpoint);
+	s = prepare_sample(&dc);
+	s->time.seconds = totalSeconds;
+	s->depth.mm = 0;
+	s->setpoint.mbar = setpoint.mbar; // the logged setpoint never changes...
+	if (tailSensorValue)
+		stampSensors(s, *tailSensorValue); // ...but the measured PO2 has dropped
+	dc.duration.seconds = totalSeconds;
+
+	return d;
+}
+
 /* Reproduces the exact scenario from the upstream bug report: the dive is not
  * manually added (it was downloaded, or built in the Planner), so ambient
  * pressure during the dive is, and always was, based on dcs[0]'s own recorded
@@ -173,6 +240,103 @@ void TestSurfaceGf::testSurfaceGfCarryover()
 	// ... and, since only 2 minutes have passed, it should still be in the
 	// same ballpark, not an unrelated, arbitrarily lower value either.
 	QVERIFY(dive2Start.surface_gf > dive1EndSurfaceGf * 0.5);
+}
+
+/* Regression test for a second, CCR/PSCR-specific defect behind the same
+ * upstream report: add_dive_to_deco() (used to carry tissue loading over to
+ * the next dive) always used the dive computer's logged, commanded setpoint,
+ * while the live profile display (fill_o2_values()/calculate_ccr_po2()) uses
+ * the actually measured, sensor-voted PO2 instead whenever the dive computer
+ * reports O2 sensor data. For a dive whose measured PO2 diverges from its
+ * commanded setpoint, the two computations disagreed about how much inert
+ * gas the diver was exposed to during the dive, producing exactly the same
+ * kind of Surface GF discontinuity across the surface interval as
+ * testSurfaceGfCarryover() guards against - just caused by the PO2 used
+ * rather than by the ambient pressure used.
+ */
+void TestSurfaceGf::testCcrPo2CarryoverSensorVsSetpoint()
+{
+	clear_dive_file_data();
+	prefs = default_prefs;
+	prefs.planner_deco_mode = BUEHLMANN;
+	set_gf(30, 70);
+
+	pressure_t setpoint = 1300_mbar;
+	// The measured PO2 at the end of the dive has dropped well below both
+	// the still-logged setpoint and ambient pressure, same as in the
+	// upstream report's CCR dive.
+	pressure_t tailSensorValue = 700_mbar;
+
+	auto d1 = makeCcrSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 540, 660,
+				     setpoint, 3, &tailSensorValue);
+	divelog.dives.record_dive(std::move(d1));
+
+	// Dive 2 starts 2 minutes after dive 1 ends.
+	timestamp_t dive2When = divelog.dives[0]->endtime() + 120;
+	auto d2 = makeSquareDive(2, dive2When, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(d2));
+
+	dive *dive1 = divelog.dives[0].get();
+	dive *dive2 = divelog.dives[1].get();
+
+	struct plot_info pi1 = create_plot_info_new(dive1, &dive1->dcs[0], nullptr);
+	QVERIFY(pi1.nr > 1);
+	double dive1EndSurfaceGf = pi1.entry[pi1.nr - 1].surface_gf;
+	QVERIFY(dive1EndSurfaceGf > 1.0);
+
+	struct plot_info pi2 = create_plot_info_new(dive2, &dive2->dcs[0], nullptr);
+	QVERIFY(pi2.nr > 1);
+
+	// As in testSurfaceGfCarryover(): a 2 minute surface interval must not
+	// raise the Surface GF above what it was at the end of the previous
+	// dive, and it should stay in the same ballpark.
+	QVERIFY(pi2.entry[0].surface_gf <= dive1EndSurfaceGf);
+	QVERIFY(pi2.entry[0].surface_gf > dive1EndSurfaceGf * 0.5);
+}
+
+/* Companion to testCcrPo2CarryoverSensorVsSetpoint(): a CCR dive computer
+ * that does not report O2 sensor data at all (no_o2sensors == 0) must keep
+ * carrying over tissue loading from its commanded setpoint only, exactly as
+ * before this fix - even if, as can happen with real dive computers, some
+ * raw O2 sensor fields are present in the sample stream without being
+ * declared as valid channels. */
+void TestSurfaceGf::testCcrPo2CarryoverSensorless()
+{
+	pressure_t setpoint = 1300_mbar;
+	pressure_t strayReading = 700_mbar;
+
+	auto run = [&](const pressure_t *sensorValue) {
+		clear_dive_file_data();
+		prefs = default_prefs;
+		prefs.planner_deco_mode = BUEHLMANN;
+		set_gf(30, 70);
+
+		auto d1 = makeCcrSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 540, 660,
+					     setpoint, 0, sensorValue);
+		divelog.dives.record_dive(std::move(d1));
+		// record_dive() -> fixup_dive() -> fixup_no_o2sensors() infers
+		// no_o2sensors from non-zero sample data whenever it was recorded
+		// as 0, which would defeat the point of this fixture. Force it back
+		// to 0 to exercise the defensive case: raw o2sensor[] data present
+		// (e.g. left over from an edit) without a declared sensor count.
+		divelog.dives[0]->dcs[0].no_o2sensors = 0;
+		timestamp_t dive2When = divelog.dives[0]->endtime() + 120;
+		auto d2 = makeSquareDive(2, dive2When, 1013_mbar, 10_m, 30, 270, 300);
+		divelog.dives.record_dive(std::move(d2));
+
+		struct plot_info pi2 = create_plot_info_new(divelog.dives[1].get(), &divelog.dives[1]->dcs[0], nullptr);
+		return pi2.entry[0].surface_gf;
+	};
+
+	double withoutStrayData = run(nullptr);
+	double withStrayData = run(&strayReading);
+
+	// Sanity check: the setpoint-only carry-over still has to produce
+	// meaningful residual nitrogen loading.
+	QVERIFY(withoutStrayData > 1.0);
+	// The whole point: no_o2sensors == 0 must ignore whatever happens to be
+	// in o2sensor[], exactly like before this fix.
+	QCOMPARE(withStrayData, withoutStrayData);
 }
 
 QTEST_GUILESS_MAIN(TestSurfaceGf)
