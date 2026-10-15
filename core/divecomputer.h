@@ -64,6 +64,15 @@ struct divecomputer {
 extern void fake_dc(struct divecomputer *dc);
 extern void free_dc_contents(struct divecomputer *dc);
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);
+/*
+ * "dc_totaltime()" is how much total time this dive computer
+ * has for this dive. Note that it can differ from "duration"
+ * if there are surface events in the middle.
+ *
+ * Still, we do ignore all but the last surface samples from the
+ * end, because some divecomputers just generate lots of them.
+ */
+extern int dc_totaltime(const struct divecomputer &dc);
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void append_sample(const struct sample &sample, struct divecomputer *dc);
 extern std::set<int16_t> get_tank_sensor_ids(const struct divecomputer &dc);

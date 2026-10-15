@@ -2381,26 +2381,6 @@ std::unique_ptr<dive> dive::create_merged_dive(const struct dive &a, const struc
 }
 
 /*
- * "dc_maxtime()" is how much total time this dive computer
- * has for this dive. Note that it can differ from "duration"
- * if there are surface events in the middle.
- *
- * Still, we do ignore all but the last surface samples from the
- * end, because some divecomputers just generate lots of them.
- */
-static inline int dc_totaltime(const struct divecomputer &dc)
-{
-	int time = dc.duration.seconds;
-
-	for (auto it = dc.samples.rbegin(); it != dc.samples.rend(); ++it) {
-		time = it->time.seconds;
-		if (it->depth.mm >= SURFACE_THRESHOLD)
-			break;
-	}
-	return time;
-}
-
-/*
  * The end of a dive is actually not trivial, because "duration"
  * is not the duration until the end, but the time we spend under
  * water, which can be very different if there are surface events

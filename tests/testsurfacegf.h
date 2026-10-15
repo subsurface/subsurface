@@ -10,6 +10,8 @@ private slots:
 	void initTestCase();
 	void testSurfacePressureConsistency();
 	void testSurfaceGfCarryover();
+	void testSurfaceTailLengthInvarianceOc();
+	void testSurfaceTailLengthInvarianceCcr();
 	void testCcrPo2CarryoverSensorVsSetpoint();
 	void testCcrPo2CarryoverSensorless();
 	void testCcrPo2VotingSparseSensors();
