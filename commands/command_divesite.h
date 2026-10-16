@@ -153,6 +153,18 @@ private:
 	taxonomy_data value; // Value to be set
 };
 
+class EditDiveSiteMarker : public Base {
+public:
+	EditDiveSiteMarker(dive_site *ds, bool alpha_flag);
+private:
+	bool workToBeDone() override;
+	void undo() override;
+	void redo() override;
+
+	dive_site *ds;
+	bool value; // Value to be set
+};
+
 class MergeDiveSites : public Base {
 public:
 	MergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites);

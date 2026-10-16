@@ -624,6 +624,8 @@ static void save_one_dive_site(struct membuffer *b, const struct dive_site &ds, 
 	show_utf8_blanked(b, ds.name.c_str(), " name='", "'", 1, anonymize);
 	put_location(b, &ds.location, " gps='", "'");
 	show_utf8_blanked(b, ds.description.c_str(), " description='", "'", 1, anonymize);
+	if (ds.alpha_flag)
+		put_format(b, " marker='alpha'");
 	put_format(b, ">\n");
 	show_utf8_blanked(b, ds.notes.c_str(), "  <notes>", " </notes>\n", 0, anonymize);
 	for (const auto &t: ds.taxonomy) {

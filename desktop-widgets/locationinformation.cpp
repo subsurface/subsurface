@@ -21,6 +21,8 @@
 
 #include <QShowEvent>
 #include <QItemSelectionModel>
+#include <QIcon>
+#include <QSignalBlocker>
 #include <qmessagebox.h>
 #include <cstdlib>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
@@ -50,6 +52,20 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteListView->setModel(&filter_model);
 	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
 	ui.diveSiteListView->installEventFilter(this);
+
+	QSize markerIconSize(32, 32);
+	ui.markerRedWhite->setIcon(QIcon(":dive-location-marker-icon"));
+	ui.markerRedWhite->setIconSize(markerIconSize);
+	ui.markerAlpha->setIcon(QIcon(":dive-location-marker-alpha-icon"));
+	ui.markerAlpha->setIconSize(markerIconSize);
+	connect(ui.markerRedWhite, &QRadioButton::toggled, this, [this](bool checked) {
+		if (checked && diveSite)
+			Command::editDiveSiteMarker(diveSite, false);
+	});
+	connect(ui.markerAlpha, &QRadioButton::toggled, this, [this](bool checked) {
+		if (checked && diveSite)
+			Command::editDiveSiteMarker(diveSite, true);
+	});
 }
 
 void LocationInformationWidget::keyPressEvent(QKeyEvent *e)
@@ -154,6 +170,18 @@ void LocationInformationWidget::updateLabels()
 	coordinatesSetWarning(false);
 
 	ui.locationTags->setText(QString::fromStdString(taxonomy_get_location_tags(diveSite->taxonomy, false)));
+	updateMarkerButtons();
+}
+
+void LocationInformationWidget::updateMarkerButtons()
+{
+	QSignalBlocker blockRedWhite(ui.markerRedWhite);
+	QSignalBlocker blockAlpha(ui.markerAlpha);
+	bool alpha = diveSite && diveSite->alpha_flag;
+	ui.markerAlpha->setChecked(alpha);
+	ui.markerRedWhite->setChecked(!alpha);
+	ui.markerRedWhite->setEnabled(diveSite != nullptr);
+	ui.markerAlpha->setEnabled(diveSite != nullptr);
 }
 
 void LocationInformationWidget::unitsChanged()
@@ -196,6 +224,9 @@ void LocationInformationWidget::diveSiteChanged(struct dive_site *ds, int field)
 		}
 		coordinatesSetWarning(false);
 		return;
+	case LocationInformationModel::MARKER:
+		updateMarkerButtons();
+		return;
 	default:
 		return;
 	}
@@ -210,6 +241,7 @@ void LocationInformationWidget::clearLabels()
 	ui.diveSiteCoordinates->clear();
 	coordinatesSetWarning(false);
 	ui.locationTags->clear();
+	updateMarkerButtons();
 }
 
 // Parse GPS text into location_t
