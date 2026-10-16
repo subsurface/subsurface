@@ -1,0 +1,46 @@
+<!-- AI-generated (Claude) -->
+<divelog program='subsurface' version='3'>
+  <settings/>
+<divesites></divesites>
+<dives>
+<dive number='1' date='2026-01-01' time='10:00:00' duration='2:00 min'>
+  <cylinder size='12.0 l' workpressure='232.0 bar' description='AL80' o2='32.0%' />
+  <cylinder size='7.0 l' workpressure='232.0 bar' description='Stage' o2='50.0%' />
+  <divecomputer model='Test'>
+  <depth max='10.0 m' mean='5.0 m' />
+  <sample time='0:00 min' depth='0.0 m' pressure0='200.0 bar' pressure1='190.0 bar' />
+  <sample time='1:00 min' depth='10.0 m' pressure0='150.0 bar' />
+  <sample time='2:00 min' depth='0.0 m' pressure0='100.0 bar' pressure1='170.0 bar' />
+  </divecomputer>
+</dive>
+<dive number='2' date='2026-01-02' time='10:00:00' duration='2:00 min'>
+  <cylinder size='12.0 l' workpressure='232.0 bar' description='AL80' o2='32.0%' />
+  <cylinder size='7.0 l' workpressure='232.0 bar' description='Stage' o2='50.0%' />
+  <divecomputer model='Test'>
+  <depth max='10.0 m' mean='5.0 m' />
+  <tanksensormapping sensorid='1' cylinderindex='0' />
+  <tanksensormapping sensorid='0' cylinderindex='1' />
+  <sample time='0:00 min' depth='0.0 m' pressure0='190.0 bar' pressure1='210.0 bar' />
+  <sample time='2:00 min' depth='0.0 m' pressure0='180.0 bar' pressure1='60.0 bar' />
+  </divecomputer>
+</dive>
+<dive number='3' date='2026-01-03' time='10:00:00' duration='2:00 min'>
+  <cylinder size='12.0 l' workpressure='232.0 bar' description='AL80' o2='21.0%' />
+  <divecomputer model='Test'>
+  <depth max='10.0 m' mean='5.0 m' />
+  <tanksensormapping sensorid='-1' cylinderindex='0' />
+  <sample time='0:00 min' depth='0.0 m' pressure0='200.0 bar' />
+  <sample time='2:00 min' depth='0.0 m' pressure0='100.0 bar' />
+  </divecomputer>
+</dive>
+<dive number='4' date='2026-01-04' time='10:00:00' duration='2:00 min'>
+  <cylinder size='12.0 l' workpressure='232.0 bar' description='AL80' o2='21.0%' start='210.0 bar' end='55.0 bar' />
+  <cylinder size='7.0 l' workpressure='232.0 bar' description='Stage' o2='50.0%' />
+  <divecomputer model='Test'>
+  <depth max='10.0 m' mean='5.0 m' />
+  <sample time='0:00 min' depth='0.0 m' pressure='200.0 bar' />
+  <sample time='2:00 min' depth='0.0 m' pressure='120.0 bar' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

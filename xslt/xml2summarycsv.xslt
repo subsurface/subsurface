@@ -2,12 +2,12 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xt="http://www.jclark.com/xt"
   extension-element-prefixes="xt" version="1.0">
+  <xsl:include href="commonTemplates.xsl"/>
   <xsl:strip-space elements="*"/>
   <xsl:param name="units" select="units"/>
   <xsl:output method="text" encoding="utf-8"/>
 
   <xsl:variable name="fs" select="','"/>
-  <xsl:variable name="quote" select="'&quot;'"/>
   <xsl:variable name="lf" select="'&#xa;'"/>
 
   <xsl:template name="EscapeQuotes">
@@ -193,7 +193,20 @@
       </xsl:call-template>
       <xsl:value-of select="$fs"/>
 
-      <xsl:variable name="pressureAttribute" select="concat('pressure', position() - 1)"/>
+      <!-- AI-generated (Claude) -->
+      <xsl:variable name="sensorstart">
+        <xsl:call-template name="tankSensorPressure">
+          <xsl:with-param name="dc" select="../divecomputer[1]"/>
+          <xsl:with-param name="cylinder" select="position() - 1"/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:variable name="sensorend">
+        <xsl:call-template name="tankSensorPressure">
+          <xsl:with-param name="dc" select="../divecomputer[1]"/>
+          <xsl:with-param name="cylinder" select="position() - 1"/>
+          <xsl:with-param name="last" select="true()"/>
+        </xsl:call-template>
+      </xsl:variable>
       <xsl:call-template name="CsvEscape">
         <xsl:with-param name="value">
           <xsl:choose>
@@ -202,14 +215,9 @@
                 <xsl:with-param name="pressureBar" select="@start"/>
               </xsl:call-template>
             </xsl:when>
-            <xsl:when test="substring-before(../divecomputer[1]/sample/@*[name() = $pressureAttribute], ' ') > 0">
+            <xsl:when test="substring-before($sensorstart, ' ') > 0">
               <xsl:call-template name="ConvertPressure">
-                <xsl:with-param name="pressureBar" select="../divecomputer[1]/sample/@*[name() = $pressureAttribute]"/>
-              </xsl:call-template>
-            </xsl:when>
-            <xsl:when test="(position() = 1) and (substring-before(../divecomputer[1]/sample/@pressure, ' ') > 0)">
-              <xsl:call-template name="ConvertPressure">
-                <xsl:with-param name="pressureBar" select="../divecomputer[1]/sample/@pressure"/>
+                <xsl:with-param name="pressureBar" select="$sensorstart"/>
               </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
@@ -228,14 +236,9 @@
                 <xsl:with-param name="pressureBar" select="@end"/>
               </xsl:call-template>
             </xsl:when>
-            <xsl:when test="substring-before(../divecomputer[1]/sample[@*[name() = $pressureAttribute]][last()]/@*[name() = $pressureAttribute], ' ') > 0">
+            <xsl:when test="substring-before($sensorend, ' ') > 0">
               <xsl:call-template name="ConvertPressure">
-                <xsl:with-param name="pressureBar" select="../divecomputer[1]/sample[@*[name() = $pressureAttribute]][last()]/@*[name() = $pressureAttribute]"/>
-              </xsl:call-template>
-            </xsl:when>
-            <xsl:when test="(position() = 1) and (substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure, ' ') > 0)">
-              <xsl:call-template name="ConvertPressure">
-                <xsl:with-param name="pressureBar" select="../divecomputer[1]/sample[@pressure][last()]/@pressure"/>
+                <xsl:with-param name="pressureBar" select="$sensorend"/>
               </xsl:call-template>
             </xsl:when>
             <xsl:otherwise>
