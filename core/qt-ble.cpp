@@ -89,6 +89,11 @@ static bool is_garmin(const device_data_t &d)
 	return d.vendor == "Garmin";
 }
 
+static bool is_halcyon(const device_data_t &d)
+{
+	return d.vendor == "Halcyon";
+}
+
 void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
 	if (verbose > 2 || debugCounter < DEBUG_THRESHOLD)
@@ -658,7 +663,7 @@ static bool looks_like_random_address(const char *devaddr)
 
 static int use_random_address(const device_data_t &user_device, const char *devaddr)
 {
-	return is_shearwater(user_device) || is_garmin(user_device) || looks_like_random_address(devaddr);
+	return is_shearwater(user_device) || is_garmin(user_device) || is_halcyon(user_device) || looks_like_random_address(devaddr);
 }
 #endif
 
