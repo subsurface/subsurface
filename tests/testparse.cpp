@@ -628,6 +628,19 @@ void TestParse::importUDDF()
 		     SUBSURFACE_TEST_DATA "/dives/test-42-uddf-import-reference.xml");
 }
 
+// Regression coverage for importing a UDDF waypoint where <alarm> precedes
+// its own <divetime> (the order Subsurface's own UDDF export uses throughout):
+// the alarm's event time must still be picked up via the following-sibling
+// fallback, not silently dropped to 0.
+void TestParse::importUDDFEvents()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test-uddf-export-events.uddf", &divelog);
+
+	QCOMPARE(save_dives("./testuddfeventsimport.xml"), 0);
+	FILE_COMPARE("./testuddfeventsimport.xml",
+		     SUBSURFACE_TEST_DATA "/dives/test-uddf-export-events-import-reference.xml");
+}
+
 void TestParse::exportDiveLogsDE()
 {
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
@@ -682,6 +695,118 @@ void TestParse::importApdInspirationUddf()
 	QCOMPARE(save_dives("./testapdinspiration.xml"), 0);
 	FILE_COMPARE("./testapdinspiration.xml",
 		     SUBSURFACE_TEST_DATA "/dives/test-apd-inspiration-reference.xml");
+}
+
+// AI-generated (Claude): Regression coverage for namespace normalisation in
+// test_xslt_transforms(). test-uddf-ccr-3.2.uddf and test-uddf-ccr-3.1.uddf
+// declare the UDDF default namespace on the root element (3.2 and 3.1
+// respectively) and are otherwise byte-identical; a CCR dive with a mid-dive
+// switch to open circuit on a bailout gas must import exactly the same way
+// in both namespaces, matching what an un-namespaced UDDF file already does.
+void TestParse::importUddfCcrNamespace32()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test-uddf-ccr-3.2.uddf", &divelog);
+
+	QCOMPARE(save_dives("./testuddfccrnamespace32.xml"), 0);
+	FILE_COMPARE("./testuddfccrnamespace32.xml",
+		     SUBSURFACE_TEST_DATA "/dives/test-uddf-ccr-reference.xml");
+}
+
+void TestParse::importUddfCcrNamespace31()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test-uddf-ccr-3.1.uddf", &divelog);
+
+	QCOMPARE(save_dives("./testuddfccrnamespace31.xml"), 0);
+	FILE_COMPARE("./testuddfccrnamespace31.xml",
+		     SUBSURFACE_TEST_DATA "/dives/test-uddf-ccr-reference.xml");
+}
+
+// AI-generated (Claude): Boundary coverage for the namespace shape check in
+// xml_ns_has_prefix()/looks_like_uddf_version_suffix() (core/parse-xml.cpp).
+// test-uddf-non-version-namespace.uddf is test-uddf-ccr-3.2.uddf with its
+// namespace changed to "http://www.streit.cc/uddf/not-a-version/": it shares
+// the UDDF URI string prefix but its suffix is not shaped like a version
+// number, so it must not be recognised/stripped as a UDDF namespace. Since
+// uddf.xslt only matches un-prefixed (or known-namespace) paths, the dive
+// stays namespaced and import of this file silently finds no dive.
+void TestParse::importUddfNonVersionNamespaceIsNotStripped()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test-uddf-non-version-namespace.uddf", &divelog);
+
+	QCOMPARE(divelog.dives.size(), 0);
+}
+
+// AI-generated (Claude): Return the "duration" attribute of the first <dive>
+// in the intermediate XML that xslt/uddf.xslt produces for filename, i.e. the
+// stylesheet's raw output before fixup_dc_duration() (core/divecomputer.cpp)
+// runs. Applies the stylesheet via test_xslt_transforms(), the same dispatch
+// parse_xml_buffer() uses before traversing the document (including any
+// namespace normalisation uddf.xslt relies on), so this reflects exactly
+// what a UDDF import feeds to the parser.
+static QString uddfTransformedDiveDuration(const char *filename)
+{
+	xmlDoc *input = xmlReadFile(filename, NULL, XML_PARSE_HUGE);
+	if (!input)
+		return QString();
+	xmlDoc *transformed = test_xslt_transforms(input, NULL);
+	if (!transformed)
+		return QString();
+
+	xmlChar *duration = nullptr;
+	xmlNode *root = xmlDocGetRootElement(transformed);
+	for (xmlNode *n = root ? xmlFirstElementChild(root) : nullptr; n; n = xmlNextElementSibling(n)) {
+		if (strcmp((const char *)n->name, "dives") != 0)
+			continue;
+		for (xmlNode *dive = xmlFirstElementChild(n); dive; dive = xmlNextElementSibling(dive)) {
+			if (strcmp((const char *)dive->name, "dive") == 0) {
+				duration = xmlGetProp(dive, (const xmlChar *)"duration");
+				break;
+			}
+		}
+		break;
+	}
+
+	QString result = duration ? QString::fromUtf8((const char *)duration) : QString();
+	xmlFree(duration);
+	xmlFreeDoc(transformed);
+	return result;
+}
+
+// AI-generated (Claude): Regression coverage for an XPath 1.0 node-set-to-number
+// pitfall in xslt/uddf.xslt's weight and duration selections. Comparing a
+// node-set to a number (the surrounding <xsl:if> tests) is existential across
+// every node in the set, but converting a node-set to a number (what
+// format-number()/value-of do to produce the output value) uses only the
+// string-value of the first node in document order. test-uddf-zero-before-
+// positive.uddf puts a zero-valued alternative earlier in document order than
+// a positive-valued one for both the weight union
+// (informationbeforedive/equipmentused/leadquantity = 0, before
+// informationafterdive/equipmentused/leadquantity = 4) and the duration union
+// (dive_duration = 0, before informationafterdive/diveduration = 300): taking
+// the first node unconditionally would silently import a 0.0 kg weight and a
+// 0:00 min duration instead of the real 4.0 kg / 5:00 min.
+void TestParse::importUddfZeroBeforePositive()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test-uddf-zero-before-positive.uddf", &divelog);
+
+	// This round-trip genuinely exercises the weight-union fix (nothing
+	// overwrites weightsystem data after import), but NOT the
+	// duration-union fix: fixup_dc_duration() (core/divecomputer.cpp)
+	// unconditionally recomputes dc.duration.seconds from the dive's
+	// sample depths/times on every import, discarding whatever duration
+	// the stylesheet selected. This fixture's sample profile happens to
+	// independently recompute to the same 300s/"5:00 min" regardless of
+	// whether the duration-union fix is applied, so comparing against the
+	// saved-and-reloaded dive below would pass even with that half of the
+	// fix fully reverted.
+	QCOMPARE(save_dives("./testuddfzerobeforepositive.xml"), 0);
+	FILE_COMPARE("./testuddfzerobeforepositive.xml",
+		     SUBSURFACE_TEST_DATA "/dives/test-uddf-zero-before-positive-reference.xml");
+
+	// Assert on the stylesheet's raw, pre-fixup output instead, which is
+	// the only place the duration-union fix is actually observable.
+	QCOMPARE(uddfTransformedDiveDuration(SUBSURFACE_TEST_DATA "/dives/test-uddf-zero-before-positive.uddf"),
+		 QString("5:00 min"));
 }
 
 void TestParse::importDlfFreedomV1()

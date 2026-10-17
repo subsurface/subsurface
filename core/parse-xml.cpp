@@ -41,8 +41,6 @@
 
 int last_xml_version = -1;
 
-static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params);
-
 static void divedate(const char *buffer, timestamp_t *when, struct parser_state *state)
 {
 	int d, m, y;
@@ -1780,28 +1778,136 @@ static struct xslt_files {
 	const char *root;
 	const char *file;
 	const char *attribute;
+	// URI prefix of a namespace that has to be stripped from the parsed
+	// document before the stylesheet runs, or NULL if none needs to be.
+	// UDDF producers inconsistently declare a version-specific default
+	// namespace (http://www.streit.cc/uddf/3.0|3.1|3.2/) on the root
+	// element; uddf.xslt only matches a handful of paths in each of
+	// those namespaces (see the u:/u1: prefixes below) and silently
+	// drops everything else, so normalise the namespace away up front
+	// instead of chasing every variant throughout the stylesheet.
+	// xml_ns_has_prefix() below additionally requires the remainder after
+	// this prefix to look like a UDDF version number, so it only strips
+	// genuine UDDF namespaces, not an unrelated one that merely shares
+	// this URI prefix.
+	const char *strip_ns_prefix;
 } xslt_files[] = {
-	  { "SUUNTO", "SuuntoSDM.xslt", NULL },
-	  { "Dive", "SuuntoDM4.xslt", "xmlns" },
-	  { "Dive", "shearwater.xslt", "version" },
-	  { "JDiveLog", "jdivelog2subsurface.xslt", NULL },
-	  { "dives", "MacDive.xslt", NULL },
-	  { "DIVELOGSDATA", "divelogs.xslt", NULL },
-	  { "uddf", "uddf.xslt", NULL },
-	  { "UDDF", "uddf.xslt", NULL },
-	  { "profile", "udcf.xslt", NULL },
-	  { "Divinglog", "DivingLog.xslt", NULL },
-	  { "csv", "csv2xml.xslt", NULL },
-	  { "sensuscsv", "sensuscsv.xslt", NULL },
-	  { "SubsurfaceCSV", "subsurfacecsv.xslt", NULL },
-	  { "manualcsv", "manualcsv2xml.xslt", NULL },
-	  { "logbook", "DiveLog.xslt", NULL },
-	  { "AV1", "av1.xslt", NULL },
-	  { "exportTrak", "Mares.xslt", NULL },
+	  { "SUUNTO", "SuuntoSDM.xslt", NULL, NULL },
+	  { "Dive", "SuuntoDM4.xslt", "xmlns", NULL },
+	  { "Dive", "shearwater.xslt", "version", NULL },
+	  { "JDiveLog", "jdivelog2subsurface.xslt", NULL, NULL },
+	  { "dives", "MacDive.xslt", NULL, NULL },
+	  { "DIVELOGSDATA", "divelogs.xslt", NULL, NULL },
+	  { "uddf", "uddf.xslt", NULL, "http://www.streit.cc/uddf/" },
+	  { "UDDF", "uddf.xslt", NULL, "http://www.streit.cc/uddf/" },
+	  { "profile", "udcf.xslt", NULL, NULL },
+	  { "Divinglog", "DivingLog.xslt", NULL, NULL },
+	  { "csv", "csv2xml.xslt", NULL, NULL },
+	  { "sensuscsv", "sensuscsv.xslt", NULL, NULL },
+	  { "SubsurfaceCSV", "subsurfacecsv.xslt", NULL, NULL },
+	  { "manualcsv", "manualcsv2xml.xslt", NULL, NULL },
+	  { "logbook", "DiveLog.xslt", NULL, NULL },
+	  { "AV1", "av1.xslt", NULL, NULL },
+	  { "exportTrak", "Mares.xslt", NULL, NULL },
 	  { NULL, }
   };
 
-static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params)
+// Is suffix (the part of a namespace URI after strip_ns_prefix) shaped like a
+// UDDF version number, i.e. one or more dot-separated groups of digits
+// followed by a trailing slash and nothing else (e.g. "3.0/", "3.1/", "3.2/",
+// or a not-yet-released "3.3/", "4.0/", ...)? Checking the shape, rather than
+// matching specific version numbers, means a future UDDF release keeps being
+// recognised without a code change, while a namespace that merely happens to
+// share the same string prefix (e.g. a typo'd "uddfimposter" producer, or an
+// unrelated namespace nested under the same URI) is not mistaken for UDDF.
+static bool looks_like_uddf_version_suffix(const char *suffix)
+{
+	bool have_digit = false;
+	for (; *suffix; suffix++) {
+		if (isdigit((unsigned char)*suffix)) {
+			have_digit = true;
+		} else if (*suffix == '.') {
+			if (!have_digit)
+				return false;
+			have_digit = false;
+		} else if (*suffix == '/' && suffix[1] == '\0') {
+			return have_digit;
+		} else {
+			return false;
+		}
+	}
+	return false;
+}
+
+static bool xml_ns_has_prefix(const xmlNs *ns, const char *prefix)
+{
+	if (!ns || !ns->href || strncmp((const char *)ns->href, prefix, strlen(prefix)) != 0)
+		return false;
+	return looks_like_uddf_version_suffix((const char *)ns->href + strlen(prefix));
+}
+
+// First pass of the namespace strip: detach every element's and attribute's
+// namespace pointer that matches prefix. This has to happen, and complete,
+// before any xmlNs declaration is freed below, since several elements can
+// share a pointer to the same xmlNs (it is normally declared once, on the
+// root element, and inherited from there).
+static void clear_xml_ns_refs(xmlNode *node, const char *prefix)
+{
+	for (; node; node = node->next) {
+		if (node->type != XML_ELEMENT_NODE)
+			continue;
+		if (xml_ns_has_prefix(node->ns, prefix))
+			node->ns = NULL;
+		for (xmlAttr *attr = node->properties; attr; attr = attr->next) {
+			if (xml_ns_has_prefix(attr->ns, prefix))
+				attr->ns = NULL;
+		}
+		clear_xml_ns_refs(node->children, prefix);
+	}
+}
+
+// Second pass of the namespace strip: now that nothing points at them any
+// more, unlink and free the matching namespace declarations themselves.
+static void free_xml_ns_defs(xmlNode *node, const char *prefix)
+{
+	for (; node; node = node->next) {
+		if (node->type != XML_ELEMENT_NODE)
+			continue;
+		xmlNs *prev = NULL;
+		xmlNs *ns = node->nsDef;
+		while (ns) {
+			xmlNs *next = ns->next;
+			if (xml_ns_has_prefix(ns, prefix)) {
+				if (prev)
+					prev->next = next;
+				else
+					node->nsDef = next;
+				ns->next = NULL;
+				xmlFreeNs(ns);
+			} else {
+				prev = ns;
+			}
+			ns = next;
+		}
+		free_xml_ns_defs(node->children, prefix);
+	}
+}
+
+// Strip every namespace whose URI starts with prefix from doc, so that an
+// un-prefixed XSLT stylesheet matches elements regardless of whether the
+// producer declared a namespace. Scoped to a URI prefix (rather than
+// stripping all namespaces) so it only touches the importer(s) that opt in
+// via xslt_files[].strip_ns_prefix.
+static void strip_xml_namespace(xmlDoc *doc, const char *prefix)
+{
+	xmlNode *root_element = xmlDocGetRootElement(doc);
+	if (!root_element)
+		return;
+	clear_xml_ns_refs(root_element, prefix);
+	free_xml_ns_defs(root_element, prefix);
+}
+
+xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params)
 {
 	struct xslt_files *info = xslt_files;
 	xmlDoc *transformed;
@@ -1836,6 +1942,8 @@ static xmlDoc *test_xslt_transforms(xmlDoc *doc, const struct xml_params *params
 			}
 			xmlFree(attribute);
 		}
+		if (info->strip_ns_prefix)
+			strip_xml_namespace(doc, info->strip_ns_prefix);
 		xslt = get_stylesheet(info->file);
 		if (xslt == NULL) {
 			report_error(translate("gettextFromC", "Can't open stylesheet %s"), info->file);

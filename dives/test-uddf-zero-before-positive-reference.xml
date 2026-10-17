@@ -1,0 +1,22 @@
+<divelog program='subsurface' version='3'>
+<settings>
+</settings>
+<divesites>
+</divesites>
+<dives>
+<dive number='1' date='2024-05-01' time='09:00:00' duration='5:00 min'>
+  <cylinder description='air' />
+  <weightsystem weight='4.0 kg' description='unknown' />
+  <divecomputer model='Subsurface Test' deviceid='d0ae84c9'>
+  <depth max='20.0 m' mean='10.0 m' />
+  <extradata key='Generator' value='Subsurface Test' />
+  <extradata key='Generator Version' value='1' />
+  <extradata key='Serial' value='000000' />
+  <extradata key='Unit dive number' value='1' />
+  <sample time='0:00 min' depth='0.0 m' />
+  <sample time='2:30 min' depth='20.0 m' />
+  <sample time='5:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>

@@ -41,11 +41,16 @@ private slots:
 	void exportDiveSitesXML();
 	void exportKML();
 	void importUDDF();
+	void importUDDFEvents();
 	void exportDiveLogsDE();
 
 	void parseDL7();
 
 	void importApdInspirationUddf();
+	void importUddfCcrNamespace32();
+	void importUddfCcrNamespace31();
+	void importUddfNonVersionNamespaceIsNotStripped();
+	void importUddfZeroBeforePositive();
 
 	void importDlfFreedomV1();
 	void importDlfLibertyV1();
