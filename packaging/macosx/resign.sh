@@ -14,10 +14,13 @@ croak() {
 if [[ "$1" == "" || ! -d "$1" || ! -d "$1/Subsurface.app/Contents/MacOS" ]] ; then
 	croak "$1 doesn't look like a mounted Subsurface DMG"
 fi
-if [[ "$2" == "" || ! -d "$2" ]] ; then
-	mkdir -p "$2" || croak "can't create $2 as output directory"
-	WORKING=$( cd "$2" && pwd )
+if [[ "$2" == "" ]] ; then
+	croak "missing working directory"
 fi
+if [[ ! -d "$2" ]] ; then
+	mkdir -p "$2" || croak "can't create $2 as output directory"
+fi
+WORKING=$( cd "$2" && pwd )
 [[ "$3" == "" ]] && croak "missing a version argument"
 VERSION="$3"
 
@@ -25,6 +28,7 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd ../../.. && pwd )
 
 DMGCREATE=create-dmg
 
+rm -rf "$WORKING"/staging
 mkdir "$WORKING"/staging
 cd "$WORKING"
 pushd staging
