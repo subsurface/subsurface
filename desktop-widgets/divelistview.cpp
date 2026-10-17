@@ -67,9 +67,21 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent),
 
 	for (int i = DiveTripModelBase::NR; i < DiveTripModelBase::COLUMNS; i++)
 		calculateInitialColumnWidth(i);
+	QSettings s;
+	s.beginGroup("DiveListColumnState");
+	QVector<bool> restored(header()->count(), false);
+	int visual = 0;
+	for (const QVariant &value: s.value("columnOrder").toList()) {
+		bool valid;
+		int logical = value.toInt(&valid);
+		if (!valid || logical < 0 || logical >= restored.size() || restored[logical])
+			continue;
+		header()->moveSection(header()->visualIndex(logical), visual++);
+		restored[logical] = true;
+	}
+	s.endGroup();
 	setColumnWidths();
 
-	QSettings s;
 	s.beginGroup("DiveListColumnState");
 	for (int i = 0; i < model()->columnCount(); i++) {
 		QString title = QStringLiteral("%1").arg(model()->headerData(i, Qt::Horizontal).toString());
@@ -112,6 +124,13 @@ DiveListView::~DiveListView()
 			settings.setValue(QStringLiteral("colwidth%1").arg(i), columnWidth(i));
 	}
 	settings.remove(QStringLiteral("colwidth%1").arg(DiveTripModelBase::COLUMNS - 1));
+	settings.endGroup();
+
+	settings.beginGroup("DiveListColumnState");
+	QVariantList columnOrder;
+	for (int visual = 0; visual < header()->count(); visual++)
+		columnOrder.append(header()->logicalIndex(visual));
+	settings.setValue("columnOrder", columnOrder);
 	settings.endGroup();
 }
 
@@ -198,11 +217,15 @@ void DiveListView::setColumnWidths()
 
 int DiveListView::lastVisibleColumn()
 {
-	int lastColumn = -1;
+	int lastColumn = -1, lastVisual = -1;
 	for (int i = DiveTripModelBase::NR; i < DiveTripModelBase::COLUMNS; i++) {
 		if (isColumnHidden(i))
 			continue;
-		lastColumn = i;
+		int visual = header()->visualIndex(i);
+		if (visual > lastVisual) {
+			lastColumn = i;
+			lastVisual = visual;
+		}
 	}
 	return lastColumn;
 }

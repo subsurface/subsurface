@@ -3066,6 +3066,8 @@ header bar of the *Dive List*, bringing up a list of columns
 that can be shown in the dive list (see above). Check an items to be included in the *Dive List*.
 The list is immediately updated. Preferences for information
 shown in the *Dive List* are saved and used when _Subsurface_ is re-opened.
+Drag a column header to change its position, or drag the edge between headers
+to change a column's width. These changes are also kept when _Subsurface_ is re-opened.
 
 [[S_Photos_divelist]]
 
