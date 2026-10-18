@@ -3,6 +3,7 @@
 #include "core/downloadfromdcthread.h" // for fill_computer_list
 #include "core/errorhelper.h"
 #include "core/parse.h"
+#include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/settings/qPref.h"
 #include "core/tag.h"
@@ -37,6 +38,7 @@ int main(int argc, char **argv)
 
 	// supporting BT makes sense when used with an iPhone and an rfcomm BT device?
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
+	init_bluez_le_backend();
 
 	bool no_filenames = true;
 	std::unique_ptr<QCoreApplication> app(new QCoreApplication(argc, argv));

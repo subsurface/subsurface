@@ -44,6 +44,7 @@ int main(int argc, char **argv)
 
 	bool no_filenames = true;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
+	init_bluez_le_backend();
 	std::unique_ptr<QApplication> app(new QApplication(argc, argv));
 	std::vector<std::string> files;
 	std::vector<std::string> importedFiles;

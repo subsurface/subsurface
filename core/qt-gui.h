@@ -2,6 +2,7 @@
 #ifndef QT_GUI_H
 #define QT_GUI_H
 
+void init_bluez_le_backend();
 void init_qt_late();
 void init_ui();
 
