@@ -113,9 +113,10 @@ DiveListView::~DiveListView()
 {
 	QSettings settings;
 	settings.beginGroup("ListWidget");
-	// don't set a width for the last column - location is supposed to be "the rest"
-	for (int i = DiveTripModelBase::NR; i < DiveTripModelBase::COLUMNS - 1; i++) {
-		if (isColumnHidden(i))
+	// The rightmost visible column stretches to fill the remaining space.
+	int stretchedColumn = lastVisibleColumn();
+	for (int i = DiveTripModelBase::NR; i < DiveTripModelBase::COLUMNS; i++) {
+		if (isColumnHidden(i) || i == stretchedColumn)
 			continue;
 		// we used to hardcode them all to 100 - so that might still be in the settings
 		if (columnWidth(i) == 100 || columnWidth(i) == initialColumnWidths[i])
@@ -123,7 +124,7 @@ DiveListView::~DiveListView()
 		else
 			settings.setValue(QStringLiteral("colwidth%1").arg(i), columnWidth(i));
 	}
-	settings.remove(QStringLiteral("colwidth%1").arg(DiveTripModelBase::COLUMNS - 1));
+	settings.remove(QStringLiteral("colwidth%1").arg(stretchedColumn));
 	settings.endGroup();
 
 	settings.beginGroup("DiveListColumnState");
