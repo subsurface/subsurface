@@ -61,7 +61,7 @@ static std::string icd_entry(struct icd_data *icdvalues, bool printheader, int t
 	}		// Add one entry to the icd table:
 	b += casprintf_loc(
 		"<tr><td rowspan='2' style= 'vertical-align:top;'>%3d%s</td>"
-		"<td rowspan=2 style= 'vertical-align:top;'>%s&#10137;",
+		"<td rowspan=2 style= 'vertical-align:top;'>%s→",
 		(time_seconds + 30) / 60, translate("gettextFromC", "min"), gas_from.name().c_str());
 	b += casprintf_loc(
 		"%s</td><td style='padding-left: 10px;'>%+5.1f%%</td>"
@@ -324,14 +324,17 @@ void diveplan::add_plan_to_notes(struct dive &dive, bool show_disclaimer, planne
 			    (isascent && (gaschange_after || rebreatherchange_after) && !atend && dp->depth.mm != nextdp->depth.mm ) ||
 			    (lastentered && !dp->entered && nextdp->depth.mm == dp->depth.mm)) {
 				// Print a symbol to indicate whether segment is an ascent, descent, constant depth (user entered) or deco stop
+				// Plain Unicode arrows (not HTML dingbat entities) are used so that the symbol renders
+				// correctly on desktop, Subsurface-mobile and the cloud web viewer, none of which can be
+				// relied on to have glyph coverage for the dingbats block or to expand numeric entities.
 				if (isascent)
-					segmentsymbol = "&#10138;"; // up-right arrow for ascent
+					segmentsymbol = "↑"; // up arrow for ascent
 				else if (dp->depth.mm > lastdepth)
-					segmentsymbol = "&#10136;"; // down-right arrow for descent
+					segmentsymbol = "↓"; // down arrow for descent
 				else if (dp->entered)
-					segmentsymbol = "&#10137;"; // right arrow for entered entered segment at constant depth
+					segmentsymbol = "→"; // right arrow for entered entered segment at constant depth
 				else
-					segmentsymbol = "-";        // minus sign (a.k.a. horizontal line) for deco stop
+					segmentsymbol = "-"; // minus sign (a.k.a. horizontal line) for deco stop
 
 				buf += format_string_std("<tr><td style='padding-left: 10px; float: right;'>%s</td>", segmentsymbol);
 
