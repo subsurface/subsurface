@@ -117,6 +117,9 @@ enum class EditCylinderType {
 };
 int editCylinder(int index, cylinder_t cyl, EditCylinderType type, bool currentDiveOnly);
 void editSensors(int toCylinder, int fromCylinder, int dcNr);
+// Cascades a rename made in the "Manage cylinder types" editor (tank_info_table)
+// into every cylinder of the currently loaded dive log that referenced oldName.
+void renameCylinderType(const std::string &oldName, const std::string &newName);
 #ifdef SUBSURFACE_MOBILE
 // Edits a dive and creates a divesite (if createDs != NULL) or edits a divesite (if changeDs != NULL).
 // Takes ownership of newDive and createDs!

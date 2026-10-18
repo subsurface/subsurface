@@ -39,6 +39,16 @@ private:
 	static void disk_default_cylinder(bool doSync);
 	static void disk_include_unused_tanks(bool doSync);
 	static void disk_display_default_tank_infos(bool doSync);
+
+	// Unlike the scalar preferences above, the persisted cylinder-type list
+	// (tank_info_table) is variable-length, so it isn't wired through the
+	// generic HANDLE_PREFERENCE_* machinery. It is also one-directional:
+	// loadSync(false) installs the persisted list (if any) as the baseline
+	// cylinder-type list (see core/equipment.h); loadSync(true) does
+	// nothing here; saving happens explicitly via save_tank_info_table()
+	// (declared in core/equipment.h) when the "Manage cylinder types"
+	// editor is closed. See that declaration for why.
+	static void load_tank_info_table_baseline();
 };
 
 #endif

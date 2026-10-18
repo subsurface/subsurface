@@ -1077,6 +1077,7 @@ void editDiveSiteName(dive_site *, const QString &) {}
 void editDiveSiteDescription(dive_site *, const QString &) {}
 void removePictures(const std::vector<PictureListForDeletion> &) {}
 int editWeight(int, weightsystem_t, bool) { return 0; }
+void renameCylinderType(const std::string &, const std::string &) {}
 
 } // namespace Command
 

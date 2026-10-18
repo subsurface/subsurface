@@ -317,6 +317,11 @@ void editSensors(int toCylinder, int fromCylinder, int dcNr)
 	execute(new EditSensors(toCylinder, fromCylinder, dcNr));
 }
 
+void renameCylinderType(const std::string &oldName, const std::string &newName)
+{
+	execute(new RenameCylinderType(oldName, newName));
+}
+
 // Trip editing related commands
 void editTripLocation(dive_trip *trip, const QString &s)
 {

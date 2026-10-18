@@ -16,6 +16,7 @@ set(SUBSURFACE_PREFERENCES_UI
   preferences_network.ui
   preferences_reset.ui
   preferences_units.ui
+  managetankinfodialog.ui
 )
 
 if(NOT USINGQT6)
@@ -53,6 +54,8 @@ set(SUBSURFACE_PREFERENCES_LIB_SRCS
 	preferences_units.h
 	preferencesdialog.cpp
 	preferencesdialog.h
+	managetankinfodialog.cpp
+	managetankinfodialog.h
 )
 
 source_group("Subsurface Preferences" FILES ${SUBSURFACE_PREFERENCES_LIB_SRCS})

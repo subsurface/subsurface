@@ -18,8 +18,11 @@ public:
 	void syncSettings() override;
 private:
 	Ui::PreferencesEquipment *ui;
+	void refreshCylinderCombo(const QString &wantedSelection);
 public slots:
 
+private slots:
+	void on_manageCylinderTypes_clicked();
 };
 
 #endif
