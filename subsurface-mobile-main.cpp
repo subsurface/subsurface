@@ -37,6 +37,7 @@ int main(int argc, char **argv)
 	QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
+	init_bluez_le_backend();
 
 	// Start application
 	std::unique_ptr<QApplication> app(new QApplication(argc, argv));

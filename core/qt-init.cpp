@@ -12,6 +12,24 @@
 
 static QTranslator qtTranslator, ssrfTranslator, parentLanguageTranslator;
 
+// AI-generated (Claude)
+// Qt picks its BlueZ backend based on the bluetoothd version, which it
+// determines by running "bluetoothd --version". When that fails (e.g. in
+// a confined snap) it assumes BlueZ 4.0 and falls back to the raw kernel
+// ATT implementation, which can't tell random from public LE addresses
+// without CAP_NET_ADMIN. Any BlueZ from the last decade supports the D-Bus
+// API, so default to that. Qt uses the D-Bus backend for anything from
+// 5.42 up, so the exact number doesn't matter; 5.64 is just a recent one.
+// This has to happen before the first use of QtBluetooth, as Qt caches
+// the version. A user-set value always wins.
+void init_bluez_le_backend()
+{
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+	if (qEnvironmentVariableIsEmpty("BLUETOOTH_FORCE_DBUS_LE_VERSION"))
+		qputenv("BLUETOOTH_FORCE_DBUS_LE_VERSION", "5.64");
+#endif
+}
+
 void init_qt_late()
 {
 	QApplication *application = qApp;
