@@ -346,6 +346,14 @@ of the dive computer (at least for those not charging while connected via USB).
    the mount point of the USB storage device as which the dive computer identifies
    itself.
 
+ - For *Garmin* dive computers, and for the generic *FIT* vendor entry used to
+   import FIT files that have already been copied to local disk, the folder
+   picked here (or entered with the _..._ button next to it) should contain
+   the device's own `Garmin/Activity` folder structure, exactly as it appears
+   when the dive computer is connected as a USB storage device. See
+   xref:S_ImportingGarminFit[Appendix B] for details, in particular when
+   copying FIT files off the device by hand.
+
  - Below the three drop downs are up to four shortcut buttons that allow you to
    easily switch between multiple dive computers that you are frequently downloading
    from. These buttons only appear once you have downloaded from different dive
@@ -5031,6 +5039,30 @@ The downside of this solution is that the guest operating system needs to be sta
 
 ****
 
+
+[[S_ImportingGarminFit]]
+=== Importing FIT files from a Garmin dive computer
+
+[NOTE]
+When a Garmin dive computer is connected as a USB storage device, the FIT
+files for individual dives are not in the top-level folder. They are kept
+inside a `Garmin/Activity` folder structure (with names such as
+`2018-08-20-10-23-30.fit`). When importing, _Subsurface_ first looks for the
+dive files inside a `Garmin/Activity` subfolder of whichever folder is
+selected in the *Device or Mount Point* field, falling back to looking
+directly in the selected folder itself if no such subfolder exists.
++
+On Linux in particular, where Garmin devices do not mount automatically over
+MTP, dive files are often copied to local disk by hand, for example with a
+KIO-MTP-style file manager plugin. The safest approach is to copy (or keep)
+the complete `Garmin/Activity` folder structure, mirroring the device's own
+layout, and then select the folder that *contains* that `Garmin/Activity`
+subfolder (not the `Activity` folder itself) in the download dialog. Copying
+the `.fit` files directly into a folder of their own, without any `Garmin`
+subfolder, also works thanks to the fallback above. However, creating only a
+partial structure, for example a `Garmin` folder without the `Activity`
+folder underneath it, does not match either case and the import will
+silently find no dives.
 
 [[S_ImportingDR5]]
 === Importing from Heinrichs Weikamp DR5

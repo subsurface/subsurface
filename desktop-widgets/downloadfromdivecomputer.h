@@ -76,6 +76,7 @@ private:
 	void showRememberedDCs();
 	void checkShowError(states state);
 	void showUpdateDialog();
+	void updateSearchTooltip(const QString &vendor);
 
 	QStringListModel vendorModel;
 	QStringListModel productModel;
