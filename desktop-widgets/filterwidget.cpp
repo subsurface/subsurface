@@ -7,6 +7,8 @@
 #include "core/divelist.h"
 #include "core/settings/qPrefUnit.h"
 #include "qt-models/filterpresetmodel.h"
+#include <algorithm>
+#include <numeric>
 
 FilterWidget::FilterWidget(QWidget* parent) :
 	QWidget(parent),
@@ -17,7 +19,12 @@ FilterWidget::FilterWidget(QWidget* parent) :
 
 	QMenu *newConstraintMenu = new QMenu(this);
 	QStringList constraintTypes = filter_constraint_type_list_translated();
-	for (int i = 0; i < constraintTypes.size(); ++i) {
+	std::vector<int> constraintOrder(constraintTypes.size());
+	std::iota(constraintOrder.begin(), constraintOrder.end(), 0);
+	std::sort(constraintOrder.begin(), constraintOrder.end(), [&constraintTypes](int a, int b) {
+		return constraintTypes[a].localeAwareCompare(constraintTypes[b]) < 0;
+	});
+	for (int i: constraintOrder) {
 		filter_constraint_type type = filter_constraint_type_from_index(i);
 		newConstraintMenu->addAction(constraintTypes[i], [this, type]() { addConstraint(type); });
 	}
