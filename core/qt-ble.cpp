@@ -638,9 +638,27 @@ dc_status_t BLEObject::setupHwTerminalIo(const QList<QLowEnergyCharacteristic> &
 // Bluez is broken, and doesn't have a sane way to query
 // whether to use a random address or not. So we have to
 // fake it.
-static int use_random_address(const device_data_t &user_device)
+//
+// AI-generated (Claude)
+// For devices other than the Shearwater and Garmin ones handled in
+// use_random_address(), look at the address itself. A public address
+// starts with an IEEE-assigned OUI, which always has the multicast
+// (0x01) and locally administered (0x02) bits of the first byte clear.
+// A random address only defines the top two bits of that byte, the
+// rest is random. So if either of the low two bits is set, it can't
+// be a public address. This catches three out of four random addresses;
+// for the rest we keep assuming public.
+static bool looks_like_random_address(const char *devaddr)
 {
-	return is_shearwater(user_device) || is_garmin(user_device);
+	QBluetoothAddress addr{QString(devaddr)};
+	if (addr.isNull())
+		return false;
+	return (addr.toUInt64() >> 40) & 0x03;
+}
+
+static int use_random_address(const device_data_t &user_device, const char *devaddr)
+{
+	return is_shearwater(user_device) || is_garmin(user_device) || looks_like_random_address(devaddr);
 }
 #endif
 
@@ -709,8 +727,10 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, device_d
 	report_info("qt_ble_open(%s)", devaddr);
 
 #if !defined(Q_OS_WIN)
-	if (use_random_address(*user_device))
+	if (use_random_address(*user_device, devaddr)) {
+		report_info("using random address type for %s", devaddr);
 		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
+	}
 #endif
 
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
