@@ -203,6 +203,11 @@ MainWindow::MainWindow() :
 #ifdef NO_PRINTING
 	ui.menuFile->removeAction(ui.actionPrint);
 #endif
+	// keep the cloud storage menu entries (and their enabled/disabled look) in sync
+	// with the verification status as soon as it changes, instead of only updating
+	// them indirectly whenever some unrelated settingsChanged signal happens to fire
+	connect(qPrefCloudStorage::instance(), &qPrefCloudStorage::cloud_verification_statusChanged,
+		this, &MainWindow::enableDisableCloudActions);
 	enableDisableCloudActions();
 
 	ui.mainErrorMessage->hide();
