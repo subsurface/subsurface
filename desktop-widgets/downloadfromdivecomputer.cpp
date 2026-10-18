@@ -60,6 +60,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(const QString &filename, QWidget *par
 	ui.unselectAllButton->setEnabled(false);
 	ui.vendor->setModel(&vendorModel);
 	ui.search->setEnabled(is_vendor_searchable(ui.vendor->currentText()));
+	updateSearchTooltip(ui.vendor->currentText());
 	ui.product->setModel(&productModel);
 	ui.syncDiveComputerTime->setChecked(prefs.sync_dc_time);
 
@@ -364,6 +365,7 @@ void DownloadFromDCWidget::on_vendor_currentTextChanged(const QString &vendor)
 	transport = dc_descriptor_get_transports(descriptor);
 	fill_device_list(transport);
 	ui.search->setEnabled(is_vendor_searchable(vendor));
+	updateSearchTooltip(vendor);
 }
 
 void DownloadFromDCWidget::on_product_currentTextChanged(const QString &)
@@ -383,6 +385,21 @@ void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
 #else
 	Q_UNUSED(device)
 #endif
+}
+
+// For Garmin / FIT imports, libdivecomputer looks for the dive files inside
+// a "Garmin/Activity" folder structure under the selected folder, matching
+// the layout the device itself uses, before falling back to looking in the
+// selected folder directly. Hint at this so users who copy files off the
+// device by hand (e.g. on Linux, where it is not mounted automatically)
+// know to preserve that structure.
+void DownloadFromDCWidget::updateSearchTooltip(const QString &vendor)
+{
+	if (vendor == "Garmin" || vendor == "FIT")
+		ui.search->setToolTip(tr("When copying files from the device by hand, keep them inside "
+					  "the device's \"Garmin/Activity\" folder structure"));
+	else
+		ui.search->setToolTip(QString());
 }
 
 void DownloadFromDCWidget::on_search_clicked()
