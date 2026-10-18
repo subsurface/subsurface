@@ -71,7 +71,14 @@ Item {
 			id: password
 			text: PrefCloudStorage.cloud_storage_password
 			visible: !showPin
-			echoMode: TextInput.PasswordEchoOnEdit
+			// TextInput.PasswordEchoOnEdit clears the Qt.ImhHiddenText hint while the
+			// field has focus (see QQuickTextInputPrivate::effectiveInputMethodHints()),
+			// so on iOS the native text responder never gets secureTextEntry set and the
+			// system never offers Password AutoFill/keychain suggestions for this field.
+			// TextInput.Password keeps Qt.ImhHiddenText set at all times (still briefly
+			// echoing the last typed character, per passwordMaskDelay) and fixes both the
+			// masking and the autofill hint.
+			echoMode: TextInput.Password
 			inputMethodHints: Qt.ImhSensitiveData |
 					  Qt.ImhHiddenText |
 					  Qt.ImhNoAutoUppercase
