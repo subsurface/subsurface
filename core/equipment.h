@@ -124,10 +124,72 @@ struct tank_info {
 
 extern std::vector<tank_info> tank_info_table;
 extern struct tank_info *get_tank_info(std::vector<tank_info> &table, const std::string &name);
+extern void update_tank_info_data(struct tank_info &info, volume_t size, pressure_t working_pressure);
 extern void set_tank_info_data(std::vector<tank_info> &table, const std::string &name, volume_t size, pressure_t working_pressure);
 extern std::pair<volume_t, pressure_t> extract_tank_info(const struct tank_info &info);
 extern std::pair<volume_t, pressure_t> get_tank_info_data(const std::vector<tank_info> &table, const std::string &name);
 extern void add_cylinder_description(const cylinder_type_t &);
 extern void reset_tank_info_table(std::vector<tank_info> &table);
+
+// Find every cylinder in the currently loaded dive log (divelog.dives) whose
+// type description exactly matches name, returning each as a (dive,
+// cylinder-index) pair. Used by Command::RenameCylinderType
+// (commands/command_edit.cpp) - the sole owner of a global cylinder-type
+// rename made through the "Manage cylinder types" editor - to cascade the
+// rename into the dives that still reference the old name, alongside the
+// matching tank_info_table and get_tank_info_baseline() entries. Otherwise
+// the old name would linger in per-dive data and reappear as a spurious
+// duplicate the next time reset_tank_info_table() merges it back into
+// tank_info_table (e.g. on reopening Preferences or reloading the file).
+extern std::vector<std::pair<struct dive *, int>> find_cylinders_with_type_description(const std::string &name);
+
+// Install the list of cylinder types used as the persisted "baseline" (see
+// tank_info_baseline in core/equipment.cpp): the entries shown before any
+// per-dive-log-specific types are layered on top by reset_tank_info_table(),
+// and the only list save_tank_info_table() ever writes to QSettings. Until
+// this is called, the baseline is the hard-coded list of common cylinders
+// built by add_default_tank_infos(). core/settings/qPrefEquipment.cpp calls
+// this once at startup to install the user's persisted customisations
+// instead, if any have been saved (and, if none have, explicitly
+// re-installs the hard-coded list below, so that a later reload - e.g. the
+// preferences dialog's own "reload everything" path - cannot leave a
+// previously installed baseline stuck in place). Wholesale replacement like
+// this is for startup/reload only; the "Manage cylinder types" editor's
+// individual add/resize/remove/rename actions instead mutate the baseline
+// in place via get_tank_info_baseline() below, with skip-if-absent
+// semantics for anything that isn't already a baseline member.
+extern void set_tank_info_baseline(std::vector<tank_info> table);
+
+// Mutable access to the persisted cylinder-type baseline (lazily seeded
+// from add_default_tank_infos() on first use, same as before
+// set_tank_info_baseline() is ever called). Used by reset_tank_info_table()
+// below to build the runtime tank_info_table, and by the "Manage cylinder
+// types" editor (qt-models/tankinfomodel.cpp) and Command::RenameCylinderType
+// (commands/command_edit.cpp) to mirror individual add/resize/remove/rename
+// edits into the list that save_tank_info_table() actually persists, without
+// ever auto-promoting a type that is only shown because the open file uses
+// it (skip-if-absent).
+extern std::vector<tank_info> &get_tank_info_baseline();
+
+// A fresh copy of the hard-coded list of common cylinder types (the same
+// list used to seed the baseline the very first time, before any
+// persisted customisation has ever been installed).
+extern std::vector<tank_info> default_tank_info_table();
+
+// Persist the current contents of the cylinder-type baseline (see
+// get_tank_info_baseline() above - NOT tank_info_table, which is just the
+// current session's runtime display/picker view) so that renames, resizes,
+// additions and removals made through the "Manage cylinder types" editor
+// survive application restarts. The baseline is already mutated in place by
+// the editor as each edit happens (see get_tank_info_baseline() above), so
+// this only needs to serialize it; there is nothing left to install as a
+// new baseline. Implemented in core/settings/qPrefEquipment.cpp, which owns
+// QSettings access for the Equipment preferences group. Deliberately not
+// tied to the generic qPref::sync() (called at shutdown by every Subsurface
+// binary, including the non-interactive CLI tools): those populate
+// tank_info_table from whatever file they happen to process and must never
+// overwrite the user's persisted cylinder-type list as a side effect of a
+// batch operation.
+extern void save_tank_info_table();
 
 #endif // EQUIPMENT_H

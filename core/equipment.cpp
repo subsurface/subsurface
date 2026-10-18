@@ -98,17 +98,32 @@ struct tank_info *get_tank_info(std::vector<tank_info> &table, const std::string
 	return it != table.end() ? &*it : nullptr;
 }
 
+// Update an existing tank_info entry in place, keeping its metric/imperial
+// representation (i.e. whichever of ml/bar or cuft/psi was already in use).
+void update_tank_info_data(struct tank_info &info, volume_t size, pressure_t working_pressure)
+{
+	bool already_imperial = info.ml == 0 && info.bar == 0 && (info.cuft != 0 || info.psi != 0);
+	// cuft is a working-pressure-rated volume, so it cannot represent a size
+	// without a known working pressure: a brand new entry (all four fields
+	// still zero) and an imperial entry that is being resized before its
+	// working pressure is known both need the metric fields instead.
+	if (already_imperial && working_pressure.mbar != 0) {
+		info.psi = lrint(to_PSI(working_pressure));
+		info.cuft = lrint(ml_to_cuft(size.mliter) * mbar_to_atm(working_pressure.mbar));
+	} else {
+		info.bar = working_pressure.mbar / 1000;
+		info.ml = size.mliter;
+		// Clear the stale imperial representation so the two don't disagree.
+		info.cuft = 0;
+		info.psi = 0;
+	}
+}
+
 void set_tank_info_data(std::vector<tank_info> &table, const std::string &name, volume_t size, pressure_t working_pressure)
 {
 	struct tank_info *info = get_tank_info(table, name);
 	if (info) {
-		if (info->ml != 0 || info->bar != 0) {
-			info->bar = working_pressure.mbar / 1000;
-			info->ml = size.mliter;
-		} else {
-			info->psi = lrint(to_PSI(working_pressure));
-			info->cuft = lrint(ml_to_cuft(size.mliter) * mbar_to_atm(working_pressure.mbar));
-		}
+		update_tank_info_data(*info, size, working_pressure);
 	} else {
 		// Metric is a better choice as the volume is independent of the working pressure
 		add_tank_info_metric(table, name, size.mliter, working_pressure.mbar / 1000);
@@ -265,18 +280,76 @@ static void add_default_tank_infos(std::vector<tank_info> &table)
 	add_tank_info_metric(table, "D20 232 bar", 40000, 232);
 }
 
+// The runtime, per-session list shown by the "Manage cylinder types" editor
+// and used as the per-dive cylinder-type picker's data source (see
+// TankInfoDelegate/createTankInfoModel() in desktop-widgets/modeldelegates.cpp).
+// Rebuilt from scratch by reset_tank_info_table() below: the baseline
+// (conditionally, see prefs.display_default_tank_infos) plus every cylinder
+// type the currently open dive log actually uses, whether or not that type
+// is also in the baseline. Never persisted directly - see tank_info_baseline
+// and save_tank_info_table() for what actually gets written to QSettings.
 std::vector<tank_info> tank_info_table;
+
+// The persisted cylinder-type library: normally the hard-coded defaults
+// (computed lazily, once), but replaced by the user's persisted
+// customisations if core/settings/qPrefEquipment.cpp has installed any via
+// set_tank_info_baseline() (called once at startup). This is the only list
+// save_tank_info_table() ever writes to QSettings; the "Manage cylinder
+// types" editor's add/resize/remove/rename actions mirror into it directly
+// (skip-if-absent for resize/remove/rename, so a type only shown because the
+// open file uses it is never silently promoted into the permanent library -
+// see TankInfoModel's add()/remove()/setData() in qt-models/tankinfomodel.cpp
+// and Command::RenameCylinderType in commands/command_edit.cpp). Row
+// reordering in the editor is deliberately NOT mirrored here: only the
+// persisted *content* needs to match the editor, not its on-screen order.
+static std::vector<tank_info> tank_info_baseline;
+static bool tank_info_baseline_initialized = false;
+
+std::vector<tank_info> &get_tank_info_baseline()
+{
+	if (!tank_info_baseline_initialized) {
+		add_default_tank_infos(tank_info_baseline);
+		tank_info_baseline_initialized = true;
+	}
+	return tank_info_baseline;
+}
+
+void set_tank_info_baseline(std::vector<tank_info> table)
+{
+	tank_info_baseline = std::move(table);
+	tank_info_baseline_initialized = true;
+}
+
+std::vector<tank_info> default_tank_info_table()
+{
+	std::vector<tank_info> table;
+	add_default_tank_infos(table);
+	return table;
+}
+
 void reset_tank_info_table(std::vector<tank_info> &table)
 {
 	table.clear();
 	if (prefs.display_default_tank_infos)
-		add_default_tank_infos(table);
+		table = get_tank_info_baseline();
 
 	/* Add cylinders from dive list */
 	for (auto &dive: divelog.dives) {
 		for (auto &cyl: dive->cylinders)
 			add_cylinder_description(cyl.type);
 	}
+}
+
+std::vector<std::pair<struct dive *, int>> find_cylinders_with_type_description(const std::string &name)
+{
+	std::vector<std::pair<struct dive *, int>> res;
+	for (auto &dive: divelog.dives) {
+		for (size_t i = 0; i < dive->cylinders.size(); i++) {
+			if (dive->cylinders[i].type.description == name)
+				res.emplace_back(dive.get(), static_cast<int>(i));
+		}
+	}
+	return res;
 }
 
 /*

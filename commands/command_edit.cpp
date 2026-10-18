@@ -1367,6 +1367,93 @@ bool EditSensors::workToBeDone()
 	return d && dc;
 }
 
+// ***** Rename Cylinder Type *****
+RenameCylinderType::RenameCylinderType(std::string oldNameIn, std::string newNameIn) :
+	oldName(std::move(oldNameIn)),
+	newName(std::move(newNameIn)),
+	matches(find_cylinders_with_type_description(oldName))
+{
+	std::vector<dive *> divesAffected;
+	for (auto &[d, idx]: matches) {
+		if (std::find(divesAffected.begin(), divesAffected.end(), d) == divesAffected.end())
+			divesAffected.push_back(d);
+	}
+	// Always set a description, even if no currently loaded dive uses the
+	// renamed type (divesAffected empty): workToBeDone() below legitimately
+	// returns true in that case too (the rename may still apply to
+	// tank_info_table/the baseline), and an undo-stack entry must never be
+	// blank.
+	if (divesAffected.size() <= 1)
+		setText(Command::Base::tr("Rename cylinder type"));
+	else
+		setText(Command::Base::tr("Rename cylinder type (%n dive(s))", "", static_cast<int>(divesAffected.size())));
+}
+
+bool RenameCylinderType::workToBeDone()
+{
+	// A rename made through the "Manage cylinder types" editor always has
+	// at least the tank_info_table entry itself to rename (that is the row
+	// being edited), even if no currently open dive happens to use the
+	// type - this isn't just about the per-dive cascade.
+	return !matches.empty() ||
+	       get_tank_info(tank_info_table, oldName) ||
+	       get_tank_info(get_tank_info_baseline(), oldName);
+}
+
+void RenameCylinderType::redo()
+{
+	for (auto &[d, idx]: matches) {
+		d->cylinders[idx].type.description = newName;
+		emit diveListNotifier.cylinderEdited(d, idx);
+		d->invalidate_cache(); // Ensure that dive is written in git_save()
+	}
+
+	// Look up by name rather than relying on a stored index: tank_info_table
+	// row order can change (reordering, reload) between this command being
+	// pushed and a later explicit Edit > Redo. Skip silently if not found -
+	// expected for a type that only exists because the open file uses it
+	// and was never promoted into the baseline (and, on the very first
+	// redo() call that QUndoStack::push() triggers synchronously, this is
+	// simply the lookup that performs the rename for the first time).
+	if (tank_info *info = get_tank_info(tank_info_table, oldName))
+		info->name = newName;
+	// Re-persist immediately whenever the baseline itself was renamed, not
+	// just tank_info_table: otherwise a later Edit > Undo/Redo (long after
+	// ManageTankInfoDialog::done()'s own save_tank_info_table() call on
+	// close) would only update the in-memory baseline, leaving QSettings on
+	// the stale name - exactly the stray-duplicate scenario this feature
+	// exists to prevent, the next time the baseline is reloaded and merged
+	// with the dive log's cylinder types. The very first redo() call here
+	// happens synchronously inside QUndoStack::push(), before
+	// ManageTankInfoDialog::done() gets a chance to save; the resulting
+	// extra QSettings write is harmless.
+	if (tank_info *info = get_tank_info(get_tank_info_baseline(), oldName)) {
+		info->name = newName;
+		save_tank_info_table();
+	}
+}
+
+void RenameCylinderType::undo()
+{
+	for (auto &[d, idx]: matches) {
+		d->cylinders[idx].type.description = oldName;
+		emit diveListNotifier.cylinderEdited(d, idx);
+		d->invalidate_cache(); // Ensure that dive is written in git_save()
+	}
+
+	// Symmetric to redo() above: by now the entries (if any) are named
+	// newName, so look them up by that instead.
+	if (tank_info *info = get_tank_info(tank_info_table, newName))
+		info->name = oldName;
+	// Same reasoning as redo(): re-persist immediately whenever the
+	// baseline entry itself was reverted, so QSettings doesn't keep the
+	// now-undone name after this point.
+	if (tank_info *info = get_tank_info(get_tank_info_baseline(), newName)) {
+		info->name = oldName;
+		save_tank_info_table();
+	}
+}
+
 #ifdef SUBSURFACE_MOBILE
 
 EditDive::EditDive(dive *oldDiveIn, dive *newDiveIn, dive_site *createDs, dive_site *editDs, location_t dsLocationIn)

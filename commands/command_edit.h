@@ -458,6 +458,32 @@ private:
 	bool workToBeDone() override;
 };
 
+// Sole owner of a global cylinder-type rename made through the "Manage
+// cylinder types" editor: a redo/undo cycle keeps all three places the name
+// appears in sync by name-based lookup (so it stays correct across repeated
+// redo/undo even if row order or indices have since changed) -
+//   1. every cylinder of the currently loaded dive log that references the
+//      name (scope is deliberately limited to the dives already in
+//      divelog: other, unopened dive-log files on disk are untouched);
+//   2. the matching tank_info_table entry, if any (the runtime
+//      display/picker view - see core/equipment.h);
+//   3. the matching get_tank_info_baseline() entry, if any (the persisted
+//      library - see core/equipment.h).
+// Each of the three lookups tolerates "not found" and skips silently: a
+// type that only exists because the open file uses it was never a
+// baseline member, and a type that isn't used by any currently open dive
+// has no per-dive match - neither is an error.
+class RenameCylinderType : public Base {
+public:
+	RenameCylinderType(std::string oldName, std::string newName);
+private:
+	std::string oldName, newName;
+	std::vector<std::pair<dive *, int>> matches; // dive + cylinder-index pairs that referenced oldName
+	void undo() override;
+	void redo() override;
+	bool workToBeDone() override;
+};
+
 #ifdef SUBSURFACE_MOBILE
 // Edit a full dive. This is used on mobile where we don't have per-field granularity.
 // It may add or edit a dive site.
