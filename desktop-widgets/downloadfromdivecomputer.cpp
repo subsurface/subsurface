@@ -602,13 +602,13 @@ void DownloadFromDCWidget::showUpdateDialog()
 		.arg(latestFirmwareAvailable);
 	message += tr("\n\nIf your device uses Bluetooth, enable Bluetooth on the dive computer and do the same preparations as for a logbook download before continuing with the update.");
 	response.addButton(tr("Not now"), QMessageBox::RejectRole);
-	response.addButton(tr("Update firmware"), QMessageBox::AcceptRole);
+	QAbstractButton *updateButton = response.addButton(tr("Update firmware"), QMessageBox::AcceptRole);
 	response.setText(message);
 	response.setWindowTitle(tr("Firmware update notice"));
 	response.setIcon(QMessageBox::Question);
 	response.setWindowModality(Qt::WindowModal);
-	int ret = response.exec();
-	if (ret == QMessageBox::Accepted) {
+	response.exec();
+	if (response.clickedButton() == updateButton) {
 		QString saveFileName = latestFirmwareFileName;
 		QFileInfo fi(filename);
 		saveFileName = fi.absolutePath().append(QDir::separator()).append(saveFileName);
