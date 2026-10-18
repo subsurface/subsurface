@@ -155,6 +155,18 @@ static QVariant percent_string(fraction_t fraction)
 	return QString("%L1%").arg(permille / 10.0, 0, 'f', 1);
 }
 
+// The O2 fraction of a cylinder that sanitize_gasmix() has recognised as
+// air (an empty/unset O2 fraction, or one entered in the 20.8-21.0% range)
+// is stored as 0 permille, which percent_string() would otherwise display
+// as a blank cell. Label it "Air" instead, consistent with how the profile
+// graph already names such a gasmix.
+static QVariant o2_percent_string(struct gasmix mix)
+{
+	if (gasmix_is_air(mix))
+		return CylindersModel::tr("Air");
+	return percent_string(mix.o2);
+}
+
 // Calculate the number of displayed cylinders: If we are in planner
 // or prefs.include_unused_tanks is set we show unused cylinders
 // at the end of the list.
@@ -251,7 +263,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 				return get_pressure_string(cyl->sample_end, true);
 			break;
 		case O2:
-			return percent_string(cyl->gasmix.o2);
+			return o2_percent_string(cyl->gasmix);
 		case HE:
 			return percent_string(cyl->gasmix.he);
 		case DEPTH:
