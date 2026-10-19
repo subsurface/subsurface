@@ -346,13 +346,14 @@ of the dive computer (at least for those not charging while connected via USB).
    the mount point of the USB storage device as which the dive computer identifies
    itself.
 
- - For *Garmin* dive computers, and for the generic *FIT* vendor entry used to
-   import FIT files that have already been copied to local disk, the folder
+ - For *Garmin* dive computers, the *Vendor* entry is for importing directly
+   from the device while it is mounted as a USB storage device. The folder
    picked here (or entered with the _..._ button next to it) should contain
    the device's own `Garmin/Activity` folder structure, exactly as it appears
-   when the dive computer is connected as a USB storage device. See
-   xref:S_ImportingGarminFit[Appendix B] for details, in particular when
-   copying FIT files off the device by hand.
+   when the dive computer is connected. See xref:S_ImportingGarminFit[Appendix B]
+   for details, in particular when copying FIT files off the device by hand.
+   To import `.fit` files that have already been copied to local disk, use
+   _Import -> Import Log Files_ instead.
 
  - Below the three drop downs are up to four shortcut buttons that allow you to
    easily switch between multiple dive computers that you are frequently downloading

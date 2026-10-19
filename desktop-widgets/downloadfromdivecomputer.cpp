@@ -23,7 +23,7 @@
 
 static bool is_vendor_searchable(QString vendor)
 {
-	return vendor == "Uemis" || vendor == "Garmin" || vendor == "FIT";
+	return vendor == "Uemis" || vendor == "Garmin";
 }
 
 DownloadFromDCWidget::DownloadFromDCWidget(const QString &filename, QWidget *parent) : QDialog(parent, QFlag(0)),
@@ -387,17 +387,21 @@ void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
 #endif
 }
 
-// For Garmin / FIT imports, libdivecomputer looks for the dive files inside
-// a "Garmin/Activity" folder structure under the selected folder, matching
-// the layout the device itself uses, before falling back to looking in the
+// This is for importing directly from a Garmin dive computer mounted as a USB
+// storage device, not for already-exported .fit files (use "Import Log File"
+// for those). libdivecomputer looks for the dive files inside a
+// "Garmin/Activity" folder structure under the selected folder, matching the
+// layout the device itself uses, before falling back to looking in the
 // selected folder directly. Hint at this so users who copy files off the
-// device by hand (e.g. on Linux, where it is not mounted automatically)
-// know to preserve that structure.
+// device by hand (e.g. on Linux, where it is not mounted automatically) know
+// to preserve that structure.
 void DownloadFromDCWidget::updateSearchTooltip(const QString &vendor)
 {
-	if (vendor == "Garmin" || vendor == "FIT")
-		ui.search->setToolTip(tr("When copying files from the device by hand, keep them inside "
-					  "the device's \"Garmin/Activity\" folder structure"));
+	if (vendor == "Garmin")
+		ui.search->setToolTip(tr("For importing from a Garmin dive computer mounted as a USB "
+					  "storage device. When copying files from the device by hand, "
+					  "keep them inside the device's \"Garmin/Activity\" folder "
+					  "structure"));
 	else
 		ui.search->setToolTip(QString());
 }
@@ -410,8 +414,6 @@ void DownloadFromDCWidget::on_search_clicked()
 			dialogTitle = tr("Find Uemis dive computer");
 		else if (ui.vendor->currentText() == "Garmin")
 			dialogTitle = tr("Find Garmin dive computer");
-		else if (ui.vendor->currentText() == "FIT")
-			dialogTitle = tr("Select diretory to import .fit files from");
 		QString dirName = QFileDialog::getExistingDirectory(this,
 								    dialogTitle,
 								    QDir::homePath(),
