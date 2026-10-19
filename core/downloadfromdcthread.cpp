@@ -148,6 +148,13 @@ void fill_computer_list()
 
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
 		const char *product = dc_descriptor_get_product(descriptor);
+		// "FIT" is libdivecomputer's generic FIT-file-import pseudo-device, not an
+		// actual dive computer. Importing already-exported .fit files is handled by
+		// "Import Log File", so skip it here to avoid a confusing duplicate entry in
+		// the "Import from Dive Computer" vendor list; Garmin devices themselves
+		// remain listed normally.
+		if (QString(vendor) == "FIT")
+			continue;
 		if (!vendorList.contains(vendor))
 			vendorList.append(vendor);
 		if (!productList[vendor].contains(product))
