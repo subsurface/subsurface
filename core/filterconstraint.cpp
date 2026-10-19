@@ -52,7 +52,7 @@ static struct type_description {
 	{ FILTER_CONSTRAINT_SURGE, "surge", QT_TRANSLATE_NOOP("gettextFromC", "surge"), false, true, true, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_CHILL, "chill", QT_TRANSLATE_NOOP("gettextFromC", "chill"), false, true, true, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 
-	{ FILTER_CONSTRAINT_DEPTH, "depth", QT_TRANSLATE_NOOP("gettextFromC", "max. depth"), false, true, false, FILTER_CONSTRAINT_LENGTH_UNIT, 1, false, false },
+	{ FILTER_CONSTRAINT_DEPTH, "depth", QT_TRANSLATE_NOOP("gettextFromC", "depth (max.)"), false, true, false, FILTER_CONSTRAINT_LENGTH_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_DURATION, "duration", QT_TRANSLATE_NOOP("gettextFromC", "duration"), false, true, false, FILTER_CONSTRAINT_DURATION_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_WEIGHT, "weight", QT_TRANSLATE_NOOP("gettextFromC", "weight"), false, true, false, FILTER_CONSTRAINT_WEIGHT_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_WATER_TEMP, "water_temp", QT_TRANSLATE_NOOP("gettextFromC", "water temp."), false, true, false, FILTER_CONSTRAINT_TEMPERATURE_UNIT, 1, false, false },
@@ -65,18 +65,18 @@ static struct type_description {
 
 	{ FILTER_CONSTRAINT_DIVE_MODE, "dive_mode", QT_TRANSLATE_NOOP("gettextFromC", "dive mode"), false, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 
-	{ FILTER_CONSTRAINT_TAGS, "tags", QT_TRANSLATE_NOOP("gettextFromC", "any tag"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_PEOPLE, "people", QT_TRANSLATE_NOOP("gettextFromC", "any person"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_LOCATION, "location", QT_TRANSLATE_NOOP("gettextFromC", "any location"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_WEIGHT_TYPE, "weight_type", QT_TRANSLATE_NOOP("gettextFromC", "any weight type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_CYLINDER_TYPE, "cylinder_type", QT_TRANSLATE_NOOP("gettextFromC", "any cylinder type"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_TAGS, "tags", QT_TRANSLATE_NOOP("gettextFromC", "tag (any)"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_PEOPLE, "people", QT_TRANSLATE_NOOP("gettextFromC", "person (any)"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_LOCATION, "location", QT_TRANSLATE_NOOP("gettextFromC", "location (any)"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_WEIGHT_TYPE, "weight_type", QT_TRANSLATE_NOOP("gettextFromC", "weight type (any)"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_CYLINDER_TYPE, "cylinder_type", QT_TRANSLATE_NOOP("gettextFromC", "cylinder type (any)"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_SIZE, "cylinder_size", QT_TRANSLATE_NOOP("gettextFromC", "cylinder size"), false, true, false, FILTER_CONSTRAINT_VOLUME_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_N2, "cylinder_n2", QT_TRANSLATE_NOOP("gettextFromC", "gas N₂ content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_O2, "cylinder_o2", QT_TRANSLATE_NOOP("gettextFromC", "gas O₂ content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_CYLINDER_HE, "cylinder_he", QT_TRANSLATE_NOOP("gettextFromC", "gas He content"), false, true, false, FILTER_CONSTRAINT_PERCENTAGE_UNIT, 1, false, false },
 	{ FILTER_CONSTRAINT_SUIT, "suit", QT_TRANSLATE_NOOP("gettextFromC", "suit"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 	{ FILTER_CONSTRAINT_NOTES, "notes", QT_TRANSLATE_NOOP("gettextFromC", "notes"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
-	{ FILTER_CONSTRAINT_DIVE_COMPUTER, "dive_computer", QT_TRANSLATE_NOOP("gettextFromC", "any dive computer"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
+	{ FILTER_CONSTRAINT_DIVE_COMPUTER, "dive_computer", QT_TRANSLATE_NOOP("gettextFromC", "dive computer (any)"), true, false, false, FILTER_CONSTRAINT_NO_UNIT, 0, false, false },
 };
 
 static struct string_mode_description {
