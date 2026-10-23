@@ -32,6 +32,26 @@ apps:
     - removable-media
 
 parts:
+  qt-tool-deps:
+    # The Qt 6 SDK snap provides qmake, moc, rcc, ... and the Qt libraries, but
+    # the tools need the system libraries that Qt Core links against and linking
+    # against Qt Gui needs the development files of its dependencies. The minimal
+    # build environment has neither. snapcraft installs the build-packages of all
+    # parts before it builds anything, so this covers the other parts as well.
+    plugin: nil
+    build-packages:
+    - libb2-1
+    - libdouble-conversion3
+    - libgl-dev
+    - libglib2.0-0t64
+    - libglx-dev
+    - libicu74
+    - libmd4c0
+    - libopengl-dev
+    - libpcre2-16-0
+    - libxkbcommon-dev
+    - libzstd1
+
   googlemaps:
     # the qt6-upstream branch builds against Qt 6 (the master branch is for Qt 5)
     source: https://github.com/Subsurface/googlemaps.git
@@ -65,8 +85,10 @@ parts:
     override-build: |
       # qlitehtml only supports being configured in its own source tree
       cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .
-      make -j${CRAFT_PARALLEL_BUILD_COUNT}
-      make DESTDIR=${CRAFT_PART_INSTALL} install
+      # only build the library - the test browser that is part of the default
+      # target is not installed and can't be linked in this build environment
+      cmake --build . --target qlitehtml --parallel ${CRAFT_PARALLEL_BUILD_COUNT}
+      DESTDIR=${CRAFT_PART_INSTALL} cmake --install .
 
   libdc:
     plugin: autotools
@@ -95,6 +117,9 @@ parts:
     - -DFTDISUPPORT=ON
     - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/usr/local/lib/libdivecomputer.so
     - -DLIBDIVECOMPUTER_INCLUDE_DIR=../../../stage/usr/local/include
+    # the transitive dependencies of the SDK's Qt libraries (freetype, duktape, ...)
+    # aren't installed here; they come from the Qt content snap at runtime
+    - -DCMAKE_EXE_LINKER_FLAGS=-Wl,--allow-shlib-undefined
     - -DBUILD_WITH_QT6=ON
     - -DCMAKE_PREFIX_PATH=../../../stage/usr/local
     build-packages:
