@@ -63,10 +63,15 @@ jobs:
       # QLiteHtml is the Qt6 replacement for the WebKit-based printing/user-manual
       # support; it isn't packaged for Fedora, so we vendor it the same way as
       # googlemaps and build it from source in make-package.sh. It bundles
-      # litehtml as its own submodule, hence --recursive.
+      # litehtml as its own submodule, hence --recursive. Use the version that the
+      # other builds use, as pinned in scripts/get-dep-lib.sh.
       run: |
+        QLITEHTML_REV=$(sed -n 's/^CURRENT_QLITEHTML="\(.*\)"/\1/p' scripts/get-dep-lib.sh)
         cd ..
         git clone --recursive https://github.com/dirkhh/qlitehtml
+        cd qlitehtml
+        git checkout -f "$QLITEHTML_REV"
+        git submodule update --init --recursive
 
     - name: run the copr build script
       run: |

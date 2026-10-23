@@ -13,21 +13,25 @@ if [[ ! -d subsurface || ! -d subsurface/libdivecomputer ]] ; then
 	echo "Please start this script from the folder ABOVE the subsurface source directory"
 	exit 1;
 fi
-if [[ ! -d googlemaps ]] ; then
-	echo "Please make sure you have the current master of https://github.com/Subsurface/googlemaps"
+if [[ ! -d googlemaps/.git ]] ; then
+	echo "Please make sure you have a git clone of https://github.com/Subsurface/googlemaps"
 	echo "checked out in parallel to the Subsurface directory"
 	exit 1;
 fi
-if [[ ! -d qlitehtml ]] ; then
-	echo "Please make sure you have https://github.com/dirkhh/qlitehtml (with its litehtml submodule)"
-	echo "checked out in parallel to the Subsurface directory"
+if [[ ! -d qlitehtml/.git ]] ; then
+	echo "Please make sure you have a git clone of https://github.com/dirkhh/qlitehtml"
+	echo "(with its litehtml submodule) checked out in parallel to the Subsurface directory"
 	exit 1;
 fi
 
 TOPDIR=$(pwd)
 
 # we build against Qt6, which needs the googlemaps plugin's qt6-upstream branch
-(cd googlemaps ; git fetch ; git switch qt6-upstream)
+(cd googlemaps && git fetch origin)
+if ! git -C googlemaps rev-parse --verify --quiet origin/qt6-upstream > /dev/null ; then
+	echo "googlemaps branch origin/qt6-upstream not found"
+	exit 1
+fi
 
 # ensure that the libdivecomputer module is there and current
 cd subsurface
@@ -63,13 +67,16 @@ if [[ ! -d $FOLDER ]]; then
 
 	(cd "$TOPDIR"/subsurface ; tar cf - . ) | (cd "$FOLDER" ; tar xf - )
 	cd "$FOLDER"
-	cp -a "$TOPDIR"/googlemaps .
-	cp -a "$TOPDIR"/qlitehtml .
+	# export the branch we need without touching the checkout in the parent directory
+	mkdir googlemaps
+	git -C "$TOPDIR"/googlemaps archive origin/qt6-upstream | tar xf - -C googlemaps
+	# export the files tracked by qlitehtml (including its litehtml submodule) - this
+	# leaves out the artifacts of any in-source build in the checkout
+	mkdir qlitehtml
+	git -C "$TOPDIR"/qlitehtml ls-files -z --recurse-submodules | tar -C "$TOPDIR"/qlitehtml --null -T - -cf - | tar xf - -C qlitehtml
 
 	# make sure we only have the files we want (the builds should all be empty when running on GitHub)
-	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
-	# qlitehtml vendors litehtml as its own submodule, so its .git metadata is nested
-	find qlitehtml -depth -name .git -exec rm -rf {} +
+	rm -rf .git libdivecomputer/.git build build-mobile libdivecomputer/build
 	echo "$BUILDNUMBER" > latest-subsurface-buildnumber
 	echo "$GITDATE" > .gitdate
 	echo "$LIBDCREVISION" > libdivecomputer/revision
