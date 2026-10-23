@@ -289,16 +289,6 @@ void TestSurfaceGf::testSurfacePressureConsistency()
 	QCOMPARE(manualDive.get_surface_pressure().mbar, manualDive.depth_to_mbar(0_m));
 }
 
-/* Find the first plot point at or after the given time. */
-static const struct plot_data &entryAt(const struct plot_info &pi, int sec)
-{
-	for (int i = 0; i < pi.nr; i++) {
-		if (pi.entry[i].sec >= sec)
-			return pi.entry[i];
-	}
-	return pi.entry[pi.nr - 1];
-}
-
 /* Regression test for the upstream report: a short (2 minute) surface
  * interval between two dives must only let tissue loading relax towards
  * equilibrium, so the Surface GF at the start of the second dive must never
@@ -336,12 +326,15 @@ void TestSurfaceGf::testSurfaceGfCarryover()
 	QVERIFY(dive1EndSurfaceGf > 1.0);
 
 	struct plot_info pi2 = create_plot_info_new(dive2, &dive2->dcs[0], nullptr);
-	QVERIFY(pi2.nr > 1);
-	const struct plot_data &dive2Start = entryAt(pi2, 0);
+	QVERIFY(!dive2->dcs[0].samples.empty());
+	QVERIFY(pi2.nr > 2);
+	// Entries 0 and 1 precede the sample stream; entry 2 is its first sample.
+	const struct plot_data &dive2Start = pi2.entry[2];
 
 	// Plot index 0 must no longer be stuck at the stale 0.0 default: it has
 	// to reflect the tissue state carried over from dive 1.
 	QVERIFY(pi2.entry[0].surface_gf > 1.0);
+	QVERIFY(dive2Start.surface_gf > 1.0);
 	QCOMPARE(pi2.entry[0].surface_gf, dive2Start.surface_gf);
 
 	// The actual regression: a 2 minute surface interval must not raise the
