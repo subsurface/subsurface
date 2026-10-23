@@ -2653,12 +2653,23 @@ even though the diver technically encountered a ceiling at depth, the dive still
 not require a specific deco stop. This feature lets dive computers offer
 longer non-stop bottom times.
 
+The same difference between an instantaneous ceiling and an ascent schedule
+also applies to decompression stops. The calculated ceiling is normally deeper
+than the first stop displayed by the dive computer: the gap grows with the
+remaining ascent and how quickly the leading tissue off-gasses, so it is
+largest on deep helium dives and closes as the diver ascends towards the ceiling.
+
 Strictly speaking, the green calculated ceiling is a direct representation of
 the inert gas loadings of the simulated tissues only and is independent of
 any assumed ascent velocities. It indicates the deco model's minimal allowed
 depth at this instant of time given the inert gas loadings and is not a statement
-about a possible ascent schedule in the remaining dive. To obtain the latter,
+about a possible ascent schedule in the remaining dive. For a full ascent schedule,
 use the "Edit dive in planner" option from the Log menu.
+
+For a like-for-like comparison with the dive computer's first stop, enable the
+*NDL/TTS* button on the Profile Panel. The profile tooltip then includes a
+"Deco: n min @ depth (calc)" line showing the first stop of a simulated ascent,
+rather than the instantaneous ceiling.
 
 [icon="cceiling.jpg"]
 [NOTE]
