@@ -499,7 +499,22 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 	fi
 	mkdir -p "$GOOGLEMAPS_BUILDDIR"
 	cd "$GOOGLEMAPS_BUILDDIR"
-	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" "$SRC/googlemaps/googlemaps.pro"
+	GOOGLEMAPS_PRIVATE_QT=""
+	if [[ $QT_VERSION == 6* && "$PLATFORM" = Linux ]]; then
+		# AI-generated (Claude)
+		# googlemaps includes private QtLocation headers, which in turn need the private
+		# headers of Qt Core, Gui, Qml and Quick (e.g. private/qglobal_p.h). Some Qt 6
+		# versions on Debian and Ubuntu (6.10 on Ubuntu 26.04) don't provide the
+		# location-private module that makes qmake add those include directories, so
+		# ask for them explicitly. They come from qt6-base-private-dev and
+		# qt6-declarative-private-dev.
+		GOOGLEMAPS_PRIVATE_QT="core-private gui-private qml-private quick-private"
+	fi
+	qmake_args=("INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release")
+	if [[ -n "$GOOGLEMAPS_PRIVATE_QT" ]]; then
+		qmake_args+=("QT+=$GOOGLEMAPS_PRIVATE_QT")
+	fi
+	$QMAKE "${qmake_args[@]}" "$SRC/googlemaps/googlemaps.pro"
 	make
 	# AI-generated (Claude)
 	# googlemaps is a private Qt plugin, not a distro package, so it must
