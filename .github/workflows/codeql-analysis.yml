@@ -27,7 +27,9 @@ permissions: read-all
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    # Ubuntu 26.04 has a recent Qt 6 (ubuntu-latest is still moving from 24.04 to
+    # 26.04, so be explicit); switch back to ubuntu-latest once that is done
+    runs-on: ubuntu-26.04
     permissions:
       security-events: write
 
@@ -52,14 +54,14 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y -q \
         autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
-        libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
-        libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
+        libgit2-dev libsqlite3-dev libssh2-1-dev libssl-dev \
         libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
-        pkg-config qml-module-qtlocation qml-module-qtpositioning \
-        qml-module-qtquick2 qt5-qmake qtchooser qtconnectivity5-dev \
-        qtdeclarative5-dev qtdeclarative5-private-dev qtlocation5-dev \
-        qtpositioning5-dev qtscript5-dev qttools5-dev qttools5-dev-tools \
-        qtquickcontrols2-5-dev xvfb libbluetooth-dev libmtp-dev libraw-dev
+        pkg-config libbluetooth-dev libmtp-dev libraw-dev \
+        libqt6qml6 libqt6quick6 qt6-svg-dev libqt6svg6 qt6-5compat-dev \
+        qml6-module-qtpositioning qml6-module-qtlocation \
+        qmake6 qt6-location-dev qt6-connectivity-dev qt6-base-private-dev \
+        qml6-module-qtquick qt6-declarative-dev qt6-tools-dev qt6-tools-dev-tools \
+        qt6-positioning-dev qt6-declarative-private-dev qt6-shadertools-dev
 
     - name: set environment variables
       id: set-variables
@@ -84,7 +86,7 @@ jobs:
         cd ..
         git config --global --add safe.directory $GITHUB_WORKSPACE
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
-        bash -e -x subsurface/scripts/build.sh -desktop -build-with-webkit
+        bash -e -x subsurface/scripts/build.sh -desktop -build-with-qt6
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
