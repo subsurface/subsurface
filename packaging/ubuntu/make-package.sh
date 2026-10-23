@@ -46,8 +46,11 @@ export_qt_private_headers() {
 	local minor tag tmp dest
 	tmp=$(mktemp -d)
 	for minor in $QT6_PRIVATE_HEADER_MINORS ; do
-		tag=$(git ls-remote --tags --refs https://github.com/qt/qtlocation.git "v${minor}.*" |
-			sed -e 's@.*refs/tags/@@' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
+		tag=$(git ls-remote --tags --refs https://github.com/qt/qtlocation.git "v${minor}.*") || {
+			echo "failed to query qtlocation releases for Qt $minor" >&2
+			exit 1
+		}
+		tag=$(printf '%s\n' "$tag" | sed -e 's@.*refs/tags/@@' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
 		if [[ -z "$tag" ]] ; then
 			echo "no qtlocation release found for Qt $minor - skipping"
 			continue
