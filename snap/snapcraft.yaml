@@ -9,7 +9,7 @@ description: |
   provide additional notes.
 
 confinement: strict
-base: core22
+base: core24
 adopt-info: subsurface
 
 layout:
@@ -18,107 +18,81 @@ layout:
 
 apps:
   subsurface:
+    # the kde-neon-qt6 extension provides the Qt 6 runtime (as a content snap),
+    # the Qt 6 SDK for the build and the desktop integration / launcher
+    extensions: [kde-neon-qt6]
     environment:
       LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}:${SNAP}/usr/local/lib
-    command-chain:
-    - bin/desktop-launch
     command: usr/local/bin/subsurface
     desktop: usr/local/share/applications/subsurface.desktop
     plugs:
     - bluez
-    - desktop
-    - desktop-legacy
     - home
     - network
-    - opengl
     - raw-usb
     - removable-media
-    - wayland
-    - x11
 
 parts:
-  googlemaps:
-    source: https://github.com/Subsurface/googlemaps.git
-    plugin: make
-    make-parameters:
-    - INSTALL_ROOT=${CRAFT_PART_INSTALL}
+  qt-tool-deps:
+    # The Qt 6 SDK snap provides qmake, moc, rcc, ... and the Qt libraries, but
+    # the tools need the system libraries that Qt Core links against and linking
+    # against Qt Gui needs the development files of its dependencies. The minimal
+    # build environment has neither. snapcraft installs the build-packages of all
+    # parts before it builds anything, so this covers the other parts as well.
+    plugin: nil
     build-packages:
-    - qtbase5-dev
-    - curl
+    - duktape-dev
+    - libb2-1
+    - libdouble-conversion3
+    - libfreetype-dev
+    - libgl-dev
+    - libglib2.0-0t64
+    - libglx-dev
+    - libicu74
+    - libmd4c0
+    - libopengl-dev
+    - libpcre2-16-0
+    - libxkbcommon-dev
+    - libzstd1
+
+  googlemaps:
+    # the qt6-upstream branch builds against Qt 6 (the master branch is for Qt 5)
+    source: https://github.com/Subsurface/googlemaps.git
+    source-branch: qt6-upstream
+    plugin: nil
+    build-packages:
+    - build-essential
+    override-build: |
+      qmake6 CONFIG+=release ${CRAFT_PART_SRC}
+      make -j${CRAFT_PARALLEL_BUILD_COUNT}
+      # this is a private plugin, so install it where our Qt 6 will find it,
+      # independent of where the SDK's qmake wants to put plugins
+      PLUGIN=$( find ${CRAFT_PART_BUILD} -name libqtgeoservices_googlemaps.so -print -quit )
+      [ -n "${PLUGIN}" ] || { echo "googlemaps plugin was not built"; exit 1; }
+      install -D -m755 "${PLUGIN}" \
+        ${CRAFT_PART_INSTALL}/usr/lib/${CRAFT_ARCH_TRIPLET_BUILD_FOR}/qt6/plugins/geoservices/libqtgeoservices_googlemaps.so
+
+  qlitehtml:
+    # provides printing and user manual support; not available as a package.
+    # Keep the commit in sync with CURRENT_QLITEHTML in scripts/get-dep-lib.sh
+    source: https://github.com/dirkhh/qlitehtml.git
+    source-commit: c43498332c004b50bcb7c2fdfb1ee7cbc539cdce
+    plugin: nil
+    build-packages:
+    - build-essential
+    - cmake
+    - git
     override-pull: |
       craftctl default
-      export QT_SELECT=5
-      export QT_VERSION=$( qmake -query QT_VERSION )
-      mkdir -p QtHeaders/QtLocation/private QtHeaders/QtPositioning/private
-      # AI-generated (Claude)
-      download_header() {
-        curl --fail --location --remote-name \
-          --connect-timeout 15 \
-          --retry 5 --retry-all-errors --retry-delay 2 "$1"
-      }
-      cd QtHeaders/QtLocation/private
-      for HEADER in \
-          qlocationglobal \
-          maps/qabstractgeotilecache \
-          maps/qcache3q \
-          maps/qgeocameracapabilities \
-          maps/qgeocameradata \
-          maps/qgeomap \
-          maps/qgeomappingmanager \
-          maps/qgeomappingmanagerengine \
-          maps/qgeomaptype \
-          maps/qgeofiletilecache \
-          maps/qgeoprojection \
-          maps/qgeotiledmap \
-          maps/qgeotiledmappingmanagerengine \
-          maps/qgeotiledmapreply \
-          maps/qgeotilefetcher \
-          maps/qgeotilespec \
-          places/unsupportedreplies
-      do
-        download_header \
-          https://raw.githubusercontent.com/qt/qtlocation/refs/tags/v5.15.3-lts-lgpl/src/location/${HEADER}_p.h
-      done
-      cd -
-      cd QtHeaders/QtPositioning/private
-      for HEADER in \
-          qdoublematrix4x4 \
-          qdoublevector2d \
-          qdoublevector3d \
-          qpositioningglobal
-      do
-        download_header \
-          https://raw.githubusercontent.com/qt/qtlocation/refs/tags/v5.15.3-lts-lgpl/src/positioning/${HEADER}_p.h
-      done
+      git submodule update --init --recursive
     override-build: |
-      qmake \
-        INCLUDEPATH+=${CRAFT_PART_SRC}/QtHeaders \
-        ${CRAFT_PART_SRC}
-      craftctl default
-
-  desktop-qt5:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: qt
-    plugin: make
-    make-parameters: ["FLAVOR=qt5"]
-    build-packages:
-      - build-essential
-      - qtbase5-dev
-      - dpkg-dev
-    stage-packages:
-      - libxkbcommon0
-      - fonts-ubuntu
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
-      - shared-mime-info
-      - libqt5gui5
-      - libgdk-pixbuf2.0-0
-      - libqt5svg5 # for loading icon themes which are svg
-      - locales-all
-      - xdg-user-dirs
-      - fcitx-frontend-qt5
+      cd "${CRAFT_PART_SRC}"
+      # qlitehtml only supports being configured in its own source tree
+      cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .
+      # only build the library - the test browser that is part of the default
+      # target is not installed and can't be linked in this build environment
+      cmake --build . --target qlitehtml --parallel ${CRAFT_PARALLEL_BUILD_COUNT}
+      DESTDIR=${CRAFT_PART_INSTALL} cmake --install .
 
   libdc:
     plugin: autotools
@@ -140,21 +114,22 @@ parts:
 
   subsurface:
     source: .
-    after: [desktop-qt5, googlemaps, libdc]
+    after: [googlemaps, qlitehtml, libdc]
     plugin: cmake
     cmake-parameters:
     - -DLIBGIT2_DYNAMIC=ON
     - -DFTDISUPPORT=ON
     - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/usr/local/lib/libdivecomputer.so
     - -DLIBDIVECOMPUTER_INCLUDE_DIR=../../../stage/usr/local/include
+    # The Qt content snap provides these transitive dependencies at runtime.
+    - -DCMAKE_EXE_LINKER_FLAGS=-Llink-stubs
+    - -DBUILD_WITH_QT6=ON
+    - -DCMAKE_PREFIX_PATH=../../../stage/usr/local
     build-packages:
     - build-essential
     - libcurl4-gnutls-dev
     - libftdi1-dev
     - libgit2-dev
-    - libqt5charts5-dev
-    - libqt5svg5-dev
-    - libqt5webkit5-dev
     - libraw-dev
     - libsqlite3-dev
     - libssh2-1-dev
@@ -163,10 +138,6 @@ parts:
     - libxslt1-dev
     - libzip-dev
     - pkg-config
-    - qtconnectivity5-dev
-    - qtlocation5-dev
-    - qtpositioning5-dev
-    - qttools5-dev
     override-pull: |
       craftctl default
       if [ ! -f latest-subsurface-buildnumber ] \
@@ -180,41 +151,32 @@ parts:
       craftctl set version=$( scripts/get-version.sh )
     override-build: |
       mkdir -p ../install-root
-      ln -sf ../../../stage/usr/lib/*/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so \
+      ln -sf ../../../stage/usr/lib/*/qt6/plugins/geoservices/libqtgeoservices_googlemaps.so \
         ../install-root/
       sed -i 's@^Icon=.*@Icon=${SNAP}/share/icons/hicolor/scalable/apps/subsurface-icon.svg@' ../src/subsurface.desktop
+      # The link interface of the SDK's Qt Gui lists the lcms2 plugin libraries, which
+      # neither the SDK's library directory nor any Ubuntu package provides for the
+      # linker. Nothing in Subsurface uses them directly (the real libraries are part
+      # of the Qt content snap at runtime), so give the linker empty placeholders.
+      mkdir -p ${CRAFT_PART_BUILD}/link-stubs
+      echo "" | gcc -x c -c -o ${CRAFT_PART_BUILD}/link-stubs/stub.o -
+      for LIB in lcms2_fast_float lcms2_threaded; do
+        ar rcs ${CRAFT_PART_BUILD}/link-stubs/lib${LIB}.a ${CRAFT_PART_BUILD}/link-stubs/stub.o
+      done
+      export LIBRARY_PATH=${CRAFT_PART_BUILD}/link-stubs${LIBRARY_PATH:+:${LIBRARY_PATH}}
       craftctl default
     stage-packages:
     - libcap2
-    - libcurl3-gnutls
-    - libdb5.3
+    - libcurl3t64-gnutls
+    - libdb5.3t64
     - libftdi1-2
-    - libgit2-1.1
-    - libqt5bluetooth5
-    - libqt5charts5
-    - libqt5concurrent5
-    - libqt5core5a
-    - libqt5gui5
-    - libqt5location5
-    - libqt5network5
-    - libqt5positioning5
-    - libqt5printsupport5
-    - libqt5qml5
-    - libqt5quick5
-    - libqt5quickwidgets5
-    - libqt5svg5
-    - libqt5webkit5
-    - libqt5widgets5
+    - libgit2-1.7
     - libsqlite3-0
-    - libssh2-1
-    - libssl3
-    - libraw20
+    - libssh2-1t64
+    - libssl3t64
+    - libraw23t64
     - libusb-1.0-0
     - libxml2
     - libxslt1.1
-    - libzip4
-    - qml-module-qtlocation
-    - qml-module-qtpositioning
-    - qml-module-qtquick2
-    - qtwayland5
+    - libzip4t64
     - zlib1g
