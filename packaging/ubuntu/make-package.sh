@@ -56,7 +56,11 @@ export_qt_private_headers() {
 			continue
 		fi
 		echo "getting the private QtLocation headers for $tag"
-		git clone --quiet -c advice.detachedHead=false --branch "$tag" --depth 1 https://github.com/qt/qtlocation.git "$tmp/qtlocation"
+		if ! git clone --quiet -c advice.detachedHead=false --branch "$tag" --depth 1 https://github.com/qt/qtlocation.git "$tmp/qtlocation" ; then
+			echo "failed to fetch private QtLocation headers for $tag" >&2
+			rm -rf "$tmp"
+			exit 1
+		fi
 		dest="$PWD/QtHeaders/$minor/include"
 		mkdir -p "$dest/QtLocation/private" "$dest/QtPositioning/private"
 		find "$tmp/qtlocation/src/location" -name '*_p.h' -exec cp {} "$dest/QtLocation/private/" \;
