@@ -36,6 +36,40 @@ export_googlemaps() {
 	git -C ../../googlemaps archive "origin/$branch" | tar xf - -C "$dest"
 }
 
+# The googlemaps plugin needs private QtLocation and QtPositioning headers that the
+# Ubuntu Qt 6 packages don't ship, and Launchpad builds have no network access. So
+# we vendor them into the source tree, one directory per Qt minor version (the
+# newest patch release of each); debian/rules.qt6 picks the one matching the Qt on
+# the build host. Add a minor version here when a supported Ubuntu release gets it.
+QT6_PRIVATE_HEADER_MINORS="6.8 6.9 6.10 6.11"
+export_qt_private_headers() {
+	local minor tag tmp dest
+	tmp=$(mktemp -d)
+	for minor in $QT6_PRIVATE_HEADER_MINORS ; do
+		tag=$(git ls-remote --tags --refs https://github.com/qt/qtlocation.git "v${minor}.*" |
+			sed -e 's@.*refs/tags/@@' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
+		if [[ -z "$tag" ]] ; then
+			echo "no qtlocation release found for Qt $minor - skipping"
+			continue
+		fi
+		echo "getting the private QtLocation headers for $tag"
+		git clone --quiet -c advice.detachedHead=false --branch "$tag" --depth 1 https://github.com/qt/qtlocation.git "$tmp/qtlocation"
+		dest="$PWD/QtHeaders/$minor/include"
+		mkdir -p "$dest/QtLocation/private" "$dest/QtPositioning/private"
+		find "$tmp/qtlocation/src/location" -name '*_p.h' -exec cp {} "$dest/QtLocation/private/" \;
+		# for Qt 6 the positioning headers are in the same repository
+		if [[ -d "$tmp/qtlocation/src/positioning" ]] ; then
+			find "$tmp/qtlocation/src/positioning" -name '*_p.h' -exec cp {} "$dest/QtPositioning/private/" \;
+		fi
+		rm -rf "$tmp/qtlocation"
+	done
+	rm -rf "$tmp"
+	if [[ ! -d QtHeaders/6.10 ]] ; then
+		echo "failed to get the private Qt headers"
+		exit 1
+	fi
+}
+
 # export the files tracked by qlitehtml (including its litehtml submodule) - this
 # leaves out the artifacts of any in-source build in the checkout
 export_qlitehtml() {
@@ -84,6 +118,7 @@ if [[ ! -d $FOLDER ]]; then
 	export_googlemaps master googlemaps
 	export_googlemaps qt6-upstream googlemaps-qt6
 	export_qlitehtml
+	export_qt_private_headers
 
 	rm -rf .git libdivecomputer/.git build build-mobile libdivecomputer/build
 	echo "$BUILDNUMBER" > latest-subsurface-buildnumber
@@ -98,6 +133,7 @@ else
 	cd "$FOLDER"
 	[[ -d googlemaps-qt6 ]] || export_googlemaps qt6-upstream googlemaps-qt6
 	[[ -d qlitehtml ]] || export_qlitehtml
+	[[ -d QtHeaders ]] || export_qt_private_headers
 fi
 
 
