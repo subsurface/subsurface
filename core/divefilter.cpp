@@ -56,7 +56,8 @@ ShownChange DiveFilter::update(const QVector<dive *> &dives) const
 	std::vector<dive *> removeFromSelection;
 	for (dive *d: dives) {
 		// There are three modes: divesite, fulltext, normal
-		bool newStatus = doDS        ? range_contains(dive_sites, d->dive_site) :
+		bool newStatus = doDS        ? range_contains(dive_sites, d->dive_site) &&
+					 (!d->invalid || prefs.display_invalid_dives) :
 				 doFullText  ? fulltext_dive_matches(d, filterData.fullText, filterData.fulltextStringMode) && showDive(d) :
 					       showDive(d);
 		updateDiveStatus(d, newStatus, res, removeFromSelection);
@@ -82,7 +83,8 @@ ShownChange DiveFilter::updateAll() const
 	// There are three modes: divesite, fulltext, normal
 	if (diveSiteMode()) {
 		for (auto &d: divelog.dives) {
-			bool newStatus = range_contains(dive_sites, d->dive_site);
+			bool newStatus = range_contains(dive_sites, d->dive_site) &&
+					 (!d->invalid || prefs.display_invalid_dives);
 			updateDiveStatus(d.get(), newStatus, res, removeFromSelection);
 		}
 	} else if (filterData.fullText.doit()) {
