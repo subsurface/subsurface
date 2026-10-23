@@ -54,8 +54,7 @@ _Subsurface-mobile_ allows:
 - Download dive data directly from some dive computers.
 - Editing most of the dive log data, e.g. dive-master, buddy,
   equipment or notes relating to a dive.
-- Viewing the localities of recorded GPS positions and of dives
-  on a map.
+- Viewing dive sites with GPS coordinates on a map.
 
 These items are discussed in greater detail below.
 
@@ -257,6 +256,12 @@ left hand side of the _Action Button_ at the bottom of the screen in order
 to open a map with the dive site in an integrated map viewer.
 This of course is only possible if the dive site is associated with GPS
 information.
+
+You can enter GPS coordinates when editing a dive site. _Subsurface-mobile_ does
+not record phone GPS fixes or automatically match such fixes to dives, so there
+is no before-or-after-dive time window for applying them in the mobile app. Cloud
+synchronization shares the dive log, including dive site coordinates; it does
+not upload or download a separate list of GPS fixes.
 
 [[S_Filter]]
 === Filter the dive list
