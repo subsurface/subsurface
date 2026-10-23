@@ -408,7 +408,7 @@ jobs:
           Write-Host "Found installer: $($oldInstaller.Name)"
 
           # Create new name consistent with other platform artifacts (title-case, -installer suffix)
-          $newName = "Subsurface-${{ steps.version_number.outputs.version }}-qt6-installer.exe"
+          $newName = "Subsurface-${{ steps.version_number.outputs.version }}-installer.exe"
           $newPath = Join-Path $buildDir $newName
 
           # Rename the installer
@@ -426,7 +426,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v7
         with:
-          name: Subsurface-Windows-MSVC-qt-6-${{ steps.version_number.outputs.version }}
+          name: Subsurface-Windows-${{ steps.version_number.outputs.version }}
           path: ${{ github.workspace }}/build/${{ steps.installer-name.outputs.installer }}
           compression-level: 0
 

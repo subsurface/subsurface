@@ -174,12 +174,13 @@ jobs:
         fi
         [ "${{ runner.arch }}" = "X64" ] && CUR_ARCH="x86_64"
         [ "${{ runner.arch }}" = "ARM64" ] && CUR_ARCH="arm64"
+        # name the DMG Subsurface-<version>-<arch>.dmg (the Qt 5 build is the legacy one)
         if [ ${{ matrix.qtversion }} = '5' ]; then
-          IMG="$REG_IMG"
+          IMG="${REG_IMG%.dmg}-legacy-qt5-${CUR_ARCH}.dmg"
         else
-          IMG="${REG_IMG/Subsurface-/Subsurface-${CUR_ARCH}-qt6-}"
-          mv "$REG_IMG" "$IMG" || exit 1
+          IMG="${REG_IMG%.dmg}-${CUR_ARCH}.dmg"
         fi
+        mv "$REG_IMG" "$IMG" || exit 1
         if [ ! -f "$IMG" ]; then
           echo "ERROR: Expected DMG file '$IMG' does not exist"
           exit 1
@@ -212,7 +213,7 @@ jobs:
       if: github.event_name == 'pull_request'
       uses: actions/upload-artifact@v7
       with:
-        name: Subsurface-MacOS-${{ matrix.arch }}-qt-${{ matrix.qtversion }}-${{ needs.compute-version.outputs.version }}
+        name: Subsurface-MacOS-${{ matrix.qtversion == 5 && 'legacy-qt5-' || '' }}${{ matrix.arch }}-${{ needs.compute-version.outputs.version }}
         path: ${{ steps.build.outputs.dmg }}
         compression-level: 0
 
