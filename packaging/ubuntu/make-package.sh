@@ -9,11 +9,39 @@ if [[ ! -d subsurface || ! -d subsurface/libdivecomputer ]] ; then
 	echo "Please start this script from the folder ABOVE the subsurface source directory"
 	exit 1;
 fi
-if [[ ! -d googlemaps ]] ; then
-	echo "Please make sure you have the current master of https://github.com/Subsurface/googlemaps"
-	echo "checked out in parallel to the Subsurface directory"
+if [[ ! -d googlemaps/.git ]] ; then
+	echo "Please make sure you have a git clone of https://github.com/Subsurface/googlemaps"
+	echo "checked out in parallel to the Subsurface directory (we need both its master"
+	echo "and its qt6-upstream branch)"
 	exit 1;
 fi
+if [[ ! -d qlitehtml/.git ]] ; then
+	echo "Please make sure you have a git clone of https://github.com/dirkhh/qlitehtml"
+	echo "(with its litehtml submodule) checked out in parallel to the Subsurface directory"
+	exit 1;
+fi
+
+# we need the remote tracking branches of googlemaps to be current
+(cd googlemaps && git fetch origin)
+
+# export a branch of googlemaps from the git repo into a directory
+# (no fallback to HEAD - building the wrong branch only fails on Launchpad)
+export_googlemaps() {
+	local branch="$1" dest="$2"
+	if ! git -C ../../googlemaps rev-parse --verify --quiet "origin/$branch" > /dev/null ; then
+		echo "googlemaps branch origin/$branch not found"
+		exit 1
+	fi
+	mkdir -p "$dest"
+	git -C ../../googlemaps archive "origin/$branch" | tar xf - -C "$dest"
+}
+
+# export the files tracked by qlitehtml (including its litehtml submodule) - this
+# leaves out the artifacts of any in-source build in the checkout
+export_qlitehtml() {
+	mkdir -p qlitehtml
+	git -C ../../qlitehtml ls-files -z --recurse-submodules | tar -C ../../qlitehtml --null -T - -cf - | tar xf - -C qlitehtml
+}
 
 # ensure that the libdivecomputer module is there and current
 cd subsurface
@@ -52,9 +80,12 @@ if [[ ! -d $FOLDER ]]; then
 
 	(cd ../subsurface ; tar cf - . ) | (cd "$FOLDER" ; tar xf - )
 	cd "$FOLDER";
-	cp -a ../../googlemaps .
 
-	rm -rf .git libdivecomputer/.git googlemaps/.git build build-mobile libdivecomputer/build googlemaps/build
+	export_googlemaps master googlemaps
+	export_googlemaps qt6-upstream googlemaps-qt6
+	export_qlitehtml
+
+	rm -rf .git libdivecomputer/.git build build-mobile libdivecomputer/build
 	echo "$BUILDNUMBER" > latest-subsurface-buildnumber
 	echo "$GITDATE" > .gitdate
 	echo "$LIBDCREVISION" > libdivecomputer/revision
@@ -65,6 +96,8 @@ if [[ ! -d $FOLDER ]]; then
 else
 	echo "using existing source tree"
 	cd "$FOLDER"
+	[[ -d googlemaps-qt6 ]] || export_googlemaps qt6-upstream googlemaps-qt6
+	[[ -d qlitehtml ]] || export_qlitehtml
 fi
 
 
@@ -78,6 +111,7 @@ echo "preparing the debian directory"
 rm -rf debian
 mkdir -p debian
 cp -a ../../subsurface/packaging/ubuntu/debian .
+rm -f debian/control.qt6 debian/rules.qt6
 
 # start with the bundled dummy changelog, but use our last one if it exists
 [[ -f ../changelog$SUFFIX ]] && cp "../changelog$SUFFIX" debian/changelog
@@ -108,7 +142,7 @@ debuild -S -d
 #
 rel=focal
 others="jammy noble"
-others_nowebkit="resolute stonking"
+others_qt6="resolute stonking"
 
 build() {
 	local next="$1"
@@ -118,24 +152,20 @@ build() {
 	rel=$next
 }
 
-# older ubuntu releases have libqt5webkit5-dev, so use that
+# older ubuntu releases use Qt5
 for next in $others
 do
 	build "$next"
 done
 
-# newer ubuntu releases no longer have libqt5webkit5-dev, so drop the dependency
-sed -i '/libqt5webkit5-dev/d' debian/control
-sed -i -re 's/NO_(PRINTING|USERMANUAL)=OFF/NO_\1=ON/g' debian/rules
+# Ubuntu 26.04 and newer use Qt6
+cp ../../subsurface/packaging/ubuntu/debian/control.qt6 debian/control
+cp ../../subsurface/packaging/ubuntu/debian/rules.qt6 debian/rules
 
-for next in $others_nowebkit
+for next in $others_qt6
 do
 	build "$next"
 done
-
-if [ -f debian/control.bak ] ; then
-	mv debian/control.bak debian/control
-fi
 
 cd ..
 

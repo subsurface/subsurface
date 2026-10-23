@@ -39,6 +39,7 @@ override_dh_auto_clean:
 	rm -f libdivecomputer/src/Makefile.in
 	rm -rf install-root
 	rm -rf googlemaps/build
+	rm -rf googlemaps-qt6/build
 	rm -rf subsurface-build
 
 override_dh_auto_configure:
@@ -48,7 +49,7 @@ override_dh_auto_configure:
 		rm -rf $(QTLOC_GIT) > /dev/null 2>&1 ; \
 		make -j8 ; \
 		INSTALL_ROOT=$(MY_INSTALL_ROOT) make install ; \
-		ln -sf $(MY_INSTALL_ROOT)/usr/lib/x86_64-linux-gnu/qt5/plugins/geoservices/*.so $(MY_INSTALL_ROOT))
+		ln -sf $(MY_INSTALL_ROOT)/usr/lib/*-linux-gnu/qt5/plugins/geoservices/*.so $(MY_INSTALL_ROOT))
 	(cd libdivecomputer ; \
 		 autoreconf --install ; \
 		./configure --disable-examples --prefix=$(MY_INSTALL_ROOT) --disable-shared ; \
