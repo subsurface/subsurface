@@ -55,6 +55,18 @@ jobs:
         cd ..
         git clone https://github.com/subsurface/googlemaps
 
+    - name: Checkout qlitehtml
+      # QLiteHtml provides printing and user manual support for the Qt6 (Ubuntu 26.04
+      # and newer) packages. Use the version that the other builds use, as pinned in
+      # scripts/get-dep-lib.sh. It bundles litehtml as a submodule, hence --recursive.
+      run: |
+        QLITEHTML_REV=$(sed -n 's/^CURRENT_QLITEHTML="\(.*\)"/\1/p' scripts/get-dep-lib.sh)
+        cd ..
+        git clone --recursive https://github.com/dirkhh/qlitehtml
+        cd qlitehtml
+        git checkout -f "$QLITEHTML_REV"
+        git submodule update --init --recursive
+
     - name: run the launchpad make-package script
       run: |
         cd ..
