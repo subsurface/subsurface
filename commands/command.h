@@ -68,6 +68,7 @@ void editDiveSiteNotes(dive_site *ds, const QString &value);
 void editDiveSiteCountry(dive_site *ds, const QString &value);
 void editDiveSiteLocation(dive_site *ds, location_t value);
 void editDiveSiteTaxonomy(dive_site *ds, taxonomy_data &value); // value is consumed (i.e. will be erased after call)!
+void editDiveSiteMarker(dive_site *ds, bool alpha_flag);
 void addDiveSite(const QString &name);
 void importDiveSites(dive_site_table sites, const QString &source); // takes ownership of dive site table
 void mergeDiveSites(dive_site *ds, const QVector<dive_site *> &sites);
