@@ -45,6 +45,13 @@ private slots:
 	void testExplicitZeroCylinderDepthSurvivesPressureChange();
 	// AI-generated (Claude)
 	void testCylindersModelRefreshedOnPressureChange();
+
+	// AI-generated (GH Copilot)
+	void testDropStoneSaveLoadRoundTripKeepsPoints();
+	void testDropStoneTemporaryDisableDoesNotPersistPreference();
+	void testDropStoneTemporaryDisableRestoresOnNewPlan();
+	void testDropStoneProgrammaticCheckboxSyncDoesNotPersistPreference();
+	void testDropStoneUserToggleAfterProgrammaticSyncPersistsPreference();
 };
 
 #endif // TESTDIVEPLANNERMODEL_H
