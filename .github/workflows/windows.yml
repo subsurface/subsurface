@@ -92,7 +92,7 @@ jobs:
       if: github.event_name == 'pull_request'
       uses: actions/upload-artifact@v7
       with:
-        name: Subsurface-Windows-${{ steps.version_number.outputs.version }}
+        name: Subsurface-Windows-legacy-qt5-${{ steps.version_number.outputs.version }}
         path: |
          subsurface.exe*
          Subsurface-*.exe

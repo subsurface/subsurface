@@ -34,7 +34,7 @@ bash -ex ../subsurface/packaging/windows/mxe-based-build.sh ${BUILD_EXTRA_ARGS} 
 mv subsurface/subsurface.exe* ${OUTPUT_DIR}/
 fullname=$(cd subsurface ; ls subsurface-*.exe)
 noprefix="${fullname#subsurface-}"
-mv subsurface/"$fullname" ${OUTPUT_DIR}/Subsurface-"${noprefix%.exe}"-installer.exe
+mv subsurface/"$fullname" ${OUTPUT_DIR}/Subsurface-"${noprefix%.exe}"-legacy-qt5-installer.exe
 
 # build Subsurface for smtk2ssrf
 
