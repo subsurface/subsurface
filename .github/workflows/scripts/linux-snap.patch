@@ -1,24 +1,18 @@
 diff --git a/snap/snapcraft.yaml b/snap/snapcraft.yaml
-index 9f34d0169..0d5a89fd9 100644
 --- a/snap/snapcraft.yaml
 +++ b/snap/snapcraft.yaml
-@@ -35,6 +35,7 @@ parts:
-     source: https://github.com/Subsurface/googlemaps.git
-     plugin: make
+@@ -39,8 +39,9 @@
+     plugin: nil
      build-packages:
+     - build-essential
 +    - ccache
-     - qtbase5-dev
-     - curl
-     override-pull: |
-@@ -79,6 +80,7 @@ parts:
      override-build: |
-       qmake \
-         INCLUDEPATH+=${CRAFT_PART_SRC}/QtHeaders \
-+        CONFIG+=ccache \
-         ${CRAFT_PART_SRC}
-       craftctl default
- 
-@@ -111,7 +113,11 @@ parts:
+-      qmake6 CONFIG+=release ${CRAFT_PART_SRC}
++      qmake6 CONFIG+=release CONFIG+=ccache ${CRAFT_PART_SRC}
+       make -j${CRAFT_PARALLEL_BUILD_COUNT}
+       # this is a private plugin, so install it where our Qt 6 will find it,
+       # independent of where the SDK's qmake wants to put plugins
+@@ -73,7 +74,11 @@
      source: .
      source-type: git
      source-subdir: libdivecomputer
@@ -30,10 +24,10 @@ index 9f34d0169..0d5a89fd9 100644
      - libbluetooth-dev
      - libhidapi-dev
      - libusb-dev
-@@ -134,8 +140,11 @@ parts:
-     - -DFTDISUPPORT=ON
-     - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/usr/local/lib/libdivecomputer.so
+@@ -97,8 +102,11 @@
      - -DLIBDIVECOMPUTER_INCLUDE_DIR=../../../stage/usr/local/include
+     - -DBUILD_WITH_QT6=ON
+     - -DCMAKE_PREFIX_PATH=../../../stage/usr/local
 +    - -DCMAKE_C_COMPILER_LAUNCHER=ccache
 +    - -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
      build-packages:
