@@ -75,6 +75,14 @@ DownloadFromDCWidget::DownloadFromDCWidget(const QString &filename, QWidget *par
 	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
 	connect(ui.selectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectAll()));
 	connect(ui.unselectAllButton, SIGNAL(clicked()), diveImportedModel, SLOT(selectNone()));
+	// QAbstractItemView::dataChanged() only schedules a repaint via update(), which some
+	// platforms defer until the next unrelated UI event (e.g. the list only visually
+	// reflecting a new selection once the user scrolls it). Force an immediate repaint of
+	// the checkbox column whenever the selection changes, whether that's from clicking a
+	// single dive or from "Select all"/"Unselect all", so the list never looks stale.
+	connect(diveImportedModel, &QAbstractItemModel::dataChanged, this, [this]() {
+		ui.downloadedView->viewport()->repaint();
+	});
 	connect(ui.syncDiveComputerTime, &QAbstractButton::toggled, qPrefDiveComputer::instance(), &qPrefDiveComputer::set_sync_dc_time);
 	connect(timer, SIGNAL(timeout()), this, SLOT(updateProgressBar()));
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
