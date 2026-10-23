@@ -61,14 +61,16 @@ export_qt_private_headers() {
 			rm -rf "$tmp"
 			exit 1
 		fi
+		if ! git clone --quiet -c advice.detachedHead=false --branch "$tag" --depth 1 https://github.com/qt/qtpositioning.git "$tmp/qtpositioning" ; then
+			echo "failed to fetch private QtPositioning headers for $tag" >&2
+			rm -rf "$tmp"
+			exit 1
+		fi
 		dest="$PWD/QtHeaders/$minor/include"
 		mkdir -p "$dest/QtLocation/private" "$dest/QtPositioning/private"
 		find "$tmp/qtlocation/src/location" -name '*_p.h' -exec cp {} "$dest/QtLocation/private/" \;
-		# for Qt 6 the positioning headers are in the same repository
-		if [[ -d "$tmp/qtlocation/src/positioning" ]] ; then
-			find "$tmp/qtlocation/src/positioning" -name '*_p.h' -exec cp {} "$dest/QtPositioning/private/" \;
-		fi
-		rm -rf "$tmp/qtlocation"
+		find "$tmp/qtpositioning/src/positioning" -name '*_p.h' -exec cp {} "$dest/QtPositioning/private/" \;
+		rm -rf "$tmp/qtlocation" "$tmp/qtpositioning"
 	done
 	rm -rf "$tmp"
 	if [[ ! -d QtHeaders/6.10 ]] ; then
