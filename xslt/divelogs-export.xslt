@@ -137,23 +137,37 @@
             <vol>
               <xsl:value-of select="substring-before(@size, ' ') div $double" />
             </vol>
+            <!-- AI-generated (Claude) -->
+            <xsl:variable name="sensorstart">
+              <xsl:call-template name="tankSensorPressure">
+                <xsl:with-param name="dc" select="../divecomputer[1]" />
+                <xsl:with-param name="cylinder" select="position() - 1" />
+              </xsl:call-template>
+            </xsl:variable>
+            <xsl:variable name="sensorend">
+              <xsl:call-template name="tankSensorPressure">
+                <xsl:with-param name="dc" select="../divecomputer[1]" />
+                <xsl:with-param name="cylinder" select="position() - 1" />
+                <xsl:with-param name="last" select="true()" />
+              </xsl:call-template>
+            </xsl:variable>
             <start_pressure>
               <xsl:choose>
-                <xsl:when test="node()/sample/@pressure != ''">
-                  <xsl:value-of select="substring-before(node()/sample/@pressure, ' ')" />
+                <xsl:when test="@start != ''">
+                  <xsl:value-of select="substring-before(@start, ' ')" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="substring-before(@start, ' ')" />
+                  <xsl:value-of select="substring-before($sensorstart, ' ')" />
                 </xsl:otherwise>
               </xsl:choose>
             </start_pressure>
             <end_pressure>
               <xsl:choose>
-                <xsl:when test="count(node()/sample[@pressure!='']) &gt; 0">
-                  <xsl:value-of select="node()/sample[@pressure][last()]/@pressure" />
+                <xsl:when test="@end != ''">
+                  <xsl:value-of select="substring-before(@end, ' ')" />
                 </xsl:when>
                 <xsl:otherwise>
-                  <xsl:value-of select="substring-before(@end, ' ')" />
+                  <xsl:value-of select="substring-before($sensorend, ' ')" />
                 </xsl:otherwise>
               </xsl:choose>
             </end_pressure>
