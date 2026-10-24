@@ -2300,40 +2300,47 @@ void QMLManager::exportToWEB(export_types type, QString userId, QString password
 	}
 }
 
-void QMLManager::shareViaEmail(export_types type, bool anonymize)
+// AI-generated (Claude): the file creation below was moved out of shareViaEmail()
+// so that saveExportToDevice() can use it as well
+QString QMLManager::writeExportFile(export_types type, bool anonymize)
 {
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString fileName = appLogFileName;
 #else
 	QString fileName = QString::fromStdString(system_default_directory());
 #endif
-	QString body;
 	switch (type) {
 	case EX_DIVES_XML:
 		fileName.replace("subsurface.log", "subsurface.ssrf");
-		if (save_dives_logic(qPrintable(fileName), false, anonymize) == 0) {
-			// ok, we have a file, let's send it
-			body = "Subsurface dive log data";
-		} else {
-			appendTextToLog("failure to save dive log, aborting attempt to send via email");
+		if (save_dives_logic(qPrintable(fileName), false, anonymize) != 0) {
+			appendTextToLog("failure to save dive log");
+			return QString();
 		}
-		break;
+		return fileName;
 	case EX_DIVE_SITES_XML:
 		fileName.replace("subsurface.log", "subsurface_divesites.xml");
 		{ // need a block so the compiler doesn't complain about creating the sites variable here
 			auto sites = getDiveSitesToExport(false);
-			if (export_dive_sites_xslt(qPrintable(fileName), sites, "divesites-export.xslt", anonymize).first == 0) {
-				// ok, we have a file, let's send it
-				body = "Subsurface dive site data";
-			} else {
-				appendTextToLog("failure to save dive site data, aborting attempt to send via email");
+			if (export_dive_sites_xslt(qPrintable(fileName), sites, "divesites-export.xslt", anonymize).first != 0) {
+				appendTextToLog("failure to save dive site data");
+				return QString();
 			}
 		}
-		break;
+		return fileName;
 	default:
-		report_info("cannot export type %d via email", static_cast<int>(type));
+		report_info("cannot export type %d to a file", static_cast<int>(type));
+		return QString();
+	}
+}
+
+void QMLManager::shareViaEmail(export_types type, bool anonymize)
+{
+	QString fileName = writeExportFile(type, anonymize);
+	if (fileName.isEmpty()) {
+		appendTextToLog("no export file, aborting attempt to send via email");
 		return;
 	}
+	QString body = type == EX_DIVES_XML ? "Subsurface dive log data" : "Subsurface dive site data";
 #if defined(Q_OS_ANDROID)
 	// let's use our nifty Java shareViaEmail function
 	QJniObject activity(QNativeInterface::QAndroidApplication::context());
@@ -2357,6 +2364,32 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 	appendTextToLog("on a mobile platform this would send" + fileName + "via email with body" + body);
 #endif
 }
+
+// AI-generated (Claude)
+// Lets the user save the export as a file in a place of their choosing, using
+// the system's own save dialog: the document picker on iOS, the Storage Access
+// Framework on Android. Neither needs any storage permission.
+void QMLManager::saveExportToDevice(export_types type, bool anonymize)
+{
+	QString fileName = writeExportFile(type, anonymize);
+	if (fileName.isEmpty()) {
+		appendTextToLog("no export file, aborting attempt to save it");
+		return;
+	}
+#if defined(Q_OS_ANDROID)
+	QJniObject activity(QNativeInterface::QAndroidApplication::context());
+	if (activity.isValid()) {
+		QJniObject path = QJniObject::fromString(fileName);
+		bool success = activity.callMethod<jboolean>("saveFile", "(Ljava/lang/String;)Z", path.object<jstring>());
+		report_info("%s saveFile %s", __func__, success ? "succeeded" : "failed");
+	}
+#elif defined(Q_OS_IOS)
+	iosshare.saveFile(fileName);
+#else
+	appendTextToLog("on a mobile platform this would offer to save " + fileName);
+#endif
+}
+
 void QMLManager::uploadFinishSlot(bool success, const QString &text, const QByteArray &html)
 {
 	emit uploadFinish(success, text);

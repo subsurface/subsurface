@@ -19,6 +19,7 @@
 }
 - (void)shareViaEmail:(const QString &) subject :(const QString &) recipient :(const QString &) body :(const QString &) firstPath :(const QString &) secondPath;
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(nullable NSError *)error;
+- (void)saveFile:(const QString &) pathQS;
 @end
 
 @implementation IosShareObject
@@ -48,6 +49,11 @@ void IosShare::shareViaEmail(const QString &subject, const QString &recipient, c
 	// where we transition from Qt/C++ code to ObjC++ code that can interact
 	// directly with iOS
 	[(id)self shareViaEmail:subject:recipient:body:firstPath:secondPath];
+}
+
+// AI-generated (Claude)
+void IosShare::saveFile(const QString &path) {
+	[(id)self saveFile:path];
 }
 
 // the rest is the ObjC++ implementation
@@ -91,6 +97,21 @@ void IosShare::shareViaEmail(const QString &subject, const QString &recipient, c
 	}
 	// finally, show the controller - the code returns right away, which is why we need the 'didFinishWithResult' method below
 	[topController presentViewController:mc animated:YES completion:NULL];
+}
+
+// AI-generated (Claude)
+// The system's export picker ("Save to Files") copies the file to a place the
+// user picks, iCloud Drive or On My iPhone included; the app needs no access
+// to that place itself. The picker dismisses itself when done.
+- (void)saveFile:(const QString &) pathQS {
+	NSString *path = [[NSString alloc] initWithUTF8String:pathQS.toUtf8().data()];
+	NSURL *url = [NSURL fileURLWithPath:path];
+	UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initForExportingURLs:@[url] asCopy:YES];
+	UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+	while (topController.presentedViewController) {
+		topController = topController.presentedViewController;
+	}
+	[topController presentViewController:picker animated:YES completion:NULL];
 }
 
 // I would have kinda liked to inform the caller that sending mail failed, but I can't figure

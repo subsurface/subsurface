@@ -19,6 +19,9 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.util.Log;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import android.net.Uri;
 import androidx.core.content.FileProvider;
 import androidx.core.app.ShareCompat;
@@ -84,6 +87,52 @@ public class SubsurfaceMobileActivity extends QtActivity
 		// in order for the recipient / subject to work, the user needs to be clever enough to share with an email app
 		this.startActivity(shareFileIntent);
 		return true;
+	}
+
+	// AI-generated (Claude)
+	// Lets the user save a copy of the file wherever they choose, through the
+	// system's save dialog (Storage Access Framework). That needs no storage
+	// permission: the app only writes to the document the user created.
+	private static final int SAVE_FILE_REQUEST = 4711;
+	private String pendingSavePath;
+
+	public boolean saveFile(String path) {
+		Log.d(TAG + " saveFile - offering to save: ", path);
+		pendingSavePath = path;
+		// octet-stream, so that no provider appends an extension of its own to the name
+		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+		intent.setType("application/octet-stream");
+		intent.putExtra(Intent.EXTRA_TITLE, new File(path).getName());
+		runOnUiThread(() -> startActivityForResult(intent, SAVE_FILE_REQUEST));
+		return true;
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode != SAVE_FILE_REQUEST)
+			return;
+		final String source = pendingSavePath;
+		pendingSavePath = null;
+		if (resultCode != RESULT_OK || data == null || data.getData() == null || source == null) {
+			Log.d(TAG + " saveFile", "cancelled");
+			return;
+		}
+		final Uri target = data.getData();
+		// a dive log can be tens of MB: copy it off the UI thread
+		new Thread(() -> {
+			try (InputStream in = new FileInputStream(source);
+			     OutputStream out = getContentResolver().openOutputStream(target, "wt")) {
+				byte[] buffer = new byte[65536];
+				int n;
+				while ((n = in.read(buffer)) > 0)
+					out.write(buffer, 0, n);
+				Log.d(TAG + " saveFile", "saved to " + target.toString());
+			} catch (Exception e) {
+				Log.e(TAG + " saveFile", "failed to save to " + target.toString(), e);
+			}
+		}).start();
 	}
 
 	public boolean supportEmail(String path1, String path2) {
