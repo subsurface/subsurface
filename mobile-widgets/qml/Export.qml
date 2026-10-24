@@ -11,6 +11,9 @@ TemplatePage {
 	title: qsTr("Export Divelog information")
 
 	property int selectedExport: ExportType.EX_DIVES_XML
+	// AI-generated (Claude): on a phone, a file export is either mailed or saved
+	property bool mobileFileExport: (Qt.platform.os === "android" || Qt.platform.os === "ios") &&
+					(selectedExport === ExportType.EX_DIVES_XML || selectedExport === ExportType.EX_DIVE_SITES_XML)
 
 	FolderDialog {
 		id: saveAsDialog
@@ -123,9 +126,8 @@ TemplatePage {
 		}
 	}
 
-	// given that there is no native file dialog on Android and that access to
-	// the file system is increasingly restrictive in future versions, file based
-	// export really doesn't make sense on Android
+	// On Android and iOS a file export is either sent by email or saved through
+	// the system's own save dialog, which needs no file system access of our own
 
 	ColumnLayout {
 		id: exportSelection
@@ -185,6 +187,7 @@ TemplatePage {
 		}
 		TemplateButton {
 			text: qsTr("Next")
+			visible: !mobileFileExport
 			onClicked: {
 				if (selectedExport === ExportType.EX_DIVELOGS_DE) {
 					textUserID.visible = true
@@ -206,11 +209,28 @@ TemplatePage {
 					exportSelection.visible = false
 					textPassword.visible = false
 					uploadDialog.visible = true
-				} else if (Qt.platform.os !== "android" && Qt.platform.os !== "ios") {
-					saveAsDialog.open()
 				} else {
+					saveAsDialog.open()
+				}
+			}
+		}
+		// AI-generated (Claude)
+		RowLayout {
+			visible: mobileFileExport
+			spacing: Kirigami.Units.smallSpacing
+			TemplateButton {
+				text: qsTr("Send via email")
+				onClicked: {
 					manager.appendTextToLog("Send export of type " + selectedExport + " via email.")
 					manager.shareViaEmail(selectedExport, anonymize.checked)
+					pageStack.pop()
+				}
+			}
+			TemplateButton {
+				text: qsTr("Save to file")
+				onClicked: {
+					manager.appendTextToLog("Save export of type " + selectedExport + " to a file.")
+					manager.saveExportToDevice(selectedExport, anonymize.checked)
 					pageStack.pop()
 				}
 			}

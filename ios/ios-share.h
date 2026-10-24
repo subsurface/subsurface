@@ -11,6 +11,8 @@ public:
 	~IosShare();
 	void supportEmail(const QString &firstPath, const QString &secondPath);
 	void shareViaEmail(const QString &subject, const QString &recipient, const QString &body, const QString &firstPath, const QString &secondPath);
+	// AI-generated (Claude): offers to save a copy of the file wherever the user picks
+	void saveFile(const QString &path);
 private:
 	void *self;
 };

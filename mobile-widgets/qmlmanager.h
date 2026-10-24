@@ -88,6 +88,7 @@ public:
 #endif
 	Q_INVOKABLE void exportToWEB(export_types type, QString userId, QString password, bool anonymize);
 	Q_INVOKABLE void shareViaEmail(export_types type, bool anonymize);
+	Q_INVOKABLE void saveExportToDevice(export_types type, bool anonymize);
 
 	QString DC_vendor() const;
 	void DC_setVendor(const QString& vendor);
@@ -287,6 +288,7 @@ private:
 	void openLocalThenRemote(QString url);
 	bool saveChangesLocal();
 	bool cloudDestinationIsSafe() const;
+	QString writeExportFile(export_types type, bool anonymize);
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString appLogFileName;
