@@ -1120,7 +1120,8 @@ static void calculate_gas_information_new(const struct dive *dive, const struct 
 		pressure_t modpO2 = { .mbar = (int)(prefs.modpO2 * 1000) };
 		entry.mod = dive->gas_mod(*gasmix, modpO2, 1_mm);
 		entry.end = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * (1000 - fhe) / 1000.0));
-		entry.ead = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * fn2 / (double)N2_IN_AIR));
+		// fill_pressures() assigns the remaining fraction after O2 to N2, including air's trace gases.
+		entry.ead = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) * fn2 / (double)(1000 - O2_IN_AIR)));
 		entry.eadd = dive->mbar_to_depth(lrint(dive->depth_to_mbarf(entry.depth) *
 				      (entry.pressures.o2 / amb_pressure * O2_DENSITY +
 				       entry.pressures.n2 / amb_pressure * N2_DENSITY +

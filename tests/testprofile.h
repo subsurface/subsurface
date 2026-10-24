@@ -11,6 +11,7 @@ private slots:
 	void init();
 	void testProfileExport();
 	void testProfileExportVPMB();
+	void testEquivalentAirDepth();
 };
 
 #endif
