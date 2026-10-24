@@ -86,6 +86,7 @@ parts:
       craftctl default
       git submodule update --init --recursive
     override-build: |
+      cd "${CRAFT_PART_SRC}"
       # qlitehtml only supports being configured in its own source tree
       cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local .
       # only build the library - the test browser that is part of the default
