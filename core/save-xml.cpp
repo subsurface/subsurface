@@ -530,7 +530,7 @@ int save_dive(FILE *f, const struct dive &dive, bool anonymize)
 	return 0;
 }
 
-static void save_trip(struct membuffer *b, dive_trip &trip, bool anonymize)
+static void save_trip(struct membuffer *b, dive_trip &trip, bool anonymize, bool select_only)
 {
 	put_format(b, "<trip");
 	show_date(b, trip.date());
@@ -545,7 +545,7 @@ static void save_trip(struct membuffer *b, dive_trip &trip, bool anonymize)
 	 * check the divetrip pointer..
 	 */
 	for (auto &dive: divelog.dives) {
-		if (dive->divetrip == &trip)
+		if (dive->divetrip == &trip && (!select_only || dive->selected))
 			save_one_dive_to_mb(b, *dive, anonymize);
 	}
 
@@ -675,27 +675,23 @@ static void save_dives_buffer(struct membuffer *b, bool select_only, bool anonym
 
 	/* save the dives */
 	for (auto &dive: divelog.dives) {
-		if (select_only) {
-			if (!dive->selected)
-				continue;
+		if (select_only && !dive->selected)
+			continue;
+		dive_trip *trip = dive->divetrip;
+
+		/* Bare dive without a trip? */
+		if (!trip) {
 			save_one_dive_to_mb(b, *dive, anonymize);
-		} else {
-			dive_trip *trip = dive->divetrip;
-
-			/* Bare dive without a trip? */
-			if (!trip) {
-				save_one_dive_to_mb(b, *dive, anonymize);
-				continue;
-			}
-
-			/* Have we already seen this trip (and thus saved this dive?) */
-			if (trip->saved)
-				continue;
-
-			/* We haven't seen this trip before - save it and all dives */
-			trip->saved = 1;
-			save_trip(b, *trip, anonymize);
+			continue;
 		}
+
+		/* Have we already seen this trip (and thus saved this dive?) */
+		if (trip->saved)
+			continue;
+
+		/* We haven't seen this trip before - save it and its exported dives */
+		trip->saved = 1;
+		save_trip(b, *trip, anonymize, select_only);
 	}
 	put_format(b, "</dives>\n</divelog>\n");
 }

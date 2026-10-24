@@ -145,6 +145,34 @@ void TestParse::testParse()
 		     SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
 }
 
+void TestParse::exportSelectedTrip()
+{
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test-selected-trip-export.xml", &divelog), 0);
+	QCOMPARE(divelog.dives.size(), size_t(5));
+	QCOMPARE(divelog.trips.size(), size_t(2));
+	divelog.dives[0]->selected = true;
+	divelog.dives[2]->selected = true;
+	divelog.dives[4]->selected = true;
+
+	QCOMPARE(save_dives_logic("./testselectedtrip.ssrf", true, false), 0);
+	QFile output("./testselectedtrip.ssrf");
+	QVERIFY(output.open(QFile::ReadOnly));
+	const QString xml = QString::fromUtf8(output.readAll());
+	QCOMPARE(xml.count("<trip"), 1);
+	QVERIFY(xml.contains("location='Selected Trip'"));
+	QVERIFY(xml.contains("<notes>Trip notes</notes>"));
+	QVERIFY(!xml.contains("Unselected Trip"));
+	QVERIFY(xml.contains("number='101'"));
+	QVERIFY(xml.contains("number='103'"));
+	QVERIFY(xml.contains("number='105'"));
+	QVERIFY(xml.indexOf("<trip") < xml.indexOf("number='101'"));
+	QVERIFY(xml.indexOf("number='101'") < xml.indexOf("number='103'"));
+	QVERIFY(xml.indexOf("number='103'") < xml.indexOf("</trip>"));
+	QVERIFY(xml.indexOf("</trip>") < xml.indexOf("number='105'"));
+	QVERIFY(!xml.contains("number='102'"));
+	QVERIFY(!xml.contains("number='104'"));
+}
+
 void TestParse::testParseTsv()
 {
 	// On some platforms (Windows) size_t has a different format string.
