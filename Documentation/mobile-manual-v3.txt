@@ -705,11 +705,14 @@ of 5 stars tend to be higher than for other ratings.
 
 == Export
 
-The _Export_ feature is somewhat experimental. On Android it only allows the upload of your dive list
-to two websites (_divelogs.de_ and _diveshare_). On iOS it also allows local file based exports as _Subsurface_
-specific XML files (both for dives and dive sites) as well as _UDDF_.
+The _Export_ feature allows the upload of your dive list to two websites (_divelogs.de_ and _diveshare_)
+and the export of _Subsurface_ specific XML files (both for dives and dive sites).
 
-Tapping on _Next_ opens an additional page for login information for the destination website (or a file selection dialog).
+For the uploads, tapping on _Next_ opens an additional page for login information for the destination website.
+
+For the XML files there are two buttons: _Send via email_ attaches the file to a new email, and _Save to file_
+opens the system's save dialog, where you choose the folder (or a cloud storage such as iCloud Drive or
+Google Drive) to save the file in. That way the file can be kept or opened in another app.
 
 == Viewing the locations of all dives in the dive list
 
