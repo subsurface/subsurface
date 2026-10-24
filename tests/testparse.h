@@ -18,6 +18,7 @@ private slots:
 	int parseV2NoQuestion();
 	int parseV3();
 	void testParse();
+	void exportSelectedTrip();
 	void testParseTsv();
 	void testParseCsv();
 	void testParseTankSensors();
