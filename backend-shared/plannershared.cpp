@@ -137,6 +137,7 @@ void PlannerShared::set_bottompo2(double value)
 {
 	qPrefDivePlanner::set_bottompo2((int) (value * 1000.0));
 	DivePlannerPointsModel::instance()->cylindersModel()->updateBestMixes();
+	DivePlannerPointsModel::instance()->emitDataChanged();
 }
 
 double PlannerShared::decopo2()

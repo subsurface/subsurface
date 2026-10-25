@@ -24,6 +24,7 @@ private slots:
 	void testZeroDepthExcludesDecoGas();
 	// AI-generated (Claude)
 	void testRecreationalPlanSaveAllowed();
+	void testPo2LimitsRefreshPlanNotes();
 	void testDesktopPlannerSurfacePressureInitialisation();
 	// AI-generated (Claude)
 	void testMobilePlannerSurfacePressureRetained();
