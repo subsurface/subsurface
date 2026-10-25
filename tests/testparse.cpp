@@ -237,6 +237,20 @@ void TestParse::testParseDM5()
 		     SUBSURFACE_TEST_DATA "/dives/TestDiveDM5.xml");
 }
 
+// AI-generated (Claude)
+// A Shearwater Cloud database whose dive_logs and dive_log_records tables are
+// empty, so the dives can only come from the raw logs in log_data
+void TestParse::testParseShearwaterCloud()
+{
+	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveShearwaterCloud.db", &_sqlite3_handle), 0);
+	QCOMPARE(parse_shearwater_cloud_buffer(_sqlite3_handle, 0, 0, 0, &divelog), 0);
+	QCOMPARE(divelog.dives.size(), 2);
+
+	QCOMPARE(save_dives("./testshearwatercloudout.ssrf"), 0);
+	FILE_COMPARE("./testshearwatercloudout.ssrf",
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveShearwaterCloud.xml");
+}
+
 void TestParse::testParseHUDC()
 {
 	xml_params params;

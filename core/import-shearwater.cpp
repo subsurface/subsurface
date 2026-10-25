@@ -14,8 +14,12 @@
 #include "errorhelper.h"
 #include "membuffer.h"
 #include "gettext.h"
+#include "libdivecomputer.h"
+#include "sha1.h"
 
+#include <algorithm>
 #include <stdlib.h>
+#include <zlib.h>
 
 static int shearwater_cylinders(void *param, int, char **data, char **)
 {
@@ -467,6 +471,148 @@ static int shearwater_cloud_dive(void *param, int, char **data, char **)
 	return SQLITE_OK;
 }
 
+// AI-generated (Claude)
+// Newer versions of Shearwater Cloud leave dive_logs and dive_log_records
+// empty and keep each dive only as the log the dive computer wrote, in
+// log_data.data_bytes_1: a little-endian 32-bit length of the uncompressed
+// log, followed by a gzip stream. The uncompressed log is the same data a
+// Bluetooth download returns, so libdivecomputer can parse it.
+static constexpr uint32_t shearwater_cloud_max_log_size = 16 * 1024 * 1024;
+static constexpr size_t shearwater_record_size = 32;
+static constexpr unsigned char shearwater_final_record = 0xFF;
+static constexpr size_t shearwater_final_serial_offset = 2;
+static constexpr size_t shearwater_final_model_offset = 13;
+static constexpr size_t shearwater_fingerprint_offset = 12;
+static constexpr size_t shearwater_fingerprint_size = 4;
+// From libdivecomputer
+static constexpr int shearwater_petrel_model = 3;
+
+static std::string shearwater_cloud_uncompress(const unsigned char *blob, int size)
+{
+	if (!blob || size < 4)
+		return std::string();
+	uint32_t length = blob[0] | (blob[1] << 8) | (blob[2] << 16) | ((uint32_t)blob[3] << 24);
+	if (length == 0 || length > shearwater_cloud_max_log_size)
+		return std::string();
+
+	std::string log(length, '\0');
+	z_stream stream = {};
+	// 16 + MAX_WBITS: expect a gzip header rather than a zlib one
+	if (inflateInit2(&stream, 16 + MAX_WBITS) != Z_OK)
+		return std::string();
+	stream.next_in = const_cast<unsigned char *>(blob + 4);
+	stream.avail_in = size - 4;
+	stream.next_out = reinterpret_cast<unsigned char *>(log.data());
+	stream.avail_out = length;
+	int ret = inflate(&stream, Z_FINISH);
+	uLong total = stream.total_out;
+	inflateEnd(&stream);
+	if (ret != Z_STREAM_END || total != length)
+		return std::string();
+	return log;
+}
+
+// The final record carries the serial number and the model number that libdivecomputer uses
+static size_t shearwater_final_record_offset(const std::string &log)
+{
+	for (size_t offset = log.size() / shearwater_record_size * shearwater_record_size; offset >= shearwater_record_size;) {
+		offset -= shearwater_record_size;
+		if ((unsigned char)log[offset] == shearwater_final_record)
+			return offset;
+	}
+	return std::string::npos;
+}
+
+// libdivecomputer only learns the serial number from the dive computer during a
+// download, so the parser reports it as 0. Set it the way a download would.
+static void shearwater_set_serial(struct divecomputer &dc, const std::string &log, size_t final)
+{
+	const unsigned char *p = (const unsigned char *)log.data() + final + shearwater_final_serial_offset;
+	uint32_t number = ((uint32_t)p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3];
+	char serial[9];
+	snprintf(serial, sizeof(serial), "%08x", number);
+
+	dc.serial = serial;
+	dc.deviceid = calculate_string_hash(serial);
+	auto it = std::find_if(dc.extra_data.begin(), dc.extra_data.end(),
+			       [](auto &ed) { return ed.key == "Serial"; });
+	if (it != dc.extra_data.end())
+		it->value = serial;
+}
+
+static int shearwater_cloud_log_data(sqlite3 *handle, struct divelog *log)
+{
+	// Only the dives that have no dive_logs row, so that databases written by
+	// older versions of Shearwater Cloud still import as before
+	char get_logs[] = "select d.DiveNumber,d.Location,d.Site,d.Buddy,d.Notes,l.data_bytes_1 FROM dive_details AS d JOIN log_data AS l ON d.DiveId=l.log_id WHERE l.format='sw-pnf' AND d.DiveId NOT IN (select diveId from dive_logs)";
+	sqlite3_stmt *stmt;
+	if (sqlite3_prepare_v2(handle, get_logs, -1, &stmt, NULL) != SQLITE_OK) {
+		report_info("Database query shearwater_cloud_log_data failed.");
+		return 1;
+	}
+
+	struct parser_state state;
+	state.log = log;
+
+	while (sqlite3_step(stmt) == SQLITE_ROW) {
+		auto text = [stmt](int column) {
+			const unsigned char *value = sqlite3_column_text(stmt, column);
+			return value ? std::string((const char *)value) : std::string();
+		};
+		int number = sqlite3_column_int(stmt, 0);
+
+		std::string data = shearwater_cloud_uncompress((const unsigned char *)sqlite3_column_blob(stmt, 5), sqlite3_column_bytes(stmt, 5));
+		if (data.size() < shearwater_fingerprint_offset + shearwater_fingerprint_size) {
+			report_error(translate("gettextFromC", "Could not read the Shearwater Cloud log of dive %d"), number);
+			continue;
+		}
+
+		device_data_t devdata;
+		devdata.log = log;
+		size_t final = shearwater_final_record_offset(data);
+		int model = final != std::string::npos ? (unsigned char)data[final + shearwater_final_model_offset] : -1;
+		std::string model_name;
+		if (model < 0 || (!prepare_device_descriptor(model, DC_FAMILY_SHEARWATER_PETREL, devdata) &&
+				  !prepare_device_descriptor(model, DC_FAMILY_SHEARWATER_PREDATOR, devdata))) {
+			report_error(translate("gettextFromC", "Unknown Shearwater model %d, using Petrel as default"), model);
+			if (!prepare_device_descriptor(shearwater_petrel_model, DC_FAMILY_SHEARWATER_PETREL, devdata)) {
+				report_error("%s", translate("gettextFromC", "Unknown DC"));
+				continue;
+			}
+			model_name = "[unknown model]";
+		}
+
+		auto d = std::make_unique<dive>();
+		d->number = number;
+		// Same name as a Bluetooth download, so that both are recognised as the same dive computer
+		d->dcs[0].model = devdata.vendor + " " + (!model_name.empty() ? model_name : devdata.model);
+
+		dc_status_t rc = libdc_buffer_parser(d.get(), &devdata, (const unsigned char *)data.data(), data.size());
+		if (rc != DC_STATUS_SUCCESS) {
+			report_error(translate("gettextFromC", "Error - %s - parsing dive %d"), errmsg(rc), number);
+			continue;
+		}
+
+		// libdivecomputer's Shearwater fingerprint, which a Bluetooth download hashes the same way
+		d->dcs[0].diveid = SHA1_uint32(data.data() + shearwater_fingerprint_offset, shearwater_fingerprint_size);
+		if (final != std::string::npos)
+			shearwater_set_serial(d->dcs[0], data, final);
+
+		std::string location = text(1);
+		std::string site = text(2);
+		std::string name = !location.empty() && !site.empty() ? location + " / " + site : location + site;
+		if (!name.empty())
+			add_dive_site(name.c_str(), d.get(), &state);
+		d->buddy = text(3);
+		d->notes = text(4);
+
+		log->dives.record_dive(std::move(d));
+	}
+	sqlite3_finalize(stmt);
+
+	return 0;
+}
+
 int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *, int, struct divelog *log)
 {
 	int retval;
@@ -507,5 +653,5 @@ int parse_shearwater_cloud_buffer(sqlite3 *handle, const char *url, const char *
 		return 1;
 	}
 
-	return 0;
+	return shearwater_cloud_log_data(handle, log);
 }
