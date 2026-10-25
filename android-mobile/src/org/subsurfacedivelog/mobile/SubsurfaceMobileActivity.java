@@ -20,7 +20,6 @@ import android.hardware.usb.UsbManager;
 import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -136,23 +135,16 @@ public class SubsurfaceMobileActivity extends QtActivity
 		}
 		// Moving the fresh export aside is instant, however large the dive log,
 		// and the next export simply writes a new file at the shared path.
-		if (export.renameTo(snapshot)) {
-			offerToSave(snapshot, export.getName());
-			return true;
+		// A rename within one folder of the app's storage is not expected to
+		// fail; if it does, report it rather than copy from a file that the
+		// next export may rewrite meanwhile.
+		if (!export.renameTo(snapshot)) {
+			Log.e(TAG + " saveFile", "cannot move " + path + " to " + snapshot.getPath());
+			snapshot.delete();
+			saveFileFailed();
+			return false;
 		}
-		// should the rename fail, copy instead, off the UI thread
-		new Thread(() -> {
-			try (InputStream in = new FileInputStream(export);
-			     OutputStream out = new FileOutputStream(snapshot)) {
-				copyStream(in, out);
-			} catch (IOException e) {
-				Log.e(TAG + " saveFile", "cannot snapshot " + path, e);
-				snapshot.delete();
-				saveFileFailed();
-				return;
-			}
-			offerToSave(snapshot, export.getName());
-		}).start();
+		offerToSave(snapshot, export.getName());
 		return true;
 	}
 
