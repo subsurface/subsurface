@@ -123,7 +123,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 
 	public boolean saveFile(String path) {
 		Log.d(TAG + " saveFile - offering to save: ", path);
-		File snapshot;
+		File snapshot = null;
 		try {
 			snapshot = File.createTempFile("export-", null, getCacheDir());
 			try (InputStream in = new FileInputStream(path);
@@ -132,6 +132,8 @@ public class SubsurfaceMobileActivity extends QtActivity
 			}
 		} catch (IOException e) {
 			Log.e(TAG + " saveFile", "cannot snapshot " + path, e);
+			if (snapshot != null)
+				snapshot.delete();
 			saveFileFailed();
 			return false;
 		}
@@ -155,20 +157,29 @@ public class SubsurfaceMobileActivity extends QtActivity
 		if (requestCode != SAVE_FILE_REQUEST)
 			return;
 		final File snapshot = takePendingSnapshot(null);
-		if (snapshot == null)
-			return;
 		if (resultCode != RESULT_OK || data == null || data.getData() == null) {
 			Log.d(TAG + " saveFile", "cancelled");
-			snapshot.delete();
+			if (snapshot != null)
+				snapshot.delete();
 			return;
 		}
 		final Uri target = data.getData();
+		if (snapshot == null || !snapshot.exists()) {
+			// the snapshot got lost (the activity was recreated and the cache cleared)
+			Log.e(TAG + " saveFile", "no snapshot to save to " + target.toString());
+			deleteIncompleteDocument(target);
+			saveFileFailed();
+			return;
+		}
 		// a dive log can be tens of MB: copy it off the UI thread
 		new Thread(() -> {
 			boolean saved = false;
-			try (InputStream in = new FileInputStream(snapshot);
-			     OutputStream out = getContentResolver().openOutputStream(target, "wt")) {
-				copyStream(in, out);
+			try {
+				try (InputStream in = new FileInputStream(snapshot);
+				     OutputStream out = getContentResolver().openOutputStream(target, "wt")) {
+					copyStream(in, out);
+				}
+				// only now: closing the output stream can fail, too
 				saved = true;
 			} catch (Exception e) {
 				Log.e(TAG + " saveFile", "failed to save to " + target.toString(), e);
@@ -178,14 +189,30 @@ public class SubsurfaceMobileActivity extends QtActivity
 				Log.d(TAG + " saveFile", "saved to " + target.toString());
 				return;
 			}
-			// don't leave a truncated file behind that looks like a good export
-			try {
-				DocumentsContract.deleteDocument(getContentResolver(), target);
-			} catch (Exception e) {
-				Log.e(TAG + " saveFile", "cannot remove the incomplete " + target.toString(), e);
-			}
+			deleteIncompleteDocument(target);
 			saveFileFailed();
 		}).start();
+	}
+
+	// don't leave a truncated file behind that looks like a good export
+	private void deleteIncompleteDocument(Uri target) {
+		try {
+			DocumentsContract.deleteDocument(getContentResolver(), target);
+		} catch (Exception e) {
+			Log.e(TAG + " saveFile", "cannot remove the incomplete " + target.toString(), e);
+		}
+	}
+
+	// the save dialog may outlive this activity instance: keep the snapshot's path
+	private static final String SAVE_SNAPSHOT_KEY = "pendingSaveSnapshot";
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		synchronized (this) {
+			if (pendingSnapshot != null)
+				outState.putString(SAVE_SNAPSHOT_KEY, pendingSnapshot.getPath());
+		}
 	}
 
 	public boolean supportEmail(String path1, String path2) {
@@ -245,6 +272,10 @@ public class SubsurfaceMobileActivity extends QtActivity
 	{
 		Log.i(TAG + " onCreate", "onCreate SubsurfaceMobileActivity");
 		super.onCreate(savedInstanceState);
+
+		// AI-generated (Claude): a save dialog still open from before a recreation
+		if (savedInstanceState != null && savedInstanceState.getString(SAVE_SNAPSHOT_KEY) != null)
+			takePendingSnapshot(new File(savedInstanceState.getString(SAVE_SNAPSHOT_KEY)));
 
 		// AI-generated (Claude)
 		// Let app content draw under the system bars from API 35 (Android 15) onward.
