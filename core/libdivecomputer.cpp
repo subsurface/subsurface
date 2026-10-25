@@ -1903,6 +1903,14 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const un
 		rc = libdc_header_parser (parser, data, dive);
 		if (rc != DC_STATUS_SUCCESS) {
 			report_error("Error parsing the dive header data. Dive # %d: %s", dive->number, errmsg(rc));
+			// AI-generated (Claude)
+			// A Bluetooth download drops a Shearwater dive whose header fails
+			// to parse, so do the same for a Shearwater log read from a file
+			if (dc_descriptor_get_type(data->descriptor) == DC_FAMILY_SHEARWATER_PREDATOR ||
+			    dc_descriptor_get_type(data->descriptor) == DC_FAMILY_SHEARWATER_PETREL) {
+				dc_parser_destroy(parser);
+				return rc;
+			}
 		}
 	}
 	rc = dc_parser_samples_foreach (parser, sample_cb, &dive->dcs[0]);

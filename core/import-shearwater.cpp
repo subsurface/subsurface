@@ -554,7 +554,8 @@ static int shearwater_cloud_log_data(sqlite3 *handle, struct divelog *log)
 	struct parser_state state;
 	state.log = log;
 
-	while (sqlite3_step(stmt) == SQLITE_ROW) {
+	int step;
+	while ((step = sqlite3_step(stmt)) == SQLITE_ROW) {
 		auto text = [stmt](int column) {
 			const unsigned char *value = sqlite3_column_text(stmt, column);
 			return value ? std::string((const char *)value) : std::string();
@@ -610,6 +611,10 @@ static int shearwater_cloud_log_data(sqlite3 *handle, struct divelog *log)
 	}
 	sqlite3_finalize(stmt);
 
+	if (step != SQLITE_DONE) {
+		report_info("Database query shearwater_cloud_log_data failed.");
+		return 1;
+	}
 	return 0;
 }
 
