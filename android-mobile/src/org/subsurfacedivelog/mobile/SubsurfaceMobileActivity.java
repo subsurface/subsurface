@@ -100,6 +100,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 	// Each save works on its own snapshot of the export: writeExportFile()
 	// always writes to the same path, and another export started while a slow
 	// provider is still copying must not change (or de-anonymise) this one.
+	// The snapshot is the export file itself, renamed out of the way.
 	private static final int SAVE_FILE_REQUEST = 4711;
 	private File pendingSnapshot;
 
@@ -123,20 +124,39 @@ public class SubsurfaceMobileActivity extends QtActivity
 
 	public boolean saveFile(String path) {
 		Log.d(TAG + " saveFile - offering to save: ", path);
-		File snapshot = null;
+		final File export = new File(path);
+		final File snapshot;
 		try {
-			snapshot = File.createTempFile("export-", null, getCacheDir());
-			try (InputStream in = new FileInputStream(path);
-			     OutputStream out = new FileOutputStream(snapshot)) {
-				copyStream(in, out);
-			}
+			// in the export's own folder, so that it can be renamed into place
+			snapshot = File.createTempFile("export-", null, export.getParentFile());
 		} catch (IOException e) {
-			Log.e(TAG + " saveFile", "cannot snapshot " + path, e);
-			if (snapshot != null)
-				snapshot.delete();
+			Log.e(TAG + " saveFile", "cannot create a snapshot for " + path, e);
 			saveFileFailed();
 			return false;
 		}
+		// Moving the fresh export aside is instant, however large the dive log,
+		// and the next export simply writes a new file at the shared path.
+		if (export.renameTo(snapshot)) {
+			offerToSave(snapshot, export.getName());
+			return true;
+		}
+		// should the rename fail, copy instead, off the UI thread
+		new Thread(() -> {
+			try (InputStream in = new FileInputStream(export);
+			     OutputStream out = new FileOutputStream(snapshot)) {
+				copyStream(in, out);
+			} catch (IOException e) {
+				Log.e(TAG + " saveFile", "cannot snapshot " + path, e);
+				snapshot.delete();
+				saveFileFailed();
+				return;
+			}
+			offerToSave(snapshot, export.getName());
+		}).start();
+		return true;
+	}
+
+	private void offerToSave(File snapshot, String fileName) {
 		// a save dialog that never returned leaves its snapshot behind
 		File stale = takePendingSnapshot(snapshot);
 		if (stale != null)
@@ -146,9 +166,8 @@ public class SubsurfaceMobileActivity extends QtActivity
 		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
 		intent.setType("application/octet-stream");
-		intent.putExtra(Intent.EXTRA_TITLE, new File(path).getName());
+		intent.putExtra(Intent.EXTRA_TITLE, fileName);
 		runOnUiThread(() -> startActivityForResult(intent, SAVE_FILE_REQUEST));
-		return true;
 	}
 
 	@Override
