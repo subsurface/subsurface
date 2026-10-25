@@ -1,0 +1,56 @@
+name: ShellCheck
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - scripts/**
+    - packaging/**
+    - icons/**
+    - '**/*.sh'
+    - '*.sh'
+    - subsurface.debug
+    - .github/workflows/shellcheck.yml
+  pull_request:
+    branches:
+    - master
+    paths:
+    - scripts/**
+    - packaging/**
+    - icons/**
+    - '**/*.sh'
+    - '*.sh'
+    - subsurface.debug
+    - .github/workflows/shellcheck.yml
+
+permissions: read-all
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-26.04
+    steps:
+    - name: checkout sources
+      id: checkout
+      uses: actions/checkout@v7
+      with:
+        ref: ${{ github.event.pull_request.head.sha || github.sha }}
+        persist-credentials: false
+        fetch-depth: 0
+
+    - name: Install ShellCheck
+      id: install_shellcheck
+      run: sudo apt-get update && sudo apt-get install -y shellcheck=0.11.0-2
+
+    - name: Test ShellCheck runner
+      run: python3 -B scripts/shellcheck/test-report-pr.py
+
+    - name: Enforce clean shell scripts
+      run: scripts/shellcheck/run.sh --check
+
+    - name: Report findings in changed exempt scripts
+      if: ${{ !cancelled() && github.event_name == 'pull_request' && steps.checkout.outcome == 'success' && steps.install_shellcheck.outcome == 'success' }}
+      env:
+        PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+      run: python3 scripts/shellcheck/report-pr.py

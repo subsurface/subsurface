@@ -319,7 +319,7 @@ mkdir ./staging
 cp -a ./Subsurface.app ./staging
 
 if [ "$SIGN" = "1" ] ; then # that's for local builds for Dirk... oops
-	sh ${DIR}/subsurface/packaging/macosx/sign
+	sh ${DIR}/subsurface/packaging/macosx/sign.sh
 else
 	codesign --force --deep --sign - staging/Subsurface.app
 fi
