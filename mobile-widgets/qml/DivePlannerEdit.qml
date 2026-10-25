@@ -71,14 +71,24 @@ TemplatePage {
 		var yearToken = format.match(/y+/);
 		if (yearToken && yearToken[0].length <= 2) {
 			var century = Math.floor(planDateTime.getFullYear() / 100) * 100;
-			parsed.setFullYear(century + parsed.getFullYear() % 100);
+			parsed.setUTCFullYear(century + parsed.getUTCFullYear() % 100);
 		}
+		// Qt parses a date-only string as midnight UTC. Local getters can
+		// therefore return the previous day west of UTC.
+		var year = parsed.getUTCFullYear();
+		var month = parsed.getUTCMonth();
+		var day = parsed.getUTCDate();
+		if (planDateTime.getFullYear() === year && planDateTime.getMonth() === month &&
+		    planDateTime.getDate() === day)
+			return false;
 		var updated = new Date(planDateTime.getTime());
-		updated.setFullYear(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
-		if (updated.getFullYear() !== parsed.getFullYear() || updated.getMonth() !== parsed.getMonth() ||
-		    updated.getDate() !== parsed.getDate())
+		updated.setFullYear(year, month, day);
+		if (updated.getFullYear() !== year || updated.getMonth() !== month || updated.getDate() !== day ||
+		    updated.getHours() !== planDateTime.getHours() || updated.getMinutes() !== planDateTime.getMinutes() ||
+		    updated.getSeconds() !== planDateTime.getSeconds())
 			return false;
 		planDateTime = updated;
+		generatePlan();
 		return true;
 	}
 
