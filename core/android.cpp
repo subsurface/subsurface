@@ -5,6 +5,8 @@
 #include "file.h"
 #include "qthelper.h"
 #include "subsurfacestartup.h"
+#include "errorhelper.h"
+#include "gettext.h"
 #include <string.h>
 #include <sys/types.h>
 #include <dirent.h>
@@ -188,6 +190,15 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_restartDownload(JNIEn
 	QMLManager::instance()->restartDownload(usbDevice);
 #endif
 	return;
+}
+
+// AI-generated (Claude)
+// Called by SubsurfaceMobileActivity (from any thread) when saving an export
+// through the system's save dialog failed; report_error() shows it in the UI.
+extern "C" JNIEXPORT void JNICALL
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_saveFileFailed(JNIEnv *, jclass)
+{
+	report_error("%s", translate("gettextFromC", "Saving the export failed"));
 }
 
 /* NOP wrappers to comform with windows.c */

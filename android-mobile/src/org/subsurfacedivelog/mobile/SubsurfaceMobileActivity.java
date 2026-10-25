@@ -20,9 +20,12 @@ import android.hardware.usb.UsbManager;
 import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import android.net.Uri;
+import android.provider.DocumentsContract;
 import androidx.core.content.FileProvider;
 import androidx.core.app.ShareCompat;
 import android.content.pm.PackageManager;
@@ -93,12 +96,50 @@ public class SubsurfaceMobileActivity extends QtActivity
 	// Lets the user save a copy of the file wherever they choose, through the
 	// system's save dialog (Storage Access Framework). That needs no storage
 	// permission: the app only writes to the document the user created.
+	//
+	// Each save works on its own snapshot of the export: writeExportFile()
+	// always writes to the same path, and another export started while a slow
+	// provider is still copying must not change (or de-anonymise) this one.
 	private static final int SAVE_FILE_REQUEST = 4711;
-	private String pendingSavePath;
+	private File pendingSnapshot;
+
+	// reports a failed save to the user (core/android.cpp)
+	private static native void saveFileFailed();
+
+	private static void copyStream(InputStream in, OutputStream out) throws IOException {
+		if (out == null)
+			throw new IOException("no output stream");
+		byte[] buffer = new byte[65536];
+		int n;
+		while ((n = in.read(buffer)) > 0)
+			out.write(buffer, 0, n);
+	}
+
+	private synchronized File takePendingSnapshot(File replacement) {
+		File previous = pendingSnapshot;
+		pendingSnapshot = replacement;
+		return previous;
+	}
 
 	public boolean saveFile(String path) {
 		Log.d(TAG + " saveFile - offering to save: ", path);
-		pendingSavePath = path;
+		File snapshot;
+		try {
+			snapshot = File.createTempFile("export-", null, getCacheDir());
+			try (InputStream in = new FileInputStream(path);
+			     OutputStream out = new FileOutputStream(snapshot)) {
+				copyStream(in, out);
+			}
+		} catch (IOException e) {
+			Log.e(TAG + " saveFile", "cannot snapshot " + path, e);
+			saveFileFailed();
+			return false;
+		}
+		// a save dialog that never returned leaves its snapshot behind
+		File stale = takePendingSnapshot(snapshot);
+		if (stale != null)
+			stale.delete();
+
 		// octet-stream, so that no provider appends an extension of its own to the name
 		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
 		intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -113,25 +154,37 @@ public class SubsurfaceMobileActivity extends QtActivity
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode != SAVE_FILE_REQUEST)
 			return;
-		final String source = pendingSavePath;
-		pendingSavePath = null;
-		if (resultCode != RESULT_OK || data == null || data.getData() == null || source == null) {
+		final File snapshot = takePendingSnapshot(null);
+		if (snapshot == null)
+			return;
+		if (resultCode != RESULT_OK || data == null || data.getData() == null) {
 			Log.d(TAG + " saveFile", "cancelled");
+			snapshot.delete();
 			return;
 		}
 		final Uri target = data.getData();
 		// a dive log can be tens of MB: copy it off the UI thread
 		new Thread(() -> {
-			try (InputStream in = new FileInputStream(source);
+			boolean saved = false;
+			try (InputStream in = new FileInputStream(snapshot);
 			     OutputStream out = getContentResolver().openOutputStream(target, "wt")) {
-				byte[] buffer = new byte[65536];
-				int n;
-				while ((n = in.read(buffer)) > 0)
-					out.write(buffer, 0, n);
-				Log.d(TAG + " saveFile", "saved to " + target.toString());
+				copyStream(in, out);
+				saved = true;
 			} catch (Exception e) {
 				Log.e(TAG + " saveFile", "failed to save to " + target.toString(), e);
 			}
+			snapshot.delete();
+			if (saved) {
+				Log.d(TAG + " saveFile", "saved to " + target.toString());
+				return;
+			}
+			// don't leave a truncated file behind that looks like a good export
+			try {
+				DocumentsContract.deleteDocument(getContentResolver(), target);
+			} catch (Exception e) {
+				Log.e(TAG + " saveFile", "cannot remove the incomplete " + target.toString(), e);
+			}
+			saveFileFailed();
 		}).start();
 	}
 
