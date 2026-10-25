@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testdiveplannermodel.h"
 #include "qt-models/diveplannermodel.h"
+#include "backend-shared/plannershared.h"
 #include "core/subsurfacestartup.h"
 #include "commands/command.h"
 #include "core/divelog.h"
@@ -357,6 +358,74 @@ void TestDivePlannerModel::testRecreationalPlanSaveAllowed()
 	model->setData(model->index(lastRow, DivePlannerPointsModel::RUNTIME), 20);
 	QVERIFY(model->planSaveAllowed());
 	QCOMPARE(saveAllowedSpy.last().at(0).toBool(), true);
+
+	model->resetPlanState();
+	prefs = default_prefs;
+}
+
+void TestDivePlannerModel::testPo2LimitsRefreshPlanNotes()
+{
+	DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
+	dive plannedDive;
+	prefs = default_prefs;
+	prefs.unit_system = METRIC;
+	prefs.units = SI_units;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.display_variations = false;
+	model->setPlanMode(DivePlannerPointsModel::PLAN);
+	model->createSimpleDive(&plannedDive);
+	// Mirror the desktop planner's cylinder-change connection. Deco pO2
+	// already triggers a replan through updateDecoDepths(), but bottom pO2
+	// without a best-mix cylinder does not emit a cylinder change.
+	QObject desktopConnections;
+	connect(model->cylindersModel(), &CylindersModel::dataChanged, &desktopConnections,
+		[model] { model->emitDataChanged(); });
+	QSignalSpy notes(model, &DivePlannerPointsModel::calculatedPlanNotes);
+
+	// Air at 15 m has a pO2 of about 0.5 bar. Changing the bottom limit
+	// must update the notes even if there is no best-mix cylinder.
+	PlannerShared::set_bottompo2(0.4);
+	QCOMPARE(notes.size(), 1);
+	QVERIFY(notes.last().at(0).toString().contains(QStringLiteral("high pO₂ value")));
+	PlannerShared::set_bottompo2(1.4);
+	QCOMPARE(notes.size(), 2);
+	QVERIFY(!notes.last().at(0).toString().contains(QStringLiteral("high pO₂ value")));
+
+	// Make a decompression dive so the calculated (not entered) stops are
+	// checked against the deco limit rather than the bottom limit.
+	model->setData(model->index(0, DivePlannerPointsModel::DEPTH), 40);
+	model->setData(model->index(1, DivePlannerPointsModel::DEPTH), 40);
+	model->setData(model->index(1, DivePlannerPointsModel::RUNTIME), 30);
+	QVERIFY(std::any_of(model->getDiveplan().dp.begin(), model->getDiveplan().dp.end(), [](const divedatapoint &point) {
+		return !point.entered && point.time > 0;
+	}));
+	// Adding a deco gas lets us verify that automatic switch depths update
+	// before the single calculation triggered by the cylinder change.
+	model->cylindersModel()->add();
+	cylinder_t *decoGas = plannedDive.get_cylinder(1);
+	QVERIFY(decoGas);
+	decoGas->gasmix.o2 = make_fraction(500);
+	decoGas->depth = plannedDive.gas_mod(decoGas->gasmix, { .mbar = prefs.decopo2 }, m_or_ft(3, 10));
+	const int oldDepth = decoGas->depth.mm;
+	const int beforeDeco = notes.size();
+	PlannerShared::set_decopo2(0.2);
+	QCOMPARE(notes.size(), beforeDeco + 1);
+	QVERIFY(decoGas->depth.mm < oldDepth);
+	QVERIFY(notes.last().at(0).toString().contains(QStringLiteral("high pO₂ value")));
+	PlannerShared::set_decopo2(1.6);
+	QCOMPARE(notes.size(), beforeDeco + 2);
+	QCOMPARE(decoGas->depth.mm, oldDepth);
+	QVERIFY(!notes.last().at(0).toString().contains(QStringLiteral("high pO₂ value")));
+
+	// A '*' (best-mix) cylinder must still follow the new bottom limit.
+	model->cylindersModel()->add();
+	cylinder_t *bestMix = plannedDive.get_cylinder(2);
+	QVERIFY(bestMix);
+	bestMix->bestmix_o2 = true;
+	PlannerShared::set_bottompo2(1.2);
+	int oldO2 = bestMix->gasmix.o2.permille;
+	PlannerShared::set_bottompo2(1.4);
+	QVERIFY(bestMix->gasmix.o2.permille > oldO2);
 
 	model->resetPlanState();
 	prefs = default_prefs;
