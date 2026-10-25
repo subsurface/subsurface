@@ -251,6 +251,25 @@ void TestParse::testParseShearwaterCloud()
 		     SUBSURFACE_TEST_DATA "/dives/TestDiveShearwaterCloud.xml");
 }
 
+// AI-generated (Claude)
+// The Perdix 2 dive from TestDiveShearwaterCloud.db, changed so that the
+// header parser first creates a dive site from a GPS fix and then fails:
+// opening record 4 byte 28 (air integration mode) is AI_ON_GPS, opening
+// record 9 holds a 3D fix at 9.07 N 123.27 E, and opening record 4 byte 1
+// (dive mode) is 0x7F, which no Shearwater computer uses. The dive must be
+// dropped without leaving its dive site behind.
+void TestParse::testParseShearwaterCloudGpsError()
+{
+	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveShearwaterCloudGpsError.db", &_sqlite3_handle), 0);
+	// The header error is reported by design, so don't fail on it
+	set_error_cb([](std::string) {});
+	int ret = parse_shearwater_cloud_buffer(_sqlite3_handle, 0, 0, 0, &divelog);
+	set_error_cb(&TestBase::failOnError);
+	QCOMPARE(ret, 0);
+	QCOMPARE(divelog.dives.size(), 0);
+	QCOMPARE(divelog.sites.size(), 0);
+}
+
 void TestParse::testParseHUDC()
 {
 	xml_params params;
