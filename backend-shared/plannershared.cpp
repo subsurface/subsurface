@@ -136,8 +136,14 @@ double PlannerShared::bottompo2()
 void PlannerShared::set_bottompo2(double value)
 {
 	qPrefDivePlanner::set_bottompo2((int) (value * 1000.0));
-	DivePlannerPointsModel::instance()->cylindersModel()->updateBestMixes();
-	DivePlannerPointsModel::instance()->emitDataChanged();
+	bool needsRefresh = !DivePlannerPointsModel::instance()->cylindersModel()->updateBestMixes();
+	// On desktop, a best-mix cylinder change already triggers a replan via dataChanged.
+	// Mobile has no such connection and still needs an explicit refresh.
+#ifdef SUBSURFACE_MOBILE
+	needsRefresh = true;
+#endif
+	if (needsRefresh)
+		DivePlannerPointsModel::instance()->emitDataChanged();
 }
 
 double PlannerShared::decopo2()

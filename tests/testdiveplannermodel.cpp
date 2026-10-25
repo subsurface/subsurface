@@ -422,9 +422,12 @@ void TestDivePlannerModel::testPo2LimitsRefreshPlanNotes()
 	cylinder_t *bestMix = plannedDive.get_cylinder(2);
 	QVERIFY(bestMix);
 	bestMix->bestmix_o2 = true;
+	const int beforeBestMix = notes.size();
 	PlannerShared::set_bottompo2(1.2);
+	QCOMPARE(notes.size(), beforeBestMix + 1);
 	int oldO2 = bestMix->gasmix.o2.permille;
 	PlannerShared::set_bottompo2(1.4);
+	QCOMPARE(notes.size(), beforeBestMix + 2);
 	QVERIFY(bestMix->gasmix.o2.permille > oldO2);
 
 	model->resetPlanState();
