@@ -10,6 +10,7 @@
 #include "parse.h"
 #include "divelist.h"
 #include "divelog.h"
+#include "divesite.h"
 #include "device.h"
 #include "errorhelper.h"
 #include "membuffer.h"
@@ -591,6 +592,8 @@ static int shearwater_cloud_log_data(sqlite3 *handle, struct divelog *log)
 		dc_status_t rc = libdc_buffer_parser(d.get(), &devdata, (const unsigned char *)data.data(), data.size());
 		if (rc != DC_STATUS_SUCCESS) {
 			report_error(translate("gettextFromC", "Error - %s - parsing dive %d"), errmsg(rc), number);
+			// The header parser may already have added the dive to a dive site from its GPS fix
+			unregister_dive_from_dive_site(d.get());
 			continue;
 		}
 
