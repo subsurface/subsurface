@@ -420,7 +420,7 @@ Kirigami.ScrollablePage {
 				text: ""
 				placeholderText: sitefilterMode.currentText
 				placeholderTextColor: subsurfaceTheme.secondaryTextColor
-				onAccepted: {
+				onTextChanged: {
 					manager.setFilter(text, sitefilterMode.currentIndex)
 				}
 				onVisibleChanged: {
