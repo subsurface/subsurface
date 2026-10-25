@@ -92,7 +92,13 @@ TemplatePage {
 			return false;
 		var updated = new Date(planDateTime.getTime());
 		updated.setHours(parsed.getHours(), parsed.getMinutes(), parsed.getSeconds(), 0);
+		if (updated.getHours() !== parsed.getHours() || updated.getMinutes() !== parsed.getMinutes() ||
+		    updated.getSeconds() !== parsed.getSeconds())
+			return false;
+		if (Qt.formatTime(updated, format) === Qt.formatTime(planDateTime, format))
+			return false;
 		planDateTime = updated;
+		generatePlan();
 		return true;
 	}
 
