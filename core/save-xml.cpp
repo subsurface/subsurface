@@ -534,9 +534,9 @@ static void save_trip(struct membuffer *b, dive_trip &trip, bool anonymize, bool
 {
 	put_format(b, "<trip");
 	show_date(b, trip.date());
-	show_utf8(b, trip.location.c_str(), " location=\'", "\'", 1);
+	show_utf8_blanked(b, trip.location.c_str(), " location=\'", "\'", 1, anonymize);
 	put_format(b, ">\n");
-	show_utf8(b, trip.notes.c_str(), "<notes>", "</notes>\n", 0);
+	show_utf8_blanked(b, trip.notes.c_str(), "<notes>", "</notes>\n", 0, anonymize);
 
 	/*
 	 * Incredibly cheesy: we want to save the dives sorted, and they

@@ -171,6 +171,16 @@ void TestParse::exportSelectedTrip()
 	QVERIFY(xml.indexOf("</trip>") < xml.indexOf("number='105'"));
 	QVERIFY(!xml.contains("number='102'"));
 	QVERIFY(!xml.contains("number='104'"));
+	output.close();
+
+	QCOMPARE(save_dives_logic("./testselectedtrip-anonymized.ssrf", true, true), 0);
+	QFile anonymizedOutput("./testselectedtrip-anonymized.ssrf");
+	QVERIFY(anonymizedOutput.open(QFile::ReadOnly));
+	const QString anonymizedXml = QString::fromUtf8(anonymizedOutput.readAll());
+	QVERIFY(anonymizedXml.contains("location='Xxxxxxxx Xxxx'"));
+	QVERIFY(anonymizedXml.contains("<notes>Xxxx xxxxx</notes>"));
+	QVERIFY(!anonymizedXml.contains("Selected Trip"));
+	QVERIFY(!anonymizedXml.contains("Trip notes"));
 }
 
 void TestParse::testParseTsv()
