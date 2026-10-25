@@ -48,9 +48,10 @@ override_dh_auto_configure:
 	mkdir -p install-root
 	# the private QtLocation / QtPositioning headers aren't part of the Qt packages
 	# and there is no network access during the build, so we ship them (see make-package.sh)
+	# those headers in turn need the private QtCore headers from qt6-base-private-dev
 	test -d $(CURDIR)/QtHeaders/$(QTMINOR)/include || { echo "no private Qt headers for Qt $(QTMINOR)" ; exit 1 ; }
 	(mkdir -p googlemaps-qt6/build ; cd googlemaps-qt6/build ; \
-		qmake6 "INCLUDEPATH=$(CURDIR)/QtHeaders/$(QTMINOR)/include" "CONFIG+=release" ../googlemaps.pro ; \
+		qmake6 "INCLUDEPATH=$(CURDIR)/QtHeaders/$(QTMINOR)/include" "QT+=core-private" "CONFIG+=release" ../googlemaps.pro ; \
 		make -j8 ; \
 		INSTALL_ROOT=$(MY_INSTALL_ROOT) make install ; \
 		ln -sf $(MY_INSTALL_ROOT)/usr/lib/*-linux-gnu/qt6/plugins/geoservices/*.so $(MY_INSTALL_ROOT))
