@@ -370,37 +370,44 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	// Keep the ScrollView below the animated header; the Page's contentItem
+	// geometry otherwise stays at the top and the first dive draws beneath it.
+	Binding { target: page.contentItem; property: "anchors.top"; value: filterHeader.bottom }
+
 	header: Rectangle {
 		id: filterHeader
-		visible: filterBar.height > 0
-		implicitHeight: filterBar.implicitHeight
-		implicitWidth: filterBar.implicitWidth
-		height: filterBar.height
+		visible: height > 0
+		implicitHeight: filterBar.implicitHeight + 2 * Kirigami.Units.smallSpacing
+		height: 0
+		clip: true
 		color: subsurfaceTheme.backgroundColor
 		enabled: rootItem.filterToggle
+		states: [
+			State {
+				name: "isVisible"
+				when: rootItem.filterToggle
+				PropertyChanges { target: filterHeader; height: filterHeader.implicitHeight }
+			},
+			State {
+				name: "isHidden"
+				when: !rootItem.filterToggle
+				PropertyChanges { target: filterHeader; height: 0 }
+			}
+		]
+		transitions: [
+			Transition { NumberAnimation { property: "height"; duration: 400; easing.type: Easing.InOutQuad }}
+		]
 		RowLayout {
 			id: filterBar
-			states: [
-				State {
-					name: "isVisible"
-					when: rootItem.filterToggle
-					PropertyChanges { target: filterBar; height: sitefilter.implicitHeight }
-				},
-				State {
-					name: "isHidden"
-					when: !rootItem.filterToggle
-					PropertyChanges { target: filterBar; height: 0 }
-				}
-			]
-			transitions: [
-				Transition { NumberAnimation { property: "height"; duration: 400; easing.type: Easing.InOutQuad }}
-			]
 			anchors.left: parent.left
 			anchors.right: parent.right
+			anchors.verticalCenter: parent.verticalCenter
 			anchors.leftMargin: Kirigami.Units.gridUnit / 2
 			anchors.rightMargin: Kirigami.Units.gridUnit / 2
+			// Do not show partially clipped controls while the header is resizing.
+			opacity: filterHeader.height >= filterHeader.implicitHeight - 1 ? 1 : 0
+			enabled: filterHeader.enabled && opacity > 0
 			TemplateSlimComboBox {
-				visible: filterBar.height === sitefilter.implicitHeight
 				id: sitefilterMode
 				model: ListModel {
 					ListElement {text: qsTr("Fulltext")}
@@ -408,7 +415,9 @@ Kirigami.ScrollablePage {
 					ListElement {text: qsTr("Tags")}
 				}
 				font.pointSize: subsurfaceTheme.smallPointSize
-				Layout.maximumWidth: parent.width * 0.3
+				Layout.minimumWidth: 0
+				Layout.preferredWidth: Math.min(Kirigami.Units.gridUnit * 8, filterBar.width * 0.3)
+				Layout.maximumWidth: filterBar.width * 0.3
 				onActivated:  {
 					manager.setFilter(sitefilter.text, currentIndex)
 				}
