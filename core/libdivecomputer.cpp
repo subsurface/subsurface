@@ -1849,7 +1849,8 @@ int prepare_device_descriptor(int data_model, dc_family_t dc_fam, device_data_t 
  * Parse data buffers instead of dc devices downloaded data.
  * Intended to be used to parse profile data from binary files during import tasks.
  * Actually included Uwatec families because of works on datatrak and smartrak logs
- * and OSTC families for OSTCTools logs import.
+ * and OSTC families for OSTCTools logs import, and Shearwater families for the
+ * logs stored in Shearwater Cloud databases.
  * For others, simply include them in the switch  (check parameters).
  * Note that dc_descriptor_t in data  *must* have been filled using dc_descriptor_iterator()
  * calls.
@@ -1883,6 +1884,8 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const un
 	case DC_FAMILY_HW_OSTC3:
 	case DC_FAMILY_DIVESOFT_FREEDOM:
 	case DC_FAMILY_GARMIN:
+	case DC_FAMILY_SHEARWATER_PREDATOR:
+	case DC_FAMILY_SHEARWATER_PETREL:
 		rc = dc_parser_new2(&parser, data->context, data->descriptor, buffer, size);
 		break;
 	default:

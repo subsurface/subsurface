@@ -8,11 +8,9 @@
 //  - it is only called from parse_gasmixes(), which in turn is only
 //    reachable via a live device download or a binary dive computer log
 //    replayed through libdc_buffer_parser();
-//  - libdc_buffer_parser() only accepts the Uwatec, HW OSTC, Divesoft
-//    Freedom and Garmin families, so a raw Shearwater log (the device that
-//    motivated this helper) can never reach it at all;
-//  - there is no public sample under tests/dives, nor a FIT sample carrying
-//    the Garmin SENSOR_PROFILE field (78) with DC_TANK_USAGE_INCLUDED,
+//  - the raw Shearwater logs in dives/TestDiveShearwaterCloud.db do not use
+//    sidemount, and there is no other public sample under dives, nor a FIT
+//    sample carrying the Garmin SENSOR_PROFILE field (78) with DC_TANK_USAGE_INCLUDED,
 //    DC_TANK_USAGE_EXCLUDED or DC_TANK_USAGE_SIDEMOUNT flags set.
 // Calling the helper directly with a truth table lets us cover the decision
 // logic without duplicating it or reimplementing parse_gasmixes().

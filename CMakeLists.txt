@@ -242,6 +242,11 @@ else()
 	pkg_config_library(LIBZIP libzip REQUIRED)
 endif()
 
+# zlib, already a dependency of libzip, uncompresses the dive logs in Shearwater Cloud databases
+find_package(ZLIB REQUIRED)
+include_directories(${ZLIB_INCLUDE_DIRS})
+LIST(APPEND SUBSURFACE_LINK_LIBRARIES ZLIB::ZLIB)
+
 if(NOT ANDROID AND NOT CMAKE_SYSTEM_NAME STREQUAL "iOS" AND NOT SUBSURFACE_TARGET_EXECUTABLE STREQUAL "CLI")
 	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		pkg_config_library(BLUEZ bluez REQUIRED)
