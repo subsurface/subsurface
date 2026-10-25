@@ -112,7 +112,9 @@ set(SMTK_IMPORT_SRCS
 	smrtk2ssrfc_window.h
 	smrtk2ssrfc_window.cpp
 )
-set(SMTK_LINK_LIBRARIES ${SMTK_LINK_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES} ${SSRF_CORELIB} ${QT_LIBRARIES})
+# zlib after the core library, which uses it for Shearwater Cloud logs
+find_package(ZLIB REQUIRED)
+set(SMTK_LINK_LIBRARIES ${SMTK_LINK_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES} ${SSRF_CORELIB} ZLIB::ZLIB ${QT_LIBRARIES})
 source_group("SmartTrak Import libs" FILES ${SMTK_IMPORT_SRCS})
 set(SMTK_IMPORT_TARGET smtk2ssrf)
 add_library(smtk_import STATIC ${SMTK_IMPORT_SRCS})
