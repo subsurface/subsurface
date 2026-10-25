@@ -435,7 +435,9 @@ Kirigami.ScrollablePage {
 				onVisibleChanged: {
 					// reset the filter when it gets toggled
 					text = ""
-					if (visible) {
+				}
+				onEnabledChanged: {
+					if (enabled && visible) {
 						forceActiveFocus()
 					}
 				}
