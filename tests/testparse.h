@@ -25,6 +25,7 @@ private slots:
 	void testParseDM4();
 	void testParseDM5();
 	void testParseShearwaterCloud();
+	void testParseShearwaterCloudGpsError();
 	void testParseHUDC();
 	void testParseNewFormat();
 	void testParseDLD();

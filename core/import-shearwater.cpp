@@ -592,8 +592,11 @@ static int shearwater_cloud_log_data(sqlite3 *handle, struct divelog *log)
 		dc_status_t rc = libdc_buffer_parser(d.get(), &devdata, (const unsigned char *)data.data(), data.size());
 		if (rc != DC_STATUS_SUCCESS) {
 			report_error(translate("gettextFromC", "Error - %s - parsing dive %d"), errmsg(rc), number);
-			// The header parser may already have added the dive to a dive site from its GPS fix
-			unregister_dive_from_dive_site(d.get());
+			// The header parser may already have created a dive site for this dive from its
+			// GPS fix. Remove the dive from it, and the site too if no other dive uses it.
+			struct dive_site *ds = unregister_dive_from_dive_site(d.get());
+			if (ds && ds->dives.empty())
+				log->sites.pull(ds);
 			continue;
 		}
 
