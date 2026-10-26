@@ -19,7 +19,7 @@ deleted files and symlinks are skipped.
 All other scripts are checked by the blocking step whether or not they were
 edited. Remove a script from the exemption list once its findings are fixed.
 
-`packaging/macosx/sign.sh` is a local packaging helper with an exemption.
+`packaging/macosx/sign.sh` is a local packaging helper checked by the blocking step.
 `subsurface.debug` keeps its extensionless name because it is installed as a
 command under that name; it is explicitly covered and exempted for its current
 findings. Other extensionless shell scripts require an explicit coverage change.
