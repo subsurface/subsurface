@@ -48,12 +48,12 @@ case "${1:---check}" in
 			fi
 		done
 		if (( ${#enforced[@]} )); then
-			shellcheck --severity=warning "${enforced[@]}"
+			shellcheck --severity=warning -- "${enforced[@]}"
 		fi
 		;;
 	--report)
 		# Include exempt scripts. Findings are expected here; use GCC format.
-		if shellcheck --severity=warning --format=gcc "${files[@]}"; then
+		if shellcheck --severity=warning --format=gcc -- "${files[@]}"; then
 			:
 		else
 			status=$?
