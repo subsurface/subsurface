@@ -140,6 +140,18 @@ class ReportShellCheckTest(unittest.TestCase):
 		self.assertIn("In tools/new.sh line", result.stdout)
 		self.assertIn("In new.sh line", result.stdout)
 
+	def test_root_script_with_leading_hyphen_is_not_an_option(self):
+		(self.root / "-new.sh").write_text("#!/bin/sh\necho $name\n")
+		self.git("add", "--", "-new.sh")
+		for mode in ("--check", "--report"):
+			with self.subTest(mode=mode):
+				result = subprocess.run(("bash", "scripts/shellcheck/run.sh", mode),
+				                        cwd=self.root, capture_output=True, text=True)
+				self.assertEqual(result.returncode, 1 if mode == "--check" else 0,
+				                 result.stdout + result.stderr)
+				self.assertIn("-new.sh", result.stdout)
+				self.assertIn("SC2154", result.stdout)
+
 	def test_extensionless_script_is_covered(self):
 		(self.root / "scripts/shellcheck/exempt.txt").write_text("packaging/legacy.sh\nscripts/old.sh\n")
 		result = subprocess.run(("bash", "scripts/shellcheck/run.sh", "--check"),
