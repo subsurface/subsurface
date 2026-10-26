@@ -16,9 +16,8 @@ fi
 tracked_file=$(mktemp)
 trap 'rm -f "$tracked_file"' EXIT
 git ls-files -z > "$tracked_file"
-mapfile -d '' -t tracked < "$tracked_file"
 files=()
-for file in "${tracked[@]}"; do
+while IFS= read -r -d '' file; do
 	case "$file" in
 		*.sh|subsurface.debug)
 			if [[ ! -f "$file" || -L "$file" ]]; then
@@ -28,12 +27,15 @@ for file in "${tracked[@]}"; do
 			files+=("$file")
 			;;
 	esac
-done
+done < "$tracked_file"
 
 case "${1:---check}" in
 	--check)
 		# Every script is enforced unless explicitly exempted for existing findings.
-		mapfile -t exempt < scripts/shellcheck/exempt.txt
+		exempt=()
+		while IFS= read -r exception || [[ -n ${exception:-} ]]; do
+			exempt+=("$exception")
+		done < scripts/shellcheck/exempt.txt
 		enforced=()
 		for file in "${files[@]}"; do
 			skip=false
