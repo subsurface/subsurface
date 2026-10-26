@@ -34,11 +34,14 @@ struct divecomputer;
  */
 struct plot_pressure_data {
 	std::array<int, NUM_PLOT_PRESSURES> data;
+	bool held = false; // A pressure copied forward without a new reading.
 };
 
 struct plot_data {
 	bool in_deco = false;
 	int sec = 0;
+	int ruler_cylinder = -1; // Active OC cylinder; -1 if it cannot be attributed.
+	int ruler_outgoing_pressure = 0; // Measured old-cylinder pressure cleared from the plotted switch entry.
 	int temperature = 0;
 	/* Depth info */
 	depth_t depth;

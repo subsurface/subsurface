@@ -1220,6 +1220,15 @@ struct plot_info create_plot_info_new(const struct dive *dive, const struct dive
 	}
 
 	populate_plot_entries(dive, dc, pi);
+	{
+		gasmix_loop loop_gas(*dive, *dc);
+		divemode_loop loop_mode(*dc);
+		for (auto &entry: pi.entry) {
+			auto [mode, cylinder, _mix] = get_dive_status_at(*dive, *dc, entry.sec, &loop_mode, &loop_gas);
+			if (mode == OC && cylinder >= 0 && cylinder < pi.nr_cylinders)
+				entry.ruler_cylinder = cylinder;
+		}
+	}
 
 	check_setpoint_events(dive, dc, pi);     /* Populate setpoints */
 	setup_gas_sensor_pressure(dive, dc, pi); /* Try to populate our gas pressure knowledge */
@@ -1417,6 +1426,48 @@ std::pair<int, std::vector<std::string>> get_plot_details_new(const struct dive 
 	return std::make_pair(idx, strings);
 }
 
+static int ruler_outgoing_pressure(const plot_info &pi, int idx, int cylinder)
+{
+	return idx > 0 && pi.entry[idx - 1].ruler_cylinder == cylinder &&
+	       pi.entry[idx].ruler_cylinder != cylinder ? pi.entry[idx].ruler_outgoing_pressure : 0;
+}
+
+static int ruler_pressure(const plot_info &pi, int idx, int cylinder)
+{
+	int outgoing = ruler_outgoing_pressure(pi, idx, cylinder);
+	return outgoing ? outgoing : get_plot_pressure(pi, idx, cylinder);
+}
+
+/* A plotted pressure can be held or extrapolated. Only a measured value, or an
+ * interpolation bounded by measurements in this gas-use span, can cover a ruler
+ * endpoint. Do not infer consumption across a cylinder switch. */
+static bool covered_ruler_pressure(const plot_info &pi, int idx, int first, int last, int cylinder)
+{
+	if (ruler_outgoing_pressure(pi, idx, cylinder) > 0 ||
+	    (get_plot_sensor_pressure(pi, idx, cylinder) > 0 &&
+	     !pi.pressures[cylinder + idx * pi.nr_cylinders].held))
+		return true;
+	if (get_plot_interpolated_pressure(pi, idx, cylinder) <= 0)
+		return false;
+	// A selection can start between two observed samples, but neither
+	// observation may come from the other side of a gas switch.
+	while (first > 0 && pi.entry[first - 1].ruler_cylinder == cylinder)
+		--first;
+	while (pi.entry[last].ruler_cylinder == cylinder &&
+	       last + 1 < static_cast<int>(pi.entry.size()) && pi.entry[last + 1].ruler_cylinder == cylinder)
+		++last;
+	bool before = false, after = false;
+	for (int i = first; i <= last; ++i) {
+		if (ruler_outgoing_pressure(pi, i, cylinder) > 0 ||
+		    (get_plot_sensor_pressure(pi, i, cylinder) > 0 &&
+		     !pi.pressures[cylinder + i * pi.nr_cylinders].held)) {
+			before |= i < idx;
+			after |= i > idx;
+		}
+	}
+	return before && after;
+}
+
 /* Compare two plot_data entries and writes the results into a set of strings */
 std::vector<std::string> compare_samples(const struct dive *d, const struct plot_info &pi, int idx1, int idx2, bool sum)
 {
@@ -1453,11 +1504,6 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	depth_t min_depth { .mm = INT_MAX };
 
 	volume_t cylinder_volume;
-	std::vector<int> start_pressures(pi.nr_cylinders, 0);
-	std::vector<int> last_pressures(pi.nr_cylinders, 0);
-	std::vector<int> bar_used(pi.nr_cylinders, 0);
-	std::vector<int> volumes_used(pi.nr_cylinders, 0);
-	std::vector<char> cylinder_is_used(pi.nr_cylinders, false);
 
 	for (int i = idx1, last_idx = idx1; i <= idx2; ++i) {
 		const struct plot_data &last_data = pi.entry[last_idx];
@@ -1478,31 +1524,6 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 			min_depth = data.depth;
 		if (data.depth.mm > max_depth.mm)
 			max_depth = data.depth;
-
-		for (int cylinder_index = 0; cylinder_index < pi.nr_cylinders; cylinder_index++) {
-			int next_pressure = get_plot_pressure(pi, i, cylinder_index);
-			if (next_pressure && !start_pressures[cylinder_index])
-				start_pressures[cylinder_index] = next_pressure;
-
-			if (start_pressures[cylinder_index]) {
-				if (last_pressures[cylinder_index]) {
-					bar_used[cylinder_index] += last_pressures[cylinder_index] - next_pressure;
-
-					const cylinder_t *cyl = d->get_cylinder(cylinder_index);
-
-					// TODO: Implement addition/subtraction on units.h types
-					volumes_used[cylinder_index] += (cyl->gas_volume(pressure_t::from_base(last_pressures[cylinder_index])) -
-									 cyl->gas_volume(pressure_t::from_base(next_pressure))).mliter;
-				}
-
-				// check if the gas in this cylinder is being used
-				if (next_pressure < start_pressures[cylinder_index] - 1000 && !cylinder_is_used[cylinder_index]) {
-					cylinder_is_used[cylinder_index] = true;
-				}
-			}
-
-			last_pressures[cylinder_index] = next_pressure;
-		}
 
 		last_idx = i;
 	}
@@ -1538,32 +1559,53 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	int total_volume_used = 0;
 	bool cylindersizes_are_identical = true;
 	bool sac_is_determinable = true;
-	for (int cylinder_index = 0; cylinder_index < pi.nr_cylinders; cylinder_index++) {
-		if (cylinder_is_used[cylinder_index]) {
-			total_bar_used += bar_used[cylinder_index];
-			total_volume_used += volumes_used[cylinder_index];
-
-			const cylinder_t *cyl = d->get_cylinder(cylinder_index);
-			if (cyl->type.size.mliter) {
-				if (cylinder_volume.mliter && cylinder_volume.mliter != cyl->type.size.mliter) {
-					cylindersizes_are_identical = false;
-				} else {
-					cylinder_volume = cyl->type.size;
-				}
-			} else {
-				sac_is_determinable = false;
-			}
+	for (int first = idx1; first < idx2;) {
+		int cylinder_index = pi.entry[first].ruler_cylinder;
+		int last = first + 1;
+		while (last < idx2 && pi.entry[last].ruler_cylinder == cylinder_index)
+			++last;
+		if (cylinder_index < 0 || cylinder_index >= pi.nr_cylinders) {
+			sac_is_determinable = false;
+			first = last;
+			continue;
 		}
+		// The switch point closes the old span and opens the new one. Its
+		// pressure must be independently attributable to each cylinder.
+		for (int i = first; i <= last; ++i)
+			if (!ruler_pressure(pi, i, cylinder_index))
+				sac_is_determinable = false;
+		if (!covered_ruler_pressure(pi, first, first, last, cylinder_index) ||
+		    !covered_ruler_pressure(pi, last, first, last, cylinder_index))
+			sac_is_determinable = false;
+
+		int a = ruler_pressure(pi, first, cylinder_index);
+		int b = ruler_pressure(pi, last, cylinder_index);
+		const cylinder_t *cyl = d->get_cylinder(cylinder_index);
+		if (a > 0 && b > 0 && a > b) {
+			total_bar_used += a - b;
+			total_volume_used += (cyl->gas_volume(pressure_t::from_base(a)) -
+					      cyl->gas_volume(pressure_t::from_base(b))).mliter;
+			if (!cyl->type.size.mliter)
+				sac_is_determinable = false;
+			else if (cylinder_volume.mliter && cylinder_volume.mliter != cyl->type.size.mliter)
+				cylindersizes_are_identical = false;
+			else
+				cylinder_volume = cyl->type.size;
+		} else if (a > 0 && b > a) {
+			sac_is_determinable = false;
+		}
+		first = last;
 	}
 
+	// Apply the noise threshold to the total, including drops smaller than a bar in individual spans.
 	// No point printing 'bar used' if we know it's meaningless because cylinders of different size were used
-	if (cylindersizes_are_identical && total_bar_used) {
+	if (sac_is_determinable && cylindersizes_are_identical && total_bar_used > 1000) {
 		int pressurevalue = get_pressure_units(total_bar_used, &pressure_unit);
 		l += space + casprintf_loc(translate("gettextFromC", "ΔP:%d%s"), pressurevalue, pressure_unit);
 	}
 
 	// We can't calculate the SAC if the volume for some of the cylinders used is unknown
-	if (sac_is_determinable && total_volume_used) {
+	if (sac_is_determinable && total_bar_used > 1000 && total_volume_used) {
 		int volume_precision;
 		const char *volume_unit;
 
