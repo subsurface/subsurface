@@ -1,8 +1,6 @@
 packaging/android/in-container-build.sh
 packaging/macosx/build-deps.sh
 packaging/macosx/homebrew-local-build.sh
-packaging/macosx/make-package.sh
-packaging/macosx/sign.sh
 packaging/windows/docker-build.sh
 packaging/windows/in-container-build.sh
 packaging/windows/mxe-based-build.sh

@@ -12,8 +12,8 @@ cd staging
 find Subsurface.app/Contents/Frameworks/ \( -name Headers -o -name \*.prl -o -name \*_debug \) -print0 | xargs -0 rm -rf
 
 # codesign --deep doesn't find the shared libraries that are QML plugins
-for dylib in $(find Subsurface.app/Contents/Resources/qml -name \*.dylib) ; do
-	codesign --options runtime --keychain $HOME/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" --deep --force $dylib
-done
+while IFS= read -r -d '' dylib; do
+	codesign --options runtime --keychain "$HOME/Library/Keychains/login.keychain" -s "Developer ID Application: Dirk Hohndel" --deep --force "$dylib"
+done < <(find Subsurface.app/Contents/Resources/qml -name '*.dylib' -print0)
 
-codesign --options runtime --keychain $HOME/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" --deep --force Subsurface.app
+codesign --options runtime --keychain "$HOME/Library/Keychains/login.keychain" -s "Developer ID Application: Dirk Hohndel" --deep --force Subsurface.app
