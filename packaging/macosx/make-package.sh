@@ -147,11 +147,9 @@ while IFS= read -r -d '' lib; do
     # Get library basename for self-reference check
     LIBNAME=$(basename "$lib")
 
-    # Get all dependencies, excluding the first line (install name) and skipping column 1
-    # Format is: \t<path> (compatibility...)
-    DEPS=$(otool -L "$lib" 2>/dev/null | tail -n +2 | awk '{print $1}')
-
-    for dep in $DEPS; do
+    # Get all dependencies, excluding the first line (install name).
+    # Format is: \t<path> (compatibility version..., current version...)
+    while IFS= read -r dep; do
         # Skip if it's a self-reference (library depends on itself)
         DEPNAME=$(basename "$dep")
         [[ "$DEPNAME" == "$LIBNAME" ]] && continue
@@ -171,7 +169,8 @@ while IFS= read -r -d '' lib; do
         echo "   ⚠️  $LIBNAME has external dependency: $dep"
         BAD_LIBS="$BAD_LIBS\n  $LIBNAME -> $dep"
         MISSING_LIBS=1
-    done
+    done < <(otool -L "$lib" 2>/dev/null | tail -n +2 |
+             sed -E 's/^[[:space:]]+//; s/[[:space:]]+\(compatibility version [^)]*\)$//')
 done < <(find "$APP_BUNDLE" -type f \( -name "*.dylib" -o -perm +111 \) -print0 2>/dev/null)
 
 if [ $MISSING_LIBS -eq 0 ]; then
@@ -319,7 +318,7 @@ mkdir ./staging
 cp -a ./Subsurface.app ./staging
 
 if [ "$SIGN" = "1" ] ; then # that's for local builds for Dirk... oops
-	sh ${DIR}/subsurface/packaging/macosx/sign.sh
+	sh "${DIR}/subsurface/packaging/macosx/sign.sh"
 else
 	codesign --force --deep --sign - staging/Subsurface.app
 fi

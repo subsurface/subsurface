@@ -227,6 +227,16 @@ class ReportShellCheckTest(unittest.TestCase):
 		self.assertIn("12 findings (SC2086=12)", limited)
 		self.assertIn("further findings omitted from this summary", limited)
 
+	def test_summary_omits_per_file_headers_when_they_exceed_limit(self):
+		issues = {f"packaging/{i:04d}-legacy.sh": [{"line": 2, "code": 2086, "message": "Needs quoting"}]
+		          for i in range(100)}
+		summary = shellcheck_report.summary_text(issues, limit=600)
+		self.assertLessEqual(len(summary.encode("utf-8")), 600)
+		self.assertIn("100 existing findings in 100 changed exempt scripts", summary)
+		self.assertIn("By directory: icons=0, packaging=100, scripts=0, other=0", summary)
+		self.assertIn("Per-file counts and 100 findings omitted", summary)
+		self.assertNotIn("packaging/0000-legacy.sh", summary)
+
 
 if __name__ == "__main__":
 	unittest.main()

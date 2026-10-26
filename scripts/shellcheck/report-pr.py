@@ -63,7 +63,12 @@ def summary_text(by_file, limit=SUMMARY_LIMIT):
 	text = "".join(lines)
 	# Reserve space for the truncation notice, even when all details fit.
 	if len(text.encode("utf-8")) + TRUNCATION_RESERVE > limit:
-		raise ValueError("ShellCheck summary headers exceed the size limit")
+		fallback = ("".join(lines[:2]) + lines[-2] + lines[-1] +
+		            f"Per-file counts and {total} findings omitted from this summary; "
+		            "run scripts/shellcheck/run.sh --report locally.\n")
+		if len(fallback.encode("utf-8")) > limit:
+			raise ValueError("ShellCheck summary limit too small for totals")
+		return fallback
 	size = len(text.encode("utf-8"))
 	omitted = 0
 	for path, issues in by_file.items():
