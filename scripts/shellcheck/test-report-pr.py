@@ -152,6 +152,22 @@ class ReportShellCheckTest(unittest.TestCase):
 				self.assertIn("-new.sh", result.stdout)
 				self.assertIn("SC2154", result.stdout)
 
+	def test_runner_handles_newlines_and_unterminated_exemptions(self):
+		name = "scripts/new\nline.sh"
+		(self.root / name).write_text("#!/bin/sh\necho hello\n")
+		self.git("add", "--", name)
+		exempt = self.root / "scripts/shellcheck/exempt.txt"
+		exempt.write_text(exempt.read_text().rstrip("\n"))
+		result = subprocess.run(("bash", "scripts/shellcheck/run.sh", "--check"),
+		                        cwd=self.root, capture_output=True, text=True)
+		self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+		(self.root / name).write_text("#!/bin/sh\necho $name\n")
+		result = subprocess.run(("bash", "scripts/shellcheck/run.sh", "--report"),
+		                        cwd=self.root, capture_output=True, text=True)
+		self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+		self.assertIn(name, result.stdout)
+		self.assertIn("SC2154", result.stdout)
+
 	def test_extensionless_script_is_covered(self):
 		(self.root / "scripts/shellcheck/exempt.txt").write_text("packaging/legacy.sh\nscripts/old.sh\n")
 		result = subprocess.run(("bash", "scripts/shellcheck/run.sh", "--check"),
