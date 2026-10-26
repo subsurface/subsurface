@@ -10,6 +10,9 @@ class TestRuler : public TestBase {
 private slots:
 	void init();
 	void testRuler();
+	void testSacCoverage();
+	void testGasSwitchPressure();
+	void testSmallSpanConsumption();
 };
 
 #endif

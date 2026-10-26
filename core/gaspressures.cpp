@@ -235,6 +235,7 @@ static void fill_missing_tank_pressures(const struct dive *dive, struct plot_inf
 
 		if (!it->pressure_time) {		// Empty segment?
 			set_plot_pressure_data(pi, i, SENSOR_PR, cyl, cur_pr);
+			pi.pressures[cyl + i * pi.nr_cylinders].held = true;
 							// Just use our current pressure
 			continue;			// and skip to next point.
 		}
@@ -378,6 +379,12 @@ void populate_pressure_information(const struct dive *dive, const struct divecom
 		// current pressure track entry and continue
 		// until we get back to this cylinder.
 		if (cyl != sensor) {
+			// Retain a measured switch reading for the ruler without changing
+			// the plotted pressure or admitting later inactive-cylinder readings.
+			if (current != std::string::npos && i > 0 && pressure &&
+			    pi.entry[i - 1].ruler_cylinder == sensor &&
+			    !pi.pressures[sensor + i * pi.nr_cylinders].held)
+				entry.ruler_outgoing_pressure = pressure;
 			current = std::string::npos;
 			set_plot_pressure_data(pi, i, SENSOR_PR, sensor, 0);
 			continue;
