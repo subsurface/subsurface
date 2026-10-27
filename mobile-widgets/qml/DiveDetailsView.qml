@@ -14,6 +14,11 @@ Item {
 	property real col3Width: gridWidth * 0.30
 	property int myId: -1
 	property bool panningProfile: false
+	// Keep rating and visibility stars distinct from the surrounding text. The
+	// bright yellow-orange remains legible on the dark background, while the
+	// darker orange provides sufficient contrast on the light themes.
+	property color activeStarColor: subsurfaceTheme.currentTheme === "Dark" ? "#ffcc00" : "#a65f00"
+	property color inactiveStarColor: subsurfaceTheme.currentTheme === "Dark" ? "#b0b0b0" : "#616161"
 
 	function resetZoom() {
 		qmlProfile.scale = 1.0
@@ -133,7 +138,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: rating >= 1 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
 				width: height
@@ -141,7 +146,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: rating >= 2 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
 				width: height
@@ -149,7 +154,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: rating >= 3 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
 				width: height
@@ -157,7 +162,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: rating >= 4 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
 				width: height
@@ -165,7 +170,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: rating === 5 ? activeStarColor : inactiveStarColor
 			}
 		}
 		Row {
@@ -186,7 +191,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: viz >= 1 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
 				width: height
@@ -194,7 +199,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: viz >= 2 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
 				width: height
@@ -202,7 +207,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: viz >= 3 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
 				width: height
@@ -210,7 +215,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: viz >= 4 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
 				width: height
@@ -218,7 +223,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
-				color: subsurfaceTheme.textColor
+				color: viz === 5 ? activeStarColor : inactiveStarColor
 			}
 		}
 	}
