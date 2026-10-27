@@ -140,6 +140,10 @@ set(TEST_PICTURE TestPicture)
 endif()
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
+TEST(TestCylindersModelSensorRefresh testcylindersmodelsensorrefresh.cpp)
+set(TEST_CYLINDERS_MODEL_SENSOR_REFRESH TestCylindersModelSensorRefresh)
+endif()
 
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable" AND NOT NO_PRINTING)
 	TEST(TestPrinting testprinting.cpp)
@@ -202,6 +206,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	${TEST_PICTURE}
 	TestMerge
 	TestTagList
+	${TEST_CYLINDERS_MODEL_SENSOR_REFRESH}
 	${TEST_PLANNER_SHARED}
 	${TEST_PRINTING}
 	TestQPrefCloudStorage

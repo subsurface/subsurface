@@ -16,6 +16,7 @@ class QPushButton;
 class QAbstractItemModel;
 class QModelIndex;
 class QTableView;
+class QMenu;
 
 class TableView : public QGroupBox {
 	Q_OBJECT
@@ -38,14 +39,23 @@ public:
 protected:
 	void showEvent(QShowEvent *) override;
 	void resizeEvent(QResizeEvent *) override;
+	bool eventFilter(QObject *obj, QEvent *event) override;
 
 signals:
 	void addButtonClicked();
 	void itemClicked(const QModelIndex &);
 
 private:
+	void updateColumnsButtonVisibility();
+
 	Ui::TableView ui;
 	QPushButton *plusBtn;
+	// Shows the checkable column-visibility actions that are attached to the
+	// table's horizontal header (see Qt::ActionsContextMenu), so that hiding
+	// a column remains discoverable without having to right-click the header.
+	// Only shown when the header actually has such actions attached.
+	QPushButton *columnsBtn;
+	QMenu *columnsMenu;
 	TableMetrics metrics;
 };
 

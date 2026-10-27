@@ -2023,12 +2023,20 @@ of these assumptions is which cylinder a pressure sensor is attached to. The fol
 dive with two deco cylinders. Each of the main cylinders has a pressure sensor attached to them. In this
 case _Subsurface_ only knows about 3 gasses and 2 sensors so it makes the assumption that the sensors
 are attached to the first two cylinders, one bottom gas and one with deco gas. For the cylinders with
-attached sensors the cylinder index will be shown in the sensors column.
+attached sensors, the *Tank sensor* column of the cylinder table shows the number of the sensor that
+reports pressure for that cylinder, not the cylinder's own position in the table; a cylinder with no
+sensor attached shows "<none>".
+
+The *Tank sensor* column is only shown automatically for dives that actually contain tank pressure
+sample data; for other dives it stays hidden to save space. If it is hidden for a dive that does have
+tank pressure data, either right-click the cylinder table's header and tick *Tank sensor* in the
+context menu, or click the column-selector button next to the cylinder table's add button, which
+offers the same list of columns. Showing or hiding the column this way is remembered for later dives.
 
 image::images/sensors-import.png["FIGURE: Imported cylinders and sensors",align="center"]
 
-To fix this, you can add a new cylinder with bottom gas and pick the index for the deco cylinder in
-the sensors drop down.
+To fix this, you can add a new cylinder with bottom gas and pick the sensor number for the deco
+cylinder in the *Tank sensor* drop down.
 
 image::images/sensors-newcylinder.png["FIGURE: New cylinder added for sensor move",align="center"]
 

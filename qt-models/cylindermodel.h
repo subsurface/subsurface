@@ -7,6 +7,8 @@
 #include "cleanertablemodel.h"
 #include "core/equipment.h"
 
+struct divecomputer;
+
 /* Encapsulation of the Cylinder Model, that presents the
  * Current cylinders that are used on a dive. */
 class CylindersModel : public CleanerTableModel {
@@ -64,6 +66,7 @@ slots:
 	void cylinderAdded(dive *d, int pos);
 	void cylinderRemoved(dive *d, int pos);
 	void cylinderEdited(dive *d, int pos);
+	void diveComputerEdited(dive &dive, divecomputer &dc);
 
 private:
 	dive *d;

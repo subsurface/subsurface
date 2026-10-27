@@ -7,9 +7,12 @@
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
 #include "core/range.h"
+#include "core/sample.h"
+#include "core/tanksensormapping.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "profile-widget/diveeventitem.h"
+#include "profile-widget/diveprofileitem.h"
 #include "profile-widget/divetextitem.h"
 #include "profile-widget/divetooltipitem.h"
 #if defined(SUBSURFACE_DESKTOP)
@@ -543,14 +546,26 @@ struct int ProfileWidget2::getEntryFromPos(QPointF pos)
 #endif
 
 #if defined(SUBSURFACE_DESKTOP)
-static bool isDiveTextItem(const QGraphicsItem *item, const DiveTextItem *textItem)
+static bool isOrHasAncestor(const QGraphicsItem *item, const QGraphicsItem *ancestor)
 {
 	while (item) {
-		if (item == textItem)
+		if (item == ancestor)
 			return true;
 		item = item->parentItem();
 	}
 	return false;
+}
+
+// Return the id of the tank-pressure sensor currently feeding cylinderIndex on dc,
+// or NO_SENSOR if no sensor is mapped to that cylinder. Mirrors the lookup that the
+// Equipment tab's "Tank sensor" column uses (qt-models/cylindermodel.cpp).
+static int16_t sensorIdForCylinder(const struct divecomputer &dc, int cylinderIndex)
+{
+	for (const auto &mapping: dc.tank_sensor_mappings) {
+		if (mapping.sensor_id != NO_SENSOR && (int)mapping.cylinder_index == cylinderIndex)
+			return mapping.sensor_id;
+	}
+	return NO_SENSOR;
 }
 
 void ProfileWidget2::addGasChangeMenu(QMenu &m, QString menuTitle, const struct dive &d, int dcNr, int changeTime)
@@ -576,7 +591,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	const struct divecomputer *currentdc = d->get_dc(dc);
 	// figure out if we are ontop of the dive computer name in the profile
 	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
-	if (isDiveTextItem(sceneItem, profileScene->diveComputerText)) {
+	if (isOrHasAncestor(sceneItem, profileScene->diveComputerText)) {
 		if (!currentdc->deviceid && dc == 0 && d->number_of_computers() == 1)
 			// nothing to do, can't rename, delete or reorder
 			return;
@@ -627,6 +642,54 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			else
 				changeMode->addAction(gettextFromC::tr(divemode_text_ui[CCR]),
 						      [this, seconds](){ addDivemodeSwitch(seconds, CCR); });
+		}
+	}
+
+	// If the click landed on a cylinder's plotted pressure track and that cylinder's
+	// pressure comes from a real tank sensor (as opposed to only interpolated data),
+	// offer to move that sensor to a different cylinder. This fixes the common case
+	// where a dive computer mis-attributes a sensor's readings to the wrong gas, right
+	// where the mismatch is visible, instead of requiring the user to already know
+	// about the Equipment tab's "Tank sensor" column. Deliberately does not swap
+	// sensors between cylinders: with more gas mixes than sensors (e.g. on CCR),
+	// swapping is more confusing than a plain move.
+	//
+	// Resolve the cylinder from the actually clicked pressure-track segment rather
+	// than from cylinder_index (the gas in use at the clicked time): several
+	// cylinders' pressure tracks can be visible at the same point in time (e.g.
+	// sidemount or CCR diluent/O2), and cylinder_index would then silently pick the
+	// wrong one.
+	//
+	// Query cylinderAt() directly instead of gating on itemAt()'s topmost hit: other
+	// items (e.g. a gas-change or bookmark marker) are drawn above the pressure track
+	// and would otherwise make a click that is genuinely on, or very close to, the
+	// track miss this menu entry just because it isn't the topmost item there.
+	// cylinderAt() already does its own proximity test, so this is still only offered
+	// for clicks actually close to a plotted segment.
+	int pressureTrackCylinder = (profileScene->gasPressureItem && profileScene->gasPressureItem->isVisible()) ?
+					    profileScene->gasPressureItem->cylinderAt(scenePos) : -1;
+	int16_t pressureTrackSensor = pressureTrackCylinder != -1 ? sensorIdForCylinder(*currentdc, pressureTrackCylinder) : NO_SENSOR;
+	if (pressureTrackSensor != NO_SENSOR && d->cylinders.size() > 1) {
+		std::vector<std::pair<int, QString>> otherCylinders = get_dive_gas_list(d, dc, false);
+		std::erase_if(otherCylinders, [pressureTrackCylinder](const auto &c) { return c.first == pressureTrackCylinder; });
+		if (!otherCylinders.empty()) {
+			QMenu *reassignSensor = m.addMenu(tr("Assign tank sensor to cylinder"));
+			for (auto &[otherCylinder, gasName]: otherCylinders) {
+				// Picking an entry below moves the sensor there unconditionally, the
+				// same as the Equipment tab's "Tank sensor" column always could: if
+				// that cylinder already has a different sensor mapped, this drops
+				// that mapping. Unlike the Equipment tab, this menu doesn't otherwise
+				// show the existing assignment, so show it in the label for cylinders
+				// that already have one, so the user can tell at a glance.
+				int16_t existingSensor = sensorIdForCylinder(*currentdc, otherCylinder);
+				QString label = existingSensor != NO_SENSOR ?
+					tr("Cyl. %1: %2 (currently: sensor %3)").arg(otherCylinder + 1).arg(gasName).arg(existingSensor + 1) :
+					tr("Cyl. %1: %2").arg(otherCylinder + 1).arg(gasName);
+				reassignSensor->addAction(label,
+							   [this, otherCylinder, pressureTrackSensor] {
+								   Command::editSensors(otherCylinder, pressureTrackSensor, dc);
+							   });
+			}
 		}
 	}
 

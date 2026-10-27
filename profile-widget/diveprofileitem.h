@@ -106,6 +106,13 @@ public:
 	void replot(const dive *d, int from, int to, bool in_planner) override;
 	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
+	// Returns the cylinder index whose plotted pressure-track segment passes close to
+	// point (in scene coordinates), or -1 if point doesn't lie on any plotted segment.
+	// Several cylinders' pressure tracks can be visible at the same point in time (e.g.
+	// sidemount or CCR diluent/O2), so this is distinct from, and more precise than,
+	// just hit-testing the item's own (combined) shape().
+	int cylinderAt(QPointF point) const;
+
 private:
 	double plotPressureValue(double mbar, double sec, QFlags<Qt::AlignmentFlag> align, double y_offset);
 	void plotGasValue(double mbar, double sec, const cylinder_t *cylinder, QFlags<Qt::AlignmentFlag> align, double x_offset, double y_offset, bool showDescription);

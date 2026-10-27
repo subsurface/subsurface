@@ -44,12 +44,13 @@ CylindersModel::CylindersModel(bool planner, QObject *parent) : CleanerTableMode
 {
 	setHeaderDataStrings(QStringList() << "#" << "" << tr("Type") << tr("Size") << tr("Work press.") << tr("Start press.") << tr("End press.") << tr("O₂%") << tr("He%")
 					   << tr("Deco switch at") << tr("Bot. MOD") << tr("MND") << tr("Use") << ""
-					   << "" << tr("Sensor"));
+					   << "" << tr("Tank sensor"));
 
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, &CylindersModel::cylindersReset);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &CylindersModel::cylinderAdded);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &CylindersModel::cylinderRemoved);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &CylindersModel::cylinderEdited);
+	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, &CylindersModel::diveComputerEdited);
 }
 
 QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -58,8 +59,22 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 		return tr("Start press.");
 	else if (role == Qt::SizeHintRole && orientation == Qt::Horizontal && section == REMOVE)
 		return QSize(0, 0);
+	else if (role == Qt::ToolTipRole && orientation == Qt::Horizontal && section == SENSORS)
+		return tr("Assigns which tank pressure sensor reports pressure for this cylinder. Click a cell in this column to pick a sensor.");
+	else if (role == Qt::ToolTipRole && orientation == Qt::Horizontal && section == USE)
+		return tr("Sets what this cylinder is used for (e.g. OC gas, diluent, oxygen). This does not control tank sensor assignment; use the 'Tank sensor' column for that.");
 	else
 		return CleanerTableModel::headerData(section, orientation, role);
+}
+
+// Return the id of the tank pressure sensor mapped to cylinder_index on dc, or NO_SENSOR if none is assigned.
+static int get_cylinder_sensor_id(const divecomputer *dc, int cylinder_index)
+{
+	for (const auto &mapping: dc->tank_sensor_mappings) {
+		if (mapping.sensor_id != NO_SENSOR && (int)mapping.cylinder_index == cylinder_index)
+			return mapping.sensor_id;
+	}
+	return NO_SENSOR;
 }
 
 static QString get_cylinder_string(const cylinder_t *cyl)
@@ -216,6 +231,12 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		}
 
 		break;
+	case Qt::ForegroundRole:
+		// de-emphasise the placeholder shown when no sensor is assigned yet
+		if (index.column() == SENSORS && get_cylinder_sensor_id(d->get_dc(dcNr), index.row()) == NO_SENSOR)
+			return QColor(Qt::gray);
+
+		break;
 	case Qt::FontRole: {
 		QFont font = defaultModelFont();
 
@@ -289,11 +310,10 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case SIZE_INT:
 			return static_cast<int>(cyl->type.size.mliter);
 		case SENSORS: {
-			for (const auto &mapping: d->get_dc(dcNr)->tank_sensor_mappings)
-				if (mapping.sensor_id != NO_SENSOR && (int)mapping.cylinder_index == index.row())
-					return QString::number(mapping.sensor_id + 1);
-
-			return QString();
+			int sensorId = get_cylinder_sensor_id(d->get_dc(dcNr), index.row());
+			if (sensorId == NO_SENSOR)
+				return "<" + tr("none") + ">";
+			return QString::number(sensorId + 1);
 		}
 		}
 		break;
@@ -644,6 +664,23 @@ void CylindersModel::cylinderEdited(struct dive *changed, int pos)
 	if (pos < numRows)
 		dataChanged(index(pos, TYPE), index(pos, USE));
 	updateNumRows();
+}
+
+// Tank-sensor mapping changes (Command::editSensors()) are not tied to a single
+// cylinder row: moving a sensor can change which cylinder shows as mapped and which
+// shows as unmapped, and they arrive via DiveListNotifier::diveComputerEdited rather
+// than cylinderEdited (whose dataChanged range excludes the SENSORS column anyway).
+// Without this, the SENSORS column - and any other displayed value derived from the
+// sensor mapping - only happened to refresh when editing it in-place from this exact
+// table's own editor, which repaints just the edited cell as a side effect of closing
+// the editor; it never refreshed when the mapping changed through another view, such
+// as the profile's "Assign tank sensor to cylinder" context-menu entry.
+void CylindersModel::diveComputerEdited(dive &dive, divecomputer &dc)
+{
+	if (d != &dive || d->get_dc(dcNr) != &dc)
+		return;
+
+	emitDataChanged();
 }
 
 void CylindersModel::updateNumRows()
