@@ -17,8 +17,8 @@ Item {
 	// Keep rating and visibility stars distinct from the surrounding text. The
 	// bright yellow-orange remains legible on the dark background, while the
 	// darker orange provides sufficient contrast on the light themes.
-	property color activeStarColor: subsurfaceTheme.currentTheme === "Dark" ? "#ffcc00" : "#a65f00"
-	property color inactiveStarColor: subsurfaceTheme.currentTheme === "Dark" ? "#b0b0b0" : "#616161"
+	property color activeStarColor: (subsurfaceTheme.currentTheme === "Blue" || subsurfaceTheme.currentTheme === "Pink") ? "#a65f00" : "#ffcc00"
+	property color inactiveStarColor: (subsurfaceTheme.currentTheme === "Blue" || subsurfaceTheme.currentTheme === "Pink") ? "#616161" : "#b0b0b0"
 
 	function resetZoom() {
 		qmlProfile.scale = 1.0
