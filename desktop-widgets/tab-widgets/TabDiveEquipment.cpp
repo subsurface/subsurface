@@ -14,6 +14,11 @@
 #include <QSettings>
 #include <QCompleter>
 
+// Set once the user has dismissed the one-off hint about the "Tank sensor"
+// column. This is purely a "have we told them already" flag, never a
+// judgement about whether their current sensor assignment makes sense.
+static const QString tankSensorHintDismissedKey = QStringLiteral("tank_sensor_hint_dismissed");
+
 static bool ignoreHiddenFlag(int i)
 {
 	switch (i) {
@@ -83,12 +88,28 @@ TabDiveEquipment::TabDiveEquipment(MainTab *parent) : TabBase(parent),
 
 	ui.multiDiveWarningMessage->hide();
 
+	ui.tankSensorHintMessage->setMessageType(KMessageWidget::Information);
+	ui.tankSensorHintMessage->setText(tr("Tank pressure sensors are assigned to cylinders in the \"Tank sensor\" column."));
+	action = new QAction(tr("Show column"), this);
+	connect(action, &QAction::triggered, this, &TabDiveEquipment::showSensorColumnFromHint);
+	ui.tankSensorHintMessage->addAction(action);
+	connect(ui.tankSensorHintMessage, &KMessageWidget::hideAnimationFinished, this, &TabDiveEquipment::sensorHintDismissed);
+	ui.tankSensorHintMessage->hide();
+
 	QSettings s;
 	s.beginGroup("cylinders_dialog");
 	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
 		if (ignoreHiddenFlag(i))
 			continue;
-		auto setting = s.value(QString("column%1_hidden").arg(i));
+		// The SENSORS column is also hidden automatically when the displayed
+		// dive has no tank-pressure samples (see setCylinderColumnVisibility()).
+		// That data-driven hide must not be confused with the user's explicit
+		// preference, so it is stored under its own settings key. This also
+		// means that any pre-existing "column15_hidden" value, which may have
+		// been poisoned by the automatic hide, is simply ignored from now on.
+		QString key = i == CylindersModel::SENSORS ? QString("column%1_user_hidden").arg(i)
+							     : QString("column%1_hidden").arg(i);
+		auto setting = s.value(key);
 		bool hidden = setting.isValid() ? setting.toBool() : false;
 		QAction *action = new QAction(cylindersModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString(), ui.cylinders->view());
 		action->setCheckable(true);
@@ -110,9 +131,23 @@ TabDiveEquipment::~TabDiveEquipment()
 {
 	QSettings s;
 	s.beginGroup("cylinders_dialog");
+	QList<QAction *> actions = ui.cylinders->view()->horizontalHeader()->actions();
 	for (int i = 0; i < CylindersModel::COLUMNS; i++) {
 		if (ignoreHiddenFlag(i))
 			continue;
+		if (i == CylindersModel::SENSORS) {
+			// Do not persist isColumnHidden() here: for this column it reflects
+			// whether the currently selected dive happens to have tank-pressure
+			// samples, not the user's preference. The preference is tracked by
+			// the checked state of the header context-menu action instead,
+			// which only ever changes in toggleTriggeredColumn().
+			auto action = std::find_if(actions.begin(), actions.end(), [](QAction *a) {
+				return a->data().toInt() == CylindersModel::SENSORS;
+			});
+			bool hidden = action != actions.end() ? !(*action)->isChecked() : ui.cylinders->view()->isColumnHidden(i);
+			s.setValue(QString("column%1_user_hidden").arg(i), hidden);
+			continue;
+		}
 		s.setValue(QString("column%1_hidden").arg(i), ui.cylinders->view()->isColumnHidden(i));
 	}
 }
@@ -120,6 +155,7 @@ TabDiveEquipment::~TabDiveEquipment()
 void TabDiveEquipment::setCylinderColumnVisibility()
 {
 	bool showSensors = true;
+	bool hasPressureSamples = false;
 	if (parent.currentDive && parent.currentDC >= 0) {
 		showSensors = false;
 		const struct divecomputer *dc = parent.currentDive->get_dc(parent.currentDC);
@@ -132,7 +168,20 @@ void TabDiveEquipment::setCylinderColumnVisibility()
 				break;
 			}
 		}
+		hasPressureSamples = showSensors;
 	}
+
+	// One-off, purely informational pointer to where cylinder-to-sensor
+	// assignment happens. It is keyed only on whether the displayed dive
+	// has tank-pressure samples, never on the contents of the assignment
+	// itself: an unusual-looking mapping (more sensors than cylinders,
+	// sensors on cylinders the diver doesn't breathe, or unassigned
+	// sensors) is routine for buddy or student monitoring and is not an
+	// error to flag.
+	if (hasPressureSamples && !QSettings().value(tankSensorHintDismissedKey, false).toBool())
+		ui.tankSensorHintMessage->show();
+	else
+		ui.tankSensorHintMessage->hide();
 
 	if (showSensors) {
 		QList<QAction *> actions = ui.cylinders->view()->horizontalHeader()->actions();
@@ -260,4 +309,22 @@ void TabDiveEquipment::on_suit_editingFinished()
 void TabDiveEquipment::closeWarning()
 {
 	ui.multiDiveWarningMessage->hide();
+}
+
+void TabDiveEquipment::showSensorColumnFromHint()
+{
+	QList<QAction *> actions = ui.cylinders->view()->horizontalHeader()->actions();
+	auto action = std::find_if(actions.begin(), actions.end(), [](QAction *a) {
+		return a->data().toInt() == CylindersModel::SENSORS;
+	});
+	if (action != actions.end())
+		(*action)->setChecked(true);
+	ui.cylinders->view()->setColumnHidden(CylindersModel::SENSORS, false);
+	setCylinderColumnVisibility();
+	ui.tankSensorHintMessage->animatedHide();
+}
+
+void TabDiveEquipment::sensorHintDismissed()
+{
+	QSettings().setValue(tankSensorHintDismissedKey, true);
 }

@@ -35,6 +35,8 @@ private slots:
 	void divesEdited(int count);
 	void diveComputerEdited(dive &dive, divecomputer &dc);
 	void cylinderRemoved(struct dive *dive, int);
+	void showSensorColumnFromHint();
+	void sensorHintDismissed();
 
 private:
 	Ui::TabDiveEquipment ui;

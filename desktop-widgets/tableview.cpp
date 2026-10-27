@@ -2,8 +2,12 @@
 #include "desktop-widgets/tableview.h"
 #include "desktop-widgets/modeldelegates.h"
 
+#include <QEvent>
+#include <QHeaderView>
+#include <QMenu>
 #include <QPushButton>
 #include <QSettings>
+#include <QStyle>
 
 TableView::TableView(QWidget *parent) : QGroupBox(parent)
 {
@@ -65,6 +69,32 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 	plusBtn->resize(btnSize, btnSize);
 #endif
 	connect(plusBtn, SIGNAL(clicked(bool)), this, SIGNAL(addButtonClicked()));
+
+	// Give the checkable column-visibility actions that are attached to the
+	// table's horizontal header (see Qt::ActionsContextMenu) a visible,
+	// discoverable control, instead of relying solely on the header's
+	// right-click menu. The same QAction objects are reused in this menu,
+	// so toggling a column here behaves identically to toggling it from the
+	// header context menu, including persistence of the setting.
+	columnsMenu = new QMenu(this);
+	connect(columnsMenu, &QMenu::aboutToShow, this, [this]() {
+		columnsMenu->clear();
+		columnsMenu->addActions(ui.tableView->horizontalHeader()->actions());
+	});
+
+	columnsBtn = new QPushButton(style()->standardIcon(QStyle::SP_FileDialogDetailedView), QString(), this);
+	columnsBtn->setFlat(true);
+	columnsBtn->setMenu(columnsMenu);
+	columnsBtn->setToolTip(tr("Select displayed columns"));
+	columnsBtn->setIconSize(QSize(iconSize, iconSize));
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+	columnsBtn->resize(btnSize, btnSize);
+#endif
+	// Only tables whose header has column-visibility actions attached (e.g.
+	// the cylinders table) should show this button; others (e.g. the
+	// weights table) must look exactly as before.
+	columnsBtn->hide();
+	ui.tableView->horizontalHeader()->installEventFilter(this);
 }
 
 TableView::~TableView()
@@ -120,7 +150,11 @@ void TableView::fixButtonPosition()
 	initStyleOption(&option);
 	QRect labelRect = style()->subControlRect(QStyle::CC_GroupBox, &option, QStyle::SC_GroupBoxLabel, this);
 	QRect contentsRect = style()->subControlRect(QStyle::CC_GroupBox, &option, QStyle::QStyle::SC_GroupBoxFrame, this);
-	plusBtn->setGeometry( contentsRect.width() - plusBtn->width(), labelRect.y(), plusBtn->width(), labelRect.height());
+	int right = contentsRect.width();
+	plusBtn->setGeometry(right - plusBtn->width(), labelRect.y(), plusBtn->width(), labelRect.height());
+	right -= plusBtn->width();
+	if (columnsBtn->isVisible())
+		columnsBtn->setGeometry(right - columnsBtn->width(), labelRect.y(), columnsBtn->width(), labelRect.height());
 }
 
 // We need to manually position the 'plus' on cylinder and weight.
@@ -133,6 +167,23 @@ void TableView::resizeEvent(QResizeEvent *event)
 void TableView::showEvent(QShowEvent *event)
 {
 	QWidget::showEvent(event);
+	fixButtonPosition();
+}
+
+bool TableView::eventFilter(QObject *obj, QEvent *event)
+{
+	if (obj == ui.tableView->horizontalHeader() &&
+	    (event->type() == QEvent::ActionAdded || event->type() == QEvent::ActionRemoved))
+		updateColumnsButtonVisibility();
+	return QGroupBox::eventFilter(obj, event);
+}
+
+// The column-selector button is only useful (and only shown) once actions
+// have actually been attached to the horizontal header. This keeps tables
+// without column actions, such as the weights table, unchanged.
+void TableView::updateColumnsButtonVisibility()
+{
+	columnsBtn->setVisible(!ui.tableView->horizontalHeader()->actions().isEmpty());
 	fixButtonPosition();
 }
 

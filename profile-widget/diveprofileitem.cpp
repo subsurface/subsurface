@@ -12,6 +12,10 @@
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"
 
+#include <QPainterPath>
+#include <QPainterPathStroker>
+#include <QPolygonF>
+
 AbstractProfilePolygonItem::AbstractProfilePolygonItem(const plot_info &pInfo, const DiveCartesianAxis &horizontal,
 						       const DiveCartesianAxis &vertical, DataAccessor accessor,
 						       double dpr) :
@@ -689,6 +693,28 @@ void DiveGasPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 		}
 	}
 	painter->restore();
+}
+
+int DiveGasPressureItem::cylinderAt(QPointF point) const
+{
+	// Matches the roughly 2-pixel wide cosmetic pen used in paint(), plus some margin
+	// so that a click close to (not just exactly on) a line selects it.
+	constexpr double pickTolerance = 6.0;
+	QPainterPathStroker stroker;
+	stroker.setWidth(pickTolerance);
+	for (const Segment &segment: segments) {
+		if (segment.polygon.size() < 2)
+			continue;
+		QPolygonF poly;
+		poly.reserve(static_cast<int>(segment.polygon.size()));
+		for (const Entry &entry: segment.polygon)
+			poly.push_back(entry.pos);
+		QPainterPath path;
+		path.addPolygon(poly);
+		if (stroker.createStroke(path).contains(point))
+			return segment.cyl;
+	}
+	return -1;
 }
 
 DiveCalculatedCeiling::DiveCalculatedCeiling(const plot_info &pInfo, const DiveCartesianAxis &hAxis,
