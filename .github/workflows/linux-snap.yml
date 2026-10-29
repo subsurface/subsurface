@@ -16,7 +16,7 @@ permissions: read-all
 
 jobs:
   Snap:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     timeout-minutes: 60
     steps:
@@ -39,7 +39,7 @@ jobs:
         echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
 
     - name: Set up LXD
-      uses: canonical/setup-lxd@main
+      uses: canonical/setup-lxd@e38f436c468900dfe2b6ca98fb8eb352bbbb917a # main
 
     - name: Set up CCache
       id: setup-ccache
@@ -65,7 +65,7 @@ jobs:
         path: ~/.ccache/**
 
     - name: Build and verify the snap
-      uses: canonical/actions/build-snap@release
+      uses: canonical/actions/build-snap@369aa83db4b62bdf1cb4240f651f11f0eb9fac11 # release
       id: build-snap
       with:
         setup-lxd: false
