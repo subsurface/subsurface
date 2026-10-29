@@ -418,6 +418,21 @@ the _Subsurface-mobile_ dive list.
 
 image::mobile-images/DC-Download.jpg["FIGURE: DC download screen",align="center"]
 
+[[S_Import_File]]
+=== Load dives from a file
+
+Besides downloading from a dive computer or entering a dive manually, dives can be loaded from a
+_Subsurface_ XML (.ssrf) file, for instance one created with the _Export_ feature's _Save to file_
+button, or a log exported from the desktop version of _Subsurface_. Select _Dive management ->
+Load from file_ in the main menu, then use the system file picker to choose the file. The dives it
+contains are added to the _Subsurface-mobile_ dive list.
+
+Loading the same file more than once does not create duplicate dives: dives that already exist in
+the dive list are recognised and merged rather than duplicated. Note, however, that if the file was
+exported with _Anonymize_ ticked, the dives in it are already anonymised and the removed personal
+information cannot be recovered on import, so such a file is not a suitable backup to restore from
+later.
+
 [[S_Edit_Dive]]
 === Edit the dive information
 
