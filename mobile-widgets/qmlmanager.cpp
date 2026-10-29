@@ -2453,6 +2453,96 @@ void QMLManager::importCacheRepo(QString repo)
 	changesNeedSaving();
 }
 
+// AI-generated (Claude)
+// Starts the "Load from file" file selection. On Android and iOS this will
+// start the native file picker, implemented by follow-up tickets; both are
+// expected to copy the user's selection into a file inside the app's own
+// storage (so that it survives the picker returning asynchronously) and then
+// hand it to importDivesFromFile() - see that function's contract below.
+// On any other platform (including the mobile-on-desktop build) the file is
+// instead picked through a QML FileDialog (main.qml), which calls
+// importDivesFromFile() directly; this method is not expected to run there.
+void QMLManager::loadDivesFromFile()
+{
+#if defined(Q_OS_ANDROID)
+	// AI-generated (Claude): placeholder - implemented by a follow-up ticket.
+	appendTextToLog("loadDivesFromFile: Android file picker not implemented yet");
+#elif defined(Q_OS_IOS)
+	// AI-generated (Claude): placeholder - implemented by a follow-up ticket.
+	appendTextToLog("loadDivesFromFile: iOS file picker not implemented yet");
+#else
+	appendTextToLog("loadDivesFromFile: use the file dialog on this platform");
+#endif
+}
+
+// AI-generated (Claude)
+// Imports every dive found in the Subsurface XML file at 'path' into the
+// current dive log. Unlike importCacheRepo() above, this goes through
+// Command::importDives() rather than divelog.add_imported_dives(), so the
+// import is undoable and the dive-list models are properly invalidated - this
+// is the same path DiveImportedModel::recordDives() uses for dive-computer
+// downloads. process_imported_dives() (called by Command::importDives())
+// already merges duplicates by timestamp, so re-importing a file that was
+// already imported adds nothing new.
+//
+// Threading contract for callers (this is the piece the Android/iOS tickets
+// need): this function touches divelog, the dive-list models and the undo
+// stack, and therefore MUST run on the Qt main thread. The native pickers
+// on Android and iOS deliver their result asynchronously and are not
+// guaranteed to call back on the main thread, so they MUST invoke this with:
+//     QMetaObject::invokeMethod(QMLManager::instance(), "importDivesFromFile",
+//                                Qt::QueuedConnection,
+//                                Q_ARG(QString, path), Q_ARG(bool, removeSource));
+// This is a stricter requirement than #5063's saveFileFailed(), which only
+// hands a plain error string to report_error() and tolerates being called
+// directly off a worker thread - that is NOT a precedent for this function.
+//
+// removeSource is set by callers that hand over a temporary copy of the file
+// (the native pickers do, since they copy the user's selection into the
+// app's own storage first); the QML FileDialog on other platforms reads the
+// user's own file in place and passes removeSource == false.
+void QMLManager::importDivesFromFile(const QString &path, bool removeSource)
+{
+	// 'path' may be a "file://" URL (as produced by a QML FileDialog) or a
+	// plain filesystem path (as a native picker would hand over); only
+	// convert in the former case, since QUrl() of a plain path is not
+	// guaranteed to round-trip through toLocalFile() unchanged.
+	QString localPath = path.startsWith("file://") ? QUrl(path).toLocalFile() : path;
+
+	struct divelog log;
+	int error = parse_file(qPrintable(localPath), &log);
+	if (removeSource)
+		QFile::remove(localPath);
+
+	if (error) {
+		QString message = consumeError();
+		if (message.isEmpty())
+			message = tr("Could not read dive data from the selected file");
+		appendTextToLog(QString("importDivesFromFile: parse_file failed for %1 with error %2").arg(localPath).arg(error));
+		setNotificationText(message);
+		emit importFinished(false, 0, message);
+		return;
+	}
+	if (log.dives.empty()) {
+		QString message = tr("No dives were found in the selected file");
+		appendTextToLog(QString("importDivesFromFile: no dives found in %1").arg(localPath));
+		setNotificationText(message);
+		emit importFinished(false, 0, message);
+		return;
+	}
+
+	int numDives = static_cast<int>(log.dives.size());
+	Command::importDives(&log, import_flags::merge_all_trips, localPath);
+	// persist right away: like the dive-computer download flow, the app could
+	// get killed once it's in the background and the freshly imported dives
+	// would otherwise be lost
+	changesNeedSaving();
+
+	QString message = tr("Imported %n dive(s) from file", "", numDives);
+	appendTextToLog(QString("importDivesFromFile: imported %1 dive(s) from %2").arg(numDives).arg(localPath));
+	emit importFinished(true, numDives, message);
+}
+
 QStringList QMLManager::cloudCacheList() const
 {
 	QDir localCacheDir(QString("%1/cloudstorage/").arg(system_default_directory().c_str()));

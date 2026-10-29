@@ -90,6 +90,15 @@ public:
 	Q_INVOKABLE void shareViaEmail(export_types type, bool anonymize);
 	Q_INVOKABLE void saveExportToDevice(export_types type, bool anonymize);
 
+	// AI-generated (Claude)
+	// loadDivesFromFile() starts the platform file picker; on Android/iOS a
+	// follow-up ticket implements the native side, which MUST hand its result
+	// to importDivesFromFile() via QMetaObject::invokeMethod(..., Qt::QueuedConnection),
+	// since import touches divelog, the dive-list models and the undo stack and
+	// MUST run on the Qt main thread. See the definitions for the full contract.
+	Q_INVOKABLE void loadDivesFromFile();
+	Q_INVOKABLE void importDivesFromFile(const QString &path, bool removeSource = false);
+
 	QString DC_vendor() const;
 	void DC_setVendor(const QString& vendor);
 
@@ -328,6 +337,10 @@ signals:
 	void passwordStateChanged();
 	void changesNeedSavingSignal();
 	void errorSignal();
+
+	// AI-generated (Claude): result of loadDivesFromFile() / importDivesFromFile(),
+	// reported asynchronously since both native file pickers return asynchronously.
+	void importFinished(bool success, int numDives, const QString &message);
 
 	// From upload process
 	void uploadFinish(bool success, const QString &text);

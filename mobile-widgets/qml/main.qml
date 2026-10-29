@@ -5,6 +5,9 @@ import QtQuick.Controls.Material
 import QtQuick.Window
 import QtQuick.Dialogs
 import QtQuick.Layouts
+// AI-generated (Claude): qualified, because the QtCore module exports a type
+// named 'Settings' that would otherwise shadow our own Settings.qml.
+import QtCore as QtCore
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami as Kirigami
 import QtQuick.Templates as QtQuickTemplates
@@ -526,6 +529,24 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						showPageFromDrawer(exportWindow)
 					}
 				}
+				// AI-generated (Claude)
+				// On Android and iOS the native file picker is started directly;
+				// everywhere else (including the mobile-on-desktop build) a QML
+				// FileDialog is used instead, since there is no platform picker.
+				Kirigami.Action {
+					icon {
+						name: ":/icons/ic_cloud_download.svg"
+						color: subsurfaceTheme.textColor
+					}
+					text: qsTr("Load from file")
+					onTriggered: {
+						globalDrawer.close()
+						if (Qt.platform.os === "android" || Qt.platform.os === "ios")
+							manager.loadDivesFromFile()
+						else
+							loadDivesDialog.open()
+					}
+				}
 			},
 			Kirigami.Action {
 				icon {
@@ -743,6 +764,34 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			}
 		] // end actions
+	}
+
+	// AI-generated (Claude)
+	// Non-mobile (and mobile-on-desktop) file selection for "Load from file":
+	// there is no platform picker here, so a plain QML FileDialog is used
+	// instead. The selected file is read in place (removeSource: false),
+	// unlike the native pickers on Android/iOS, which hand over a temporary
+	// copy that importDivesFromFile() is told to delete afterwards.
+	FileDialog {
+		id: loadDivesDialog
+		title: qsTr("Load dives from file")
+		currentFolder: QtCore.StandardPaths.writableLocation(QtCore.StandardPaths.DocumentsLocation)
+		fileMode: FileDialog.OpenFile
+		nameFilters: [qsTr("Subsurface XML files") + " (*.ssrf *.xml)", qsTr("All files") + " (*)"]
+		onAccepted: {
+			manager.importDivesFromFile(selectedFile, false)
+		}
+	}
+
+	// AI-generated (Claude): surface the result of loadDivesFromFile() /
+	// importDivesFromFile() as a passive notification. This is separate from
+	// the notificationText-driven one above, which (on success) instead shows
+	// the undo/redo text set by changesNeedSaving().
+	Connections {
+		target: manager
+		function onImportFinished(success, numDives, message) {
+			showPassiveNotification(message, success ? 5000 : 8000)
+		}
 	}
 
 	property double regularFontsize: subsurfaceTheme.regularPointSize
