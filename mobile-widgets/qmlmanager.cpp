@@ -2455,19 +2455,29 @@ void QMLManager::importCacheRepo(QString repo)
 }
 
 // AI-generated (Claude)
-// Starts the "Load from file" file selection. On Android and iOS this will
-// start the native file picker, implemented by follow-up tickets; both are
-// expected to copy the user's selection into a file inside the app's own
-// storage (so that it survives the picker returning asynchronously) and then
-// hand it to importDivesFromFile() - see that function's contract below.
-// On any other platform (including the mobile-on-desktop build) the file is
-// instead picked through a QML FileDialog (main.qml), which calls
-// importDivesFromFile() directly; this method is not expected to run there.
+// Starts the "Load from file" file selection. On Android this starts the
+// native Storage Access Framework picker (SubsurfaceMobileActivity.loadFile()),
+// which copies the user's selection into a file inside the app's own storage
+// (so that it survives the picker returning asynchronously) and then hands
+// it to importDivesFromFile() - see that function's contract below. The iOS
+// picker is a placeholder, implemented by a follow-up ticket, following the
+// same contract. On any other platform (including the mobile-on-desktop
+// build) the file is instead picked through a QML FileDialog (main.qml),
+// which calls importDivesFromFile() directly; this method is not expected
+// to run there.
 void QMLManager::loadDivesFromFile()
 {
 #if defined(Q_OS_ANDROID)
-	// AI-generated (Claude): placeholder - implemented by a follow-up ticket.
-	appendTextToLog("loadDivesFromFile: Android file picker not implemented yet");
+	// AI-generated (Claude)
+	// Start the system's open document dialog (Storage Access Framework) on
+	// the Java side; it copies the picked file into the app's own storage
+	// off the UI thread and then calls back into core/android.cpp, which
+	// hands the result to importDivesFromFile() on the Qt main thread.
+	QJniObject activity(QNativeInterface::QAndroidApplication::context());
+	if (activity.isValid())
+		activity.callMethod<void>("loadFile", "()V");
+	else
+		appendTextToLog("loadDivesFromFile: no valid Android activity");
 #elif defined(Q_OS_IOS)
 	// AI-generated (Claude): placeholder - implemented by a follow-up ticket.
 	appendTextToLog("loadDivesFromFile: iOS file picker not implemented yet");

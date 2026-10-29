@@ -20,6 +20,7 @@ import android.hardware.usb.UsbManager;
 import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -165,6 +166,11 @@ public class SubsurfaceMobileActivity extends QtActivity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
+		// AI-generated (Claude): "Load from file" uses its own request code, handled separately below
+		if (requestCode == LOAD_FILE_REQUEST) {
+			onLoadFileResult(resultCode, data);
+			return;
+		}
 		if (requestCode != SAVE_FILE_REQUEST)
 			return;
 		final File snapshot = takePendingSnapshot(null);
@@ -224,6 +230,68 @@ public class SubsurfaceMobileActivity extends QtActivity
 			if (pendingSnapshot != null)
 				outState.putString(SAVE_SNAPSHOT_KEY, pendingSnapshot.getPath());
 		}
+	}
+
+	// AI-generated (Claude)
+	// Lets the user pick a file to import dives from ("Load from file"),
+	// through the system's open document dialog (Storage Access Framework).
+	// That needs no storage permission: the app only reads the document the
+	// user picked. ".ssrf" has no registered MIME type, so a narrower filter
+	// than "*/*" would hide the user's own exports; the picker shows every
+	// file as a result.
+	//
+	// Unlike saveFile() above, nothing needs to be stashed in an instance
+	// field before the picker starts: onActivityResult() below does its work
+	// entirely from the Uri Android hands back in its result Intent, which
+	// is redelivered as-is even if this activity is recreated (e.g. killed
+	// for memory while the picker was in the foreground) before the result
+	// arrives. So, unlike SAVE_SNAPSHOT_KEY, there is no onSaveInstanceState
+	// counterpart to add here.
+	private static final int LOAD_FILE_REQUEST = 4712;
+
+	// reports a failed copy to the user (core/android.cpp)
+	private static native void loadFileFailed();
+	// hands the copy of the picked file over for import on the Qt main thread (core/android.cpp)
+	private static native void loadFileReady(String path);
+
+	public void loadFile() {
+		Log.d(TAG + " loadFile", "offering to pick a file to import");
+		Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+		intent.setType("*/*");
+		runOnUiThread(() -> startActivityForResult(intent, LOAD_FILE_REQUEST));
+	}
+
+	// cancelling the picker (resultCode != RESULT_OK, or no data) is a no-op:
+	// loadFile() above creates no file ahead of time, so there is nothing to
+	// clean up
+	private void onLoadFileResult(int resultCode, Intent data) {
+		if (resultCode != RESULT_OK || data == null || data.getData() == null) {
+			Log.d(TAG + " loadFile", "cancelled");
+			return;
+		}
+		final Uri source = data.getData();
+		// a dive log can be tens of MB: copy it off the UI thread
+		new Thread(() -> {
+			File copy = null;
+			try {
+				// the app's own cache, so the Qt side can read it as a plain path
+				copy = File.createTempFile("import-", ".ssrf", getCacheDir());
+				try (InputStream in = getContentResolver().openInputStream(source);
+				     OutputStream out = new FileOutputStream(copy)) {
+					if (in == null)
+						throw new IOException("cannot open " + source.toString());
+					copyStream(in, out);
+				}
+				Log.d(TAG + " loadFile", "copied " + source.toString() + " to " + copy.getPath());
+				loadFileReady(copy.getPath());
+			} catch (Exception e) {
+				Log.e(TAG + " loadFile", "failed to copy " + source.toString(), e);
+				if (copy != null)
+					copy.delete();
+				loadFileFailed();
+			}
+		}).start();
 	}
 
 	public boolean supportEmail(String path1, String path2) {
