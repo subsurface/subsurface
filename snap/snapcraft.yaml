@@ -99,6 +99,12 @@ parts:
     source: .
     source-type: git
     source-subdir: libdivecomputer
+    # The SDK snap puts its own gcc first in PATH. Since revision 57 it still
+    # ships that gcc driver, but no longer the C runtime objects (crt*.o) or
+    # libgcc that it needs to link, so Autotools' compiler check fails with
+    # "C compiler cannot create executables". Use the system compiler instead.
+    build-environment:
+    - CC: /usr/bin/gcc
     build-packages:
     - libbluetooth-dev
     - libhidapi-dev

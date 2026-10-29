@@ -1,7 +1,7 @@
 diff --git a/snap/snapcraft.yaml b/snap/snapcraft.yaml
 --- a/snap/snapcraft.yaml
 +++ b/snap/snapcraft.yaml
-@@ -39,8 +39,9 @@
+@@ -62,8 +62,9 @@ parts:
      plugin: nil
      build-packages:
      - build-essential
@@ -12,20 +12,20 @@ diff --git a/snap/snapcraft.yaml b/snap/snapcraft.yaml
        make -j${CRAFT_PARALLEL_BUILD_COUNT}
        # this is a private plugin, so install it where our Qt 6 will find it,
        # independent of where the SDK's qmake wants to put plugins
-@@ -73,7 +74,11 @@
-     source: .
-     source-type: git
-     source-subdir: libdivecomputer
+@@ -105,7 +106,11 @@ parts:
+     # "C compiler cannot create executables". Use the system compiler instead.
+     build-environment:
+     - CC: /usr/bin/gcc
 +    autotools-configure-parameters:
-+    - CC="ccache gcc"
++    - CC="ccache /usr/bin/gcc"
 +    - CXX="ccache g++"
      build-packages:
 +    - ccache
      - libbluetooth-dev
      - libhidapi-dev
      - libusb-dev
-@@ -97,8 +102,11 @@
-     - -DLIBDIVECOMPUTER_INCLUDE_DIR=../../../stage/usr/local/include
+@@ -131,8 +136,11 @@ parts:
+     - -DCMAKE_EXE_LINKER_FLAGS=-Llink-stubs
      - -DBUILD_WITH_QT6=ON
      - -DCMAKE_PREFIX_PATH=../../../stage/usr/local
 +    - -DCMAKE_C_COMPILER_LAUNCHER=ccache
