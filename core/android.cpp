@@ -201,6 +201,38 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_saveFileFailed(JNIEnv
 	report_error("%s", translate("gettextFromC", "Saving the export failed"));
 }
 
+// AI-generated (Claude)
+// Called by SubsurfaceMobileActivity (from any thread) when copying the file
+// picked for "Load from file" out of the Storage Access Framework failed;
+// report_error() shows it in the UI. Like saveFileFailed() above, this only
+// hands a plain error string to report_error() and does not touch divelog,
+// the models or the undo stack, so calling it directly off a worker thread
+// is fine - unlike loadFileReady() below.
+extern "C" JNIEXPORT void JNICALL
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_loadFileFailed(JNIEnv *, jclass)
+{
+	report_error("%s", translate("gettextFromC", "Could not read the selected file"));
+}
+
+// AI-generated (Claude)
+// Called by SubsurfaceMobileActivity (from a worker thread) once the file
+// picked for "Load from file" has been copied into the app's own storage.
+// QMLManager::importDivesFromFile() touches divelog, the dive-list models
+// and the undo stack and therefore MUST run on the Qt main thread; this is
+// not guaranteed to be called on that thread, so dispatch with a queued
+// connection rather than calling it directly - see that function's
+// documentation for the full threading contract. removeSource is true
+// because 'path' is a temporary copy made for this import, owned by us.
+extern "C" JNIEXPORT void JNICALL
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_loadFileReady(JNIEnv *, jclass, jstring path)
+{
+#if defined(SUBSURFACE_MOBILE)
+	QString localPath = QJniObject(path).toString();
+	QMetaObject::invokeMethod(QMLManager::instance(), "importDivesFromFile", Qt::QueuedConnection,
+				   Q_ARG(QString, localPath), Q_ARG(bool, true));
+#endif
+}
+
 /* NOP wrappers to comform with windows.c */
 int subsurface_rename(const char *path, const char *newpath)
 {
