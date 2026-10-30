@@ -3,7 +3,6 @@
 #include "profilewidget.h"
 #include "profile-widget/profilewidget2.h"
 #include "commands/command.h"
-#include "core/color.h"
 #include "core/event.h"
 #include "core/sample.h"
 #include "core/selection.h"
@@ -14,44 +13,34 @@
 
 #include <QToolBar>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QStackedWidget>
 #include <QLabel>
+#include <QIcon>
 
-// A resizing display of the Subsurface logo when no dive is shown
-class EmptyView : public QLabel {
+//  small display of Subsurface logo when no dive is shown + a helpful hint
+class EmptyView : public QWidget {
 public:
 	EmptyView(QWidget *parent = nullptr);
-	~EmptyView();
-private:
-	QPixmap logo;
-	void update();
-	void resizeEvent(QResizeEvent *) override;
 };
 
-EmptyView::EmptyView(QWidget *parent) : QLabel(parent),
-	logo(":poster-icon")
+EmptyView::EmptyView(QWidget *parent) : QWidget(parent)
 {
-	QPalette pal;
-	pal.setColor(QPalette::Window, getColor(::BACKGROUND));
 	setAutoFillBackground(true);
-	setPalette(pal);
-	setMinimumSize(1,1);
-	setAlignment(Qt::AlignHCenter);
-	update();
-}
 
-EmptyView::~EmptyView()
-{
-}
+	QLabel *icon = new QLabel;
+	icon->setAlignment(Qt::AlignHCenter);
+	icon->setPixmap(QIcon(":poster-icon").pixmap(QSize(64, 64)));
 
-void EmptyView::update()
-{
-	setPixmap(logo.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-}
+	QLabel *message = new QLabel(ProfileWidget::tr("Welcome! Select a dive to show information here"));
+	message->setAlignment(Qt::AlignHCenter);
+	message->setWordWrap(true);
 
-void EmptyView::resizeEvent(QResizeEvent *)
-{
-	update();
+	QVBoxLayout *layout = new QVBoxLayout(this);
+	layout->addStretch();
+	layout->addWidget(icon);
+	layout->addWidget(message);
+	layout->addStretch();
 }
 
 ProfileWidget::ProfileWidget() : d(nullptr), dc(0), placingCommand(false)
