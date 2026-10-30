@@ -1141,7 +1141,7 @@ void TestDivePlannerModel::testCylindersModelRefreshedOnPressureChange()
 namespace Command {
 
 void addDive(std::unique_ptr<dive>, bool, bool) {}
-void importDives(struct divelog *, int, const QString &) {}
+bool importDives(struct divelog *, int, const QString &) { return false; }
 void replanDive(dive *) {}
 int editCylinder(int, cylinder_t, EditCylinderType, bool) { return 0; }
 void editSensors(int, int, int) {}

@@ -7,10 +7,13 @@
 #include "errorhelper.h"
 #include "filterpreset.h"
 #include "filterpresettable.h"
+#include "membuffer.h"
 #include "qthelper.h" // for emit_reset_signal() -> should be removed
 #include "range.h"
 #include "selection.h" // clearly, a layering violation -> should be removed
 #include "trip.h"
+
+#include <cstring>
 
 struct divelog divelog;
 
@@ -171,19 +174,48 @@ static bool dive_is_after_last(const struct dive &d)
  * table. On failure everything stays unchanged.
  * If "prefer_imported" is true, use data of the new dive.
  */
-static bool try_to_merge_into(struct dive &dive_to_add, struct dive *old_dive, bool prefer_imported,
-			      /* output parameters: */
-			      struct dive_table &dives_to_add, struct std::vector<dive *> &dives_to_remove)
+enum class merge_into_result {
+	no_match,
+	unchanged,
+	changed,
+};
+
+// The merge code creates a replacement dive even when both input dives contain
+// the same persistent data. Avoid replacing the existing dive in that case: a
+// replacement is observable to the undo stack despite leaving the log unchanged.
+static bool same_persistent_dive(const struct dive &a, const struct dive &b)
+{
+	// These values are calculated while processing the imported dive and are
+	// not part of the stored dive data. They must not cause an otherwise
+	// identical import to replace a dive.
+	dive a_copy = a;
+	dive b_copy = b;
+	a_copy.sac = a_copy.otu = a_copy.maxcns = 0;
+	b_copy.sac = b_copy.otu = b_copy.maxcns = 0;
+
+	membuffer a_buffer;
+	membuffer b_buffer;
+	save_one_dive_to_mb(&a_buffer, a_copy, false);
+	save_one_dive_to_mb(&b_buffer, b_copy, false);
+	return a_buffer.len == b_buffer.len &&
+	       std::memcmp(a_buffer.buffer, b_buffer.buffer, a_buffer.len) == 0;
+}
+
+static merge_into_result try_to_merge_into(struct dive &dive_to_add, struct dive *old_dive, bool prefer_imported,
+					   /* output parameters: */
+					   struct dive_table &dives_to_add, struct std::vector<dive *> &dives_to_remove)
 {
 	auto merged = dives_to_add.try_to_merge(*old_dive, dive_to_add, prefer_imported);
 	if (!merged)
-		return false;
+		return merge_into_result::no_match;
 
+	if (same_persistent_dive(*old_dive, *merged))
+		return merge_into_result::unchanged;
 	merged->divetrip = old_dive->divetrip;
 	range_insert_sorted(dives_to_remove, old_dive, comp_dives_ptr);
 	dives_to_add.put(std::move(merged));
 
-	return true;
+	return merge_into_result::changed;
 }
 
 /* Merge dives from "dives_from", owned by "delete" into the owned by "dives_to".
@@ -239,10 +271,13 @@ static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive
 		 * transitive. But let's just go *completely* sure for the odd corner-case. */
 		if (j > 0 && (last_merged_into == std::string::npos || j > last_merged_into + 1) &&
 		    dives_to[j - 1]->endtime() > dive_to_add->when) {
-			if (try_to_merge_into(*dive_to_add, dives_to[j - 1], prefer_imported,
-					      dives_to_add, dives_to_remove)) {
-				last_merged_into = j - 1;
-				num_merged++;
+			auto merge_result = try_to_merge_into(*dive_to_add, dives_to[j - 1], prefer_imported,
+							      dives_to_add, dives_to_remove);
+			if (merge_result != merge_into_result::no_match) {
+				if (merge_result == merge_into_result::changed) {
+					last_merged_into = j - 1;
+					num_merged++;
+				}
 				continue;
 			}
 		}
@@ -251,10 +286,13 @@ static bool merge_dive_tables(const std::vector<dive *> &dives_from, struct dive
 		 * Try to merge into next dive. */
 		if (j < dives_to.size() && (last_merged_into == std::string::npos || j > last_merged_into) &&
 		    dive_to_add->endtime() > dives_to[j]->when) {
-			if (try_to_merge_into(*dive_to_add, dives_to[j], prefer_imported,
-					      dives_to_add, dives_to_remove)) {
-				last_merged_into = j;
-				num_merged++;
+			auto merge_result = try_to_merge_into(*dive_to_add, dives_to[j], prefer_imported,
+							      dives_to_add, dives_to_remove);
+			if (merge_result != merge_into_result::no_match) {
+				if (merge_result == merge_into_result::changed) {
+					last_merged_into = j;
+					num_merged++;
+				}
 				continue;
 			}
 		}

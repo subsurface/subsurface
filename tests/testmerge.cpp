@@ -67,6 +67,34 @@ void TestMerge::testMergeBackwards()
 		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
 }
 
+void TestMerge::testReimportDoesNotReplaceUnchangedDives()
+{
+	struct divelog log;
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &log), 0);
+	divelog.add_imported_dives(log, import_flags::merge_all_trips);
+	QCOMPARE(static_cast<int>(divelog.dives.size()), 1);
+
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &log), 0);
+	auto result = divelog.process_imported_dives(log, import_flags::merge_all_trips);
+	QCOMPARE(static_cast<int>(result.dives_to_add.size()), 0);
+	QCOMPARE(static_cast<int>(result.dives_to_remove.size()), 0);
+
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &log), 0);
+	log.dives.front()->notes = "Changed during import";
+	result = divelog.process_imported_dives(log, import_flags::merge_all_trips);
+	QCOMPARE(static_cast<int>(result.dives_to_add.size()), 1);
+	QCOMPARE(static_cast<int>(result.dives_to_remove.size()), 1);
+
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &log), 0);
+	auto new_dive = std::make_unique<dive>(*log.dives.front());
+	new_dive->when += 24 * 60 * 60;
+	new_dive->dcs[0].when += 24 * 60 * 60;
+	log.dives.put(std::move(new_dive));
+	result = divelog.process_imported_dives(log, import_flags::merge_all_trips);
+	QCOMPARE(static_cast<int>(result.dives_to_add.size()), 1);
+	QCOMPARE(static_cast<int>(result.dives_to_remove.size()), 0);
+}
+
 void TestMerge::testMergeWeights()
 {
 	// Helper lambda to make a weightsystem_t

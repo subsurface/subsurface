@@ -42,7 +42,7 @@ bool placingCommand();			// Currently executing a new command -> might not have 
 // If newNumber is true, the dive is assigned a new number, depending on the
 // insertion position.
 void addDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber);
-void importDives(struct divelog *log, int flags, const QString &source); // The tables are consumed!
+bool importDives(struct divelog *log, int flags, const QString &source); // The tables are consumed!
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const std::vector<dive *> &changedDives, int amount);
 void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);
