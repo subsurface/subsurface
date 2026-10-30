@@ -2561,7 +2561,13 @@ void QMLManager::importDivesFromFile(const QString &path, bool removeSource)
 	size_t numDivesAdded = numDivesAfter > numDivesBefore ? numDivesAfter - numDivesBefore : 0;
 	Q_ASSERT(numDivesAdded <= static_cast<size_t>(std::numeric_limits<int>::max()));
 	int numDives = static_cast<int>(numDivesAdded);
-	QString message = tr("Imported %n dive(s) from file", "", numDives);
+	// A changed-dive match replaces the old dive with the merged one, so the
+	// dive count can stay the same even though 'imported' is true (see
+	// try_to_merge_into() in core/divelog.cpp). Don't claim "Imported 0
+	// dive(s)" in that case - the existing dives were genuinely updated and
+	// saved.
+	QString message = numDives > 0 ? tr("Imported %n dive(s) from file", "", numDives)
+					: tr("Updated existing dives from the selected file");
 	appendTextToLog(QString("importDivesFromFile: imported %1 dive(s) from %2").arg(numDives).arg(localPath));
 	emit importFinished(true, numDives, message);
 }
