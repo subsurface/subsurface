@@ -42,6 +42,7 @@ private slots:
 	void exportUDDF();
 	void exportUDDFEvents();
 	void exportUDDFTankSensors();
+	void exportCSVProfileBareSamples();
 	void exportDiveSitesXML();
 	void exportKML();
 	void importUDDF();

@@ -141,12 +141,15 @@
   <!-- AI-generated (Claude) -->
   <!-- Id of the pressure sensor feeding cylinder $cylinder (0-based) of
        divecomputer $dc, or empty if none. Without tanksensormapping
-       elements sensor N feeds cylinder N, a sensorid of -1 means none. -->
+       elements sensor N feeds cylinder N, a sensorid of -1 means none.
+       Mappings are only defined inside a divecomputer element: if $dc is
+       empty or is some other element (e.g. the dive of an old log with
+       samples that have no divecomputer), sensor N feeds cylinder N. -->
   <xsl:template name="tankSensorId">
     <xsl:param name="dc"/>
     <xsl:param name="cylinder"/>
     <xsl:choose>
-      <xsl:when test="$dc/tanksensormapping">
+      <xsl:when test="$dc/self::divecomputer/tanksensormapping">
         <xsl:value-of select="$dc/tanksensormapping[@cylinderindex = $cylinder and @sensorid &gt;= 0][1]/@sensorid"/>
       </xsl:when>
       <xsl:otherwise>
