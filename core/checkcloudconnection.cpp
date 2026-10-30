@@ -31,6 +31,11 @@ CheckCloudConnection::CheckCloudConnection(QObject *parent) :
 #define TEAPOT "/make-latte?number-of-shots=3"
 #define HTTP_I_AM_A_TEAPOT 418
 #define MILK "Linus does not like non-fat milk"
+/**
+ * Check cloud reachability, trying the available fallback servers on failure.
+ * @return true for the expected HTTP 418 response and body; otherwise false,
+ *         enabling git_local_only when server selection is exhausted.
+ */
 bool CheckCloudConnection::checkServer()
 {
 	if (verbose)
