@@ -517,6 +517,9 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
 	set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${SSRF_VERSION_3DIGIT}")
 	find_library(MESSAGEUI_FRAMEWORK MessageUI)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${MESSAGEUI_FRAMEWORK})
+	# AI-generated (Claude): UTTypeItem, used by the "Load from file" document picker
+	find_library(UNIFORMTYPEIDENTIFIERS_FRAMEWORK UniformTypeIdentifiers)
+	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${UNIFORMTYPEIDENTIFIERS_FRAMEWORK})
 	# libgit2 depends on iconv on iOS
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES -liconv)
 	# googlemaps static plugin for iOS - search all paths in CMAKE_FIND_ROOT_PATH
@@ -764,6 +767,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "MobileExecutable")
 	if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
 		target_sources(${SUBSURFACE_TARGET} PRIVATE
 			${CMAKE_SOURCE_DIR}/ios/ios-share.mm
+			${CMAKE_SOURCE_DIR}/ios/ios-import.cpp
 		)
 		set_target_properties(${SUBSURFACE_TARGET} PROPERTIES
 			MACOSX_BUNDLE TRUE
