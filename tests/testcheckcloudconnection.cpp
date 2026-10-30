@@ -15,6 +15,7 @@ const QByteArray validResponse = "HTTP/1.1 418 I'm a teapot\r\nContent-Length: 3
 const QByteArray failedResponse = "HTTP/1.1 503 Service Unavailable\r\nContent-Length: 0\r\nConnection: close\r\n\r\n";
 }
 
+/** Save global settings and route test requests through a loopback proxy. */
 void TestCheckCloudConnection::init()
 {
 	originalProxy = QNetworkProxy::applicationProxy();
@@ -62,6 +63,7 @@ void TestCheckCloudConnection::init()
 	});
 }
 
+/** Restore global settings and destroy the local proxy and its connections. */
 void TestCheckCloudConnection::cleanup()
 {
 	delete server;
@@ -72,6 +74,7 @@ void TestCheckCloudConnection::cleanup()
 	git_local_only = originalLocalOnly;
 }
 
+/** Verify connection errors return without waiting out the cloud timeout. */
 void TestCheckCloudConnection::refusedConnectionReturnsImmediately()
 {
 	server->close();
@@ -82,6 +85,7 @@ void TestCheckCloudConnection::refusedConnectionReturnsImmediately()
 	QVERIFY2(elapsed.elapsed() < 1000, qPrintable(QString("Failed requests took %1 ms").arg(elapsed.elapsed())));
 }
 
+/** Supply valid responses and failures with an incorrect status or body. */
 void TestCheckCloudConnection::finishedResponses_data()
 {
 	QTest::addColumn<QByteArray>("serverResponse");
@@ -92,6 +96,7 @@ void TestCheckCloudConnection::finishedResponses_data()
 	QTest::newRow("server-error") << failedResponse << false;
 }
 
+/** Verify completed replies are validated promptly and connections close. */
 void TestCheckCloudConnection::finishedResponses()
 {
 	QFETCH(QByteArray, serverResponse);
@@ -107,6 +112,7 @@ void TestCheckCloudConnection::finishedResponses()
 	QTRY_COMPARE(liveConnections, 0);
 }
 
+/** Verify a pending request can succeed after a progress interval elapses. */
 void TestCheckCloudConnection::delayedSuccess()
 {
 	response = validResponse;
@@ -120,6 +126,7 @@ void TestCheckCloudConnection::delayedSuccess()
 	QCOMPARE(requestHosts, QStringList { CLOUD_HOST_EU });
 }
 
+/** Verify unanswered requests time out and their connections are released. */
 void TestCheckCloudConnection::stalledRequestsTimeout()
 {
 	prefs.cloud_timeout = 1;

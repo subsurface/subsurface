@@ -8,6 +8,7 @@
 
 class QTcpServer;
 
+/** Exercise cloud connection checks using a loopback proxy instead of the cloud. */
 class TestCheckCloudConnection : public QObject {
 	Q_OBJECT
 private slots:
