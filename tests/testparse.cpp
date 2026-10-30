@@ -626,6 +626,27 @@ void TestParse::exportUDDFTankSensors()
 	QCOMPARE(actual.readAll(), expected.readAll());
 }
 
+// AI-generated (Claude): Bare <sample> elements directly under <dive> must not pick up a <dive>-level tank sensor mapping.
+void TestParse::exportCSVProfileBareSamples()
+{
+	xmlDoc *input = xmlReadFile(SUBSURFACE_TEST_DATA "/dives/test-csv-detail-bare-samples.xml", NULL, XML_PARSE_HUGE);
+	QVERIFY(input);
+	xsltStylesheetPtr stylesheet = get_stylesheet("xml2detailscsv.xslt");
+	QVERIFY(stylesheet);
+	const char *params[] = { "units", "'0'", NULL };
+	xmlDoc *output = xsltApplyStylesheet(stylesheet, input, params);
+	QVERIFY(output);
+	QVERIFY(xsltSaveResultToFilename("testcsvprofilebaresamples.csv", output, stylesheet, 0) > 0);
+	xmlFreeDoc(output);
+	xsltFreeStylesheet(stylesheet);
+	xmlFreeDoc(input);
+	QFile expected(SUBSURFACE_TEST_DATA "/dives/test-csv-detail-bare-samples.csv");
+	QVERIFY(expected.open(QFile::ReadOnly));
+	QFile actual("testcsvprofilebaresamples.csv");
+	QVERIFY(actual.open(QFile::ReadOnly));
+	QCOMPARE(actual.readAll(), expected.readAll());
+}
+
 static std::vector<const dive_site *> allDiveSites()
 {
 	std::vector<const dive_site *> sites;
