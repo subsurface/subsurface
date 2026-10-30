@@ -499,7 +499,15 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 	fi
 	mkdir -p "$GOOGLEMAPS_BUILDDIR"
 	cd "$GOOGLEMAPS_BUILDDIR"
-	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" "CONFIG+=release" "$SRC/googlemaps/googlemaps.pro"
+	GOOGLEMAPS_INCLUDEPATH="$INSTALL_ROOT/include"
+	if [ "$PLATFORM" = Linux ]; then
+		GOOGLEMAPS_INCLUDEPATH="$GOOGLEMAPS_INCLUDEPATH $QT_HEADERS_PATH/QtCore/$QT_VERSION $QT_HEADERS_PATH/QtCore/$QT_VERSION/QtCore"
+	fi
+
+	$QMAKE \
+		"INCLUDEPATH=$GOOGLEMAPS_INCLUDEPATH" \
+		"CONFIG+=release" \
+		"$SRC/googlemaps/googlemaps.pro"
 	make
 	# AI-generated (Claude)
 	# googlemaps is a private Qt plugin, not a distro package, so it must
