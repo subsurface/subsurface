@@ -138,6 +138,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: rating >= 1 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
@@ -146,6 +147,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: rating >= 2 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
@@ -154,6 +156,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: rating >= 3 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
@@ -162,6 +165,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: rating >= 4 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
@@ -170,6 +174,7 @@ Item {
 				anchors.verticalCenter: ratingText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (rating === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: rating === 5 ? activeStarColor : inactiveStarColor
 			}
 		}
@@ -191,6 +196,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 1) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: viz >= 1 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
@@ -199,6 +205,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 2) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: viz >= 2 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
@@ -207,6 +214,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 3) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: viz >= 3 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
@@ -215,6 +223,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz >= 4) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: viz >= 4 ? activeStarColor : inactiveStarColor
 			}
 			Kirigami.Icon {
@@ -223,6 +232,7 @@ Item {
 				anchors.verticalCenter: visibilityText.verticalCenter
 				anchors.verticalCenterOffset: height * 0.2
 				source: (viz === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
+				isMask: true
 				color: viz === 5 ? activeStarColor : inactiveStarColor
 			}
 		}
