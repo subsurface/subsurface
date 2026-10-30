@@ -2284,20 +2284,16 @@ void QMLManager::exportToFile(export_types type, QString dir, bool anonymize)
 }
 #endif
 
-void QMLManager::exportToWEB(export_types type, QString userId, QString password, bool anonymize)
+void QMLManager::exportToDivelogsDE(QString userId, QString password)
 {
-	switch (type)
-	{
-		case EX_DIVELOGS_DE:
-			uploadDiveLogsDE::instance()->doUpload(false, userId, password);
-			break;
-		case EX_DIVESHARE:
-			uploadDiveShare::instance()->doUpload(false, userId, anonymize);
-			break;
-		default:
-			report_info("upload to unknown type %d using %s/%s remove names %d", static_cast<int>(type), qPrintable(userId), qPrintable(password), anonymize);
-			break;
-	}
+	uploadDiveLogsDE::instance()->doUpload(false, userId, password);
+}
+
+// AI-generated (Claude): diveSharePrivate maps to uploadDiveShare::doUpload()'s
+// "noPublic" parameter - the DiveShare "Private" checkbox, not anonymization.
+void QMLManager::exportToDiveShare(QString userId, bool diveSharePrivate)
+{
+	uploadDiveShare::instance()->doUpload(false, userId, diveSharePrivate);
 }
 
 // AI-generated (Claude): the file creation below was moved out of shareViaEmail()
@@ -2338,30 +2334,42 @@ void QMLManager::shareViaEmail(export_types type, bool anonymize)
 	QString fileName = writeExportFile(type, anonymize);
 	if (fileName.isEmpty()) {
 		appendTextToLog("no export file, aborting attempt to send via email");
+		emit fileExportFinished(false, tr("Could not create the export file to send by email."));
 		return;
 	}
 	QString body = type == EX_DIVES_XML ? "Subsurface dive log data" : "Subsurface dive site data";
 #if defined(Q_OS_ANDROID)
 	// let's use our nifty Java shareViaEmail function
 	QJniObject activity(QNativeInterface::QAndroidApplication::context());
+	bool handedOff = false;
 	if (activity.isValid()) {
 		QJniObject attachmentPath = QJniObject::fromString(fileName);
 		QJniObject subject = QJniObject::fromString("Subsurface export");
 		QJniObject bodyString = QJniObject::fromString(body);
 		QJniObject emptyString = QJniObject::fromString("");
-		bool success = activity.callMethod<jboolean>("shareViaEmail",
+		handedOff = activity.callMethod<jboolean>("shareViaEmail",
 					"(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Z", // five string arguments, return bool
 					subject.object<jstring>(), emptyString.object<jstring>(), bodyString.object<jstring>(),
 							     attachmentPath.object<jstring>(), emptyString.object<jstring>());
-		report_info("%s shareViaEmail %s", __func__, success ? "succeeded" : "failed");
+		report_info("%s shareViaEmail %s", __func__, handedOff ? "succeeded" : "failed");
 	}
+	// AI-generated (Claude): handedOff only tells us the share intent was
+	// launched, not that the user actually completed sharing the email. If the
+	// intent could not even be launched, report failure so the page stays open
+	// for the user to retry, instead of closing as though the export succeeded.
+	emit fileExportFinished(handedOff, handedOff ? tr("Export file created and handed to your email app.")
+						      : tr("Export file created, but the email app could not be opened."));
 #elif defined(Q_OS_IOS)
 	// call into objC++ code to share on iOS
 	QString subject("Subsurface export");
 	QString emptyString;
 	iosshare.shareViaEmail(subject, emptyString, body, fileName, emptyString);
+	// AI-generated (Claude): iosshare.shareViaEmail() doesn't report back whether
+	// the share sheet was actually presented, so this only confirms the file.
+	emit fileExportFinished(true, tr("Export file created and handed to your email app."));
 #else
 	appendTextToLog("on a mobile platform this would send" + fileName + "via email with body" + body);
+	emit fileExportFinished(true, tr("Export file created at %1.").arg(fileName));
 #endif
 }
 
@@ -2374,19 +2382,31 @@ void QMLManager::saveExportToDevice(export_types type, bool anonymize)
 	QString fileName = writeExportFile(type, anonymize);
 	if (fileName.isEmpty()) {
 		appendTextToLog("no export file, aborting attempt to save it");
+		emit fileExportFinished(false, tr("Could not create the export file to save."));
 		return;
 	}
 #if defined(Q_OS_ANDROID)
 	QJniObject activity(QNativeInterface::QAndroidApplication::context());
+	bool handedOff = false;
 	if (activity.isValid()) {
 		QJniObject path = QJniObject::fromString(fileName);
-		bool success = activity.callMethod<jboolean>("saveFile", "(Ljava/lang/String;)Z", path.object<jstring>());
-		report_info("%s saveFile %s", __func__, success ? "succeeded" : "failed");
+		handedOff = activity.callMethod<jboolean>("saveFile", "(Ljava/lang/String;)Z", path.object<jstring>());
+		report_info("%s saveFile %s", __func__, handedOff ? "succeeded" : "failed");
 	}
+	// AI-generated (Claude): handedOff only tells us the Storage Access Framework
+	// intent was launched, not that the user completed the save. If the intent
+	// could not even be launched, report failure so the page stays open for the
+	// user to retry, instead of closing as though the export succeeded.
+	emit fileExportFinished(handedOff, handedOff ? tr("Export file created; choose where to save it.")
+						      : tr("Export file created, but the save dialog could not be opened."));
 #elif defined(Q_OS_IOS)
 	iosshare.saveFile(fileName);
+	// AI-generated (Claude): iosshare.saveFile() doesn't report back whether the
+	// document picker was actually presented, so this only confirms the file.
+	emit fileExportFinished(true, tr("Export file created; choose where to save it."));
 #else
 	appendTextToLog("on a mobile platform this would offer to save " + fileName);
+	emit fileExportFinished(true, tr("Export file created at %1.").arg(fileName));
 #endif
 }
 

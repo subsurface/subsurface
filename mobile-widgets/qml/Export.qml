@@ -8,12 +8,12 @@ import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami as Kirigami
 
 TemplatePage {
-	title: qsTr("Export Divelog information")
+	title: qsTr("Export and upload dive data")
 
 	property int selectedExport: ExportType.EX_DIVES_XML
-	// AI-generated (Claude): on a phone, a file export is either mailed or saved
-	property bool mobileFileExport: (Qt.platform.os === "android" || Qt.platform.os === "ios") &&
-					(selectedExport === ExportType.EX_DIVES_XML || selectedExport === ExportType.EX_DIVE_SITES_XML)
+	// AI-generated (Claude): on Android/iOS a file export is handed to the platform's
+	// own email/save mechanism instead of using a desktop-style folder picker
+	property bool mobileFileExport: Qt.platform.os === "android" || Qt.platform.os === "ios"
 
 	FolderDialog {
 		id: saveAsDialog
@@ -29,209 +29,150 @@ TemplatePage {
 		}
 	}
 
-	GridLayout {
-		id: uploadDialog
-		visible: false
-		anchors {
-			top: parent.top
-			left: parent.left
-			right: parent.right
-			margins: Kirigami.Units.gridUnit / 2
-		}
-		rowSpacing: Kirigami.Units.smallSpacing * 2
-		columnSpacing: Kirigami.Units.smallSpacing
-		columns: 3
-		TemplateLabel {
-			text: qsTr("Export credentials")
-			Layout.columnSpan: 3
-		}
-		TemplateLabel {
-			id: textUserID
-			text: qsTr("User ID")
-		}
-		SsrfTextField {
-			id: fieldUserID
-			Layout.columnSpan: 2
-			Layout.fillWidth: true
-			inputMethodHints: Qt.ImhNoAutoUppercase
-		}
-		TemplateLabel {
-			id: textPassword
-			text: qsTr("Password:")
-		}
-		SsrfTextField {
-			id: fieldPassword
-			Layout.columnSpan: 2
-			Layout.fillWidth: true
-			inputMethodHints: Qt.ImhSensitiveData |
-					  Qt.ImhHiddenText |
-					  Qt.ImhNoAutoUppercase
-			echoMode: TextInput.PasswordEchoOnEdit
-		}
-		TemplateCheckBox {
-			id: fieldPrivate
-			visible: selectedExport === ExportType.EX_DIVESHARE
-			Layout.fillWidth: true
-			text: qsTr("Private")
-		}
-		ProgressBar {
-			id: progress
-			value: 0.0
-			Layout.columnSpan: 2
-		}
-		TemplateLabel {
-			id: statusText
-			Layout.fillWidth: true
-			Layout.columnSpan: 3
-			wrapMode: Text.Wrap
-		}
-
-		TemplateButton {
-			text: qsTr("Export")
-			onClicked: {
-				if (selectedExport === ExportType.EX_DIVELOGS_DE) {
-					if (fieldUserID.text !== PrefCloudStorage.divelogde_user) {
-						PrefCloudStorage.divelogde_user = fieldUserID.text
-					}
-					if (fieldPassword.text !== PrefCloudStorage.divelogde_pass)
-						PrefCloudStorage.divelogde_pass = fieldPassword.text
-					manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, anonymize.checked)
-				} else {
-					if (fieldUserID.text !== PrefCloudStorage.diveshare_uid) {
-						        PrefCloudStorage.diveshare_uid = fieldUserID.text
-					}
-					PrefCloudStorage.diveshare_private = fieldPrivate.checked
-					manager.exportToWEB(selectedExport, fieldUserID.text, fieldPassword.text, fieldPrivate.checked)
-				}
-			}
-		}
-		TemplateButton {
-			text: qsTr("Cancel")
-			onClicked: {
+	// AI-generated (Claude): report the outcome manager.shareViaEmail()/
+	// saveExportToDevice() actually observed - writing the export file is
+	// synchronous, so a failure is known and must not pop the page as though
+	// the export succeeded; success only means the file was created and handed
+	// to the platform, not that the user completed the email/save.
+	Connections {
+		target: manager
+		function onFileExportFinished(success, text) {
+			showPassiveNotification(text, success ? 5000 : 8000)
+			if (success)
 				pageStack.pop()
-			}
-		}
-		Connections {
-			target: manager
-			function onUploadFinish(success, text) {
-				if (success) {
-					pageStack.pop()
-				}
-				statusText.text = text
-				progress.value = 0
-			}
-			function onUploadProgress(percentage) {
-				progress.value = percentage
-			}
 		}
 	}
 
-	// On Android and iOS a file export is either sent by email or saved through
-	// the system's own save dialog, which needs no file system access of our own
-
-	ColumnLayout {
+	// AI-generated (Claude): the page is grouped by mechanism, not just by data
+	// scope - "Export to a file" is the only section where the data choice
+	// (dive log vs. dive sites) and anonymization apply, because the action
+	// buttons underneath it are the only consumers of selectedExport/anonymize.
+	// "Upload the dive log" has no data choice to make: both backends
+	// (uploadDiveLogsDE::doUpload(), uploadDiveShare::doUpload()) always send
+	// the whole dive log and never honour anonymize, so that section carries
+	// its own fixed scope as a note instead of a disabled-with-reason control.
+	Column {
 		id: exportSelection
 		visible: true
 		width: parent.width
-		spacing: 3
+		spacing: Kirigami.Units.smallSpacing
 		Layout.margins: Kirigami.Units.gridUnit / 2
 
-		TemplateRadioButton {
-			text: qsTr("Export Subsurface XML")
-			checked: true
-			onClicked: {
-				selectedExport = ExportType.EX_DIVES_XML
-				explain.text = qsTr("Subsurface native XML format.")
-			}
-		}
-		TemplateRadioButton {
-			text: qsTr("Export Subsurface dive sites XML")
-			onClicked: {
-				selectedExport = ExportType.EX_DIVE_SITES_XML
-				explain.text = qsTr("Subsurface dive sites native XML format.")
-			}
-		}
-		TemplateRadioButton {
-			text: qsTr("Upload divelogs.de")
-			onClicked: {
-				selectedExport = ExportType.EX_DIVELOGS_DE
-				explain.text = qsTr("Send the dive data to divelogs.de website.")
-			}
-		}
-		TemplateRadioButton {
-			text: qsTr("Upload DiveShare")
-			onClicked: {
-				selectedExport = ExportType.EX_DIVESHARE
-				explain.text = qsTr("Send the dive data to dive-share.appspot.com website.")
-			}
-		}
-		Rectangle {
-			width: 1
-			height: Kirigami.Units.gridUnit
-			color: "transparent"
-		}
-		TemplateLabel {
-			id: explain
-			Layout.fillWidth: true
-			wrapMode: Text.Wrap
-		}
-		Rectangle {
-			width: 1
-			height: Kirigami.Units.gridUnit
-			color: "transparent"
-		}
-		TemplateCheckBox {
-			id: anonymize
-			Layout.fillWidth: true
-			text: qsTr("Anonymize")
-		}
-		TemplateButton {
-			text: qsTr("Next")
-			visible: !mobileFileExport
-			onClicked: {
-				if (selectedExport === ExportType.EX_DIVELOGS_DE) {
-					textUserID.visible = true
-					fieldUserID.visible = true
-					fieldUserID.text = PrefCloudStorage.divelogde_user
-					textPassword.visible = true
-					fieldPassword.visible = true
-					fieldPassword.text = PrefCloudStorage.divelogde_pass
-					anonymize.visible = false
-					statusText.text = ""
-					exportSelection.visible = false
-					uploadDialog.visible = true
-				} else if (selectedExport === ExportType.EX_DIVESHARE) {
-					textUserID.visible = true
-					fieldUserID.visible = true
-					fieldUserID.text = PrefCloudStorage.diveshare_uid
-					fieldPrivate.visible = true
-					fieldPrivate.checked = PrefCloudStorage.diveshare_private
-					exportSelection.visible = false
-					textPassword.visible = false
-					uploadDialog.visible = true
-				} else {
-					saveAsDialog.open()
+		TemplateSection {
+			id: sectionExportToFile
+			title: qsTr("Export to a file")
+			isExpanded: true
+			width: parent.width
+
+			ColumnLayout {
+				visible: sectionExportToFile.isExpanded
+				width: parent.width
+				spacing: 3
+
+				TemplateRadioButton {
+					text: qsTr("Dive log")
+					checked: true
+					onClicked: selectedExport = ExportType.EX_DIVES_XML
+				}
+				TemplateLabel {
+					visible: selectedExport === ExportType.EX_DIVES_XML
+					Layout.fillWidth: true
+					Layout.leftMargin: Kirigami.Units.gridUnit
+					wrapMode: Text.Wrap
+					text: qsTr("Subsurface native XML format.")
+				}
+				TemplateRadioButton {
+					text: qsTr("Dive sites")
+					onClicked: selectedExport = ExportType.EX_DIVE_SITES_XML
+				}
+				TemplateLabel {
+					visible: selectedExport === ExportType.EX_DIVE_SITES_XML
+					Layout.fillWidth: true
+					Layout.leftMargin: Kirigami.Units.gridUnit
+					wrapMode: Text.Wrap
+					text: qsTr("Subsurface dive sites native XML format.")
+				}
+				Rectangle {
+					width: 1
+					height: Kirigami.Units.smallSpacing
+					color: "transparent"
+				}
+				TemplateCheckBox {
+					id: anonymize
+					Layout.fillWidth: true
+					text: qsTr("Anonymize")
+				}
+				// AI-generated (Claude): matches what save_dives_logic()/
+				// export_dive_sites_xslt() actually do via show_utf8_blanked()/
+				// blankout() (core/save-xml.cpp) - buddy/dive master/suit/notes
+				// on dives, and name/description/notes/taxonomy on dive sites.
+				// blankout() only replaces ASCII 'A'-'Z'/'a'-'z' bytes; non-ASCII
+				// letters (e.g. accented or non-Latin characters), digits, and
+				// punctuation pass through unchanged, so this must not be
+				// described as removing the text. GPS coordinates are not
+				// affected either way.
+				TemplateLabel {
+					Layout.fillWidth: true
+					Layout.leftMargin: Kirigami.Units.gridUnit
+					wrapMode: Text.Wrap
+					text: qsTr("Replaces ASCII letters with X or x in buddy, dive master, suit, and notes text, and in dive site names, descriptions, and notes, in the exported file. Non-ASCII characters, digits, and punctuation are not changed.")
+				}
+				TemplateButton {
+					text: qsTr("Save to a file...")
+					onClicked: {
+						if (mobileFileExport) {
+							manager.appendTextToLog("Save export of type " + selectedExport + " to a file.")
+							manager.saveExportToDevice(selectedExport, anonymize.checked)
+						} else {
+							saveAsDialog.open()
+						}
+					}
+				}
+				TemplateButton {
+					text: qsTr("Send by email...")
+					visible: mobileFileExport
+					onClicked: {
+						manager.appendTextToLog("Send export of type " + selectedExport + " via email.")
+						manager.shareViaEmail(selectedExport, anonymize.checked)
+					}
 				}
 			}
 		}
-		// AI-generated (Claude)
-		RowLayout {
-			visible: mobileFileExport
-			spacing: Kirigami.Units.smallSpacing
-			TemplateButton {
-				text: qsTr("Send via email")
-				onClicked: {
-					manager.appendTextToLog("Send export of type " + selectedExport + " via email.")
-					manager.shareViaEmail(selectedExport, anonymize.checked)
-					pageStack.pop()
+
+		TemplateSection {
+			id: sectionUploadTheDiveLog
+			title: qsTr("Upload the dive log")
+			isExpanded: true
+			width: parent.width
+
+			ColumnLayout {
+				visible: sectionUploadTheDiveLog.isExpanded
+				width: parent.width
+				spacing: 3
+
+				// AI-generated (Claude): dive site names and coordinates travel
+				// embedded in each dive record (xslt/divelogs-export.xslt,
+				// core/save-html.cpp) - they are not omitted, there is simply no
+				// dive-sites-only upload, and anonymize (file export only) does
+				// not apply here either.
+				TemplateLabel {
+					Layout.fillWidth: true
+					wrapMode: Text.Wrap
+					text: qsTr("Uploads always send the whole dive log, including dive site names and coordinates; anonymizing is not available for uploads.")
 				}
-			}
-			TemplateButton {
-				text: qsTr("Save to file")
-				onClicked: {
-					manager.appendTextToLog("Save export of type " + selectedExport + " to a file.")
-					manager.saveExportToDevice(selectedExport, anonymize.checked)
-					pageStack.pop()
+				TemplateButton {
+					text: qsTr("Upload to divelogs.de...")
+					onClicked: {
+						exportUploadWindow.uploadDestination = ExportType.EX_DIVELOGS_DE
+						pageStack.push(exportUploadWindow)
+					}
+				}
+				TemplateButton {
+					text: qsTr("Upload to DiveShare...")
+					onClicked: {
+						exportUploadWindow.uploadDestination = ExportType.EX_DIVESHARE
+						pageStack.push(exportUploadWindow)
+					}
 				}
 			}
 		}

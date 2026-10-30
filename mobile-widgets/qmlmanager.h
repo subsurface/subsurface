@@ -86,7 +86,13 @@ public:
 #if !defined(Q_OS_ANDROID)
 	Q_INVOKABLE void exportToFile(export_types type, QString directory, bool anonymize);
 #endif
-	Q_INVOKABLE void exportToWEB(export_types type, QString userId, QString password, bool anonymize);
+	// AI-generated (Claude): split per upload destination so each takes only the
+	// arguments its backend actually honours. divelogs.de never had an
+	// anonymize/private flag of its own; DiveShare's boolean controls visibility
+	// of the uploaded dive data (the "Private" option), not anonymization -
+	// anonymizing personal data only applies to the file-based XML exports.
+	Q_INVOKABLE void exportToDivelogsDE(QString userId, QString password);
+	Q_INVOKABLE void exportToDiveShare(QString userId, bool diveSharePrivate);
 	Q_INVOKABLE void shareViaEmail(export_types type, bool anonymize);
 	Q_INVOKABLE void saveExportToDevice(export_types type, bool anonymize);
 
@@ -332,6 +338,17 @@ signals:
 	// From upload process
 	void uploadFinish(bool success, const QString &text);
 	void uploadProgress(qreal percentage);
+
+	// AI-generated (Claude): result of shareViaEmail()/saveExportToDevice().
+	// writeExportFile()'s own outcome is known synchronously, so success is
+	// reliable there; handing the written file to the platform's email/share
+	// mechanism afterwards is fire-and-forget. On Android, success means the
+	// share/save intent was launched - false means that launch itself failed,
+	// not that the user completed the share/save, which Android never reports
+	// back. On iOS nothing at all is reported back, so success there only
+	// confirms the file was written. The message reflects what was actually
+	// observed rather than asserting the hand-off finished.
+	void fileExportFinished(bool success, const QString &text);
 
 	void progressChanged();
 
