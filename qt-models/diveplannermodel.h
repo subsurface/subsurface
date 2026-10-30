@@ -75,6 +75,7 @@ public:
 	void loadFromDive(dive *d, int dcNr);
 	void addStop(depth_t depth, int seconds);
 	void cylindersChanged();
+	void setDropStoneModeForCurrentPlan(bool value);
 public
 slots:
 	void addDefaultStop();
@@ -149,12 +150,14 @@ private:
 	void computeVariationsAsync(struct diveplan plan, struct deco_state ds); // Note: works on copies of plan and ds
 	void computeVariationsDone(QString text);
 	void setPlanSaveAllowed(bool allowed);
+	void setDropStoneModeImpl(bool value, bool persistPreference);
 	int analyzeVariations(const std::vector<decostop> &min, const std::vector<decostop> &mid, const std::vector<decostop> &max, const char *unit);
 	struct dive *d;
 	int dcNr;
 	CylindersModel cylinders;
 	Mode mode;
 	bool saveAllowed;
+	bool dropStoneModeEnabled;
 	QVector<divedatapoint> divepoints;
 	QDateTime startTime;
 	int instanceCounter = 0;
