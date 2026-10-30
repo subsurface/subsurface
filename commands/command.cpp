@@ -18,9 +18,9 @@ void addDive(std::unique_ptr<dive> d, bool autogroup, bool newNumber)
 	execute(new AddDive(std::move(d), autogroup, newNumber));
 }
 
-void importDives(struct divelog *log, int flags, const QString &source)
+bool importDives(struct divelog *log, int flags, const QString &source)
 {
-	execute(new ImportDives(log, flags, source));
+	return execute(new ImportDives(log, flags, source));
 }
 
 void deleteDive(const QVector<struct dive*> &divesToDelete)
