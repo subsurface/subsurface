@@ -159,6 +159,7 @@ endif()
 #endif()
 
 TEST(TestQPrefCloudStorage testqPrefCloudStorage.cpp)
+TEST(TestCheckCloudConnection testcheckcloudconnection.cpp)
 TEST(TestQPrefDisplay testqPrefDisplay.cpp)
 TEST(TestQPrefDiveComputer testqPrefDiveComputer.cpp)
 TEST(TestQPrefDivePlanner testqPrefDivePlanner.cpp)
@@ -210,6 +211,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	${TEST_PLANNER_SHARED}
 	${TEST_PRINTING}
 	TestQPrefCloudStorage
+	TestCheckCloudConnection
 	TestQPrefDisplay
 	TestQPrefDiveComputer
 	TestQPrefDivePlanner

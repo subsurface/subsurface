@@ -63,6 +63,8 @@ bool CheckCloudConnection::checkServer()
 						qWarning() << "Cloud storage: successfully checked connection to cloud server";
 					return true;
 				}
+				// A failed reply will not emit finished again.
+				break;
 			} else if (seconds < prefs.cloud_timeout) {
 				QString text = tr("Waiting for cloud connection (%n second(s) passed)", "", seconds);
 				git_storage_update_progress(qPrintable(text));
