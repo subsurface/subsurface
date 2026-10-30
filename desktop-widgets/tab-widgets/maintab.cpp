@@ -17,6 +17,7 @@
 #include "core/selection.h"
 #include "qt-models/diveplannermodel.h"
 
+
 #include <QShortcut>
 
 static bool paletteIsDark(const QPalette &p)
