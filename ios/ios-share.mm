@@ -11,15 +11,25 @@
 #import <Foundation/NSString.h>
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+// AI-generated (Claude): UTTypeItem, for the "Load from file" document picker.
+// UTTypeItem is a global constant declared in UTCoreTypes.h, not in UTType.h
+// (which only declares the UTType class itself).
+#import <UniformTypeIdentifiers/UTType.h>
+#import <UniformTypeIdentifiers/UTCoreTypes.h>
 
 // declare an ObjC++ class that will interact with the mail controller
 // that second member that is called when the mail app is finished is critical for this to work
-@interface IosShareObject : UIViewController  <MFMailComposeViewControllerDelegate>
+// AI-generated (Claude): also acts as the delegate for the "Load from file" document picker
+@interface IosShareObject : UIViewController  <MFMailComposeViewControllerDelegate, UIDocumentPickerDelegate>
 {
 }
 - (void)shareViaEmail:(const QString &) subject :(const QString &) recipient :(const QString &) body :(const QString &) firstPath :(const QString &) secondPath;
 - (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(nullable NSError *)error;
 - (void)saveFile:(const QString &) pathQS;
+// AI-generated (Claude)
+- (void)loadFile;
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls;
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller;
 @end
 
 @implementation IosShareObject
@@ -54,6 +64,11 @@ void IosShare::shareViaEmail(const QString &subject, const QString &recipient, c
 // AI-generated (Claude)
 void IosShare::saveFile(const QString &path) {
 	[(id)self saveFile:path];
+}
+
+// AI-generated (Claude)
+void IosShare::loadFile() {
+	[(id)self loadFile];
 }
 
 // the rest is the ObjC++ implementation
@@ -112,6 +127,50 @@ void IosShare::saveFile(const QString &path) {
 		topController = topController.presentedViewController;
 	}
 	[topController presentViewController:picker animated:YES completion:NULL];
+}
+
+// AI-generated (Claude)
+// Lets the user pick a file to import dives from ("Load from file"), using
+// the system's document picker in OPEN mode. UTTypeItem (rather than a
+// custom UTI) is enough here: the picker just needs to let the user choose
+// any file, it doesn't need to claim ownership of a file type the way
+// registering an exported UTI for "Open in Subsurface" would - that is a
+// separate, out of scope feature. asCopy:YES hands us a copy of the chosen
+// file inside our own sandbox, so there is no need for security-scoped
+// bookmarks or startAccessingSecurityScopedResource.
+- (void)loadFile {
+	UIDocumentPickerViewController *picker = [[UIDocumentPickerViewController alloc] initForOpeningContentTypes:@[UTTypeItem] asCopy:YES];
+	picker.delegate = self;
+	UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+	while (topController.presentedViewController) {
+		topController = topController.presentedViewController;
+	}
+	[topController presentViewController:picker animated:YES completion:NULL];
+}
+
+// AI-generated (Claude)
+// The picker already copied the chosen document into our sandbox (asCopy:YES
+// above); hand its path to importDivesFromFile() via the free-function
+// bridge declared in ios-share.h. This delegate callback runs on the main
+// thread, so no thread marshalling is needed - unlike the Android JNI
+// bridge, which must dispatch with Qt::QueuedConnection because its copy
+// runs on a worker thread.
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray<NSURL *> *)urls {
+	NSURL *url = urls.firstObject;
+	NSString *path = url.path;
+	if (path == nil) {
+		iosLoadFileFailed();
+		return;
+	}
+	QString localPath = QString::fromUtf8([path UTF8String]);
+	iosLoadFileReady(localPath);
+}
+
+// AI-generated (Claude)
+// Cancelling the picker is silent and changes nothing: asCopy:YES only
+// copies a file into our sandbox once the user actually picks one, so there
+// is nothing to clean up here.
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
 }
 
 // I would have kinda liked to inform the caller that sending mail failed, but I can't figure

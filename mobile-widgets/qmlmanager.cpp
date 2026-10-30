@@ -2459,12 +2459,13 @@ void QMLManager::importCacheRepo(QString repo)
 // native Storage Access Framework picker (SubsurfaceMobileActivity.loadFile()),
 // which copies the user's selection into a file inside the app's own storage
 // (so that it survives the picker returning asynchronously) and then hands
-// it to importDivesFromFile() - see that function's contract below. The iOS
-// picker is a placeholder, implemented by a follow-up ticket, following the
-// same contract. On any other platform (including the mobile-on-desktop
-// build) the file is instead picked through a QML FileDialog (main.qml),
-// which calls importDivesFromFile() directly; this method is not expected
-// to run there.
+// it to importDivesFromFile() - see that function's contract below. iOS
+// starts the UIDocumentPickerViewController in open mode (ios/ios-share.mm),
+// which likewise copies the chosen file into the app's sandbox and hands it
+// to importDivesFromFile() via the free-function bridge in ios/ios-share.h.
+// On any other platform (including the mobile-on-desktop build) the file is
+// instead picked through a QML FileDialog (main.qml), which calls
+// importDivesFromFile() directly; this method is not expected to run there.
 void QMLManager::loadDivesFromFile()
 {
 #if defined(Q_OS_ANDROID)
@@ -2479,8 +2480,8 @@ void QMLManager::loadDivesFromFile()
 	else
 		appendTextToLog("loadDivesFromFile: no valid Android activity");
 #elif defined(Q_OS_IOS)
-	// AI-generated (Claude): placeholder - implemented by a follow-up ticket.
-	appendTextToLog("loadDivesFromFile: iOS file picker not implemented yet");
+	// AI-generated (Claude): call into ObjC++ code to present the document picker
+	iosshare.loadFile();
 #else
 	appendTextToLog("loadDivesFromFile: use the file dialog on this platform");
 #endif
