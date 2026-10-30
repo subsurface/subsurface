@@ -91,8 +91,8 @@ public:
 	Q_INVOKABLE void saveExportToDevice(export_types type, bool anonymize);
 
 	// AI-generated (Claude)
-	// loadDivesFromFile() starts the platform file picker; on Android/iOS a
-	// follow-up ticket implements the native side, which MUST hand its result
+	// loadDivesFromFile() starts the platform file picker; platform-specific
+	// implementation for the Android/iOS pickers MUST hand their result
 	// to importDivesFromFile() via QMetaObject::invokeMethod(..., Qt::QueuedConnection),
 	// since import touches divelog, the dive-list models and the undo stack and
 	// MUST run on the Qt main thread. See the definitions for the full contract.

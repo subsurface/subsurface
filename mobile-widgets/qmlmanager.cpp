@@ -15,6 +15,7 @@
 #include <QtConcurrent>
 #include <QFuture>
 #include <QUndoStack>
+#include <limits>
 
 #include <QBluetoothLocalDevice>
 #if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
@@ -2485,8 +2486,7 @@ void QMLManager::loadDivesFromFile()
 // already merges duplicates by timestamp, so re-importing a file that was
 // already imported adds nothing new.
 //
-// Threading contract for callers (this is the piece the Android/iOS tickets
-// need): this function touches divelog, the dive-list models and the undo
+// Threading contract for callers: this function touches divelog, the dive-list models and the undo
 // stack, and therefore MUST run on the Qt main thread. The native pickers
 // on Android and iOS deliver their result asynchronously and are not
 // guaranteed to call back on the main thread, so they MUST invoke this with:
@@ -2531,13 +2531,25 @@ void QMLManager::importDivesFromFile(const QString &path, bool removeSource)
 		return;
 	}
 
-	int numDives = static_cast<int>(log.dives.size());
-	Command::importDives(&log, import_flags::merge_all_trips, localPath);
+	size_t numDivesBefore = divelog.dives.size();
+	bool imported = Command::importDives(&log, import_flags::merge_all_trips, localPath);
 	// persist right away: like the dive-computer download flow, the app could
 	// get killed once it's in the background and the freshly imported dives
 	// would otherwise be lost
-	changesNeedSaving();
+	if (imported)
+		changesNeedSaving();
 
+	if (!imported) {
+		QString message = tr("No new dives were imported from the selected file");
+		appendTextToLog(QString("importDivesFromFile: no new dives in %1").arg(localPath));
+		emit importFinished(true, 0, message);
+		return;
+	}
+
+	size_t numDivesAfter = divelog.dives.size();
+	size_t numDivesAdded = numDivesAfter > numDivesBefore ? numDivesAfter - numDivesBefore : 0;
+	Q_ASSERT(numDivesAdded <= static_cast<size_t>(std::numeric_limits<int>::max()));
+	int numDives = static_cast<int>(numDivesAdded);
 	QString message = tr("Imported %n dive(s) from file", "", numDives);
 	appendTextToLog(QString("importDivesFromFile: imported %1 dive(s) from %2").arg(numDives).arg(localPath));
 	emit importFinished(true, numDives, message);
