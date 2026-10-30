@@ -29,6 +29,8 @@ CheckBox {
 		color: subsurfaceTheme.textColor
 		font.pointSize: subsurfaceTheme.regularPointSize
 		text: cb.text
+		width: cb.availableWidth
+		wrapMode: Text.Wrap
 		leftPadding: cb.indicator.width + cb.spacing
 	}
 }

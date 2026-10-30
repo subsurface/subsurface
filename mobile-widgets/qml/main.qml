@@ -1035,6 +1035,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		visible: false
 	}
 
+	ExportUpload {
+		id: exportUploadWindow
+		visible: false
+	}
+
 	DiveDetails {
 		id: detailsWindow
 		visible: false
