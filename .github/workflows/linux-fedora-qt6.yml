@@ -40,7 +40,7 @@ jobs:
         xorg-x11-server-Xvfb
 
     - name: checkout sources
-      uses: actions/checkout@v7
+      uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         submodules: recursive
@@ -82,7 +82,7 @@ jobs:
 
     - name: upload test artifacts
       if: failure()
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: test-output-${{ steps.version_number.outputs.version }}
         path: |

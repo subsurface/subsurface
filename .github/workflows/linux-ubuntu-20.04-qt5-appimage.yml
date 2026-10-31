@@ -62,14 +62,14 @@ jobs:
 
     # needs git from the previous step
     - name: checkout sources
-      uses: actions/checkout@v7
+      uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: load the documentation from cache
       id: load-cache
-      uses: actions/cache@v6
+      uses: actions/cache@v6.1.0
       with:
         path: Documentation/output
         key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
@@ -141,7 +141,7 @@ jobs:
     - name: PR artifacts
       if: github.event_name == 'pull_request'
       # We cannot update this as glibc on 16.04 is too old for node 20.
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: Subsurface-Linux-AppImage-${{ steps.version_number.outputs.version }}
         path: Subsurface-*.AppImage
@@ -150,7 +150,7 @@ jobs:
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
       if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v3
+      uses: softprops/action-gh-release@v3.0.3
       with:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
