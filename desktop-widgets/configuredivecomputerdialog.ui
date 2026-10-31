@@ -140,6 +140,16 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="openOstc4BackupFolderButton">
+       <property name="text">
+        <string>Open OSTC 4/5 backup folder</string>
+       </property>
+       <property name="toolTip">
+        <string>Open the folder containing partial raw OSTC 4/5 settings backups for manual recovery</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>

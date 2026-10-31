@@ -113,6 +113,19 @@ target_link_libraries(
 
 # SSRF test cases (TBD, convert to standard qTest setup)
 TEST(TestUnitConversion testunitconversion.cpp)
+TEST(TestOstc4Settings testostc4settings.cpp)
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
+	add_executable(TestOstc4Dialog testostc4dialog.cpp testostc4dialog.h)
+	target_link_libraries(TestOstc4Dialog subsurface_generated_ui subsurface_interface
+		subsurface_profile ${SUBSURFACE_MAPWIDGET} subsurface_backend_shared
+		subsurface_models_desktop subsurface_commands subsurface_corelib subsurface_stats
+		${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
+	add_test(NAME TestOstc4Dialog COMMAND $<TARGET_FILE:TestOstc4Dialog>)
+	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		set_tests_properties(TestOstc4Dialog PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+	endif()
+	set(TEST_OSTC4_DIALOG TestOstc4Dialog)
+endif()
 TEST(TestProfile testprofile.cpp)
 TEST(TestGpsCoords testgpscoords.cpp)
 TEST(TestParse testparse.cpp)
@@ -194,6 +207,8 @@ add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> -input ${SUBSURFACE_SOURCE}
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	DEPENDS
 	TestUnitConversion
+	TestOstc4Settings
+	${TEST_OSTC4_DIALOG}
 	TestProfile
 	TestGpsCoords
 	TestParse

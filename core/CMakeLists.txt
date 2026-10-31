@@ -64,6 +64,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	configuredivecomputer.h
 	configuredivecomputerthreads.cpp
 	configuredivecomputerthreads.h
+	ostc4settingstransaction.cpp
+	ostc4settingstransaction.h
 	connectionlistmodel.cpp
 	connectionlistmodel.h
 	datatrak.cpp

@@ -18,6 +18,7 @@
 # include "qt-ble.h"
 #endif
 #include "errorhelper.h"
+#include "qtserialbluetooth.h"
 
 QList<QBluetoothUuid> registeredUuids;
 
@@ -68,39 +69,46 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char *d
 
 	// Wait until the connection succeeds or until an error occurs
 	QEventLoop loop;
+	bool terminalError = false;
 	loop.connect(serial_port->socket, SIGNAL(connected()), SLOT(quit()));
 	QObject::connect(serial_port->socket, &QBluetoothSocket::stateChanged, &loop,
-			 [&loop, &elapsed](QBluetoothSocket::SocketState state) {
+		 [&loop, &elapsed, &terminalError](QBluetoothSocket::SocketState state) {
 		report_info("RFCOMM socket state changed after %lld ms: %d",
 			    static_cast<long long>(elapsed.elapsed()), static_cast<int>(state));
 		if (state == QBluetoothSocket::SocketState::UnconnectedState ||
-		    state == QBluetoothSocket::SocketState::ClosingState)
+		    state == QBluetoothSocket::SocketState::ClosingState) {
+			terminalError = true;
 			loop.quit();
+		}
 	});
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	QObject::connect(socket, &QBluetoothSocket::errorOccurred, &loop,
-			 [socket, &loop, &elapsed](QBluetoothSocket::SocketError error) {
+			 [socket, &loop, &elapsed, &terminalError](QBluetoothSocket::SocketError error) {
 		const auto state = socket->state();
 		const bool terminal = rfcomm_error_is_terminal(error, state);
 		report_info("RFCOMM socket error after %lld ms: %d (%s), state %d (%s)",
 			    static_cast<long long>(elapsed.elapsed()), static_cast<int>(error),
 			    qPrintable(socket->errorString()),
 			    static_cast<int>(state), terminal ? "terminal" : "connection still in progress");
-		if (terminal)
+		if (terminal) {
+			terminalError = true;
 			loop.quit();
+		}
 	});
 #else
 	QObject::connect(socket,
 			 QOverload<QBluetoothSocket::SocketError>::of(&QBluetoothSocket::error), &loop,
-			 [socket, &loop, &elapsed](QBluetoothSocket::SocketError error) {
+			 [socket, &loop, &elapsed, &terminalError](QBluetoothSocket::SocketError error) {
 		const auto state = socket->state();
 		const bool terminal = rfcomm_error_is_terminal(error, state);
 		report_info("RFCOMM socket error after %lld ms: %d (%s), state %d (%s)",
 			    static_cast<long long>(elapsed.elapsed()), static_cast<int>(error),
 			    qPrintable(socket->errorString()),
 			    static_cast<int>(state), terminal ? "terminal" : "connection still in progress");
-		if (terminal)
+		if (terminal) {
+			terminalError = true;
 			loop.quit();
+		}
 	});
 #endif
 
@@ -127,10 +135,11 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char *d
 	serial_port->socket->connectToService(remoteDeviceAddress, uuid, QIODevice::ReadWrite | QIODevice::Unbuffered);
 #endif
 	timer.start(msec);
-	loop.exec();
+	if (!terminalError && socket->state() != QBluetoothSocket::SocketState::ConnectedState)
+		loop.exec();
 
-	if (serial_port->socket->state() == QBluetoothSocket::SocketState::ConnectingState ||
-	    serial_port->socket->state() == QBluetoothSocket::SocketState::ServiceLookupState) {
+	if (!terminalError && (serial_port->socket->state() == QBluetoothSocket::SocketState::ConnectingState ||
+	    serial_port->socket->state() == QBluetoothSocket::SocketState::ServiceLookupState)) {
 		// It seems that the connection step took more than expected. Wait another 20 seconds.
 		report_info("The connection step took more than expected. Wait another 20 seconds");
 		timer.start(4 * msec);
@@ -168,6 +177,29 @@ static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t*, const char *d
 	return DC_STATUS_SUCCESS;
 }
 
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) && QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+bool waitForRfcommDisconnect(QBluetoothSocket *socket, int deadlineMs)
+{
+	if (socket->state() == QBluetoothSocket::SocketState::UnconnectedState)
+		return true;
+	QEventLoop loop;
+	QTimer deadline;
+	deadline.setSingleShot(true);
+	// A close deadline must not fire early (the default coarse timer can).
+	deadline.setTimerType(Qt::PreciseTimer);
+	QObject::connect(socket, &QBluetoothSocket::stateChanged, &loop,
+		[&loop](QBluetoothSocket::SocketState state) {
+			if (state == QBluetoothSocket::SocketState::UnconnectedState)
+				loop.quit();
+		});
+	QObject::connect(&deadline, &QTimer::timeout, &loop, &QEventLoop::quit);
+	deadline.start(deadlineMs);
+	if (socket->state() != QBluetoothSocket::SocketState::UnconnectedState)
+		loop.exec();
+	return socket->state() == QBluetoothSocket::SocketState::UnconnectedState;
+}
+#endif
+
 static dc_status_t qt_serial_close(void *io)
 {
 	qt_serial_t *device = (qt_serial_t*) io;
@@ -181,11 +213,21 @@ static dc_status_t qt_serial_close(void *io)
 	}
 
 	device->socket->close();
+	bool closed = true;
+	// On BlueZ, closing a connected Qt socket can finish asynchronously through
+	// QLocalSocket::stateChanged. That callback disconnects and unregisters the
+	// client profile. Destroying the socket before it runs skips that teardown,
+	// leaving the profile active until the application exits.
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) && QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+	closed = waitForRfcommDisconnect(device->socket, 5000);
+	if (!closed)
+		report_info("RFCOMM socket did not finish disconnecting before close deadline");
+#endif
 
 	delete device->socket;
 	free(device);
 
-	return DC_STATUS_SUCCESS;
+	return closed ? DC_STATUS_SUCCESS : DC_STATUS_IO;
 }
 
 static dc_status_t qt_serial_read(void *io, void* data, size_t size, size_t *actual)

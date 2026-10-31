@@ -6,6 +6,7 @@
 #include <QDateTime>
 #include "libdivecomputer.h"
 #include "units.h"
+#include "ostc4settingstransaction.h"
 
 struct gas {
 	unsigned char oxygen;
@@ -30,6 +31,10 @@ public:
 	QString firmwareVersion;
 	QString customText;
 	QString model;
+	Ostc4SettingsTransaction ostc4Snapshot;
+	std::array<bool, 0x35> ostc4Editable {};
+	// Build only records with a successful raw baseline; leave unknown replies absent.
+	std::array<QByteArray, 0x35> ostc4LegacyEdits() const;
 	gas gas1;
 	gas gas2;
 	gas gas3;
