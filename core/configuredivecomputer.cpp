@@ -78,7 +78,7 @@ void ConfigureDiveComputer::readSettings(device_data_t *data)
 			closeTransport(data);
 		readThread->setTransport(readOpen, [this, thread = readThread](device_data_t *session) {
 			if (readClose(session) != DC_STATUS_SUCCESS)
-				emit thread->error(tr("Settings transport did not close cleanly. Values already verified by read-back may have been saved, but the connection may not be ready for another read."));
+				emit thread->error(tr("Settings transport did not close cleanly. The connection may not be ready for another read; see any preceding save report for written values."));
 		});
 		readThread->setSession(true);
 	}
