@@ -41,7 +41,7 @@ jobs:
         apt-get -y update
 
     - name: checkout sources
-      uses: actions/checkout@v7
+      uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         submodules: recursive
@@ -54,7 +54,7 @@ jobs:
 
     - name: load the documentation from cache
       id: load-cache
-      uses: actions/cache@v6
+      uses: actions/cache@v6.1.0
       with:
         path: Documentation/output
         key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
@@ -90,7 +90,7 @@ jobs:
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: Subsurface-Windows-legacy-qt5-${{ steps.version_number.outputs.version }}
         path: |
@@ -101,7 +101,7 @@ jobs:
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
       if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v3
+      uses: softprops/action-gh-release@v3.0.3
       with:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds

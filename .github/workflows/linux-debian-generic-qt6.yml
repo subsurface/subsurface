@@ -49,7 +49,7 @@ jobs:
         git config --global --add safe.directory $GITHUB_WORKSPACE/libdivecomputer
     # needs git from the previous step
     - name: checkout sources
-      uses: actions/checkout@v7
+      uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         submodules: recursive
@@ -89,7 +89,7 @@ jobs:
 
     - name: upload test artifacts
       if: failure()
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: test-output-${{ inputs.arch }}-${{ steps.version_number.outputs.version }}
         path: |
@@ -121,7 +121,7 @@ jobs:
 
     - name: upload test artifacts
       if: failure()
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: test-output-mobile-${{ inputs.arch }}-${{ steps.version_number.outputs.version }}
         path: |

@@ -51,14 +51,14 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
     - name: checkout sources
-      uses: actions/checkout@v7
+      uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         submodules: recursive
 
     - name: Cache Homebrew packages
       id: cache-homebrew
-      uses: actions/cache@v6
+      uses: actions/cache@v6.1.0
       with:
         path: ~/Library/Caches/Homebrew
         key: macos-brew-${{ runner.os }}-${{ hashFiles('.github/workflows/mac.yml') }}
@@ -69,7 +69,7 @@ jobs:
 
     - name: checkout Qt resources
       if: ${{ matrix.qtversion != 5 }}
-      uses: jurplel/install-qt-action@v4
+      uses: jurplel/install-qt-action@v4.5.0
       with:
         version: ${{ matrix.qtversion }}
         host: 'mac'
@@ -79,7 +79,7 @@ jobs:
 
     - name: checkout our packaged Qt resources
       if: ${{ matrix.qtversion == 5 }}
-      uses: actions/checkout@v7
+      uses: actions/checkout@v7.0.1
       with:
         repository: subsurface/qt-mac
         ref: main
@@ -87,7 +87,7 @@ jobs:
 
     - name: load the documentation from cache
       id: load-cache
-      uses: actions/cache@v6
+      uses: actions/cache@v6.1.0
       with:
         path: Documentation/output
         key: documentation-${{ hashFiles('.github/workflows/documentation-build.yml', 'Documentation') }}
@@ -101,7 +101,7 @@ jobs:
 
     - name: cache deps
       id: cache-deps
-      uses: actions/cache@v6
+      uses: actions/cache@v6.1.0
       with:
         path: ${{ steps.get-install-root.outputs.path }}
         key: macos-deps-${{ runner.arch }}-qt${{ matrix.qtversion }}-${{ hashFiles('.github/workflows/mac.yml', 'scripts/build.sh', 'packaging/macosx/build-deps.sh', 'scripts/get-dep-lib.sh') }}
@@ -211,7 +211,7 @@ jobs:
 
     - name: publish pull request artifacts
       if: github.event_name == 'pull_request'
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: Subsurface-MacOS-${{ matrix.qtversion == 5 && 'legacy-qt5-' || '' }}${{ matrix.arch }}-${{ needs.compute-version.outputs.version }}
         path: ${{ steps.build.outputs.dmg }}
@@ -220,7 +220,7 @@ jobs:
     # only publish a 'release' on push events (those include merging a PR)
     - name: upload binaries
       if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v3
+      uses: softprops/action-gh-release@v3.0.3
       with:
         tag_name: v${{ needs.compute-version.outputs.version }}
         repository: ${{ github.repository_owner }}/nightly-builds
