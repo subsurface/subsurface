@@ -17,6 +17,7 @@ ConfigureDiveComputer::ConfigureDiveComputer() : readThread(0),
 	resetThread(0),
 	firmwareThread(0)
 {
+	qRegisterMetaType<DeviceDetails>("DeviceDetails"); // Qt 5 queued worker-to-dialog delivery.
 	setState(INITIAL);
 }
 
