@@ -37,6 +37,8 @@ private slots:
 	int parseCSVmanual(int, std::string);
 	void exportSubsurfaceCSV();
 	void exportCSVDiveDetails();
+	void exportCSVDiveDetailsTankSensors();
+	void exportCSVDiveSummaryTankSensors();
 	int parseCSVprofile(int, std::string);
 	void exportCSVDiveProfile();
 	void exportUDDF();
@@ -47,6 +49,7 @@ private slots:
 	void importUDDF();
 	void importUDDFEvents();
 	void exportDiveLogsDE();
+	void exportDiveLogsDETankSensors();
 
 	void parseDL7();
 

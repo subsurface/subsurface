@@ -1,0 +1,5 @@
+dive number,date,time,duration [min],sac [l/min],maxdepth [m],avgdepth [m],mode,airtemp [C],watertemp [C],cylinder size (1) [l],startpressure (1) [bar],endpressure (1) [bar],o2 (1) [%],he (1) [%],cylinder size (2) [l],startpressure (2) [bar],endpressure (2) [bar],o2 (2) [%],he (2) [%],location,gps,divemaster,buddy,suit,rating,visibility,notes,weight [kg],tags,
+1,2026-01-01,10:00:00,2:00,,10,5,,,,12.0,200.0,100.0,32.0,,7.0,190.0,170.0,50.0,,,,,,,,,,,
+2,2026-01-02,10:00:00,2:00,,10,5,,,,12.0,210.0,60.0,32.0,,7.0,190.0,180.0,50.0,,,,,,,,,,,
+3,2026-01-03,10:00:00,2:00,,10,5,,,,12.0,,,,,,,,,,,,,,,,,,,
+4,2026-01-04,10:00:00,2:00,577.087,10,5,,,,12.0,210.0,55.0,,,7.0,,,50.0,,,,,,,,,,,

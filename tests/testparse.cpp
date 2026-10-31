@@ -576,6 +576,20 @@ void TestParse::exportCSVDiveProfile()
 		     "testcsvexportprofile.csv");
 }
 
+void TestParse::exportCSVDiveSummaryTankSensors()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test-export-sensors.xml", &divelog);
+	export_dives_xslt("testcsvexportsummary-tankp.csv", 0, 0, "xml2summarycsv.xslt", false);
+	FILE_COMPARE("testcsvexportsummary-tankp.csv", SUBSURFACE_TEST_DATA "/dives/test-export-sensors-summary.csv");
+}
+
+void TestParse::exportCSVDiveDetailsTankSensors()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test-export-sensors.xml", &divelog);
+	export_dives_xslt("testcsvexportdetail-tankp.csv", 0, 0, "xml2detailscsv.xslt", false);
+	FILE_COMPARE("testcsvexportdetail-tankp.csv", SUBSURFACE_TEST_DATA "/dives/test-export-sensors-detail.csv");
+}
+
 void TestParse::exportUDDF()
 {
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &divelog);
@@ -608,7 +622,7 @@ void TestParse::exportUDDFEvents()
 // AI-generated (Claude): Tank pressures from sensor samples (pressureN) and tank sensor mappings.
 void TestParse::exportUDDFTankSensors()
 {
-	xmlDoc *input = xmlReadFile(SUBSURFACE_TEST_DATA "/dives/test-uddf-export-sensors.xml", NULL, XML_PARSE_HUGE);
+	xmlDoc *input = xmlReadFile(SUBSURFACE_TEST_DATA "/dives/test-export-sensors.xml", NULL, XML_PARSE_HUGE);
 	QVERIFY(input);
 	xsltStylesheetPtr stylesheet = get_stylesheet("uddf-export.xslt");
 	QVERIFY(stylesheet);
@@ -619,7 +633,7 @@ void TestParse::exportUDDFTankSensors()
 	xmlFreeDoc(output);
 	xsltFreeStylesheet(stylesheet);
 	xmlFreeDoc(input);
-	QFile expected(SUBSURFACE_TEST_DATA "/dives/test-uddf-export-sensors.uddf");
+	QFile expected(SUBSURFACE_TEST_DATA "/dives/test-export-sensors.uddf");
 	QVERIFY(expected.open(QFile::ReadOnly));
 	QFile actual("testuddfsensors.uddf");
 	QVERIFY(actual.open(QFile::ReadOnly));
@@ -738,6 +752,13 @@ void TestParse::exportDiveLogsDE()
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &divelog);
 	export_dives_xslt("testdivelogsexport.divelogs", 0, 0, "divelogs-export.xslt", false);
 	FILE_COMPARE("testdivelogsexport.divelogs", SUBSURFACE_TEST_DATA "/dives/test40.divelogs");
+}
+
+void TestParse::exportDiveLogsDETankSensors()
+{
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test-export-sensors.xml", &divelog);
+	export_dives_xslt("testdivelogsexport.divelogs", 0, 0, "divelogs-export.xslt", false);
+	FILE_COMPARE("testdivelogsexport.divelogs", SUBSURFACE_TEST_DATA "/dives/test-export-sensors.divelogs");
 }
 
 void TestParse::parseDL7()
