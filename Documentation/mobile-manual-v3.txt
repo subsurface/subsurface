@@ -710,14 +710,40 @@ of 5 stars tend to be higher than for other ratings.
 
 == Export
 
-The _Export_ feature allows the upload of your dive list to two websites (_divelogs.de_ and _diveshare_)
-and the export of _Subsurface_ specific XML files (both for dives and dive sites).
+Selecting _Export_ from the menu opens a page with two sections, _Export to a file_ and _Upload the
+dive log_.
 
-For the uploads, tapping on _Next_ opens an additional page for login information for the destination website.
+=== _Export to a file_ section
 
-For the XML files there are two buttons: _Send via email_ attaches the file to a new email, and _Save to file_
-opens the system's save dialog, where you choose the folder (or a cloud storage such as iCloud Drive or
-Google Drive) to save the file in. That way the file can be kept or opened in another app.
+This section chooses a data set, optionally anonymizes it, and writes it to a file:
+
+* _Dive log_ - the _Subsurface_ native XML format.
+* _Dive sites_ - the _Subsurface_ dive sites native XML format.
+
+The _Anonymize_ option replaces ASCII letters (A-Z and a-z) with X or x in personal text - buddy,
+dive master, suit, and notes from dives, and names, descriptions, and notes from dive sites - in the
+exported file. Non-ASCII characters, digits, and punctuation are left unchanged, so names written with
+accented or non-Latin characters are not anonymized. It applies only to this section; it has no effect
+on the upload section below.
+
+_Save to a file..._:: On Android and iOS, hands the exported file to the system's own save mechanism.
+On the desktop (and the mobile-on-desktop build), opens a folder picker where you choose the folder
+(or a cloud storage service such as iCloud Drive or Google Drive) to save the file in, so it can be
+kept or opened in another app.
+
+_Send by email..._:: Attaches the exported file to a new email. This option is only available on
+Android and iOS.
+
+=== _Upload the dive log_ section
+
+This section always uploads the whole dive log - there is no dive-sites-only upload, and the
+_Anonymize_ option above does not apply here. Dive site names and coordinates are included within
+the uploaded dive records, so an upload is not an anonymous or site-free transfer.
+
+_Upload to divelogs.de..._ and _Upload to DiveShare..._:: Open a separate page for the login
+information of the chosen website, with an _Upload_ button to send your dive log. divelogs.de needs a
+user ID and password. DiveShare needs a user ID and an optional checkbox that controls whether the
+upload is listed publicly on dive-share; it does not change what is uploaded.
 
 == Viewing the locations of all dives in the dive list
 
