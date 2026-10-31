@@ -42,7 +42,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           submodules: recursive
           fetch-depth: 0
@@ -51,7 +51,7 @@ jobs:
       # Install Qt via aqtinstall (includes Location, Positioning, etc.)
       # ---------------------------------------------------------------
       - name: Install Qt
-        uses: jurplel/install-qt-action@v4
+        uses: jurplel/install-qt-action@v4.5.0
         with:
           version: ${{ env.QT_VERSION }}
           arch: ${{ env.QT_ARCH }}
@@ -84,7 +84,7 @@ jobs:
           New-Item -ItemType Directory -Force -Path "${{ github.workspace }}\vcpkg-cache"
 
       - name: Restore vcpkg cache
-        uses: actions/cache/restore@v6
+        uses: actions/cache/restore@v6.1.0
         with:
           path: ${{ github.workspace }}/vcpkg-cache
           key: windows-vcpkg-${{ hashFiles('.github/workflows/windows-msvc-qt6.yml') }}
@@ -115,7 +115,7 @@ jobs:
           C:\vcpkg\vcpkg.exe list
 
       - name: Save vcpkg cache
-        uses: actions/cache/save@v6
+        uses: actions/cache/save@v6.1.0
         if: always()
         with:
           path: ${{ github.workspace }}/vcpkg-cache
@@ -123,7 +123,7 @@ jobs:
 
       - name: load the documentation from cache
         id: load-cache
-        uses: actions/cache/restore@v6
+        uses: actions/cache/restore@v6.1.0
         with:
           path: Documentation/output
           key: ${{ needs.build-documentation.outputs.cache-key }}
@@ -176,7 +176,7 @@ jobs:
           Write-Host "Generated revision.h with revision: $revision"
 
       - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v3
+        uses: microsoft/setup-msbuild@v3.0.0
 
       - name: Build libdivecomputer with MSVC
         shell: pwsh
@@ -214,7 +214,7 @@ jobs:
       # Set up MSVC environment (needed for googlemaps and Subsurface builds)
       # ---------------------------------------------------------------
       - name: Set up MSVC environment
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@v1.13.0
         with:
           arch: x64
 
@@ -424,7 +424,7 @@ jobs:
 
       - name: publish pull request artifacts
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: Subsurface-Windows-${{ steps.version_number.outputs.version }}
           path: ${{ github.workspace }}/build/${{ steps.installer-name.outputs.installer }}
@@ -433,7 +433,7 @@ jobs:
       # only publish a 'release' on push events (those include merging a PR)
       - name: upload binaries
         if: github.event_name == 'push'
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@v3.0.3
         with:
           tag_name: v${{ steps.version_number.outputs.version }}
           repository: ${{ github.repository_owner }}/nightly-builds

@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 60
     steps:
     - name: Check out code
-      uses: actions/checkout@v7
+      uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         submodules: recursive
@@ -39,7 +39,7 @@ jobs:
         echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
 
     - name: Set up LXD
-      uses: canonical/setup-lxd@e38f436c468900dfe2b6ca98fb8eb352bbbb917a # main
+      uses: canonical/setup-lxd@main
 
     - name: Set up CCache
       id: setup-ccache
@@ -57,7 +57,7 @@ jobs:
         echo "key=$( git merge-base origin/master $GITHUB_SHA )" >> $GITHUB_OUTPUT
 
     - name: CCache
-      uses: actions/cache@v6
+      uses: actions/cache@v6.1.0
       with:
         key: linux-ccache-${{ runner.os }}-${{ steps.setup-ccache.outputs.key }}
         restore-keys: |
@@ -65,7 +65,7 @@ jobs:
         path: ~/.ccache/**
 
     - name: Build and verify the snap
-      uses: canonical/actions/build-snap@369aa83db4b62bdf1cb4240f651f11f0eb9fac11 # release
+      uses: canonical/actions/build-snap@release
       id: build-snap
       with:
         setup-lxd: false
@@ -75,7 +75,7 @@ jobs:
 
     - name: Upload the snap
       if: github.event_name == 'push'
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: ${{ steps.build-snap.outputs.snap-name }}
         path: ${{ steps.build-snap.outputs.snap-path }}

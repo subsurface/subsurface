@@ -45,7 +45,7 @@ jobs:
 
     # needs git from the previous step
     - name: checkout sources
-      uses: actions/checkout@v7
+      uses: actions/checkout@v7.0.1
       with:
         fetch-depth: 0
         submodules: recursive
@@ -80,7 +80,7 @@ jobs:
         make -C subsurface/build export-html
 
     - name: artifacts
-      uses: actions/upload-artifact@v7
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: Subsurface-export-html-${{ steps.version_number.outputs.version }}
         path: build/export-html

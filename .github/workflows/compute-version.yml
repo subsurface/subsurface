@@ -28,7 +28,7 @@ jobs:
       release_tag: v${{ steps.version_number.outputs.version }}
     steps:
       - name: checkout sources
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0
 
