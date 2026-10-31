@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testostc4dialog.h"
 #include "desktop-widgets/configuredivecomputerdialog.h"
+#ifdef BT_SUPPORT
 #include "core/qtserialbluetooth.h"
 #include <QBluetoothSocket>
+#endif
 #include <QComboBox>
 #include <QCheckBox>
 #include <QLineEdit>
@@ -20,7 +22,7 @@
 
 void TestOstc4Dialog::rfcommDisconnectWait()
 {
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) && QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#if defined(BT_SUPPORT) && defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID) && QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 	class SimulatedSocket : public QBluetoothSocket {
 	public:
 		void transition(SocketState state) { setSocketState(state); }
