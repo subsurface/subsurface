@@ -91,6 +91,7 @@ slots:
 #endif
 
 private:
+	friend class TestOstc4Dialog;
 	Ui::ConfigureDiveComputerDialog ui;
 
 	QString logFile;

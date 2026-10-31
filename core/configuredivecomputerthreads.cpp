@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "configuredivecomputerthreads.h"
+#include <QEventLoop>
 #include "libdivecomputer/hw_ostc.h"
 #include "libdivecomputer/hw_ostc3.h"
 #include "libdivecomputer.h"
 #include "units.h"
 #include "errorhelper.h"
+#include <QFileInfo>
 
 #define OSTC3_GAS1			0x10
 #define OSTC3_GAS2			0x11
@@ -369,549 +371,116 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 		progress_cb(device_data.device, DC_EVENT_PROGRESS, &progress, userdata); \
 	} while (0)
 
-static dc_status_t read_ostc4_settings(device_data_t &device_data, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static bool ostc4_identify(dc_device_t *device, Ostc4SettingsTransaction::Identity &identity)
 {
-	// This code is really similar to the OSTC3 code, but there are minor
-	// differences in what the data means, and how to communicate with the
-	// device. If anyone can find a good way to harmonize the two, be my guest.
-	dc_status_t rc = DC_STATUS_SUCCESS;
-	dc_event_progress_t progress;
-	progress.current = 0;
-	progress.maximum = 51;
-
-	EMIT_PROGRESS();
-
-	//Read gas mixes
-	gas gas1;
-	gas gas2;
-	gas gas3;
-	gas gas4;
-	gas gas5;
-	unsigned char gasData[4] = { 0, 0, 0, 0 };
-
-	dc_device_t *device = device_data.device;
-	rc = hw_ostc3_device_config_read(device, OSTC3_GAS1, gasData, sizeof(gasData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	gas1.oxygen = gasData[0];
-	gas1.helium = gasData[1];
-	gas1.type = gasData[2];
-	gas1.depth = gasData[3];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_GAS2, gasData, sizeof(gasData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	gas2.oxygen = gasData[0];
-	gas2.helium = gasData[1];
-	gas2.type = gasData[2];
-	gas2.depth = gasData[3];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_GAS3, gasData, sizeof(gasData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	gas3.oxygen = gasData[0];
-	gas3.helium = gasData[1];
-	gas3.type = gasData[2];
-	gas3.depth = gasData[3];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_GAS4, gasData, sizeof(gasData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	gas4.oxygen = gasData[0];
-	gas4.helium = gasData[1];
-	gas4.type = gasData[2];
-	gas4.depth = gasData[3];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_GAS5, gasData, sizeof(gasData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	gas5.oxygen = gasData[0];
-	gas5.helium = gasData[1];
-	gas5.type = gasData[2];
-	gas5.depth = gasData[3];
-	EMIT_PROGRESS();
-
-	deviceDetails.gas1 = gas1;
-	deviceDetails.gas2 = gas2;
-	deviceDetails.gas3 = gas3;
-	deviceDetails.gas4 = gas4;
-	deviceDetails.gas5 = gas5;
-	EMIT_PROGRESS();
-
-	//Read Dil Values
-	gas dil1;
-	gas dil2;
-	gas dil3;
-	gas dil4;
-	gas dil5;
-	unsigned char dilData[4] = { 0, 0, 0, 0 };
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_DIL1, dilData, sizeof(dilData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	dil1.oxygen = dilData[0];
-	dil1.helium = dilData[1];
-	dil1.type = dilData[2];
-	dil1.depth = dilData[3];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_DIL2, dilData, sizeof(dilData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	dil2.oxygen = dilData[0];
-	dil2.helium = dilData[1];
-	dil2.type = dilData[2];
-	dil2.depth = dilData[3];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_DIL3, dilData, sizeof(dilData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	dil3.oxygen = dilData[0];
-	dil3.helium = dilData[1];
-	dil3.type = dilData[2];
-	dil3.depth = dilData[3];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_DIL4, dilData, sizeof(dilData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	dil4.oxygen = dilData[0];
-	dil4.helium = dilData[1];
-	dil4.type = dilData[2];
-	dil4.depth = dilData[3];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_DIL5, dilData, sizeof(dilData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	dil5.oxygen = dilData[0];
-	dil5.helium = dilData[1];
-	dil5.type = dilData[2];
-	dil5.depth = dilData[3];
-	EMIT_PROGRESS();
-
-	deviceDetails.dil1 = dil1;
-	deviceDetails.dil2 = dil2;
-	deviceDetails.dil3 = dil3;
-	deviceDetails.dil4 = dil4;
-	deviceDetails.dil5 = dil5;
-
-	//Read setpoint Values
-	setpoint sp1;
-	setpoint sp2;
-	setpoint sp3;
-	setpoint sp4;
-	setpoint sp5;
-	unsigned char spData[4] = { 0, 0, 0, 0};
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_SP1, spData, sizeof(spData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	sp1.sp = spData[0];
-	sp1.depth = spData[1];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_SP2, spData, sizeof(spData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	sp2.sp = spData[0];
-	sp2.depth = spData[1];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_SP3, spData, sizeof(spData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	sp3.sp = spData[0];
-	sp3.depth = spData[1];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_SP4, spData, sizeof(spData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	sp4.sp = spData[0];
-	sp4.depth = spData[1];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_SP5, spData, sizeof(spData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	sp5.sp = spData[0];
-	sp5.depth = spData[1];
-	EMIT_PROGRESS();
-
-	deviceDetails.sp1 = sp1;
-	deviceDetails.sp2 = sp2;
-	deviceDetails.sp3 = sp3;
-	deviceDetails.sp4 = sp4;
-	deviceDetails.sp5 = sp5;
-
-	//Read other settings
-	unsigned char uData[4] = { 0 };
-
-#define READ_SETTING(_OSTC4_SETTING, _DEVICE_DETAIL)                                            \
-	do {                                                                                    \
-		rc = hw_ostc3_device_config_read(device, _OSTC4_SETTING, uData, sizeof(uData)); \
-		if (rc != DC_STATUS_SUCCESS)                                                    \
-			return rc;                                                              \
-		deviceDetails._DEVICE_DETAIL = uData[0];                                        \
-		EMIT_PROGRESS();                                                                \
-	} while (0)
-
-	READ_SETTING(OSTC3_DIVE_MODE, diveMode);
-	READ_SETTING(OSTC3_LAST_DECO, lastDeco);
-	READ_SETTING(OSTC3_BRIGHTNESS, brightness);
-	READ_SETTING(OSTC3_UNITS, units);
-	READ_SETTING(OSTC3_SALINITY, salinity);
-	READ_SETTING(OSTC3_DIVEMODE_COLOR, diveModeColor);
-	READ_SETTING(OSTC3_LANGUAGE, language);
-	READ_SETTING(OSTC3_DATE_FORMAT, dateFormat);
-	READ_SETTING(OSTC3_SAFETY_STOP, safetyStop);
-	READ_SETTING(OSTC3_GF_HIGH, gfHigh);
-	READ_SETTING(OSTC3_GF_LOW, gfLow);
-	READ_SETTING(OSTC3_PPO2_MIN, ppO2Min);
-	READ_SETTING(OSTC3_PPO2_MAX, ppO2Max);
-	READ_SETTING(OSTC3_FUTURE_TTS, futureTTS);
-	READ_SETTING(OSTC3_CCR_MODE, ccrMode);
-	READ_SETTING(OSTC3_DECO_TYPE, decoType);
-	READ_SETTING(OSTC3_AGF_HIGH, aGFHigh);
-	READ_SETTING(OSTC3_AGF_LOW, aGFLow);
-	READ_SETTING(OSTC4_VPM_CONSERVATISM, vpmConservatism);
-	READ_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
-	READ_SETTING(OSTC3_FLIP_SCREEN, flipScreen);
-	READ_SETTING(OSTC4_BUTTON_SENSIVITY, buttonSensitivity);
-	READ_SETTING(OSTC4_BUTTON_BALANCE, buttonBalance);
-	READ_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
-	READ_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
-	READ_SETTING(OSTC4_TRAVEL_GAS_CONSUMPTION, travelGasConsumption);
-	READ_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
-	READ_SETTING(OSTC3_SAFETY_STOP_LENGTH, safetyStopLength);
-	READ_SETTING(OSTC3_SAFETY_STOP_START_DEPTH, safetyStopStartDepth);
-	/*
-	 * Settings not yet implemented
-	 *
-	 * logbook offset 0x47 0..9000 low byte 0..9000 high byte
-	 * Extra display 0x71 0=0ff, 1=BigFont
-	 * Custom View Center 0x72 0..8 (..9 Bonex Version)
-	 * CV Center Fallback 0x73 0..20 sec
-	 * Custom View Corner 0x74 1..7
-	 * CV Corner Fallback 0x75 0..20 sec
-	 */
-
-#undef READ_SETTING
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_PRESSURE_SENSOR_OFFSET, uData, sizeof(uData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	// OSTC3 stores the pressureSensorOffset in two-complement
-	deviceDetails.pressureSensorOffset = (signed char)uData[0];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_TEMP_SENSOR_OFFSET, uData, sizeof(uData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	// OSTC3 stores the tempSensorOffset in two-complement
-	deviceDetails.tempSensorOffset = (signed char)uData[0];
-	EMIT_PROGRESS();
-
-	rc = hw_ostc3_device_config_read(device, OSTC3_COMPASS_GAIN, uData, sizeof(uData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	// OSTC4 stores the compass declination in two-complement
-	deviceDetails.compassGain = (signed char)uData[0];
-	EMIT_PROGRESS();
-
-	//read firmware settings
-	unsigned char fData[64] = { 0 };
-	rc = hw_ostc3_device_version(device, fData, sizeof(fData));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	int serial = fData[0] + (fData[1] << 8);
-	deviceDetails.serialNo = QString::number(serial);
-	unsigned char X, Y, Z, beta;
-	unsigned int firmwareOnDevice = (fData[3] << 8) + fData[2];
-	X = (firmwareOnDevice & 0xF800) >> 11;
-	Y = (firmwareOnDevice & 0x07C0) >> 6;
-	Z = (firmwareOnDevice & 0x003E) >> 1;
-	beta = firmwareOnDevice & 0x0001;
-	deviceDetails.firmwareVersion = QString("%1.%2.%3%4").arg(X).arg(Y).arg(Z).arg(beta?" beta":"");
-	QByteArray ar((char *)fData + 4, 60);
-	deviceDetails.customText = ar.trimmed();
-	EMIT_PROGRESS();
-
-	rc = divecomputer_sync_time(device_data);
-	EMIT_PROGRESS();
-
-	return rc;
+	return Ostc4SettingsTransaction::readIdentity(
+		[device](unsigned char *reply, unsigned int size) {
+			return hw_ostc3_device_hardware(device, reply, size) == DC_STATUS_SUCCESS;
+		}, [device](unsigned char *reply, unsigned int size) {
+			return hw_ostc3_device_version(device, reply, size) == DC_STATUS_SUCCESS;
+		}, identity);
 }
 
-static dc_status_t write_ostc4_settings(device_data_t &device_data, const DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
+static dc_status_t read_verified_ostc4(device_data_t &data, DeviceDetails &details)
 {
-	// This code is really similar to the OSTC3 code, but there are minor
-	// differences in what the data means, and how to communicate with the
-	// device. If anyone can find a good way to harmonize the two, be my guest.
-	dc_status_t rc = DC_STATUS_SUCCESS;
-	dc_event_progress_t progress;
-	progress.current = 0;
-	progress.maximum = 24;
-
-	//write gas values
-	unsigned char gas1Data[4] = {
-		deviceDetails.gas1.oxygen,
-		deviceDetails.gas1.helium,
-		deviceDetails.gas1.type,
-		deviceDetails.gas1.depth
+	dc_device_t *device = data.device;
+	auto identify = [device](Ostc4SettingsTransaction::Identity &i) { return ostc4_identify(device, i); };
+	auto read = [device](quint8 id, QByteArray &bytes) {
+		unsigned char raw[4] = {};
+		if (hw_ostc3_device_config_read(device, id, raw, sizeof(raw)) != DC_STATUS_SUCCESS)
+			return false;
+		bytes = QByteArray(reinterpret_cast<char *>(raw), sizeof(raw));
+		return true;
 	};
-
-	unsigned char gas2Data[4] = {
-		deviceDetails.gas2.oxygen,
-		deviceDetails.gas2.helium,
-		deviceDetails.gas2.type,
-		deviceDetails.gas2.depth
+	if (!details.ostc4Snapshot.capture(identify, read))
+		return DC_STATUS_UNSUPPORTED;
+	if (Ostc4SettingsTransaction::legacyCompatible(details.ostc4Snapshot.identity)) {
+		unsigned char version[64] = {};
+		const auto &i = details.ostc4Snapshot.identity;
+		if (hw_ostc3_device_version(device, version, sizeof(version)) == DC_STATUS_SUCCESS &&
+		    (version[0] | (version[1] << 8)) == i.serial &&
+		    (version[2] | (version[3] << 8)) == i.firmware) {
+			details.ostc4Snapshot.originalCustomText = QByteArray(reinterpret_cast<const char *>(version + 4), 60);
+			details.customText = Ostc4SettingsTransaction::customText(details.ostc4Snapshot.originalCustomText);
+		}
+	}
+	const auto &snapshot = details.ostc4Snapshot;
+	details.model = snapshot.identity.model == 0x43 ? QStringLiteral("OSTC 4") :
+			snapshot.identity.model == 0x44 ? QStringLiteral("OSTC 5") : QStringLiteral("Unknown OSTC");
+	details.serialNo = QString::number(snapshot.identity.serial);
+	details.firmwareVersion = Ostc4SettingsTransaction::firmwareString(snapshot.identity.firmware);
+	auto byte = [&snapshot](int n, int offset) {
+		return snapshot.records[n].availability == Ostc4SettingsTransaction::Record::Readable ?
+			static_cast<unsigned char>(snapshot.records[n].original[offset]) : 0;
 	};
-
-	unsigned char gas3Data[4] = {
-		deviceDetails.gas3.oxygen,
-		deviceDetails.gas3.helium,
-		deviceDetails.gas3.type,
-		deviceDetails.gas3.depth
+	setpoint *points[] = { &details.sp1, &details.sp2, &details.sp3, &details.sp4, &details.sp5 };
+	for (int n = 0; n < 5; ++n) {
+		points[n]->sp = byte(n, 0);
+		points[n]->depth = byte(n, 1);
+	}
+	details.gfLow = byte(5, 0);
+	details.gfHigh = byte(6, 0);
+	// readData() returns four bytes for every ID, including scalar values.
+	// These additional values are display-only: writeData() has different
+	// validation/normalisation and the checked transaction covers only seven IDs.
+	const auto &display = snapshot.displayRecords;
+	for (int n = 0; n < 10; ++n) {
+		const QByteArray &raw = display[n];
+		if (raw.size() != 4)
+			continue;
+		gas value(static_cast<quint8>(raw[0]), static_cast<quint8>(raw[1]),
+			static_cast<quint8>(raw[2]), static_cast<quint8>(raw[3]));
+		gas *gases[] = { &details.gas1, &details.gas2, &details.gas3, &details.gas4, &details.gas5,
+			&details.dil1, &details.dil2, &details.dil3, &details.dil4, &details.dil5 };
+		*gases[n] = value;
+	}
+	// Only fields already represented by the OSTC4 page. 0x2a/2b,
+	// 0x2f, 0x37, 0x3f/40 and 0x45/46 are firmware constants or
+	// derived values, not independent editable settings.
+	auto scalar = [&display](int id, int &field) {
+		const QByteArray &raw = display[id - 0x10];
+		if (raw.size() == 4)
+			field = static_cast<quint8>(raw[0]);
 	};
-
-	unsigned char gas4Data[4] = {
-		deviceDetails.gas4.oxygen,
-		deviceDetails.gas4.helium,
-		deviceDetails.gas4.type,
-		deviceDetails.gas4.depth
-	};
-
-	unsigned char gas5Data[4] = {
-		deviceDetails.gas5.oxygen,
-		deviceDetails.gas5.helium,
-		deviceDetails.gas5.type,
-		deviceDetails.gas5.depth
-	};
-	dc_device_t *device = device_data.device;
-	//gas 1
-	rc = hw_ostc3_device_config_write(device, OSTC3_GAS1, gas1Data, sizeof(gas1Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//gas 2
-	rc = hw_ostc3_device_config_write(device, OSTC3_GAS2, gas2Data, sizeof(gas2Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//gas 3
-	rc = hw_ostc3_device_config_write(device, OSTC3_GAS3, gas3Data, sizeof(gas3Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//gas 4
-	rc = hw_ostc3_device_config_write(device, OSTC3_GAS4, gas4Data, sizeof(gas4Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//gas 5
-	rc = hw_ostc3_device_config_write(device, OSTC3_GAS5, gas5Data, sizeof(gas5Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-
-	//write setpoint values
-	unsigned char sp1Data[4] = {
-		deviceDetails.sp1.sp,
-		deviceDetails.sp1.depth
-	};
-
-	unsigned char sp2Data[4] = {
-		deviceDetails.sp2.sp,
-		deviceDetails.sp2.depth
-	};
-
-	unsigned char sp3Data[4] = {
-		deviceDetails.sp3.sp,
-		deviceDetails.sp3.depth
-	};
-
-	unsigned char sp4Data[4] = {
-		deviceDetails.sp4.sp,
-		deviceDetails.sp4.depth
-	};
-
-	unsigned char sp5Data[4] = {
-		deviceDetails.sp5.sp,
-		deviceDetails.sp5.depth
-	};
-
-	//sp 1
-	rc = hw_ostc3_device_config_write(device, OSTC3_SP1, sp1Data, sizeof(sp1Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//sp 2
-	rc = hw_ostc3_device_config_write(device, OSTC3_SP2, sp2Data, sizeof(sp2Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//sp 3
-	rc = hw_ostc3_device_config_write(device, OSTC3_SP3, sp3Data, sizeof(sp3Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//sp 4
-	rc = hw_ostc3_device_config_write(device, OSTC3_SP4, sp4Data, sizeof(sp4Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//sp 5
-	rc = hw_ostc3_device_config_write(device, OSTC3_SP5, sp5Data, sizeof(sp5Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-
-	//write dil values
-	unsigned char dil1Data[4] = {
-		deviceDetails.dil1.oxygen,
-		deviceDetails.dil1.helium,
-		deviceDetails.dil1.type,
-		deviceDetails.dil1.depth
-	};
-
-	unsigned char dil2Data[4] = {
-		deviceDetails.dil2.oxygen,
-		deviceDetails.dil2.helium,
-		deviceDetails.dil2.type,
-		deviceDetails.dil2.depth
-	};
-
-	unsigned char dil3Data[4] = {
-		deviceDetails.dil3.oxygen,
-		deviceDetails.dil3.helium,
-		deviceDetails.dil3.type,
-		deviceDetails.dil3.depth
-	};
-
-	unsigned char dil4Data[4] = {
-		deviceDetails.dil4.oxygen,
-		deviceDetails.dil4.helium,
-		deviceDetails.dil4.type,
-		deviceDetails.dil4.depth
-	};
-
-	unsigned char dil5Data[4] = {
-		deviceDetails.dil5.oxygen,
-		deviceDetails.dil5.helium,
-		deviceDetails.dil5.type,
-		deviceDetails.dil5.depth
-	};
-	//dil 1
-	rc = hw_ostc3_device_config_write(device, OSTC3_DIL1, dil1Data, sizeof(gas1Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//dil 2
-	rc = hw_ostc3_device_config_write(device, OSTC3_DIL2, dil2Data, sizeof(dil2Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//dil 3
-	rc = hw_ostc3_device_config_write(device, OSTC3_DIL3, dil3Data, sizeof(dil3Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//dil 4
-	rc = hw_ostc3_device_config_write(device, OSTC3_DIL4, dil4Data, sizeof(dil4Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-	//dil 5
-	rc = hw_ostc3_device_config_write(device, OSTC3_DIL5, dil5Data, sizeof(dil5Data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-
-	//write general settings
-	//custom text
-	rc = hw_ostc3_device_customtext(device, qPrintable(deviceDetails.customText));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-
-	unsigned char data[4] = { 0 };
-#define WRITE_SETTING(_OSTC4_SETTING, _DEVICE_DETAIL)                                          \
-	do {                                                                                   \
-		data[0] = deviceDetails._DEVICE_DETAIL;                                        \
-		rc = hw_ostc3_device_config_write(device, _OSTC4_SETTING, data, sizeof(data)); \
-		if (rc != DC_STATUS_SUCCESS)                                                   \
-			return rc;                                                             \
-		EMIT_PROGRESS();                                                               \
-	} while (0)
-
-	WRITE_SETTING(OSTC3_DIVE_MODE, diveMode);
-	WRITE_SETTING(OSTC3_LAST_DECO, lastDeco);
-	WRITE_SETTING(OSTC3_BRIGHTNESS, brightness);
-	WRITE_SETTING(OSTC3_UNITS, units);
-	WRITE_SETTING(OSTC3_SALINITY, salinity);
-	WRITE_SETTING(OSTC3_DIVEMODE_COLOR, diveModeColor);
-	WRITE_SETTING(OSTC3_LANGUAGE, language);
-	WRITE_SETTING(OSTC3_DATE_FORMAT, dateFormat);
-	WRITE_SETTING(OSTC3_COMPASS_GAIN, compassGain);
-	WRITE_SETTING(OSTC3_SAFETY_STOP, safetyStop);
-	WRITE_SETTING(OSTC3_GF_HIGH, gfHigh);
-	WRITE_SETTING(OSTC3_GF_LOW, gfLow);
-	WRITE_SETTING(OSTC3_PPO2_MIN, ppO2Min);
-	WRITE_SETTING(OSTC3_PPO2_MAX, ppO2Max);
-	WRITE_SETTING(OSTC3_FUTURE_TTS, futureTTS);
-	WRITE_SETTING(OSTC3_CCR_MODE, ccrMode);
-	WRITE_SETTING(OSTC3_DECO_TYPE, decoType);
-	WRITE_SETTING(OSTC3_AGF_HIGH, aGFHigh);
-	WRITE_SETTING(OSTC3_AGF_LOW, aGFLow);
-	WRITE_SETTING(OSTC4_VPM_CONSERVATISM, vpmConservatism);
-	WRITE_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
-	WRITE_SETTING(OSTC3_FLIP_SCREEN, flipScreen);
-	WRITE_SETTING(OSTC4_BUTTON_SENSIVITY, buttonSensitivity);
-	WRITE_SETTING(OSTC4_BUTTON_BALANCE, buttonBalance);
-	WRITE_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
-	WRITE_SETTING(OSTC3_DECO_GAS_CONSUMPTION, decoGasConsumption);
-	WRITE_SETTING(OSTC4_TRAVEL_GAS_CONSUMPTION, travelGasConsumption);
-	WRITE_SETTING(OSTC3_ALWAYS_SHOW_PPO2, alwaysShowppO2);
-	WRITE_SETTING(OSTC3_SAFETY_STOP_LENGTH, safetyStopLength);
-	WRITE_SETTING(OSTC3_SAFETY_STOP_START_DEPTH, safetyStopStartDepth);
-	/*
-	 * Settings not yet implemented
-	 *
-	 * logbook offset 0x47 0..9000 low byte 0..9000 high byte
-	 * Extra display 0x71 0=0ff, 1=BigFont
-	 * Custom View Center 0x72 0..8 (..9 Bonex Version)
-	 * CV Center Fallback 0x73 0..20 sec
-	 * Custom View Corner 0x74 1..7
-	 * CV Corner Fallback 0x75 0..20 sec
-	 */
-
-#undef WRITE_SETTING
-
-	// OSTC3 stores the pressureSensorOffset in two-complement
-	data[0] = (unsigned char)deviceDetails.pressureSensorOffset;
-	rc = hw_ostc3_device_config_write(device, OSTC3_PRESSURE_SENSOR_OFFSET, data, sizeof(data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-
-	// OSTC3 stores the tempSensorOffset in two-complement
-	data[0] = (unsigned char)deviceDetails.tempSensorOffset;
-	rc = hw_ostc3_device_config_write(device, OSTC3_TEMP_SENSOR_OFFSET, data, sizeof(data));
-	if (rc != DC_STATUS_SUCCESS)
-		return rc;
-	EMIT_PROGRESS();
-
-	rc = divecomputer_sync_time(device_data);
-	EMIT_PROGRESS();
-
-	return rc;
+	scalar(0x1f, details.ccrMode);
+	scalar(0x20, details.diveMode);
+	scalar(0x21, details.decoType);
+	scalar(0x22, details.ppO2Max);
+	scalar(0x23, details.ppO2Min);
+	scalar(0x24, details.futureTTS);
+	scalar(0x27, details.aGFLow);
+	scalar(0x28, details.aGFHigh);
+	scalar(0x29, details.vpmConservatism);
+	scalar(0x2c, details.lastDeco);
+	scalar(0x2d, details.brightness);
+	scalar(0x2e, details.units);
+	scalar(0x30, details.salinity);
+	scalar(0x31, details.diveModeColor);
+	scalar(0x32, details.language);
+	scalar(0x33, details.dateFormat);
+	if (display[0x34 - 0x10].size() == 4)
+		details.compassGain = static_cast<qint8>(display[0x34 - 0x10][0]);
+	if (display[0x35 - 0x10].size() == 4)
+		details.pressureSensorOffset = static_cast<qint8>(display[0x35 - 0x10][0]);
+	scalar(0x3a, details.buttonSensitivity);
+	scalar(0x3c, details.bottomGasConsumption);
+	scalar(0x3d, details.decoGasConsumption);
+	scalar(0x3e, details.travelGasConsumption);
+	if (display[0x43 - 0x10].size() == 4)
+		details.safetyStopLength = static_cast<quint8>(display[0x43 - 0x10][0]);
+	if (display[0x44 - 0x10].size() == 4)
+		details.safetyStopStartDepth = static_cast<quint8>(display[0x44 - 0x10][0]);
+	if (display[0x42 - 0x10].size() == 4)
+		details.tempSensorOffset = static_cast<qint8>(display[0x42 - 0x10][0]);
+	if (display[0x36 - 0x10].size() == 4)
+		details.safetyStop = display[0x36 - 0x10][0] != 0;
+	if (display[0x38 - 0x10].size() == 4)
+		details.setPointFallback = display[0x38 - 0x10][0] != 0;
+	if (display[0x39 - 0x10].size() == 4)
+		details.flipScreen = display[0x39 - 0x10][0] != 0;
+	if (display[0x41 - 0x10].size() == 4)
+		details.alwaysShowppO2 = display[0x41 - 0x10][0] != 0;
+	return DC_STATUS_SUCCESS;
 }
 
 static dc_status_t read_ostc3_settings(device_data_t &device_data, DeviceDetails &deviceDetails, dc_event_callback_t progress_cb, void *userdata)
@@ -919,6 +488,13 @@ static dc_status_t read_ostc3_settings(device_data_t &device_data, DeviceDetails
 	dc_status_t rc;
 
 	dc_device_t *device = device_data.device;
+	unsigned char hardware[5] = {};
+	// Bluetooth model detection overrides the selected descriptor. Never
+	// enter the OSTC3 read/time-sync path on detected OSTC4/5 hardware.
+	if (hw_ostc3_device_hardware(device, hardware, sizeof(hardware)) == DC_STATUS_SUCCESS &&
+	    Ostc4SettingsTransaction::isOstc4Hardware(
+		QByteArray(reinterpret_cast<const char *>(hardware), sizeof(hardware))))
+		return read_verified_ostc4(device_data, deviceDetails);
 
 	// Use the descriptor that was already set during device initialization
 	if (!device_data.descriptor) {
@@ -927,8 +503,8 @@ static dc_status_t read_ostc3_settings(device_data_t &device_data, DeviceDetails
 
 	deviceDetails.model = dc_descriptor_get_product(device_data.descriptor);
 
-	if (deviceDetails.model == "OSTC 4" || deviceDetails.model == "OSTC 5")
-		return read_ostc4_settings(device_data, deviceDetails, progress_cb, userdata);
+	if (device_data.product == "OSTC 4" || device_data.product == "OSTC 5")
+		return read_verified_ostc4(device_data, deviceDetails);
 
 	dc_event_progress_t progress {
 		.current = 0,
@@ -2121,44 +1697,128 @@ ReadSettingsThread::ReadSettingsThread(QObject *parent, device_data_t *data) : D
 {
 }
 
+void ReadSettingsThread::save(const DeviceDetails &details, const QString &backupPath)
+{
+	QMutexLocker lock(&m_mutex);
+	m_saveDetails = details;
+	m_backupPath = backupPath;
+	m_save = true;
+	emit sessionCommand();
+}
+
+void ReadSettingsThread::stopSession()
+{
+	QMutexLocker lock(&m_mutex);
+	m_stop = true;
+	emit sessionCommand();
+}
+
+void ReadSettingsThread::setTransport(std::function<QString(device_data_t *)> open,
+	std::function<void(device_data_t *)> close)
+{
+	m_open = std::move(open);
+	m_close = std::move(close);
+}
+
 void ReadSettingsThread::run()
 {
-	dc_status_t rc;
-
-	DeviceDetails deviceDetails;
-	switch (dc_device_get_type(m_data->device)) {
-	case DC_FAMILY_SUUNTO_VYPER:
-		rc = read_suunto_vyper_settings(m_data->device, deviceDetails, DeviceThread::event_cb, this);
-		if (rc == DC_STATUS_SUCCESS) {
-			emit devicedetails(std::move(deviceDetails));
-		} else if (rc == DC_STATUS_UNSUPPORTED) {
-			emit error(tr("This feature is not yet available for the selected dive computer."));
-		} else {
-			emit error(tr("Reading Vyper settings failed!"));
+	bool connected = true;
+	if (m_open) {
+		const QString connectionError = m_open(m_data);
+		if (!connectionError.isEmpty()) {
+			m_close(m_data);
+			emit error(tr("Could not connect for settings read: %1. Reload required.").arg(connectionError));
+			emit operationFinished(false);
+			return;
 		}
-		break;
-	case DC_FAMILY_HW_OSTC3:
-		rc = read_ostc3_settings(*m_data, deviceDetails, DeviceThread::event_cb, this);
-		if (rc == DC_STATUS_SUCCESS)
-			emit devicedetails(std::move(deviceDetails));
-		else
-			emit error(tr("Reading OSTC3 settings failed!"));
-		break;
-
-#ifdef DEBUG_OSTC
-	case DC_FAMILY_NULL:
-#endif
-	case DC_FAMILY_HW_OSTC:
-		rc = read_ostc_settings(*m_data, deviceDetails, DeviceThread::event_cb, this);
-		if (rc == DC_STATUS_SUCCESS)
-			emit devicedetails(std::move(deviceDetails));
-		else
-			emit error(tr("Reading OSTC settings failed!"));
-		break;
-	default:
-		emit error(tr("This feature is not yet available for the selected dive computer."));
-		break;
 	}
+	if (m_testOperation) {
+		if (!m_testOperation(m_data)) {
+			emit error(tr("Reading settings failed!"));
+			connected = false;
+		} else if (m_testDetails.ostc4Snapshot.valid)
+			emit devicedetails(m_testDetails);
+	} else {
+		dc_status_t rc;
+		DeviceDetails deviceDetails;
+		switch (dc_device_get_type(m_data->device)) {
+		case DC_FAMILY_SUUNTO_VYPER:
+			rc = read_suunto_vyper_settings(m_data->device, deviceDetails, DeviceThread::event_cb, this);
+			if (rc == DC_STATUS_SUCCESS) emit devicedetails(std::move(deviceDetails));
+			else { emit error(rc == DC_STATUS_UNSUPPORTED ? tr("This feature is not yet available for the selected dive computer.") : tr("Reading Vyper settings failed!")); connected = false; }
+			break;
+		case DC_FAMILY_HW_OSTC3:
+			rc = read_ostc3_settings(*m_data, deviceDetails, DeviceThread::event_cb, this);
+			if (rc == DC_STATUS_SUCCESS) emit devicedetails(std::move(deviceDetails));
+			else { emit error(tr("Reading OSTC3 settings failed!")); connected = false; }
+			break;
+#ifdef DEBUG_OSTC
+		case DC_FAMILY_NULL:
+#endif
+		case DC_FAMILY_HW_OSTC:
+			rc = read_ostc_settings(*m_data, deviceDetails, DeviceThread::event_cb, this);
+			if (rc == DC_STATUS_SUCCESS) emit devicedetails(std::move(deviceDetails));
+			else { emit error(tr("Reading OSTC settings failed!")); connected = false; }
+			break;
+		default:
+			emit error(tr("This feature is not yet available for the selected dive computer."));
+			connected = false;
+			break;
+		}
+	}
+	// Keep a Qt event loop alive while editing: Bluetooth socket notifiers and
+	// disconnects must be serviced on the same thread that owns the transport.
+	QEventLoop sessionLoop;
+	if (m_session)
+		connect(this, &ReadSettingsThread::sessionCommand, &sessionLoop, &QEventLoop::quit, Qt::QueuedConnection);
+	if (!connected && m_close)
+		m_close(m_data);
+	emit operationFinished(false);
+	bool wrote = false;
+	if (connected && m_session) {
+		for (;;) {
+			DeviceDetails details;
+			QString backupPath;
+			bool stop;
+			bool save;
+			{
+				QMutexLocker lock(&m_mutex);
+				stop = m_stop;
+				save = m_save;
+				if (save && !stop) {
+					details = std::move(m_saveDetails);
+					backupPath = std::move(m_backupPath);
+					m_save = false;
+				}
+			}
+			if (stop)
+				break;
+			if (!save) {
+				sessionLoop.exec();
+				continue;
+			}
+			if (m_testOperation && !m_saveIO) {
+				if (!m_testOperation(m_data))
+					emit error(tr("Settings operation failed; any changes already sent may have taken effect. Reload required."));
+			} else {
+				WriteSettingsThread writer(nullptr, m_data);
+				writer.setDeviceDetails(details);
+				writer.setIO(m_saveIO);
+				writer.setBackupPath(backupPath);
+				connect(&writer, &WriteSettingsThread::error, this, &ReadSettingsThread::error, Qt::DirectConnection);
+				connect(&writer, &WriteSettingsThread::result, this, &ReadSettingsThread::result, Qt::DirectConnection);
+				writer.perform();
+			}
+			wrote = true;
+			break; // after apply, a fresh read is required; close on this same thread
+		}
+	}
+	if (connected && m_close)
+		m_close(m_data);
+	// The GUI may start another read as soon as it receives completion. Do not
+	// announce completion until the owning thread has closed the transport.
+	if (wrote)
+		emit operationFinished(true);
 }
 
 WriteSettingsThread::WriteSettingsThread(QObject *parent, device_data_t *data) :
@@ -2171,11 +1831,43 @@ void WriteSettingsThread::setDeviceDetails(const DeviceDetails &details)
 	m_deviceDetails = details;
 }
 
+void WriteSettingsThread::setTransport(std::function<QString(device_data_t *)> open,
+	std::function<void(device_data_t *)> close)
+{
+	m_open = std::move(open);
+	m_close = std::move(close);
+}
+
 void WriteSettingsThread::run()
+{
+	// The read session was closed by its creator. Never operate on a Qt socket
+	// opened in the GUI thread from this worker. Close even a partially opened
+	// session here, before the GUI can offer another read or disconnect.
+	if (m_open) {
+		const QString connectionError = m_open(m_data);
+		if (!connectionError.isEmpty()) {
+			m_close(m_data);
+			emit error(tr("Could not reconnect for OSTC 4/5 settings: %1. Connection failed before settings were applied; reload required.").arg(connectionError));
+			return;
+		}
+	}
+	if (m_testOperation) {
+		if (!m_testOperation(m_data))
+			emit error(tr("Settings operation failed; any changes already sent may have taken effect. Reload required."));
+		if (m_close)
+			m_close(m_data);
+		return;
+	}
+	perform();
+	if (m_close)
+		m_close(m_data);
+}
+
+void WriteSettingsThread::perform()
 {
 	dc_status_t rc;
 
-	switch (dc_device_get_type(m_data->device)) {
+	switch (m_io ? DC_FAMILY_HW_OSTC3 : dc_device_get_type(m_data->device)) {
 	case DC_FAMILY_SUUNTO_VYPER:
 		rc = write_suunto_vyper_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 		if (rc == DC_STATUS_UNSUPPORTED) {
@@ -2185,11 +1877,78 @@ void WriteSettingsThread::run()
 		}
 		break;
 	case DC_FAMILY_HW_OSTC3:
-		// We trust m_deviceDetails because they were read from the device in read_ostc3_settings()
-		if (m_deviceDetails.model == "OSTC 4" || m_deviceDetails.model == "OSTC 5")
-			rc = write_ostc4_settings(*m_data, m_deviceDetails, DeviceThread::event_cb, this);
-		else
+		if (m_data->product == "OSTC 4" || m_data->product == "OSTC 5" ||
+		    m_deviceDetails.ostc4Snapshot.identity.model == 0x43 ||
+		    m_deviceDetails.ostc4Snapshot.identity.model == 0x44) {
+			rc = DC_STATUS_SUCCESS;
+			const auto snapshot = m_deviceDetails.ostc4Snapshot;
+			std::array<QByteArray, 7> desired;
+			for (size_t n = 0; n < desired.size(); ++n)
+				desired[n] = snapshot.records[n].original;
+			const setpoint points[] = { m_deviceDetails.sp1, m_deviceDetails.sp2, m_deviceDetails.sp3,
+				m_deviceDetails.sp4, m_deviceDetails.sp5 };
+			for (int n = 3; n < 5; ++n) {
+				if (snapshot.records[n].availability == Ostc4SettingsTransaction::Record::Readable) {
+					desired[n][0] = static_cast<char>(points[n].sp);
+					desired[n][1] = static_cast<char>(points[n].depth);
+				}
+			}
+			if (snapshot.records[5].availability == Ostc4SettingsTransaction::Record::Readable)
+				desired[5][0] = static_cast<char>(m_deviceDetails.gfLow);
+			if (snapshot.records[6].availability == Ostc4SettingsTransaction::Record::Readable)
+				desired[6][0] = static_cast<char>(m_deviceDetails.gfHigh);
+			dc_device_t *device = m_data->device;
+			auto identify = [device](Ostc4SettingsTransaction::Identity &i) { return ostc4_identify(device, i); };
+			auto read = [device](quint8 id, QByteArray &bytes) {
+				unsigned char raw[4] = {};
+				if (hw_ostc3_device_config_read(device, id, raw, sizeof(raw)) != DC_STATUS_SUCCESS)
+					return false;
+				bytes = QByteArray(reinterpret_cast<char *>(raw), sizeof(raw));
+				return true;
+			};
+			auto write = [device](quint8 id, const QByteArray &bytes) {
+				return hw_ostc3_device_config_write(device, id,
+					reinterpret_cast<const unsigned char *>(bytes.constData()), bytes.size()) == DC_STATUS_SUCCESS;
+			};
+			auto readText = [device](QByteArray &text) {
+				unsigned char version[64] = {};
+				if (hw_ostc3_device_version(device, version, sizeof(version)) != DC_STATUS_SUCCESS)
+					return false;
+				text = QByteArray(reinterpret_cast<const char *>(version + 4), 60);
+				return true;
+			};
+			auto writeText = [device](const QByteArray &text) {
+				return hw_ostc3_device_customtext(device, text.constData()) == DC_STATUS_SUCCESS;
+			};
+			const Ostc4SettingsTransaction::Identify transactionIdentify = m_io ? m_io->identify : identify;
+			const Ostc4SettingsTransaction::Read transactionRead = m_io ? m_io->read : read;
+			const Ostc4SettingsTransaction::Write transactionWrite = m_io ? m_io->write : write;
+			const std::function<bool(QByteArray &)> transactionReadText = m_io ? m_io->readText : readText;
+			const std::function<bool(const QByteArray &)> transactionWriteText = m_io ? m_io->writeText : writeText;
+			bool backupCommitted = false;
+			auto backup = [this, &backupCommitted](const Ostc4SettingsTransaction &s) {
+				QString error;
+				backupCommitted = !m_backupPath.isEmpty() && !QFileInfo::exists(m_backupPath) &&
+					s.saveBackup(m_backupPath, error);
+				return backupCommitted;
+			};
+			QString report;
+			const bool ok = Ostc4SettingsTransaction::legacyCompatible(snapshot.identity) ?
+				snapshot.applyLegacy(transactionIdentify, transactionRead, transactionWrite, backup,
+					m_deviceDetails.ostc4LegacyEdits(), report, m_deviceDetails.customText,
+					transactionReadText, transactionWriteText, m_data->sync_time,
+					[this]() { return divecomputer_sync_time(*m_data) == DC_STATUS_SUCCESS; }) :
+				snapshot.apply(transactionIdentify, transactionRead, transactionWrite, backup, desired, report);
+			if (backupCommitted)
+				report += tr(" Backup: %1. Review it manually against a fresh read; no automatic rollback.").arg(m_backupPath);
+			if (ok)
+				emit result(report);
+			else
+				emit error(report);
+			break;
+		} else {
 			rc = write_ostc3_settings(*m_data, m_deviceDetails, DeviceThread::event_cb, this);
+		}
 		if (rc != DC_STATUS_SUCCESS)
 			emit error(tr("Failed!"));
 		break;

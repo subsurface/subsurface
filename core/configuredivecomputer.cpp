@@ -20,39 +20,146 @@ ConfigureDiveComputer::ConfigureDiveComputer() : readThread(0),
 	setState(INITIAL);
 }
 
+ConfigureDiveComputer::~ConfigureDiveComputer()
+{
+	stopReadSession();
+	for (DeviceThread *thread : { static_cast<DeviceThread *>(writeThread), static_cast<DeviceThread *>(resetThread), static_cast<DeviceThread *>(firmwareThread) })
+		if (thread)
+			thread->wait();
+}
+
+void ConfigureDiveComputer::stopReadSession()
+{
+	if (!readThread)
+		return;
+	disconnect(readThread, nullptr, this, nullptr);
+	readThread->stopSession();
+	readThread->wait();
+	delete readThread;
+	readThread = nullptr;
+}
+
 void ConfigureDiveComputer::connectThreadSignals(DeviceThread *thread)
 {
-	connect(thread, &DeviceThread::finished, this, &ConfigureDiveComputer::threadFinished, Qt::QueuedConnection);
+	if (thread != readThread)
+		connect(thread, &DeviceThread::finished, this, &ConfigureDiveComputer::threadFinished, Qt::QueuedConnection);
 	connect(thread, &DeviceThread::error, this, &ConfigureDiveComputer::setError);
 	connect(thread, &DeviceThread::progress, this, &ConfigureDiveComputer::progressEvent, Qt::QueuedConnection);
 }
 
+void ConfigureDiveComputer::setReadTransportForTesting(std::function<QString(device_data_t *)> open,
+	std::function<dc_status_t(device_data_t *)> close, std::function<bool(device_data_t *)> operation)
+{
+	readOpen = std::move(open);
+	readClose = std::move(close);
+	readOperation = std::move(operation);
+}
+
 void ConfigureDiveComputer::readSettings(device_data_t *data)
 {
+	if (currentState == READING || currentState == WRITING) {
+		emit error(tr("Wait for the settings operation to finish before reading again."));
+		return;
+	}
+	lastError.clear();
+	ostc4Snapshot.valid = false;
+	stopReadSession();
 	setState(READING);
 
-	if (readThread)
-		readThread->deleteLater();
-
 	readThread = new ReadSettingsThread(this, data);
+	// An OSTC4/5 may be selected as OSTC3 over Bluetooth. All OSTC3-family
+	// reads therefore use a worker-owned session, rather than using the GUI's
+	// Qt RFCOMM socket from ReadSettingsThread. Leave other families unchanged.
+	if (data->descriptor && dc_descriptor_get_type(data->descriptor) == DC_FAMILY_HW_OSTC3) {
+		// The connection is deferred until this worker. No GUI-owned socket is
+		// handed to a QThread, including when OSTC4/5 was selected as OSTC3.
+		// A reset/firmware operation may have opened a GUI session meanwhile.
+		if (data->device || data->iostream || data->context)
+			closeTransport(data);
+		readThread->setTransport(readOpen, [this, thread = readThread](device_data_t *session) {
+			if (readClose(session) != DC_STATUS_SUCCESS)
+				emit thread->error(tr("Settings transport did not close cleanly. Values already verified by read-back may have been saved, but the connection may not be ready for another read."));
+		});
+		readThread->setSession(true);
+	}
+	if (readOperation)
+		readThread->setTestOperation(readOperation);
+	if (readOperation)
+		readThread->setTestDetails(testDetails);
+	if (testIO)
+		readThread->setSaveIO(testIO);
 	connectThreadSignals(readThread);
-	connect(readThread, &ReadSettingsThread::devicedetails, this, &ConfigureDiveComputer::deviceDetailsChanged);
+	connect(readThread, &ReadSettingsThread::devicedetails, this, [this](DeviceDetails details) {
+		ostc4Snapshot = details.ostc4Snapshot;
+		emit deviceDetailsChanged(std::move(details));
+	});
+	connect(readThread, &ReadSettingsThread::result, this, &ConfigureDiveComputer::message);
+	connect(readThread, &ReadSettingsThread::operationFinished, this, [this](bool writing) {
+		if ((!writing && currentState != READING) || (writing && currentState != WRITING))
+			return;
+		const bool success = lastError.isEmpty();
+		if (writing) {
+			ostc4Snapshot.valid = false;
+			ostc4Writing = false;
+		}
+		setState(success ? DONE : ERRORED);
+		if (success && !writing && ostc4Snapshot.identity.model != 0x43 && ostc4Snapshot.identity.model != 0x44)
+			emit message(tr("The operation completed successfully"));
+	});
 
 	readThread->start();
 }
 
 void ConfigureDiveComputer::saveDeviceDetails(const DeviceDetails &details, device_data_t *data)
 {
+	if (currentState == READING || currentState == WRITING) {
+		emit error(tr("Wait for the settings operation to finish before saving."));
+		return;
+	}
+	ostc4Writing = data->product == "OSTC 4" || data->product == "OSTC 5" ||
+		ostc4Snapshot.identity.model == 0x43 || ostc4Snapshot.identity.model == 0x44;
+	if (ostc4Writing && !ostc4Snapshot.valid) {
+		ostc4Writing = false;
+		setError(tr("OSTC 4/5 settings are unavailable or need a fresh read."));
+		return;
+	}
+	const bool ostc3Family = data->descriptor && dc_descriptor_get_type(data->descriptor) == DC_FAMILY_HW_OSTC3;
+	if (ostc4Writing && !ostc3Family) {
+		ostc4Writing = false;
+		setError(tr("OSTC 4/5 settings need a recognised device descriptor; reload required."));
+		return;
+	}
+	if (ostc4Writing && (!readThread || !readThread->isRunning() || (!data->device && !readOperation))) {
+		ostc4Writing = false;
+		setError(tr("OSTC 4/5 settings session ended; reload required."));
+		return;
+	}
+	lastError.clear();
 	setState(WRITING);
+	DeviceDetails checked = details;
+	if (ostc4Writing) {
+		checked.ostc4Snapshot = ostc4Snapshot;
+		readThread->save(checked, ostc4BackupPath);
+		return;
+	}
+	if (ostc3Family)
+		stopReadSession();
 
 	if (writeThread)
 		writeThread->deleteLater();
 
 	writeThread = new WriteSettingsThread(this, data);
 	connectThreadSignals(writeThread);
+	if (ostc3Family)
+		writeThread->setTransport(ConfigureDiveComputer::openTransport, ConfigureDiveComputer::closeTransport);
 
-	writeThread->setDeviceDetails(details);
+	writeThread->setDeviceDetails(checked);
 	writeThread->start();
+}
+
+bool ConfigureDiveComputer::validateOstc4Backup(const QString &path, QString &description) const
+{
+	return ostc4Snapshot.valid && Ostc4SettingsTransaction::validateBackup(path, ostc4Snapshot.identity, description);
 }
 
 static QString writeGasDetails(gas g)
@@ -519,6 +626,10 @@ bool ConfigureDiveComputer::restoreXMLBackup(const QString &fileName, DeviceDeta
 
 void ConfigureDiveComputer::startFirmwareUpdate(const QString &fileName, device_data_t *data, bool forceUpdate)
 {
+	if (currentState == READING || currentState == WRITING) {
+		emit error(tr("Wait for the settings operation to finish before updating firmware."));
+		return;
+	}
 	setState(FWUPDATE);
 	if (firmwareThread)
 		firmwareThread->deleteLater();
@@ -531,6 +642,10 @@ void ConfigureDiveComputer::startFirmwareUpdate(const QString &fileName, device_
 
 void ConfigureDiveComputer::resetSettings(device_data_t *data)
 {
+	if (currentState == READING || currentState == WRITING) {
+		emit error(tr("Wait for the settings operation to finish before resetting."));
+		return;
+	}
 	setState(RESETTING);
 
 	if (resetThread)
@@ -557,19 +672,31 @@ void ConfigureDiveComputer::setState(ConfigureDiveComputer::states newState)
 
 void ConfigureDiveComputer::setError(QString err)
 {
+	// A close failure can follow a write/read-back error in the same worker.
+	// Keep the earlier device outcome visible rather than replacing it with the
+	// transport outcome.
+	if (currentState == WRITING && !lastError.isEmpty())
+		err = lastError + QStringLiteral("\n") + err;
 	lastError = err;
 	emit error(std::move(err));
 }
 
 void ConfigureDiveComputer::threadFinished()
 {
-	setState(DONE);
+	const bool success = lastError.isEmpty();
+	const bool wasOstc4Write = ostc4Writing;
+	if (ostc4Writing) {
+		ostc4Snapshot.valid = false;
+		ostc4Writing = false;
+	}
+	setState(success ? DONE : ERRORED);
 
-	if (lastError.isEmpty())
+	if (success && !wasOstc4Write &&
+	    !(sender() == readThread && (ostc4Snapshot.identity.model == 0x43 || ostc4Snapshot.identity.model == 0x44)))
 		emit message(tr("The operation completed successfully"));
 }
 
-QString ConfigureDiveComputer::dc_open(device_data_t *data)
+QString ConfigureDiveComputer::openTransport(device_data_t *data)
 {
 	FILE *fp = NULL;
 	dc_status_t rc;
@@ -605,21 +732,53 @@ QString ConfigureDiveComputer::dc_open(device_data_t *data)
 		return tr("Could not a establish connection to the dive computer.");
 	}
 
-	setState(OPEN);
-
 	return NULL;
 }
 
-void ConfigureDiveComputer::dc_close(device_data_t *data)
+QString ConfigureDiveComputer::dc_open(device_data_t *data)
 {
+	if (currentState == READING || currentState == WRITING)
+		return tr("Wait for the settings operation to finish before connecting.");
+	// An OSTC3-family settings read owns its transport in the worker. Connecting
+	// here would immediately close it and connect a second time on Retrieve.
+	if (data->descriptor && dc_descriptor_get_type(data->descriptor) == DC_FAMILY_HW_OSTC3) {
+		setState(OPEN);
+		return {};
+	}
+	QString error = openTransport(data);
+	if (error.isEmpty())
+		setState(OPEN);
+	return error;
+}
+
+QString ConfigureDiveComputer::openForOtherOperation(device_data_t *data)
+{
+	if (currentState == READING || currentState == WRITING)
+		return tr("Wait for the settings operation to finish before connecting.");
+	stopReadSession();
 	if (data->device)
-		dc_device_close(data->device);
+		return {};
+	const QString error = openTransport(data);
+	if (error.isEmpty())
+		setState(OPEN);
+	else
+		closeTransport(data);
+	return error;
+}
+
+dc_status_t ConfigureDiveComputer::closeTransport(device_data_t *data)
+{
+	dc_status_t status = DC_STATUS_SUCCESS;
+	if (data->device)
+		status = dc_device_close(data->device);
 	data->device = NULL;
 	// Close the iostream before freeing the context: dc_serial_close (and other iostream
 	// close implementations) may call SYSERROR(abstract->context, ...) on error paths
 	// (e.g. tcsetattr/ioctl failing on a disconnected RFCOMM fd). Freeing the context
 	// first causes a use-after-free in those error paths.
-	dc_iostream_close(data->iostream);
+	const dc_status_t streamStatus = dc_iostream_close(data->iostream);
+	if (status == DC_STATUS_SUCCESS)
+		status = streamStatus;
 	data->iostream = NULL;
 	if (data->context)
 		dc_context_free(data->context);
@@ -627,6 +786,14 @@ void ConfigureDiveComputer::dc_close(device_data_t *data)
 
 	if (data->libdc_logfile)
 		fclose(data->libdc_logfile);
+	data->libdc_logfile = nullptr;
+	return status;
+}
 
+void ConfigureDiveComputer::dc_close(device_data_t *data)
+{
+	stopReadSession();
+	ostc4Snapshot.valid = false;
+	closeTransport(data);
 	setState(INITIAL);
 }

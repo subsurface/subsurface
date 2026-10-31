@@ -9,7 +9,9 @@
 #include "core/downloadfromdcthread.h"
 
 #include <array>
+#include <algorithm>
 #include <QFileDialog>
+#include <QCloseEvent>
 #include <QMessageBox>
 #include <QProgressDialog>
 #include <QSettings>
@@ -276,8 +278,13 @@ ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
 	delete config;
 }
 
-void ConfigureDiveComputerDialog::closeEvent(QCloseEvent *)
+void ConfigureDiveComputerDialog::closeEvent(QCloseEvent *event)
 {
+	if (config->currentState == ConfigureDiveComputer::READING || config->currentState == ConfigureDiveComputer::WRITING) {
+		event->ignore();
+		configError(tr("Wait for the settings operation to finish before disconnecting."));
+		return;
+	}
 	dc_close();
 
 	QSettings settings;
@@ -737,7 +744,7 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC4()
 
 	dil3.oxygen = GET_INT_FROM(ui.ostc4DilTable->item(2, 1), 21);
 	dil3.helium = GET_INT_FROM(ui.ostc4DilTable->item(2, 2), 0);
-	dil3.type = GET_INT_FROM(ui.ostc4DilTable->item(2, 4), 0);
+	dil3.type = GET_INT_FROM(ui.ostc4DilTable->item(2, 3), 0);
 	dil3.depth = GET_INT_FROM(ui.ostc4DilTable->item(2, 4), 0);
 
 	dil4.oxygen = GET_INT_FROM(ui.ostc4DilTable->item(3, 1), 21);
@@ -799,6 +806,10 @@ void ConfigureDiveComputerDialog::readSettings()
 
 void ConfigureDiveComputerDialog::resetSettings()
 {
+	if (const QString err = config->openForOtherOperation(&device_data); !err.isEmpty()) {
+		configError(err);
+		return;
+	}
 	ui.progressBar->setValue(0);
 	ui.progressBar->setFormat("%p%");
 	ui.progressBar->setTextVisible(true);
@@ -814,6 +825,8 @@ void ConfigureDiveComputerDialog::configMessage(QString msg)
 void ConfigureDiveComputerDialog::configError(QString err)
 {
 	ui.progressBar->setFormat(tr("Error") + ": " + err);
+	if (ui.dcStackedWidget->currentIndex() == 2)
+		ui.progressBar->setToolTip(ui.progressBar->format());
 }
 
 void ConfigureDiveComputerDialog::getDeviceData()
@@ -854,22 +867,258 @@ void ConfigureDiveComputerDialog::on_close_clicked()
 
 void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
 {
+	populateDeviceDetails();
+	if (ui.dcStackedWidget->currentIndex() == 2) {
+		if (!deviceDetails.ostc4Snapshot.valid) {
+			configError(tr("This model/firmware has no source-backed writable settings. Reload required."));
+			return;
+		}
+		const auto &records = deviceDetails.ostc4Snapshot.records;
+		const bool legacy = Ostc4SettingsTransaction::legacyCompatible(deviceDetails.ostc4Snapshot.identity);
+		device_data.sync_time = legacy && ui.dateTimeSyncCheckBox->isEnabled() && ui.dateTimeSyncCheckBox->isChecked();
+		const setpoint points[] = { deviceDetails.sp1, deviceDetails.sp2, deviceDetails.sp3,
+			deviceDetails.sp4, deviceDetails.sp5 };
+		bool changed = false;
+		if (!legacy) {
+			for (int n = 3; n < 5; ++n)
+				changed |= records[n].availability == Ostc4SettingsTransaction::Record::Readable &&
+					(points[n].sp != static_cast<unsigned char>(records[n].original[0]) ||
+					 points[n].depth != static_cast<unsigned char>(records[n].original[1]));
+			changed |= records[5].availability == Ostc4SettingsTransaction::Record::Readable &&
+				deviceDetails.gfLow != static_cast<unsigned char>(records[5].original[0]);
+			changed |= records[6].availability == Ostc4SettingsTransaction::Record::Readable &&
+				deviceDetails.gfHigh != static_cast<unsigned char>(records[6].original[0]);
+		}
+		if (legacy) {
+			changed |= device_data.sync_time;
+			changed |= deviceDetails.ostc4Snapshot.originalCustomText.size() == 60 &&
+				Ostc4SettingsTransaction::customText(deviceDetails.ostc4Snapshot.originalCustomText) != deviceDetails.customText;
+			const auto desired = deviceDetails.ostc4LegacyEdits();
+			for (int id = 0x10; id <= 0x44; ++id) {
+				const auto found = std::find(Ostc4SettingsTransaction::ids.begin(),
+					Ostc4SettingsTransaction::ids.end(), id);
+				const QByteArray &original = found == Ostc4SettingsTransaction::ids.end() ?
+					deviceDetails.ostc4Snapshot.displayRecords[id - 0x10] :
+					records[found - Ostc4SettingsTransaction::ids.begin()].original;
+				changed |= original.size() == 4 && desired[id - 0x10] != original;
+			}
+		}
+		const QString suggested = QFileInfo(filename).absolutePath() + QDir::separator() +
+			QStringLiteral("OSTC4-settings-%1-%2.json").arg(deviceDetails.serialNo,
+				QDateTime::currentDateTimeUtc().toString(QStringLiteral("yyyyMMdd-HHmmss")));
+		const QString path = changed ? QFileDialog::getSaveFileName(this, tr("Choose a NEW partial raw OSTC4 backup before applying"),
+			suggested, tr("OSTC4 raw backups (*.json)")) : QString();
+		if (changed && path.isEmpty()) {
+			configError(tr("Backup cancelled; no settings written."));
+			return;
+		}
+		config->setOstc4BackupPath(path);
+	}
 	ui.progressBar->setValue(0);
 	ui.progressBar->setFormat("%p%");
 	ui.progressBar->setTextVisible(true);
 
-	populateDeviceDetails();
 	config->saveDeviceDetails(deviceDetails, &device_data);
 }
 
 void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails newDeviceDetails)
 {
 	deviceDetails = std::move(newDeviceDetails);
+	if (device_data.product == "OSTC 4" || device_data.product == "OSTC 5" ||
+	    deviceDetails.ostc4Snapshot.identity.model == 0x43 || deviceDetails.ostc4Snapshot.identity.model == 0x44)
+		ui.dcStackedWidget->setCurrentIndex(2);
 	reloadValues();
+	if (config->currentState == ConfigureDiveComputer::READING)
+		ui.saveSettingsPushButton->setEnabled(false);
+	if (ui.dcStackedWidget->currentIndex() == 2) {
+		deviceDetails.ostc4Editable.fill(false);
+		const auto &snapshot = deviceDetails.ostc4Snapshot;
+		const bool legacy = Ostc4SettingsTransaction::legacyCompatible(snapshot.identity);
+		// Unsupported versions retain the narrow source-backed editor.
+		for (auto *widget : ui.page_ostc4->findChildren<QWidget *>()) {
+			if (qobject_cast<QAbstractSpinBox *>(widget) || qobject_cast<QComboBox *>(widget) ||
+			    qobject_cast<QLineEdit *>(widget) || qobject_cast<QAbstractButton *>(widget) ||
+			    qobject_cast<QTableWidget *>(widget))
+				widget->setEnabled(false);
+		}
+		const bool gf = snapshot.valid &&
+			snapshot.records[5].availability == Ostc4SettingsTransaction::Record::Readable &&
+			snapshot.records[6].availability == Ostc4SettingsTransaction::Record::Readable &&
+			ui.gfLowSpinBox_4->value() == static_cast<quint8>(snapshot.records[5].original[0]) &&
+			ui.gfHighSpinBox_4->value() == static_cast<quint8>(snapshot.records[6].original[0]);
+		ui.gfLowSpinBox_4->setEnabled(gf);
+		ui.gfHighSpinBox_4->setEnabled(gf);
+		bool anyEditable = gf;
+		for (auto *field : { ui.gfLowSpinBox_4, ui.gfHighSpinBox_4 })
+			if (auto *edit = field->findChild<QLineEdit *>())
+				edit->setEnabled(gf);
+		for (int row = 0; row < 5; ++row) {
+			const bool editable = (legacy || row >= 3) && snapshot.valid &&
+				snapshot.records[row].availability == Ostc4SettingsTransaction::Record::Readable;
+			deviceDetails.ostc4Editable[0x1a + row - 0x10] = editable;
+			anyEditable |= editable;
+			for (int col = 1; col <= 2; ++col) {
+				auto *item = ui.ostc4SetPointTable->item(row, col);
+				if (item)
+					item->setFlags(editable ? item->flags() | Qt::ItemIsEditable : item->flags() & ~Qt::ItemIsEditable);
+			}
+		}
+		ui.ostc4SetPointTable->setEnabled(snapshot.valid);
+		if (legacy) {
+			ui.customTextLlineEdit_4->setEnabled(snapshot.originalCustomText.size() == 60);
+			anyEditable |= snapshot.originalCustomText.size() == 60;
+			for (int group = 0; group < 2; ++group) {
+				QTableWidget *table = group ? ui.ostc4DilTable : ui.ostc4GasTable;
+				table->setEnabled(snapshot.valid);
+				for (int row = 0; row < 5; ++row) {
+					deviceDetails.ostc4Editable[group * 5 + row] =
+						snapshot.valid && snapshot.displayRecords[group * 5 + row].size() == 4;
+					anyEditable |= deviceDetails.ostc4Editable[group * 5 + row];
+				}
+				for (int row = 0; row < 5; ++row)
+					for (int col = 1; col <= 4; ++col) {
+						auto *item = table->item(row, col);
+						if (item)
+							item->setFlags(deviceDetails.ostc4Editable[group * 5 + row] ?
+								item->flags() | Qt::ItemIsEditable : item->flags() & ~Qt::ItemIsEditable);
+					}
+			}
+			const std::pair<int, QWidget *> editable[] = {
+				{0x1f, ui.ccrModeComboBox_4}, {0x20, ui.diveModeComboBox_4}, {0x21, ui.decoTypeComboBox_4},
+				{0x22, ui.ppO2MaxSpinBox_4}, {0x23, ui.ppO2MinSpinBox_4}, {0x24, ui.futureTTSSpinBox_4},
+				{0x27, ui.aGFLowSpinBox_4}, {0x28, ui.aGFHighSpinBox_4}, {0x29, ui.vpmConservatismSpinBox},
+				{0x2c, ui.lastDecoSpinBox_4}, {0x2d, ui.brightnessComboBox_4}, {0x2e, ui.unitsComboBox_4},
+				{0x30, ui.salinitySpinBox_4}, {0x31, ui.diveModeColour_4}, {0x32, ui.languageComboBox_4},
+				{0x33, ui.dateFormatComboBox_4}, {0x34, ui.compassDeclinationSpinBox_4},
+				{0x35, ui.pressureSensorOffsetSpinBox_4},
+				{0x38, ui.setPointFallbackCheckBox_4}, {0x39, ui.flipScreenCheckBox_4},
+				{0x3a, ui.buttonSensitivity_4}, {0x3d, ui.decoGasConsumption_4},
+				{0x3e, ui.travelGasConsumption_4}, {0x41, ui.alwaysShowppO2_4},
+				{0x42, ui.tempSensorOffsetDoubleSpinBox_4}, {0x43, ui.safetyStopLengthSpinBox_4},
+				{0x44, ui.safetyStopStartDepthDoubleSpinBox_4}
+			};
+			for (const auto &field : editable) {
+				// reloadValuesOSTC4 explicitly hides unrepresentable fields. isVisible()
+				// also tests the current tab and dialog, which may not be shown yet.
+				const bool available = !field.second->isHidden() && snapshot.displayRecords[field.first - 0x10].size() == 4;
+				field.second->setEnabled(available);
+				deviceDetails.ostc4Editable[field.first - 0x10] = available;
+				if (auto *edit = field.second->findChild<QLineEdit *>())
+					edit->setEnabled(available);
+				anyEditable |= available;
+			}
+			deviceDetails.ostc4Editable[0x25 - 0x10] = gf;
+			deviceDetails.ostc4Editable[0x26 - 0x10] = gf;
+		}
+		ui.saveSettingsPushButton->setEnabled(anyEditable || legacy); // allow an explicit clock-only action
+		ui.dateTimeSyncCheckBox->setEnabled(legacy);
+		ui.progressBar->setFormat(legacy ?
+			(anyEditable ? tr("%1 %2: settings read; available controls can be edited.") :
+			 tr("%1 %2: no settings available to edit; explicit clock sync remains available."))
+				.arg(deviceDetails.model, deviceDetails.firmwareVersion) : snapshot.valid ?
+			tr("%1 %2: gases, diluents, setpoints 1-3 and other shown values are read-only; only setpoints 4/5 and GF low/high can be edited when readable. Unavailable replies are blank/hidden. Other settings cannot be written here. Reads do not verify writing or persistence.")
+				.arg(deviceDetails.model, deviceDetails.firmwareVersion) :
+			tr("%1 %2: unsupported or unverified firmware; settings disabled.")
+				.arg(deviceDetails.model, deviceDetails.firmwareVersion));
+		ui.progressBar->setToolTip(legacy ?
+			tr("Released 1.7.5 compatibility editing: only represented, readable settings with safe encodings can be written. Unsafe legacy encodings remain disabled. Reads and immediate read-back do not verify persistence or hardware compatibility. Explicit clock sync is not backed up or read-back verified.") :
+			ui.progressBar->format());
+		ui.page_ostc4->setEnabled(true);
+	}
 }
 
 void ConfigureDiveComputerDialog::processStateChanged(ConfigureDiveComputer::states oldState, ConfigureDiveComputer::states newState)
 {
+	if (newState == ConfigureDiveComputer::states::READING) {
+		ui.saveSettingsPushButton->setEnabled(false);
+		ui.retrieveDetails->setEnabled(false);
+		ui.connectButton->setEnabled(false);
+		ui.connectBluetoothButton->setEnabled(false);
+		ui.resetButton->setEnabled(false);
+		ui.resetButton_4->setEnabled(false);
+	}
+	if (oldState == ConfigureDiveComputer::states::READING &&
+	    (newState == ConfigureDiveComputer::states::DONE || newState == ConfigureDiveComputer::states::ERRORED))
+		ui.retrieveDetails->setEnabled(true);
+	if (oldState == ConfigureDiveComputer::states::READING &&
+	    (newState == ConfigureDiveComputer::states::DONE || newState == ConfigureDiveComputer::states::ERRORED) &&
+	    device_data.device) {
+		ui.resetButton->setEnabled(true);
+		ui.resetButton_4->setEnabled(true);
+	}
+	if (oldState == ConfigureDiveComputer::states::READING &&
+	    (newState == ConfigureDiveComputer::states::DONE || newState == ConfigureDiveComputer::states::ERRORED) &&
+	    !device_data.device) {
+		// The read failed and the worker closed its session. Keep the logical
+		// connection available for a retry. Reset opens on demand.
+		ui.disconnectButton->setEnabled(true);
+		ui.resetButton->setEnabled(true);
+		ui.resetButton_4->setEnabled(true);
+		ui.updateFirmwareButton->setEnabled(false);
+		ui.dateTimeSyncCheckBox->setEnabled(false);
+		ui.connectButton->setEnabled(false);
+		ui.connectBluetoothButton->setEnabled(false);
+	}
+	if (oldState == ConfigureDiveComputer::states::READING &&
+	    newState == ConfigureDiveComputer::states::DONE)
+		ui.saveSettingsPushButton->setEnabled(ui.dcStackedWidget->currentIndex() != 2 || deviceDetails.ostc4Snapshot.valid);
+	if (newState == ConfigureDiveComputer::states::READING && ui.dcStackedWidget->currentIndex() == 2) {
+		deviceDetails.ostc4Snapshot.valid = false;
+		deviceDetails.ostc4Editable.fill(false);
+		ui.page_ostc4->setEnabled(false); // A failed read must not leave the previous editor usable.
+		ui.saveSettingsPushButton->setEnabled(false);
+	}
+	if (newState == ConfigureDiveComputer::states::WRITING && ui.dcStackedWidget->currentIndex() == 2) {
+		ui.page_ostc4->setEnabled(false); // Only a fresh successful read can restore editing.
+		ui.saveSettingsPushButton->setEnabled(false);
+		ui.retrieveDetails->setEnabled(false);
+		ui.disconnectButton->setEnabled(false);
+		ui.resetButton_4->setEnabled(false);
+		ui.dateTimeSyncCheckBox->setEnabled(false);
+		ui.backupButton->setEnabled(false);
+		ui.restoreBackupButton->setEnabled(false);
+	}
+	if (newState == ConfigureDiveComputer::states::WRITING) {
+		ui.resetButton->setEnabled(false);
+		ui.resetButton_4->setEnabled(false);
+		ui.updateFirmwareButton->setEnabled(false);
+	}
+	if (oldState == ConfigureDiveComputer::states::WRITING &&
+	    (newState == ConfigureDiveComputer::states::DONE || newState == ConfigureDiveComputer::states::ERRORED) &&
+	    !device_data.device) {
+		ui.disconnectButton->setEnabled(false);
+		ui.resetButton->setEnabled(false);
+		ui.resetButton_4->setEnabled(false);
+		ui.connectButton->setEnabled(true);
+		ui.connectBluetoothButton->setEnabled(true);
+	}
+	if (oldState == ConfigureDiveComputer::states::WRITING &&
+	    (newState == ConfigureDiveComputer::states::DONE || newState == ConfigureDiveComputer::states::ERRORED) &&
+	    ui.dcStackedWidget->currentIndex() == 2) {
+		deviceDetails.ostc4Snapshot.valid = false;
+		deviceDetails.ostc4Editable.fill(false);
+		ui.page_ostc4->setEnabled(false);
+		ui.saveSettingsPushButton->setEnabled(false); // A fresh device read is mandatory.
+		ui.retrieveDetails->setEnabled(false);
+		ui.disconnectButton->setEnabled(false);
+		ui.resetButton_4->setEnabled(false);
+		ui.dateTimeSyncCheckBox->setEnabled(false);
+		ui.backupButton->setEnabled(false);
+		ui.restoreBackupButton->setEnabled(false);
+		ui.updateFirmwareButton->setEnabled(false);
+		ui.forceUpdateFirmware->setEnabled(false);
+		ui.connectButton->setEnabled(true);
+#ifdef BT_SUPPORT
+		ui.connectBluetoothButton->setEnabled(supportedDiveComputers[ui.DiveComputerList->currentRow()].transport == DC_TRANSPORT_BLUETOOTH);
+#endif
+		ui.DiveComputerList->setEnabled(true);
+		ui.logToFile->setEnabled(true);
+		// The worker has already closed its transport. Do not call dc_close():
+		// that would erase the save outcome and may race the worker's teardown.
+		ui.progressBar->setFormat(ui.progressBar->format() +
+			tr("\nDisconnected after saving. Re-enable Bluetooth on the dive computer if needed, then Connect and Retrieve details again before editing."));
+		ui.progressBar->setToolTip(ui.progressBar->format());
+	}
 	if (oldState == ConfigureDiveComputer::states::FWUPDATE && newState == ConfigureDiveComputer::states::DONE) {
 		// Close the bluetooth connection to trigger the start of the update on the device
 		// instead of making it wait for a timeout
@@ -1295,10 +1544,69 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC4()
 	//load setpoint 5 values
 	ui.ostc4SetPointTable->setItem(4, 1, new QTableWidgetItem(QString::number(deviceDetails.sp5.sp)));
 	ui.ostc4SetPointTable->setItem(4, 2, new QTableWidgetItem(QString::number(deviceDetails.sp5.depth)));
+	const auto &snapshot = deviceDetails.ostc4Snapshot;
+	// Missing replies are unknown, not zero. Keep their cells blank and
+	// their controls out of view rather than displaying constructor defaults.
+	ui.gfLowSpinBox_4->setVisible(snapshot.records[5].availability == Ostc4SettingsTransaction::Record::Readable);
+	ui.gfHighSpinBox_4->setVisible(snapshot.records[6].availability == Ostc4SettingsTransaction::Record::Readable);
+	for (int row = 0; row < 5; ++row) {
+		for (int group = 0; group < 2; ++group) {
+			QTableWidget *table = group ? ui.ostc4DilTable : ui.ostc4GasTable;
+			if (snapshot.displayRecords[group * 5 + row].size() != 4)
+				for (int col = 1; col <= 4; ++col)
+					table->item(row, col)->setText(QString());
+		}
+		if (snapshot.records[row].availability != Ostc4SettingsTransaction::Record::Readable)
+			for (int col = 1; col <= 2; ++col)
+				ui.ostc4SetPointTable->item(row, col)->setText(QString());
+	}
+	const std::pair<int, QWidget *> shown[] = {
+		{0x1f, ui.ccrModeComboBox_4}, {0x20, ui.diveModeComboBox_4},
+		{0x21, ui.decoTypeComboBox_4}, {0x22, ui.ppO2MaxSpinBox_4},
+		{0x23, ui.ppO2MinSpinBox_4}, {0x24, ui.futureTTSSpinBox_4},
+		{0x27, ui.aGFLowSpinBox_4}, {0x28, ui.aGFHighSpinBox_4},
+		{0x29, ui.vpmConservatismSpinBox}, {0x2c, ui.lastDecoSpinBox_4},
+		{0x2d, ui.brightnessComboBox_4}, {0x2e, ui.unitsComboBox_4},
+		{0x30, ui.salinitySpinBox_4}, {0x31, ui.diveModeColour_4},
+		{0x32, ui.languageComboBox_4}, {0x33, ui.dateFormatComboBox_4},
+		{0x34, ui.compassDeclinationSpinBox_4}, {0x35, ui.pressureSensorOffsetSpinBox_4},
+		{0x36, ui.safetyStopCheckBox_4}, {0x38, ui.setPointFallbackCheckBox_4},
+		{0x39, ui.flipScreenCheckBox_4}, {0x3a, ui.buttonSensitivity_4},
+		{0x3d, ui.decoGasConsumption_4}, {0x3e, ui.travelGasConsumption_4},
+		{0x41, ui.alwaysShowppO2_4}, {0x42, ui.tempSensorOffsetDoubleSpinBox_4},
+		{0x43, ui.safetyStopLengthSpinBox_4}, {0x44, ui.safetyStopStartDepthDoubleSpinBox_4}
+	};
+	for (const auto &field : shown) {
+		const QByteArray &raw = snapshot.displayRecords[field.first - 0x10];
+		bool visible = raw.size() == 4;
+		if (visible) {
+			const int value = (field.first == 0x34 || field.first == 0x35 || field.first == 0x42) ?
+				static_cast<qint8>(raw[0]) : static_cast<quint8>(raw[0]);
+			if (auto *spin = qobject_cast<QSpinBox *>(field.second))
+				visible = spin->value() == value;
+			else if (auto *spin = qobject_cast<QDoubleSpinBox *>(field.second))
+				visible = spin->value() == value / 10.0;
+			else if (auto *combo = qobject_cast<QComboBox *>(field.second))
+				visible = combo->currentIndex() == value;
+		}
+		field.second->setVisible(visible);
+	}
 }
 
 void ConfigureDiveComputerDialog::on_backupButton_clicked()
 {
+	if (ui.dcStackedWidget->currentIndex() == 2) {
+		const QString path = QFileDialog::getSaveFileName(this, tr("Save partial raw OSTC4 backup"),
+			QFileInfo(filename).absolutePath() + QDir::separator() + QStringLiteral("OSTC4-settings.json"),
+			tr("OSTC4 raw backups (*.json)"));
+		QString error;
+		if (!path.isEmpty() && (QFileInfo::exists(path) || !deviceDetails.ostc4Snapshot.saveBackup(path, error)))
+			QMessageBox::critical(this, tr("Backup failed"), tr("Choose a new file. %1").arg(error));
+		else if (!path.isEmpty())
+			QMessageBox::information(this, tr("Partial raw backup saved"),
+				tr("Readable records only, not all device settings: %1").arg(path));
+		return;
+	}
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
 	QString backupPath = QFileDialog::getSaveFileName(this, tr("Backup dive computer settings"),
@@ -1319,6 +1627,20 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 
 void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 {
+	if (ui.dcStackedWidget->currentIndex() == 2) {
+		const QString path = QFileDialog::getOpenFileName(this, tr("Inspect OSTC4 raw backup (no automatic restore)"),
+			QFileInfo(filename).absolutePath(), tr("OSTC4 raw backups (*.json)"));
+		if (!path.isEmpty()) {
+			QString description;
+			if (!config->validateOstc4Backup(path, description))
+				QMessageBox::critical(this, tr("Backup rejected"),
+					tr("Malformed backup or wrong device/model/firmware. Read the device again before recovery."));
+			else
+				QMessageBox::information(this, tr("Partial backup for manual recovery"),
+					tr("Original raw records (hex):\n%1\nCompare with a fresh device read. Re-enter only supported fields manually, then apply with a NEW backup. No automatic rollback or guarantee of power-cycle persistence.").arg(description));
+		}
+		return;
+	}
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
 	QString restorePath = QFileDialog::getOpenFileName(this, tr("Restore dive computer settings"),
@@ -1346,6 +1668,10 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 	QString firmwarePath = QFileDialog::getOpenFileName(this, tr("Select firmware file"),
 							    filename, tr("All files") + " (*.*)");
 	if (!firmwarePath.isEmpty()) {
+		if (const QString err = config->openForOtherOperation(&device_data); !err.isEmpty()) {
+			configError(err);
+			return;
+		}
 		ui.progressBar->setValue(0);
 		ui.progressBar->setFormat("%p%");
 		ui.progressBar->setTextVisible(true);
@@ -1371,7 +1697,8 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 void ConfigureDiveComputerDialog::changeTimeSync(int state)
 {
 	bool newState = state == Qt::Checked;
-	ui.dateTimeSyncCheckBox->setEnabled(newState);
+	if (!Ostc4SettingsTransaction::legacyCompatible(deviceDetails.ostc4Snapshot.identity))
+		ui.dateTimeSyncCheckBox->setEnabled(newState);
 	device_data.sync_time = newState;
 }
 
@@ -1441,7 +1768,7 @@ void ConfigureDiveComputerDialog::dc_open()
 	ui.forceUpdateFirmware->setEnabled(selectedDiveComputer.forcedFirmwareUpgradeSupported);
 	ui.dateTimeSyncCheckBox->setEnabled(selectedDiveComputer.timeSyncSupported);
 
-	ui.progressBar->setFormat(tr("Connected to device"));
+	ui.progressBar->setFormat(device_data.device ? tr("Connected to device") : tr("Ready to retrieve details"));
 
 	qPrefDiveComputer::set_device(device_data.devname.c_str());
 	qPrefDiveComputer::set_device_name(device_data.btname.c_str());
@@ -1451,7 +1778,14 @@ void ConfigureDiveComputerDialog::dc_open()
 
 void ConfigureDiveComputerDialog::dc_close()
 {
+	if (config->currentState == ConfigureDiveComputer::READING || config->currentState == ConfigureDiveComputer::WRITING) {
+		configError(tr("Wait for the settings operation to finish before disconnecting."));
+		return;
+	}
 	config->dc_close(&device_data);
+	deviceDetails.ostc4Snapshot.valid = false;
+	deviceDetails.ostc4Editable.fill(false);
+	ui.page_ostc4->setEnabled(false);
 
 	ui.retrieveDetails->setEnabled(false);
 	ui.resetButton->setEnabled(false);
