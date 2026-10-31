@@ -263,7 +263,8 @@ Kirigami.Page {
 		// pops up when first showing a dive. So let's get more aggressive
 		// QML doesn't let me trigger this based on the visible property of the inputMethod,
 		// but when it becomes visible, the height of the page changes, so let's use that
-		if (Qt.inputMethod.visible && state === "view")
+		// Only hide it while viewing this page, not when filtering the dive list.
+		if (pageStack.currentItem === diveDetailsPage && Qt.inputMethod.visible && state === "view")
 			Qt.inputMethod.hide()
 	}
 
