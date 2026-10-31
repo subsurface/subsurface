@@ -358,6 +358,18 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	function toggleFilter() {
+		rootItem.filterToggle = !rootItem.filterToggle
+		if (!rootItem.filterToggle) {
+			sitefilter.focus = false
+			Qt.inputMethod.hide()
+			sitefilter.text = ""
+			manager.setFilter("", 0)
+		}
+		// On opening, filterBar.onEnabledChanged focuses the field after the
+		// header animation. Showing the keyboard here is too early.
+	}
+
 	Controls.Label {
 		property bool showProcessingText: manager.diveListProcessing
 		anchors.fill: parent
@@ -420,6 +432,14 @@ Kirigami.ScrollablePage {
 				Layout.maximumWidth: filterBar.width * 0.3
 				onActivated:  {
 					manager.setFilter(sitefilter.text, currentIndex)
+					// The popup takes focus while selecting a mode. Restore it only
+					// after the popup has closed.
+					Qt.callLater(function() {
+						if (rootItem.filterToggle && pageStack.currentItem === page) {
+							sitefilter.forceActiveFocus()
+							Qt.inputMethod.show()
+						}
+					})
 				}
 			}
 			SsrfTextField  {
@@ -432,20 +452,17 @@ Kirigami.ScrollablePage {
 				onTextChanged: {
 					manager.setFilter(text, sitefilterMode.currentIndex)
 				}
-				onVisibleChanged: {
-					// reset the filter when it gets toggled
-					text = ""
-				}
-				onEnabledChanged: {
-					if (enabled && visible) {
-						forceActiveFocus()
-					}
-				}
 			}
 			TemplateLabel {
 				id: numShown
 				verticalAlignment: Text.AlignVCenter
 				text: diveModel.shown
+			}
+			onEnabledChanged: {
+				if (enabled && pageStack.currentItem === page) {
+					sitefilter.forceActiveFocus()
+					Qt.inputMethod.show()
+				}
 			}
 		}
 	}
@@ -464,12 +481,7 @@ Kirigami.ScrollablePage {
 			SsrfToolButton {
 				iconSource: "qrc:/icons/ic_filter_list.svg"
 				onClicked: {
-					rootItem.filterToggle = !rootItem.filterToggle
-					manager.setFilter("", 0)
-					if (rootItem.filterToggle)
-						Qt.inputMethod.show()
-					else
-						Qt.inputMethod.hide()
+					toggleFilter()
 				}
 			}
 			SsrfToolButton {
@@ -532,12 +544,7 @@ Kirigami.ScrollablePage {
 		}
 		text: qsTr("Filter dives")
 		onTriggered: {
-			rootItem.filterToggle = !rootItem.filterToggle
-			manager.setFilter("", 0)
-			if (rootItem.filterToggle)
-				Qt.inputMethod.show()
-			else
-				Qt.inputMethod.hide()
+			toggleFilter()
 		}
 	}
 
