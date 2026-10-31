@@ -15,5 +15,6 @@ private slots:
 	void readWorkerCleansPartialOpen();
 	void retrieveUsesOneWorkerConnection();
 	void rfcommDisconnectWait();
+	void clampedGradientFactorsStayUnchanged();
 };
 #endif

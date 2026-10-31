@@ -1893,9 +1893,11 @@ void WriteSettingsThread::perform()
 					desired[n][1] = static_cast<char>(points[n].depth);
 				}
 			}
-			if (snapshot.records[5].availability == Ostc4SettingsTransaction::Record::Readable)
+			if (snapshot.records[5].availability == Ostc4SettingsTransaction::Record::Readable &&
+			    m_deviceDetails.ostc4Editable[0x25 - 0x10])
 				desired[5][0] = static_cast<char>(m_deviceDetails.gfLow);
-			if (snapshot.records[6].availability == Ostc4SettingsTransaction::Record::Readable)
+			if (snapshot.records[6].availability == Ostc4SettingsTransaction::Record::Readable &&
+			    m_deviceDetails.ostc4Editable[0x26 - 0x10])
 				desired[6][0] = static_cast<char>(m_deviceDetails.gfHigh);
 			dc_device_t *device = m_data->device;
 			auto identify = [device](Ostc4SettingsTransaction::Identity &i) { return ostc4_identify(device, i); };

@@ -884,9 +884,11 @@ void ConfigureDiveComputerDialog::on_saveSettingsPushButton_clicked()
 				changed |= records[n].availability == Ostc4SettingsTransaction::Record::Readable &&
 					(points[n].sp != static_cast<unsigned char>(records[n].original[0]) ||
 					 points[n].depth != static_cast<unsigned char>(records[n].original[1]));
-			changed |= records[5].availability == Ostc4SettingsTransaction::Record::Readable &&
+			changed |= deviceDetails.ostc4Editable[0x25 - 0x10] &&
+				records[5].availability == Ostc4SettingsTransaction::Record::Readable &&
 				deviceDetails.gfLow != static_cast<unsigned char>(records[5].original[0]);
-			changed |= records[6].availability == Ostc4SettingsTransaction::Record::Readable &&
+			changed |= deviceDetails.ostc4Editable[0x26 - 0x10] &&
+				records[6].availability == Ostc4SettingsTransaction::Record::Readable &&
 				deviceDetails.gfHigh != static_cast<unsigned char>(records[6].original[0]);
 		}
 		if (legacy) {
@@ -948,6 +950,8 @@ void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails newDeviceD
 			ui.gfHighSpinBox_4->value() == static_cast<quint8>(snapshot.records[6].original[0]);
 		ui.gfLowSpinBox_4->setEnabled(gf);
 		ui.gfHighSpinBox_4->setEnabled(gf);
+		deviceDetails.ostc4Editable[0x25 - 0x10] = gf;
+		deviceDetails.ostc4Editable[0x26 - 0x10] = gf;
 		bool anyEditable = gf;
 		for (auto *field : { ui.gfLowSpinBox_4, ui.gfHighSpinBox_4 })
 			if (auto *edit = field->findChild<QLineEdit *>())
@@ -1007,8 +1011,6 @@ void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails newDeviceD
 					edit->setEnabled(available);
 				anyEditable |= available;
 			}
-			deviceDetails.ostc4Editable[0x25 - 0x10] = gf;
-			deviceDetails.ostc4Editable[0x26 - 0x10] = gf;
 		}
 		ui.saveSettingsPushButton->setEnabled(anyEditable || legacy); // allow an explicit clock-only action
 		ui.dateTimeSyncCheckBox->setEnabled(legacy);

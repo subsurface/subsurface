@@ -40,6 +40,54 @@ void TestOstc4Dialog::rfcommDisconnectWait()
 #endif
 }
 
+void TestOstc4Dialog::clampedGradientFactorsStayUnchanged()
+{
+	using Transaction = Ostc4SettingsTransaction;
+	const Transaction::Identity identity { 0x43, 428, static_cast<quint16>((1 << 11) | (7 << 6) | (6 << 1) | 1) };
+	std::map<quint8, QByteArray> device;
+	for (int id = 0x10; id <= 0x44; ++id)
+		device[id] = QByteArray::fromHex("00000000");
+	device[0x25][0] = 5; // UI minimum is 10.
+	device[0x26][0] = 50; // UI minimum is 60, but 60 passes transaction validation.
+	Transaction snapshot;
+	QVERIFY(snapshot.capture([&](Transaction::Identity &out) { out = identity; return true; },
+		[&](quint8 id, QByteArray &out) { out = device.at(id); return true; }));
+	DeviceDetails details;
+	details.model = QStringLiteral("OSTC 4");
+	details.ostc4Snapshot = snapshot;
+	details.gfLow = 5;
+	details.gfHigh = 50;
+	ConfigureDiveComputerDialog dialog(QStringLiteral("/tmp/ostc4-gf-test.xml"));
+	dialog.deviceDetailsReceived(details);
+	QVERIFY(!dialog.ui.gfLowSpinBox_4->isEnabled());
+	QVERIFY(!dialog.ui.gfHighSpinBox_4->isEnabled());
+	QVERIFY(!dialog.deviceDetails.ostc4Editable[0x25 - 0x10]);
+	QVERIFY(!dialog.deviceDetails.ostc4Editable[0x26 - 0x10]);
+
+	// The populated details contain the clamped values, but cannot change either byte.
+	dialog.populateDeviceDetails();
+	device_data_t data;
+	data.product = "OSTC 4";
+	WriteSettingsThread worker(nullptr, &data);
+	DeviceDetails edited = dialog.deviceDetails;
+	edited.sp4 = setpoint(0, 0);
+	edited.sp5 = setpoint(0, 0);
+	worker.setDeviceDetails(edited);
+	auto io = std::make_shared<Ostc4SettingsIO>();
+	io->identify = [&](Transaction::Identity &out) { out = identity; return true; };
+	io->read = [&](quint8 id, QByteArray &out) { out = device.at(id); return true; };
+	int writes = 0;
+	io->write = [&](quint8, const QByteArray &) { ++writes; return true; };
+	worker.setIO(io);
+	QSignalSpy results(&worker, &WriteSettingsThread::result);
+	QSignalSpy errors(&worker, &WriteSettingsThread::error);
+	worker.perform();
+	QCOMPARE(errors.size(), 0);
+	QCOMPARE(writes, 0);
+	QVERIFY(!results.isEmpty());
+	QVERIFY(results.first().first().toString().contains(QStringLiteral("No changes")));
+}
+
 void TestOstc4Dialog::retrieveUsesOneWorkerConnection()
 {
 	// Exercise the actual connect button, controller and Retrieve details slot.
