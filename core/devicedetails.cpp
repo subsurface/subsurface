@@ -11,6 +11,55 @@ setpoint::setpoint(unsigned char sp, unsigned char depth) :
 {
 }
 
+std::array<QByteArray, 0x35> DeviceDetails::ostc4LegacyEdits() const
+{
+	std::array<QByteArray, 0x35> desired = ostc4Snapshot.displayRecords;
+	for (size_t n = 0; n < Ostc4SettingsTransaction::ids.size(); ++n)
+		desired[Ostc4SettingsTransaction::ids[n] - 0x10] = ostc4Snapshot.records[n].original;
+	const gas gases[] = { gas1, gas2, gas3, gas4, gas5, dil1, dil2, dil3, dil4, dil5 };
+	for (int n = 0; n < 10; ++n) {
+		QByteArray &raw = desired[n];
+		if (raw.size() != 4 || !ostc4Editable[n])
+			continue;
+		raw[0] = static_cast<char>(gases[n].oxygen);
+		raw[1] = static_cast<char>(gases[n].helium);
+		raw[2] = static_cast<char>(gases[n].type);
+		raw[3] = static_cast<char>(gases[n].depth);
+	}
+	const setpoint points[] = { sp1, sp2, sp3, sp4, sp5 };
+	for (int n = 0; n < 5; ++n) {
+		QByteArray &raw = desired[0x1a + n - 0x10];
+		if (raw.size() == 4 && ostc4Editable[0x1a + n - 0x10]) {
+			raw[0] = static_cast<char>(points[n].sp);
+			raw[1] = static_cast<char>(points[n].depth);
+		}
+	}
+	const std::pair<int, int> scalars[] = {
+		{0x1f, ccrMode}, {0x20, diveMode}, {0x21, decoType}, {0x22, ppO2Max},
+		{0x23, ppO2Min}, {0x24, futureTTS}, {0x25, gfLow}, {0x26, gfHigh},
+		{0x27, aGFLow}, {0x28, aGFHigh}, {0x29, vpmConservatism},
+		{0x2c, lastDeco}, {0x2d, brightness}, {0x2e, units}, {0x30, salinity},
+		{0x31, diveModeColor}, {0x32, language}, {0x33, dateFormat},
+		{0x34, compassGain}, {0x35, pressureSensorOffset},
+		{0x38, setPointFallback}, {0x39, flipScreen}, {0x3a, buttonSensitivity},
+		{0x3d, decoGasConsumption}, {0x3e, travelGasConsumption},
+		{0x41, alwaysShowppO2}, {0x42, tempSensorOffset},
+		{0x43, safetyStopLength}, {0x44, safetyStopStartDepth}
+	};
+	for (const auto &field : scalars) {
+		QByteArray &raw = desired[field.first - 0x10];
+		if (raw.size() != 4 || !ostc4Editable[field.first - 0x10])
+			continue;
+		if (field.second < (field.first == 0x34 || field.first == 0x35 || field.first == 0x42 ? -128 : 0) ||
+		    field.second > (field.first == 0x34 || field.first == 0x35 || field.first == 0x42 ? 127 : 255)) {
+			raw = QByteArray(1, '\0'); // rejected by applyLegacy before any writes
+			continue;
+		}
+		raw[0] = static_cast<char>(field.second);
+	}
+	return desired;
+}
+
 DeviceDetails::DeviceDetails() :
 	setPointFallback(0),
 	ccrMode(0),

@@ -91,12 +91,19 @@ slots:
 #endif
 
 private:
+	friend class TestOstc4Dialog;
 	Ui::ConfigureDiveComputerDialog ui;
 
 	QString logFile;
 	QString filename;
+	QString ostc4BackupDirectory;
+	QString ostc4Status;
 
 	void closeEvent(QCloseEvent *event);
+	bool eventFilter(QObject *object, QEvent *event) override;
+	void setOstc4Status(const QString &message, const QString &extra = QString());
+	void clearOstc4Status();
+	void updateOstc4Status();
 
 	ConfigureDiveComputer *config;
 	device_data_t device_data;
@@ -106,6 +113,9 @@ private:
 
 	DeviceDetails deviceDetails;
 	void populateDeviceDetails();
+	QString newOstc4BackupPath() const;
+	bool saveManualOstc4Backup(const QString &path, QString &error) const;
+	void openOstc4BackupFolder();
 	void populateDeviceDetailsOSTC3();
 	void populateDeviceDetailsOSTC();
 	void populateDeviceDetailsSuuntoVyper();
