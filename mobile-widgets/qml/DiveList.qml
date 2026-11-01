@@ -454,7 +454,7 @@ Kirigami.ScrollablePage {
 				Layout.minimumWidth: 0
 				Layout.preferredWidth: Math.min(Kirigami.Units.gridUnit * 8, filterBar.width * 0.3)
 				Layout.maximumWidth: filterBar.width * 0.3
-				onActivated:  {
+				onActivated: {
 					manager.setFilter(sitefilter.text, currentIndex)
 					// The popup takes focus while selecting a mode. Restore it only
 					// after the popup has closed.
