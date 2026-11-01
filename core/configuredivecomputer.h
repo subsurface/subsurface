@@ -42,11 +42,14 @@ public:
 	bool restoreXMLBackup(const QString &fileName, DeviceDetails &details);
 	void startFirmwareUpdate(const QString &fileName, device_data_t *data, bool forceUpdate);
 	void resetSettings(device_data_t *data);
+	bool requiresReconnect() const { return readCloseFailed; }
 
 	QString dc_open(device_data_t *data);
 	QString openForOtherOperation(device_data_t *data);
 	// Test seam for the controller-to-worker transport lifecycle.
 	void setReadTransportForTesting(std::function<QString(device_data_t *)> open,
+		std::function<dc_status_t(device_data_t *)> close, std::function<bool(device_data_t *)> operation);
+	void setWriteTransportForTesting(std::function<QString(device_data_t *)> open,
 		std::function<dc_status_t(device_data_t *)> close, std::function<bool(device_data_t *)> operation);
 	void setReadDetailsForTesting(const DeviceDetails &details) { testDetails = details; }
 	void setOstc4IOForTesting(std::shared_ptr<const Ostc4SettingsIO> io) { testIO = std::move(io); }
@@ -55,7 +58,7 @@ public:
 	static dc_status_t closeTransport(device_data_t *data);
 public
 slots:
-	void dc_close(device_data_t *data);
+	dc_status_t dc_close(device_data_t *data);
 signals:
 	void progress(int percent);
 	void message(QString msg);
@@ -67,6 +70,8 @@ private:
 	Ostc4SettingsTransaction ostc4Snapshot;
 	QString ostc4BackupPath;
 	bool ostc4Writing = false;
+	bool readCloseFailed = false;
+	bool reconnectPending = false;
 	ReadSettingsThread *readThread;
 	WriteSettingsThread *writeThread;
 	ResetSettingsThread *resetThread;
@@ -74,6 +79,9 @@ private:
 	std::function<QString(device_data_t *)> readOpen = openTransport;
 	std::function<dc_status_t(device_data_t *)> readClose = closeTransport;
 	std::function<bool(device_data_t *)> readOperation;
+	std::function<QString(device_data_t *)> writeOpen = openTransport;
+	std::function<dc_status_t(device_data_t *)> writeClose = closeTransport;
+	std::function<bool(device_data_t *)> writeOperation;
 	DeviceDetails testDetails;
 	std::shared_ptr<const Ostc4SettingsIO> testIO;
 	dc_status_t stopReadSession();

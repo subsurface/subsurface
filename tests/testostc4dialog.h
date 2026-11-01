@@ -18,11 +18,21 @@ private slots:
 	void rfcommDisconnectWait();
 	void clampedGradientFactorsStayUnchanged();
 	void settingsBlockedDuringFirmwareAndReset();
+	void resetAndFirmwareIgnorePreviousError();
+	void resetInvalidatesOstc4Snapshot();
+	void disconnectBlockedDuringDeviceOperations();
+	void rejectPreservesOperationAndDisconnect();
+	void failedTeardownKeepsDialogOpen();
 	void openFailureWithoutCloseHook();
 	void dialogGuardsAndManualBackupError();
 	void closeFailureBlocksNextOperation();
 	void closeFailureBlocksOstc3Save();
+	void writeCloseFailureReportsError();
 	void precloseFailureBlocksRead();
+	void disconnectReportsCloseFailure();
+	void readAndCloseErrorsRemainVisible();
+	void modelPageFollowsLatestRead();
+	void writeCompletionWithoutSelection();
 	void recordOpenedUrl(QUrl url);
 private:
 	QUrl openedUrl;

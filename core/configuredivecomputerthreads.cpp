@@ -1835,7 +1835,7 @@ void WriteSettingsThread::setDeviceDetails(const DeviceDetails &details)
 }
 
 void WriteSettingsThread::setTransport(std::function<QString(device_data_t *)> open,
-	std::function<void(device_data_t *)> close)
+	std::function<dc_status_t(device_data_t *)> close)
 {
 	m_open = std::move(open);
 	m_close = std::move(close);
@@ -1843,14 +1843,17 @@ void WriteSettingsThread::setTransport(std::function<QString(device_data_t *)> o
 
 void WriteSettingsThread::run()
 {
+	auto close = [this] {
+		if (m_close && m_close(m_data) != DC_STATUS_SUCCESS)
+			emit error(tr("Settings transport did not close cleanly. Re-enable Bluetooth and reconnect before continuing; any settings sent may have taken effect."));
+	};
 	// The read session was closed by its creator. Never operate on a Qt socket
 	// opened in the GUI thread from this worker. Close even a partially opened
 	// session here, before the GUI can offer another read or disconnect.
 	if (m_open) {
 		const QString connectionError = m_open(m_data);
 		if (!connectionError.isEmpty()) {
-			if (m_close)
-				m_close(m_data);
+			close();
 			emit error(tr("Could not reconnect for OSTC 4/5 settings: %1. Connection failed before settings were applied; reload required.").arg(connectionError));
 			return;
 		}
@@ -1858,13 +1861,11 @@ void WriteSettingsThread::run()
 	if (m_testOperation) {
 		if (!m_testOperation(m_data))
 			emit error(tr("Settings operation failed; any changes already sent may have taken effect. Reload required."));
-		if (m_close)
-			m_close(m_data);
+		close();
 		return;
 	}
 	perform();
-	if (m_close)
-		m_close(m_data);
+	close();
 }
 
 void WriteSettingsThread::perform()

@@ -290,14 +290,30 @@ ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
 	delete config;
 }
 
-void ConfigureDiveComputerDialog::closeEvent(QCloseEvent *event)
+void ConfigureDiveComputerDialog::reject()
 {
-	if (config->currentState == ConfigureDiveComputer::READING || config->currentState == ConfigureDiveComputer::WRITING) {
-		event->ignore();
-		configError(tr("Wait for the settings operation to finish before disconnecting."));
+	if (config->currentState == ConfigureDiveComputer::READING || config->currentState == ConfigureDiveComputer::WRITING ||
+	    config->currentState == ConfigureDiveComputer::FWUPDATE || config->currentState == ConfigureDiveComputer::RESETTING) {
+		configError(tr("Wait for the device operation to finish before disconnecting."));
 		return;
 	}
-	dc_close();
+	if (!dc_close())
+		return;
+	QDialog::reject();
+}
+
+void ConfigureDiveComputerDialog::closeEvent(QCloseEvent *event)
+{
+	if (config->currentState == ConfigureDiveComputer::READING || config->currentState == ConfigureDiveComputer::WRITING ||
+	    config->currentState == ConfigureDiveComputer::FWUPDATE || config->currentState == ConfigureDiveComputer::RESETTING) {
+		event->ignore();
+		configError(tr("Wait for the device operation to finish before disconnecting."));
+		return;
+	}
+	if (!dc_close()) {
+		event->ignore();
+		return;
+	}
 
 	QSettings settings;
 	settings.beginGroup("ConfigureDiveComputerDialog");
@@ -1009,6 +1025,12 @@ void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails newDeviceD
 	if (device_data.product == "OSTC 4" || device_data.product == "OSTC 5" ||
 	    deviceDetails.ostc4Snapshot.identity.model == 0x43 || deviceDetails.ostc4Snapshot.identity.model == 0x44)
 		ui.dcStackedWidget->setCurrentIndex(2);
+	else if (device_data.product == "OSTC Plus")
+		ui.dcStackedWidget->setCurrentIndex(1);
+	else if (device_data.product == "OSTC 2N")
+		ui.dcStackedWidget->setCurrentIndex(0);
+	else if (device_data.product == "Vyper")
+		ui.dcStackedWidget->setCurrentIndex(3);
 	reloadValues();
 	if (config->currentState == ConfigureDiveComputer::READING)
 		ui.saveSettingsPushButton->setEnabled(false);
@@ -1111,6 +1133,28 @@ void ConfigureDiveComputerDialog::deviceDetailsReceived(DeviceDetails newDeviceD
 
 void ConfigureDiveComputerDialog::processStateChanged(ConfigureDiveComputer::states oldState, ConfigureDiveComputer::states newState)
 {
+	if (newState == ConfigureDiveComputer::states::RESETTING) {
+		ui.retrieveDetails->setEnabled(false);
+		ui.resetButton->setEnabled(false);
+		ui.resetButton_4->setEnabled(false);
+		ui.updateFirmwareButton->setEnabled(false);
+		ui.forceUpdateFirmware->setEnabled(false);
+		if (ui.dcStackedWidget->currentIndex() == 2) {
+			deviceDetails.ostc4Snapshot.valid = false;
+			deviceDetails.ostc4Editable.fill(false);
+			ui.page_ostc4->setEnabled(false);
+			ui.saveSettingsPushButton->setEnabled(false);
+			ui.backupButton->setEnabled(false);
+			ui.restoreBackupButton->setEnabled(false);
+			ui.dateTimeSyncCheckBox->setEnabled(false);
+		}
+	}
+	if (oldState == ConfigureDiveComputer::states::RESETTING &&
+	    (newState == ConfigureDiveComputer::states::DONE || newState == ConfigureDiveComputer::states::ERRORED)) {
+		ui.retrieveDetails->setEnabled(device_data.device != nullptr);
+		if (newState == ConfigureDiveComputer::states::DONE && ui.dcStackedWidget->currentIndex() == 2)
+			setOstc4Status(tr("Reset finished. Retrieve details again before editing or backing up settings."));
+	}
 	if (newState == ConfigureDiveComputer::states::READING) {
 		ui.saveSettingsPushButton->setEnabled(false);
 		ui.retrieveDetails->setEnabled(false);
@@ -1151,14 +1195,19 @@ void ConfigureDiveComputerDialog::processStateChanged(ConfigureDiveComputer::sta
 		ui.saveSettingsPushButton->setEnabled(false);
 		ui.backupButton->setEnabled(false);
 	}
-	if (newState == ConfigureDiveComputer::states::ERRORED && ui.dcStackedWidget->currentIndex() == 2) {
+	if (newState == ConfigureDiveComputer::states::ERRORED) {
 		// A close failure can abort before READING begins, leaving the old editor visible.
 		deviceDetails.ostc4Snapshot.valid = false;
 		deviceDetails.ostc4Editable.fill(false);
 		ui.page_ostc4->setEnabled(false);
-		ui.saveSettingsPushButton->setEnabled(false);
-		ui.backupButton->setEnabled(false);
+		if (ui.dcStackedWidget->currentIndex() == 2) {
+			ui.saveSettingsPushButton->setEnabled(false);
+			ui.backupButton->setEnabled(false);
+			ui.restoreBackupButton->setEnabled(false);
+		}
 	}
+	if (newState == ConfigureDiveComputer::states::ERRORED && config->requiresReconnect())
+		ui.retrieveDetails->setEnabled(false);
 	if (newState == ConfigureDiveComputer::states::WRITING && ui.dcStackedWidget->currentIndex() == 2) {
 		ui.page_ostc4->setEnabled(false); // Only a fresh successful read can restore editing.
 		ui.saveSettingsPushButton->setEnabled(false);
@@ -1177,6 +1226,9 @@ void ConfigureDiveComputerDialog::processStateChanged(ConfigureDiveComputer::sta
 	if (oldState == ConfigureDiveComputer::states::WRITING &&
 	    (newState == ConfigureDiveComputer::states::DONE || newState == ConfigureDiveComputer::states::ERRORED) &&
 	    !device_data.device) {
+		ui.retrieveDetails->setEnabled(false); // The worker closed its transport; reconnect explicitly.
+		ui.saveSettingsPushButton->setEnabled(false);
+		ui.backupButton->setEnabled(false);
 		ui.disconnectButton->setEnabled(false);
 		ui.resetButton->setEnabled(false);
 		ui.resetButton_4->setEnabled(false);
@@ -1200,7 +1252,9 @@ void ConfigureDiveComputerDialog::processStateChanged(ConfigureDiveComputer::sta
 		ui.forceUpdateFirmware->setEnabled(false);
 		ui.connectButton->setEnabled(true);
 #ifdef BT_SUPPORT
-		ui.connectBluetoothButton->setEnabled(supportedDiveComputers[ui.DiveComputerList->currentRow()].transport == DC_TRANSPORT_BLUETOOTH);
+		const int row = ui.DiveComputerList->currentRow();
+		ui.connectBluetoothButton->setEnabled(row >= 0 && row < static_cast<int>(std::size(supportedDiveComputers)) &&
+			supportedDiveComputers[row].transport == DC_TRANSPORT_BLUETOOTH);
 #endif
 		ui.DiveComputerList->setEnabled(true);
 		ui.logToFile->setEnabled(true);
@@ -1880,14 +1934,15 @@ void ConfigureDiveComputerDialog::dc_open()
 	qPrefDiveComputer::set_product(device_data.product.c_str());
 }
 
-void ConfigureDiveComputerDialog::dc_close()
+bool ConfigureDiveComputerDialog::dc_close()
 {
-	if (config->currentState == ConfigureDiveComputer::READING || config->currentState == ConfigureDiveComputer::WRITING) {
-		configError(tr("Wait for the settings operation to finish before disconnecting."));
-		return;
+	if (config->currentState == ConfigureDiveComputer::READING || config->currentState == ConfigureDiveComputer::WRITING ||
+	    config->currentState == ConfigureDiveComputer::FWUPDATE || config->currentState == ConfigureDiveComputer::RESETTING) {
+		configError(tr("Wait for the device operation to finish before disconnecting."));
+		return false;
 	}
 	clearOstc4Status();
-	config->dc_close(&device_data);
+	const dc_status_t closeStatus = config->dc_close(&device_data);
 	deviceDetails.ostc4Snapshot.valid = false;
 	deviceDetails.ostc4Editable.fill(false);
 	ui.page_ostc4->setEnabled(false);
@@ -1906,6 +1961,10 @@ void ConfigureDiveComputerDialog::dc_close()
 	ui.updateFirmwareButton->setEnabled(false);
 	ui.forceUpdateFirmware->setEnabled(false);
 	ui.dateTimeSyncCheckBox->setEnabled(false);
-	ui.progressBar->setFormat(tr("Disconnected from device"));
+	if (closeStatus != DC_STATUS_SUCCESS)
+		configError(config->lastError);
+	else
+		ui.progressBar->setFormat(tr("Disconnected from device"));
 	ui.progressBar->setValue(0);
+	return closeStatus == DC_STATUS_SUCCESS;
 }
