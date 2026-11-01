@@ -598,7 +598,11 @@ void OstcFirmwareCheck::saveOstcFirmware(QNetworkReply *reply)
 	reply->close();
 	emit checkCompleted();
 
-	config->dc_open(&devData);
+	const QString openError = config->openForOtherOperation(&devData);
+	if (!openError.isEmpty()) {
+		report_error("Could not open device for firmware update: %s", qPrintable(openError));
+		return;
+	}
 	config->startFirmwareUpdate(storeFirmware, &devData, false);
 }
 

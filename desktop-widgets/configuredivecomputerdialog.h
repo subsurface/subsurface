@@ -60,6 +60,9 @@ public:
 	explicit ConfigureDiveComputerDialog(const QString &filename, QWidget *parent = 0);
 	~ConfigureDiveComputerDialog();
 
+public slots:
+	void reject() override;
+
 private
 slots:
 	void changeTimeSync(int state);
@@ -83,7 +86,7 @@ slots:
 	void on_DiveComputerList_currentRowChanged(int currentRow);
 
 	void dc_open();
-	void dc_close();
+	bool dc_close();
 
 #ifdef BT_SUPPORT
 	void bluetoothSelectionDialogIsFinished(int result);

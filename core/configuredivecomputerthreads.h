@@ -75,7 +75,7 @@ public:
 	void setDeviceDetails(const DeviceDetails &details);
 	void setIO(std::shared_ptr<const Ostc4SettingsIO> io) { m_io = std::move(io); }
 	void setTransport(std::function<QString(device_data_t *)> open,
-		std::function<void(device_data_t *)> close);
+		std::function<dc_status_t(device_data_t *)> close);
 	// Test seam for exercising the actual worker lifecycle without device I/O.
 	void setTestOperation(std::function<bool(device_data_t *)> operation) { m_testOperation = std::move(operation); }
 	void run();
@@ -88,7 +88,7 @@ private:
 	std::shared_ptr<const Ostc4SettingsIO> m_io;
 	QString m_backupPath;
 	std::function<QString(device_data_t *)> m_open;
-	std::function<void(device_data_t *)> m_close;
+	std::function<dc_status_t(device_data_t *)> m_close;
 	std::function<bool(device_data_t *)> m_testOperation;
 public:
 	void setBackupPath(const QString &path) { m_backupPath = path; }

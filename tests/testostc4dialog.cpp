@@ -122,15 +122,158 @@ void TestOstc4Dialog::settingsBlockedDuringFirmwareAndReset()
 	int opens = 0;
 	config.setReadTransportForTesting([&](device_data_t *) { ++opens; return QString(); },
 		[](device_data_t *) { return DC_STATUS_SUCCESS; }, [](device_data_t *) { return true; });
-	for (auto state : { ConfigureDiveComputer::FWUPDATE, ConfigureDiveComputer::RESETTING }) {
+	for (auto state : { ConfigureDiveComputer::READING, ConfigureDiveComputer::WRITING,
+	                   ConfigureDiveComputer::FWUPDATE, ConfigureDiveComputer::RESETTING }) {
 		config.currentState = state; // Model an active worker without touching hardware.
 		config.readSettings(&data);
 		config.saveDeviceDetails(details, &data);
+		QVERIFY(!config.openForOtherOperation(&data).isEmpty());
+		config.startFirmwareUpdate(QString(), &data, false);
+		config.resetSettings(&data);
 		QCOMPARE(config.currentState, state);
 	}
-	QCOMPARE(errors.size(), 4);
+	QCOMPARE(errors.size(), 16);
 	QCOMPARE(states.size(), 0);
 	QCOMPARE(opens, 0);
+}
+
+void TestOstc4Dialog::resetAndFirmwareIgnorePreviousError()
+{
+	device_data_t data;
+	ConfigureDiveComputer config;
+	config.lastError = QStringLiteral("previous settings error");
+	config.currentState = ConfigureDiveComputer::READING;
+	config.resetSettings(&data);
+	config.startFirmwareUpdate(QString(), &data, false);
+	QCOMPARE(config.currentState, ConfigureDiveComputer::READING);
+	QCOMPARE(config.lastError, QStringLiteral("previous settings error"));
+
+	// A null device is a no-op reset in the worker, without touching hardware.
+	config.currentState = ConfigureDiveComputer::ERRORED;
+	config.resetSettings(&data);
+	QTRY_COMPARE(config.currentState, ConfigureDiveComputer::DONE);
+	QVERIFY(config.lastError.isEmpty());
+
+	// Firmware registration rejects the null device: only that new error remains.
+	config.lastError = QStringLiteral("previous settings error");
+	config.startFirmwareUpdate(QString(), &data, false);
+	QTRY_COMPARE(config.currentState, ConfigureDiveComputer::ERRORED);
+	QVERIFY(config.lastError.contains(QStringLiteral("event handler")));
+	QVERIFY(!config.lastError.contains(QStringLiteral("previous settings error")));
+}
+
+void TestOstc4Dialog::resetInvalidatesOstc4Snapshot()
+{
+	ConfigureDiveComputerDialog dialog(testDialogPath("ostc4-reset-snapshot-test.xml"));
+	dialog.ui.dcStackedWidget->setCurrentIndex(2);
+	dialog.deviceDetails.ostc4Snapshot.valid = true;
+	dialog.deviceDetails.ostc4Editable[0] = true;
+	dialog.ui.page_ostc4->setEnabled(true);
+	dialog.ui.saveSettingsPushButton->setEnabled(true);
+	dialog.ui.backupButton->setEnabled(true);
+	dialog.ui.restoreBackupButton->setEnabled(true);
+	dialog.processStateChanged(ConfigureDiveComputer::DONE, ConfigureDiveComputer::RESETTING);
+	QVERIFY(!dialog.deviceDetails.ostc4Snapshot.valid);
+	QVERIFY(!dialog.deviceDetails.ostc4Editable[0]);
+	QVERIFY(!dialog.ui.page_ostc4->isEnabled());
+	QVERIFY(!dialog.ui.saveSettingsPushButton->isEnabled());
+	QVERIFY(!dialog.ui.backupButton->isEnabled());
+	QVERIFY(!dialog.ui.restoreBackupButton->isEnabled());
+	dialog.processStateChanged(ConfigureDiveComputer::RESETTING, ConfigureDiveComputer::DONE);
+	QVERIFY(!dialog.ui.page_ostc4->isEnabled());
+	QVERIFY(!dialog.ui.saveSettingsPushButton->isEnabled());
+	QVERIFY(!dialog.ui.backupButton->isEnabled());
+	QVERIFY(!dialog.ui.retrieveDetails->isEnabled()); // No device was opened in this simulation.
+
+	// The controller also rejects the old baseline after reset, independently of the UI.
+	device_data_t data;
+	data.product = "OSTC 4";
+	ConfigureDiveComputer config;
+	DeviceDetails details;
+	details.ostc4Snapshot.valid = true;
+	config.setReadDetailsForTesting(details);
+	config.setReadTransportForTesting([](device_data_t *) { return QString(); },
+		[](device_data_t *) { return DC_STATUS_SUCCESS; }, [](device_data_t *) { return true; });
+	config.readSettings(&data);
+	QTRY_COMPARE(config.currentState, ConfigureDiveComputer::DONE);
+	config.saveDeviceDetails(details, &data);
+	QVERIFY(config.lastError.contains(QStringLiteral("recognised device descriptor")));
+	config.resetSettings(&data);
+	QTRY_COMPARE(config.currentState, ConfigureDiveComputer::DONE);
+	config.saveDeviceDetails(details, &data);
+	QVERIFY(config.lastError.contains(QStringLiteral("fresh read")));
+}
+
+void TestOstc4Dialog::disconnectBlockedDuringDeviceOperations()
+{
+	ConfigureDiveComputerDialog dialog(testDialogPath("ostc4-active-disconnect-test.xml"));
+	dialog.deviceDetails.ostc4Snapshot.valid = true;
+	for (auto state : { ConfigureDiveComputer::READING, ConfigureDiveComputer::WRITING,
+	                   ConfigureDiveComputer::FWUPDATE, ConfigureDiveComputer::RESETTING }) {
+		dialog.config->currentState = state; // Model an active worker without hardware.
+		dialog.dc_close();
+		QCOMPARE(dialog.config->currentState, state);
+		QVERIFY(dialog.deviceDetails.ostc4Snapshot.valid);
+		QVERIFY(dialog.ui.progressBar->format().contains(QStringLiteral("finish before disconnecting")));
+		QCloseEvent event;
+		dialog.closeEvent(&event);
+		QVERIFY(!event.isAccepted());
+		QCOMPARE(dialog.config->currentState, state);
+		QVERIFY(dialog.deviceDetails.ostc4Snapshot.valid);
+	}
+	dialog.config->currentState = ConfigureDiveComputer::INITIAL;
+}
+
+void TestOstc4Dialog::rejectPreservesOperationAndDisconnect()
+{
+	ConfigureDiveComputerDialog dialog(testDialogPath("ostc4-reject-test.xml"));
+	dialog.show();
+	QSignalSpy rejected(&dialog, &QDialog::rejected);
+	for (auto state : { ConfigureDiveComputer::READING, ConfigureDiveComputer::WRITING,
+	                   ConfigureDiveComputer::FWUPDATE, ConfigureDiveComputer::RESETTING }) {
+		dialog.config->currentState = state; // Model an active worker without touching hardware.
+		dialog.reject(); // Escape is delivered through reject(), not closeEvent().
+		QVERIFY(dialog.isVisible());
+		QCOMPARE(dialog.config->currentState, state);
+		QCOMPARE(rejected.size(), 0);
+	}
+	dialog.config->currentState = ConfigureDiveComputer::DONE;
+	dialog.deviceDetails.ostc4Snapshot.valid = true;
+	dialog.reject();
+	QVERIFY(!dialog.isVisible());
+	QCOMPARE(rejected.size(), 1);
+	QCOMPARE(dialog.config->currentState, ConfigureDiveComputer::INITIAL);
+	QVERIFY(!dialog.deviceDetails.ostc4Snapshot.valid);
+}
+
+void TestOstc4Dialog::failedTeardownKeepsDialogOpen()
+{
+	for (bool escape : { true, false }) {
+		ConfigureDiveComputerDialog dialog(testDialogPath("ostc4-reject-close-failure-test.xml"));
+		for (int row = 0; row < dialog.ui.DiveComputerList->count(); ++row)
+			if (dialog.ui.DiveComputerList->item(row)->text().contains(QStringLiteral("OSTC 4/5")))
+				dialog.ui.DiveComputerList->setCurrentRow(row);
+		int closes = 0;
+		dialog.config->setReadTransportForTesting([](device_data_t *) { return QString(); },
+			[&](device_data_t *) { ++closes; return DC_STATUS_IO; }, [](device_data_t *) { return true; });
+		dialog.ui.connectButton->click();
+		dialog.ui.retrieveDetails->click();
+		QTRY_COMPARE(dialog.config->currentState, ConfigureDiveComputer::DONE);
+		dialog.show();
+		QSignalSpy rejected(&dialog, &QDialog::rejected);
+		if (escape) {
+			dialog.reject();
+		} else {
+			QCloseEvent event;
+			dialog.closeEvent(&event);
+			QVERIFY(!event.isAccepted());
+		}
+		QVERIFY(dialog.isVisible());
+		QCOMPARE(rejected.size(), 0);
+		QCOMPARE(closes, 1);
+		QCOMPARE(dialog.config->currentState, ConfigureDiveComputer::ERRORED);
+		QVERIFY(dialog.ui.progressBar->toolTip().contains(QStringLiteral("did not close cleanly")));
+	}
 }
 
 void TestOstc4Dialog::openFailureWithoutCloseHook()
@@ -161,6 +304,7 @@ void TestOstc4Dialog::closeFailureBlocksNextOperation()
 			if (dialog.ui.DiveComputerList->item(row)->text().contains(QStringLiteral("OSTC 4/5")))
 				dialog.ui.DiveComputerList->setCurrentRow(row);
 		int opens = 0, closes = 0;
+		bool failClose = true;
 		DeviceDetails details;
 		details.model = QStringLiteral("OSTC 4");
 		details.ostc4Snapshot.valid = true;
@@ -168,7 +312,8 @@ void TestOstc4Dialog::closeFailureBlocksNextOperation()
 		details.ostc4Snapshot.identity.serial = 428;
 		dialog.config->setReadDetailsForTesting(details);
 		dialog.config->setReadTransportForTesting([&](device_data_t *) { ++opens; return QString(); },
-			[&](device_data_t *) { ++closes; return DC_STATUS_IO; }, [](device_data_t *) { return true; });
+			[&](device_data_t *) { ++closes; return failClose ? DC_STATUS_IO : DC_STATUS_SUCCESS; },
+			[](device_data_t *) { return true; });
 		dialog.ui.connectButton->click();
 		dialog.ui.retrieveDetails->click();
 		QTRY_COMPARE(dialog.config->currentState, ConfigureDiveComputer::DONE);
@@ -182,6 +327,7 @@ void TestOstc4Dialog::closeFailureBlocksNextOperation()
 			QVERIFY(errors.first().first().toString().contains(QStringLiteral("did not close cleanly")));
 			QVERIFY(!dialog.deviceDetails.ostc4Snapshot.valid);
 			QVERIFY(!dialog.ui.page_ostc4->isEnabled());
+			QVERIFY(!dialog.ui.retrieveDetails->isEnabled());
 			QVERIFY(!dialog.ui.saveSettingsPushButton->isEnabled());
 			QVERIFY(!dialog.ui.backupButton->isEnabled());
 			QTemporaryDir directory;
@@ -194,9 +340,41 @@ void TestOstc4Dialog::closeFailureBlocksNextOperation()
 		} else {
 			const QString result = dialog.config->openForOtherOperation(&dialog.device_data);
 			QVERIFY(result.contains(QStringLiteral("did not close cleanly")));
+			QCOMPARE(dialog.config->currentState, ConfigureDiveComputer::ERRORED);
+			QVERIFY(!dialog.deviceDetails.ostc4Snapshot.valid);
+			QVERIFY(!dialog.ui.page_ostc4->isEnabled());
+			QVERIFY(!dialog.ui.retrieveDetails->isEnabled());
+			QVERIFY(!dialog.ui.saveSettingsPushButton->isEnabled());
+			QVERIFY(!dialog.ui.backupButton->isEnabled());
+			QVERIFY(!dialog.ui.restoreBackupButton->isEnabled());
+			QTemporaryDir directory;
+			QVERIFY(directory.isValid());
+			QString error;
+			const QString path = directory.filePath(QStringLiteral("stale.json"));
+			QVERIFY(!dialog.saveManualOstc4Backup(path, error));
+			QVERIFY(error.contains(QStringLiteral("fresh read")));
+			QVERIFY(!QFile::exists(path));
+			dialog.config->saveDeviceDetails(details, &dialog.device_data);
+			QVERIFY(dialog.config->lastError.contains(QStringLiteral("fresh read")));
 		}
 		QCOMPARE(closes, 1);
 		QCOMPARE(opens, 1); // No new transport after a failed close.
+		if (reread) {
+			dialog.config->readSettings(&dialog.device_data);
+			QCOMPARE(dialog.config->currentState, ConfigureDiveComputer::ERRORED);
+			QCOMPARE(opens, 1); // An immediate Retrieve retry cannot bypass the failed close.
+			QVERIFY(dialog.config->lastError.contains(QStringLiteral("Reconnect")));
+			failClose = false;
+			QVERIFY(dialog.dc_close());
+			dialog.ui.connectButton->click();
+			QVERIFY(dialog.ui.retrieveDetails->isEnabled());
+			dialog.ui.retrieveDetails->click();
+			QTRY_COMPARE(dialog.config->currentState, ConfigureDiveComputer::DONE);
+			QCOMPARE(opens, 2);
+			dialog.config->readSettings(&dialog.device_data);
+			QTRY_COMPARE(dialog.config->currentState, ConfigureDiveComputer::DONE);
+			QCOMPARE(opens, 3); // A successful reconnect cleared the guard.
+		}
 	}
 }
 
@@ -228,6 +406,38 @@ void TestOstc4Dialog::closeFailureBlocksOstc3Save()
 	QVERIFY(dialog.config->findChildren<WriteSettingsThread *>().isEmpty());
 }
 
+void TestOstc4Dialog::writeCloseFailureReportsError()
+{
+	for (bool failWrite : { false, true }) {
+		ConfigureDiveComputerDialog dialog(testDialogPath("ostc3-write-close-failure-test.xml"));
+		int row = -1;
+		for (int i = 0; i < dialog.ui.DiveComputerList->count(); ++i)
+			if (dialog.ui.DiveComputerList->item(i)->text().contains(QStringLiteral("OSTC 2/3/Sport/Plus/cR"))) { row = i; break; }
+		QVERIFY(row >= 0);
+		dialog.ui.DiveComputerList->setCurrentRow(row);
+		dialog.ui.connectButton->click();
+		QCOMPARE(dc_descriptor_get_type(dialog.device_data.descriptor), DC_FAMILY_HW_OSTC3);
+		int opens = 0, writes = 0, closes = 0;
+		dialog.config->setWriteTransportForTesting([&](device_data_t *) { ++opens; return QString(); },
+			[&](device_data_t *) { ++closes; return DC_STATUS_IO; },
+			[&](device_data_t *) { ++writes; return !failWrite; });
+		DeviceDetails details;
+		dialog.config->saveDeviceDetails(details, &dialog.device_data);
+		QTRY_COMPARE(dialog.config->currentState, ConfigureDiveComputer::ERRORED);
+		QCOMPARE(opens, 1);
+		QCOMPARE(writes, 1);
+		QCOMPARE(closes, 1);
+		QVERIFY(dialog.config->lastError.contains(QStringLiteral("did not close cleanly")));
+		QVERIFY(!dialog.ui.retrieveDetails->isEnabled());
+		QVERIFY(!dialog.ui.saveSettingsPushButton->isEnabled());
+		QVERIFY(dialog.ui.connectButton->isEnabled());
+		if (failWrite)
+			QVERIFY(dialog.config->lastError.contains(QStringLiteral("Settings operation failed")));
+		else
+			QVERIFY(!dialog.config->lastError.contains(QStringLiteral("Settings operation failed")));
+	}
+}
+
 void TestOstc4Dialog::precloseFailureBlocksRead()
 {
 	ConfigureDiveComputerDialog dialog(testDialogPath("ostc3-preclose-failure-test.xml"));
@@ -257,6 +467,63 @@ void TestOstc4Dialog::precloseFailureBlocksRead()
 	QCOMPARE(errors.size(), 1);
 	QVERIFY(errors.first().first().toString().contains(QStringLiteral("did not close cleanly")));
 	QVERIFY(dialog.config->findChildren<ReadSettingsThread *>().isEmpty());
+}
+
+void TestOstc4Dialog::disconnectReportsCloseFailure()
+{
+	ConfigureDiveComputerDialog dialog(testDialogPath("ostc4-disconnect-failure-test.xml"));
+	for (int row = 0; row < dialog.ui.DiveComputerList->count(); ++row)
+		if (dialog.ui.DiveComputerList->item(row)->text().contains(QStringLiteral("OSTC 4/5")))
+			dialog.ui.DiveComputerList->setCurrentRow(row);
+	int opens = 0, closes = 0;
+	dialog.config->setReadTransportForTesting([&](device_data_t *) { ++opens; return QString(); },
+		[&](device_data_t *) { ++closes; return DC_STATUS_IO; }, [](device_data_t *) { return true; });
+	dialog.ui.connectButton->click();
+	dialog.ui.retrieveDetails->click();
+	QTRY_COMPARE(dialog.config->currentState, ConfigureDiveComputer::DONE);
+	dialog.dc_close();
+	QCOMPARE(closes, 1);
+	QCOMPARE(opens, 1);
+	QCOMPARE(dialog.config->currentState, ConfigureDiveComputer::ERRORED);
+	QVERIFY(dialog.config->lastError.contains(QStringLiteral("did not close cleanly")));
+	QVERIFY(dialog.ui.progressBar->format().contains(QStringLiteral("Error")));
+	QVERIFY(dialog.ui.progressBar->toolTip().contains(QStringLiteral("did not close cleanly")));
+	QVERIFY(!dialog.ui.saveSettingsPushButton->isEnabled());
+	QVERIFY(!dialog.ui.backupButton->isEnabled());
+}
+
+void TestOstc4Dialog::readAndCloseErrorsRemainVisible()
+{
+	ConfigureDiveComputerDialog dialog(testDialogPath("ostc4-read-close-failure-test.xml"));
+	for (int row = 0; row < dialog.ui.DiveComputerList->count(); ++row)
+		if (dialog.ui.DiveComputerList->item(row)->text().contains(QStringLiteral("OSTC 4/5")))
+			dialog.ui.DiveComputerList->setCurrentRow(row);
+	int closes = 0;
+	dialog.config->setReadTransportForTesting([](device_data_t *) { return QString(); },
+		[&](device_data_t *) { ++closes; return DC_STATUS_IO; }, [](device_data_t *) { return false; });
+	dialog.ui.connectButton->click();
+	dialog.ui.retrieveDetails->click();
+	QTRY_COMPARE(dialog.config->currentState, ConfigureDiveComputer::ERRORED);
+	QCOMPARE(closes, 1);
+	QVERIFY(dialog.config->lastError.contains(QStringLiteral("Reading settings failed")));
+	QVERIFY(dialog.config->lastError.contains(QStringLiteral("did not close cleanly")));
+}
+
+void TestOstc4Dialog::modelPageFollowsLatestRead()
+{
+	ConfigureDiveComputerDialog dialog(testDialogPath("ostc4-model-page-test.xml"));
+	dialog.device_data.product = "OSTC Plus";
+	DeviceDetails ostc4;
+	ostc4.model = QStringLiteral("OSTC 4");
+	ostc4.ostc4Snapshot.valid = true;
+	ostc4.ostc4Snapshot.identity.model = 0x43;
+	dialog.deviceDetailsReceived(ostc4);
+	QCOMPARE(dialog.ui.dcStackedWidget->currentIndex(), 2);
+	DeviceDetails ostc3;
+	ostc3.model = QStringLiteral("OSTC Plus");
+	dialog.deviceDetailsReceived(ostc3);
+	QCOMPARE(dialog.ui.dcStackedWidget->currentIndex(), 1);
+	QVERIFY(!dialog.deviceDetails.ostc4Snapshot.valid);
 }
 
 void TestOstc4Dialog::dialogGuardsAndManualBackupError()
@@ -487,6 +754,7 @@ void TestOstc4Dialog::writeWorkerOwnsTransport()
 			++closes;
 			delete transport;
 			transport = nullptr;
+			return DC_STATUS_SUCCESS;
 		});
 		worker.setTestOperation([&](device_data_t *) {
 			Q_ASSERT(transport && transport->thread() == QThread::currentThread());
@@ -620,7 +888,10 @@ void TestOstc4Dialog::continuousSaveSession()
 			QCOMPARE(dialog.config->currentState, ConfigureDiveComputer::ERRORED);
 			QCOMPARE(opens, 1); // Do not open another session after a failed close.
 			QVERIFY(dialog.config->lastError.contains(QStringLiteral("did not close cleanly")));
-			dialog.ui.retrieveDetails->click(); // The failed session has been removed; retry explicitly.
+			QVERIFY(!dialog.ui.retrieveDetails->isEnabled());
+			QVERIFY(dialog.dc_close());
+			dialog.ui.connectButton->click();
+			dialog.ui.retrieveDetails->click(); // A fresh logical connection is required.
 		}
 		QTRY_COMPARE(dialog.config->currentState, ConfigureDiveComputer::DONE);
 		QCOMPARE(opens, 2);
@@ -991,6 +1262,17 @@ void TestOstc4Dialog::hiddenTabsAndReread()
 	dialog.configError(QStringLiteral("Read failed"));
 	QVERIFY(progress->toolTip().contains(QStringLiteral("Read failed")));
 	QCOMPARE(progress->accessibleDescription(), progress->toolTip());
+}
+
+void TestOstc4Dialog::writeCompletionWithoutSelection()
+{
+	ConfigureDiveComputerDialog dialog(testDialogPath("ostc4-write-no-selection-test.xml"));
+	dialog.ui.dcStackedWidget->setCurrentIndex(2);
+	dialog.ui.DiveComputerList->setCurrentRow(-1);
+	QCOMPARE(dialog.ui.DiveComputerList->currentRow(), -1);
+	dialog.processStateChanged(ConfigureDiveComputer::WRITING, ConfigureDiveComputer::DONE);
+	QVERIFY(dialog.ui.connectButton->isEnabled());
+	QVERIFY(!dialog.ui.connectBluetoothButton->isEnabled());
 }
 
 QTEST_MAIN(TestOstc4Dialog)
