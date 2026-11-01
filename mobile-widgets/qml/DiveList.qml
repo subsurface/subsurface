@@ -370,6 +370,20 @@ Kirigami.ScrollablePage {
 		// header animation. Showing the keyboard here is too early.
 	}
 
+	Connections {
+		target: pageStack
+		function onCurrentItemChanged() {
+			if (pageStack.currentItem === page && rootItem.filterToggle) {
+				Qt.callLater(function() {
+					if (pageStack.currentItem === page && filterBar.enabled) {
+						sitefilter.forceActiveFocus()
+						Qt.inputMethod.show()
+					}
+				})
+			}
+		}
+	}
+
 	Controls.Label {
 		property bool showProcessingText: manager.diveListProcessing
 		anchors.fill: parent
