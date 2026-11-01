@@ -375,11 +375,10 @@ Kirigami.ScrollablePage {
 		target: pageStack
 		function onDepthChanged() {
 			// Statistics removes the list from the stack but still uses the
-			// shared dive filter. Do not clear it for pages above the list.
-			Qt.callLater(function() {
-				if (pageIndex(page) === -1 && rootItem.filterToggle)
-					toggleFilter()
-			})
+			// shared dive filter. Clear before Statistics is pushed, but not
+			// while another page is merely stacked above the list.
+			if (pageStack.depth === 0 && rootItem.filterToggle)
+				toggleFilter()
 		}
 		function onCurrentItemChanged() {
 			if (pageStack.currentItem === page && rootItem.filterToggle) {
