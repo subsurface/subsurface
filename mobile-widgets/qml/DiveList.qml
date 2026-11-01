@@ -20,6 +20,7 @@ Kirigami.ScrollablePage {
 	Kirigami.ColumnView.preventStealing: true
 	property int dlHorizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property QtObject diveListModel: null
+	readonly property bool filterFieldFocused: sitefilter.activeFocus
 	// we want to use our own colors for Kirigami, so let's define our colorset
 	Kirigami.Theme.inherit: false
 	Kirigami.Theme.colorSet: Kirigami.Theme.Button
