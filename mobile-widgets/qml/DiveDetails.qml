@@ -264,7 +264,8 @@ Kirigami.Page {
 		// QML doesn't let me trigger this based on the visible property of the inputMethod,
 		// but when it becomes visible, the height of the page changes, so let's use that
 		// Only hide it while viewing this page, not when filtering the dive list.
-		if (pageStack.currentItem === diveDetailsPage && Qt.inputMethod.visible && state === "view")
+		if (pageStack.currentItem === diveDetailsPage && !diveList.filterFieldFocused &&
+		    Qt.inputMethod.visible && state === "view")
 			Qt.inputMethod.hide()
 	}
 
