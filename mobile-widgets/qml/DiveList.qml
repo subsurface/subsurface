@@ -364,8 +364,10 @@ Kirigami.ScrollablePage {
 		if (!rootItem.filterToggle) {
 			sitefilter.focus = false
 			Qt.inputMethod.hide()
-			sitefilter.text = ""
-			manager.setFilter("", 0)
+			if (sitefilter.text)
+				sitefilter.text = "" // onTextChanged clears the manager filter
+			else
+				manager.setFilter("", 0)
 		}
 		// On opening, filterBar.onEnabledChanged focuses the field after the
 		// header animation. Showing the keyboard here is too early.
