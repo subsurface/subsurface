@@ -457,7 +457,7 @@ Kirigami.ScrollablePage {
 					// The popup takes focus while selecting a mode. Restore it only
 					// after the popup has closed.
 					Qt.callLater(function() {
-						if (rootItem.filterToggle && pageStack.currentItem === page) {
+						if (rootItem.filterToggle && page.visible && filterBar.enabled) {
 							sitefilter.forceActiveFocus()
 							Qt.inputMethod.show()
 						}
@@ -481,7 +481,7 @@ Kirigami.ScrollablePage {
 				text: diveModel.shown
 			}
 			onEnabledChanged: {
-				if (enabled && pageStack.currentItem === page) {
+				if (enabled && page.visible) {
 					sitefilter.forceActiveFocus()
 					Qt.inputMethod.show()
 				}
