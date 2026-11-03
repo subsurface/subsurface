@@ -1,0 +1,14 @@
+#!/bin/sh
+# Runs after the command chain of the kde-neon-qt6 extension (desktop-launch6),
+# which points fontconfig at ${SNAP}/qt6/etc/fonts/fonts.conf, a file that the
+# kde-qt6-core24 content snap does not currently ship. Without a configuration
+# fontconfig has no alias for "sans-serif" and falls back to a serif font.
+# Use the fontconfig configuration that is staged into this snap instead, but
+# only if the runtime does not provide one, so that this keeps working if the
+# runtime gets fixed.
+if [ ! -f "${FONTCONFIG_FILE}" ]; then
+	export FONTCONFIG_PATH="${SNAP}/etc/fonts"
+	export FONTCONFIG_FILE="${SNAP}/etc/fonts/fonts.conf"
+fi
+
+exec "${SNAP}/usr/local/bin/subsurface" "$@"
