@@ -64,8 +64,12 @@ $ sudo snap install --edge subsurface
 $ sudo snap connect subsurface:kde-qt6-core24 kde-qt6-core24:kde-qt6-core24-slot
 ```
 
-Without this connection Subsurface does not start and reports
-`not connected to the kde-qt6-core24 content interface`.
+Without this connection Subsurface does not start and reports (with the
+revision of the Snap in place of `<rev>`):
+
+```
+Content snap command-chain for /snap/subsurface/<rev>/qt6/snap/command-chain/desktop-launch6 not found: ensure slot is connected
+```
 
 To open files on removable media (below `/media`, `/run/media` or `/mnt`), for
 example on a USB stick, also connect:
