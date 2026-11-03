@@ -73,6 +73,16 @@ parts:
         /*) ln -sfn "../../..${TARGET}" "${LINK}" ;;
         esac
       done
+      # The Debian fonts.conf only scans absolute paths such as /usr/share/fonts,
+      # which do not point to the fonts staged into the snap. Add the staged
+      # font directory, relative to this file so that it follows $SNAP.
+      cat > "${CRAFT_PRIME}/etc/fonts/conf.d/00-snap-fonts.conf" <<'EOF'
+      <?xml version="1.0"?>
+      <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+      <fontconfig>
+        <dir prefix="relative">../../../usr/share/fonts</dir>
+      </fontconfig>
+      EOF
 
   launcher:
     # starts Subsurface with a working fontconfig configuration, see the fonts part
