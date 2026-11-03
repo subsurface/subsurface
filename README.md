@@ -52,6 +52,32 @@ the following:
 1) Learn how to set persistent environment variables on your OS
 2) Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'
 
+## Installing the Snap
+
+The Snap from the 'edge' channel is built against Qt 6, which it gets from the
+`kde-qt6-core24` content snap. `snap install` installs that snap as well, but
+the Snap Store does not connect it to Subsurface automatically. Until
+that is changed, connect it once by hand after installing:
+
+```
+$ sudo snap install --edge subsurface
+$ sudo snap connect subsurface:kde-qt6-core24 kde-qt6-core24:kde-qt6-core24-slot
+```
+
+Without this connection Subsurface does not start and reports
+`not connected to the kde-qt6-core24 content interface`.
+
+To open files on removable media (below `/media`, `/run/media` or `/mnt`), for
+example on a USB stick, also connect:
+
+```
+$ sudo snap connect subsurface:removable-media
+```
+
+Use `snap connections subsurface` to check which interfaces are connected.
+Snap hooks run confined and cannot connect interfaces, so this can not be done
+from the Snap itself.
+
 ## Basic Usage
 
 Install and start from the desktop, or you can run it locally from the
