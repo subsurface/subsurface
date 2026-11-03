@@ -23,7 +23,7 @@ apps:
     extensions: [kde-neon-qt6]
     environment:
       LD_LIBRARY_PATH: ${LD_LIBRARY_PATH}:${SNAP}/usr/local/lib
-    command: usr/local/bin/subsurface
+    command: bin/subsurface-launch
     desktop: usr/local/share/applications/subsurface.desktop
     plugs:
     - bluez
@@ -54,6 +54,32 @@ parts:
     - libpcre2-16-0
     - libxkbcommon-dev
     - libzstd1
+
+  fonts:
+    # The Qt 6 content snap does not ship a fontconfig configuration, so without
+    # this fontconfig has no "sans-serif" alias and Qt falls back to a serif font.
+    # bin/subsurface-launch points fontconfig at this configuration.
+    plugin: nil
+    stage-packages:
+    - fontconfig-config
+    - fonts-dejavu-core
+    override-prime: |
+      craftctl default
+      # The Debian package links the enabled snippets in conf.d with absolute
+      # paths, which do not resolve inside the snap. Make them relative.
+      for LINK in ${CRAFT_PRIME}/etc/fonts/conf.d/*; do
+        TARGET=$( readlink "${LINK}" ) || continue
+        case "${TARGET}" in
+        /*) ln -sfn "../../..${TARGET}" "${LINK}" ;;
+        esac
+      done
+
+  launcher:
+    # starts Subsurface with a working fontconfig configuration, see the fonts part
+    plugin: dump
+    source: snap/local
+    organize:
+      subsurface-launch: bin/subsurface-launch
 
   googlemaps:
     # the qt6-upstream branch builds against Qt 6 (the master branch is for Qt 5)
