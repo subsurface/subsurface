@@ -5442,6 +5442,7 @@ Only a subset of the dive data is exported:
 |gps| (*string*) GPS coordinates of the dive
 |gps_decimal| (*string*) GPS coordinates of the dive in decimal format
 |duration| (*string*) duration of the dive
+|surfaceInterval| (*string*) surface interval since the end of the previous dive in the dive log; empty for the first dive
 |depth| (*string*) depth of the dive
 |meandepth| (*string*) mean depth of the dive
 |divemaster| (*string*) divemaster for the dive
