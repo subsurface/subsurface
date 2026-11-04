@@ -9,6 +9,7 @@
 #include "printoptions.h"
 #include "core/dive.h"
 #include "core/divelist.h"
+#include "core/divelog.h"
 #include "core/gettextfromc.h"
 #include "core/selection.h"
 #include "core/tag.h"
@@ -536,6 +537,14 @@ QVariant TemplateLayout::getValue(QString list, QString property, const State &s
 			return format_gps_decimal(d);
 		} else if (property == "duration") {
 			return formatDiveDuration(d);
+		} else if (property == "surfaceInterval") {
+			// Relative to the whole dive log, not only the dives being printed.
+			timestamp_t interval = divelog.dives.get_surface_interval(d->when);
+			if (interval < 0)
+				return QString();
+			// maxdays = 0: do not replace long intervals by "more than N days"
+			return get_dive_surfint_string(interval, gettextFromC::tr("d"), gettextFromC::tr("h"),
+						       gettextFromC::tr("min"), " ", 0);
 		} else if (property == "noDive") {
 			return d->duration.seconds == 0 && d->dcs[0].duration.seconds == 0;
 		} else if (property == "depth") {

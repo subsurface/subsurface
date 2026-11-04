@@ -14,6 +14,7 @@
 #include <QDir>
 #include <QFile>
 #include <QImage>
+#include <QRegularExpression>
 #include <QTemporaryDir>
 #include <QTextStream>
 #include <QUuid>
@@ -168,16 +169,20 @@ static std::pair<print_options, template_options> defaultTestOptions(const QStri
 	return {printOptions, templateOptions};
 }
 
-QString TestPrinting::exportHtmlWithTemplate(const QString &templateName) const
+QString TestPrinting::exportHtmlWithTemplate(const QString &templateName, dive *singleDive, bool allDives) const
 {
 	auto [printOptions, templateOptions] = defaultTestOptions(templateName);
+	if (allDives)
+		printOptions.print_selected = false; // print the whole dive log
 
 	QImage image(1200, 800, QImage::Format_ARGB32);
 	image.fill(Qt::white);
 
 	if (divelog.dives.empty())
 		return QString();
-	Printer printer(&image, printOptions, templateOptions, Printer::PREVIEW, divelog.dives[0].get());
+	if (!allDives && !singleDive)
+		singleDive = divelog.dives[0].get();
+	Printer printer(&image, printOptions, templateOptions, Printer::PREVIEW, singleDive);
 	return printer.exportHtml();
 }
 
@@ -287,6 +292,69 @@ void TestPrinting::testPrinterRenderRecognizesDiveProfile()
 	const int changedPixels = imageDifferencePixels(recognized, control);
 	QVERIFY2(changedPixels >= 0, qPrintable(QString("%1: image size mismatch").arg(templatePath)));
 	QVERIFY2(changedPixels > 200, qPrintable(QString("%1 changedPixels=%2").arg(templatePath).arg(changedPixels)));
+}
+
+static const QString surfaceIntervalTemplate =
+	"<html>\n<body data-numberofdives=\"1\">\n"
+	"{% for dive in dives %}\n"
+	"<div id=\"dive_{{ dive.id }}\">[{{ dive.surfaceInterval }}]</div>\n"
+	"{% endfor %}\n"
+	"</body>\n</html>\n";
+
+// Extract the text rendered for {{ dive.surfaceInterval }} of the given dive
+static QString renderedSurfaceInterval(const QString &html, int diveId)
+{
+	const QRegularExpression re(QString("<div id=\"dive_%1\">\\[([^\\]]*)\\]</div>").arg(diveId));
+	const QRegularExpressionMatch match = re.match(html);
+	return match.hasMatch() ? match.captured(1) : QStringLiteral("<not rendered>");
+}
+
+void TestPrinting::testSurfaceIntervalProperty()
+{
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/surface-interval.xml", &divelog), 0);
+	QCOMPARE(divelog.dives.size(), 6u);
+
+	const QString templateName = createTemplateFromString("test_print_surfint", surfaceIntervalTemplate);
+	QVERIFY(!templateName.isEmpty());
+	temporaryTemplates << templateName;
+
+	const QString html = exportHtmlWithTemplate(templateName, nullptr, true);
+	QVERIFY(!html.isEmpty());
+	QVERIFY(!html.contains("{{ dive.surfaceInterval }}"));
+	// No previous dive in the log: empty
+	QCOMPARE(renderedSurfaceInterval(html, divelog.dives[0]->id), QString());
+	// Second dive starts 1 h 30 min after the end of the first
+	QCOMPARE(renderedSurfaceInterval(html, divelog.dives[1]->id), QString("1h 30min"));
+	// Third dive starts 2 days after the end of the second
+	QCOMPARE(renderedSurfaceInterval(html, divelog.dives[2]->id), QString("2d 0h 0min"));
+	// Fourth dive starts 10 days after the end of the third: not capped to "more than 4 days"
+	QCOMPARE(renderedSurfaceInterval(html, divelog.dives[3]->id), QString("10d 0h 0min"));
+	// Fifth dive starts 59 min 40 s after the end of the fourth: rounds up to 1h 0min, not "0h 60min"
+	QCOMPARE(renderedSurfaceInterval(html, divelog.dives[4]->id), QString("1h 0min"));
+	// Sixth dive starts 15 min into the fifth dive: 0h 0min, not empty
+	QCOMPARE(renderedSurfaceInterval(html, divelog.dives[5]->id), QString("0h 0min"));
+}
+
+void TestPrinting::testSurfaceIntervalPropertyPartialSelection()
+{
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/surface-interval.xml", &divelog), 0);
+	QCOMPARE(divelog.dives.size(), 6u);
+
+	const QString templateName = createTemplateFromString("test_print_surfint_single", surfaceIntervalTemplate);
+	QVERIFY(!templateName.isEmpty());
+	temporaryTemplates << templateName;
+
+	// Printing only the second dive must still use the first dive of the log as predecessor
+	const int secondId = divelog.dives[1]->id;
+	const QString html = exportHtmlWithTemplate(templateName, divelog.dives[1].get());
+	QVERIFY(!html.isEmpty());
+	QVERIFY(!html.contains(QString("dive_%1\"").arg(divelog.dives[0]->id)));
+	QVERIFY(!html.contains(QString("dive_%1\"").arg(divelog.dives[2]->id)));
+	QCOMPARE(renderedSurfaceInterval(html, secondId), QString("1h 30min"));
+
+	// Printing only the first dive still renders empty
+	const QString firstHtml = exportHtmlWithTemplate(templateName, divelog.dives[0].get());
+	QCOMPARE(renderedSurfaceInterval(firstHtml, divelog.dives[0]->id), QString());
 }
 
 int main(int argc, char **argv)

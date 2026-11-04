@@ -1,0 +1,27 @@
+<dives>
+<program name='subsurface' version='1'></program>
+<dive number='1' date='2011-01-01' time='08:00:00' duration='30:00 min'>
+  <depth max='20.0 m' mean='10.0 m' />
+  <location>First dive</location>
+</dive>
+<dive number='2' date='2011-01-01' time='10:00:00' duration='30:00 min'>
+  <depth max='20.0 m' mean='10.0 m' />
+  <location>Second dive, 1 h 30 min after the end of the first</location>
+</dive>
+<dive number='3' date='2011-01-03' time='10:30:00' duration='30:00 min'>
+  <depth max='20.0 m' mean='10.0 m' />
+  <location>Third dive, 2 days after the end of the second</location>
+</dive>
+<dive number='4' date='2011-01-13' time='11:00:00' duration='30:00 min'>
+  <depth max='20.0 m' mean='10.0 m' />
+  <location>Fourth dive, 10 days after the end of the third</location>
+</dive>
+<dive number='5' date='2011-01-13' time='12:29:40' duration='30:00 min'>
+  <depth max='20.0 m' mean='10.0 m' />
+  <location>Fifth dive, 59 min 40 s after the end of the fourth</location>
+</dive>
+<dive number='6' date='2011-01-13' time='12:45:00' duration='30:00 min'>
+  <depth max='20.0 m' mean='10.0 m' />
+  <location>Sixth dive, starts during the fifth dive</location>
+</dive>
+</dives>

@@ -537,10 +537,12 @@ QString get_duration_string_short(duration_t duration)
 
 QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator, int maxdays)
 {
+	// Round to whole minutes first so that the rounding carries into hours and days
 	int days, hrs, mins;
-	days = when / 3600 / 24;
-	hrs = (when - days * 3600 * 24) / 3600;
-	mins = (when + 30 - days * 3600 * 24 - hrs * 3600) / 60;
+	mins = (when + 30) / 60;
+	days = mins / (60 * 24);
+	hrs = (mins / 60) % 24;
+	mins %= 60;
 
 	QString displayInt;
 	if (maxdays && days > maxdays) displayInt = gettextFromC::tr("more than %1 days").arg(maxdays);
