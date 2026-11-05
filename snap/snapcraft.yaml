@@ -12,6 +12,12 @@ confinement: strict
 base: core24
 adopt-info: subsurface
 
+# the Qt 6 runtime and SDK content snaps (kde-qt6-core24, kde-qt6-core24-sdk)
+# are only published for amd64 and arm64
+platforms:
+  amd64:
+  arm64:
+
 layout:
   /etc/gitconfig:
     bind-file: $SNAP_DATA/gitconfig
