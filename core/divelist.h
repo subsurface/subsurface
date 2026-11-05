@@ -37,6 +37,7 @@ struct dive_table : public sorted_owning_table<dive, &comp_dives> {
 	void update_cylinder_related_info(struct dive &dive) const;
 	int get_dive_nr_at_idx(int idx) const;
 	timestamp_t get_surface_interval(timestamp_t when) const;
+	timestamp_t get_surface_interval_before(const struct dive &d) const;
 	struct dive *find_next_visible_dive(timestamp_t when);
 	std::array<std::unique_ptr<dive>, 2> split_divecomputer(const struct dive &src, int num) const;
 	std::array<std::unique_ptr<dive>, 2> split_dive(const struct dive &dive) const;

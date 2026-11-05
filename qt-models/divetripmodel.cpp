@@ -22,6 +22,7 @@
 #include <QIcon>
 #include <QDebug>
 #include <QDateTime>
+#include <QSet>
 #include <memory>
 #include <algorithm>
 
@@ -43,6 +44,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModelBase::SAC:
 	case DiveTripModelBase::OTU:
 	case DiveTripModelBase::MAXCNS:
+	case DiveTripModelBase::SURFACE_INTERVAL:
 		// Right align numeric columns
 		return int(Qt::AlignRight | Qt::AlignVCenter);
 	// NR needs to be left aligned because its the indent marker for trips too
@@ -269,8 +271,62 @@ QString DiveTripModelBase::getDescription(int column)
 		return tr("Notes");
 	case DIVEMODE:
 		return tr("Divemode");
+	case SURFACE_INTERVAL:
+		return tr("Surface interval before this dive");
 	default:
 		return QString();
+	}
+}
+
+// Surface interval before a dive, calculated against the whole dive log
+// and not only the dives that are currently shown.
+static QString displaySurfaceInterval(const struct dive *d)
+{
+	timestamp_t interval = divelog.dives.get_surface_interval_before(*d);
+	if (interval < 0)
+		return QString(); // No previous dive
+	return get_dive_surfint_string(interval, gettextFromC::tr("d"), gettextFromC::tr("h"), gettextFromC::tr("min"));
+}
+
+// The surface interval of a dive depends on the dive that precedes it in the dive log.
+// Therefore, if a dive changes, is added or is deleted, the interval of its successor has
+// to be refreshed as well. If the dives were moved by "delta", the successors of their
+// old position are affected, too.
+void DiveTripModelBase::surfaceIntervalsChanged(const QVector<dive *> &dives, timestamp_t delta)
+{
+	// Collect the successors, skipping those that are themselves part of the change,
+	// because their whole row is updated anyway.
+	// Not using the iterator constructor of QSet, which needs Qt 5.14 or newer.
+	QSet<const dive *> changed;
+	for (const dive *d: dives)
+		changed.insert(d);
+
+	// Dives that start at the same time share their predecessor, so refresh all
+	// dives that start at the same time as the first dive that starts after "when".
+	// This does not need the dive to be in the log, which is not the case for deleted dives.
+	auto refreshAfter = [&](timestamp_t when) {
+		auto it = std::upper_bound(divelog.dives.begin(), divelog.dives.end(), when,
+					   [] (timestamp_t t, const std::unique_ptr<dive> &other)
+					   { return t < other->when; });
+		if (it == divelog.dives.end())
+			return;
+		timestamp_t start = (*it)->when;
+		for (; it != divelog.dives.end() && (*it)->when == start; ++it) {
+			const dive *next = it->get();
+			if (changed.contains(next) || next->hidden_by_filter)
+				continue; // Updated anyway or not in the model
+			QModelIndex index = diveToIdx(next);
+			if (!index.isValid())
+				continue;
+			index = index.siblingAtColumn(SURFACE_INTERVAL);
+			dataChanged(index, index);
+		}
+	};
+
+	for (const dive *d: dives) {
+		refreshAfter(d->when);
+		if (delta != 0)
+			refreshAfter(d->when - delta);
 	}
 }
 
@@ -370,6 +426,8 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			return QString::fromStdString(d->notes);
 		case DIVEMODE:
 			return QString(divemode_text_ui[(int)d->dcs[0].divemode]);
+		case SURFACE_INTERVAL:
+			return displaySurfaceInterval(d);
 		}
 		break;
 	case Qt::DecorationRole:
@@ -458,6 +516,8 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 			return tr("Notes");
 		case DIVEMODE:
 			return tr("Divemode");
+		case SURFACE_INTERVAL:
+			return tr("Surface interval");
 		}
 		break;
 	case Qt::ToolTipRole:
@@ -1166,6 +1226,12 @@ int DiveTripModelTree::tripInDirection(const struct dive *d, int direction) cons
 
 void DiveTripModelTree::divesAdded(dive_trip *trip, bool newTrip, const QVector<dive *> &divesIn)
 {
+	divesAddedInternal(trip, newTrip, divesIn);
+	surfaceIntervalsChanged(divesIn); // Also for hidden dives, which still change the interval of their successor
+}
+
+void DiveTripModelTree::divesAddedInternal(dive_trip *trip, bool newTrip, const QVector<dive *> &divesIn)
+{
 	QVector <dive *> dives = visibleDives(divesIn);
 	if (dives.empty())
 		return;
@@ -1194,12 +1260,12 @@ void DiveTripModelTree::divesAdded(dive_trip *trip, bool newTrip, const QVector<
 void DiveTripModelTree::divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &divesIn)
 {
 	QVector <dive *> dives = visibleDives(divesIn);
-	if (dives.empty())
-		return;
-
-	if (oldCurrent && std::find(dives.begin(), dives.end(), oldCurrent) != dives.end())
-		oldCurrent = nullptr;
-	divesDeletedInternal(trip, deleteTrip, dives); // Tail call
+	if (!dives.empty()) {
+		if (oldCurrent && std::find(dives.begin(), dives.end(), oldCurrent) != dives.end())
+			oldCurrent = nullptr;
+		divesDeletedInternal(trip, deleteTrip, dives);
+	}
+	surfaceIntervalsChanged(divesIn); // Also for hidden dives, which still change the interval of their successor
 }
 
 void DiveTripModelTree::divesDeletedInternal(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives)
@@ -1260,6 +1326,7 @@ void DiveTripModelTree::divesChanged(const QVector<dive *> &dives)
 {
 	processByTrip(dives, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesChangedTrip(trip, divesInTrip); });
+	surfaceIntervalsChanged(dives);
 }
 
 void DiveTripModelTree::diveChanged(dive *d)
@@ -1346,13 +1413,14 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 	// Unfortunately, removing the dives means that their selection is lost.
 	// Thus, remember the selection and re-add it later.
 	divesDeletedInternal(from, deleteFrom, dives); // Use internal version to keep current dive
-	divesAdded(to, createTo, dives);
+	divesAddedInternal(to, createTo, dives);
 }
 
 void DiveTripModelTree::divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives)
 {
 	processByTrip(dives, [this, delta] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesTimeChangedTrip(trip, delta, divesInTrip); });
+	surfaceIntervalsChanged(dives, delta);
 }
 
 void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &divesIn)
@@ -1372,7 +1440,7 @@ void DiveTripModelTree::divesTimeChangedTrip(dive_trip *trip, timestamp_t delta,
 	// Unfortunately, removing the dives means that their selection is lost.
 	// Thus, remember the selection and re-add it later.
 	divesDeletedInternal(trip, false, dives); // Use internal version to keep current dive
-	divesAdded(trip, false, dives);
+	divesAddedInternal(trip, false, dives);
 }
 
 QModelIndex DiveTripModelTree::diveToIdx(const dive *d) const
@@ -1616,6 +1684,7 @@ void DiveTripModelList::divesDeleted(dive_trip *trip, bool, const QVector<dive *
 	if (oldCurrent && std::find(dives.begin(), dives.end(), oldCurrent) != dives.end())
 		oldCurrent = nullptr;
 	divesDeletedInternal(dives);
+	surfaceIntervalsChanged(divesIn); // Also for hidden dives, which still change the interval of their successor
 }
 
 void DiveTripModelList::divesDeletedInternal(const QVector<dive *> &dives)
@@ -1627,6 +1696,7 @@ void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &div
 {
 	QVector<dive *> dives = visibleDives(divesIn);
 	addDives(dives);
+	surfaceIntervalsChanged(divesIn); // Also for hidden dives, which still change the interval of their successor
 }
 
 void DiveTripModelList::diveSiteChanged(dive_site *ds, int field)
@@ -1656,6 +1726,8 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 				return 0; // No items added or deleted
 			 });
 
+	surfaceIntervalsChanged(divesIn);
+
 	// If the current dive changed (because the change caused it to become hidden
 	// by the filter), instruct the UI of the changed selection.
 	// TODO: This is way to heavy, as it reloads the whole selection!
@@ -1671,13 +1743,14 @@ void DiveTripModelList::diveChanged(dive *d)
 void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *> &divesIn)
 {
 	QVector<dive *> dives = visibleDives(divesIn);
-	if (dives.empty())
-		return;
-	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
+	if (!dives.empty()) {
+		std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 
-	// See comment for DiveTripModelTree::divesTimeChanged above.
-	divesDeletedInternal(dives); // Use internal version to keep current dive
-	divesAdded(nullptr, false, dives);
+		// See comment for DiveTripModelTree::divesTimeChanged above.
+		divesDeletedInternal(dives); // Use internal version to keep current dive
+		addDives(dives);
+	}
+	surfaceIntervalsChanged(divesIn, delta);
 }
 
 QModelIndex DiveTripModelList::diveToIdx(const dive *d) const
@@ -1809,5 +1882,12 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 		return lessThanHelper(strCmp(d1->notes, d2->notes), row_diff);
 	case DIVEMODE:
 		return lessThanHelper((int)d1->dcs[0].divemode - (int)d2->dcs[0].divemode, row_diff);
+	case SURFACE_INTERVAL: {
+		// Compare the numerical values: no interval (-1) sorts before an interval of 0 seconds.
+		// Don't subtract, because timestamp_t is 64 bit.
+		timestamp_t i1 = divelog.dives.get_surface_interval_before(*d1);
+		timestamp_t i2 = divelog.dives.get_surface_interval_before(*d2);
+		return lessThanHelper((i1 > i2) - (i1 < i2), row_diff);
+	}
 	}
 }

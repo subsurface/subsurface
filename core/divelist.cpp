@@ -1129,6 +1129,26 @@ timestamp_t dive_table::get_surface_interval(timestamp_t when) const
 	return when - prev_end;
 }
 
+/* Same result as get_surface_interval(d.when), but locates the previous dive by
+ * binary search instead of scanning the table from the end. This makes it cheap
+ * enough to be called for every row of the dive list. The table is sorted by start
+ * time first, so the first dive that does not start before this one is found
+ * directly, however many dives share its start time, and whether or not d is in
+ * the table. */
+timestamp_t dive_table::get_surface_interval_before(const struct dive &d) const
+{
+	auto first = std::lower_bound(begin(), end(), d.when,
+				      [] (const std::unique_ptr<dive> &other, timestamp_t when)
+				      { return other->when < when; });
+	if (first == begin())
+		return -1;
+
+	timestamp_t prev_end = (*std::prev(first))->endtime();
+	if (prev_end > d.when)
+		return 0;
+	return d.when - prev_end;
+}
+
 /* Find visible dive close to given date. First search towards older,
  * then newer dives. */
 struct dive *dive_table::find_next_visible_dive(timestamp_t when)
