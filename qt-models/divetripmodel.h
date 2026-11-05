@@ -45,6 +45,7 @@ public:
 		LOCATION,
 		NOTES,
 		DIVEMODE,
+		SURFACE_INTERVAL,
 		COLUMNS
 	};
 
@@ -98,6 +99,7 @@ protected:
 	static QString tripTitle(const dive_trip *trip);
 	static QString tripShortDate(const dive_trip *trip);
 	static QString getDescription(int column);
+	void surfaceIntervalsChanged(const QVector<dive *> &dives, timestamp_t delta = 0);
 	void currentChanged(dive *currentDive);
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
@@ -138,6 +140,7 @@ private:
 	void divesShown(dive_trip *trip, const QVector<dive *> &dives);
 	void divesHidden(dive_trip *trip, const QVector<dive *> &dives);
 	void divesTimeChangedTrip(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
+	void divesAddedInternal(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeletedInternal(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
 
 	// The tree model has two levels. At the top level, we have either trips or dives

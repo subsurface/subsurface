@@ -196,6 +196,8 @@ TEST(TestTankInfoModel testtankinfomodel.cpp)
 set(TEST_TANK_INFO_MODEL TestTankInfoModel)
 TEST(TestDiveFilter testdivefilter.cpp)
 set(TEST_DIVE_FILTER TestDiveFilter)
+TEST(TestSurfaceIntervalColumn testsurfaceintervalcolumn.cpp)
+set(TEST_SURFACE_INTERVAL_COLUMN TestSurfaceIntervalColumn)
 endif()
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> -input ${SUBSURFACE_SOURCE}/tests)
 
@@ -248,6 +250,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestMobileCylinderEdit
 	${TEST_TANK_INFO_MODEL}
 	${TEST_DIVE_FILTER}
+	${TEST_SURFACE_INTERVAL_COLUMN}
 )
 
 # useful for debugging CMake issues
