@@ -181,11 +181,15 @@ Item {
 		}
 		Row {
 			visible: surfaceInterval !== ""
+			// visible only hides the row; its geometry would otherwise still
+			// count towards divePlate.childrenRect, leaving a gap for dives
+			// without a preceding dive. Collapse height and top margin too.
+			height: surfaceInterval !== "" ? implicitHeight : 0
 			spacing: Kirigami.Units.smallSpacing
 			anchors {
 				left: dateRow.left
 				top: ratingRow.bottom
-				topMargin: Kirigami.Units.smallSpacing
+				topMargin: surfaceInterval !== "" ? Kirigami.Units.smallSpacing : 0
 			}
 			TemplateLabelSmall {
 				text: qsTr("Surface interval:")
