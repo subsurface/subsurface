@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uddf version="3.2.0">
+  <generator><name>D-TWIN</name></generator>
+  <decomodel><buehlmann id="gf"><gradientfactorlow>0.35</gradientfactorlow><gradientfactorhigh>0.75</gradientfactorhigh></buehlmann></decomodel>
+  <profiledata><repetitiongroup><dive><informationbeforedive><divenumber>1</divenumber><datetime>2024-05-01T09:00:00</datetime></informationbeforedive></dive></repetitiongroup></profiledata>
+</uddf>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uddf xmlns="http://www.streit.cc/uddf/3.2/" version="3.2.0">
+  <generator><name>Other exporter</name></generator>
+  <decomodel>
+    <buehlmann id="first"><gradientfactorlow>0.30</gradientfactorlow><gradientfactorhigh>0.80</gradientfactorhigh></buehlmann>
+    <buehlmann id="second"><gradientfactorlow>0.405</gradientfactorlow><gradientfactorhigh>0.855</gradientfactorhigh></buehlmann>
+    <buehlmann id="boundary"><gradientfactorlow>0</gradientfactorlow><gradientfactorhigh>1</gradientfactorhigh></buehlmann>
+    <buehlmann id="empty"><gradientfactorlow/><gradientfactorhigh>0.8</gradientfactorhigh></buehlmann>
+    <buehlmann id="missing"><gradientfactorlow>0.2</gradientfactorlow></buehlmann>
+    <buehlmann id="duplicate"><gradientfactorlow>0.2</gradientfactorlow><gradientfactorlow>0.3</gradientfactorlow><gradientfactorhigh>0.8</gradientfactorhigh></buehlmann>
+    <buehlmann id="duplicate-high"><gradientfactorlow>0.2</gradientfactorlow><gradientfactorhigh>0.8</gradientfactorhigh><gradientfactorhigh>0.9</gradientfactorhigh></buehlmann>
+    <buehlmann id="nan"><gradientfactorlow>invalid</gradientfactorlow><gradientfactorhigh>0.8</gradientfactorhigh></buehlmann>
+    <buehlmann id="nan-high"><gradientfactorlow>0.2</gradientfactorlow><gradientfactorhigh>invalid</gradientfactorhigh></buehlmann>
+    <buehlmann id="negative"><gradientfactorlow>-0.01</gradientfactorlow><gradientfactorhigh>0.8</gradientfactorhigh></buehlmann>
+    <buehlmann id="over"><gradientfactorlow>0.2</gradientfactorlow><gradientfactorhigh>1.01</gradientfactorhigh></buehlmann>
+    <buehlmann id="reverse"><gradientfactorlow>0.9</gradientfactorlow><gradientfactorhigh>0.8</gradientfactorhigh></buehlmann>
+    <buehlmann id="ambiguous"><gradientfactorlow>0.2</gradientfactorlow><gradientfactorhigh>0.8</gradientfactorhigh></buehlmann>
+    <buehlmann id="ambiguous"><gradientfactorlow>0.3</gradientfactorlow><gradientfactorhigh>0.9</gradientfactorhigh></buehlmann>
+    <rgbm id="other"/>
+  </decomodel>
+  <profiledata><repetitiongroup>
+    <dive><informationbeforedive><divenumber>1</divenumber><datetime>2024-05-01T09:00:00</datetime><link ref="first"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>2</divenumber><datetime>2024-05-02T09:00:00</datetime><link ref="second"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>3</divenumber><datetime>2024-05-03T09:00:00</datetime><link ref="boundary"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>4</divenumber><datetime>2024-05-04T09:00:00</datetime><link ref="empty"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>5</divenumber><datetime>2024-05-05T09:00:00</datetime><link ref="missing"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>6</divenumber><datetime>2024-05-06T09:00:00</datetime><link ref="duplicate"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>7</divenumber><datetime>2024-05-07T09:00:00</datetime><link ref="duplicate-high"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>8</divenumber><datetime>2024-05-08T09:00:00</datetime><link ref="nan"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>9</divenumber><datetime>2024-05-09T09:00:00</datetime><link ref="nan-high"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>10</divenumber><datetime>2024-05-10T09:00:00</datetime><link ref="negative"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>11</divenumber><datetime>2024-05-11T09:00:00</datetime><link ref="over"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>12</divenumber><datetime>2024-05-12T09:00:00</datetime><link ref="reverse"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>13</divenumber><datetime>2024-05-13T09:00:00</datetime><link ref="ambiguous"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>14</divenumber><datetime>2024-05-14T09:00:00</datetime><link ref="other"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>15</divenumber><datetime>2024-05-15T09:00:00</datetime><link ref="unknown"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>16</divenumber><datetime>2024-05-16T09:00:00</datetime></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>17</divenumber><datetime>2024-05-17T09:00:00</datetime><link ref="first"/><link ref="second"/></informationbeforedive></dive>
+    <dive><informationbeforedive><divenumber>18</divenumber><datetime>2024-05-18T09:00:00</datetime><link ref="second"/></informationbeforedive><samples><waypoint><divetime>60</divetime><setgflow>0.5</setgflow><setgfhigh>0.7</setgfhigh></waypoint></samples></dive>
+  </repetitiongroup></profiledata>
+</uddf>

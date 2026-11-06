@@ -48,6 +48,9 @@ private slots:
 	void exportDiveSitesXML();
 	void exportKML();
 	void importUDDF();
+	void importUddfGradientFactors();
+	void importUddfGradientFactorFallback_data();
+	void importUddfGradientFactorFallback();
 	void importUDDFEvents();
 	void exportDiveLogsDE();
 	void exportDiveLogsDETankSensors();
