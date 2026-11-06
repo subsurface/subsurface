@@ -481,6 +481,22 @@
           </extradata>
         </xsl:if>
 
+        <!-- A linked model belongs to this dive, not necessarily the first dive or model.
+             Only D-TWIN's unlinked single-dive export has an unambiguous implicit model. -->
+        <xsl:variable name="linked_models" select="/uddf/decomodel/*[normalize-space(@id) != '' and @id = current()/informationbeforedive/link/@ref]"/>
+        <xsl:variable name="fallback_models" select="/uddf/decomodel/*[/uddf/generator/name = 'D-TWIN' and count(/uddf/profiledata/repetitiongroup/dive) = 1 and count(/uddf/decomodel/*) = 1 and not(/uddf/profiledata/repetitiongroup/dive/informationbeforedive/link)]"/>
+        <xsl:variable name="model" select="$linked_models[count($linked_models) = 1] | $fallback_models[not(current()/informationbeforedive/link)]"/>
+        <xsl:if test="count($model) = 1 and local-name($model) = 'buehlmann' and not(samples/waypoint/setgflow and samples/waypoint/setgfhigh)">
+          <xsl:variable name="low_nodes" select="$model/gradientfactorlow"/>
+          <xsl:variable name="high_nodes" select="$model/gradientfactorhigh"/>
+          <xsl:variable name="low" select="number($low_nodes)"/>
+          <xsl:variable name="high" select="number($high_nodes)"/>
+          <xsl:if test="count($low_nodes) = 1 and count($high_nodes) = 1 and $low = $low and $high = $high and $low &gt;= 0 and $low &lt;= $high and $high &lt;= 1">
+            <extradata key="GF Low" value="{round($low * 100)}"/>
+            <extradata key="GF High" value="{round($high * 100)}"/>
+          </xsl:if>
+        </xsl:if>
+
         <xsl:variable name="batteryvoltage_values" select="samples/waypoint[batteryvoltage]"/>
 
         <xsl:for-each select="/uddf/diver/owner/equipment/rebreather/battery">
