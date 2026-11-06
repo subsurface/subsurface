@@ -121,6 +121,7 @@ Item {
 			}
 		}
 		Row {
+			id: ratingRow
 			anchors {
 				left: dateRow.left
 				top: numberText.bottom
@@ -176,6 +177,26 @@ Item {
 				source: (rating === 5) ? ":/icons/ic_star.svg" : ":/icons/ic_star_border.svg"
 				isMask: true
 				color: rating === 5 ? activeStarColor : inactiveStarColor
+			}
+		}
+		Row {
+			visible: surfaceInterval !== ""
+			spacing: Kirigami.Units.smallSpacing
+			anchors {
+				left: dateRow.left
+				top: ratingRow.bottom
+				topMargin: Kirigami.Units.smallSpacing
+			}
+			TemplateLabelSmall {
+				text: qsTr("Surface interval:")
+				opacity: 0.6
+				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
+			}
+			TemplateLabelSmall {
+				text: surfaceInterval
+				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
 			}
 		}
 		Row {

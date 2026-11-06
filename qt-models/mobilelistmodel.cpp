@@ -2,6 +2,7 @@
 #include "mobilelistmodel.h"
 #include "core/divefilter.h" // for shown_dives
 #include "core/settings/qPrefLanguage.h"
+#include "core/subsurface-qt/divelistnotifier.h"
 
 MobileListModelBase::MobileListModelBase(DiveTripModelBase *sourceIn) : source(sourceIn)
 {
@@ -56,6 +57,7 @@ QHash<int, QByteArray> MobileListModelBase::roleNames() const
 	roles[TripLocationRole] = "tripLocation";
 	roles[TripNotesRole] = "tripNotes";
 	roles[IsInvalidRole] = "isInvalid";
+	roles[SurfaceIntervalRole] = "surfaceInterval";
 	return roles;
 }
 
@@ -562,6 +564,23 @@ MobileSwipeModel::MobileSwipeModel(DiveTripModelBase *source) : MobileListModelB
 	connect(source, &DiveTripModelBase::rowsMoved, this, &MobileSwipeModel::doneMove);
 	connect(source, &DiveTripModelBase::dataChanged, this, &MobileSwipeModel::changed);
 
+	// The surface interval of a dive changes if the preceding dive in the dive log
+	// is added, deleted, moved in time or has its duration edited. Such a change is not
+	// reported as a change of the (possibly filtered) dive itself, therefore listen
+	// to the notifier directly. Note that the source model has connected to the notifier
+	// first, so it has updated its rows by the time we get these signals.
+	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this,
+		[this] { invalidateSurfaceIntervals(); });
+	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this,
+		[this] { invalidateSurfaceIntervals(); });
+	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this,
+		[this] { invalidateSurfaceIntervals(); });
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this,
+		[this] (const QVector<dive *> &, DiveField field) {
+			if (field.datetime || field.duration)
+				invalidateSurfaceIntervals();
+		});
+
 	initData();
 }
 
@@ -929,6 +948,14 @@ void MobileSwipeModel::invalidate()
 	QModelIndex fromIdx = createIndex(0, 0);
 	QModelIndex toIdx = createIndex(rows - 1, 0);
 	dataChanged(fromIdx, toIdx);
+}
+
+void MobileSwipeModel::invalidateSurfaceIntervals()
+{
+	int rows = rowCount(QModelIndex());
+	if (rows <= 0)
+		return;
+	dataChanged(createIndex(0, 0), createIndex(rows - 1, 0), { SurfaceIntervalRole });
 }
 
 QVariant MobileSwipeModel::data(const QModelIndex &index, int role) const
