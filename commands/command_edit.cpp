@@ -758,12 +758,14 @@ void PasteDives::undo()
 		// Changing the time may have unsorted the dive and trip tables. The dive list
 		// models can only handle a single time change relative to the tables they
 		// have seen, so restore the order and send the signal for each dive in turn.
+		// The dives of the trip go first: trips and dives with equal times are
+		// ordered by the first dive of their trip.
 		timestamp_t delta = state.d.when - oldWhen;
 		if (state.when.has_value() && delta != 0) {
+			if (state.d.divetrip)
+				state.d.divetrip->sort_dives();
 			divelog.dives.sort();
 			divelog.trips.sort();
-			if (state.d.divetrip)
-				state.d.divetrip->sort_dives(); // Keep the trip-table in order
 			emit diveListNotifier.divesTimeChanged(delta, QVector<dive *> { &state.d });
 		}
 	}
