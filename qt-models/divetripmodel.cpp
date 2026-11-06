@@ -372,6 +372,12 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 	case MobileListModel::SelectedRole: return d->selected;
 	case MobileListModel::DiveInTripRole: return d->divetrip != NULL;
 	case MobileListModel::IsInvalidRole: return d->invalid;
+	case MobileListModel::SurfaceIntervalRole: {
+		timestamp_t interval = divelog.dives.get_surface_interval(d->when);
+		if (interval < 0)
+			return QString();
+		return get_dive_surfint_string(interval, gettextFromC::tr("d"), gettextFromC::tr("h"), gettextFromC::tr("min"));
+	}
 	}
 #endif
 	switch (role) {

@@ -62,7 +62,8 @@ public:
 		TripBelow,
 		TripLocationRole,
 		TripNotesRole,
-		IsInvalidRole
+		IsInvalidRole,
+		SurfaceIntervalRole
 	};
 	QHash<int, QByteArray> roleNames() const override;
 protected:
@@ -154,6 +155,9 @@ private:
 	IndexRange mapRangeFromSource(const QModelIndex &parent, int first, int last) const;
 	void invalidateSourceRowCache() const;
 	void updateSourceRowCache(int row) const;
+
+	// The surface interval depends on the previous dive in the whole dive log.
+	void invalidateSurfaceIntervals();
 
 	// Update elements
 	void initData();
