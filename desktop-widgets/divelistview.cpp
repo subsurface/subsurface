@@ -445,6 +445,11 @@ void DiveListView::cylinderEdited(struct dive *dive, int)
 	check_cylinder_use(*dive);
 }
 
+QList<QAction *> DiveListView::columnVisibilityActions() const
+{
+	return header()->actions();
+}
+
 void DiveListView::toggleColumnVisibilityByIndex()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
