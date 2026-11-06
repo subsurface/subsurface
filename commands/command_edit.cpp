@@ -751,8 +751,23 @@ void PasteDives::undo()
 	divesToNotify.reserve(dives.size());
 	for (PasteState &state: dives) {
 		divesToNotify.push_back(&state.d);
+		timestamp_t oldWhen = state.d.when;
 		state.swap();
 		state.d.invalidate_cache(); // Ensure that dive is written in git_save()
+
+		// Changing the time may have unsorted the dive and trip tables. The dive list
+		// models can only handle a single time change relative to the tables they
+		// have seen, so restore the order and send the signal for each dive in turn.
+		// The dives of the trip go first: trips and dives with equal times are
+		// ordered by the first dive of their trip.
+		timestamp_t delta = state.d.when - oldWhen;
+		if (state.when.has_value() && delta != 0) {
+			if (state.d.divetrip)
+				state.d.divetrip->sort_dives();
+			divelog.dives.sort();
+			divelog.trips.sort();
+			emit diveListNotifier.divesTimeChanged(delta, QVector<dive *> { &state.d });
+		}
 	}
 
 	// Send signals. We use the first data item to determine what changed
