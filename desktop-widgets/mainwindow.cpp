@@ -7,6 +7,7 @@
 #include "mainwindow.h"
 
 #include <QFileDialog>
+#include <QMenu>
 #include <QMessageBox>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QDesktopWidget>
@@ -189,6 +190,14 @@ MainWindow::MainWindow() :
 		connect(actionsRecent[i], SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	}
 	ui.menuFile->insertSeparator(ui.actionQuit);
+
+	// The dive list has no space for a visible column selector, so offer the
+	// column visibility actions of its header context menu in the View menu as well.
+	// The same QAction objects are shown, so both menus behave identically.
+	QMenu *diveListColumnsMenu = new QMenu(tr("Dive list columns"), this);
+	diveListColumnsMenu->addActions(diveList->columnVisibilityActions());
+	ui.menuView->insertMenu(ui.actionFullScreen, diveListColumnsMenu);
+
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(this, &MainWindow::showError, ui.mainErrorMessage, &NotificationWidget::showError, Qt::AutoConnection);
