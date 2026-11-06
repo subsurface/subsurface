@@ -60,10 +60,16 @@ QVariant MapLocation::getRole(int role) const
 		return QVariant::fromValue(coordinate);
 	case RoleName:
 		return QVariant::fromValue(name);
-	case RolePixmap:
+	case RolePixmap: {
+		bool alpha = divesite && divesite->alpha_flag;
+		if (alpha)
+			return selected ? QString("qrc:///dive-location-marker-alpha-selected-icon") :
+			       inEditMode() ? QString("qrc:///dive-location-marker-alpha-inactive-icon") :
+					    QString("qrc:///dive-location-marker-alpha-icon");
 		return selected ? QString("qrc:///dive-location-marker-selected-icon") :
 		       inEditMode() ? QString("qrc:///dive-location-marker-inactive-icon") :
 				    QString("qrc:///dive-location-marker-icon");
+	}
 	case RoleZ:
 		return selected ? 1 : 0;
 	case RoleIsSelected:
