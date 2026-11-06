@@ -4,6 +4,7 @@
 #include "core/dive.h"
 #include "core/divelog.h"
 #include "core/divesite.h"
+#include "core/extradata.h"
 #include "core/errorhelper.h"
 #include "core/file.h"
 #include "core/import-csv.h"
@@ -17,6 +18,7 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 #include <QTextStream>
+#include <QTemporaryDir>
 #include <QXmlStreamReader>
 
 #include <algorithm>
@@ -753,6 +755,83 @@ void TestParse::importUDDF()
 	QCOMPARE(save_dives("./testuddfimport.xml"), 0);
 	FILE_COMPARE("./testuddfimport.xml",
 		     SUBSURFACE_TEST_DATA "/dives/test-42-uddf-import-reference.xml");
+}
+
+static QString gfExtraData(const struct divecomputer &dc, const std::string &key)
+{
+	for (const auto &entry : dc.extra_data) {
+		if (entry.key == key)
+			return QString::fromStdString(entry.value);
+	}
+	return {};
+}
+
+void TestParse::importUddfGradientFactors()
+{
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test-uddf-gf-linked.uddf", &divelog), 0);
+	QCOMPARE(divelog.dives.size(), 18);
+	auto check = []() {
+		const QString low[] = { QStringLiteral("30"), QStringLiteral("41"), QStringLiteral("0") };
+		const QString high[] = { QStringLiteral("80"), QStringLiteral("86"), QStringLiteral("100") };
+		for (int i = 0; i < 18; ++i) {
+			const auto &dc = divelog.dives[i]->dcs[0];
+			QCOMPARE(gfExtraData(dc, "GF Low"), i < 3 ? low[i] : QString());
+			QCOMPARE(gfExtraData(dc, "GF High"), i < 3 ? high[i] : QString());
+		}
+		QCOMPARE(gfExtraData(divelog.dives[17]->dcs[0], "Deco model"), QStringLiteral("GF 50/70"));
+	};
+	check();
+	QCOMPARE(save_dives("./testuddfgf.xml"), 0);
+	clear_dive_file_data();
+	QCOMPARE(parse_file("./testuddfgf.xml", &divelog), 0);
+	QCOMPARE(divelog.dives.size(), 18);
+	check();
+}
+
+void TestParse::importUddfGradientFactorFallback_data()
+{
+	QTest::addColumn<QByteArray>("generator");
+	QTest::addColumn<QByteArray>("extraModel");
+	QTest::addColumn<QByteArray>("link");
+	QTest::addColumn<bool>("extraDive");
+	QTest::addColumn<bool>("expected");
+	QTest::newRow("single D-TWIN") << QByteArray("D-TWIN") << QByteArray() << QByteArray() << false << true;
+	QTest::newRow("other generator") << QByteArray("Other") << QByteArray() << QByteArray() << false << false;
+	QTest::newRow("multiple models") << QByteArray("D-TWIN") << QByteArray("<rgbm id=\"other\"/>") << QByteArray() << false << false;
+	QTest::newRow("unrelated link") << QByteArray("D-TWIN") << QByteArray() << QByteArray("<link ref=\"other\"/>") << false << false;
+	QTest::newRow("multiple dives") << QByteArray("D-TWIN") << QByteArray() << QByteArray() << true << false;
+	QTest::newRow("non Buehlmann") << QByteArray("D-TWIN") << QByteArray("<rgbm id=\"other\"/>") << QByteArray() << false << false;
+}
+
+void TestParse::importUddfGradientFactorFallback()
+{
+	QFETCH(QByteArray, generator);
+	QFETCH(QByteArray, extraModel);
+	QFETCH(QByteArray, link);
+	QFETCH(bool, extraDive);
+	QFETCH(bool, expected);
+	QFile input(SUBSURFACE_TEST_DATA "/dives/test-uddf-gf-fallback.uddf");
+	QVERIFY(input.open(QIODevice::ReadOnly));
+	QByteArray xml = input.readAll();
+	xml.replace("D-TWIN", generator);
+	if (QTest::currentDataTag() == QByteArray("non Buehlmann"))
+		xml.replace("<buehlmann id=\"gf\">", "<rgbm id=\"gf\">").replace("</buehlmann>", "</rgbm>");
+	else
+		xml.replace("</decomodel>", extraModel + "</decomodel>");
+	xml.replace("</informationbeforedive>", link + "</informationbeforedive>");
+	if (extraDive)
+		xml.replace("</profiledata>", "<repetitiongroup><dive><informationbeforedive><datetime>2024-05-02T09:00:00</datetime></informationbeforedive></dive></repetitiongroup></profiledata>");
+	QTemporaryDir dir;
+	QVERIFY(dir.isValid());
+	QString filename = dir.filePath("input.uddf");
+	QFile file(filename);
+	QVERIFY(file.open(QIODevice::WriteOnly));
+	QCOMPARE(file.write(xml), xml.size());
+	file.close();
+	QCOMPARE(parse_file(filename.toUtf8().constData(), &divelog), 0);
+	QCOMPARE(divelog.dives.size(), extraDive ? 2 : 1);
+	QCOMPARE(gfExtraData(divelog.dives[0]->dcs[0], "GF Low"), expected ? QStringLiteral("35") : QString());
+	QCOMPARE(gfExtraData(divelog.dives[0]->dcs[0], "GF High"), expected ? QStringLiteral("75") : QString());
 }
 
 // Regression coverage for importing a UDDF waypoint where <alarm> precedes
