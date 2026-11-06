@@ -29,9 +29,15 @@ namespace {
 //	no trip: F (1500), G (5000), E (10000)
 //
 // In the tree model, this yields the top-level order trip(A), F, G, E.
+//
+// createTwoTripLog() has two trips instead, and no dives outside of them:
+//
+//	trip: A (1000), B (2000), C (3000)
+//	second trip: X (5000), Y (6000)
 struct TestLog {
 	std::map<std::string, dive *> byName;
 	dive_trip *trip = nullptr;
+	dive_trip *secondTrip = nullptr; // Only set by createTwoTripLog()
 
 	dive *operator[](const std::string &name) const { return byName.at(name); }
 	std::string nameOf(const dive *d) const
@@ -76,6 +82,33 @@ TestLog createLog()
 	return res;
 }
 
+// Two trips, to test dives that move across the boundary between them.
+TestLog createTwoTripLog()
+{
+	TestLog res;
+	auto tripPtr = std::make_unique<dive_trip>();
+	auto secondTripPtr = std::make_unique<dive_trip>();
+	res.trip = tripPtr.get();
+	res.secondTrip = secondTripPtr.get();
+
+	auto add = [&res](const std::string &name, timestamp_t when, dive_trip *trip) {
+		auto d = std::make_unique<dive>();
+		d->when = when;
+		d->notes = name;
+		trip->add_dive(d.get());
+		res.byName[name] = divelog.dives.register_dive(std::move(d));
+	};
+	add("A", 1000, res.trip);
+	add("B", 2000, res.trip);
+	add("C", 3000, res.trip);
+	add("X", 5000, res.secondTrip);
+	add("Y", 6000, res.secondTrip);
+	divelog.trips.put(std::move(tripPtr));
+	divelog.trips.put(std::move(secondTripPtr));
+	DiveFilter::instance()->reset(); // Registered dives start out hidden, make them visible
+	return res;
+}
+
 // Dive list as seen by the core: the dive table and the dive list of the trip.
 QStringList coreOrder(const TestLog &log)
 {
@@ -90,11 +123,21 @@ QStringList tripOrder(const TestLog &log)
 	return log.names(log.trip->dives);
 }
 
+QStringList secondTripOrder(const TestLog &log)
+{
+	return log.names(log.secondTrip->dives);
+}
+
 // Check that the core data structures are sorted and consistent
-void verifyCore(const TestLog &log, const QStringList &expectedDives, const QStringList &expectedTrip)
+void verifyCore(const TestLog &log, const QStringList &expectedDives, const QStringList &expectedTrip,
+		const QStringList &expectedSecondTrip = {})
 {
 	QCOMPARE(coreOrder(log), expectedDives);
 	QCOMPARE(tripOrder(log), expectedTrip);
+	if (log.secondTrip) {
+		QCOMPARE(secondTripOrder(log), expectedSecondTrip);
+		QVERIFY(std::is_sorted(log.secondTrip->dives.begin(), log.secondTrip->dives.end(), dive_less_than_ptr));
+	}
 	QVERIFY(std::is_sorted(divelog.dives.begin(), divelog.dives.end(),
 			       [](auto &a, auto &b) { return comp_dives(*a, *b) < 0; }));
 	QVERIFY(std::is_sorted(divelog.trips.begin(), divelog.trips.end(),
@@ -160,21 +203,23 @@ struct Expected {
 	QStringList dives;
 	QStringList trip;
 	QStringList treeRows;
+	QStringList secondTrip; // Only used with createTwoTripLog()
 };
 
 // Run: initial state -> paste -> undo -> redo -> undo -> redo, checking core data and model each time.
 void runScenario(const std::vector<std::string> &targets, timestamp_t when,
 		 const Expected &before, const Expected &after,
-		 const std::vector<std::pair<std::string, timestamp_t>> &expectedDeltas)
+		 const std::vector<std::pair<std::string, timestamp_t>> &expectedDeltas,
+		 TestLog (*create)() = createLog)
 {
 	divelog.clear();
-	TestLog log = createLog();
+	TestLog log = create();
 
 	// Only one dive list model may exist at any time, because they share the filter state.
 	for (int layout = 0; layout < 2; ++layout) {
 		if (layout > 0) {
 			divelog.clear();
-			log = createLog();
+			log = create();
 		}
 		std::unique_ptr<DiveTripModelBase> model;
 		if (layout == 0)
@@ -188,7 +233,7 @@ void runScenario(const std::vector<std::string> &targets, timestamp_t when,
 			return layout == 0 ? e.treeRows : e.dives;
 		};
 
-		verifyCore(log, before.dives, before.trip);
+		verifyCore(log, before.dives, before.trip, before.secondTrip);
 		QCOMPARE(rows(), expectedRows(before));
 
 		std::vector<dive *> selection;
@@ -211,7 +256,7 @@ void runScenario(const std::vector<std::string> &targets, timestamp_t when,
 		}
 		for (size_t i = 0; i < selection.size(); ++i)
 			QCOMPARE(selection[i]->when, when);
-		verifyCore(log, after.dives, after.trip);
+		verifyCore(log, after.dives, after.trip, after.secondTrip);
 		QCOMPARE(rows(), expectedRows(after));
 
 		std::unique_ptr<QAction> undo(Command::undoAction(nullptr));
@@ -228,7 +273,7 @@ void runScenario(const std::vector<std::string> &targets, timestamp_t when,
 			}
 			for (size_t i = 0; i < selection.size(); ++i)
 				QCOMPARE(selection[i]->when, oldWhen[i]);
-			verifyCore(log, before.dives, before.trip);
+			verifyCore(log, before.dives, before.trip, before.secondTrip);
 			QCOMPARE(rows(), expectedRows(before));
 
 			spy.clear();
@@ -241,7 +286,7 @@ void runScenario(const std::vector<std::string> &targets, timestamp_t when,
 			}
 			for (size_t i = 0; i < selection.size(); ++i)
 				QCOMPARE(selection[i]->when, when);
-			verifyCore(log, after.dives, after.trip);
+			verifyCore(log, after.dives, after.trip, after.secondTrip);
 			QCOMPARE(rows(), expectedRows(after));
 		}
 
@@ -289,6 +334,17 @@ void TestPasteDives::pasteTimeMultipleDives()
 	Expected before { { "A", "F", "B", "C", "G", "E" }, { "A", "B", "C" }, { "T[A,B,C]", "F", "G", "E" } };
 	Expected after { { "F", "B", "A", "E", "C", "G" }, { "B", "A", "C" }, { "F", "T[B,A,C]", "E", "G" } };
 	runScenario({ "A", "E" }, 2500, before, after, { { "A", 1500 }, { "E", -7500 } });
+}
+
+// Paste a time onto A, which moves it past the first dive of the second trip.
+// Inside its own trip A moves behind C, so the trip then starts with B. Since
+// the trip table is ordered by the first dive of each trip, it must be sorted
+// only after the dives of the trip, otherwise the trips end up swapped.
+void TestPasteDives::pasteTimeFirstDiveOfTripPastOtherTrip()
+{
+	Expected before { { "A", "B", "C", "X", "Y" }, { "A", "B", "C" }, { "T[A,B,C]", "T[X,Y]" }, { "X", "Y" } };
+	Expected after { { "B", "C", "X", "A", "Y" }, { "B", "C", "A" }, { "T[B,C,A]", "T[X,Y]" }, { "X", "Y" } };
+	runScenario({ "A" }, 5500, before, after, { { "A", 4500 } }, createTwoTripLog);
 }
 
 // Pasting something else than the time must not report any time change.

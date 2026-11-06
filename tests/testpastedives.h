@@ -15,6 +15,7 @@ private slots:
 
 	void pasteTimeSingleDive();
 	void pasteTimeMultipleDives();
+	void pasteTimeFirstDiveOfTripPastOtherTrip();
 	void pasteWithoutTimeSendsNoTimeSignal();
 };
 
