@@ -152,7 +152,8 @@ void TestSurfaceIntervalColumn::testColumnPosition()
 {
 	QCOMPARE(int(DiveTripModelBase::DIVEMODE), 20);
 	QCOMPARE(int(DiveTripModelBase::SURFACE_INTERVAL), 21);
-	QCOMPARE(int(DiveTripModelBase::COLUMNS), 22);
+	QCOMPARE(int(DiveTripModelBase::SURFACE_GF), 22);
+	QCOMPARE(int(DiveTripModelBase::COLUMNS), 23);
 
 	DiveTripModelList listModel;
 	DiveTripModelBase &model = listModel;
@@ -340,8 +341,11 @@ void TestSurfaceIntervalColumn::testSuccessorRefreshList()
 	QCOMPARE(rowOf(model, d7), -1);
 	spy.clear();
 	emit diveListNotifier.divesChanged(QVector<dive *> { diveByNumber(6) }, DiveField::DURATION);
-	QCOMPARE(spy.count(), 1);	// Only the row of the changed dive
-	QVERIFY(spy.first()[0].value<QModelIndex>().isValid());
+	QVERIFY(spy.count() >= 1); // The GF cache refresh also notifies every visible row.
+	for (const auto &args: spy) {
+		QVERIFY(args[0].value<QModelIndex>().isValid());
+		QVERIFY(args[1].value<QModelIndex>().isValid());
+	}
 }
 
 void TestSurfaceIntervalColumn::testSuccessorRefreshTree()

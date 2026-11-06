@@ -7,6 +7,8 @@
 #include <QAbstractItemModel>
 #include <QBrush>
 #include <QFont>
+#include <optional>
+#include <unordered_map>
 
 class DiveFilter;
 
@@ -46,6 +48,7 @@ public:
 		NOTES,
 		DIVEMODE,
 		SURFACE_INTERVAL,
+		SURFACE_GF,
 		COLUMNS
 	};
 
@@ -100,12 +103,15 @@ protected:
 	static QString tripShortDate(const dive_trip *trip);
 	static QString getDescription(int column);
 	void surfaceIntervalsChanged(const QVector<dive *> &dives, timestamp_t delta = 0);
+	void surfaceGfsChanged();
+	std::optional<double> surfaceGf(const dive *d) const;
 	void currentChanged(dive *currentDive);
 
 	virtual dive *diveOrNull(const QModelIndex &index) const = 0;	// Returns a dive if this index represents a dive, null otherwise
 	virtual void clearData() = 0;
 	virtual void populate() = 0;
 	virtual QModelIndex diveToIdx(const dive *d) const = 0;
+	mutable std::unordered_map<const dive *, std::optional<double>> surfaceGfCache;
 };
 
 class DiveTripModelTree final : public DiveTripModelBase
@@ -198,7 +204,9 @@ public slots:
 	void divesChanged(const QVector<dive *> &dives);
 	void diveChanged(dive *d);
 	void divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives);
-	// Does nothing in list view.
+	// Moving dives between trips doesn't change the flat list itself (no
+	// dedicated slot needed), but it is still connected in the .cpp file to
+	// invalidate cached Surface GF values; see the constructor.
 	//void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesSelectedSlot(const QVector<dive *> &dives, dive *currentDive, int currentDC);
 	void tripSelected(dive_trip *trip, dive *currentDive);

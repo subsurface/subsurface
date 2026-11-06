@@ -34,6 +34,12 @@ struct dive_table : public sorted_owning_table<dive, &comp_dives> {
 	void fixup_dive(struct dive &dive) const;
 	void force_fixup_dive(struct dive &d) const;
 	int init_decompression(struct deco_state *ds, const struct dive *dive, bool in_planner) const;
+	// True if d's span [when, endtime()) shares time with any other dive in
+	// the table, in any trip. d need not be in the table.
+	bool overlaps_other_dive(const struct dive &d) const;
+	// Tissue loading at dive.totaltime(), including eligible preceding dives.
+	// No value for overlapping dives or a first dive computer without samples.
+	std::optional<double> end_surface_gf(const struct dive &dive) const;
 	void update_cylinder_related_info(struct dive &dive) const;
 	int get_dive_nr_at_idx(int idx) const;
 	timestamp_t get_surface_interval(timestamp_t when) const;

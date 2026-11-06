@@ -914,17 +914,13 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 			struct plot_data &entry0 = pi.entry[0];
 			entry0.ambpressure = dive->depth_to_bar(entry0.depth);
 			tissue_tolerance_calc(ds, dive, entry0.ambpressure, in_planner);
-			entry0.surface_gf = 0.0;
+			entry0.surface_gf = surface_gradient_factor(ds, surface_pressure);
 			entry0.current_gf = 0.0;
 			for (int j = 0; j < 16; j++) {
 				double m_value = ds->buehlmann_inertgas_a[j] + entry0.ambpressure / ds->buehlmann_inertgas_b[j];
-				double surface_m_value = ds->buehlmann_inertgas_a[j] + surface_pressure / ds->buehlmann_inertgas_b[j];
 				double current_gf = (ds->tissue_inertgas_saturation[j] - entry0.ambpressure) / (m_value - entry0.ambpressure);
 				if (current_gf > entry0.current_gf)
 					entry0.current_gf = current_gf;
-				double surface_gf = 100.0 * (ds->tissue_inertgas_saturation[j] - surface_pressure) / (surface_m_value - surface_pressure);
-				if (surface_gf > entry0.surface_gf)
-					entry0.surface_gf = surface_gf;
 			}
 		}
 
@@ -995,11 +991,10 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 						time_clear_ceiling = t1;
 				}
 			}
-			entry.surface_gf = 0.0;
+			entry.surface_gf = surface_gradient_factor(ds, surface_pressure);
 			entry.current_gf = 0.0;
 			for (int j = 0; j < 16; j++) {
 				double m_value = ds->buehlmann_inertgas_a[j] + entry.ambpressure / ds->buehlmann_inertgas_b[j];
-				double surface_m_value = ds->buehlmann_inertgas_a[j] + surface_pressure / ds->buehlmann_inertgas_b[j];
 				entry.ceilings[j] = deco_allowed_depth(ds->tolerated_by_tissue[j], surface_pressure, dive, 1);
 				if (entry.ceilings[j].mm > max_ceiling.mm)
 					max_ceiling = entry.ceilings[j];
@@ -1009,9 +1004,6 @@ static void calculate_deco_information(struct deco_state *ds, const struct deco_
 					lrint(AMB_PERCENTAGE + current_gf * (100.0 - AMB_PERCENTAGE));
 				if (current_gf > entry.current_gf)
 					entry.current_gf = current_gf;
-				double surface_gf = 100.0 * (ds->tissue_inertgas_saturation[j] - surface_pressure) / (surface_m_value - surface_pressure);
-				if (surface_gf > entry.surface_gf)
-					entry.surface_gf = surface_gf;
 			}
 
 			// In the planner, if the ceiling is violated, add an event.
