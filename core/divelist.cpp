@@ -713,6 +713,62 @@ static void add_dive_to_deco(struct deco_state *ds, const struct dive &dive, boo
 	}
 }
 
+// True if d's span [when, endtime()) shares time with any other dive in the
+// table, in any trip. Dives starting at the same instant always count as
+// overlapping, including zero-length ones. d need not be in the table: a
+// dive that is not is checked as if it were added at its start time.
+bool dive_table::overlaps_other_dive(const struct dive &d) const
+{
+	timestamp_t start = d.when, end = d.endtime();
+	for (const auto &o: *this) {
+		if (o.get() == &d)
+			continue;
+		if (o->when == start)
+			return true;
+		if (o->when >= end)
+			break;	// sorted by start time: no later dive can overlap
+		if (o->endtime() > start)
+			return true;	// o starts before d ends and ends after d starts
+	}
+	return false;
+}
+
+std::optional<double> dive_table::end_surface_gf(const struct dive &dive) const
+{
+	if (dive.dcs[0].samples.empty())
+		return std::nullopt;
+
+	// add_dive_to_deco() only ever walks dcs[0]'s own samples (see its comment),
+	// so it cannot account for any interval between dcs[0]'s last sample and
+	// dive.totaltime() (the maximum over *all* dive computers plus the
+	// dive-level duration field). That gap is normally zero or negative - see
+	// dc_totaltime()'s deliberate discarding of dcs[0]'s own trailing surface
+	// samples - but a second dive computer that recorded a longer dive (e.g.
+	// disagreeing dive computers, or a manually edited duration) can make it
+	// positive, leaving the tissue state frozen at dcs[0]'s last sample while
+	// the rest of the dive - in-water or not - goes unaccounted for. Rather
+	// than reporting a value that may not reflect the dive's actual end,
+	// decline to answer.
+	if (dive.dcs[0].samples.back().time.seconds < dive.totaltime().seconds)
+		return std::nullopt;
+
+	if (overlaps_other_dive(dive))
+		return std::nullopt;
+
+	// A dive has a value only if: (1) it overlaps no other dive in the table,
+	// in any trip (checked above); (2) init_decompression() returns >= 0, i.e.
+	// no overlap among the earlier dives in its own deco chain; and (3) the
+	// samples and multi-dive-computer-tail checks above pass.
+	struct deco_state ds;
+	if (init_decompression(&ds, &dive, false) < 0)
+		return std::nullopt;
+	add_dive_to_deco(&ds, dive, false);
+	double surface_pressure = dive.get_surface_pressure().mbar / 1000.0;
+	// add_segment() updates tissue loading but not the mixed-gas Bühlmann coefficients.
+	tissue_tolerance_calc(&ds, &dive, surface_pressure, false);
+	return surface_gradient_factor(&ds, surface_pressure);
+}
+
 /* take into account previous dives until there is a 48h gap between dives */
 /* return last surface time before this dive or dummy value of 48h */
 /* return negative surface time if dives are overlapping */

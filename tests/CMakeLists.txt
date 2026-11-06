@@ -211,6 +211,8 @@ TEST(TestDiveFilter testdivefilter.cpp)
 set(TEST_DIVE_FILTER TestDiveFilter)
 TEST(TestSurfaceIntervalColumn testsurfaceintervalcolumn.cpp)
 set(TEST_SURFACE_INTERVAL_COLUMN TestSurfaceIntervalColumn)
+TEST(TestSurfaceGfColumn testsurfacegfcolumn.cpp)
+set(TEST_SURFACE_GF_COLUMN TestSurfaceGfColumn)
 endif()
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> -input ${SUBSURFACE_SOURCE}/tests)
 
@@ -265,6 +267,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	${TEST_TANK_INFO_MODEL}
 	${TEST_DIVE_FILTER}
 	${TEST_SURFACE_INTERVAL_COLUMN}
+	${TEST_SURFACE_GF_COLUMN}
 )
 
 # useful for debugging CMake issues

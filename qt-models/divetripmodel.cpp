@@ -2,6 +2,7 @@
 #include "qt-models/divetripmodel.h"
 #include "core/divefilter.h"
 #include "core/divelog.h"
+#include "core/extradata.h"
 #ifdef SUBSURFACE_MOBILE
 #include "qt-models/mobilelistmodel.h"
 #endif
@@ -11,6 +12,8 @@
 #include "core/string-format.h"
 #include "core/trip.h"
 #include "core/pref.h"
+#include "core/settings/qPrefDivePlanner.h"
+#include "core/settings/qPrefGeneral.h"
 #include "core/qthelper.h"
 #include "core/range.h"
 #include "core/divesite.h"
@@ -45,6 +48,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModelBase::OTU:
 	case DiveTripModelBase::MAXCNS:
 	case DiveTripModelBase::SURFACE_INTERVAL:
+	case DiveTripModelBase::SURFACE_GF:
 		// Right align numeric columns
 		return int(Qt::AlignRight | Qt::AlignVCenter);
 	// NR needs to be left aligned because its the indent marker for trips too
@@ -273,6 +277,8 @@ QString DiveTripModelBase::getDescription(int column)
 		return tr("Divemode");
 	case SURFACE_INTERVAL:
 		return tr("Surface interval before this dive");
+	case SURFACE_GF:
+		return tr("Surface GF at the end of the dive");
 	default:
 		return QString();
 	}
@@ -327,6 +333,28 @@ void DiveTripModelBase::surfaceIntervalsChanged(const QVector<dive *> &dives, ti
 		refreshAfter(d->when);
 		if (delta != 0)
 			refreshAfter(d->when - delta);
+	}
+}
+
+std::optional<double> DiveTripModelBase::surfaceGf(const dive *d) const
+{
+	auto [it, inserted] = surfaceGfCache.try_emplace(d);
+	if (inserted)
+		it->second = divelog.dives.end_surface_gf(*d);
+	return it->second;
+}
+
+void DiveTripModelBase::surfaceGfsChanged()
+{
+	// A dive can affect all later dives in its 48-hour repetitive chain.
+	surfaceGfCache.clear();
+	for (int row = 0; row < rowCount(QModelIndex()); ++row) {
+		QModelIndex parent = index(row, 0, QModelIndex());
+		QModelIndex cell = index(row, SURFACE_GF, QModelIndex());
+		emit dataChanged(cell, cell);
+		int children = rowCount(parent);
+		if (children)
+			emit dataChanged(index(0, SURFACE_GF, parent), index(children - 1, SURFACE_GF, parent));
 	}
 }
 
@@ -434,6 +462,13 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 			return QString(divemode_text_ui[(int)d->dcs[0].divemode]);
 		case SURFACE_INTERVAL:
 			return displaySurfaceInterval(d);
+		case SURFACE_GF: {
+			std::optional<double> gf = surfaceGf(d);
+			if (!gf)
+				return QVariant();
+			int percent = qRound(*gf);
+			return prefs.units.show_units_table ? QVariant(QString("%1%").arg(percent)) : QVariant(percent);
+		}
 		}
 		break;
 	case Qt::DecorationRole:
@@ -454,6 +489,21 @@ QVariant DiveTripModelBase::diveData(const struct dive *d, int column, int role)
 		}
 		break;
 	case Qt::ToolTipRole:
+		if (column == SURFACE_GF) {
+			const extra_data *gfLow = nullptr;
+			const extra_data *gfHigh = nullptr;
+			for (const extra_data &data: d->dcs[0].extra_data) {
+				if (data.key == "Deco model")
+					return getDescription(column) + "\n" + tr("Dive computer deco model: %1").arg(QString::fromStdString(data.value));
+				if (data.key == "GF Low")
+					gfLow = &data;
+				else if (data.key == "GF High")
+					gfHigh = &data;
+			}
+			if (gfLow && gfHigh)
+				return getDescription(column) + "\n" + tr("Dive computer deco model: %1")
+					.arg(tr("GF %1/%2").arg(QString::fromStdString(gfLow->value), QString::fromStdString(gfHigh->value)));
+		}
 		return getDescription(column);
 	case STAR_ROLE:
 		return d->rating;
@@ -524,6 +574,8 @@ QVariant DiveTripModelBase::headerData(int section, Qt::Orientation orientation,
 			return tr("Divemode");
 		case SURFACE_INTERVAL:
 			return tr("Surface interval");
+		case SURFACE_GF:
+			return tr("Surface GF");
 		}
 		break;
 	case Qt::ToolTipRole:
@@ -550,18 +602,54 @@ void DiveTripModelBase::initSelection()
 void DiveTripModelBase::reset()
 {
 	beginResetModel();
+	surfaceGfCache.clear();
 	oldCurrent = nullptr;
 	clearData();
 	populate();
 	endResetModel();
+	surfaceGfsChanged();
 	emit diveListNotifier.numShownChanged();
 	uiNotification(tr("finish populating data store"));
+}
+
+// pscr_o2() (core/gas.cpp) is only ever consulted for a segment that is
+// actually in PSCR mode at that point in time - either because the dive
+// computer declared the whole dive PSCR, or because a "modechange" event
+// switched into PSCR mid-dive (see divemode_loop). If no logged dive ever
+// reaches PSCR mode either way, none of pscr_ratio/o2consumption/bottomsac
+// can affect any computed Surface GF, so refreshing on their change would
+// only cost time without ever changing a displayed value.
+static bool logHasPscrDive()
+{
+	for (const auto &d: divelog.dives) {
+		if (!d)
+			continue;
+		for (const auto &dc: d->dcs) {
+			if (dc.divemode == PSCR)
+				return true;
+			for (const auto &ev: dc.events) {
+				if (ev.is_divemodechange() && static_cast<divemode_t>(ev.value) == PSCR)
+					return true;
+			}
+		}
+	}
+	return false;
 }
 
 DiveTripModelBase::DiveTripModelBase(QObject *parent) : QAbstractItemModel(parent),
 	invalidForeground(Qt::gray)
 {
 	invalidFont.setStrikeOut(true);
+	// pscr_o2() (core/gas.cpp) computes PSCR dives' O2 partial pressure from
+	// all three of these preferences together, so a logged PSCR dive's
+	// Surface GF depends on all three. Skip the refresh entirely when the
+	// log has no PSCR activity at all, so adjusting these planner
+	// preferences doesn't needlessly force a full resort/recompute of an
+	// unrelated, possibly large, dive list.
+	auto refreshIfPscrDependent = [this] { if (logHasPscrDive()) surfaceGfsChanged(); };
+	connect(qPrefGeneral::instance(), &qPrefGeneral::pscr_ratioChanged, this, refreshIfPscrDependent);
+	connect(qPrefGeneral::instance(), &qPrefGeneral::o2consumptionChanged, this, refreshIfPscrDependent);
+	connect(qPrefDivePlanner::instance(), &qPrefDivePlanner::bottomsacChanged, this, refreshIfPscrDependent);
 }
 
 int DiveTripModelBase::columnCount(const QModelIndex&) const
@@ -762,6 +850,8 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelTree::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, [this] { surfaceGfsChanged(); });
+	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, [this] { surfaceGfsChanged(); });
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &DiveTripModelTree::diveChanged);
@@ -1232,7 +1322,9 @@ int DiveTripModelTree::tripInDirection(const struct dive *d, int direction) cons
 
 void DiveTripModelTree::divesAdded(dive_trip *trip, bool newTrip, const QVector<dive *> &divesIn)
 {
+	surfaceGfCache.clear();
 	divesAddedInternal(trip, newTrip, divesIn);
+	surfaceGfsChanged();
 	surfaceIntervalsChanged(divesIn); // Also for hidden dives, which still change the interval of their successor
 }
 
@@ -1265,12 +1357,14 @@ void DiveTripModelTree::divesAddedInternal(dive_trip *trip, bool newTrip, const 
 
 void DiveTripModelTree::divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &divesIn)
 {
+	surfaceGfCache.clear();
 	QVector <dive *> dives = visibleDives(divesIn);
 	if (!dives.empty()) {
 		if (oldCurrent && std::find(dives.begin(), dives.end(), oldCurrent) != dives.end())
 			oldCurrent = nullptr;
 		divesDeletedInternal(trip, deleteTrip, dives);
 	}
+	surfaceGfsChanged();
 	surfaceIntervalsChanged(divesIn); // Also for hidden dives, which still change the interval of their successor
 }
 
@@ -1330,8 +1424,10 @@ void DiveTripModelTree::diveSiteChanged(dive_site *ds, int field)
 
 void DiveTripModelTree::divesChanged(const QVector<dive *> &dives)
 {
+	surfaceGfCache.clear();
 	processByTrip(dives, [this] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesChangedTrip(trip, divesInTrip); });
+	surfaceGfsChanged();
 	surfaceIntervalsChanged(dives);
 }
 
@@ -1400,9 +1496,12 @@ void DiveTripModelTree::tripChanged(dive_trip *trip, TripField)
 
 void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &divesIn)
 {
+	surfaceGfCache.clear();
 	QVector <dive *> dives = visibleDives(divesIn);
-	if (dives.empty())
+	if (dives.empty()) {
+		surfaceGfsChanged();
 		return;
+	}
 
 	// Move dives between trips. This is an "interesting" problem, as we might
 	// move from trip to trip, from trip to top-level or from top-level to trip.
@@ -1412,20 +1511,25 @@ void DiveTripModelTree::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, b
 	// this is handled by Qt and if it gives some ugly UI behavior!
 
 	// But first let's just rule out the trivial case: same-to-same trip move.
-	if (from == to)
+	if (from == to) {
+		surfaceGfsChanged();
 		return;
+	}
 
 	// Cheating!
 	// Unfortunately, removing the dives means that their selection is lost.
 	// Thus, remember the selection and re-add it later.
 	divesDeletedInternal(from, deleteFrom, dives); // Use internal version to keep current dive
 	divesAddedInternal(to, createTo, dives);
+	surfaceGfsChanged();
 }
 
 void DiveTripModelTree::divesTimeChanged(timestamp_t delta, const QVector<dive *> &dives)
 {
+	surfaceGfCache.clear();
 	processByTrip(dives, [this, delta] (dive_trip *trip, const QVector<dive *> &divesInTrip)
 		      { divesTimeChangedTrip(trip, delta, divesInTrip); });
+	surfaceGfsChanged();
 	surfaceIntervalsChanged(dives, delta);
 }
 
@@ -1570,8 +1674,11 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this, &DiveTripModelList::divesDeleted);
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &DiveTripModelList::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &DiveTripModelList::diveSiteChanged);
-	// Does nothing in list-view
-	//connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModelList::divesMovedBetweenTrips);
+	// Moving dives between trips doesn't change anything in the flat list
+	// itself, but it can change which preceding dives init_decompression()
+	// considers when computing Surface GF (see its divetrip check), so the
+	// cached values still have to be invalidated.
+	connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, [this] { surfaceGfsChanged(); });
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModelList::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModelList::divesSelectedSlot);
 	connect(&diveListNotifier, &DiveListNotifier::tripSelected, this, &DiveTripModelList::tripSelected);
@@ -1579,6 +1686,8 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::cylinderAdded, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderEdited, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelList::diveChanged);
+	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, [this] { surfaceGfsChanged(); });
+	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, [this] { surfaceGfsChanged(); });
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &DiveTripModelList::diveChanged);
@@ -1686,10 +1795,12 @@ void DiveTripModelList::removeDives(QVector<dive *> dives)
 
 void DiveTripModelList::divesDeleted(dive_trip *trip, bool, const QVector<dive *> &divesIn)
 {
+	surfaceGfCache.clear();
 	QVector<dive *> dives = visibleDives(divesIn);
 	if (oldCurrent && std::find(dives.begin(), dives.end(), oldCurrent) != dives.end())
 		oldCurrent = nullptr;
 	divesDeletedInternal(dives);
+	surfaceGfsChanged();
 	surfaceIntervalsChanged(divesIn); // Also for hidden dives, which still change the interval of their successor
 }
 
@@ -1700,8 +1811,10 @@ void DiveTripModelList::divesDeletedInternal(const QVector<dive *> &dives)
 
 void DiveTripModelList::divesAdded(dive_trip *, bool, const QVector<dive *> &divesIn)
 {
+	surfaceGfCache.clear();
 	QVector<dive *> dives = visibleDives(divesIn);
 	addDives(dives);
+	surfaceGfsChanged();
 	surfaceIntervalsChanged(divesIn); // Also for hidden dives, which still change the interval of their successor
 }
 
@@ -1714,6 +1827,7 @@ void DiveTripModelList::diveSiteChanged(dive_site *ds, int field)
 
 void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 {
+	surfaceGfCache.clear();
 	QVector<dive *> dives = divesIn;
 	std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
 
@@ -1733,6 +1847,7 @@ void DiveTripModelList::divesChanged(const QVector<dive *> &divesIn)
 			 });
 
 	surfaceIntervalsChanged(divesIn);
+	surfaceGfsChanged();
 
 	// If the current dive changed (because the change caused it to become hidden
 	// by the filter), instruct the UI of the changed selection.
@@ -1748,6 +1863,7 @@ void DiveTripModelList::diveChanged(dive *d)
 
 void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *> &divesIn)
 {
+	surfaceGfCache.clear();
 	QVector<dive *> dives = visibleDives(divesIn);
 	if (!dives.empty()) {
 		std::sort(dives.begin(), dives.end(), dive_less_than_ptr);
@@ -1756,6 +1872,7 @@ void DiveTripModelList::divesTimeChanged(timestamp_t delta, const QVector<dive *
 		divesDeletedInternal(dives); // Use internal version to keep current dive
 		addDives(dives);
 	}
+	surfaceGfsChanged();
 	surfaceIntervalsChanged(divesIn, delta);
 }
 
@@ -1894,6 +2011,14 @@ bool DiveTripModelList::lessThan(const QModelIndex &i1, const QModelIndex &i2) c
 		timestamp_t i1 = divelog.dives.get_surface_interval_before(*d1);
 		timestamp_t i2 = divelog.dives.get_surface_interval_before(*d2);
 		return lessThanHelper((i1 > i2) - (i1 < i2), row_diff);
+	}
+	case SURFACE_GF: {
+		std::optional<double> gf1 = surfaceGf(d1);
+		std::optional<double> gf2 = surfaceGf(d2);
+		// No value sorts after all values in ascending order.
+		if (!gf1 || !gf2)
+			return lessThanHelper(int(!gf1) - int(!gf2), row_diff);
+		return lessThanHelper((*gf1 > *gf2) - (*gf1 < *gf2), row_diff);
 	}
 	}
 }

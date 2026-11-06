@@ -58,6 +58,18 @@ struct buehlmann_config buehlmann_config = {
 	.gf_low_position_min = 1.0,
 };
 
+double surface_gradient_factor(const struct deco_state *ds, double surface_pressure_bar)
+{
+	double result = 0.0;
+	for (int j = 0; j < 16; j++) {
+		double surface_m_value = ds->buehlmann_inertgas_a[j] + surface_pressure_bar / ds->buehlmann_inertgas_b[j];
+		double surface_gf = 100.0 * (ds->tissue_inertgas_saturation[j] - surface_pressure_bar) / (surface_m_value - surface_pressure_bar);
+		if (surface_gf > result)
+			result = surface_gf;
+	}
+	return result;
+}
+
 //! Option structure for VPM-B decompression.
 struct vpmb_config {
 	double crit_radius_N2;            //! Critical radius of N2 nucleon (microns).

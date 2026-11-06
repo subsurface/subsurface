@@ -3,6 +3,7 @@
 #include "core/deco.h"
 #include "core/dive.h"
 #include "core/divecomputer.h"
+#include "core/divelist.h"
 #include "core/divelog.h"
 #include "core/equipment.h"
 #include "core/gas.h"
@@ -10,7 +11,9 @@
 #include "core/pref.h"
 #include "core/profile.h"
 #include "core/sample.h"
+#include "core/trip.h"
 #include "core/units.h"
+#include <cmath>
 
 void TestSurfaceGf::initTestCase()
 {
@@ -57,6 +60,328 @@ static std::unique_ptr<dive> makeSquareDive(int number, timestamp_t when, pressu
 	dc.duration.seconds = totalSeconds;
 
 	return d;
+}
+
+void TestSurfaceGf::testEndSurfaceGfSquareDive()
+{
+	clear_dive_file_data();
+	prefs = default_prefs;
+	prefs.planner_deco_mode = BUEHLMANN;
+	auto d = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 540, 660);
+	divelog.dives.record_dive(std::move(d));
+	const dive &logged = *divelog.dives[0];
+	std::optional<double> endGf = divelog.dives.end_surface_gf(logged);
+	QVERIFY(endGf.has_value());
+	QVERIFY(*endGf > 0.0);
+
+	plot_info pi = create_plot_info_new(&logged, &logged.dcs[0], nullptr);
+	int last = -1;
+	for (int i = 0; i < pi.nr; i++) {
+		if (pi.entry[i].sec <= logged.totaltime().seconds)
+			last = i;
+	}
+	QVERIFY(last >= 0);
+	QVERIFY(std::abs(*endGf - pi.entry[last].surface_gf) <= 1.0);
+}
+
+void TestSurfaceGf::testEndSurfaceGfRepetitiveDive()
+{
+	clear_dive_file_data();
+	prefs = default_prefs;
+	prefs.planner_deco_mode = BUEHLMANN;
+	const timestamp_t start = 1000000000;
+	auto predecessor = makeSquareDive(1, start, 1013_mbar, 30_m, 120, 540, 660);
+	divelog.dives.record_dive(std::move(predecessor));
+	const timestamp_t secondStart = divelog.dives[0]->endtime() + 120;
+	auto second = makeSquareDive(2, secondStart, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(second));
+	dive_trip *trip = divelog.trips.put(std::make_unique<dive_trip>()).ptr;
+	trip->add_dive(divelog.dives[0].get());
+	trip->add_dive(divelog.dives[1].get());
+	std::optional<double> withPredecessor = divelog.dives.end_surface_gf(*divelog.dives[1]);
+	QVERIFY(withPredecessor.has_value());
+
+	clear_dive_file_data();
+	auto alone = makeSquareDive(2, secondStart, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(alone));
+	std::optional<double> withoutPredecessor = divelog.dives.end_surface_gf(*divelog.dives[0]);
+	QVERIFY(withoutPredecessor.has_value());
+	QVERIFY(*withPredecessor > *withoutPredecessor);
+}
+
+void TestSurfaceGf::testEndSurfaceGfNoSamples()
+{
+	clear_dive_file_data();
+	auto d = std::make_unique<dive>();
+	divelog.dives.record_dive(std::move(d));
+	QVERIFY(!divelog.dives.end_surface_gf(*divelog.dives[0]).has_value());
+}
+
+void TestSurfaceGf::testEndSurfaceGfOverlappingDives()
+{
+	clear_dive_file_data();
+	auto first = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 540, 660);
+	divelog.dives.record_dive(std::move(first));
+	auto second = makeSquareDive(2, 1000000600, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(second));
+	QVERIFY(!divelog.dives.end_surface_gf(*divelog.dives[1]).has_value());
+}
+
+/* Regression test for a review finding: the overlap check only looked at
+ * whether an adjacent dive started at exactly the same instant, so it
+ * covered the *later* of two staggered, overlapping dives (which
+ * init_decompression() already flags via a negative computed surface
+ * interval) and the case of two exactly simultaneous dives, but not the
+ * *earlier* dive of a staggered, overlapping pair: init_decompression()'s
+ * backward walk only ever considers dives starting strictly before this
+ * one, so querying the earlier dive never reaches that negative-interval
+ * check and used to report a value as if the later, overlapping dive did
+ * not exist.
+ */
+void TestSurfaceGf::testEndSurfaceGfOverlappingDivesEarlierMember()
+{
+	clear_dive_file_data();
+	auto first = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 540, 660);
+	divelog.dives.record_dive(std::move(first));
+	auto second = makeSquareDive(2, 1000000600, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(second));
+	QVERIFY(!divelog.dives.end_surface_gf(*divelog.dives[0]).has_value());
+}
+
+/* Regression test for a review finding: the overlap check only looked at
+ * the immediately adjacent table entry on the earlier side, so a
+ * long-running predecessor that is still "open" when the queried dive
+ * starts went undetected whenever a short dive sat between them in the
+ * table and had already ended by then. Using a different trip for the long
+ * predecessor also rules out init_decompression()'s own machinery
+ * incidentally catching the overlap, since it skips predecessors outside
+ * the queried dive's trip entirely.
+ */
+void TestSurfaceGf::testEndSurfaceGfNonAdjacentOverlap()
+{
+	clear_dive_file_data();
+	// A (long, no trip): 1000000000 .. 1000007200 (2h)
+	auto a = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 7000, 7200);
+	divelog.dives.record_dive(std::move(a));
+	// B (short, intervening): starts inside A's interval, ends well before C.
+	auto b = makeSquareDive(2, 1000000500, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(b));
+	// C: starts after B ends, but still inside A's interval. B and C share a
+	// trip; A does not belong to it.
+	auto c = makeSquareDive(3, 1000001000, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(c));
+	dive_trip *trip = divelog.trips.put(std::make_unique<dive_trip>()).ptr;
+	trip->add_dive(divelog.dives[1].get());
+	trip->add_dive(divelog.dives[2].get());
+
+	// Sanity check: B (the adjacent predecessor) must not itself overlap C,
+	// or the existing adjacent-neighbour check alone would already catch
+	// this and the test wouldn't be exercising the new code path.
+	QVERIFY(divelog.dives[1]->endtime() <= divelog.dives[2]->when);
+	QVERIFY(!divelog.dives.end_surface_gf(*divelog.dives[2]).has_value());
+}
+
+/* Pinning test for the overlaps_other_dive()-based refactor: one dive fully
+ * contained inside another overlaps it just as much as a partial, staggered
+ * overlap does - querying either dive of the pair must return no value.
+ */
+void TestSurfaceGf::testEndSurfaceGfOneDiveInsideAnother()
+{
+	clear_dive_file_data();
+	// Outer (long): 1000000000 .. 1000007200 (2h)
+	auto outer = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 7000, 7200);
+	divelog.dives.record_dive(std::move(outer));
+	// Inner: fully contained within the outer dive's interval.
+	auto inner = makeSquareDive(2, 1000001000, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(inner));
+
+	QVERIFY(divelog.dives[1]->when > divelog.dives[0]->when);
+	QVERIFY(divelog.dives[1]->endtime() < divelog.dives[0]->endtime());
+	QVERIFY(!divelog.dives.end_surface_gf(*divelog.dives[0]).has_value());
+	QVERIFY(!divelog.dives.end_surface_gf(*divelog.dives[1]).has_value());
+}
+
+/* Pinning test: two earlier dives sharing the queried dive's own trip
+ * overlap each other, but neither overlaps the queried dive itself, so
+ * overlaps_other_dive() does not reject it directly. The rejection instead
+ * has to come from init_decompression()'s own negative-surface-interval
+ * detection while it walks the same-trip deco chain back through both
+ * overlapping predecessors.
+ */
+void TestSurfaceGf::testEndSurfaceGfPredecessorsOverlapSameTrip()
+{
+	clear_dive_file_data();
+	auto a = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 7000, 7200);
+	divelog.dives.record_dive(std::move(a));
+	auto b = makeSquareDive(2, 1000000500, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(b));
+	auto d = makeSquareDive(3, 1000008000, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(d));
+	dive_trip *trip = divelog.trips.put(std::make_unique<dive_trip>()).ptr;
+	trip->add_dive(divelog.dives[0].get());
+	trip->add_dive(divelog.dives[1].get());
+	trip->add_dive(divelog.dives[2].get());
+
+	// Sanity: A and B really do overlap each other...
+	QVERIFY(divelog.dives[1]->when < divelog.dives[0]->endtime());
+	// ...but neither overlaps D itself, so the new check alone wouldn't
+	// reject it.
+	QVERIFY(divelog.dives[0]->endtime() <= divelog.dives[2]->when);
+	QVERIFY(divelog.dives[1]->endtime() <= divelog.dives[2]->when);
+	QVERIFY(!divelog.dives.overlaps_other_dive(*divelog.dives[2]));
+
+	QVERIFY(!divelog.dives.end_surface_gf(*divelog.dives[2]).has_value());
+}
+
+/* Pinning test: two dives that overlap each other sit in a *different* trip
+ * from the queried dive. Overlap is checked trip-independently, but
+ * init_decompression()'s own deco-chain walk is not, so the queried dive -
+ * which does not itself overlap anything - must still get a value: the
+ * other trip's internal overlap is none of its concern.
+ */
+void TestSurfaceGf::testEndSurfaceGfOtherTripOverlapDoesNotAffectDive()
+{
+	clear_dive_file_data();
+	auto a = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 7000, 7200);
+	divelog.dives.record_dive(std::move(a));
+	auto b = makeSquareDive(2, 1000000500, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(b));
+	auto d = makeSquareDive(3, 1000008000, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(d));
+	dive_trip *otherTrip = divelog.trips.put(std::make_unique<dive_trip>()).ptr;
+	otherTrip->add_dive(divelog.dives[0].get());
+	otherTrip->add_dive(divelog.dives[1].get());
+	dive_trip *ownTrip = divelog.trips.put(std::make_unique<dive_trip>()).ptr;
+	ownTrip->add_dive(divelog.dives[2].get());
+
+	QVERIFY(!divelog.dives.overlaps_other_dive(*divelog.dives[2]));
+	QVERIFY(divelog.dives.end_surface_gf(*divelog.dives[2]).has_value());
+}
+
+/* Pinning test: a dive in another trip, ending less than 48h before the
+ * queried dive and not overlapping it, must not change the queried dive's
+ * value at all. This is not new behaviour - init_decompression() only ever
+ * carries tissue loading over from predecessors in the *same* trip, never
+ * merely because they are close in time, matching the profile's pre-existing
+ * semantics - it is pinned here to confirm the overlaps_other_dive()-based
+ * refactor does not accidentally change it.
+ */
+void TestSurfaceGf::testEndSurfaceGfCrossTripWithin48hUnaffected()
+{
+	clear_dive_file_data();
+	prefs = default_prefs;
+	prefs.planner_deco_mode = BUEHLMANN;
+	auto a = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 540, 660);
+	divelog.dives.record_dive(std::move(a));
+	timestamp_t dWhen = divelog.dives[0]->endtime() + 120; // 2 minutes later, well within 48h
+	auto d = makeSquareDive(2, dWhen, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(d));
+	dive_trip *tripA = divelog.trips.put(std::make_unique<dive_trip>()).ptr;
+	tripA->add_dive(divelog.dives[0].get());
+	dive_trip *tripD = divelog.trips.put(std::make_unique<dive_trip>()).ptr;
+	tripD->add_dive(divelog.dives[1].get());
+	std::optional<double> withA = divelog.dives.end_surface_gf(*divelog.dives[1]);
+	QVERIFY(withA.has_value());
+
+	clear_dive_file_data();
+	auto alone = makeSquareDive(2, dWhen, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(alone));
+	std::optional<double> withoutA = divelog.dives.end_surface_gf(*divelog.dives[0]);
+	QVERIFY(withoutA.has_value());
+
+	QCOMPARE(*withA, *withoutA);
+}
+
+/* Pinning test for the overlaps_other_dive()-based refactor: a dive that is
+ * not (yet) in the table is now actually checked for overlap against the
+ * dives that are, instead of being silently skipped, as the old,
+ * get_idx()-based neighbour check used to do whenever get_idx() returned
+ * "not found".
+ */
+void TestSurfaceGf::testEndSurfaceGfNotInTableOverlapsTableEntry()
+{
+	clear_dive_file_data();
+	auto inTable = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 540, 660);
+	divelog.dives.record_dive(std::move(inTable));
+
+	// Not registered in divelog.dives at all.
+	auto notInTable = makeSquareDive(2, 1000000300, 1013_mbar, 10_m, 30, 270, 300);
+	QVERIFY(divelog.dives[0]->endtime() > notInTable->when); // really overlaps
+
+	QVERIFY(!divelog.dives.end_surface_gf(*notInTable).has_value());
+}
+
+/* Regression test for a review finding on the overlap check above: two
+ * dives starting at exactly the same instant overlap just as much as the
+ * already-covered case of staggered, overlapping start times, but
+ * init_decompression()'s backward and forward walks both stop on a
+ * "when >= this dive's when" comparison, which treats an exactly
+ * simultaneous dive as neither a predecessor nor a successor. Without an
+ * explicit check, that silently skips the other dive and returns success
+ * instead of reporting the overlap.
+ */
+void TestSurfaceGf::testEndSurfaceGfSimultaneousDives()
+{
+	clear_dive_file_data();
+	auto first = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 540, 660);
+	divelog.dives.record_dive(std::move(first));
+	auto second = makeSquareDive(2, 1000000000, 1013_mbar, 10_m, 30, 270, 300);
+	divelog.dives.record_dive(std::move(second));
+	QVERIFY(!divelog.dives.end_surface_gf(*divelog.dives[0]).has_value());
+	QVERIFY(!divelog.dives.end_surface_gf(*divelog.dives[1]).has_value());
+}
+
+/* Regression test for a review finding: add_dive_to_deco() only ever walks
+ * dcs[0]'s own samples, so it cannot know about an interval between dcs[0]'s
+ * last sample and dive.totaltime() (the maximum over *all* dive computers).
+ * That gap is normally zero or negative, because dc_totaltime() deliberately
+ * discards dcs[0]'s own trailing surface samples - but a second dive
+ * computer that recorded a longer dive (disagreeing dive computers being the
+ * most plausible real-world cause) can make it positive. Simulating only up
+ * to dcs[0]'s last sample would then report a Surface GF frozen at that
+ * point, silently ignoring whatever happened - in or out of the water -
+ * during the unaccounted interval. end_surface_gf() must decline to answer
+ * instead.
+ */
+void TestSurfaceGf::testEndSurfaceGfUnaccountedMultiDcTail()
+{
+	clear_dive_file_data();
+	prefs = default_prefs;
+	prefs.planner_deco_mode = BUEHLMANN;
+	auto d = makeSquareDive(1, 1000000000, 1013_mbar, 30_m, 120, 540, 660);
+
+	// A second dive computer claims the diver was still at depth well past
+	// dcs[0]'s own last sample (660), stretching dive.totaltime() out to 900.
+	struct divecomputer dc2;
+	dc2.model = "subsurface test dc 2";
+	dc2.when = 1000000000;
+	dc2.surface_pressure = 1013_mbar;
+	dc2.divemode = OC;
+	struct sample *s;
+	s = prepare_sample(&dc2);
+	s->time.seconds = 0;
+	s->depth.mm = 0;
+	s = prepare_sample(&dc2);
+	s->time.seconds = 120;
+	s->depth.mm = 30000;
+	s = prepare_sample(&dc2);
+	s->time.seconds = 540;
+	s->depth.mm = 30000;
+	s = prepare_sample(&dc2);
+	s->time.seconds = 870;
+	s->depth.mm = 30000;
+	s = prepare_sample(&dc2);
+	s->time.seconds = 900;
+	s->depth.mm = 0;
+	dc2.duration.seconds = 900;
+	d->dcs.push_back(dc2);
+	divelog.dives.record_dive(std::move(d));
+	const dive &logged = *divelog.dives[0];
+
+	// Sanity check: this fixture has to actually reproduce the gap this
+	// test is about, or the assertion below would pass trivially.
+	QVERIFY(logged.dcs[0].samples.back().time.seconds < logged.totaltime().seconds);
+	QVERIFY(!divelog.dives.end_surface_gf(logged).has_value());
 }
 
 /* Build a CCR square-profile dive directly on dcs[0]: a constant commanded
