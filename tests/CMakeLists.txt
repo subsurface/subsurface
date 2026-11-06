@@ -151,6 +151,19 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 TEST(TestPicture testpicture.cpp)
 set(TEST_PICTURE TestPicture)
 endif()
+# Uses the real undo commands instead of the stubs from testbase.cpp, so it
+# is set up like TestOstc4Dialog and does not link RESOURCE_LIBRARY.
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
+	add_executable(TestPasteDives testpastedives.cpp testpastedives.h)
+	target_link_libraries(TestPasteDives subsurface_commands subsurface_models_desktop
+		subsurface_backend_shared subsurface_corelib
+		${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
+	add_test(NAME TestPasteDives COMMAND $<TARGET_FILE:TestPasteDives>)
+	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		set_tests_properties(TestPasteDives PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+	endif()
+	set(TEST_PASTE_DIVES TestPasteDives)
+endif()
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
@@ -222,6 +235,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestDiveSiteDuplication
 	TestRenumber
 	${TEST_PICTURE}
+	${TEST_PASTE_DIVES}
 	TestMerge
 	TestTagList
 	${TEST_CYLINDERS_MODEL_SENSOR_REFRESH}
