@@ -1006,3 +1006,35 @@ void DiveListView::mouseDoubleClickEvent(QMouseEvent*)
 {
 	return;
 }
+
+void DiveListView::selectDiveByNo(int diveNo)
+{
+	MultiFilterSortModel *m = MultiFilterSortModel::instance();
+	for (int row = 0; row < m->rowCount(); ++row) {
+		QModelIndex parentIdx = m->index(row, 0);
+        dive *d = parentIdx.data(DiveTripModelBase::DIVE_ROLE).value<dive *>();
+		if (d && d->number == diveNo) {
+			selectionModel()->clearSelection();
+			QItemSelection selection;
+			selection.select(parentIdx, parentIdx);
+			selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+			selectionModel()->setCurrentIndex(parentIdx, QItemSelectionModel::Current);
+			scrollTo(parentIdx);
+			return;
+		}
+		for (int child = 0; child < m->rowCount(parentIdx); ++child) {
+			QModelIndex idx = m->index(child, 0, parentIdx);
+			dive *cd = idx.data(DiveTripModelBase::DIVE_ROLE).value<dive *>();
+			if (cd && cd->number == diveNo) {
+				expand(parentIdx);
+				selectionModel()->clearSelection();
+				QItemSelection selection;
+				selection.select(idx, idx);
+				selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+				selectionModel()->setCurrentIndex( idx, QItemSelectionModel::Current);
+				scrollTo(idx);
+				return;
+			}
+		}
+	}
+}

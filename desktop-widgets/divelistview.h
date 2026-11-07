@@ -33,6 +33,7 @@ public:
 	// Checkable actions that show or hide the individual columns. They are also
 	// attached to the header's context menu, so every menu offering them stays in sync.
 	QList<QAction *> columnVisibilityActions() const;
+	void selectDiveByNo(int diveNo);
 signals:
 	// currentDC = -1: don't change dc number.
 	void divesSelected(const std::vector<dive *> &dives, dive *currentDive, int currentDC);

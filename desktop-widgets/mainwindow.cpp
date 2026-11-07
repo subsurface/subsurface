@@ -29,11 +29,11 @@
 #include "core/planner.h"
 #include "core/qthelper.h"
 #include "core/selection.h"
+#include "core/subsurfacestartup.h"
 #include "core/subsurface-string.h"
 #include "core/trip.h"
 #include "core/version.h"
 #include "core/windowtitleupdate.h"
-
 #include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefDisplay.h"
 
@@ -1426,8 +1426,9 @@ void MainWindow::loadFiles(const std::vector<std::string> &fileNames)
 	}
 	hideProgressBar();
 	updateRecentFiles();
-	divelog.process_loaded_dives();
-
+	divelog.process_loaded_dives();	
+	if (startupDiveNo >= 0)
+		diveList->selectDiveByNo(startupDiveNo);
 	refreshDisplay();
 	updateAutogroup();
 

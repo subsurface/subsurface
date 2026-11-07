@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include <iostream>
 
 extern void show_computer_list();
 
@@ -28,6 +29,9 @@ std::string settings_suffix;
  * track whether we switched to importing dives
  */
 bool imported = false;
+
+/* Initialize CLI option --dive-no */
+int startupDiveNo = -1;
 
 #if SUBSURFACE_DOWNLOADER
 // Firmware update CLI options
@@ -88,6 +92,7 @@ static void print_help()
 	printf("\n --verbose|-v          Verbose debug (repeat to increase verbosity)");
 	printf("\n --version             Prints current version");
 	printf("\n --user=<test>         Choose configuration space for user <test>");
+	printf("\n --dive-no=<nr>        Select the dive with the specified internal dive No. at startup");
 #ifdef SUBSURFACE_MOBILE_DESKTOP
 	printf("\n --testqml=<dir>       Use QML files from <dir> instead of QML resources");
 #elif SUBSURFACE_DOWNLOADER
@@ -157,6 +162,17 @@ void parse_argument(const char *arg)
 				++force_root;
 				return;
 			}
+			if (strncmp(arg, "--dive-no=", sizeof("--dive-no=") - 1) == 0) {
+				const char *value = arg + sizeof("--dive-no=") - 1;
+				try {
+					startupDiveNo = std::stoi(value);
+				}
+				catch (const std::exception &) {
+					fprintf(stderr, "Invalid command-line option dive-no: %s\n", value);
+					startupDiveNo = -1;
+				}
+				return;
+			}
 #if SUBSURFACE_DOWNLOADER
 			if (strncmp(arg, "--dc-vendor=", sizeof("--dc-vendor=") - 1) == 0) {
 				prefs.dive_computer.vendor = arg + sizeof("--dc-vendor=") - 1;
@@ -189,7 +205,7 @@ void parse_argument(const char *arg)
 			if (strncmp(arg, "--list-dc", sizeof("--list-dc") - 1) == 0) {
 				show_computer_list();
 				exit(0);
-			}
+			}			
 #elif SUBSURFACE_MOBILE_DESKTOP
 			if (strncmp(arg, "--testqml=", sizeof("--testqml=") - 1) == 0) {
 				testqml = arg + sizeof("--testqml=") - 1;

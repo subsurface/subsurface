@@ -4,6 +4,9 @@
 
 #include <string>
 
+/* CLI option --dive-no */
+extern int startupDiveNo;
+
 extern bool imported;
 extern int quit, force_root, ignore_bt;
 
