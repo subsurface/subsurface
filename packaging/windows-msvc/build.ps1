@@ -443,12 +443,12 @@ if (-not $SkipQlitehtml) {
     Write-Step "Building qlitehtml library"
 
     $qlitehtmlDir = Join-Path $SourceDir "qlitehtml"
-    $qlitehtmlVersion = "b8f9096eae730ec9464b24874e4e6312144aa9ce"
+    $qlitehtmlVersion = "ed4bb77c8a993a4d664bf470dd6ad1649cd273f1"
 
     # Clone if not present
     if (-not (Test-Path $qlitehtmlDir)) {
         Write-Host "Cloning qlitehtml..."
-        git clone https://github.com/dirkhh/qlitehtml.git $qlitehtmlDir
+        git clone https://github.com/subsurface/qlitehtml.git $qlitehtmlDir
     }
 
     Push-Location $qlitehtmlDir
@@ -468,12 +468,15 @@ if (-not $SkipQlitehtml) {
 
     # qlitehtml currently only allows in-source builds
     # Configure with cmake
+    # litehtml runs clang-tidy with warnings as errors on itself when it finds one, and the one that
+    # comes with Visual Studio fails on it, so turn that off
     $cmakeQlitehtmlArgs = @(
         ".",
         "-G", "Ninja",
         "-DCMAKE_BUILD_TYPE=$BuildType",
         "-DCMAKE_PREFIX_PATH=$Qt6Dir",
-        "-DCMAKE_INSTALL_PREFIX=$InstallDir"
+        "-DCMAKE_INSTALL_PREFIX=$InstallDir",
+        "-DLITEHTML_ENABLE_LINT=OFF"
     )
 
     Write-Host "Running cmake..."
