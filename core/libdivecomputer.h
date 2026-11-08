@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string>
+#include <vector>
 
 #include "equipment.h"
 #include "divemode.h"
@@ -61,6 +62,18 @@ int prepare_device_descriptor(int data_model, dc_family_t dc_fam, device_data_t 
 dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const unsigned char *buffer, int size);
 enum cylinderuse cylinder_use_from_tank_usage(enum cylinderuse current_use, dc_tank_usage_t tank_usage,
 					      enum divemode_t divemode, unsigned int ngases, unsigned int ntanks);
+
+// AI-generated (Claude)
+// The gas mix and tank (pressure sensor) of a cylinder, -1 for none.
+struct cylinder_source {
+	int gasmix;
+	int tank;
+};
+bool tanks_linked_to_gasmixes(const std::vector<int> &tank_gasmix, unsigned int ngases);
+std::vector<cylinder_source> match_tanks_to_gasmixes(const std::vector<int> &tank_gasmix, unsigned int ngases);
+std::vector<int> gasmix_cylinders(const std::vector<cylinder_source> &cylinders, unsigned int ngases,
+				  const std::vector<bool> &used = {});
+
 void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata);
 dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model);
 
