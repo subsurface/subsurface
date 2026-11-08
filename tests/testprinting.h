@@ -18,6 +18,12 @@ private slots:
 	void testPrinterExportHtmlDiveId();
 	void testPrinterRenderRecognizesDiveProfile_data();
 	void testPrinterRenderRecognizesDiveProfile();
+	void testBundledLayout_data();
+	void testBundledLayout();
+	void testPdfPages_data();
+	void testPdfPages();
+	void testPreviewDialog_data();
+	void testPreviewDialog();
 	void testSurfaceIntervalProperty();
 	void testSurfaceIntervalPropertyPartialSelection();
 
@@ -25,6 +31,7 @@ private:
 	QString createTemplateFromFile(const QString &prefix, const QString &sourcePath) const;
 	QString createTemplateFromString(const QString &prefix, const QString &contents) const;
 	QImage renderWithTemplate(const QString &templateName) const;
+	QStringList flowTextsPerDive(const QString &templateName) const;
 	QString exportHtmlWithTemplate(const QString &templateName, dive *singleDive = nullptr, bool allDives = false) const;
 	void removeTemplate(const QString &templateName) const;
 	QString loadFileContents(const QString &path) const;

@@ -62,7 +62,7 @@ jobs:
       run: |
         QLITEHTML_REV=$(sed -n 's/^CURRENT_QLITEHTML="\(.*\)"/\1/p' scripts/get-dep-lib.sh)
         cd ..
-        git clone --recursive https://github.com/dirkhh/qlitehtml
+        git clone --recursive https://github.com/subsurface/qlitehtml
         cd qlitehtml
         git checkout -f "$QLITEHTML_REV"
         git submodule update --init --recursive

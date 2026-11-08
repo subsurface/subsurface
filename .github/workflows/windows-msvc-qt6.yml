@@ -255,7 +255,7 @@ jobs:
           $qlitehtmlVersion = (Get-Content "scripts/get-dep-lib.sh" | Select-String 'CURRENT_QLITEHTML="(.+)"').Matches.Groups[1].Value
           Write-Host "Using qlitehtml version: $qlitehtmlVersion"
 
-          git clone https://github.com/dirkhh/qlitehtml.git qlitehtml
+          git clone https://github.com/subsurface/qlitehtml.git qlitehtml
           Push-Location qlitehtml
           git checkout -f $qlitehtmlVersion
           git submodule init
@@ -270,11 +270,14 @@ jobs:
           Push-Location qlitehtml
 
           # qlitehtml currently only allows in-source builds
+          # litehtml runs clang-tidy with warnings as errors on itself when it finds one, and the
+          # one that comes with Visual Studio fails on it, so turn that off
           cmake . `
             -G Ninja `
             -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} `
             -DCMAKE_PREFIX_PATH="$env:Qt6_DIR" `
-            -DCMAKE_INSTALL_PREFIX="$installPrefix"
+            -DCMAKE_INSTALL_PREFIX="$installPrefix" `
+            -DLITEHTML_ENABLE_LINT=OFF
 
           ninja
           ninja install
@@ -384,6 +387,26 @@ jobs:
           Push-Location "${{ github.workspace }}\build"
           ninja validate_windows_msvc_stage
           Pop-Location
+
+      # AI-generated (Claude)
+      # The staging step copies install\bin\*.dll without naming the files, so
+      # confirm that the qlitehtml runtime library made it into the payload.
+      # This job always builds the desktop Qt 6 MSVC target with the user
+      # manual (NO_USERMANUAL=OFF), which is what needs qlitehtml1.dll.
+      - name: Check that the staged payload contains qlitehtml1.dll
+        shell: pwsh
+        run: |
+          $staging = "${{ github.workspace }}\build\staging"
+          $dll = Join-Path $staging "qlitehtml1.dll"
+
+          if (-not (Test-Path -LiteralPath $dll -PathType Leaf) -or (Get-Item -LiteralPath $dll).Length -eq 0) {
+            Write-Host "Top-level files in ${staging}:"
+            Get-ChildItem -LiteralPath $staging -File | Select-Object Name, Length | Format-Table -AutoSize | Out-String | Write-Host
+            Write-Error "qlitehtml1.dll is missing or empty in $staging"
+            exit 1
+          }
+
+          Write-Host "Found staged qlitehtml1.dll ($((Get-Item -LiteralPath $dll).Length) bytes)"
 
       - name: Build installer
         shell: pwsh

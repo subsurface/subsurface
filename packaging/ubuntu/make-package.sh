@@ -16,7 +16,7 @@ if [[ ! -d googlemaps/.git ]] ; then
 	exit 1;
 fi
 if [[ ! -d qlitehtml/.git ]] ; then
-	echo "Please make sure you have a git clone of https://github.com/dirkhh/qlitehtml"
+	echo "Please make sure you have a git clone of https://github.com/subsurface/qlitehtml"
 	echo "(with its litehtml submodule) checked out in parallel to the Subsurface directory"
 	exit 1;
 fi

@@ -14,10 +14,16 @@
 #include <QDir>
 #include <QFile>
 #include <QImage>
+#include <QPageSize>
+#include <QPrinter>
 #include <QRegularExpression>
 #include <QTemporaryDir>
 #include <QTextStream>
+#include <QTimer>
 #include <QUuid>
+#if defined(USE_QLITEHTML)
+#include <qlitehtmlwidget.h>
+#endif
 
 class ProfileAnimation {
 };
@@ -186,6 +192,34 @@ QString TestPrinting::exportHtmlWithTemplate(const QString &templateName, dive *
 	return printer.exportHtml();
 }
 
+// The text of every "dontbreak" container of the flow layout, from its opening tag to the next
+// container or the end of the document, without markup. Each container holds one dive.
+static QStringList flowContainerTexts(const QString &html)
+{
+	const QRegularExpression container("<div[^>]*class=\"(?:[^\"]*\\s)?dontbreak(?:\\s[^\"]*)?\"[^>]*>");
+	const QRegularExpression tags("<[^>]*>");
+	const QRegularExpression whitespace("\\s+");
+	QList<qsizetype> starts;
+	auto matches = container.globalMatch(html);
+	while (matches.hasNext())
+		starts << matches.next().capturedEnd();
+	QStringList texts;
+	for (qsizetype i = 0; i < starts.size(); ++i) {
+		const qsizetype end = i + 1 < starts.size() ? starts[i + 1] : html.size();
+		texts << html.mid(starts[i], end - starts[i]).remove(tags).replace(whitespace, " ").trimmed();
+	}
+	return texts;
+}
+
+// What every dive looks like in the flow layout, from exporting the dives one by one.
+QStringList TestPrinting::flowTextsPerDive(const QString &templateName) const
+{
+	QStringList texts;
+	for (const auto &dive : divelog.dives)
+		texts << flowContainerTexts(exportHtmlWithTemplate(templateName, dive.get())).value(0);
+	return texts;
+}
+
 QImage TestPrinting::renderWithTemplate(const QString &templateName) const
 {
 	auto [printOptions, templateOptions] = defaultTestOptions(templateName);
@@ -293,6 +327,192 @@ void TestPrinting::testPrinterRenderRecognizesDiveProfile()
 	QVERIFY2(changedPixels >= 0, qPrintable(QString("%1: image size mismatch").arg(templatePath)));
 	QVERIFY2(changedPixels > 200, qPrintable(QString("%1 changedPixels=%2").arg(templatePath).arg(changedPixels)));
 }
+
+void TestPrinting::testBundledLayout_data()
+{
+	QTest::addColumn<QString>("fileName");
+	QTest::addColumn<QString>("divesPerPage");
+	QTest::newRow("one") << QString("One Dive.html") << QString("1");
+	QTest::newRow("two") << QString("Two Dives.html") << QString("2");
+	QTest::newRow("six") << QString("Six Dives.html") << QString("6");
+	QTest::newRow("flow") << QString("Flowlayout.html") << QString("0");
+}
+
+void TestPrinting::testBundledLayout()
+{
+	QFETCH(QString, fileName);
+	QFETCH(QString, divesPerPage);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/abitofeverything.ssrf", &divelog), 0);
+	QVERIFY(!divelog.dives.empty());
+	const QString name = createTemplateFromFile("test_print_layout", QString(SUBSURFACE_SOURCE "/printing_templates/") + fileName);
+	QVERIFY2(!name.isEmpty(), qPrintable(fileName));
+	temporaryTemplates << name;
+
+	// Export the whole log so that the multi-dive and flow layouts have dives to lay out.
+	const QString html = exportHtmlWithTemplate(name, nullptr, true);
+	QVERIFY2(QRegularExpression(QString("data-numberofdives\\s*=\\s*\\\"?%1\\\"?").arg(divesPerPage)).match(html).hasMatch(),
+		 qPrintable(fileName));
+	if (fileName == "Flowlayout.html") {
+		// Every dive has its own "dontbreak" container, so the containers must show the dives
+		// one by one. Counting them would not notice a repeated and an omitted dive.
+		const QStringList expectedTexts = flowTextsPerDive(name);
+		// A repeated dive can only be told from an omitted one if the dives look different.
+		QVERIFY(!expectedTexts.contains(QString()));
+		QStringList distinctTexts = expectedTexts;
+		distinctTexts.removeDuplicates();
+		QCOMPARE(distinctTexts.size(), int(divelog.dives.size()));
+		QVERIFY2(flowContainerTexts(html) == expectedTexts, qPrintable(fileName));
+	} else {
+		for (const auto &dive : divelog.dives)
+			QVERIFY2(html.contains(QString("id=\"dive_%1\"").arg(dive->id)),
+				 qPrintable(QString("%1: dive %2 is missing").arg(fileName).arg(dive->id)));
+	}
+	// The render check below only draws the first dive.
+	QImage rendered = renderWithTemplate(name);
+	QVERIFY2(!rendered.isNull(), qPrintable(fileName));
+	QImage blank(rendered.size(), rendered.format());
+	blank.fill(Qt::white);
+	QVERIFY2(imageDifferencePixels(rendered, blank) > 200, qPrintable(fileName));
+}
+
+void TestPrinting::testPdfPages_data()
+{
+	QTest::addColumn<QString>("fileName");
+	QTest::addColumn<int>("paper");
+	QTest::addColumn<int>("divesPerPage");
+	QTest::newRow("one-A4") << QString("One Dive.html") << int(QPageSize::A4) << 1;
+	QTest::newRow("two-Letter") << QString("Two Dives.html") << int(QPageSize::Letter) << 2;
+	QTest::newRow("six-A4") << QString("Six Dives.html") << int(QPageSize::A4) << 6;
+	QTest::newRow("flow-Letter") << QString("Flowlayout.html") << int(QPageSize::Letter) << 0;
+}
+
+void TestPrinting::testPdfPages()
+{
+	QFETCH(QString, fileName);
+	QFETCH(int, paper);
+	QFETCH(int, divesPerPage);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/abitofeverything.ssrf", &divelog), 0);
+	QVERIFY(!divelog.dives.empty());
+	const QString name = createTemplateFromFile("test_print_pdf", QString(SUBSURFACE_SOURCE "/printing_templates/") + fileName);
+	QVERIFY(!name.isEmpty());
+	temporaryTemplates << name;
+	QTemporaryDir output;
+	QVERIFY(output.isValid());
+	const QString pdf = output.filePath("layout.pdf");
+	QPrinter device(QPrinter::HighResolution);
+	device.setOutputFormat(QPrinter::PdfFormat);
+	device.setOutputFileName(pdf);
+	device.setPageSize(QPageSize(static_cast<QPageSize::PageSizeId>(paper)));
+	device.setResolution(96);
+	auto [printOptions, templateOptions] = defaultTestOptions(name);
+	printOptions.print_selected = false;
+	Printer printer(&device, printOptions, templateOptions, Printer::PRINT, nullptr);
+	printer.print();
+	QFile result(pdf);
+	QVERIFY2(result.exists(), qPrintable(pdf));
+	QVERIFY2(result.size() > 1000, qPrintable(pdf));
+	QVERIFY(result.open(QIODevice::ReadOnly));
+	const QByteArray contents = result.readAll();
+	QVERIFY(contents.startsWith("%PDF-"));
+	const QRegularExpression pageMarker("/Type\\s*/Page\\b");
+	int pages = 0;
+	// Qt 5's fromLatin1(QByteArray) stops at the first NUL byte, which the PDF's
+	// binary streams contain, so convert the whole buffer using its explicit size.
+	const QString text = QString::fromLatin1(contents.constData(), contents.size());
+	auto matches = pageMarker.globalMatch(text);
+	while (matches.hasNext()) {
+		matches.next();
+		++pages;
+	}
+	// A fixed layout starts a new page after every divesPerPage dives, so a PDF with
+	// fewer pages is missing dives. The renderer may use more pages if a layout
+	// overflows, so this is a lower bound. The flow layout paginates by content height
+	// and is only expected to span more than one page.
+	const int dives = int(divelog.dives.size());
+	const int minimumPages = divesPerPage > 0 ? (dives + divesPerPage - 1) / divesPerPage : 2;
+	QVERIFY2(pages >= minimumPages,
+		 qPrintable(QString("%1: %2 pages, expected at least %3").arg(fileName).arg(pages).arg(minimumPages)));
+#if defined(USE_QLITEHTML)
+	// The page text is stored as glyph streams that cannot be searched, but litehtml embeds
+	// the profile of every dive in a fixed layout as an image, so a dive missing from the PDF
+	// means too few images. The flow layout has no profile images and keeps the page check.
+	if (divesPerPage > 0) {
+		int images = 0;
+		for (qsizetype pos = 0; (pos = contents.indexOf("/Subtype /Image", pos)) >= 0; ++pos)
+			++images;
+		QVERIFY2(images >= dives,
+			 qPrintable(QString("%1: %2 images, expected at least %3").arg(fileName).arg(images).arg(dives)));
+	}
+#endif
+}
+
+#if defined(USE_QLITEHTML)
+void TestPrinting::testPreviewDialog_data()
+{
+	QTest::addColumn<QString>("fileName");
+	QTest::addColumn<int>("paper");
+	QTest::newRow("one-A4") << QString("One Dive.html") << int(QPageSize::A4);
+	QTest::newRow("two-Letter") << QString("Two Dives.html") << int(QPageSize::Letter);
+	QTest::newRow("six-A4") << QString("Six Dives.html") << int(QPageSize::A4);
+	QTest::newRow("flow-Letter") << QString("Flowlayout.html") << int(QPageSize::Letter);
+}
+
+void TestPrinting::testPreviewDialog()
+{
+	QFETCH(QString, fileName);
+	QFETCH(int, paper);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/abitofeverything.ssrf", &divelog), 0);
+	QVERIFY(!divelog.dives.empty());
+	const QString name = createTemplateFromFile("test_print_preview", QString(SUBSURFACE_SOURCE "/printing_templates/") + fileName);
+	QVERIFY(!name.isEmpty());
+	temporaryTemplates << name;
+	QPrinter device(QPrinter::HighResolution);
+	device.setPageSize(QPageSize(static_cast<QPageSize::PageSizeId>(paper)));
+	auto [printOptions, templateOptions] = defaultTestOptions(name);
+	printOptions.print_selected = false;
+	Printer printer(&device, printOptions, templateOptions, Printer::PREVIEW, nullptr);
+	QStringList expectedTexts;
+	if (fileName == "Flowlayout.html") {
+		expectedTexts = flowTextsPerDive(name);
+		// A repeated dive can only be told from an omitted one if the dives look different.
+		QVERIFY(!expectedTexts.contains(QString()));
+		QStringList distinctTexts = expectedTexts;
+		distinctTexts.removeDuplicates();
+		QCOMPARE(distinctTexts.size(), int(divelog.dives.size()));
+	}
+	bool opened = false;
+	bool hasContent = false;
+	QTimer::singleShot(0, [&] {
+		QWidget *dialog = QApplication::activeModalWidget();
+		if (!dialog)
+			return;
+		opened = true;
+		auto *view = dialog->findChild<QLiteHtmlWidget *>();
+		hasContent = view && view->isVisible();
+		if (hasContent) {
+			const QString html = view->html();
+			if (fileName == "Flowlayout.html") {
+				// Every dive has its own "dontbreak" container, so the containers must show the
+				// dives one by one. Counting them would not notice a repeated and an omitted dive.
+				hasContent = flowContainerTexts(html) == expectedTexts;
+			} else {
+				// "diveProfile" also appears in the stylesheet, so look for the id of every dive
+				// and the profile image that replaces its placeholder instead.
+				for (size_t i = 0; hasContent && i < divelog.dives.size(); ++i)
+					hasContent = html.contains(QString("id=\"dive_%1\"").arg(divelog.dives[i]->id)) &&
+						     html.contains(QString("/dive_%1.png\"").arg(divelog.dives[i]->id));
+			}
+		}
+		dialog->close();
+	});
+	printer.preview();
+	QVERIFY2(opened, qPrintable(fileName));
+	QVERIFY2(hasContent, qPrintable(fileName));
+}
+#else
+void TestPrinting::testPreviewDialog_data() { }
+void TestPrinting::testPreviewDialog() { }
+#endif
 
 static const QString surfaceIntervalTemplate =
 	"<html>\n<body data-numberofdives=\"1\">\n"

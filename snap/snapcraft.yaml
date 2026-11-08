@@ -117,8 +117,8 @@ parts:
   qlitehtml:
     # provides printing and user manual support; not available as a package.
     # Keep the commit in sync with CURRENT_QLITEHTML in scripts/get-dep-lib.sh
-    source: https://github.com/dirkhh/qlitehtml.git
-    source-commit: c43498332c004b50bcb7c2fdfb1ee7cbc539cdce
+    source: https://github.com/subsurface/qlitehtml.git
+    source-commit: ed4bb77c8a993a4d664bf470dd6ad1649cd273f1
     plugin: nil
     build-packages:
     - build-essential
