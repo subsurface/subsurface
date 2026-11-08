@@ -1046,6 +1046,74 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	return DC_STATUS_SUCCESS;
 }
 
+// AI-generated (Claude)
+/**
+ * @brief libdc_fixup_cylinder_pressures adjusts the start and end pressures from
+ * libdivecomputer of the cylinders that have pressure samples
+ * A stage cylinder whose valve stays closed until the gas switch first reads the
+ * pressure left in its regulator, which can be far below the cylinder pressure.
+ * So if, deeper than the surface threshold, the second highest pressure sample of
+ * a cylinder is more than 10 bar above its first one, that becomes the start
+ * pressure. The second highest sample, so that a single bad reading doesn't count.
+ * The pressure graph still starts at the first sample, but the gas use and SAC rate
+ * of the cylinder are worked out from this start pressure.
+ * If clear_backend_pressures is set, the end pressure, and any start pressure that
+ * isn't adjusted, are cleared. libdivecomputer gives the first and last pressure
+ * samples, but Subsurface then uses the first and last samples deeper than the
+ * surface threshold, which gives more accurate SAC calculations by excluding
+ * breathing at the surface before and after the dive.
+ * The importers of other logbook software that call libdc_buffer_parser() fill in
+ * cylinder pressures from their own data where libdivecomputer gave none, so they
+ * don't clear them. Then the end pressure stays the one from libdivecomputer, and
+ * a start pressure from libdivecomputer is only raised, never lowered, as it may
+ * come from the dive computer's own record rather than from the samples.
+ * As elsewhere in the importer, the sensor index of a pressure sample is taken
+ * to be the cylinder index.
+ * @param dive The dive, with its cylinders and the samples of its first dive computer.
+ * @param clear_backend_pressures Whether to clear the start and end pressures of a
+ * cylinder with pressure samples, when its start pressure isn't adjusted.
+ */
+void libdc_fixup_cylinder_pressures(struct dive *dive, bool clear_backend_pressures)
+{
+	static constexpr int closed_valve_margin = 10000; // mbar
+	const auto &samples = dive->dcs[0].samples;
+
+	for (size_t i = 0; i < dive->cylinders.size(); i++) {
+		cylinder_t &cyl = dive->cylinders[i];
+		bool has_pressure_samples = false;
+		int first_pressure = 0, highest_pressure = 0, second_highest_pressure = 0;
+		for (const struct sample &s: samples) {
+			for (int j = 0; j < MAX_SENSORS; j++) {
+				if (s.sensor[j] != (int)i || s.pressure[j].mbar <= 0)
+					continue;
+				has_pressure_samples = true;
+				if (s.depth.mm < SURFACE_THRESHOLD)
+					continue;
+				int pressure = s.pressure[j].mbar;
+				if (!first_pressure)
+					first_pressure = pressure;
+				if (pressure > highest_pressure) {
+					second_highest_pressure = highest_pressure;
+					highest_pressure = pressure;
+				} else if (pressure > second_highest_pressure) {
+					second_highest_pressure = pressure;
+				}
+			}
+		}
+		if (!has_pressure_samples)
+			continue;
+		if (first_pressure && second_highest_pressure > first_pressure + closed_valve_margin) {
+			if (clear_backend_pressures || cyl.start.mbar < second_highest_pressure)
+				cyl.start = pressure_t { .mbar = second_highest_pressure };
+			if (clear_backend_pressures)
+				cyl.end = 0_bar;
+		} else if (clear_backend_pressures) {
+			cyl.start = 0_bar;
+			cyl.end = 0_bar;
+		}
+	}
+}
+
 /**
  * @brief dive_cb adds a dive downloaded from a dive computer to the dive log
  * This is the callback of libdivecomputer's dc_device_foreach().
@@ -1197,31 +1265,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	    dive->dcs[0].samples[1].temperature.mkelvin > dive->dcs[0].samples[0].temperature.mkelvin)
 		dive->dcs[0].samples[0].temperature.mkelvin = dive->dcs[0].samples[1].temperature.mkelvin;
 
-	/* If a cylinder has both start/end pressure from the backend AND pressure sensor
-	 * data in samples, clear the start/end pressure. libdivecomputer calculates these
-	 * from the first/last sample with pressure, but Subsurface uses first/last sample
-	 * below the surface threshold, which gives more accurate SAC calculations by
-	 * excluding breathing at the surface before/after the dive. */
-	for (size_t i = 0; i < dive->cylinders.size(); i++) {
-		cylinder_t &cyl = dive->cylinders[i];
-		if (cyl.start.mbar == 0 && cyl.end.mbar == 0)
-			continue;
-
-		/* Check if any sample has pressure data for this cylinder (sensor index == cylinder index) */
-		bool has_pressure_samples = std::any_of(dive->dcs[0].samples.begin(), dive->dcs[0].samples.end(),
-			[i](const struct sample &s) {
-				for (int j = 0; j < MAX_SENSORS; j++) {
-					if (s.sensor[j] == (int)i && s.pressure[j].mbar > 0)
-						return true;
-				}
-				return false;
-			});
-
-		if (has_pressure_samples) {
-			cyl.start.mbar = 0;
-			cyl.end.mbar = 0;
-		}
-	}
+	libdc_fixup_cylinder_pressures(dive.get(), true);
 
 	devdata->log->dives.record_dive(std::move(dive));
 	return true;
@@ -2077,6 +2121,9 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const un
 		return rc;
 	}
 	dc_parser_destroy(parser);
+
+	// AI-generated (Claude)
+	libdc_fixup_cylinder_pressures(dive, false);
 
 	// Finalise GPS location data now that per-sample fixes are available.
 	// Per-sample fixes (DC_SAMPLE_LOCATION) take priority over DC_FIELD_LOCATION
