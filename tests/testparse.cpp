@@ -272,6 +272,22 @@ void TestParse::testParseShearwaterCloudGpsError()
 	QCOMPARE(divelog.sites.size(), 0);
 }
 
+// AI-generated (Claude)
+// Perdix 2 dives with air integration: three with a sidemount pair on bottom
+// gas and stages on 50% and oxygen with their own transmitters, the stage
+// valves closed until the gas switch, and one with only the sidemount pair.
+// Each transmitter must end up on the cylinder with its gas mix.
+void TestParse::testParseShearwaterCloudAirIntegration()
+{
+	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveShearwaterCloudAI.db", &_sqlite3_handle), 0);
+	QCOMPARE(parse_shearwater_cloud_buffer(_sqlite3_handle, 0, 0, 0, &divelog), 0);
+	QCOMPARE(divelog.dives.size(), 4);
+
+	QCOMPARE(save_dives("./testshearwatercloudaiout.ssrf"), 0);
+	FILE_COMPARE("./testshearwatercloudaiout.ssrf",
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveShearwaterCloudAI.xml");
+}
+
 void TestParse::testParseHUDC()
 {
 	xml_params params;

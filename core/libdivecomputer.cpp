@@ -63,6 +63,9 @@ double progress_bar_fraction = 0.0;
 static int stoptime, stopdepth, ndl, po2, cns, heartbeat, bearing;
 static bool in_deco, first_temp_is_air;
 static int current_gas_index;
+// AI-generated (Claude)
+// The cylinder of each gas mix index reported by libdivecomputer
+static std::vector<int> gas_cylinder;
 #ifdef DC_SAMPLE_LOCATION
 static dc_location_t first_location, last_location;
 static bool got_first_location, got_last_location;
@@ -185,6 +188,10 @@ enum cylinderuse cylinder_use_from_tank_usage(enum cylinderuse current_use, dc_t
  * If there are more gas mixes than tanks, additional tanks are created.
  * If there are fewer gas mixes than tanks, the remaining tanks are assigned to
  * the gas mix with the lowest (deepest) MOD.
+ * If the dive computer links tanks to gas mixes, each tank gets its linked gas
+ * mix instead, several tanks can share a gas mix, and the gas mixes without a
+ * tank are added as cylinders after the tanks. Cylinder i is still tank i, as
+ * the pressure samples identify tanks by index.
  * @param devdata The dive computer data.
  * @param dive The dive to which these tanks and gas mixes will be assigned.
  * @param parser The libdivecomputer parser data.
@@ -199,7 +206,23 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 
 	unsigned int ntanks = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_TANK_COUNT, 0, &ntanks);
-	if (rc == DC_STATUS_SUCCESS) {
+	if (rc != DC_STATUS_SUCCESS)
+		ntanks = 0;
+
+	// AI-generated (Claude)
+	// Does the dive computer link any tank to a gas mix?
+	std::vector<dc_tank_t> tanks(ntanks);
+	bool linked = false;
+	for (i = 0; i < ntanks; i++) {
+		tanks[i] = dc_tank_t { DC_GASMIX_UNKNOWN };
+		rc = dc_parser_get_field(parser, DC_FIELD_TANK, i, &tanks[i]);
+		if (rc != DC_STATUS_SUCCESS)
+			tanks[i] = dc_tank_t { DC_GASMIX_UNKNOWN };
+		if (tanks[i].gasmix != DC_GASMIX_UNKNOWN && tanks[i].gasmix < ngases)
+			linked = true;
+	}
+	// Without links, the gas mixes are matched to the tanks by position.
+	if (!linked) {
 		if (ntanks && ntanks < ngases) {
 			shown_warning = true;
 			report_error("Warning: different number of gases (%d) and cylinders (%d)", ngases, ntanks);
@@ -214,16 +237,52 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 		bottom_gas = gasmix_air;
 	}
 
-	dive->cylinders.clear();
-	for (i = 0; i < std::max(ngases, ntanks); i++) {
-		cylinder_t cyl;
+	// AI-generated (Claude)
+	// Work out the gas mix and tank of each cylinder (-1 for none).
+	std::vector<int> cyl_gas, cyl_tank;
+	if (linked) {
+		for (i = 0; i < ntanks; i++) {
+			cyl_gas.push_back(tanks[i].gasmix < ngases ? (int)tanks[i].gasmix : -1);
+			cyl_tank.push_back(i);
+		}
+		for (i = 0; i < ngases; i++) {
+			if (std::find(cyl_gas.begin(), cyl_gas.end(), (int)i) == cyl_gas.end()) {
+				cyl_gas.push_back(i);
+				cyl_tank.push_back(-1);
+			}
+		}
+	} else {
+		for (i = 0; i < std::max(ngases, ntanks); i++) {
+			cyl_gas.push_back(i < ngases ? (int)i : -1);
+			cyl_tank.push_back(i < ntanks ? (int)i : -1);
+		}
+	}
+	gas_cylinder.assign(ngases, -1);
+	for (i = cyl_gas.size(); i-- > 0;) {
+		if (cyl_gas[i] >= 0)
+			gas_cylinder[cyl_gas[i]] = i;
+	}
+	// Cylinders without a gas mix get the bottom gas, so do them last.
+	std::vector<unsigned int> order;
+	for (i = 0; i < cyl_gas.size(); i++) {
+		if (cyl_gas[i] >= 0)
+			order.push_back(i);
+	}
+	for (i = 0; i < cyl_gas.size(); i++) {
+		if (cyl_gas[i] < 0)
+			order.push_back(i);
+	}
+
+	std::vector<cylinder_t> cylinders(cyl_gas.size());
+	for (unsigned int c: order) {
+		cylinder_t &cyl = cylinders[c];
 		cyl.cylinder_use = NOT_USED;
 
-		if (i < ngases) {
+		if (cyl_gas[c] >= 0) {
 			dc_gasmix_t gasmix = { 0 };
 			int o2, he;
 
-			rc = dc_parser_get_field(parser, DC_FIELD_GASMIX, i, &gasmix);
+			rc = dc_parser_get_field(parser, DC_FIELD_GASMIX, cyl_gas[c], &gasmix);
 			if (rc == DC_STATUS_SUCCESS) {
 				o2 = lrint(gasmix.oxygen * 1000);
 				he = lrint(gasmix.helium * 1000);
@@ -271,15 +330,14 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 			}
 		}
 
-		if (i < ntanks) {
+		if (cyl_tank[c] >= 0) {
 			// If we've run out of gas mixes, assign this cylinder to bottom
-			// gas. Note that this can be overridden below if the dive computer
-			// explicitly reports a gas mix for this tank.
-			if (i >= ngases) {
+			// gas.
+			if (cyl_gas[c] < 0) {
 				cyl.gasmix = bottom_gas;
 			}
 			dc_tank_t tank = { 0 };
-			rc = dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank);
+			rc = dc_parser_get_field(parser, DC_FIELD_TANK, cyl_tank[c], &tank);
 			if (rc == DC_STATUS_SUCCESS) {
 				cyl.type.size.mliter = lrint(tank.volume * 1000);
 				cyl.type.workingpressure.mbar = lrint(tank.workpressure * 1000);
@@ -320,10 +378,6 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 											mbar_to_atm(cyl.type.workingpressure.mbar));
 					}
 				}
-				if (tank.gasmix != DC_GASMIX_UNKNOWN && tank.gasmix != i) { // we don't handle this, yet
-					shown_warning = true;
-					report_error("gasmix %d for tank %d doesn't match", tank.gasmix, i);
-				}
 				cyl.cylinder_use = cylinder_use_from_tank_usage(cyl.cylinder_use, tank.usage,
 								dive->dcs[0].divemode, ngases, ntanks);
 			}
@@ -358,9 +412,8 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 		/* whatever happens, make sure there is a name for the cylinder */
 		if (cyl.type.description.empty())
 			cyl.type.description = translate("gettextFromC", "unknown");
-
-		dive->cylinders.push_back(std::move(cyl));
 	}
+	dive->cylinders.assign(std::make_move_iterator(cylinders.begin()), std::make_move_iterator(cylinders.end()));
 	return DC_STATUS_SUCCESS;
 }
 
@@ -432,6 +485,10 @@ static void handle_gasmix(struct divecomputer *dc, const struct sample &sample, 
 	/* TODO: Verify that index is not higher than the number of cylinders */
 	if (idx < 0)
 		return;
+	// AI-generated (Claude)
+	// libdivecomputer reports the gas mix index, which needn't be the cylinder index
+	if (idx < (int)gas_cylinder.size() && gas_cylinder[idx] >= 0)
+		idx = gas_cylinder[idx];
 	add_event(dc, sample.time.seconds, SAMPLE_EVENT_GASCHANGE2, idx+1, 0, "gaschange");
 	current_gas_index = idx;
 }
@@ -910,6 +967,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	ndl = bearing = -1;
 	in_deco = false;
 	current_gas_index = -1;
+	gas_cylinder.clear();
 #ifdef DC_SAMPLE_LOCATION
 	got_first_location = false;
 	got_last_location = false;
@@ -1046,24 +1104,32 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	 * data in samples, clear the start/end pressure. libdivecomputer calculates these
 	 * from the first/last sample with pressure, but Subsurface uses first/last sample
 	 * below the surface threshold, which gives more accurate SAC calculations by
-	 * excluding breathing at the surface before/after the dive. */
+	 * excluding breathing at the surface before/after the dive.
+	 * Keep a start pressure that is the highest sample, if that is clearly higher
+	 * than the first sample: then the backend corrected it, e.g. for a stage that
+	 * first reads the pressure left in its regulator, because the valve is closed
+	 * until the gas switch. */
 	for (size_t i = 0; i < dive->cylinders.size(); i++) {
 		cylinder_t &cyl = dive->cylinders[i];
 		if (cyl.start.mbar == 0 && cyl.end.mbar == 0)
 			continue;
 
-		/* Check if any sample has pressure data for this cylinder (sensor index == cylinder index) */
-		bool has_pressure_samples = std::any_of(dive->dcs[0].samples.begin(), dive->dcs[0].samples.end(),
-			[i](const struct sample &s) {
-				for (int j = 0; j < MAX_SENSORS; j++) {
-					if (s.sensor[j] == (int)i && s.pressure[j].mbar > 0)
-						return true;
+		/* Find the first and highest pressure samples for this cylinder (sensor index == cylinder index) */
+		int first_pressure = 0, highest_pressure = 0;
+		for (const struct sample &s: dive->dcs[0].samples) {
+			for (int j = 0; j < MAX_SENSORS; j++) {
+				if (s.sensor[j] == (int)i && s.pressure[j].mbar > 0) {
+					if (!first_pressure)
+						first_pressure = s.pressure[j].mbar;
+					highest_pressure = std::max(highest_pressure, s.pressure[j].mbar);
 				}
-				return false;
-			});
+			}
+		}
 
-		if (has_pressure_samples) {
-			cyl.start.mbar = 0;
+		if (first_pressure) {
+			// AI-generated (Claude)
+			if (cyl.start.mbar <= first_pressure + 10000 || abs(cyl.start.mbar - highest_pressure) > 1000)
+				cyl.start.mbar = 0;
 			cyl.end.mbar = 0;
 		}
 	}
@@ -1865,6 +1931,7 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, const un
 	ndl = bearing = -1;
 	in_deco = false;
 	current_gas_index = -1;
+	gas_cylinder.clear();
 #ifdef DC_SAMPLE_LOCATION
 	got_first_location = false;
 	got_last_location = false;
