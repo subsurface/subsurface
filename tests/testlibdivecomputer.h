@@ -12,6 +12,8 @@ private slots:
 	void matchTanksToGasmixes_data();
 	void matchTanksToGasmixes();
 	void gasmixCylindersPreferUsed();
+	void fixupCylinderPressures_data();
+	void fixupCylinderPressures();
 };
 
 #endif
