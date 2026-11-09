@@ -19,7 +19,7 @@ workflows:
         - 'anthropics/claude-code-action@v1.0.266'
     '.github/workflows/codeql-analysis.yml':
         - 'actions/checkout@v7.0.1'
-        - 'github/codeql-action@v4.39.1'
+        - 'github/codeql-action@v4.39.3'
     '.github/workflows/compute-version.yml':
         - 'actions/checkout@v7.0.1'
     '.github/workflows/detect_merge_conflicts.yml':
@@ -173,9 +173,9 @@ dependencies:
         commit: 'sha1-0273be72a0bbd58fcd71d0d6c02c209b50d1e5e1'
         owner_id: 12292047
         repo_id: 248206495
-    'github/codeql-action@v4.39.1':
-        ref: 'v4.39.1'
-        commit: 'sha1-9b3254085494b55a0f7c4c2b3d2d52cc712ce370'
+    'github/codeql-action@v4.39.3':
+        ref: 'v4.39.3'
+        commit: 'sha1-33d7b85da1a04171e211befe2c739303b9a4c066'
         owner_id: 9919
         repo_id: 259445878
     'ilammy/msvc-dev-cmd@v1.13.0':
