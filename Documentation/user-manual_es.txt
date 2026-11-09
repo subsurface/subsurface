@@ -4372,6 +4372,7 @@ Las opciones incluyen:
 |--version|Muestra la vesión actual de _Subsurface_
 |--survey|Abre la xref:S_UserSurvey[encuesta de usuarios] inmediatamente después de lanzar _Subsurface_
 |--user<nombre de usuario>|Selecciona la xref:S_user_space[configuración de trabajo] del usuario <nombre de usuario>
+|--dive-no=|Seleccionar la inmersión con el número de inmersión de _Subsurface_ (N.º / Nr.) especificado al iniciar
 |--cloud-timeout=<duración>|Ajusta el tiempo de espera para la conexión con la nube (0 < duración < 60). Esto permite mayores tiempos de espera si tenemos una conexión a internet lenta
 |====================
 

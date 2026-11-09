@@ -3588,6 +3588,7 @@ De volgende opties zijn mogelijk:
 |--version|Druk de huidige versie af van _Subsurface_
 |--survey|Opent de xref:S_UserSurvey[gebruikers enquête] bij opstarten van _Subsurface_
 |--user=<username>|Kies de xref:S_user_space[instellingen] van gebruiker <username>
+|--dive-no=|Selecteer bij het opstarten de duik met het opgegeven _Subsurface_-duiknummer (Nr. / No.)
 |--cloud-timeout=<duration>|Stel de timeout in voor de verbinding ,met de cloud (0 < duration < 60). Soms handig op trage Internet verbindingen
 |====================
 

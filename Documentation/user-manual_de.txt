@@ -2407,6 +2407,7 @@ Zu den Optionen gehören:
 | -v -v| Drucken Sie noch mehr Debug-Informationen, während Sie _Subsurface_ ausführen
 |--version|Druckt die aktuelle Version von _Subsurface_
 |--user=<username>|Wählen Sie xref:S_user_space[Konfigurationsbereich] von dem <Benutzernamen>
+|--dive-no=|Beim Start den Tauchgang mit der angegebenen internen Tauchgangsnummer (Nr. / No.) auswählen
 |--cloud-timeout=<duration>|Legen Sie das Timeout für die Cloud-Verbindung fest (0 < Dauer < 60). Dies ermöglicht längere Timeouts für langsame Internetverbindungen
 |====================
 

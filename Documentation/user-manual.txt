@@ -4577,6 +4577,7 @@ The options include:
 | -v -v| Print even more debug information while running _Subsurface_
 |--version|Prints the current version of _Subsurface_
 |--user=<username>|Choose the xref:S_user_space[configuration space] of user <username>
+|--dive-no=|Select the dive with the specified _Subsurface_ dive number (No.) at startup
 |--cloud-timeout=<duration>|Set the timeout for cloud connection (0 < duration < 60). This enables longer timeouts for slow Internet connections
 |====================
 
