@@ -1426,9 +1426,11 @@ void MainWindow::loadFiles(const std::vector<std::string> &fileNames)
 	}
 	hideProgressBar();
 	updateRecentFiles();
-	divelog.process_loaded_dives();	
-	if (startupDiveNo >= 0)
+	divelog.process_loaded_dives();
+	if (startupDiveNo >= 0) {
 		diveList->selectDiveByNo(startupDiveNo);
+		startupDiveNo = -1;
+	}
 	refreshDisplay();
 	updateAutogroup();
 

@@ -20,6 +20,7 @@
 #include <QThread>
 #include "commands/command.h"
 #include "commands/command_base.h"
+#include "core/divelog.h"
 #include "core/errorhelper.h"
 #include "core/qthelper.h"
 #include "core/range.h"
@@ -1037,4 +1038,11 @@ void DiveListView::selectDiveByNo(int diveNo)
 			}
 		}
 	}
+	for (auto &d : divelog.dives) {
+	if (d && d->number == diveNo) {
+		fprintf(stderr, "Requested dive number %d is hidden by the current filter\n", diveNo);
+		return;
+		}
+	}
+	fprintf(stderr, "Requested dive number %d does not exist\n", diveNo);
 }

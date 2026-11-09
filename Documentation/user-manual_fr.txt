@@ -4118,7 +4118,7 @@ Ces options incluent:
 |--version|Prints the current version of _Subsurface_
 |--survey|Opens the xref:S_UserSurvey[user survey] immediately after starting _Subsurface_
 |--user=<username>|Choose the xref:S_user_space[configuration space] of user <username>
-|--dive-no=|Sélectionner la plongée correspondant au numéro de plongée _Subsurface_ (n° / No.) spécifié, au démarrage
+|--dive-no=<nr>|Sélectionner la plongée correspondant au numéro de plongée _Subsurface_ (n° / No.) spécifié, au démarrage
 |--cloud-timeout=<duration>|Set the timeout for cloud connection (0 < duration < 60). This enables longer timeouts for slow Internet connections
 |====================
 

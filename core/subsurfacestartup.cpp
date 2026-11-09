@@ -163,16 +163,21 @@ void parse_argument(const char *arg)
 				return;
 			}
 			if (strncmp(arg, "--dive-no=", sizeof("--dive-no=") - 1) == 0) {
-				const char *value = arg + sizeof("--dive-no=") - 1;
-				try {
-					startupDiveNo = std::stoi(value);
-				}
-				catch (const std::exception &) {
-					fprintf(stderr, "Invalid command-line option dive-no: %s\n", value);
-					startupDiveNo = -1;
-				}
-				return;
+			const char *value = arg + sizeof("--dive-no=") - 1;
+			try {
+				size_t pos;
+				startupDiveNo = std::stoi(value, &pos);
+				if (value[pos] != '\0')
+					throw std::invalid_argument("trailing characters");
+				if (startupDiveNo < 0)		
+					throw std::invalid_argument("negative dive number");
 			}
+			catch (const std::exception &) {
+				fprintf(stderr, "Invalid command-line option dive-no: %s\n", value);
+				startupDiveNo = -1;
+			}
+			return;
+		}
 #if SUBSURFACE_DOWNLOADER
 			if (strncmp(arg, "--dc-vendor=", sizeof("--dc-vendor=") - 1) == 0) {
 				prefs.dive_computer.vendor = arg + sizeof("--dc-vendor=") - 1;
