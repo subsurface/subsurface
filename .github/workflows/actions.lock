@@ -9,7 +9,7 @@ workflows:
     '.github/workflows/android.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/upload-artifact@v7.0.2'
-        - 'softprops/action-gh-release@v3.0.3'
+        - 'softprops/action-gh-release@v3.0.4'
     '.github/workflows/artifact-links.yml':
         - 'tonyhallett/artifacts-url-comments@v1.1.0'
     '.github/workflows/check-divecomputer-lists.yml':
@@ -31,7 +31,7 @@ workflows:
         - 'actions/cache@v6.1.0'
         - 'actions/checkout@v7.0.1'
         - 'actions/upload-artifact@v7.0.2'
-        - 'softprops/action-gh-release@v3.0.3'
+        - 'softprops/action-gh-release@v3.0.4'
     '.github/workflows/fedora-copr-build.yml':
         - 'actions/checkout@v7.0.1'
     '.github/workflows/ios.yml':
@@ -57,7 +57,7 @@ workflows:
         - 'actions/cache@v6.1.0'
         - 'actions/checkout@v7.0.1'
         - 'actions/upload-artifact@v7.0.2'
-        - 'softprops/action-gh-release@v3.0.3'
+        - 'softprops/action-gh-release@v3.0.4'
     '.github/workflows/linux-ubuntu-24.04-qt5-export-html.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/upload-artifact@v7.0.2'
@@ -66,11 +66,11 @@ workflows:
         - 'actions/checkout@v7.0.1'
         - 'actions/upload-artifact@v7.0.2'
         - 'jurplel/install-qt-action@v4.5.0'
-        - 'softprops/action-gh-release@v3.0.3'
+        - 'softprops/action-gh-release@v3.0.4'
     '.github/workflows/notify-release-coordinator.yml': []
     '.github/workflows/post-releasenotes.yml':
         - 'actions/checkout@v7.0.1'
-        - 'softprops/action-gh-release@v3.0.3'
+        - 'softprops/action-gh-release@v3.0.4'
     '.github/workflows/publish-release.yml':
         - 'actions/checkout@v7.0.1'
     '.github/workflows/shellcheck.yml':
@@ -93,7 +93,7 @@ workflows:
         - 'jurplel/install-qt-action@v4.5.0'
         - 'microsoft/setup-msbuild@v3.0.0'
         - 'negrutiu/nsis-install@v3'
-        - 'softprops/action-gh-release@v3.0.3'
+        - 'softprops/action-gh-release@v3.0.4'
     '.github/workflows/windows-mxe-dockerimage.yml':
         - 'actions/checkout@v7.0.1'
         - 'elgohr/publish-docker-github-action@v5'
@@ -101,7 +101,7 @@ workflows:
         - 'actions/cache@v6.1.0'
         - 'actions/checkout@v7.0.1'
         - 'actions/upload-artifact@v7.0.2'
-        - 'softprops/action-gh-release@v3.0.3'
+        - 'softprops/action-gh-release@v3.0.4'
 dependencies:
     'actions/cache@v6.1.0':
         ref: 'v6.1.0'
@@ -210,9 +210,9 @@ dependencies:
         commit: 'sha1-0c5077e51419868618aeaa5fe8019c62421857d6'
         owner_id: 108928776
         repo_id: 512644635
-    'softprops/action-gh-release@v3.0.3':
-        ref: 'v3.0.3'
-        commit: 'sha1-efb35369e0ad2afab669f228072c1b0d510eae64'
+    'softprops/action-gh-release@v3.0.4':
+        ref: 'v3.0.4'
+        commit: 'sha1-8a0cd651e5b2365bd640854a3fa5dfc70e4875f3'
         owner_id: 2242
         repo_id: 204253808
     'tonyhallett/artifacts-url-comments@v1.1.0':
