@@ -73,7 +73,7 @@ jobs:
 
     - name: upload documentation
       if: github.event_name == 'push'
-      uses: softprops/action-gh-release@v3.0.3
+      uses: softprops/action-gh-release@v3.0.4
       with:
         tag_name: v${{ steps.version_number.outputs.version }}
         repository:  ${{ github.repository_owner }}/nightly-builds
