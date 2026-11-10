@@ -25,4 +25,4 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: anthropics/claude-code-action@v1.0.266
+      - uses: anthropics/claude-code-action@v1.0.269

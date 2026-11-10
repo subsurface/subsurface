@@ -16,7 +16,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
     '.github/workflows/claude-review.yml':
         - 'actions/checkout@v7.0.1'
-        - 'anthropics/claude-code-action@v1.0.266'
+        - 'anthropics/claude-code-action@v1.0.269'
     '.github/workflows/codeql-analysis.yml':
         - 'actions/checkout@v7.0.1'
         - 'github/codeql-action@v4.39.3'
@@ -133,9 +133,9 @@ dependencies:
         commit: 'sha1-cf430e030ddbb5b0abf93d22962f4752f3646cd9'
         owner_id: 44036562
         repo_id: 192625955
-    'anthropics/claude-code-action@v1.0.266':
-        ref: 'v1.0.266'
-        commit: 'sha1-d535f5172dec02b204866b393d6b20b9b2aaf98d'
+    'anthropics/claude-code-action@v1.0.269':
+        ref: 'v1.0.269'
+        commit: 'sha1-61a9c274fa7110a66dfafc1bbbced03833eb25fe'
         owner_id: 76263028
         repo_id: 986421638
         uses:
