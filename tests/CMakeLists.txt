@@ -125,6 +125,17 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		set_tests_properties(TestOstc4Dialog PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 	endif()
 	set(TEST_OSTC4_DIALOG TestOstc4Dialog)
+
+	add_executable(TestTextHyperlinkEventFilter testtexthyperlinkeventfilter.cpp testtexthyperlinkeventfilter.h)
+	target_link_libraries(TestTextHyperlinkEventFilter subsurface_generated_ui subsurface_interface
+		subsurface_profile ${SUBSURFACE_MAPWIDGET} subsurface_backend_shared
+		subsurface_models_desktop subsurface_commands subsurface_corelib subsurface_stats
+		${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
+	add_test(NAME TestTextHyperlinkEventFilter COMMAND $<TARGET_FILE:TestTextHyperlinkEventFilter>)
+	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		set_tests_properties(TestTextHyperlinkEventFilter PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+	endif()
+	set(TEST_TEXT_HYPERLINK_EVENT_FILTER TestTextHyperlinkEventFilter)
 endif()
 TEST(TestProfile testprofile.cpp)
 TEST(TestGpsCoords testgpscoords.cpp)
@@ -258,6 +269,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestUnitConversion
 	TestOstc4Settings
 	${TEST_OSTC4_DIALOG}
+	${TEST_TEXT_HYPERLINK_EVENT_FILTER}
 	TestProfile
 	TestGpsCoords
 	TestParse
