@@ -479,7 +479,12 @@ QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, b
 		  "mn.abcd." for the url (wrong). So we have to go to 'i', to
 		  capture "mn.abcd.edu " (with trailing space), and then clean it up.
 		*/
-		QStringList list = grownText.split(QRegularExpression("\\s"), SKIP_EMPTY);
+		/*
+		  QTextCursor::selectedText() represents a block boundary as U+2029
+		  (paragraph separator) and a soft line break as U+2028. These are
+		  whitespace, but only matched by \s with Unicode properties enabled.
+		*/
+		QStringList list = grownText.split(QRegularExpression("\\s", QRegularExpression::UseUnicodePropertiesOption), SKIP_EMPTY);
 		if (!list.isEmpty()) {
 			result = list[0];
 		}
