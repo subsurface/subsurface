@@ -6,6 +6,7 @@
 #include "core/divesite.h"
 #include "core/extradata.h"
 #include "core/errorhelper.h"
+#include "core/event.h"
 #include "core/file.h"
 #include "core/import-csv.h"
 #include "core/parse.h"
@@ -57,9 +58,15 @@ void TestParse::init()
 	_sqlite3_handle = NULL;
 }
 
+// AI-generated (Claude)
+/**
+ * @brief cleanup clears the dive log and the preferences a test changed
+ */
 void TestParse::cleanup()
 {
 	clear_dive_file_data();
+	// AI-generated (Claude)
+	prefs.guess_tank_gasmixes = default_prefs.guess_tank_gasmixes;
 
 	// Some test use sqlite3, ensure db is closed
 	sqlite3_close(_sqlite3_handle);
@@ -270,6 +277,70 @@ void TestParse::testParseShearwaterCloudGpsError()
 	QCOMPARE(ret, 0);
 	QCOMPARE(divelog.dives.size(), 0);
 	QCOMPARE(divelog.sites.size(), 0);
+}
+
+// AI-generated (Claude)
+/**
+ * Perdix 2 dives with air integration: three with a sidemount pair on bottom
+ * gas and stages on 50% and oxygen with their own transmitters, the stage
+ * valves closed until the gas switch, and one with only the sidemount pair.
+ * Shearwater logs don't say which gas mix a transmitter is on, so with the
+ * guess turned on, each transmitter must end up on the cylinder with the gas
+ * mix it was breathed on.
+ */
+void TestParse::testParseShearwaterCloudGuessTankGas()
+{
+	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveShearwaterCloudAI.db", &_sqlite3_handle), 0);
+	prefs.guess_tank_gasmixes = true; // cleanup() turns it off again
+	QCOMPARE(parse_shearwater_cloud_buffer(_sqlite3_handle, 0, 0, 0, &divelog), 0);
+	QCOMPARE(divelog.dives.size(), 4);
+
+	QCOMPARE(save_dives("./testshearwatercloudguessout.ssrf"), 0);
+	FILE_COMPARE("./testshearwatercloudguessout.ssrf",
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveShearwaterCloudAI.xml");
+}
+
+// AI-generated (Claude)
+/**
+ * The same dives with the guess turned off, which it is by default: the gas
+ * mixes are matched to the transmitters by position, and nothing is guessed.
+ */
+void TestParse::testParseShearwaterCloudNoTankGasGuess()
+{
+	QVERIFY(!prefs.guess_tank_gasmixes);
+	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveShearwaterCloudAI.db", &_sqlite3_handle), 0);
+	// Matching by position warns about the numbers of gas mixes and tanks,
+	// but nothing else may go wrong
+	static std::vector<std::string> errors;
+	errors.clear();
+	set_error_cb([](std::string s) { errors.push_back(std::move(s)); });
+	int ret = parse_shearwater_cloud_buffer(_sqlite3_handle, 0, 0, 0, &divelog);
+	set_error_cb(&TestBase::failOnError);
+	for (const std::string &error: errors)
+		QVERIFY2(error.find("than cylinders") != std::string::npos ||
+			 error.find("different number of gases") != std::string::npos, error.c_str());
+	QCOMPARE(ret, 0);
+	QCOMPARE(divelog.dives.size(), 4);
+	for (auto &d: divelog.dives) {
+		for (const struct extra_data &ed: d->dcs[0].extra_data)
+			QVERIFY(ed.key != "Tank gas mixes");
+		// By position, the first two transmitters get the first two gas mixes,
+		// which Shearwater lists from oxygen down: 99% and 50%
+		QVERIFY(d->cylinders.size() >= 2);
+		QCOMPARE(d->cylinders[0].gasmix.o2.permille, 990);
+		QCOMPARE(d->cylinders[1].gasmix.o2.permille, 500);
+		// and the gas changes go to the cylinder at the index of the gas mix,
+		// one of the three gas mixes of these dives, rather than to a guessed
+		// cylinder after them
+		int gas_changes = 0;
+		for (const struct event &ev: d->dcs[0].events) {
+			if (!ev.is_gaschange())
+				continue;
+			gas_changes++;
+			QVERIFY(ev.gas.index >= 0 && ev.gas.index < 3);
+		}
+		QVERIFY(gas_changes > 0);
+	}
 }
 
 void TestParse::testParseHUDC()

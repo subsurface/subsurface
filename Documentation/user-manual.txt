@@ -3748,6 +3748,32 @@ image::images/Pref_eqpmnt.jpg["FIGURE: Preferences: equipment",align="center"]
      This will also include unused cylinders in data exports and when dives are cloned for the planner
      or merged into one dive. Unused cylinders are not included when calculating SAC or total gas consumption for the dive.
 
+  ** *Guess the gas of each cylinder pressure sensor from the pressure drops*: Some
+     dive computers, e.g. Shearwater ones, record the pressures of several cylinders, but not which gas each
+     cylinder holds. Then _Subsurface_ matches the gases to the pressure sensors in the order the dive computer
+     lists them, which is often wrong. If this checkbox is checked, _Subsurface_ instead guesses that each of
+     these sensors is on the gas that was in use while its pressure dropped: at least 20 bar, and at least
+     twice as much as on any other gas. Once a sensor is linked to a gas other than the one in the dive
+     computer's order, a sensor that can't be linked gets the deepest gas. Several sensors
+     can be on the same gas, e.g. a sidemount pair. If the dive computer marks two sensors as sidemount,
+     they count together as a pair, so that between them they must have dropped at least 20 bar, unless
+     either of them on its own dropped more on another gas. If it marks more than two, which of them make
+     up a pair isn't known, so each counts on its own. The guess is only made
+     for open circuit dives, when they are downloaded from a dive computer or imported from a dive computer
+     log, e.g. the raw dive computer logs in a Shearwater Cloud database. Dives imported from older
+     Shearwater Cloud databases, which only hold the samples rather than the raw logs, aren't guessed.
+     Checking this checkbox doesn't change the dives already in the dive log. Downloading a dive again,
+     with _Force download of all dives_ and _Always prefer downloaded dives_ checked, replaces it with one
+     whose gases are guessed where the pressures allow it, but this can also replace changes made to the
+     dive since it was first downloaded, so back up the dive log first. The guess is wrong for a sensor on
+     someone else's cylinder, e.g. a student's, so leave this unchecked if you monitor other divers'
+     cylinders. It can also be wrong for a stage that is carried but never opened, if its regulator was
+     charged before the dive, and for a stage that is carried open but not breathed, if it cools a lot in
+     the water, e.g. a 300 bar cylinder: check the gases of such stages. A dive whose gases the guess
+     changes has the extra information _Tank gas mixes: guessed by Subsurface_. If the dive computer
+     doesn't link any sensor to a gas, and the guesses only confirm its order, nothing changes, and the
+     dive doesn't have this note.
+
 === Media
 
 This tab sets some defaults relating to photos or videos during dives.

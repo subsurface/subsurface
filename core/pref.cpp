@@ -13,6 +13,10 @@ struct preferences prefs, git_prefs, default_prefs;
  * a file with no units line does not clobber the locally-persisted preference. */
 bool git_prefs_units_set = false;
 
+// AI-generated (Claude)
+/**
+ * @brief preferences sets each preference to its default
+ */
 preferences::preferences() :
 	animation_speed(500),
 	cloud_base_url("https://" CLOUD_HOST_EU "/"), // if we don't know any better, use the European host
@@ -30,6 +34,7 @@ preferences::preferences() :
 	map_short_names(false),
 	include_unused_tanks(false),
 	display_default_tank_infos(true),
+	guess_tank_gasmixes(false),
 	auto_recalculate_thumbnails(true),
 	extract_video_thumbnails(true),
 	extract_video_thumbnails_position(20),		// The first fifth seems like a reasonable place

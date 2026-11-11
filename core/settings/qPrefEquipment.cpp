@@ -13,11 +13,17 @@ qPrefEquipment *qPrefEquipment::instance()
 	return self;
 }
 
+// AI-generated (Claude)
+/**
+ * @brief loadSync loads the equipment preferences from the settings, or stores them
+ * @param doSync true to store the preferences, false to load them.
+ */
 void qPrefEquipment::loadSync(bool doSync)
 {
 	disk_default_cylinder(doSync);
 	disk_include_unused_tanks(doSync);
 	disk_display_default_tank_infos(doSync);
+	disk_guess_tank_gasmixes(doSync);
 	if (!doSync)
 		load_tank_info_table_baseline();
 }
@@ -26,6 +32,12 @@ HANDLE_PREFERENCE_TXT(Equipment, "default_cylinder", default_cylinder);
 // Keeping the persisted preference name the same to avoid resetting this for everybody
 HANDLE_PREFERENCE_BOOL(Equipment, "display_unused_tanks", include_unused_tanks);
 HANDLE_PREFERENCE_BOOL(Equipment, "display_default_tank_infos", display_default_tank_infos);
+// AI-generated (Claude)
+/**
+ * set_guess_tank_gasmixes() and disk_guess_tank_gasmixes(): whether to guess the gas
+ * mix of each tank the dive computer doesn't link to one, see guess_tank_gasmixes().
+ */
+HANDLE_PREFERENCE_BOOL(Equipment, "guess_tank_gasmixes", guess_tank_gasmixes);
 
 // ---- Persistence of the global cylinder-type list (tank_info_table) ----
 //

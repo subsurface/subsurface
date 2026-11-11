@@ -107,6 +107,7 @@ struct preferences {
 	std::string default_cylinder;
 	bool        include_unused_tanks;
 	bool        display_default_tank_infos;
+	bool        guess_tank_gasmixes;
 
 	// ********** General **********
 	bool        auto_recalculate_thumbnails;

@@ -50,6 +50,7 @@
 #include "core/pref.h"
 #include "core/file.h"
 #include "core/bluetoothaddress.h"
+#include "core/tankgasguess.h"
 #include <algorithm>
 #include <array>
 #include <charconv>
@@ -267,6 +268,112 @@ std::vector<int> gasmix_cylinders(const std::vector<cylinder_source> &cylinders,
 	return result;
 }
 
+// AI-generated (Claude)
+// The gas mix in use and the tank pressures at each sample, for guess_tank_gasmixes()
+struct tank_gas_trace {
+	std::vector<tank_gas_sample> samples;
+	size_t ntanks = 0;
+	int gasmix = -1;
+};
+
+/**
+ * @brief tank_gas_sample_cb collects the gas mix in use and the tank pressures of
+ * each sample, as a libdivecomputer sample callback
+ * Each sample starts with its time. A pressure without a sample, or for a tank
+ * the dive computer doesn't report, is ignored.
+ * @param type The type of the sample value.
+ * @param pvalue The sample value.
+ * @param userdata The tank_gas_trace to add to.
+ */
+static void tank_gas_sample_cb(dc_sample_type_t type, const dc_sample_value_t *pvalue, void *userdata)
+{
+	tank_gas_trace *trace = static_cast<tank_gas_trace *>(userdata);
+
+	switch (type) {
+	case DC_SAMPLE_TIME:
+		// Each sample starts with its time
+		trace->samples.push_back(tank_gas_sample { trace->gasmix, std::vector<int>(trace->ntanks, 0) });
+		break;
+	case DC_SAMPLE_GASMIX:
+		trace->gasmix = pvalue->gasmix == DC_GASMIX_UNKNOWN ? -1 : (int)pvalue->gasmix;
+		if (!trace->samples.empty())
+			trace->samples.back().gasmix = trace->gasmix;
+		break;
+	case DC_SAMPLE_PRESSURE:
+		// A reading that isn't a plausible tank pressure, e.g. from a parser's
+		// counter running past zero, would look like a huge drop or rise
+		if (!trace->samples.empty() && pvalue->pressure.tank < trace->ntanks &&
+		    pvalue->pressure.value > 0 && pvalue->pressure.value < 1000)
+			trace->samples.back().pressure[pvalue->pressure.tank] = lrint(pvalue->pressure.value * 1000);
+		break;
+	default:
+		break;
+	}
+}
+
+// AI-generated (Claude)
+/**
+ * @brief apply_tank_gas_guesses adds the guessed gas mixes to the tanks the dive
+ * computer doesn't link to a gas mix
+ * The links the dive computer reports are kept, and the tanks it excludes from the
+ * diver's gas, e.g. a buddy's, are left out. Nothing changes if nothing was guessed,
+ * or if the dive computer links no tank to a gas mix and the guesses only confirm
+ * the order of the tanks: then the tanks without a guess keep the gas mixes at their
+ * index too, as without the guess. If the dive computer links a tank to a gas mix
+ * other than the one at its index, any guess changes the tank it is added to, which
+ * would otherwise get the deepest gas mix.
+ * @param tank_gasmix The gas mix of each tank, -1 for none. The guesses are added.
+ * @param guess The guessed gas mix of each tank, -1 for none.
+ * @param tank_usage The usage the dive computer reports for each tank.
+ * @param ngases The number of gas mixes.
+ * @return true if the guesses changed the links.
+ */
+bool apply_tank_gas_guesses(std::vector<int> &tank_gasmix, const std::vector<int> &guess,
+			    const std::vector<dc_tank_usage_t> &tank_usage, unsigned int ngases)
+{
+	std::vector<int> result = tank_gasmix;
+	for (size_t i = 0; i < result.size() && i < guess.size(); i++) {
+		bool excluded = i < tank_usage.size() && tank_usage[i] == DC_TANK_USAGE_EXCLUDED;
+		if (result[i] < 0 && !excluded)
+			result[i] = guess[i];
+	}
+	if (result == tank_gasmix || !tanks_linked_to_gasmixes(result, ngases))
+		return false;
+	tank_gasmix = result;
+	return true;
+}
+
+// AI-generated (Claude)
+/**
+ * @brief guess_unlinked_tank_gasmixes guesses the gas mixes of the tanks the dive
+ * computer doesn't link to a gas mix, see guess_tank_gasmixes(), and notes in the
+ * extra data of the dive computer if that changes the cylinders
+ * The tanks the dive computer excludes from the diver's gas, e.g. a buddy's, are
+ * left out. This makes an extra pass over the samples, as the one that adds them to
+ * the dive only comes after the cylinders are set up. libdivecomputer parsers parse
+ * the samples again from the start on each pass.
+ * @param dive The dive.
+ * @param parser The libdivecomputer parser data.
+ * @param tank_gasmix The gas mix of each tank, -1 for none. The guesses are added.
+ * @param tank_usage The usage the dive computer reports for each tank.
+ * @param ngases The number of gas mixes.
+ */
+static void guess_unlinked_tank_gasmixes(struct dive *dive, dc_parser_t *parser, std::vector<int> &tank_gasmix,
+					 const std::vector<dc_tank_usage_t> &tank_usage, unsigned int ngases)
+{
+	tank_gas_trace trace;
+	trace.ntanks = tank_gasmix.size();
+	if (dc_parser_samples_foreach(parser, tank_gas_sample_cb, &trace) != DC_STATUS_SUCCESS)
+		return;
+
+	std::vector<bool> sidemount(tank_usage.size());
+	for (size_t i = 0; i < tank_usage.size(); i++)
+		sidemount[i] = tank_usage[i] == DC_TANK_USAGE_SIDEMOUNT;
+	std::vector<int> guess = guess_tank_gasmixes(trace.samples, sidemount, ngases);
+	if (apply_tank_gas_guesses(tank_gasmix, guess, tank_usage, ngases))
+		add_extra_data(&dive->dcs[0], "Tank gas mixes", "guessed by Subsurface");
+}
+
 /**
  * @brief parse_gasmixes matches gas mixes with cylinders
  * This function retrieves all tanks and gas mixes reported by libdivecomputer
@@ -277,6 +384,9 @@ std::vector<int> gasmix_cylinders(const std::vector<cylinder_source> &cylinders,
  * the gas mix with the lowest (deepest) MOD.
  * If the dive computer links tanks to other gas mixes, the tanks get their linked
  * gas mixes instead, see match_tanks_to_gasmixes().
+ * On open circuit dives, if the user has asked for it in the preferences, the gas
+ * mixes of the tanks the dive computer doesn't link are guessed first, see
+ * guess_unlinked_tank_gasmixes().
  * @param devdata The dive computer data.
  * @param dive The dive to which these tanks and gas mixes will be assigned.
  * @param parser The libdivecomputer parser data.
@@ -297,11 +407,14 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 	// AI-generated (Claude)
 	// The gas mix each tank is linked to, if the dive computer says
 	std::vector<int> tank_gasmix(ntanks, -1);
+	std::vector<dc_tank_usage_t> tank_usage(ntanks, DC_TANK_USAGE_NONE);
 	for (i = 0; i < ntanks; i++) {
 		dc_tank_t tank = { 0 };
 		tank.gasmix = DC_GASMIX_UNKNOWN;
-		if (dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank) != DC_STATUS_SUCCESS ||
-		    tank.gasmix == DC_GASMIX_UNKNOWN)
+		if (dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank) != DC_STATUS_SUCCESS)
+			continue;
+		tank_usage[i] = tank.usage;
+		if (tank.gasmix == DC_GASMIX_UNKNOWN)
 			continue;
 		if (tank.gasmix < ngases) {
 			tank_gasmix[i] = (int)tank.gasmix;
@@ -309,6 +422,10 @@ static dc_status_t parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_
 			report_error("gasmix %u for tank %u doesn't exist", tank.gasmix, i);
 		}
 	}
+	// If the user asks for it, guess the gas mixes of the other tanks
+	if (prefs.guess_tank_gasmixes && dive->dcs[0].divemode == OC && ngases > 0 &&
+	    std::find(tank_gasmix.begin(), tank_gasmix.end(), -1) != tank_gasmix.end())
+		guess_unlinked_tank_gasmixes(dive, parser, tank_gasmix, tank_usage, ngases);
 
 	// With links, the numbers of gas mixes and tanks needn't match
 	if (!tanks_linked_to_gasmixes(tank_gasmix, ngases)) {

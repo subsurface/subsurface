@@ -196,6 +196,8 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	subsurfacestartup.h
 	tag.cpp
 	tag.h
+	tankgasguess.cpp
+	tankgasguess.h
 	tanksensormapping.h
 	taxonomy.cpp
 	taxonomy.h

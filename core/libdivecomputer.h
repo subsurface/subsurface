@@ -73,6 +73,8 @@ bool tanks_linked_to_gasmixes(const std::vector<int> &tank_gasmix, unsigned int 
 std::vector<cylinder_source> match_tanks_to_gasmixes(const std::vector<int> &tank_gasmix, unsigned int ngases);
 std::vector<int> gasmix_cylinders(const std::vector<cylinder_source> &cylinders, unsigned int ngases,
 				  const std::vector<bool> &used = {});
+bool apply_tank_gas_guesses(std::vector<int> &tank_gasmix, const std::vector<int> &guess,
+			    const std::vector<dc_tank_usage_t> &tank_usage, unsigned int ngases);
 
 void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata);
 dc_descriptor_t *get_descriptor(dc_family_t type, unsigned int model);
