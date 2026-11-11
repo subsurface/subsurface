@@ -23,6 +23,9 @@ void TestQPrefEquipment::initTestCase()
 	qPref::registerQML(NULL);
 }
 
+/**
+ * @brief test_struct_get checks that the getters return the struct preferences
+ */
 void TestQPrefEquipment::test_struct_get()
 {
 	// Test struct pref -> get func.
@@ -32,8 +35,13 @@ void TestQPrefEquipment::test_struct_get()
 	QCOMPARE(tst->default_cylinder(), QString::fromStdString(prefs.default_cylinder));
 	prefs.include_unused_tanks = true;
 	QCOMPARE(tst->include_unused_tanks(), prefs.include_unused_tanks);
+	prefs.guess_tank_gasmixes = true;
+	QCOMPARE(tst->guess_tank_gasmixes(), prefs.guess_tank_gasmixes);
 }
 
+/**
+ * @brief test_set_struct checks that the setters change the struct preferences
+ */
 void TestQPrefEquipment::test_set_struct()
 {
 	// Test set func -> struct pref
@@ -43,8 +51,16 @@ void TestQPrefEquipment::test_set_struct()
 	QCOMPARE(QString::fromStdString(prefs.default_cylinder), QString("new base21"));
 	tst->set_include_unused_tanks(false);
 	QCOMPARE(prefs.include_unused_tanks, false);
+	prefs.guess_tank_gasmixes = false;
+	tst->set_guess_tank_gasmixes(true);
+	QCOMPARE(prefs.guess_tank_gasmixes, true);
+	tst->set_guess_tank_gasmixes(false);
+	QCOMPARE(prefs.guess_tank_gasmixes, false);
 }
 
+/**
+ * @brief test_set_load_struct checks that load() restores what the setters stored
+ */
 void TestQPrefEquipment::test_set_load_struct()
 {
 	// test set func -> load -> struct pref
@@ -55,11 +71,17 @@ void TestQPrefEquipment::test_set_load_struct()
 	prefs.default_cylinder = "error";
 	tst->set_include_unused_tanks(false);
 	prefs.include_unused_tanks = true;
+	tst->set_guess_tank_gasmixes(false);
+	prefs.guess_tank_gasmixes = true;
 	tst->load();
 	QCOMPARE(QString::fromStdString(prefs.default_cylinder), QString("new base31"));
 	QCOMPARE(prefs.include_unused_tanks, false);
+	QCOMPARE(prefs.guess_tank_gasmixes, false);
 }
 
+/**
+ * @brief test_struct_disk checks that sync() and load() round-trip the struct preferences
+ */
 void TestQPrefEquipment::test_struct_disk()
 {
 	// test struct prefs -> disk
@@ -67,14 +89,17 @@ void TestQPrefEquipment::test_struct_disk()
 	auto tst = qPrefEquipment::instance();
 	prefs.default_cylinder = "base41";
 	prefs.include_unused_tanks = true;
+	prefs.guess_tank_gasmixes = true;
 
 	tst->sync();
 	prefs.default_cylinder = "error";
 	prefs.include_unused_tanks = false;
+	prefs.guess_tank_gasmixes = false;
 
 	tst->load();
 	QCOMPARE(QString::fromStdString(prefs.default_cylinder), QString("base41"));
 	QCOMPARE(prefs.include_unused_tanks, true);
+	QCOMPARE(prefs.guess_tank_gasmixes, true);
 
 }
 
@@ -84,6 +109,9 @@ void TestQPrefEquipment::test_struct_disk()
 	equipment->load();           \
 	QCOMPARE(METHOD, VALUE);
 
+/**
+ * @brief test_oldPreferences checks each preference through the setters, sync() and load()
+ */
 void TestQPrefEquipment::test_oldPreferences()
 {
 	auto equipment = qPrefEquipment::instance();
@@ -95,13 +123,21 @@ void TestQPrefEquipment::test_oldPreferences()
 	TEST(equipment->include_unused_tanks(), true);
 	equipment->set_include_unused_tanks(false);
 	TEST(equipment->include_unused_tanks(), false);
+	equipment->set_guess_tank_gasmixes(true);
+	TEST(equipment->guess_tank_gasmixes(), true);
+	equipment->set_guess_tank_gasmixes(false);
+	TEST(equipment->guess_tank_gasmixes(), false);
 }
 
+/**
+ * @brief test_signals checks that the setters signal changes
+ */
 void TestQPrefEquipment::test_signals()
 {
 	qPrefEquipment::set_default_cylinder("signal test");
 	QSignalSpy spy1(qPrefEquipment::instance(), &qPrefEquipment::default_cylinderChanged);
 	QSignalSpy spy2(qPrefEquipment::instance(), &qPrefEquipment::include_unused_tanksChanged);
+	QSignalSpy spy3(qPrefEquipment::instance(), &qPrefEquipment::guess_tank_gasmixesChanged);
 
 	// set default cylinder to same value it already had
 	qPrefEquipment::set_default_cylinder("signal test");
@@ -116,6 +152,19 @@ void TestQPrefEquipment::test_signals()
 	qPrefEquipment::set_include_unused_tanks(false);
 	QCOMPARE(spy2.count(), 1);
 	QVERIFY(spy2.takeFirst().at(0).toBool() == false);
+
+	prefs.guess_tank_gasmixes = true;
+	qPrefEquipment::set_guess_tank_gasmixes(false);
+	QCOMPARE(spy3.count(), 1);
+	QVERIFY(spy3.takeFirst().at(0).toBool() == false);
+
+	qPrefEquipment::set_guess_tank_gasmixes(true);
+	QCOMPARE(spy3.count(), 1);
+	QVERIFY(spy3.takeFirst().at(0).toBool() == true);
+
+	// setting the same value again doesn't signal
+	qPrefEquipment::set_guess_tank_gasmixes(true);
+	QCOMPARE(spy3.count(), 0);
 }
 
 // Regression tests for persisting the global cylinder-type list

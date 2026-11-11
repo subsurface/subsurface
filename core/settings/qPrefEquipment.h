@@ -10,6 +10,7 @@ class qPrefEquipment : public QObject {
 	Q_PROPERTY(QString default_cylinder READ default_cylinder WRITE set_default_cylinder NOTIFY default_cylinderChanged)
 	Q_PROPERTY(bool include_unused_tanks READ include_unused_tanks WRITE set_include_unused_tanks NOTIFY include_unused_tanksChanged)
 	Q_PROPERTY(bool display_default_tank_infos READ display_default_tank_infos WRITE set_display_default_tank_infos NOTIFY display_default_tank_infosChanged)
+	Q_PROPERTY(bool guess_tank_gasmixes READ guess_tank_gasmixes WRITE set_guess_tank_gasmixes NOTIFY guess_tank_gasmixesChanged)
 
 public:
 	static qPrefEquipment *instance();
@@ -23,22 +24,26 @@ public:
 	static QString default_cylinder() { return QString::fromStdString(prefs.default_cylinder); }
 	static bool include_unused_tanks() { return prefs.include_unused_tanks; }
 	static bool display_default_tank_infos() { return prefs.display_default_tank_infos; }
+	static bool guess_tank_gasmixes() { return prefs.guess_tank_gasmixes; }
 
 public slots:
 	static void set_default_cylinder(const QString& value);
 	static void set_include_unused_tanks(bool value);
 	static void set_display_default_tank_infos(bool value);
+	static void set_guess_tank_gasmixes(bool value);
 
 signals:
 	void default_cylinderChanged(const QString& value);
 	void include_unused_tanksChanged(bool value);
 	void display_default_tank_infosChanged(bool value);
+	void guess_tank_gasmixesChanged(bool value);
 
 private:
 	qPrefEquipment() {}
 	static void disk_default_cylinder(bool doSync);
 	static void disk_include_unused_tanks(bool doSync);
 	static void disk_display_default_tank_infos(bool doSync);
+	static void disk_guess_tank_gasmixes(bool doSync);
 
 	// Unlike the scalar preferences above, the persisted cylinder-type list
 	// (tank_info_table) is variable-length, so it isn't wired through the

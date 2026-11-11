@@ -22,10 +22,15 @@ PreferencesEquipment::~PreferencesEquipment()
 	delete ui;
 }
 
+// AI-generated (Claude)
+/**
+ * @brief refreshSettings shows the equipment preferences in the dialog
+ */
 void PreferencesEquipment::refreshSettings()
 {
 	ui->include_unused_tanks->setChecked(prefs.include_unused_tanks);
 	ui->display_default_tank_infos->setChecked(prefs.display_default_tank_infos);
+	ui->guess_tank_gasmixes->setChecked(prefs.guess_tank_gasmixes);
 	refreshCylinderCombo(qPrefEquipment::default_cylinder());
 }
 
@@ -45,11 +50,16 @@ void PreferencesEquipment::refreshCylinderCombo(const QString &wantedSelection)
 	ui->default_cylinder->setCurrentIndex(wantedIndex);
 }
 
+// AI-generated (Claude)
+/**
+ * @brief syncSettings stores the equipment preferences from the dialog
+ */
 void PreferencesEquipment::syncSettings()
 {
 	auto equipment = qPrefEquipment::instance();
 	qPrefEquipment::set_include_unused_tanks(ui->include_unused_tanks->isChecked());
 	qPrefEquipment::set_display_default_tank_infos(ui->display_default_tank_infos->isChecked());
+	qPrefEquipment::set_guess_tank_gasmixes(ui->guess_tank_gasmixes->isChecked());
 	equipment->set_default_cylinder(ui->default_cylinder->currentText());
 
 	// In case the user changed the tank info settings,

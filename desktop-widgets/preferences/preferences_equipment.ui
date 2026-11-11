@@ -76,6 +76,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="guess_tank_gasmixes">
+     <property name="text">
+      <string>Guess the gas of each cylinder pressure sensor from the pressure drops</string>
+     </property>
+     <property name="toolTip">
+      <string>When downloading or importing open circuit dives, link each pressure sensor that the dive computer doesn't link to a gas to the gas that was in use while its pressure dropped. This is wrong for a sensor on someone else's cylinder, e.g. a student's.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_manageCylinderTypes">
      <item>
       <widget class="QPushButton" name="manageCylinderTypes">
