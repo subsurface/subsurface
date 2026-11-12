@@ -38,7 +38,15 @@ QString thumbnailFileName(const QString &filename);
 void learnPictureFilename(const QString &originalName, const QString &localName);
 QString localFilePath(const QString &originalFilename);
 std::optional<std::string> getCloudURL(); // move to prefs.h, probably.
+// Parses GPS text and checks that the result is a location that can exist.
+// Two plain decimal numbers that are clearly latitude and longitude the wrong
+// way round (e.g. "151.27, -33.98") are swapped.
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
+// AI-generated (Claude)
+// The same, without the range check, so that a caller can tell text that
+// cannot be read from coordinates that are out of range.
+bool parseGpsTextUnchecked(const QString &gps_text, double *latitude, double *longitude);
+bool gpsCoordinatesInRange(double latitude, double longitude);
 void init_proxy();
 QStringList mediaExtensionFilters();
 QStringList imageExtensionFilters();

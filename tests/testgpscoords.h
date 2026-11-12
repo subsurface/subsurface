@@ -25,9 +25,14 @@ private slots:
 	void testPrefixNoUnitParse();
 	void testOurWeb();
 	void testGoogle();
-	void testSwappedRejected();
+	void testSwappedCorrected();
+	void testSwappedNotCorrectedWithHemispheres();
+	void testUnreadableSeparatorRejected();
 	void testOutOfRangeRejected();
 	void testRangeLimitsAccepted();
+	void testSignedPlainPairs();
+	void testCommaOnlyPairs();
+	void testWrongWayRoundWithUnitsRejected();
 	void testOutOfRangeWithUnitsRejected();
 	void testRoundTrip();
 

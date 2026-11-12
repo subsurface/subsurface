@@ -118,21 +118,48 @@ void TestGpsCoords::testGoogle()
 }
 
 // AI-generated (Claude)
-void TestGpsCoords::testSwappedRejected()
+void TestGpsCoords::testSwappedCorrected()
 {
 	// Latitude and longitude entered the wrong way round: a latitude
-	// of 151 cannot exist, so this must not be accepted.
-	testParseFails("151.266423, -33.984807");
+	// of 151 cannot exist, and swapping gives a real location.
+	testParseOK("151.266423, -33.984807", -33.984807, 151.266423);
+	testParseOK("-151.266423 33.984807", 33.984807, -151.266423);
+	// The same without a space after the comma.
+	testParseOK("151.266423,-33.984807", -33.984807, 151.266423);
+	testParseOK("151.266423,33.984807", 33.984807, 151.266423);
+	// Other spacing and separators that the parser accepts.
+	testParseOK("151.266423     -33.984807", -33.984807, 151.266423);
+	testParseOK("151.266423,\t-33.984807", -33.984807, 151.266423);
+	testParseOK("151.266423; -33.984807", -33.984807, 151.266423);
+	testParseOK("151.266423;-33.984807", -33.984807, 151.266423);
+	// An explicit plus sign on either value.
+	testParseOK("+151.266423, -33.984807", -33.984807, 151.266423);
+	testParseOK("151.266423, +33.984807", 33.984807, 151.266423);
 	testParseOK("-33.984807, 151.266423", -33.984807, 151.266423);
+}
+
+void TestGpsCoords::testUnreadableSeparatorRejected()
+{
+	// A full-width comma is not a separator the parser accepts, so the
+	// text cannot be read at all, swapped or not.
+	testParseFails("151.266423，-33.984807");
+	testParseFails("-33.984807，151.266423");
+}
+
+void TestGpsCoords::testSwappedNotCorrectedWithHemispheres()
+{
+	// With hemisphere letters the user said which is which, so an
+	// impossible latitude is rejected rather than swapped.
+	testParseFails("151.27N 33.98E");
+	testParseFails("151°N 33°E");
 }
 
 void TestGpsCoords::testOutOfRangeRejected()
 {
-	testParseFails("90.5 0");
-	testParseFails("-91, 10");
+	testParseFails("95, 100");
+	testParseFails("-91, -200");
 	testParseFails("0, 180.5");
 	testParseFails("10 -181");
-	testParseFails("95°N 10°E");
 	testParseFails("10°N 185°W");
 }
 
@@ -140,6 +167,40 @@ void TestGpsCoords::testRangeLimitsAccepted()
 {
 	testParseOK("90, 180", 90.0, 180.0);
 	testParseOK("-90 -180", -90.0, -180.0);
+}
+
+void TestGpsCoords::testSignedPlainPairs()
+{
+	// A leading "+" must not make the second number be read as minutes.
+	testParseOK("+33.984807 151.266423", 33.984807, 151.266423);
+	testParseOK("+33.984807, +151.266423", 33.984807, 151.266423);
+	testParseOK("33.984807 +151.266423", 33.984807, 151.266423);
+	testParseOK("+151.266423 33.984807", 33.984807, 151.266423);
+	testParseOK("+151.266423 -33.984807", -33.984807, 151.266423);
+}
+
+void TestGpsCoords::testCommaOnlyPairs()
+{
+	// Two whole numbers joined by a comma are two coordinates, not one
+	// number with a decimal comma, which would be read as 0, 0.
+	testParseOK("33,151", 33.0, 151.0);
+	testParseOK("-33,151", -33.0, 151.0);
+	testParseOK("151,33", 33.0, 151.0);
+	testParseOK("151;-33", -33.0, 151.0);
+}
+
+
+void TestGpsCoords::testWrongWayRoundWithUnitsRejected()
+{
+	// With degrees, minutes or seconds, or with hemisphere letters, an
+	// impossible latitude is rejected rather than swapped, so that the
+	// user can check what was meant.
+	testParseFails("151°15'59.1228\" -33°59'05.3052\"");
+	testParseFails("151°15.98538' -33°59.08842'");
+	testParseFails("151.266423° -33.984807°");
+	testParseFails("151°15'59.1228\"E 33°59'05.3052\"S");
+	testParseFails("151.266423E 33.984807S");
+	testParseFails("E151.266423 S33.984807");
 }
 
 void TestGpsCoords::testOutOfRangeWithUnitsRejected()
