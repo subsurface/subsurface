@@ -189,6 +189,23 @@ void TestGpsCoords::testCommaOnlyPairs()
 	testParseOK("151;-33", -33.0, 151.0);
 }
 
+void TestGpsCoords::testSouthernEasternFormats()
+{
+	// The same location near Sydney in each supported format, as most
+	// other tests use the northern hemisphere.
+	const double lat = coord2double(-33, -59, -5.3052);
+	const double lon = coord2double(151, 15, 59.1228);
+	testParseOK("33°59'05.3052\"S 151°15'59.1228\"E", lat, lon);
+	testParseOK("S33°59'05.3052\" E151°15'59.1228\"", lat, lon);
+	testParseOK("33 ° 59 ' 05.3052 \" S  151 ° 15 ' 59.1228 \" E", lat, lon);
+	testParseOK("-33°59'05.3052\" 151°15'59.1228\"", lat, lon);
+	testParseOK("33°59.08842'S 151°15.98538'E", coord2double(-33, -59.08842), coord2double(151, 15.98538));
+	testParseOK("S33 59.08842 E151 15.98538", coord2double(-33, -59.08842), coord2double(151, 15.98538));
+	testParseOK("33.984807°S 151.266423°E", -33.984807, 151.266423);
+	testParseOK("33.984807S 151.266423E", -33.984807, 151.266423);
+	testParseOK("S 33.984807 E 151.266423", -33.984807, 151.266423);
+	testParseOK("-33.984807 151.266423", -33.984807, 151.266423);
+}
 
 void TestGpsCoords::testWrongWayRoundWithUnitsRejected()
 {

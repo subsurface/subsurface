@@ -32,6 +32,7 @@ private slots:
 	void testRangeLimitsAccepted();
 	void testSignedPlainPairs();
 	void testCommaOnlyPairs();
+	void testSouthernEasternFormats();
 	void testWrongWayRoundWithUnitsRejected();
 	void testOutOfRangeWithUnitsRejected();
 	void testRoundTrip();
