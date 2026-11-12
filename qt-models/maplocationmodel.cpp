@@ -142,6 +142,10 @@ void MapLocationModel::selectionChanged()
 	emit dataChanged(createIndex(0, 0), createIndex((int)m_mapLocations.size() - 1, 0));
 }
 
+// Rebuild the list of flags from the dive sites. Sites without a usable
+// location are left out, except in dive site edit mode, where the selected
+// ones are placed at the map centre so they can be dragged into place.
+// Same-named sites close together share one flag outside edit mode.
 void MapLocationModel::reload(QObject *map)
 {
 	beginResetModel();
@@ -168,17 +172,22 @@ void MapLocationModel::reload(QObject *map)
 		// Don't show dive sites of hidden dives, unless we're in dive site edit mode.
 		if (!diveSiteMode && !hasVisibleDive(*ds))
 			continue;
-		if (!ds->has_gps_location()) {
+		if (ds->has_gps_location()) {
+			qreal latitude = ds->location.lat.udeg * 0.000001;
+			qreal longitude = ds->location.lon.udeg * 0.000001;
+			dsCoord = QGeoCoordinate(latitude, longitude);
+		}
+		// AI-generated (Claude)
+		// A location that cannot exist (e.g. latitude and longitude stored the
+		// wrong way round) gives an invalid coordinate. Treat it like a missing
+		// location, so that it can be dragged to the right place when editing.
+		if (!dsCoord.isValid()) {
 			// Dive sites that do not have a gps location are not shown in normal mode.
 			// In dive-edit mode, selected sites are placed at the center of the map,
 			// so that the user can drag them somewhere without having to enter coordinates.
 			if (!diveSiteMode || !range_contains(m_selectedDs, ds.get()) || !map)
 				continue;
 			dsCoord = map->property("center").value<QGeoCoordinate>();
-		} else {
-			qreal latitude = ds->location.lat.udeg * 0.000001;
-			qreal longitude = ds->location.lon.udeg * 0.000001;
-			dsCoord = QGeoCoordinate(latitude, longitude);
 		}
 		if (!diveSiteMode && hasSelectedDive(*ds) && !range_contains(m_selectedDs, ds.get()))
 			m_selectedDs.push_back(ds.get());
