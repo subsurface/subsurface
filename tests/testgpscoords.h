@@ -25,8 +25,14 @@ private slots:
 	void testPrefixNoUnitParse();
 	void testOurWeb();
 	void testGoogle();
+	void testSwappedRejected();
+	void testOutOfRangeRejected();
+	void testRangeLimitsAccepted();
+	void testOutOfRangeWithUnitsRejected();
+	void testRoundTrip();
 
 private:
+	static void testParseFails(const QString &txt);
 	static void testParseOK(const QString &txt, double expectedLat,
 				double expectedLon);
 	static double coord2double(double deg, double min = 0.0, double sec = 0.0);

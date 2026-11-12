@@ -26,6 +26,7 @@
 #include "imagedownloader.h"
 #include "xmlparams.h"
 #include <QFile>
+#include <cmath>
 #include <QRegularExpression>
 #include <QDir>
 #include <QStandardPaths>
@@ -195,12 +196,17 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 		*longitude = 0.0;
 		return true;
 	}
-	if (parseSpecialCoords(normalized, *latitude, *longitude))
-		return true;
 	int pos = 0;
-	return parseCoord(normalized, pos, POS_LAT, NEG_LAT, POS_LON + NEG_LON, *latitude) &&
-		parseCoord(normalized, pos, POS_LON, NEG_LON, "", *longitude) &&
-		pos == normalized.size();
+	bool parsed = parseSpecialCoords(normalized, *latitude, *longitude) ||
+		(parseCoord(normalized, pos, POS_LAT, NEG_LAT, POS_LON + NEG_LON, *latitude) &&
+		 parseCoord(normalized, pos, POS_LON, NEG_LON, "", *longitude) &&
+		 pos == normalized.size());
+	// AI-generated (Claude)
+	// Reject coordinates that cannot exist, such as latitude and longitude
+	// entered the wrong way round ("151.27, -33.98" instead of
+	// "-33.98, 151.27"). Such a location would otherwise be stored and
+	// confuse the map, which cannot place it.
+	return parsed && std::fabs(*latitude) <= 90.0 && std::fabs(*longitude) <= 180.0;
 }
 
 static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
