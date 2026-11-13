@@ -112,6 +112,15 @@ The first line should be meaningful on its own because it is shown in summaries 
 
 Use the body to explain why the change is needed and any decisions that are not obvious from the diff. Wrap commit-message lines at approximately 74 characters.
 
+Commit messages and files in the repository use Unix (LF) line endings. On Windows, Git's `core.autocrlf` setting (on by default in Git for Windows) converts files, and `git commit` removes carriage returns from messages, but scripts and tools that create commits another way, such as with `git commit-tree`, can store CRLF messages. You can check a commit from a Unix shell (Git Bash on Windows) with `git cat-file commit HEAD | cat -e`. A line ending in `^M$` contains a carriage return and should be reworded.
+
+
+### Organizing Commits in a Pull Request
+
+Before asking for review, arrange your branch as a short series of commits, each making one logical change and explaining it in its own message. A pull request does not need to be a single commit. For example, a preparatory refactor, the fix itself and its tests can sensibly be separate. However, each commit should build on its own, so that `git bisect` stays useful.
+
+Commits that only correct earlier commits in the same branch, such as "fix typo", "address review comments" or "fix build", should be folded into the commit they correct. To fold existing commits, run `git rebase -i upstream/master`, move each one to just below the commit it corrects and change its `pick` to `fixup`. For a correction you have not committed yet, `git commit --fixup <commit>` followed by `git rebase -i --autosquash upstream/master` does the reordering for you. Then update the pull request with `git push --force-with-lease`. Please do this both before the first review and after later rounds of review.
+
 
 ### Coding Style
 
