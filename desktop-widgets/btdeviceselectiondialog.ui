@@ -141,6 +141,16 @@
         </property>
        </widget>
       </item>
+      <item row="6" column="1">
+       <widget class="QLabel" name="bluetoothPowerGuidance">
+        <property name="text">
+         <string>To turn Bluetooth on or off, use System Settings.</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="localSelectedDevice"/>
       </item>
