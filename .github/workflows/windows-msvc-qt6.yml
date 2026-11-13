@@ -335,7 +335,8 @@ jobs:
             -DLIBGIT2_LIBRARIES="$vcpkgInstalled\lib\git2.lib" `
             -DMAKE_TESTS=OFF `
             -DNO_USERMANUAL=OFF `
-            -DINSTALL_DOCS=ON
+            -DINSTALL_DOCS=ON `
+            -DREQUIRE_USERMANUAL=ON
 
           Pop-Location
 

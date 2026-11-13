@@ -65,6 +65,7 @@ override_dh_auto_configure:
 			-DNO_PRINTING=OFF \
 			-DNO_USERMANUAL=OFF \
 			-DBUILD_DOCS=ON \
+			-DREQUIRE_USERMANUAL=ON \
 			$$(pwd)/.. ; )
 
 override_dh_installchangelogs:

@@ -100,7 +100,8 @@ mkdir -p install-root
                 -DLIBDIVECOMPUTER_LIBRARIES=%{_builddir}/install-root/lib/libdivecomputer.a \
                 -DCMAKE_PREFIX_PATH=%{_builddir}/install-root \
                 -DNO_PRINTING=OFF \
-                -DBUILD_DOCS=ON
+                -DBUILD_DOCS=ON \
+                -DREQUIRE_USERMANUAL=ON
 %cmake_build
 
 %install
