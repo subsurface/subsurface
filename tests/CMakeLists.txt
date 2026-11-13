@@ -198,7 +198,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable" AND NOT NO_USERMANU
 		subsurface_profile ${SUBSURFACE_MAPWIDGET} subsurface_backend_shared
 		subsurface_models_desktop subsurface_commands subsurface_corelib subsurface_stats
 		RESOURCE_LIBRARY ${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
-	if(BUILD_DOCS OR INSTALL_DOCS)
+	if(REQUIRE_USERMANUAL OR BUILD_DOCS OR INSTALL_DOCS)
 		add_test(NAME TestUserManual COMMAND $<TARGET_FILE:TestUserManual>)
 		# The packaged manual is looked up next to the executable, but the build only stages it in
 		# the top level build directory. Make it visible next to TestUserManual as well. The script
@@ -220,6 +220,9 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable" AND NOT NO_USERMANU
 	endif()
 	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		set_tests_properties(TestUserManual PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+	endif()
+	if(REQUIRE_USERMANUAL)
+		set_property(TEST TestUserManual APPEND PROPERTY ENVIRONMENT "SUBSURFACE_TEST_REQUIRE_USERMANUAL=1")
 	endif()
 	set(TEST_USER_MANUAL TestUserManual)
 endif()
