@@ -24,13 +24,16 @@ diff --git a/snap/snapcraft.yaml b/snap/snapcraft.yaml
      - libbluetooth-dev
      - libhidapi-dev
      - libusb-dev
-@@ -131,8 +136,11 @@ parts:
+@@ -131,11 +136,14 @@ parts:
      - -DCMAKE_EXE_LINKER_FLAGS=-Llink-stubs
      - -DBUILD_WITH_QT6=ON
+     - -DBUILD_DOCS=ON
+     - -DREQUIRE_USERMANUAL=ON
      - -DCMAKE_PREFIX_PATH=../../../stage/usr/local
 +    - -DCMAKE_C_COMPILER_LAUNCHER=ccache
 +    - -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
      build-packages:
+     - asciidoctor
      - build-essential
 +    - ccache
      - libcurl4-gnutls-dev
