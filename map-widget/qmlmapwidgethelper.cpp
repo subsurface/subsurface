@@ -30,23 +30,36 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 	connect(&diveListNotifier, &DiveListNotifier::diveSiteChanged, this, &MapWidgetHelper::diveSiteChanged);
 }
 
-QGeoCoordinate MapWidgetHelper::getCoordinates(struct dive_site *ds)
+// AI-generated (Claude)
+// The map coordinate of a dive site, or an invalid QGeoCoordinate if the
+// site has no GPS location or one that cannot exist (e.g. latitude and
+// longitude stored the wrong way round). Note that QGeoCoordinate::distanceTo()
+// returns 0 for an invalid coordinate, so callers must check isValid()
+// rather than rely on distances.
+static QGeoCoordinate siteCoordinate(const struct dive_site *ds)
 {
 	if (!ds || !ds->has_gps_location())
-		return QGeoCoordinate(0.0, 0.0);
+		return QGeoCoordinate();
 	return QGeoCoordinate(ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 }
 
+// The dive site's coordinate for QML, which treats 0, 0 as "no location".
+QGeoCoordinate MapWidgetHelper::getCoordinates(struct dive_site *ds)
+{
+	QGeoCoordinate coord = siteCoordinate(ds);
+	return coord.isValid() ? coord : QGeoCoordinate(0.0, 0.0);
+}
+
+// Select the dive site on the map and move the map to it, if it has a usable
+// location.
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
-	if (!ds || !ds->has_gps_location()) {
-		// dive site with no GPS
-		m_mapLocationModel->setSelected(ds);
+	m_mapLocationModel->setSelected(ds);
+	QGeoCoordinate dsCoord = siteCoordinate(ds);
+	if (!dsCoord.isValid()) {
+		// dive site with no usable GPS location
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
 	} else {
-		// dive site with GPS
-		m_mapLocationModel->setSelected(ds);
-		QGeoCoordinate dsCoord (ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
 	}
 }
@@ -58,6 +71,8 @@ void MapWidgetHelper::setSelected(const std::vector<dive_site *> divesites)
 	updateEditMode();
 }
 
+// Move the map to show the selected dive sites that have a usable location:
+// centred on a single site, or zoomed to fit several.
 void MapWidgetHelper::centerOnSelectedDiveSite()
 {
 	std::vector<struct dive_site *> selDS = m_mapLocationModel->selectedDs();
@@ -71,12 +86,15 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 	// find the most top-left and bottom-right dive sites on the map coordinate system.
 	qreal minLat = 0.0, minLon = 0.0, maxLat = 0.0, maxLon = 0.0;
 	int count = 0;
+	QGeoCoordinate firstCoord;
 	for(struct dive_site *dss: selDS) {
-		if (!has_location(&dss->location))
+		QGeoCoordinate coord = siteCoordinate(dss);
+		if (!coord.isValid())
 			continue;
-		qreal lat = dss->location.lat.udeg * 0.000001;
-		qreal lon = dss->location.lon.udeg * 0.000001;
+		qreal lat = coord.latitude();
+		qreal lon = coord.longitude();
 		if (++count == 1) {
+			firstCoord = coord;
 			minLat = maxLat = lat;
 			minLon = maxLon = lon;
 			continue;
@@ -94,8 +112,8 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 	// Pass coordinates to QML, either as a point or as a rectangle.
 	// If we didn't find any coordinates, do nothing.
 	if (count == 1) {
-		QGeoCoordinate dsCoord (selDS[0]->location.lat.udeg * 0.000001, selDS[0]->location.lon.udeg * 0.000001);
-		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
+		// Use the one site that has a location, which need not be selDS[0].
+		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(firstCoord)));
 	} else if (count > 1) {
 		QGeoCoordinate coordTopLeft(minLat, minLon);
 		QGeoCoordinate coordBottomRight(maxLat, maxLon);
@@ -125,6 +143,8 @@ void MapWidgetHelper::reloadMapLocations()
 	m_mapLocationModel->reload(m_map);
 }
 
+// Called when a flag is clicked: select the dives at that location (on the
+// desktop, all dives within a small circle around it) and report them.
 void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 {
 	QList<int> selectedDiveIds;
@@ -138,12 +158,10 @@ void MapWidgetHelper::selectedLocationChanged(struct dive_site *ds_in)
 
 	for (auto [idx, dive]: enumerated_range(divelog.dives)) {
 		struct dive_site *ds = dive->dive_site;
-		if (!ds || !ds->has_gps_location())
+		QGeoCoordinate dsCoord = siteCoordinate(ds);
+		if (!dsCoord.isValid())
 			continue;
 #ifndef SUBSURFACE_MOBILE
-		const qreal latitude = ds->location.lat.udeg * 0.000001;
-		const qreal longitude = ds->location.lon.udeg * 0.000001;
-		QGeoCoordinate dsCoord(latitude, longitude);
 		if (locationCoord.distanceTo(dsCoord) < m_smallCircleRadius)
 			selectedDiveIds.append(idx);
 	}

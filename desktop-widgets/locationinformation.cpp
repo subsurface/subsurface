@@ -23,6 +23,7 @@
 #include <QItemSelectionModel>
 #include <qmessagebox.h>
 #include <cstdlib>
+#include <cmath>
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QDesktopWidget>
 #endif
@@ -120,6 +121,8 @@ void LocationInformationWidget::coordinatesSetWarning(bool warn)
 	if (warn) {
 		palette.setColor(QPalette::Base, REDORANGE1_MED_TRANS);
 		palette.setColor(QPalette::Text, WHITE1);
+	} else {
+		ui.diveSiteCoordinates->setToolTip(QString());
 	}
 	ui.diveSiteCoordinates->setPalette(palette);
 }
@@ -229,6 +232,26 @@ static bool validateGpsText(const QString &textIn)
 	return text.isEmpty() || parseGpsText(text.trimmed(), &lat, &lon);
 }
 
+// AI-generated (Claude)
+// Explain why GPS text is not accepted, or return an empty string if it is.
+static QString gpsTextProblem(const QString &textIn)
+{
+	double lat, lon;
+	QString text = textIn.trimmed();
+	if (text.isEmpty() || parseGpsText(text, &lat, &lon))
+		return QString();
+	if (!parseGpsTextUnchecked(text, &lat, &lon))
+		return LocationInformationWidget::tr("These coordinates cannot be read. Enter the latitude, then the longitude, e.g. 48.8584, 2.2945");
+	// Only suggest a swap when it would give a real location. Plain decimal
+	// numbers like that are swapped by parseGpsText() and never get here;
+	// with degrees or N/S/E/W the user has to swap them.
+	if (std::fabs(lat) > 90.0 && gpsCoordinatesInRange(lon, lat))
+		return LocationInformationWidget::tr("The latitude must be between -90 and 90. Are the latitude and longitude the wrong way round?");
+	if (std::fabs(lat) > 90.0)
+		return LocationInformationWidget::tr("The latitude must be between -90 and 90.");
+	return LocationInformationWidget::tr("The longitude must be between -180 and 180.");
+}
+
 void LocationInformationWidget::diveSiteDeleted(struct dive_site *ds, int)
 {
 	// If the currently edited dive site was removed under our feet, close the widget.
@@ -297,9 +320,13 @@ void LocationInformationWidget::on_diveSiteCoordinates_editingFinished()
 		Command::editDiveSiteLocation(diveSite, parseGpsText(ui.diveSiteCoordinates->text()));
 }
 
+// While the coordinates are typed, mark the field if they would not be
+// accepted, and say why in its tooltip.
 void LocationInformationWidget::on_diveSiteCoordinates_textEdited(const QString &s)
 {
-	coordinatesSetWarning(!validateGpsText(s));
+	QString problem = gpsTextProblem(s);
+	coordinatesSetWarning(!problem.isEmpty());
+	ui.diveSiteCoordinates->setToolTip(problem);
 }
 
 void LocationInformationWidget::on_diveSiteCountry_editingFinished()

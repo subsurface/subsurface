@@ -26,6 +26,7 @@
 #include "imagedownloader.h"
 #include "xmlparams.h"
 #include <QFile>
+#include <cmath>
 #include <QRegularExpression>
 #include <QDir>
 #include <QStandardPaths>
@@ -159,10 +160,14 @@ static bool parseCoord(const QString &txt, int &pos, const QString &positives,
 }
 
 /**
-* Parse special coordinate formats that cannot be handled by parseCoord.
+* Parse two plain decimal numbers, each with an optional sign, separated by
+* whitespace or by a comma or semicolon with optional whitespace, e.g.
+* "46.47 6.78", "12.13, -68.28" or "+151.27;-33.98". parseCoord() cannot be
+* used for these: it reads a number after whitespace as minutes, and a comma
+* between digits as a decimal comma.
 */
 static bool parseSpecialCoords(const QString &txt, double &latitude, double &longitude) {
-	QRegularExpression xmlFormat("\\A(-?\\d+(?:\\.\\d+)?),?\\s+(-?\\d+(?:\\.\\d+)?)\\z");
+	static const QRegularExpression xmlFormat("\\A([+-]?\\d+(?:\\.\\d+)?)(?:\\s*[,;]\\s*|\\s+)([+-]?\\d+(?:\\.\\d+)?)\\z");
 	QRegularExpressionMatch match = xmlFormat.match(txt);
 	if (match.hasMatch()) {
 		latitude = match.captured(1).toDouble();
@@ -172,7 +177,10 @@ static bool parseSpecialCoords(const QString &txt, double &latitude, double &lon
 	return false;
 }
 
-bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
+// Parse GPS text in any of the supported formats into a latitude and a
+// longitude, without checking that they describe a real location. Empty
+// text gives 0, 0. Returns false if the text cannot be read.
+bool parseGpsTextUnchecked(const QString &gps_text, double *latitude, double *longitude)
 {
 	static const QString POS_LAT = QString("+N") + gettextFromC::tr("N");
 	static const QString NEG_LAT = QString("-S") + gettextFromC::tr("S");
@@ -195,12 +203,49 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 		*longitude = 0.0;
 		return true;
 	}
-	if (parseSpecialCoords(normalized, *latitude, *longitude))
+	// Use the text before normalization, which removes the whitespace in
+	// front of a "+" sign.
+	if (parseSpecialCoords(gps_text.trimmed(), *latitude, *longitude))
 		return true;
 	int pos = 0;
 	return parseCoord(normalized, pos, POS_LAT, NEG_LAT, POS_LON + NEG_LON, *latitude) &&
 		parseCoord(normalized, pos, POS_LON, NEG_LON, "", *longitude) &&
 		pos == normalized.size();
+}
+
+// AI-generated (Claude)
+// True if the latitude is within -90..90 and the longitude within -180..180.
+bool gpsCoordinatesInRange(double latitude, double longitude)
+{
+	return std::fabs(latitude) <= 90.0 && std::fabs(longitude) <= 180.0;
+}
+
+// Parse GPS text into a real location: as parseGpsTextUnchecked(), but swap
+// two plain decimal numbers that are clearly latitude and longitude the wrong
+// way round, and reject any other coordinates that cannot exist.
+bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
+{
+	if (!parseGpsTextUnchecked(gps_text, latitude, longitude))
+		return false;
+	if (gpsCoordinatesInRange(*latitude, *longitude))
+		return true;
+
+	// Two plain decimal numbers whose first cannot be a latitude but
+	// whose second can, e.g. "151.27, -33.98": latitude and longitude
+	// were entered the wrong way round, and swapping them is the only
+	// reading that gives a real location. Only do this for plain numbers,
+	// as with N/S/E/W or degree notation the user said which is which.
+	double first, second;
+	if (parseSpecialCoords(gps_text.trimmed(), first, second) &&
+	    std::fabs(first) > 90.0 && gpsCoordinatesInRange(second, first)) {
+		*latitude = second;
+		*longitude = first;
+		return true;
+	}
+
+	// Reject any other coordinates that cannot exist. Such a location
+	// would otherwise be stored and confuse the map, which cannot place it.
+	return false;
 }
 
 static xmlDocPtr get_stylesheet_doc(const xmlChar *uri, xmlDictPtr, int, void *, xsltLoadType)
