@@ -115,6 +115,29 @@ target_link_libraries(
 TEST(TestUnitConversion testunitconversion.cpp)
 TEST(TestOstc4Settings testostc4settings.cpp)
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
+	if (BTSUPPORT)
+		add_executable(TestBtDevicePowerDialog testbtdevicepowerdialog.cpp testbtdevicepowerdialog.h)
+		target_link_libraries(TestBtDevicePowerDialog subsurface_generated_ui subsurface_interface
+			subsurface_profile ${SUBSURFACE_MAPWIDGET} subsurface_backend_shared
+			subsurface_models_desktop subsurface_commands subsurface_corelib subsurface_stats
+			${QT_TEST_LIBRARIES} ${SUBSURFACE_LINK_LIBRARIES})
+		if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+			install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DSUBSURFACE_TARGET=TestBtDevicePowerDialog -DSUBSURFACE_SOURCE=${SUBSURFACE_SOURCE} -DSTAGING=${WINDOWS_STAGING_TESTS} -P ${CMAKE_SOURCE_DIR}/cmake/Modules/dlllist.cmake WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})")
+			if(WINE_PROGRAM)
+				add_test(NAME TestBtDevicePowerDialog COMMAND $<TARGET_FILE:TestBtDevicePowerDialog>
+					WORKING_DIRECTORY ${WINDOWS_STAGING_TESTS})
+				set_tests_properties(TestBtDevicePowerDialog PROPERTIES
+					ENVIRONMENT "WINEPATH=${WINDOWS_STAGING_TESTS};WINEDEBUG=-all"
+					DEPENDS InstallTestsDataAndDependencies)
+			endif()
+		else()
+			add_test(NAME TestBtDevicePowerDialog COMMAND $<TARGET_FILE:TestBtDevicePowerDialog>)
+			if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+				set_tests_properties(TestBtDevicePowerDialog PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+			endif()
+		endif()
+		set(TEST_BT_DEVICE_POWER_DIALOG TestBtDevicePowerDialog)
+	endif()
 	add_executable(TestOstc4Dialog testostc4dialog.cpp testostc4dialog.h)
 	target_link_libraries(TestOstc4Dialog subsurface_generated_ui subsurface_interface
 		subsurface_profile ${SUBSURFACE_MAPWIDGET} subsurface_backend_shared
@@ -268,6 +291,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	DEPENDS
 	TestUnitConversion
 	TestOstc4Settings
+	${TEST_BT_DEVICE_POWER_DIALOG}
 	${TEST_OSTC4_DIALOG}
 	${TEST_TEXT_HYPERLINK_EVENT_FILTER}
 	TestProfile

@@ -30,6 +30,12 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	ui->deviceNameLabel->setText(tr("Name:"));
 	ui->deviceState->setText(tr("Bluetooth powered on"));
 	ui->changeDeviceState->setText(tr("Turn on/off"));
+#if defined(Q_OS_MACOS)
+	ui->changeDeviceState->hide();
+	ui->bluetoothPowerGuidance->setText(tr("To turn Bluetooth on or off, use System Settings."));
+#else
+	ui->bluetoothPowerGuidance->hide();
+#endif
 	ui->discoveredDevicesLabel->setText(tr("Discovered devices"));
 	ui->scan->setText(tr("Scan"));
 	ui->clear->setText(tr("Clear"));
@@ -105,6 +111,7 @@ void BtDeviceSelectionDialog::done(int result)
 
 void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
 {
+#if !defined(Q_OS_MACOS)
 	if (localDevice->hostMode() == QBluetoothLocalDevice::HostPoweredOff) {
 		ui->dialogStatus->setText(tr("Trying to turn on the local Bluetooth device..."));
 		localDevice->powerOn();
@@ -112,6 +119,7 @@ void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
 		ui->dialogStatus->setText(tr("Trying to turn off the local Bluetooth device..."));
 		localDevice->setHostMode(QBluetoothLocalDevice::HostPoweredOff);
 	}
+#endif
 }
 
 void BtDeviceSelectionDialog::on_save_clicked()
