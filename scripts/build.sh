@@ -575,6 +575,9 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	fi
 	if [ "$INSTALL_DOCS" = "1" ] ; then
 		EXTRA_OPTS="$EXTRA_OPTS -DINSTALL_DOCS=ON"
+		if [ "$SUBSURFACE_EXECUTABLE" = "DesktopExecutable" ] ; then
+			EXTRA_OPTS="$EXTRA_OPTS -DREQUIRE_USERMANUAL=ON"
+		fi
 	fi
 	if [ "$BUILD_WITH_QT6" = "1" ] ; then
 		EXTRA_OPTS="$EXTRA_OPTS -DBUILD_WITH_QT6=ON"
