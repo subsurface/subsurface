@@ -43,6 +43,8 @@ void TestUserManual::captureExternalUrl(const QUrl &url)
 void TestUserManual::testPackagedManualSmoke()
 {
 	const QUrl url = getPackagedUserManualUrl();
+	if (!url.isValid() && qEnvironmentVariable("SUBSURFACE_TEST_REQUIRE_USERMANUAL") == "1")
+		QFAIL("Packaged manual not installed in the test data search path");
 	if (!url.isValid())
 		QSKIP("Packaged manual not installed in the test data search path");
 	UserManual manual(mainWindow.get());
