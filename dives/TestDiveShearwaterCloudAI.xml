@@ -462,8 +462,8 @@
 <dive number='1' otu='71' cns='36%' divesiteid='64043fc9' date='2026-07-04' time='09:03:26' duration='60:00 min'>
   <cylinder description='unknown' depth='66.0 m' />
   <cylinder description='unknown' depth='66.0 m' />
-  <cylinder description='unknown' o2='50.0%' depth='21.0 m' />
-  <cylinder description='unknown' o2='99.0%' depth='6.0 m' />
+  <cylinder description='unknown' o2='50.0%' start='191.95 bar' depth='21.0 m' />
+  <cylinder description='unknown' o2='99.0%' start='147.134 bar' depth='6.0 m' />
   <divecomputer model='Shearwater Perdix 2' deviceid='6a72db72' diveid='f3f6e692'>
   <depth max='46.9 m' mean='24.494 m' />
   <temperature water='16.0 C' />
@@ -858,8 +858,8 @@
 <dive number='2' otu='83' cns='51%' divesiteid='bea8176a' date='2026-10-24' time='09:09:40' duration='66:50 min'>
   <cylinder description='unknown' o2='20.0%' he='17.0%' depth='69.0 m' />
   <cylinder description='unknown' o2='20.0%' he='17.0%' end='60.812 bar' depth='69.0 m' />
-  <cylinder description='unknown' o2='50.0%' depth='21.0 m' />
-  <cylinder description='unknown' o2='99.0%' depth='6.0 m' />
+  <cylinder description='unknown' o2='50.0%' start='189.33 bar' depth='21.0 m' />
+  <cylinder description='unknown' o2='99.0%' start='78.876 bar' depth='6.0 m' />
   <divecomputer model='Shearwater Perdix 2' deviceid='6a72db72' diveid='34522694'>
   <depth max='44.4 m' mean='24.199 m' />
   <temperature water='14.0 C' />
@@ -1295,8 +1295,8 @@
 <dive number='3' otu='85' cns='40%' date='2026-11-07' time='08:41:58' duration='69:00 min'>
   <cylinder description='unknown' depth='66.0 m' />
   <cylinder description='unknown' depth='66.0 m' />
-  <cylinder description='unknown' o2='50.0%' depth='21.0 m' />
-  <cylinder description='unknown' o2='99.0%' depth='6.0 m' />
+  <cylinder description='unknown' o2='50.0%' start='206.153 bar' depth='21.0 m' />
+  <cylinder description='unknown' o2='99.0%' start='162.303 bar' depth='6.0 m' />
   <divecomputer model='Shearwater Perdix 2' deviceid='6a72db72' diveid='2501bd1b'>
   <depth max='44.7 m' mean='23.746 m' />
   <temperature water='16.0 C' />
