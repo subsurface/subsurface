@@ -63,6 +63,67 @@
     Var StartMenuFolder
 
 #--------------------------------
+# Installation preflight
+
+Function CheckSubsurfaceRunning
+    # Return 0 (absent), 1 (running), or 2 (enumeration failed) on the stack.
+    # NSIS/System runs as a 32-bit process, even when installing a 64-bit app.
+    # &l4 writes sizeof(PROCESSENTRY32W) = 556; p is the 32-bit heap pointer.
+    # Use WCHAR[260] and the explicit W APIs, not the target app's ABI.
+    System::Call '*(&l4, i, i, p, i, i, i, i, i, &w260) p.r1'
+    StrCmp $1 0 check_failed
+    StrCmp $1 "error" check_failed
+    System::Call 'kernel32::CreateToolhelp32Snapshot(i 0x2, i 0) p.r0'
+    IntCmp $0 -1 close_snapshot
+    StrCmp $0 0 close_snapshot
+    StrCmp $0 "error" close_snapshot
+
+    System::Call 'kernel32::Process32FirstW(p r0, p r1) i.r2 ? e'
+    Pop $3
+    StrCmp $2 0 first_finished
+    check_next:
+        # szExeFile begins after nine 32-bit fields (including the pointer).
+        System::Call '*$1(&v36, &w260 .r4)'
+        StrCmp $4 "error" enumeration_failed
+        System::Call 'kernel32::lstrcmpiW(w r4, w "subsurface.exe") i.r2'
+        StrCmp $2 "error" enumeration_failed
+        StrCmp $2 0 found_running
+        System::Call 'kernel32::Process32NextW(p r0, p r1) i.r2 ? e'
+        Pop $3
+        StrCmp $2 0 next_finished
+        Goto check_next
+
+    first_finished:
+    next_finished:
+        StrCmp $3 18 no_process ; ERROR_NO_MORE_FILES
+        Goto enumeration_failed
+    found_running:
+        StrCpy $2 1
+        Goto release_snapshot
+    no_process:
+        StrCpy $2 0
+        Goto release_snapshot
+    enumeration_failed:
+        StrCpy $2 2
+    release_snapshot:
+        System::Call 'kernel32::CloseHandle(p r0) i.r4'
+        StrCmp $4 0 close_failed
+        StrCmp $4 "error" close_failed
+        Goto release_buffer
+    close_failed:
+        StrCpy $2 2
+        Goto release_buffer
+    close_snapshot:
+        StrCpy $2 2
+    release_buffer:
+        System::Free $1
+        Push $2
+        Return
+    check_failed:
+        Push 2
+FunctionEnd
+
+#--------------------------------
 # Custom pages
 
 # Maintain some checkboxes in the uninstall dialog
@@ -134,6 +195,26 @@ FunctionEnd
     !insertmacro MUI_LANGUAGE "English"
 
 Section
+    # Do not touch the installed payload until every matching process exits.
+    retry_process_check:
+        Call CheckSubsurfaceRunning
+        Pop $0
+        StrCmp $0 0 process_check_passed
+        IfSilent process_check_cancelled
+        StrCmp $0 1 process_running process_check_failed
+    process_running:
+        MessageBox MB_RETRYCANCEL|MB_ICONEXCLAMATION \
+            "Subsurface is still running. Save your logbook and close every Subsurface window before continuing.$\n$\nClick Retry after closing it, or Cancel to leave the installation unchanged." \
+            IDRETRY retry_process_check
+        Goto process_check_cancelled
+    process_check_failed:
+        MessageBox MB_RETRYCANCEL|MB_ICONSTOP \
+            "Could not check whether Subsurface is running. No files have been changed.$\n$\nClick Retry to check again, or Cancel to leave the installation unchanged." \
+            IDRETRY retry_process_check
+    process_check_cancelled:
+        SetErrorLevel 1
+        Quit
+    process_check_passed:
     SetShellVarContext all
 
     # Installation path
