@@ -46,7 +46,7 @@ compile does not validate the staged Qt Location/Positioning payload.
 4. Run a similarly named process (such as `subsurface-test.exe`), but no
    `subsurface.exe`. Verify a fresh install and an upgrade proceed without
    this prompt. Use only disposable paths, not the real logbook.
-5. With `subsurface.exe` running, run `.\subsurface-VERSION.exe /S /D=C:\test\Subsurface`
+5. With `subsurface.exe` running, run `.\subsurface-VERSION.exe /S /D=C:\test\Subsurface | Out-Null`
    from PowerShell, then inspect `$LASTEXITCODE`. It must return non-zero
    promptly without a dialog; existing hashes must not change. Repeat with
    no matching process: silent installation should complete normally.
