@@ -125,6 +125,16 @@
         </property>
        </widget>
       </item>
+      <item row="4" column="0" colspan="3">
+       <widget class="QCheckBox" name="ruler_same_gas_cylinders">
+        <property name="text">
+         <string>Ruler: count every cylinder on the same gas (sidemount, independent doubles)</string>
+        </property>
+        <property name="toolTip">
+         <string>Most dive computers don't log switches between sidemount cylinders, so the ruler counts only the first one. With this checked, it also counts the other cylinders on the same gas that have pressure readings. This is wrong for a cylinder monitored for another diver, unless that cylinder is marked as not used.</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

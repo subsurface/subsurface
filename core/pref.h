@@ -192,6 +192,7 @@ struct preferences {
 	bool                        percentagegraph;
 	partial_pressure_graphs_t   pp_graphs;
 	bool                        redceiling;
+	bool                        ruler_same_gas_cylinders;
 	bool                        rulergraph;
 	bool                        show_average_depth;
 	bool                        show_ccr_sensors;

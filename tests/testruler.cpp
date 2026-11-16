@@ -299,4 +299,123 @@ void TestRuler::testSmallSpanConsumption()
 	QVERIFY(text().find("ΔP:") == std::string::npos);
 }
 
+// AI-generated (Claude)
+/* Sidemount cylinders or independent doubles on the same gas are usually
+ * breathed without a logged switch. With the ruler_same_gas_cylinders
+ * preference, the ruler counts every cylinder on the active gas, except
+ * those marked as not used. By default it counts only the active cylinder. */
+void TestRuler::testSameGasCylinders()
+{
+	dive d;
+	divecomputer &dc = d.dcs[0];
+	dc.surface_pressure = 1000_mbar;
+	// Cylinders 0 and 1 are a sidemount pair. Cylinder 2 is on another
+	// diver's transmitter, on the same gas and not marked as not used.
+	for (int c = 0; c < 3; ++c) {
+		cylinder_t *cyl = d.get_or_create_cylinder(c);
+		cyl->type.size.mliter = 12000;
+		dc.tank_sensor_mappings.push_back({static_cast<int16_t>(c), static_cast<unsigned int>(c)});
+	}
+	d.get_or_create_cylinder(0)->start = 200_bar;
+	d.get_or_create_cylinder(0)->end = 188_bar;
+	d.get_or_create_cylinder(1)->start = 189500_mbar;
+	d.get_or_create_cylinder(1)->end = 184500_mbar;
+	d.get_or_create_cylinder(2)->start = 210_bar;
+	d.get_or_create_cylinder(2)->end = 198_bar;
+	// The pair's readings alternate, as on a Shearwater with two transmitters.
+	// The other diver breathes throughout.
+	for (int t = 0; t <= 120; t += 10) {
+		sample *s = prepare_sample(&dc);
+		s->time.seconds = t;
+		s->depth = 10_m;
+		s->sensor[1] = 1;
+		s->sensor[2] = 2;
+		if (t % 20 == 0)
+			s->pressure[0].mbar = 200000 - t * 100;
+		else
+			s->pressure[1].mbar = 190000 - t * 50;
+		s->pressure[2].mbar = 210000 - t * 100;
+	}
+	auto index_at = [](const plot_info &pi, int sec) {
+		for (int i = 0; i < pi.nr; ++i)
+			if (pi.entry[i].sec == sec)
+				return i;
+		return -1;
+	};
+	auto text = [&](int from_sec, int to_sec) {
+		const plot_info pi = create_plot_info_new(&d, &dc, nullptr);
+		int from = index_at(pi, from_sec), to = index_at(pi, to_sec);
+		if (from < 0 || to < 0)
+			return std::string();
+		return compare_samples(&d, pi, from, to, false)[1];
+	};
+
+	// By default only the active cylinder counts: cylinder 0, 198 -> 190 bar.
+	QVERIFY(!prefs.ruler_same_gas_cylinders);
+	QVERIFY(text(20, 100).find("ΔP:8bar") != std::string::npos);
+
+	// With the preference, the rest of the pair counts too: cylinder 1 is
+	// interpolated between its readings, 189 -> 185 bar. So does the other
+	// diver's cylinder, 208 -> 200 bar, as nothing marks it as someone else's.
+	prefs.ruler_same_gas_cylinders = true;
+	QVERIFY(text(20, 100).find("ΔP:20bar") != std::string::npos);
+	QVERIFY(text(20, 100).find("SAC:") != std::string::npos);
+
+	// Marked as not used, the other diver's cylinder is left out.
+	d.get_or_create_cylinder(2)->cylinder_use = NOT_USED;
+	QVERIFY(text(20, 100).find("ΔP:12bar") != std::string::npos);
+
+	// So is a cylinder with a different gas.
+	d.get_or_create_cylinder(1)->gasmix.o2 = 32_percent;
+	QVERIFY(text(20, 100).find("ΔP:8bar") != std::string::npos);
+	d.get_or_create_cylinder(1)->gasmix = gasmix_air;
+
+	// The pair's combined drop counts. A cylinder that is not breathed may
+	// warm up and gain pressure; that does not hide the other cylinder's use.
+	for (auto &s: dc.samples)
+		if (s.time.seconds % 20 == 0)
+			s.pressure[0].mbar = 180000 + s.time.seconds * 10;
+	QVERIFY(text(20, 100).find("SAC:") != std::string::npos);
+}
+
+// AI-generated (Claude)
+/* Same-gas cylinders of different sizes can cancel out in bar although gas was
+ * used. The ruler then judges the noise threshold by volume: 1 bar's worth of
+ * the largest cylinder. */
+void TestRuler::testSameGasDifferentSizes()
+{
+	dive d;
+	d.dcs[0].surface_pressure = 1000_mbar;
+	d.get_or_create_cylinder(0)->type.size.mliter = 12000;
+	d.get_or_create_cylinder(1)->type.size.mliter = 3000;
+	plot_info pi;
+	pi.nr_cylinders = 2;
+	pi.entry.resize(3);
+	pi.pressures.resize(6);
+	for (int i = 0; i < 3; ++i) {
+		pi.entry[i].sec = i * 60;
+		pi.entry[i].depth = 10_m;
+		pi.entry[i].ruler_cylinder = 0;
+	}
+	// The 12 l cylinder drops as much as the 3 l one gains.
+	auto pressures = [&](int drop) {
+		for (int i = 0; i < 3; ++i) {
+			set_plot_pressure_data(pi, i, SENSOR_PR, 0, 200000 - i * drop / 2);
+			set_plot_pressure_data(pi, i, SENSOR_PR, 1, 200000 - drop + i * drop / 2);
+		}
+	};
+	const auto text = [&] { return compare_samples(&d, pi, 0, 2, false)[1]; };
+	prefs.ruler_same_gas_cylinders = true;
+
+	// 2 bar each way: no net drop in bar, but 24 - 6 = 18 l used.
+	pressures(2000);
+	QVERIFY(text().find("SAC:") != std::string::npos);
+	// Different sizes, so no ΔP.
+	QVERIFY(text().find("ΔP:") == std::string::npos);
+
+	// 1 bar each way: 12 - 3 = 9 l, less than 1 bar of the 12 l cylinder.
+	pressures(1000);
+	QVERIFY(text().find("SAC:") == std::string::npos);
+}
+
 QTEST_GUILESS_MAIN(TestRuler)
