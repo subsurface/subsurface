@@ -9,6 +9,7 @@
 # Include Modern UI
 
     !include "MUI2.nsh"
+    !include "LogicLib.nsh"
 
 #--------------------------------
 # General
@@ -19,6 +20,9 @@
     # VIProductVersion requires version in x.x.x.x format
     !define SUBSURFACE_VIPRODUCTVERSION "PRODVTOKEN"
 
+    # Apps & Features (Uninstall) registry key, below HKLM (64-bit view)
+    !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf"
+
     # Installer name and filename
     Name "Smtk2ssrf"
     Caption "Smtk2ssrf ${SUBSURFACE_VERSION} Setup"
@@ -28,10 +32,24 @@
     !define MUI_ICON "subsurface.ico"
 
     # Default installation folder
-    InstallDir "$PROGRAMFILES\Smtk2ssrf"
+    !define DEFAULT_INSTDIR "$PROGRAMFILES\Smtk2ssrf"
 
-    # Get installation folder from registry if available
-    InstallDirRegKey HKCU "Software\Smtk2ssrf" ""
+    # NSIS applies a /D= command line option to $INSTDIR before .onInit
+    # runs, and removes it from $CMDLINE, so .onInit cannot tell a /D= that
+    # names the default folder from no /D= at all. InstallDir therefore
+    # holds a placeholder, which NSIS only uses when there is no valid /D=.
+    # .onInit replaces it with the real default or the remembered folder.
+    # The placeholder has no drive or share root, so it is never a valid
+    # installation folder: NSIS discards a /D= naming it, as it discards
+    # any invalid /D=, and no valid explicit folder can match it. It ends
+    # in the application folder name, because NSIS takes the folder it
+    # appends after Browse (D:\Apps becomes D:\Apps\Smtk2ssrf) from the text
+    # after the last backslash of InstallDir.
+    !define INSTDIR_PLACEHOLDER ".default-instdir\Smtk2ssrf"
+    InstallDir "${INSTDIR_PLACEHOLDER}"
+
+    # The remembered installation folder is looked up in .onInit, as
+    # InstallDirRegKey cannot read the 64-bit registry view
 
     # Request application privileges
     RequestExecutionLevel admin
@@ -133,6 +151,39 @@
 
     !insertmacro MUI_LANGUAGE "English"
 
+#--------------------------------
+# Installer initialisation
+
+Function .onInit
+    SetRegView 64
+
+    # Only look for a remembered installation folder if the placeholder is
+    # still in place, that is if there was no /D= on the command line.
+    # An explicit /D= is always respected, even if it names the default.
+    ${If} $INSTDIR == "${INSTDIR_PLACEHOLDER}"
+        StrCpy $INSTDIR "${DEFAULT_INSTDIR}"
+        ReadRegStr $0 HKLM "${UNINST_KEY}" "InstallLocation"
+        ${If} $0 == ""
+            # legacy location written by earlier installers
+            ReadRegStr $0 HKCU "Software\Smtk2ssrf" ""
+        ${EndIf}
+        # only use it if Smtk2ssrf is actually installed there
+        ${If} $0 != ""
+            ${If} ${FileExists} "$0\smtk2ssrf.exe"
+            ${OrIf} ${FileExists} "$0\Uninstall_smtk2ssrf.exe"
+                StrCpy $INSTDIR $0
+            ${EndIf}
+        ${EndIf}
+    ${EndIf}
+FunctionEnd
+
+#--------------------------------
+# Uninstaller initialisation
+
+Function un.onInit
+    SetRegView 64
+FunctionEnd
+
 Section
     SetShellVarContext all
 
@@ -158,9 +209,6 @@ Section
     File subsurface.ico
     File qt.conf
 
-    # Store installation folder in registry
-    WriteRegStr HKCU "Software\Smtk2ssrf" "" $INSTDIR
-
     # Create shortcuts
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
         CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -172,14 +220,29 @@ Section
     # Create the uninstaller
     WriteUninstaller "$INSTDIR\Uninstall_smtk2ssrf.exe"
 
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf" \
-        "DisplayName" "Smtk2ssrf"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf" \
-        "DisplayIcon" "$INSTDIR\subsurface.ico"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf" \
-        "UninstallString" "$INSTDIR\Uninstall_smtk2ssrf.exe"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf" \
-        "DisplayVersion" ${SUBSURFACE_VERSION}
+    # Register the installation machine-wide, in the 64-bit registry view.
+    # This also stores the installation folder, read back by .onInit.
+    SetRegView 64
+    ClearErrors
+    WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "Smtk2ssrf"
+    WriteRegStr HKLM "${UNINST_KEY}" "DisplayIcon" "$INSTDIR\subsurface.ico"
+    WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" "$\"$INSTDIR\Uninstall_smtk2ssrf.exe$\""
+    WriteRegStr HKLM "${UNINST_KEY}" "DisplayVersion" ${SUBSURFACE_VERSION}
+    WriteRegStr HKLM "${UNINST_KEY}" "InstallLocation" "$INSTDIR"
+
+    # NSIS does not abort when a registry write fails, it only sets the
+    # error flag. Remove the legacy entries only once the machine-wide
+    # registration is in place; otherwise keep them, as they are the only
+    # registration of this installation.
+    ${If} ${Errors}
+        MessageBox MB_OK|MB_ICONEXCLAMATION "Smtk2ssrf could not be registered for all users. The existing registration has been left in place." /SD IDOK
+    ${Else}
+        # Remove the legacy per-user entries of the elevating account. Only
+        # the default value of HKCU\Software\Smtk2ssrf is removed: the key
+        # itself holds the Start Menu folder needed by the uninstaller.
+        DeleteRegKey HKCU "${UNINST_KEY}"
+        DeleteRegValue HKCU "Software\Smtk2ssrf" ""
+    ${EndIf}
 
 SectionEnd
 
@@ -226,7 +289,15 @@ Section "Uninstall"
 #        RMDir /r $UserDir
 #    ${EndIf}
 
-    # remove the uninstaller entry
-    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Smtk2ssrf"
+    # remove the uninstaller entry, and the legacy per-user one. The
+    # machine-wide entry is shared: a later installation into another
+    # folder replaces it, so only remove it if it still names this folder.
+    SetRegView 64
+    ReadRegStr $0 HKLM "${UNINST_KEY}" "InstallLocation"
+    ${If} $0 == ""
+    ${OrIf} $0 == "$INSTDIR"
+        DeleteRegKey HKLM "${UNINST_KEY}"
+    ${EndIf}
+    DeleteRegKey HKCU "${UNINST_KEY}"
 
 SectionEnd

@@ -19,6 +19,9 @@
     # VIProductVersion requires version in x.x.x.x format
     !define SUBSURFACE_VIPRODUCTVERSION "PRODVTOKEN"
 
+    # Apps & Features (Uninstall) registry key, below HKLM (64-bit view)
+    !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface"
+
     # Installer name and filename
     Name "Subsurface"
     Caption "Subsurface ${SUBSURFACE_VERSION} Setup"
@@ -28,10 +31,24 @@
     !define MUI_ICON "subsurface.ico"
 
     # Default installation folder
-    InstallDir "$PROGRAMFILES64\Subsurface"
+    !define DEFAULT_INSTDIR "$PROGRAMFILES64\Subsurface"
 
-    # Get installation folder from registry if available
-    InstallDirRegKey HKCU "Software\Subsurface" ""
+    # NSIS applies a /D= command line option to $INSTDIR before .onInit
+    # runs, and removes it from $CMDLINE, so .onInit cannot tell a /D= that
+    # names the default folder from no /D= at all. InstallDir therefore
+    # holds a placeholder, which NSIS only uses when there is no valid /D=.
+    # .onInit replaces it with the real default or the remembered folder.
+    # The placeholder has no drive or share root, so it is never a valid
+    # installation folder: NSIS discards a /D= naming it, as it discards
+    # any invalid /D=, and no valid explicit folder can match it. It ends
+    # in the application folder name, because NSIS takes the folder it
+    # appends after Browse (D:\Apps becomes D:\Apps\Subsurface) from the text
+    # after the last backslash of InstallDir.
+    !define INSTDIR_PLACEHOLDER ".default-instdir\Subsurface"
+    InstallDir "${INSTDIR_PLACEHOLDER}"
+
+    # The remembered installation folder is looked up in .onInit, as
+    # InstallDirRegKey cannot read the 64-bit registry view
 
     # Request application privileges
     RequestExecutionLevel admin
@@ -133,6 +150,110 @@ FunctionEnd
 
     !insertmacro MUI_LANGUAGE "English"
 
+#--------------------------------
+# Installer initialisation
+
+Function .onInit
+    SetRegView 64
+
+    # Only look for a remembered installation folder if the placeholder is
+    # still in place, that is if there was no /D= on the command line.
+    # An explicit /D= is always respected, even if it names the default.
+    ${If} $INSTDIR == "${INSTDIR_PLACEHOLDER}"
+        StrCpy $INSTDIR "${DEFAULT_INSTDIR}"
+        ReadRegStr $0 HKLM "${UNINST_KEY}" "InstallLocation"
+        ${If} $0 == ""
+            # legacy location written by installers up to and including 6.0.x
+            ReadRegStr $0 HKCU "Software\Subsurface" ""
+        ${EndIf}
+        # only use it if Subsurface is actually installed there
+        ${If} $0 != ""
+        ${AndIf} ${FileExists} "$0\subsurface.exe"
+            StrCpy $INSTDIR $0
+        ${EndIf}
+    ${EndIf}
+FunctionEnd
+
+#--------------------------------
+# Uninstaller initialisation
+
+Function un.onInit
+    SetRegView 64
+FunctionEnd
+
+#--------------------------------
+# Stale per-user Uninstall entries of other accounts
+#
+# Older installers wrote the Apps & Features entry below HKCU of the
+# account that approved the UAC prompt. When that is not the account
+# using the installer, the entry sits in the hive of another user, which
+# Windows keeps loaded below HKEY_USERS while that user is logged on.
+# Remove such entries from every loaded hive, but only if they are
+# recognisably ours: DisplayName is exactly "Subsurface" and the
+# uninstaller they reference is the one in this installation folder. The
+# path is compared as a string only. It is never probed with FileExists:
+# the other user controls it, so a probe could make this elevated process
+# contact a network share (a UNC path, or a symbolic link to one), and a
+# failed probe cannot tell a missing file from an unavailable volume.
+# Hives of users who are logged off are not loaded and are not handled.
+# HKU\<SID>\Software\Subsurface (the user's settings) is never touched.
+# Failures (some hives deny writes) are ignored.
+
+!macro RemoveStaleUserEntries un
+Function ${un}RemoveStaleUserEntries
+    Push $0
+    Push $1
+    Push $2
+    Push $3
+    Push $4
+
+    StrCpy $0 0
+    ${Do}
+        ClearErrors
+        EnumRegKey $1 HKU "" $0
+        ${If} ${Errors}
+        ${OrIf} $1 == ""
+            ${Break}
+        ${EndIf}
+        IntOp $0 $0 + 1
+
+        # skip the HKCU\Software\Classes hives (<SID>_Classes)
+        StrCpy $2 $1 8 -8
+        ${If} $2 != "_Classes"
+            ClearErrors
+            ReadRegStr $2 HKU "$1\${UNINST_KEY}" "DisplayName"
+            ${IfNot} ${Errors}
+            ${AndIf} $2 S== "Subsurface"
+                ReadRegStr $3 HKU "$1\${UNINST_KEY}" "UninstallString"
+                # tolerate the quoted form as well as the legacy unquoted one
+                StrCpy $4 $3 1
+                ${If} $4 == "$\""
+                    StrCpy $3 $3 "" 1
+                    StrCpy $4 $3 1 -1
+                    ${If} $4 == "$\""
+                        StrCpy $3 $3 -1
+                    ${EndIf}
+                ${EndIf}
+                ${If} $3 != ""
+                ${AndIf} $3 == "$INSTDIR\Uninstall.exe"
+                    DeleteRegKey HKU "$1\${UNINST_KEY}"
+                ${EndIf}
+            ${EndIf}
+        ${EndIf}
+    ${Loop}
+
+    ClearErrors
+    Pop $4
+    Pop $3
+    Pop $2
+    Pop $1
+    Pop $0
+FunctionEnd
+!macroend
+
+!insertmacro RemoveStaleUserEntries ""
+!insertmacro RemoveStaleUserEntries "un."
+
 Section
     SetShellVarContext all
 
@@ -157,9 +278,6 @@ Section
     File subsurface.ico
     File /nonfatal qt.conf
 
-    # Store installation folder in registry
-    WriteRegStr HKCU "Software\Subsurface" "" $INSTDIR
-
     # Create shortcuts
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
         CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -171,14 +289,33 @@ Section
     # Create the uninstaller
     WriteUninstaller "$INSTDIR\Uninstall.exe"
 
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface" \
-        "DisplayName" "Subsurface"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface" \
-        "DisplayIcon" "$INSTDIR\subsurface.ico"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface" \
-        "UninstallString" "$INSTDIR\Uninstall.exe"
-    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface" \
-        "DisplayVersion" ${SUBSURFACE_VERSION}
+    # Register the installation machine-wide, in the 64-bit registry view.
+    # This also stores the installation folder, read back by .onInit.
+    SetRegView 64
+    ClearErrors
+    WriteRegStr HKLM "${UNINST_KEY}" "DisplayName" "Subsurface"
+    WriteRegStr HKLM "${UNINST_KEY}" "DisplayIcon" "$INSTDIR\subsurface.ico"
+    WriteRegStr HKLM "${UNINST_KEY}" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
+    WriteRegStr HKLM "${UNINST_KEY}" "DisplayVersion" ${SUBSURFACE_VERSION}
+    WriteRegStr HKLM "${UNINST_KEY}" "InstallLocation" "$INSTDIR"
+
+    # NSIS does not abort when a registry write fails, it only sets the
+    # error flag. Remove the legacy entries only once the machine-wide
+    # registration is in place; otherwise keep them, as they are the only
+    # registration of this installation.
+    ${If} ${Errors}
+        MessageBox MB_OK|MB_ICONEXCLAMATION "Subsurface could not be registered for all users. The existing registration has been left in place." /SD IDOK
+    ${Else}
+        # Remove the legacy per-user entries of the elevating account. Only
+        # the default value of HKCU\Software\Subsurface is removed: the key
+        # itself holds the application settings (in its Subsurface subkey)
+        # and the Start Menu folder.
+        DeleteRegKey HKCU "${UNINST_KEY}"
+        DeleteRegValue HKCU "Software\Subsurface" ""
+
+        # ... and those of other logged-on accounts
+        Call RemoveStaleUserEntries
+    ${EndIf}
 
 SectionEnd
 
@@ -225,7 +362,15 @@ Section "Uninstall"
         RMDir /r $UserDir
     ${EndIf}
 
-    # remove the uninstaller entry
-    DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Subsurface"
+    # remove the uninstaller entry, and the legacy per-user one. The
+    # machine-wide entry is shared: a later installation into another
+    # folder replaces it, so only remove it if it still names this folder.
+    ReadRegStr $0 HKLM "${UNINST_KEY}" "InstallLocation"
+    ${If} $0 == ""
+    ${OrIf} $0 == "$INSTDIR"
+        DeleteRegKey HKLM "${UNINST_KEY}"
+    ${EndIf}
+    DeleteRegKey HKCU "${UNINST_KEY}"
+    Call un.RemoveStaleUserEntries
 
 SectionEnd
