@@ -1091,7 +1091,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	install(DIRECTORY printing_templates DESTINATION ${WINDOWSSTAGING})
 	install(FILES ${TRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
 	install(FILES ${QTTRANSLATIONS} DESTINATION ${WINDOWSSTAGING}/translations)
-	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.ico DESTINATION ${WINDOWSSTAGING})
+	install(FILES ${CMAKE_SOURCE_DIR}/gpl-2.0.txt ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface.ico ${CMAKE_SOURCE_DIR}/packaging/windows/subsurface-installer.ico DESTINATION ${WINDOWSSTAGING})
 	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION ${WINDOWSSTAGING})
 	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
 

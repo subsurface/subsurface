@@ -21,11 +21,11 @@
 
     # Installer name and filename
     Name "Smtk2ssrf"
-    Caption "Smtk2ssrf ${SUBSURFACE_VERSION} Setup"
+    Caption "Install Smtk2ssrf ${SUBSURFACE_VERSION}"
     OutFile "..\smtk2ssrf-${SUBSURFACE_VERSION}.exe"
 
-    # Icon to use for the installer
-    !define MUI_ICON "subsurface.ico"
+    # Icon to use for the installer (the installed application keeps subsurface.ico)
+    !define MUI_ICON "subsurface-installer.ico"
 
     # Default installation folder
     InstallDir "$PROGRAMFILES\Smtk2ssrf"

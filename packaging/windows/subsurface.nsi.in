@@ -21,11 +21,11 @@
 
     # Installer name and filename
     Name "Subsurface"
-    Caption "Subsurface ${SUBSURFACE_VERSION} Setup"
+    Caption "Install Subsurface ${SUBSURFACE_VERSION}"
     OutFile "..\subsurface-${SUBSURFACE_VERSION}.exe"
 
-    # Icon to use for the installer
-    !define MUI_ICON "subsurface.ico"
+    # Icon to use for the installer (the installed application keeps subsurface.ico)
+    !define MUI_ICON "subsurface-installer.ico"
 
     # Default installation folder
     InstallDir "$PROGRAMFILES64\Subsurface"
