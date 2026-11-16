@@ -13,6 +13,8 @@ private slots:
 	void testSacCoverage();
 	void testGasSwitchPressure();
 	void testSmallSpanConsumption();
+	void testSameGasCylinders();
+	void testSameGasDifferentSizes();
 };
 
 #endif

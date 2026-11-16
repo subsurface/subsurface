@@ -53,6 +53,9 @@ static double calcZoom(int zoomLevel)
 	return zoomLevel == 0 ? 1.0 : pow(zoomFactor, zoomLevel);
 }
 
+/**
+ * @brief ProfileWidget2 creates the interactive profile and replots it when a preference it shows changes
+ */
 ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dpr, QWidget *parent) : QGraphicsView(parent),
 	profileScene(new ProfileScene(dpr, false, false)),
 	currentState(INIT),
@@ -109,6 +112,7 @@ ProfileWidget2::ProfileWidget2(DivePlannerPointsModel *plannerModelIn, double dp
 	connect(tec, &qPrefTechnicalDetails::calcndlttsChanged               , this, &ProfileWidget2::actionRequestedReplot);
 	connect(tec, &qPrefTechnicalDetails::hrgraphChanged                  , this, &ProfileWidget2::actionRequestedReplot);
 	connect(tec, &qPrefTechnicalDetails::rulergraphChanged               , this, &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::ruler_same_gas_cylindersChanged , this, &ProfileWidget2::actionRequestedReplot);
 	connect(tec, &qPrefTechnicalDetails::show_sacChanged                 , this, &ProfileWidget2::actionRequestedReplot);
 	connect(tec, &qPrefTechnicalDetails::zoomed_plotChanged              , this, &ProfileWidget2::actionRequestedReplot);
 	connect(tec, &qPrefTechnicalDetails::decoinfoChanged                 , this, &ProfileWidget2::actionRequestedReplot);
