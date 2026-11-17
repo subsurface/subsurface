@@ -45,7 +45,7 @@
     .\build.ps1 -BuildType Debug -Clean
 
 .EXAMPLE
-    .\build.ps1 -Qt6Dir "C:\Qt\6.8.0\msvc2026_64"
+    .\build.ps1 -Qt6Dir "C:\Qt\6.10.3\msvc2022_64"
 #>
 
 param(
@@ -85,6 +85,24 @@ function Test-Command {
     param([string]$Command)
     $null = Get-Command $Command -ErrorAction SilentlyContinue
     return $?
+}
+
+function ConvertTo-ComparablePath {
+    # Return a path with native separators, no "." or ".." segments and no trailing separator,
+    # so that equivalent spellings of one directory compare equal. The path need not exist.
+    param([string]$Path)
+    $full = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Path)
+    return $full.Replace('/', '\').TrimEnd('\')
+}
+
+function Test-PathIsWithin {
+    param(
+        [string]$Path,
+        [string]$Parent
+    )
+    $comparablePath = ConvertTo-ComparablePath $Path
+    $comparableParent = ConvertTo-ComparablePath $Parent
+    return $comparablePath.StartsWith("$comparableParent\", [System.StringComparison]::OrdinalIgnoreCase)
 }
 
 function Update-PathEnvironment {
@@ -185,6 +203,10 @@ if (-not $Qt6Dir) {
     } else {
         # Try common Qt installation paths
         $qtPaths = @(
+            "C:\Qt\6.10*\msvc2026_64",
+            "C:\Qt\6.10*\msvc2022_64",
+            "$env:USERPROFILE\Qt\6.10*\msvc2026_64",
+            "$env:USERPROFILE\Qt\6.10*\msvc2022_64",
             "C:\Qt\6.8*\msvc2026_64",
             "C:\Qt\6.7*\msvc2026_64",
             "C:\Qt\6.6*\msvc2026_64",
@@ -210,7 +232,7 @@ if (-not $Qt6Dir -or -not (Test-Path $Qt6Dir)) {
     Write-Error @"
 Qt6 not found. Please either:
 1. Set the Qt6_DIR environment variable
-2. Install Qt 6.8 to C:\Qt
+2. Install Qt 6.10 to C:\Qt
 3. Specify -Qt6Dir parameter
 
 Install Qt from: https://www.qt.io/download-qt-installer
@@ -252,6 +274,28 @@ if ($missingTools.Count -gt 0) {
 }
 
 Write-Host "All prerequisites found." -ForegroundColor Green
+
+# The main CMake cache retains Qt package paths even when CMAKE_PREFIX_PATH changes.
+# Require an explicit clean build rather than mixing objects from different Qt versions.
+$cmakeCache = Join-Path $BuildDir "CMakeCache.txt"
+if (-not $Clean -and (Test-Path -LiteralPath $cmakeCache)) {
+    $cachedPrefix = Get-Content -LiteralPath $cmakeCache |
+        Where-Object { $_ -match '^CMAKE_PREFIX_PATH:[^=]*=' } |
+        Select-Object -First 1
+    $cachedQtDir = if ($cachedPrefix) { (($cachedPrefix -split '=', 2)[1] -split ';')[0] }
+    # Optional components that were not found, such as Qt6Location, are cached as <name>-NOTFOUND.
+    $cachedQtPackageDirs = Get-Content -LiteralPath $cmakeCache |
+        Where-Object { $_ -match '^(QT|Qt6[A-Za-z0-9_]*)_DIR:[^=]*=' } |
+        ForEach-Object { ($_ -split '=', 2)[1] } |
+        Where-Object { $_ -and $_ -notlike '*-NOTFOUND' }
+    # -ne on strings is case-insensitive, which matches Windows paths.
+    if (-not $cachedQtDir -or
+        (ConvertTo-ComparablePath $cachedQtDir) -ne (ConvertTo-ComparablePath $Qt6Dir) -or
+        ($cachedQtPackageDirs | Where-Object { -not (Test-PathIsWithin $_ $Qt6Dir) })) {
+        Write-Error "The build directory was configured with a different or unknown Qt installation. Rerun with -Clean to switch to $Qt6Dir."
+        exit 1
+    }
+}
 
 # ---------------------------------------------------------------
 # Clean if requested
@@ -426,6 +470,10 @@ if (-not $SkipGooglemaps) {
     }
 
     $googlemapsBuild = Join-Path $googlemapsDir "build"
+    # qmake may reuse objects built against a different Qt installation.
+    if (Test-Path -LiteralPath $googlemapsBuild) {
+        Remove-Item -LiteralPath $googlemapsBuild -Recurse -Force
+    }
     New-Item -ItemType Directory -Force -Path $googlemapsBuild | Out-Null
 
     Push-Location $googlemapsBuild
@@ -538,6 +586,14 @@ if (-not $SkipQlitehtml) {
     }
 
     # qlitehtml currently only allows in-source builds
+    # Discard cached Qt package paths before configuring against the selected Qt installation.
+    foreach ($entry in @("CMakeCache.txt", "CMakeFiles")) {
+        $path = Join-Path $qlitehtmlDir $entry
+        if (Test-Path $path) {
+            Remove-Item -Path $path -Recurse -Force
+        }
+    }
+
     # Configure with cmake
     # litehtml runs clang-tidy with warnings as errors on itself when it finds one, and the one that
     # comes with Visual Studio fails on it, so turn that off

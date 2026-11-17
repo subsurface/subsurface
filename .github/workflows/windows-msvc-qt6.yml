@@ -16,9 +16,9 @@ on:
 
 env:
   RELEASE_PUBLISHER: "true"
-  # Qt version - use 6.8.x which is an LTS release (promised until 2029) and
-  # includes Positioning and Location modules
-  QT_VERSION: "6.8"
+  # Qt version - same as the Android build (see android.yml); this is not an
+  # LTS release
+  QT_VERSION: "6.10.3"
   QT_ARCH: "win64_msvc2022_64"
   # vcpkg configuration
   VCPKG_DEFAULT_TRIPLET: x64-windows

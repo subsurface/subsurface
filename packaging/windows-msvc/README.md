@@ -14,9 +14,9 @@ This guide explains how to build Subsurface natively on Windows using Microsoft 
 2. **Git for Windows**
    - Download from https://git-scm.com/download/win
 
-3. **Qt 6.8** (or later LTS)
+3. **Qt 6.10** (CI builds with Qt 6.10.3; `build.ps1` also accepts 6.8, 6.7 and 6.6)
    - Download the online installer from https://www.qt.io/download-qt-installer
-   - Install Qt 6.8.x for MSVC 2026 64-bit, or MSVC 2022 64-bit if using Visual Studio 2022
+   - Install Qt 6.10.x for MSVC 2022 64-bit (the MSVC 64-bit build Qt publishes for 6.10)
    - Include these modules: Qt Location, Qt Positioning, Qt Connectivity, Qt5Compat, Qt WebChannel, Qt WebEngine
 
 4. **vcpkg** (for C/C++ dependencies)
@@ -125,6 +125,9 @@ Options:
 - `-SkipLibdivecomputer`: Skip building libdivecomputer (if already built)
 - `-SkipGooglemaps`: Skip building the googlemaps plugin
 - `-Jobs`: Number of parallel build jobs (default: number of CPUs)
+
+When switching Qt installations in an existing build directory, pass `-Clean` to
+remove the previous build and install directories before rebuilding.
 
 ## Manual Build Steps
 
@@ -238,7 +241,7 @@ This is expected on Windows. The CMakeLists.txt has been updated to find librari
 ### Qt not found
 Set the `Qt6_DIR` environment variable to your Qt installation, e.g.:
 ```powershell
-$env:Qt6_DIR = "C:\Qt\6.8.0\msvc2026_64"
+$env:Qt6_DIR = "C:\Qt\6.10.3\msvc2022_64"
 ```
 
 ### libdivecomputer build fails

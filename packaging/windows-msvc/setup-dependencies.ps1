@@ -104,5 +104,5 @@ Write-Host "Installed packages:" -ForegroundColor Cyan
 
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Green
-Write-Host "  1. Make sure Qt 6.8 is installed and Qt6_DIR is set"
+Write-Host "  1. Make sure Qt 6.10 is installed and Qt6_DIR is set"
 Write-Host "  2. Run .\packaging\windows-msvc\build.ps1 to build Subsurface"
