@@ -6,8 +6,15 @@
 #include "core/settings/qPrefDisplay.h"
 
 #include <QDate>
+#include <QSettings>
 #include <QTest>
 #include <QSignalSpy>
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+#include <QApplication>
+#include <QPalette>
+#include <QStyle>
+#include <QWidget>
+#endif
 
 void TestQPrefDisplay::initTestCase()
 {
@@ -16,6 +23,15 @@ void TestQPrefDisplay::initTestCase()
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefDisplay");
+
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	// What the application looks like before any colour scheme override
+	QApplication *app = qobject_cast<QApplication *>(QCoreApplication::instance());
+	if (app) {
+		systemPalette = QApplication::palette();
+		systemStyle = QApplication::style()->name();
+	}
+#endif
 }
 
 void TestQPrefDisplay::test_struct_get()
@@ -232,5 +248,145 @@ void TestQPrefDisplay::test_signals()
 	QVERIFY(spy14.takeFirst().at(0).toByteArray() == QByteArray("signal geo1"));
 	QVERIFY(spy15.takeFirst().at(0).toByteArray() == QByteArray("signal win1"));
 }
+
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+void TestQPrefDisplay::test_color_scheme()
+{
+	// This covers saving and reloading the preference. It does not depend on
+	// the platform theme honouring the override.
+	const QString key = QStringLiteral("Display/color_scheme");
+	QSettings().remove(key);
+
+	qPrefDisplay::load();
+	QCOMPARE(qPrefDisplay::color_scheme(), QStringLiteral("system"));
+	qPrefDisplay::set_theme(QStringLiteral("mobileTheme"));
+
+	QSignalSpy spy(qPrefDisplay::instance(), &qPrefDisplay::color_schemeChanged);
+	qPrefDisplay::set_color_scheme(QStringLiteral("light"));
+	QCOMPARE(qPrefDisplay::color_scheme(), QStringLiteral("light"));
+	QCOMPARE(QSettings().value(key).toString(), QStringLiteral("light"));
+	QCOMPARE(qPrefDisplay::theme(), QStringLiteral("mobileTheme"));
+	QCOMPARE(spy.count(), 1);
+	QCOMPARE(spy.takeFirst().at(0).toString(), QStringLiteral("light"));
+
+	qPrefDisplay::set_color_scheme(QStringLiteral("dark"));
+	QCOMPARE(qPrefDisplay::color_scheme(), QStringLiteral("dark"));
+	QCOMPARE(QSettings().value(key).toString(), QStringLiteral("dark"));
+
+	// Forget the in-memory value, then reload it from the saved settings
+	qPrefDisplay::set_color_scheme(QStringLiteral("system"));
+	QSettings().setValue(key, QStringLiteral("dark"));
+	qPrefDisplay::load();
+	QCOMPARE(qPrefDisplay::color_scheme(), QStringLiteral("dark"));
+
+	QSettings().setValue(key, QStringLiteral("invalid"));
+	qPrefDisplay::load();
+	QCOMPARE(qPrefDisplay::color_scheme(), QStringLiteral("system"));
+
+	// Selecting the default again removes the saved value
+	qPrefDisplay::set_color_scheme(QStringLiteral("light"));
+	QCOMPARE(QSettings().value(key).toString(), QStringLiteral("light"));
+	qPrefDisplay::set_color_scheme(QStringLiteral("system"));
+	QVERIFY(!QSettings().contains(key));
+}
+
+static bool paletteIsLight(const QPalette &palette, QPalette::ColorGroup group = QPalette::Active)
+{
+	return palette.color(group, QPalette::Window).lightnessF() > 0.5 &&
+	       palette.color(group, QPalette::Base).lightnessF() > 0.5 &&
+	       palette.color(group, QPalette::WindowText).lightnessF() < 0.5 &&
+	       palette.color(group, QPalette::Text).lightnessF() < 0.5 &&
+	       palette.color(group, QPalette::ButtonText).lightnessF() < 0.5;
+}
+
+static bool paletteIsDark(const QPalette &palette, QPalette::ColorGroup group = QPalette::Active)
+{
+	return palette.color(group, QPalette::Window).lightnessF() < 0.5 &&
+	       palette.color(group, QPalette::Base).lightnessF() < 0.5 &&
+	       palette.color(group, QPalette::WindowText).lightnessF() > 0.5 &&
+	       palette.color(group, QPalette::Text).lightnessF() > 0.5 &&
+	       palette.color(group, QPalette::ButtonText).lightnessF() > 0.5;
+}
+
+// An explicit Light or Dark choice must be visible whatever the platform theme
+// does with QStyleHints::setColorScheme(), and "Use system" must bring back the
+// appearance the application had before.
+void TestQPrefDisplay::test_color_scheme_palette()
+{
+	QVERIFY2(qobject_cast<QApplication *>(QCoreApplication::instance()), "needs a widgets application");
+
+	QSettings().remove(QStringLiteral("Display/color_scheme"));
+	qPrefDisplay::load();
+	QCOMPARE(QApplication::palette(), systemPalette);
+	QCOMPARE(QApplication::palette().resolveMask(), systemPalette.resolveMask());
+
+	// A widget that exists before the change must follow it. Qt delivers the
+	// palette change to existing widgets from the event loop, hence QTRY_*.
+	QWidget widget;
+
+	qPrefDisplay::set_color_scheme(QStringLiteral("dark"));
+	QVERIFY(paletteIsDark(QApplication::palette()));
+	QVERIFY(paletteIsDark(QApplication::palette(), QPalette::Inactive));
+	QTRY_VERIFY(paletteIsDark(widget.palette()));
+	// Disabled text must stay readable against the dark background, but dimmer than enabled text
+	const QPalette dark = QApplication::palette();
+	QVERIFY(dark.color(QPalette::Disabled, QPalette::Text).lightnessF() < dark.color(QPalette::Active, QPalette::Text).lightnessF());
+	QVERIFY(dark.color(QPalette::Disabled, QPalette::Text).lightnessF() > dark.color(QPalette::Active, QPalette::Base).lightnessF());
+
+	qPrefDisplay::set_color_scheme(QStringLiteral("light"));
+	QVERIFY(paletteIsLight(QApplication::palette()));
+	QVERIFY(paletteIsLight(QApplication::palette(), QPalette::Inactive));
+	QTRY_VERIFY(paletteIsLight(widget.palette()));
+	const QPalette light = QApplication::palette();
+	QVERIFY(light.color(QPalette::Disabled, QPalette::Text).lightnessF() > light.color(QPalette::Active, QPalette::Text).lightnessF());
+	QVERIFY(light.color(QPalette::Disabled, QPalette::Text).lightnessF() < light.color(QPalette::Active, QPalette::Base).lightnessF());
+
+	// Switching directly between overrides does not leave anything of the previous one behind
+	qPrefDisplay::set_color_scheme(QStringLiteral("dark"));
+	QCOMPARE(QApplication::palette(), dark);
+
+	// Use system removes the override and restores the earlier palette and style
+	qPrefDisplay::set_color_scheme(QStringLiteral("system"));
+	QCOMPARE(QApplication::palette(), systemPalette);
+	QCOMPARE(QApplication::palette().resolveMask(), systemPalette.resolveMask());
+	QTRY_COMPARE(widget.palette(), systemPalette);
+	QCOMPARE(QApplication::style()->name(), systemStyle);
+
+	// The widget style is not touched by an override either
+	qPrefDisplay::set_color_scheme(QStringLiteral("dark"));
+	QCOMPARE(QApplication::style()->name(), systemStyle);
+	qPrefDisplay::set_color_scheme(QStringLiteral("system"));
+}
+
+// The saved choice is applied when the preferences are loaded at startup
+void TestQPrefDisplay::test_color_scheme_startup()
+{
+	const QString key = QStringLiteral("Display/color_scheme");
+
+	QSettings().setValue(key, QStringLiteral("dark"));
+	qPrefDisplay::load();
+	QCOMPARE(qPrefDisplay::color_scheme(), QStringLiteral("dark"));
+	QVERIFY(paletteIsDark(QApplication::palette()));
+
+	QSettings().setValue(key, QStringLiteral("light"));
+	qPrefDisplay::load();
+	QVERIFY(paletteIsLight(QApplication::palette()));
+
+	QSettings().setValue(key, QStringLiteral("system"));
+	qPrefDisplay::load();
+	QCOMPARE(QApplication::palette(), systemPalette);
+
+	// An unusable saved value falls back to the system appearance
+	QSettings().setValue(key, QStringLiteral("dark"));
+	qPrefDisplay::load();
+	QSettings().setValue(key, QStringLiteral("invalid"));
+	qPrefDisplay::load();
+	QCOMPARE(qPrefDisplay::color_scheme(), QStringLiteral("system"));
+	QCOMPARE(QApplication::palette(), systemPalette);
+
+	QSettings().remove(key);
+	qPrefDisplay::load();
+}
+#endif
 
 QTEST_MAIN(TestQPrefDisplay)

@@ -119,6 +119,25 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="colorSchemeGroup">
+     <property name="title">
+      <string>Colour scheme</string>
+     </property>
+     <layout class="QHBoxLayout" name="colorSchemeLayout">
+      <item>
+       <widget class="QLabel" name="colorSchemeLabel">
+        <property name="text">
+         <string>Appearance</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="colorScheme"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBox_gridDepth">
      <property name="title">
       <string>Dive profile depth grid</string>

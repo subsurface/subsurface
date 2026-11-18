@@ -3641,6 +3641,13 @@ image::images/Pref_display.jpg["FIGURE: Preferences: Display",align="center"]
      tabular data, e.g. *Dive Table* and Cylinder: decreasing the font size allows one to see more
      information on a screen.
 
+   ** *Colour scheme*: On desktop builds using Qt 6.8 or later, choose _Use system_
+      (the default) to follow the operating system appearance, or choose _Light_ or
+      _Dark_ to override it. Changes take effect when selecting _Apply_ or _Save_.
+      The override is applied to the application's widgets whether or not the
+      operating system or its Qt platform theme supports it. The dive profile and the
+      map keep their own colours. Choosing _Use system_ removes the override again.
+
   ** *Animations*: Some actions in showing the dive profile are performed using
      animations. For instance, the axis values for depth and time change from dive to
      dive. When viewing a different dive, these changes in axis characteristics do not
