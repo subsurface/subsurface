@@ -15,6 +15,14 @@
 PreferencesDefaults::PreferencesDefaults(): AbstractPreferencesWidget(tr("Display"), QIcon(":preferences-display-icon"), 0 ), ui(new Ui::PreferencesDefaults())
 {
 	ui->setupUi(this);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	// Item data is set here because uic does not support user data for combo box items
+	ui->colorScheme->addItem(tr("Use system"), QStringLiteral("system"));
+	ui->colorScheme->addItem(tr("Light"), QStringLiteral("light"));
+	ui->colorScheme->addItem(tr("Dark"), QStringLiteral("dark"));
+#else
+	ui->colorSchemeGroup->hide();
+#endif
 }
 
 PreferencesDefaults::~PreferencesDefaults()
@@ -34,6 +42,9 @@ void PreferencesDefaults::refreshSettings()
 		ui->gridGeneric->setChecked(true);
 
 	ui->checkBox_map_short_names->setChecked(qPrefDisplay::map_short_names());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	ui->colorScheme->setCurrentIndex(ui->colorScheme->findData(qPrefDisplay::color_scheme()));
+#endif
 }
 
 void PreferencesDefaults::syncSettings()
@@ -43,4 +54,7 @@ void PreferencesDefaults::syncSettings()
 	qPrefDisplay::set_animation_speed(ui->velocitySlider->value());
 	qPrefDisplay::set_three_m_based_grid(ui->grid3MBased->isChecked());
 	qPrefDisplay::set_map_short_names(ui->checkBox_map_short_names->isChecked());
+#if QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	qPrefDisplay::set_color_scheme(ui->colorScheme->currentData().toString());
+#endif
 }

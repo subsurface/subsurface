@@ -27,6 +27,9 @@ class qPrefDisplay : public QObject {
 	Q_PROPERTY(bool singleColumnPortrait READ singleColumnPortrait WRITE set_singleColumnPortrait NOTIFY singleColumnPortraitChanged)
 	Q_PROPERTY(bool three_m_based_grid READ three_m_based_grid WRITE set_three_m_based_grid NOTIFY three_m_based_gridChanged)
 	Q_PROPERTY(bool map_short_names READ map_short_names WRITE set_map_short_names NOTIFY map_short_namesChanged)
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	Q_PROPERTY(QString color_scheme READ color_scheme WRITE set_color_scheme NOTIFY color_schemeChanged)
+#endif
 
 public:
 	static qPrefDisplay *instance();
@@ -56,6 +59,9 @@ public:
 	static bool singleColumnPortrait() { return st_singleColumnPortrait; }
 	static bool three_m_based_grid() { return prefs.three_m_based_grid; }
 	static bool map_short_names() { return prefs.map_short_names; }
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	static QString color_scheme() { return st_color_scheme; }
+#endif
 
 public slots:
 	static void set_animation_speed(int value);
@@ -77,6 +83,9 @@ public slots:
 	static void set_singleColumnPortrait(bool value);
 	static void set_three_m_based_grid(bool value);
 	static void set_map_short_names(bool value);
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	static void set_color_scheme(const QString &value);
+#endif
 
 signals:
 	void animation_speedChanged(int value);
@@ -98,6 +107,9 @@ signals:
 	void singleColumnPortraitChanged(bool value);
 	void three_m_based_gridChanged(bool value);
 	void map_short_namesChanged(bool value);
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	void color_schemeChanged(const QString &value);
+#endif
 
 private:
 	qPrefDisplay() {}
@@ -124,6 +136,11 @@ private:
 	static void load_windowState();
 	static void load_lastState();
 	static void load_singleColumnPortrait();
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	static void load_color_scheme();
+	static QString validated_color_scheme(const QString &value);
+	static void apply_color_scheme();
+#endif
 
 	// font helper function
 	static void setCorrectFont();
@@ -140,5 +157,8 @@ private:
 	static QByteArray st_windowState;
 	static int st_lastState;
 	static bool st_singleColumnPortrait;
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	static QString st_color_scheme;
+#endif
 };
 #endif

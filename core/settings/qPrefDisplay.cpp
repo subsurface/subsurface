@@ -6,6 +6,11 @@
 #include <QApplication>
 #include <QFont>
 #include <QScreen>
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+#include <QPalette>
+#include <QStyleHints>
+#include <optional>
+#endif
 
 static const QString group = QStringLiteral("Display");
 
@@ -42,6 +47,11 @@ static int st_lastState_default = false;
 bool qPrefDisplay::st_singleColumnPortrait;
 static bool st_singleColumnPortrait_default = false;
 
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+QString qPrefDisplay::st_color_scheme;
+static const QString st_color_scheme_default = QStringLiteral("system");
+#endif
+
 qPrefDisplay *qPrefDisplay::instance()
 {
 	static qPrefDisplay *self = new qPrefDisplay;
@@ -67,6 +77,9 @@ void qPrefDisplay::loadSync(bool doSync)
 		load_windowState();
 		load_lastState();
 		load_singleColumnPortrait();
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+		load_color_scheme();
+#endif
 	}
 	disk_three_m_based_grid(doSync);
 	disk_map_short_names(doSync);
@@ -213,3 +226,112 @@ HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/windowState", windowState);
 HANDLE_PROP_INT(Display, "MainWindow/lastState", lastState);
 
 HANDLE_PROP_BOOL(Display, "singleColumnPortrait", singleColumnPortrait);
+
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+QString qPrefDisplay::validated_color_scheme(const QString &value)
+{
+	if (value == QLatin1String("light") || value == QLatin1String("dark") || value == QLatin1String("system"))
+		return value;
+	return st_color_scheme_default;
+}
+
+// Qt only forwards QStyleHints::setColorScheme() to the platform theme, and
+// themes without support for it (for example the generic Unix theme used on
+// WSLg or when no desktop environment is running) ignore the request. It also
+// takes effect asynchronously where it is supported, so it cannot be used to
+// tell whether an override worked. To make an explicit Light or Dark choice
+// visibly effective everywhere, the matching palette is also set on the
+// application. "Use system" removes both again.
+static QPalette color_scheme_palette(Qt::ColorScheme scheme)
+{
+	const bool dark = scheme == Qt::ColorScheme::Dark;
+	const QColor window = dark ? QColor(0x35, 0x35, 0x35) : QColor(0xef, 0xef, 0xef);
+	const QColor base = dark ? QColor(0x23, 0x23, 0x23) : QColor(0xff, 0xff, 0xff);
+	const QColor alternateBase = dark ? QColor(0x2d, 0x2d, 0x2d) : QColor(0xf7, 0xf7, 0xf7);
+	const QColor text = dark ? QColor(0xf0, 0xf0, 0xf0) : QColor(0x00, 0x00, 0x00);
+	const QColor disabledText = dark ? QColor(0x80, 0x80, 0x80) : QColor(0xbe, 0xbe, 0xbe);
+	const QColor highlight = dark ? QColor(0x2a, 0x82, 0xda) : QColor(0x30, 0x8c, 0xc6);
+	const QColor disabledHighlight = dark ? QColor(0x50, 0x50, 0x50) : QColor(0x91, 0x91, 0x91);
+	const QColor link = dark ? QColor(0x5c, 0xaa, 0xf0) : QColor(0x00, 0x00, 0xff);
+	const QColor linkVisited = dark ? QColor(0xb0, 0x8c, 0xe6) : QColor(0xff, 0x00, 0xff);
+	const QColor toolTipBase = dark ? QColor(0x45, 0x45, 0x45) : QColor(0xff, 0xff, 0xdc);
+	QColor placeholder = text;
+	placeholder.setAlpha(128);
+
+	// The two colour constructor derives the bevel roles (Light, Midlight, Dark,
+	// Mid, Shadow) that styles use to draw frames from the button colour
+	QPalette palette(window, window);
+	palette.setColor(QPalette::WindowText, text);
+	palette.setColor(QPalette::Text, text);
+	palette.setColor(QPalette::ButtonText, text);
+	palette.setColor(QPalette::BrightText, QColor(0xff, 0x00, 0x00));
+	palette.setColor(QPalette::Base, base);
+	palette.setColor(QPalette::AlternateBase, alternateBase);
+	palette.setColor(QPalette::ToolTipBase, toolTipBase);
+	palette.setColor(QPalette::ToolTipText, text);
+	palette.setColor(QPalette::PlaceholderText, placeholder);
+	palette.setColor(QPalette::Highlight, highlight);
+	palette.setColor(QPalette::HighlightedText, QColor(0xff, 0xff, 0xff));
+	palette.setColor(QPalette::Accent, highlight);
+	palette.setColor(QPalette::Link, link);
+	palette.setColor(QPalette::LinkVisited, linkVisited);
+	palette.setColor(QPalette::Disabled, QPalette::WindowText, disabledText);
+	palette.setColor(QPalette::Disabled, QPalette::Text, disabledText);
+	palette.setColor(QPalette::Disabled, QPalette::ButtonText, disabledText);
+	palette.setColor(QPalette::Disabled, QPalette::Highlight, disabledHighlight);
+	palette.setColor(QPalette::Disabled, QPalette::Accent, disabledHighlight);
+
+	// Mark every role as explicitly set. Roles left unset would be filled in
+	// from the platform theme, which is what is being overridden.
+	for (int group = 0; group < QPalette::NColorGroups; group++) {
+		for (int role = 0; role < QPalette::NColorRoles; role++) {
+			const QPalette::ColorGroup g = static_cast<QPalette::ColorGroup>(group);
+			const QPalette::ColorRole r = static_cast<QPalette::ColorRole>(role);
+			palette.setBrush(g, r, palette.brush(g, r));
+		}
+	}
+	return palette;
+}
+
+void qPrefDisplay::apply_color_scheme()
+{
+	// Without widgets (for instance a console or downloader application) there
+	// is no appearance to change
+	if (!qobject_cast<QApplication *>(QCoreApplication::instance()))
+		return;
+
+	// Remember the application palette from before the first override, so that
+	// "Use system" restores exactly that instead of a hard-coded palette. A
+	// palette without explicitly set roles is resolved against the platform
+	// theme again, so the application follows the system as it did before.
+	static std::optional<QPalette> systemPalette;
+	if (!systemPalette)
+		systemPalette = QApplication::palette();
+
+	Qt::ColorScheme scheme = Qt::ColorScheme::Unknown;
+	if (st_color_scheme == QLatin1String("light"))
+		scheme = Qt::ColorScheme::Light;
+	else if (st_color_scheme == QLatin1String("dark"))
+		scheme = Qt::ColorScheme::Dark;
+
+	QGuiApplication::styleHints()->setColorScheme(scheme);
+	QApplication::setPalette(scheme == Qt::ColorScheme::Unknown ? *systemPalette : color_scheme_palette(scheme));
+}
+
+void qPrefDisplay::set_color_scheme(const QString &value)
+{
+	const QString newValue = validated_color_scheme(value);
+	if (newValue != st_color_scheme) {
+		st_color_scheme = newValue;
+		qPrefPrivate::propSetValue(keyFromGroupAndName(group, "color_scheme"), st_color_scheme, st_color_scheme_default);
+		apply_color_scheme();
+		emit instance()->color_schemeChanged(st_color_scheme);
+	}
+}
+
+void qPrefDisplay::load_color_scheme()
+{
+	st_color_scheme = validated_color_scheme(qPrefPrivate::propValue(keyFromGroupAndName(group, "color_scheme"), st_color_scheme_default).toString());
+	apply_color_scheme();
+}
+#endif

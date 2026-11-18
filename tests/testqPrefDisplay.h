@@ -4,6 +4,9 @@
 
 #include "testbase.h"
 
+#include <QPalette>
+#include <QString>
+
 class TestQPrefDisplay : public TestBase {
 	Q_OBJECT
 private slots:
@@ -14,6 +17,17 @@ private slots:
 	void test_struct_disk();
 	void test_multiple();
 	void test_signals();
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	void test_color_scheme();
+	void test_color_scheme_palette();
+	void test_color_scheme_startup();
+#endif
+
+private:
+#if !defined(SUBSURFACE_MOBILE) && QT_VERSION >= QT_VERSION_CHECK(6, 8, 0)
+	QPalette systemPalette;
+	QString systemStyle;
+#endif
 };
 
 #endif // TESTQPREFDISPLAY_H

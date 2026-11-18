@@ -283,6 +283,19 @@ TEST(TestSurfaceIntervalColumn testsurfaceintervalcolumn.cpp)
 set(TEST_SURFACE_INTERVAL_COLUMN TestSurfaceIntervalColumn)
 TEST(TestSurfaceGfColumn testsurfacegfcolumn.cpp)
 set(TEST_SURFACE_GF_COLUMN TestSurfaceGfColumn)
+TEST(TestPreferencesDefaults testpreferencesdefaults.cpp)
+if (USINGQT6)
+	qt_wrap_ui(TEST_PREFERENCES_DEFAULTS_UI_HDRS ../desktop-widgets/preferences/preferences_defaults.ui)
+else()
+	qt5_wrap_ui(TEST_PREFERENCES_DEFAULTS_UI_HDRS ../desktop-widgets/preferences/preferences_defaults.ui)
+endif()
+target_sources(TestPreferencesDefaults PRIVATE
+	../desktop-widgets/preferences/abstractpreferenceswidget.cpp
+	../desktop-widgets/preferences/preferences_defaults.cpp
+	${TEST_PREFERENCES_DEFAULTS_UI_HDRS}
+)
+target_include_directories(TestPreferencesDefaults PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+set(TEST_PREFERENCES_DEFAULTS TestPreferencesDefaults)
 endif()
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> -input ${SUBSURFACE_SOURCE}/tests)
 
@@ -341,6 +354,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	${TEST_DIVE_FILTER}
 	${TEST_SURFACE_INTERVAL_COLUMN}
 	${TEST_SURFACE_GF_COLUMN}
+	${TEST_PREFERENCES_DEFAULTS}
 )
 
 # useful for debugging CMake issues
