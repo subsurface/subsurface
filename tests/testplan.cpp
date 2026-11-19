@@ -506,7 +506,7 @@ void TestPlan::testMetric()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 148l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 157l);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN36 at 33m
 	struct event *ev = &dive.dcs[0].events[0];
@@ -543,7 +543,7 @@ void TestPlan::testImperial()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 155l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 164l);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
 	// check first gas change to EAN36 at 33m
 	struct event *ev = &dive.dcs[0].events[0];
@@ -579,7 +579,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 108l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 117l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar).mm * 0.001);
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
@@ -605,7 +605,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 162l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 172l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar).mm * 0.001);
 	// check benchmark run time of 141 minutes, and known Subsurface runtime of 139 minutes
@@ -657,7 +657,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 155l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 162l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar).mm * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 1);
@@ -689,7 +689,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 159l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 165l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar).mm * 0.001);
 	// check first gas change to EAN50 at 21m
@@ -721,7 +721,7 @@ void TestPlan::testVpmbMetric100m60min()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 157l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 158l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar).mm * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
@@ -807,7 +807,7 @@ void TestPlan::testVpmbMetric100m10min()
 
 	// check minimum gas result
 	auto dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 175l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 179l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar).mm * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 2);
@@ -868,7 +868,7 @@ void TestPlan::testVpmbMetricRepeat()
 
 	// check minimum gas result
 	dp = std::find_if(testPlan.dp.begin(), testPlan.dp.end(), [](auto &dp) { return dp.minimum_gas.mbar != 0; });
-	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 85l);
+	QCOMPARE(lrint(dp == testPlan.dp.end() ? 0.0 : dp->minimum_gas.mbar / 1000.0), 100l);
 	// print first ceiling
 	printf("First ceiling %.1f m\n", dive.mbar_to_depth(test_deco_state.first_ceiling_pressure.mbar).mm * 0.001);
 	QVERIFY(dive.dcs[0].events.size() >= 3);
@@ -951,8 +951,8 @@ void TestPlan::testCcrBailoutGasSelection()
 	QCOMPARE(cylinder->cylinder_use, OC_GAS);
 	QCOMPARE(get_o2(cylinder->gasmix), 530);
 
-	// check expected run time of 51 minutes
-	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 51 * 60, 51 * 60));
+	// check expected run time of 52 minutes
+	QVERIFY(compareDecoTime(dive.dcs[0].duration.seconds, 52 * 60, 52 * 60));
 
 }
 
@@ -1233,6 +1233,82 @@ void TestPlan::testRecreationalExceedingNDL()
 	planner_error_t error = plan(&test_deco_state, testPlan, &dive, 0, 60, cache, true, false, nullptr);
 
 	QCOMPARE(error, PLAN_ERROR_RECREATIONAL_EXCEEDS_NDL);
+}
+
+// AI-generated (Claude)
+// Gas switch duration test: when arriving at a gas switch depth, the diver
+// must spend the switch duration breathing the previous gas before switching
+// to the new gas.
+void TestPlan::testGasSwitchDurationPosition()
+{
+	deco_state_cache cache;
+
+	setupPrefs();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+	prefs.planner_deco_mode = BUEHLMANN;
+	prefs.min_switch_duration = 60;
+	prefs.switch_at_req_stop = false;
+
+	diveplan dp;
+	dp.salinity = 10300;
+	dp.surface_pressure = 1_atm;
+	dp.gflow = 50;
+	dp.gfhigh = 80;
+	dp.bottomsac = prefs.bottomsac;
+	dp.decosac = prefs.decosac;
+
+	struct gasmix air = { 21_percent, 0_percent };
+	struct gasmix ean50 = { 50_percent, 0_percent };
+	pressure_t po2 = 1600_mbar;
+
+	cylinder_t *cyl1 = dive.get_or_create_cylinder(1);
+	cylinder_t *cyl0 = dive.get_or_create_cylinder(0);
+	cyl0->gasmix = air;
+	cyl0->type.size = 24_l;
+	cyl0->type.workingpressure = 200_bar;
+	cyl1->gasmix = ean50;
+	cyl1->type.size = 11_l;
+	cyl1->type.workingpressure = 200_bar;
+	dive.surface_pressure = 1_atm;
+	dive.dcs[0].divemode = OC;
+	reset_cylinders(&dive, true);
+
+	// Plan: descend to 40m, stay for 20 minutes total bottom time, switch to EAN50 at MOD (21m)
+	plan_add_segment(dp, 0, dive.gas_mod(ean50, po2, m_or_ft(3, 10)), 1, 0, 1, OC);
+	plan_add_segment(dp, 120, 40_m, 0, 0, 1, OC);
+	plan_add_segment(dp, 18 * 60, 40_m, 0, 0, 1, OC);
+
+	planner_error_t error = plan(&test_deco_state, dp, &dive, 0, 60, cache, true, false, nullptr);
+	QCOMPARE(error, PLAN_OK);
+
+	// Find the gas change event to cylinder 1 (EAN50).
+	// EAN50 has no helium, so the event type is SAMPLE_EVENT_GASCHANGE (not GASCHANGE2).
+	const struct event *switch_ev = nullptr;
+	for (const auto &ev : dive.dcs[0].events) {
+		if (ev.is_gaschange() && ev.gas.index == 1) {
+			switch_ev = &ev;
+			break;
+		}
+	}
+	QVERIFY2(switch_ev != nullptr, "Gas switch event to cylinder 1 not found");
+
+	int switch_time = switch_ev->time.seconds;
+	// The diver must be at 21m during the switch
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], switch_time), 21000);
+
+	// Halfway through the 60s switch duration at 21m, the diver should still be breathing air (21% O2)
+	QCOMPARE(get_depth_at_time(&dive.dcs[0], switch_time - 30), 21000);
+	duration_t timeDuringSwitch;
+	timeDuringSwitch.seconds = switch_time - 30;
+	gasmix gasDuringSwitch = dive.get_gasmix_at_time(dive.dcs[0], timeDuringSwitch);
+	QCOMPARE(get_o2(gasDuringSwitch), 210);
+
+	// After the switch event, the diver should be breathing EAN50 (50% O2)
+	duration_t timeAfterSwitch;
+	timeAfterSwitch.seconds = switch_time + 5;
+	gasmix gasAfterSwitch = dive.get_gasmix_at_time(dive.dcs[0], timeAfterSwitch);
+	QCOMPARE(get_o2(gasAfterSwitch), 500);
 }
 
 QTEST_GUILESS_MAIN(TestPlan)
