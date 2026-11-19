@@ -477,6 +477,8 @@
   <extradata key='Battery at end' value='1.5 V' />
   <extradata key='T1 battery' value='normal' />
   <extradata key='T2 battery' value='warning' />
+  <extradata key='T3 battery' value='warning' />
+  <extradata key='T4 battery' value='normal' />
   <extradata key='Divemode' value='OC Technical' />
   <extradata key='Tank gas mixes' value='guessed by Subsurface' />
   <extradata key='Start location' value='-34.136990, 151.152450' />
@@ -873,6 +875,8 @@
   <extradata key='Battery at end' value='1.5 V' />
   <extradata key='T1 battery' value='normal' />
   <extradata key='T2 battery' value='normal' />
+  <extradata key='T3 battery' value='normal' />
+  <extradata key='T4 battery' value='normal' />
   <extradata key='Divemode' value='OC Technical' />
   <extradata key='Tank gas mixes' value='guessed by Subsurface' />
   <extradata key='Start location' value='-34.179360, 151.093260' />
@@ -1310,6 +1314,8 @@
   <extradata key='Battery at end' value='1.5 V' />
   <extradata key='T1 battery' value='normal' />
   <extradata key='T2 battery' value='normal' />
+  <extradata key='T3 battery' value='warning' />
+  <extradata key='T4 battery' value='normal' />
   <extradata key='Divemode' value='OC Technical' />
   <extradata key='Tank gas mixes' value='guessed by Subsurface' />
   <event time='0:10 min' type='25' flags='1' name='gaschange' cylinder='0' />
