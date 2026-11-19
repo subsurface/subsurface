@@ -272,6 +272,7 @@ TEST(TestQPrefUnits testqPrefUnits.cpp)
 TEST(TestQPrefUpdateManager testqPrefUpdateManager.cpp)
 TEST(TestOstcFirmware testostcfirmware.cpp)
 TEST(TestformatDiveGasString testformatDiveGasString.cpp)
+TEST(TestFormatNotes testformatnotes.cpp)
 TEST(TestRuler testruler.cpp)
 TEST(TestMobileCylinderEdit testmobilecylinderedit.cpp)
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
@@ -347,6 +348,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefUpdateManager
 	TestOstcFirmware
 	TestformatDiveGasString
+	TestFormatNotes
 	TestQML
 	TestRuler
 	TestMobileCylinderEdit
