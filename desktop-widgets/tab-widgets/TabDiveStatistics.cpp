@@ -10,6 +10,9 @@
 #include "core/string-format.h"
 #include <QLabel>
 #include <QIcon>
+#include <QEvent>
+#include <QPainter>
+#include <QPalette>
 
 TabDiveStatistics::TabDiveStatistics(MainTab *parent) : TabBase(parent), ui(new Ui::TabDiveStatistics())
 {
@@ -173,16 +176,29 @@ double MinMaxAvgWidget::minimum() const
 	return minValue->text().toDouble();
 }
 
+// AI-generated (Claude)
+// The icons are monochrome and near-black, so they are barely visible on a dark
+// background. Render each icon and recolour it with the given colour, keeping
+// its alpha channel and device pixel ratio.
+static QPixmap tintedIcon(const QString &resource, const QColor &color)
+{
+	QPixmap pixmap = QIcon(resource).pixmap(16, 16);
+	if (pixmap.isNull())
+		return pixmap;
+	QPainter painter(&pixmap);
+	painter.setCompositionMode(QPainter::CompositionMode_SourceIn);
+	painter.fillRect(pixmap.rect(), color);
+	painter.end();
+	return pixmap;
+}
+
 MinMaxAvgWidget::MinMaxAvgWidget(QWidget *parent) : QWidget(parent)
 {
 	avgIco = new QLabel(this);
-	avgIco->setPixmap(QIcon(":value-average-icon").pixmap(16, 16));
 	avgIco->setToolTip(gettextFromC::tr("Average"));
 	minIco = new QLabel(this);
-	minIco->setPixmap(QIcon(":value-minimum-icon").pixmap(16, 16));
 	minIco->setToolTip(gettextFromC::tr("Minimum"));
 	maxIco = new QLabel(this);
-	maxIco->setPixmap(QIcon(":value-maximum-icon").pixmap(16, 16));
 	maxIco->setToolTip(gettextFromC::tr("Maximum"));
 	avgValue = new QLabel(this);
 	minValue = new QLabel(this);
@@ -196,6 +212,25 @@ MinMaxAvgWidget::MinMaxAvgWidget(QWidget *parent) : QWidget(parent)
 	formLayout->addWidget(minIco, 2, 0);
 	formLayout->addWidget(minValue, 2, 1);
 	setLayout(formLayout);
+
+	updateIcons();
+}
+
+// AI-generated (Claude)
+void MinMaxAvgWidget::updateIcons()
+{
+	QColor color = palette().color(QPalette::WindowText);
+	avgIco->setPixmap(tintedIcon(":value-average-icon", color));
+	minIco->setPixmap(tintedIcon(":value-minimum-icon", color));
+	maxIco->setPixmap(tintedIcon(":value-maximum-icon", color));
+}
+
+// AI-generated (Claude)
+void MinMaxAvgWidget::changeEvent(QEvent *event)
+{
+	if (event->type() == QEvent::PaletteChange)
+		updateIcons();
+	QWidget::changeEvent(event);
 }
 
 void MinMaxAvgWidget::clear()
