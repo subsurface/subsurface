@@ -27,12 +27,16 @@ private:
 
 // Widget describing, minimum, maximum and average value.
 // Scheduled for removal in due course.
+class QEvent;
 class QLabel;
 class MinMaxAvgWidget : public QWidget {
 	Q_OBJECT
 	QLabel *avgIco, *avgValue;
 	QLabel *minIco, *minValue;
 	QLabel *maxIco, *maxValue;
+	void updateIcons();
+protected:
+	void changeEvent(QEvent *event) override;
 public:
 	MinMaxAvgWidget(QWidget *parent);
 	double minimum() const;
