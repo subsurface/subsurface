@@ -27,7 +27,8 @@ by `ninja installer` (MSVC) or the legacy MXE container build above. Record the
 Windows version, NSIS version (`makensis -VERSION`), Subsurface version, build
 variant, and the installer filename. For MSVC builds, retain the existing
 `validate_windows_msvc_stage` check before invoking NSIS; a script-only NSIS
-compile does not validate the staged Qt Location/Positioning payload.
+compile does not validate the staged Qt TLS backend or Qt
+Location/Positioning payload.
 
 1. Install a prior build to a disposable directory. Record hashes of its
    `subsurface.exe` and DLLs, for example with PowerShell

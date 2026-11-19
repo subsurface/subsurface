@@ -381,7 +381,7 @@ jobs:
           Pop-Location
 
       # AI-generated (Claude)
-      - name: Validate staged Qt map payload
+      - name: Validate staged Qt TLS and map payload
         shell: pwsh
         run: |
           Push-Location "${{ github.workspace }}\build"
