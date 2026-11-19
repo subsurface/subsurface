@@ -1422,14 +1422,21 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		DEPENDS ${SUBSURFACE_TARGET}
 	)
 
-	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND USINGQT6 AND MAPSUPPORT)
+	if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND USINGQT6)
 		# AI-generated (Claude)
 		# Keep NSIS behind an explicit, reusable validation target. This also
 		# prevents direct local `ninja installer` invocations from packaging an
-		# incomplete map runtime payload.
+		# incomplete payload (no TLS backend, or an incomplete map runtime
+		# when map support is enabled).
+		if(MAPSUPPORT)
+			set(_validate_mapsupport ON)
+		else()
+			set(_validate_mapsupport OFF)
+		endif()
 		add_custom_target(
 			validate_windows_msvc_stage
 			COMMAND "${CMAKE_COMMAND}" -DSTAGING=${WINDOWSSTAGING}
+				-DMAPSUPPORT=${_validate_mapsupport}
 				-P "${CMAKE_SOURCE_DIR}/cmake/Modules/ValidateWindowsMsvcStage.cmake"
 			DEPENDS fake_install
 		)
