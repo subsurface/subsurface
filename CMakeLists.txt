@@ -1266,11 +1266,28 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				endif()
 			endforeach()
 
-			# Copy TLS plugins (for HTTPS support)
+			# AI-generated (Claude)
+			# Copy TLS plugins (for HTTPS support). Schannel is the intended backend;
+			# OpenSSL is excluded on purpose. Every Qt 6 TLS backend name ends in
+			# 'backend.dll', so a plain 'd.dll' suffix test would also drop the release
+			# plugins. A file is a debug build only when '<base>d.dll' has a matching
+			# '<base>.dll' next to it (e.g. qschannelbackendd.dll / qschannelbackend.dll).
+			if(NOT EXISTS \"${QT_INSTALL_PREFIX}/plugins/tls/qschannelbackend.dll\")
+				message(FATAL_ERROR \"Qt TLS backend plugin is missing: ${QT_INSTALL_PREFIX}/plugins/tls/qschannelbackend.dll. HTTPS (map tiles, cloud storage) would not work without it.\")
+			endif()
 			file(GLOB _tls_plugins \"${QT_INSTALL_PREFIX}/plugins/tls/*.dll\")
 			foreach(_plugin \${_tls_plugins})
 				get_filename_component(_name \"\${_plugin}\" NAME)
-				if(NOT _name MATCHES \"d\\\\.dll$\" AND NOT _name MATCHES \"openssl\")
+				get_filename_component(_dir \"\${_plugin}\" DIRECTORY)
+				set(_tls_is_debug FALSE)
+				# CMAKE_MATCH_1 is only set once the match has been evaluated, so
+				# this cannot be folded into a single if() with AND.
+				if(_name MATCHES \"^(.+)d\\\\.dll$\")
+					if(EXISTS \"\${_dir}/\${CMAKE_MATCH_1}.dll\")
+						set(_tls_is_debug TRUE)
+					endif()
+				endif()
+				if(NOT _tls_is_debug AND NOT _name MATCHES \"openssl\")
 					file(COPY \"\${_plugin}\" DESTINATION \"${WINDOWSSTAGING}/plugins/tls\")
 				endif()
 			endforeach()
