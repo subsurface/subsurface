@@ -99,7 +99,7 @@ void DivePlannerPointsModel::createSimpleDive(struct dive *dIn)
 
 	// If we're in drop_stone_mode, don't add a first point.
 	// It will be added implicitly.
-	if (!prefs.drop_stone_mode)
+	if (!dropStoneModeEnabled)
 		addStop(m_or_ft(15, 45), 1 * 60, cylinderid, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
 
 	addStop(m_or_ft(15, 45), 20 * 60, 0, prefs.defaultsetpoint, true, UNDEF_COMP_TYPE);
@@ -254,6 +254,8 @@ void DivePlannerPointsModel::addCylinder_clicked()
 void DivePlannerPointsModel::setPlanMode(Mode m)
 {
 	mode = m;
+	if (m == PLAN)
+		dropStoneModeEnabled = prefs.drop_stone_mode;
 	// the planner may reset our GF settings that are used to show deco
 	// reset them to what's in the preferences
 	if (m != PLAN) {
@@ -268,6 +270,7 @@ void DivePlannerPointsModel::resetPlanState()
 	setPlanMode(NOTHING);
 	clear();
 	diveplan.dp.clear();
+	dropStoneModeEnabled = prefs.drop_stone_mode;
 	d = nullptr;
 	dcNr = 0;
 }
@@ -554,7 +557,8 @@ DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTable
 	d(nullptr),
 	cylinders(true),
 	mode(NOTHING),
-	saveAllowed(true)
+	saveAllowed(true),
+	dropStoneModeEnabled(prefs.drop_stone_mode)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
 	startTime = QDateTime(startTime.date(), startTime.time(), QTimeZone(QTimeZone::UTC));
@@ -898,10 +902,27 @@ void DivePlannerPointsModel::setReserveGas(int reserve)
 
 void DivePlannerPointsModel::setDropStoneMode(bool value)
 {
-	qPrefDivePlanner::set_drop_stone_mode(value);
+	setDropStoneModeImpl(value, true);
+}
+
+void DivePlannerPointsModel::setDropStoneModeForCurrentPlan(bool value)
+{
+	setDropStoneModeImpl(value, false);
+}
+
+void DivePlannerPointsModel::setDropStoneModeImpl(bool value, bool persistPreference)
+{
+	if (persistPreference)
+		qPrefDivePlanner::set_drop_stone_mode(value);
+
+	if (dropStoneModeEnabled == value)
+		return;
+
+	dropStoneModeEnabled = value;
+
 	if (divepoints.isEmpty())
 		return;
-	if (prefs.drop_stone_mode) {
+	if (dropStoneModeEnabled) {
 	/* Remove the first entry if we enable drop_stone_mode */
 		if (rowCount() >= 2) {
 			beginRemoveRows(QModelIndex(), 0, 0);
@@ -988,14 +1009,14 @@ void DivePlannerPointsModel::addReverseProfile() {
 
 	int runtime = divepoints.back().time;
 
-	beginInsertRows(QModelIndex(), divepoints.size(), 2 * divepoints.size() - (prefs.drop_stone_mode ? 1 : 2));
+	beginInsertRows(QModelIndex(), divepoints.size(), 2 * divepoints.size() - (dropStoneModeEnabled ? 1 : 2));
 	for (int i = divepoints.count() - 2; i >= 0; --i) {
 		divepoints << divepoints[i];
 		runtime += divepoints[i+1].time - divepoints[i].time;
 		divepoints.back().time = runtime;
 	}
 
-	if (prefs.drop_stone_mode) {
+	if (dropStoneModeEnabled) {
 		divepoints << divepoints[0];
 		divepoints.back().time = runtime + divepoints[0].time - divepoints[0].depth.mm / prefs.descrate;
 	}
@@ -1276,7 +1297,8 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		divemode_t divemode = get_local_divemode(d, dcNr, p.cylinderid, p.divemode);
 		int deltaT = lastIndex != -1 ? p.time - at(lastIndex).time : p.time;
 		lastIndex = i;
-		if (i == 0 && mode == PLAN && prefs.drop_stone_mode) {
+		if (i == 0 && mode == PLAN && dropStoneModeEnabled) {
+
 			/* Okay, we add a first segment where we go down to depth */
 			plan_add_segment(diveplan, p.depth.mm / prefs.descrate, p.depth, p.cylinderid, p.setpoint, true, divemode);
 			deltaT -= p.depth.mm / prefs.descrate;
@@ -1674,7 +1696,7 @@ QVariantMap DivePlannerPointsModel::calculatePlan(const QVariantList &cylindersD
 		int setpoint = map["setpoint"].toInt();
 		int duration = map["duration"].toInt() * 60;
 
-		if (firstSegment && prefs.drop_stone_mode && prefs.descrate > 0) {
+		if (firstSegment && dropStoneModeEnabled && prefs.descrate > 0) {
 			// Descent to the first depth at the configured descent rate.
 			int descentDuration = depth.mm / prefs.descrate;
 			plan_add_segment(diveplan, descentDuration, depth, cylinderId, setpoint, true, divemode);

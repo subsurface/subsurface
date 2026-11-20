@@ -53,6 +53,7 @@ class PlannerSettingsWidget : public QWidget {
 public:
 	explicit PlannerSettingsWidget(PlannerWidgets *parent);
 	~PlannerSettingsWidget();
+	void setDropStoneMode(bool enabled);
 	void disableDecoElements(int mode, divemode_t divemode);
 public
 slots:
