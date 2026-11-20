@@ -47,12 +47,16 @@ QString formatSac(const dive *d)
 	return QString::number(value, 'f', decimal).append(unit);
 }
 
+// Return the notes as HTML, suitable for display in rich text widgets:
+// special characters are escaped and line breaks are turned into <br/>.
 QString formatNotes(const dive *d)
 {
+	// AI-generated (Claude)
 	QString tmp = QString::fromStdString(d->notes);
 	if (is_dc_planner(&d->dcs[0])) {
 		QTextDocument notes;
 	#define _NOTES_BR "&#92n"
+	#define _NOTES_BR_ESCAPED "&amp;#92n"
 		tmp.replace("<thead>", "<thead>" _NOTES_BR)
 			.replace("<br>", "<br>" _NOTES_BR)
 			.replace("<br/>", "<br/>" _NOTES_BR)
@@ -60,10 +64,15 @@ QString formatNotes(const dive *d)
 			.replace("<tr>", "<tr>" _NOTES_BR)
 			.replace("</tr>", "</tr>" _NOTES_BR);
 		notes.setHtml(tmp);
-		tmp = notes.toPlainText();
-		tmp.replace(_NOTES_BR, "<br/>");
+		// The placeholder survives as literal text in the plain text. Escape
+		// the plain text so that it isn't interpreted as markup, which turns
+		// the '&' of the placeholder into "&amp;", so match the escaped form.
+		tmp = notes.toPlainText().toHtmlEscaped();
+		tmp.replace(_NOTES_BR_ESCAPED, "<br/>");
+	#undef _NOTES_BR_ESCAPED
 	#undef _NOTES_BR
 	} else {
+		tmp = tmp.toHtmlEscaped();
 		tmp.replace("\n", "<br/>");
 	}
 	return tmp;
