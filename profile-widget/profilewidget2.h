@@ -45,6 +45,7 @@ public:
 		static constexpr int None = 0;
 		static constexpr int Instant = 1 << 0;
 		static constexpr int DontRecalculatePlotInfo = 1 << 1;
+		static constexpr int DontRecreatePictures = 1 << 2;
 	};
 
 	// Pass null as plannerModel if no support for planning required
@@ -111,6 +112,7 @@ private:
 	void dragMoveEvent(QDragMoveEvent *event) override;
 
 	void replot();
+	void replotPreservePictures();
 	void diveComputerEdited(dive &dive, divecomputer &dc);
 	void setZoom(int level);
 	void addGasSwitch(int tank, int seconds);
