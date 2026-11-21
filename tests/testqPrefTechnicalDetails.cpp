@@ -19,6 +19,9 @@ void TestQPrefTechnicalDetails::initTestCase()
 	qPref::registerQML(NULL);
 }
 
+/**
+ * @brief test_struct_get checks that the getters return the struct preferences
+ */
 void TestQPrefTechnicalDetails::test_struct_get()
 {
 	// Test struct pref -> get func.
@@ -40,6 +43,7 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	prefs.modpO2 = 1.02;
 	prefs.percentagegraph = true;
 	prefs.redceiling = true;
+	prefs.ruler_same_gas_cylinders = true;
 	prefs.rulergraph = true;
 	prefs.show_ccr_sensors = true;
 	prefs.show_ccr_setpoint = true;
@@ -66,6 +70,7 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	QCOMPARE(tst->modpO2(), prefs.modpO2);
 	QCOMPARE(tst->percentagegraph(), prefs.percentagegraph);
 	QCOMPARE(tst->redceiling(), prefs.redceiling);
+	QCOMPARE(tst->ruler_same_gas_cylinders(), prefs.ruler_same_gas_cylinders);
 	QCOMPARE(tst->rulergraph(), prefs.rulergraph);
 	QCOMPARE(tst->show_ccr_sensors(), prefs.show_ccr_sensors);
 	QCOMPARE(tst->show_ccr_setpoint(), prefs.show_ccr_setpoint);
@@ -79,6 +84,9 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	QCOMPARE(tst->infobox(), prefs.infobox);
 }
 
+/**
+ * @brief test_set_struct checks that the setters change the struct preferences
+ */
 void TestQPrefTechnicalDetails::test_set_struct()
 {
 	// Test set func -> struct pref
@@ -100,6 +108,7 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	tst->set_modpO2(1.12);
 	tst->set_percentagegraph(false);
 	tst->set_redceiling(false);
+	tst->set_ruler_same_gas_cylinders(false);
 	tst->set_rulergraph(false);
 	tst->set_show_ccr_sensors(false);
 	tst->set_show_ccr_setpoint(false);
@@ -126,6 +135,7 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	QCOMPARE(prefs.modpO2, 1.12);
 	QCOMPARE(prefs.percentagegraph, false);
 	QCOMPARE(prefs.redceiling, false);
+	QCOMPARE(prefs.ruler_same_gas_cylinders, false);
 	QCOMPARE(prefs.rulergraph, false);
 	QCOMPARE(prefs.show_ccr_sensors, false);
 	QCOMPARE(prefs.show_ccr_setpoint, false);
@@ -139,6 +149,9 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	QCOMPARE(prefs.infobox, false);
 }
 
+/**
+ * @brief test_set_load_struct checks that load() restores what the setters stored
+ */
 void TestQPrefTechnicalDetails::test_set_load_struct()
 {
 	// test set func -> load -> struct pref
@@ -160,6 +173,7 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	tst->set_modpO2(1.12);
 	tst->set_percentagegraph(false);
 	tst->set_redceiling(false);
+	tst->set_ruler_same_gas_cylinders(false);
 	tst->set_rulergraph(false);
 	tst->set_show_ccr_sensors(true);
 	tst->set_show_ccr_setpoint(true);
@@ -187,6 +201,7 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	prefs.modpO2 = 1.02;
 	prefs.percentagegraph = true;
 	prefs.redceiling = true;
+	prefs.ruler_same_gas_cylinders = true;
 	prefs.rulergraph = true;
 	prefs.show_ccr_sensors = false;
 	prefs.show_ccr_setpoint = false;
@@ -214,6 +229,7 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	QCOMPARE(prefs.modpO2, 1.12);
 	QCOMPARE(prefs.percentagegraph, false);
 	QCOMPARE(prefs.redceiling, false);
+	QCOMPARE(prefs.ruler_same_gas_cylinders, false);
 	QCOMPARE(prefs.rulergraph, false);
 	QCOMPARE(prefs.show_ccr_sensors, true);
 	QCOMPARE(prefs.show_ccr_setpoint, true);
@@ -227,6 +243,9 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	QCOMPARE(prefs.infobox, true);
 }
 
+/**
+ * @brief test_struct_disk checks that sync() and load() round-trip the struct preferences
+ */
 void TestQPrefTechnicalDetails::test_struct_disk()
 {
 	// test struct prefs -> disk
@@ -248,6 +267,7 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	prefs.modpO2 = 1.14;
 	prefs.percentagegraph = true;
 	prefs.redceiling = true;
+	prefs.ruler_same_gas_cylinders = true;
 	prefs.rulergraph = true;
 	prefs.show_ccr_sensors = true;
 	prefs.show_ccr_setpoint = true;
@@ -276,6 +296,7 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	prefs.modpO2 = 1.02;
 	prefs.percentagegraph = false;
 	prefs.redceiling = false;
+	prefs.ruler_same_gas_cylinders = false;
 	prefs.rulergraph = false;
 	prefs.show_ccr_sensors = false;
 	prefs.show_ccr_setpoint = false;
@@ -302,6 +323,7 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	QCOMPARE(prefs.modpO2, 1.14);
 	QCOMPARE(prefs.percentagegraph, true);
 	QCOMPARE(prefs.redceiling, true);
+	QCOMPARE(prefs.ruler_same_gas_cylinders, true);
 	QCOMPARE(prefs.rulergraph, true);
 	QCOMPARE(prefs.show_ccr_sensors, true);
 	QCOMPARE(prefs.show_ccr_setpoint, true);
@@ -335,6 +357,9 @@ void TestQPrefTechnicalDetails::test_multiple()
 	tecDetails->load();           \
 	QCOMPARE(METHOD, VALUE);
 
+/**
+ * @brief test_oldPreferences checks each preference through the setters, sync() and load()
+ */
 void TestQPrefTechnicalDetails::test_oldPreferences()
 {
 	auto tecDetails = qPrefTechnicalDetails::instance();
@@ -380,7 +405,9 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	TEST(tecDetails->tankbar(), true);
 	tecDetails->set_percentagegraph(true);
 	TEST(tecDetails->percentagegraph(), true);
+	tecDetails->set_ruler_same_gas_cylinders(true);
 	tecDetails->set_rulergraph(true);
+	TEST(tecDetails->ruler_same_gas_cylinders(), true);
 	TEST(tecDetails->rulergraph(), true);
 	tecDetails->set_show_ccr_setpoint(true);
 	TEST(tecDetails->show_ccr_setpoint(), true);
@@ -417,7 +444,9 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	TEST(tecDetails->tankbar(), false);
 	tecDetails->set_percentagegraph(false);
 	TEST(tecDetails->percentagegraph(), false);
+	tecDetails->set_ruler_same_gas_cylinders(false);
 	tecDetails->set_rulergraph(false);
+	TEST(tecDetails->ruler_same_gas_cylinders(), false);
 	TEST(tecDetails->rulergraph(), false);
 	tecDetails->set_show_ccr_setpoint(false);
 	TEST(tecDetails->show_ccr_setpoint(), false);
@@ -433,6 +462,9 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	TEST(tecDetails->infobox(), false);
 }
 
+/**
+ * @brief test_signals checks that the setters signal changes
+ */
 void TestQPrefTechnicalDetails::test_signals()
 {
 	QSignalSpy spy1(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcalltissuesChanged);
@@ -450,6 +482,7 @@ void TestQPrefTechnicalDetails::test_signals()
 	QSignalSpy spy14(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::modpO2Changed);
 	QSignalSpy spy15(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraphChanged);
 	QSignalSpy spy16(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::redceilingChanged);
+	QSignalSpy spy29(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::ruler_same_gas_cylindersChanged);
 	QSignalSpy spy17(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::rulergraphChanged);
 	QSignalSpy spy19(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensorsChanged);
 	QSignalSpy spy20(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_setpointChanged);
@@ -488,7 +521,9 @@ void TestQPrefTechnicalDetails::test_signals()
 	qPrefTechnicalDetails::set_percentagegraph(false);
 	prefs.redceiling = true;
 	qPrefTechnicalDetails::set_redceiling(false);
+	prefs.ruler_same_gas_cylinders = true;
 	prefs.rulergraph = true;
+	qPrefTechnicalDetails::set_ruler_same_gas_cylinders(false);
 	qPrefTechnicalDetails::set_rulergraph(false);
 	prefs.show_ccr_sensors = true;
 	qPrefTechnicalDetails::set_show_ccr_sensors(false);
@@ -525,6 +560,7 @@ void TestQPrefTechnicalDetails::test_signals()
 	QCOMPARE(spy14.count(), 1);
 	QCOMPARE(spy15.count(), 1);
 	QCOMPARE(spy16.count(), 1);
+	QCOMPARE(spy29.count(), 1);
 	QCOMPARE(spy17.count(), 1);
 	QCOMPARE(spy19.count(), 1);
 	QCOMPARE(spy20.count(), 1);
@@ -552,6 +588,7 @@ void TestQPrefTechnicalDetails::test_signals()
 	QVERIFY(spy14.takeFirst().at(0).toDouble() == -1.12);
 	QVERIFY(spy15.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy16.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy29.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy17.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy19.takeFirst().at(0).toBool() == false);
 	QVERIFY(spy20.takeFirst().at(0).toBool() == false);

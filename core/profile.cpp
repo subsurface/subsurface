@@ -1430,34 +1430,66 @@ static int ruler_pressure(const plot_info &pi, int idx, int cylinder)
 	return outgoing ? outgoing : get_plot_pressure(pi, idx, cylinder);
 }
 
+/* Whether the cylinder has a measured pressure at this entry: a sensor reading
+ * that is not held over from an earlier sample, or the outgoing cylinder's
+ * reading retained at a switch. */
+static bool measured_ruler_pressure(const plot_info &pi, int idx, int cylinder)
+{
+	return ruler_outgoing_pressure(pi, idx, cylinder) > 0 ||
+	       (get_plot_sensor_pressure(pi, idx, cylinder) > 0 &&
+		!pi.pressures[cylinder + idx * pi.nr_cylinders].held);
+}
+
 /* A plotted pressure can be held or extrapolated. Only a measured value, or an
  * interpolation bounded by measurements in this gas-use span, can cover a ruler
- * endpoint. Do not infer consumption across a cylinder switch. */
-static bool covered_ruler_pressure(const plot_info &pi, int idx, int first, int last, int cylinder)
+ * endpoint. Do not infer consumption across a cylinder switch. The span is the
+ * one in which 'active' is breathed; 'cylinder' is the cylinder whose pressure
+ * is checked, which may be a different cylinder with the same gas. */
+static bool covered_ruler_pressure(const plot_info &pi, int idx, int first, int last, int active, int cylinder)
 {
-	if (ruler_outgoing_pressure(pi, idx, cylinder) > 0 ||
-	    (get_plot_sensor_pressure(pi, idx, cylinder) > 0 &&
-	     !pi.pressures[cylinder + idx * pi.nr_cylinders].held))
+	if (measured_ruler_pressure(pi, idx, cylinder))
 		return true;
 	if (get_plot_interpolated_pressure(pi, idx, cylinder) <= 0)
 		return false;
 	// A selection can start between two observed samples, but neither
 	// observation may come from the other side of a gas switch.
-	while (first > 0 && pi.entry[first - 1].ruler_cylinder == cylinder)
+	while (first > 0 && pi.entry[first - 1].ruler_cylinder == active)
 		--first;
-	while (pi.entry[last].ruler_cylinder == cylinder &&
-	       last + 1 < static_cast<int>(pi.entry.size()) && pi.entry[last + 1].ruler_cylinder == cylinder)
+	while (pi.entry[last].ruler_cylinder == active &&
+	       last + 1 < static_cast<int>(pi.entry.size()) && pi.entry[last + 1].ruler_cylinder == active)
 		++last;
 	bool before = false, after = false;
 	for (int i = first; i <= last; ++i) {
-		if (ruler_outgoing_pressure(pi, i, cylinder) > 0 ||
-		    (get_plot_sensor_pressure(pi, i, cylinder) > 0 &&
-		     !pi.pressures[cylinder + i * pi.nr_cylinders].held)) {
+		if (measured_ruler_pressure(pi, i, cylinder)) {
 			before |= i < idx;
 			after |= i > idx;
 		}
 	}
 	return before && after;
+}
+
+// AI-generated (Claude)
+/* Whether the ruler counts 'cylinder' in a span where 'active' is breathed.
+ * Most dive computers do not log switches between sidemount cylinders or
+ * independent doubles, so another cylinder with the same gas mix may be
+ * breathed too. Counting those is a preference, off by default: a cylinder
+ * that is monitored for another diver also has the default use, unless it
+ * is marked as not used. Cylinders marked as not used are left out, as they
+ * are for the dive's SAC. So are diluent and oxygen cylinders, which feed a
+ * rebreather loop. */
+static bool ruler_counts_cylinder(const struct dive *d, int active, int cylinder)
+{
+	if (cylinder == active)
+		return true;
+	if (!prefs.ruler_same_gas_cylinders)
+		return false;
+	const cylinder_t *cyl = d->get_cylinder(cylinder);
+	const cylinder_t *active_cyl = d->get_cylinder(active);
+	if (!cyl || !active_cyl)
+		return false;
+	if (cyl->cylinder_use != OC_GAS && cyl->cylinder_use != TRAVEL_OC)
+		return false;
+	return same_gasmix(cyl->gasmix, active_cyl->gasmix);
 }
 
 /* Compare two plot_data entries and writes the results into a set of strings */
@@ -1496,6 +1528,7 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 	depth_t min_depth { .mm = INT_MAX };
 
 	volume_t cylinder_volume;
+	volume_t largest_cylinder;
 
 	for (int i = idx1, last_idx = idx1; i <= idx2; ++i) {
 		const struct plot_data &last_data = pi.entry[last_idx];
@@ -1566,25 +1599,47 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 		for (int i = first; i <= last; ++i)
 			if (!ruler_pressure(pi, i, cylinder_index))
 				sac_is_determinable = false;
-		if (!covered_ruler_pressure(pi, first, first, last, cylinder_index) ||
-		    !covered_ruler_pressure(pi, last, first, last, cylinder_index))
+		if (!covered_ruler_pressure(pi, first, first, last, cylinder_index, cylinder_index) ||
+		    !covered_ruler_pressure(pi, last, first, last, cylinder_index, cylinder_index))
 			sac_is_determinable = false;
 
-		int a = ruler_pressure(pi, first, cylinder_index);
-		int b = ruler_pressure(pi, last, cylinder_index);
-		const cylinder_t *cyl = d->get_cylinder(cylinder_index);
-		if (a > 0 && b > 0 && a > b) {
-			total_bar_used += a - b;
-			total_volume_used += (cyl->gas_volume(pressure_t::from_base(a)) -
-					      cyl->gas_volume(pressure_t::from_base(b))).mliter;
+		// AI-generated (Claude)
+		// Count the active cylinder and every other cylinder with the same gas
+		// mix, and judge the group's combined drop: a cylinder that is not being
+		// breathed can warm up and gain a little pressure. A same-gas cylinder
+		// without measured pressures at both ends of the span is left out.
+		int span_bar_used = 0;
+		int span_volume_used = 0;
+		for (int c = 0; c < pi.nr_cylinders; ++c) {
+			if (!ruler_counts_cylinder(d, cylinder_index, c))
+				continue;
+			if (c != cylinder_index &&
+			    (!covered_ruler_pressure(pi, first, first, last, cylinder_index, c) ||
+			     !covered_ruler_pressure(pi, last, first, last, cylinder_index, c)))
+				continue;
+			int a = ruler_pressure(pi, first, c);
+			int b = ruler_pressure(pi, last, c);
+			if (a <= 0 || b <= 0 || a == b)
+				continue;
+			const cylinder_t *cyl = d->get_cylinder(c);
+			span_bar_used += a - b;
+			span_volume_used += (cyl->gas_volume(pressure_t::from_base(a)) -
+					     cyl->gas_volume(pressure_t::from_base(b))).mliter;
 			if (!cyl->type.size.mliter)
 				sac_is_determinable = false;
 			else if (cylinder_volume.mliter && cylinder_volume.mliter != cyl->type.size.mliter)
 				cylindersizes_are_identical = false;
 			else
 				cylinder_volume = cyl->type.size;
-		} else if (a > 0 && b > a) {
+			if (cyl->type.size.mliter > largest_cylinder.mliter)
+				largest_cylinder = cyl->type.size;
+		}
+		// Cylinders can differ in size, so judge the drop by volume.
+		if (span_volume_used < 0) {
 			sac_is_determinable = false;
+		} else {
+			total_bar_used += span_bar_used;
+			total_volume_used += span_volume_used;
 		}
 		first = last;
 	}
@@ -1596,8 +1651,26 @@ std::vector<std::string> compare_samples(const struct dive *d, const struct plot
 		l += space + casprintf_loc(translate("gettextFromC", "ΔP:%d%s"), pressurevalue, pressure_unit);
 	}
 
+	// AI-generated (Claude)
+	// The 1 bar noise threshold applies to the summed pressure drops. When the
+	// counted cylinders differ in size, that sum can understate the gas used:
+	// a breathed cylinder can drop while a same-gas cylinder of another size,
+	// which isn't being breathed, gains pressure as it warms, e.g. on an ascent
+	// into warmer water. The two can cancel out in bar although gas was used,
+	// so for cylinders of different sizes, also accept a volume above that of
+	// 1 bar in the largest cylinder.
+	// This is rare. It needs same-gas cylinders of different sizes, each with a
+	// transmitter, counted together (see ruler_counts_cylinder()), and a ruler
+	// short enough for the gain to offset most of the drop. The likeliest case
+	// is a sidemount pair from different makers, e.g. 11.1 l and 11.0 l
+	// aluminium cylinders, and for sizes that close the volume test gives
+	// almost the same answer as the bar test. Either way it can only add a SAC
+	// that would otherwise be hidden; it never removes one.
+	bool above_noise = total_bar_used > 1000 ||
+			   (!cylindersizes_are_identical && total_volume_used > largest_cylinder.mliter);
+
 	// We can't calculate the SAC if the volume for some of the cylinders used is unknown
-	if (sac_is_determinable && total_bar_used > 1000 && total_volume_used) {
+	if (sac_is_determinable && above_noise && total_volume_used) {
 		int volume_precision;
 		const char *volume_unit;
 

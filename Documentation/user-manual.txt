@@ -2622,7 +2622,10 @@ Measurements of *depth or time differences* can be achieved by using the
 The measurement is done by dragging the red dots to the two points
 on the dive profile that you wish to measure. Information is then given
 in the horizontal white area underneath the
-two red dots.
+two red dots. The SAC rate and pressure drop shown by the ruler count the
+cylinder in use. Most dive computers don't record switching between sidemount
+cylinders or independent doubles, so for those, check _Ruler: count every
+cylinder on the same gas_ in xref:S_CCR_options[_File->Preferences->Tech setup_].
 
 [icon="ShowPhotos.png"]
 [NOTE]
@@ -3815,6 +3818,13 @@ these items mainly pertain to oxygen management:
    The pO~2~ threshold is probably the most important one and a value of 1.6 is commonly used.
 ** _pO~2~ in calculating MOD_ is used for calculating the maximum operative depth for a particular
    nitrox or trimix gas mixture. A value of 1.4 is commonly used.
+** _Ruler: count every cylinder on the same gas (sidemount, independent doubles)_: The ruler on the
+   dive profile works out the SAC rate from the pressure drop of the cylinder in use. Most dive
+   computers don't record switching between sidemount cylinders or independent doubles, so only the
+   first of them counts, and the SAC rate comes out too low. If this checkbox is checked, the ruler
+   also counts every other cylinder on the same gas whose pressure is measured at both ends of the
+   ruler. Cylinders marked as _not used_ are left out. Leave this unchecked if you monitor the
+   cylinders of other divers on the same gas, unless those cylinders are marked as _not used_.
 
 ** CCR Options: These options determine oxygen management for CCR dives:
 

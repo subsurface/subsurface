@@ -12,6 +12,10 @@ qPrefTechnicalDetails *qPrefTechnicalDetails::instance()
 }
 
 
+/**
+ * @brief loadSync loads the technical details preferences from the settings, or stores them
+ * @param doSync true to store the preferences, false to load them.
+ */
 void qPrefTechnicalDetails::loadSync(bool doSync)
 {
 	disk_allowOcGasAsDiluent(doSync);
@@ -31,6 +35,7 @@ void qPrefTechnicalDetails::loadSync(bool doSync)
 	disk_modpO2(doSync);
 	disk_percentagegraph(doSync);
 	disk_redceiling(doSync);
+	disk_ruler_same_gas_cylinders(doSync);
 	disk_rulergraph(doSync);
 	disk_show_ccr_sensors(doSync);
 	disk_show_ccr_setpoint(doSync);
@@ -119,6 +124,13 @@ HANDLE_PREFERENCE_DOUBLE(TechnicalDetails, "modpO2", modpO2);
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "percentagegraph", percentagegraph);
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "redceiling", redceiling);
+
+// AI-generated (Claude)
+/**
+ * set_ruler_same_gas_cylinders() and disk_ruler_same_gas_cylinders(): whether the ruler
+ * counts every cylinder on the active gas, see ruler_counts_cylinder() in core/profile.cpp.
+ */
+HANDLE_PREFERENCE_BOOL(TechnicalDetails, "ruler_same_gas_cylinders", ruler_same_gas_cylinders);
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "RulerBar", rulergraph);
 

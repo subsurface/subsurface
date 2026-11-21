@@ -95,6 +95,7 @@ preferences::preferences() :
 	modpO2(1.6),
 	percentagegraph(false),
 	redceiling(false),
+	ruler_same_gas_cylinders(false),
 	rulergraph(false),
 	show_average_depth(true),
 	show_ccr_sensors(false),

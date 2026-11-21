@@ -20,6 +20,9 @@ PreferencesGraph::~PreferencesGraph()
 	delete ui;
 }
 
+/**
+ * @brief refreshSettings shows the tech setup preferences in the dialog
+ */
 void PreferencesGraph::refreshSettings()
 {
 	ui->pheThreshold->setValue(prefs.pp_graphs.phe_threshold);
@@ -27,6 +30,7 @@ void PreferencesGraph::refreshSettings()
 	ui->po2ThresholdMin->setValue(prefs.pp_graphs.po2_threshold_min);
 	ui->pn2Threshold->setValue(prefs.pp_graphs.pn2_threshold);
 	ui->maxpo2->setValue(prefs.modpO2);
+	ui->ruler_same_gas_cylinders->setChecked(prefs.ruler_same_gas_cylinders);
 	ui->red_ceiling->setChecked(prefs.redceiling);
 
 	if (prefs.display_deco_mode == BUEHLMANN) {
@@ -54,6 +58,9 @@ void PreferencesGraph::refreshSettings()
 	ui->allowOcGasAsDiluent->setChecked(prefs.allowOcGasAsDiluent);
 }
 
+/**
+ * @brief syncSettings stores the tech setup preferences from the dialog
+ */
 void PreferencesGraph::syncSettings()
 {
 	qPrefGeneral::set_defaultsetpoint(lrint(ui->defaultSetpoint->value() * 1000.0));
@@ -66,6 +73,7 @@ void PreferencesGraph::syncSettings()
 	qPrefPartialPressureGas::set_pn2_threshold(ui->pn2Threshold->value());
 
 	qPrefTechnicalDetails::set_modpO2(ui->maxpo2->value());
+	qPrefTechnicalDetails::set_ruler_same_gas_cylinders(ui->ruler_same_gas_cylinders->isChecked());
 	qPrefTechnicalDetails::set_redceiling(ui->red_ceiling->isChecked());
 	prefs.planner_deco_mode = ui->buehlmann->isChecked() ? BUEHLMANN : VPMB;
 	qPrefTechnicalDetails::set_gasplot_frac(ui->gasplot_frac->value());

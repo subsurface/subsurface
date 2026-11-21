@@ -25,6 +25,7 @@ class qPrefTechnicalDetails : public QObject {
 	Q_PROPERTY(double modpO2 READ modpO2 WRITE set_modpO2 NOTIFY modpO2Changed)
 	Q_PROPERTY(bool percentagegraph READ percentagegraph WRITE set_percentagegraph NOTIFY percentagegraphChanged)
 	Q_PROPERTY(bool redceiling READ redceiling WRITE set_redceiling NOTIFY redceilingChanged)
+	Q_PROPERTY(bool ruler_same_gas_cylinders READ ruler_same_gas_cylinders WRITE set_ruler_same_gas_cylinders NOTIFY ruler_same_gas_cylindersChanged)
 	Q_PROPERTY(bool rulergraph READ rulergraph WRITE set_rulergraph NOTIFY rulergraphChanged)
 	Q_PROPERTY(bool show_ccr_sensors READ show_ccr_sensors WRITE set_show_ccr_sensors NOTIFY show_ccr_sensorsChanged)
 	Q_PROPERTY(bool show_ccr_setpoint READ show_ccr_setpoint WRITE set_show_ccr_setpoint NOTIFY show_ccr_setpointChanged)
@@ -64,6 +65,7 @@ public:
 	static double modpO2() { return prefs.modpO2; }
 	static bool percentagegraph() { return prefs.percentagegraph; }
 	static bool redceiling() { return prefs.redceiling; }
+	static bool ruler_same_gas_cylinders() { return prefs.ruler_same_gas_cylinders; }
 	static bool rulergraph() { return prefs.rulergraph; }
 	static bool show_ccr_sensors() { return prefs.show_ccr_sensors; }
 	static bool show_ccr_setpoint() { return prefs.show_ccr_setpoint; }
@@ -95,6 +97,7 @@ public slots:
 	static void set_modpO2(double value);
 	static void set_percentagegraph(bool value);
 	static void set_redceiling(bool value);
+	static void set_ruler_same_gas_cylinders(bool value);
 	static void set_rulergraph(bool value);
 	static void set_show_ccr_sensors(bool value);
 	static void set_show_ccr_setpoint(bool value);
@@ -126,6 +129,7 @@ signals:
 	void modpO2Changed(double value);
 	void percentagegraphChanged(bool value);
 	void redceilingChanged(bool value);
+	void ruler_same_gas_cylindersChanged(bool value);
 	void rulergraphChanged(bool value);
 	void show_ccr_sensorsChanged(bool value);
 	void show_ccr_setpointChanged(bool value);
@@ -159,6 +163,7 @@ private:
 	static void disk_modpO2(bool doSync);
 	static void disk_percentagegraph(bool doSync);
 	static void disk_redceiling(bool doSync);
+	static void disk_ruler_same_gas_cylinders(bool doSync);
 	static void disk_rulergraph(bool doSync);
 	static void disk_show_ccr_sensors(bool doSync);
 	static void disk_show_ccr_setpoint(bool doSync);
