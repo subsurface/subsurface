@@ -98,11 +98,17 @@ class FirmwareUpdateThread : public DeviceThread {
 	Q_OBJECT
 public:
 	FirmwareUpdateThread(QObject *parent, device_data_t *data, QString fileName, bool forceUpdate);
+	void setTransport(std::function<QString(device_data_t *)> open,
+		std::function<dc_status_t(device_data_t *)> close);
+	void setTestOperation(std::function<bool(device_data_t *)> operation) { m_testOperation = std::move(operation); }
 	void run();
 
 private:
 	QString m_fileName;
 	bool m_forceUpdate;
+	std::function<QString(device_data_t *)> m_open;
+	std::function<dc_status_t(device_data_t *)> m_close;
+	std::function<bool(device_data_t *)> m_testOperation;
 };
 
 class ResetSettingsThread : public DeviceThread {

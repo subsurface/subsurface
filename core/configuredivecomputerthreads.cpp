@@ -1687,7 +1687,7 @@ void DeviceThread::event_cb(dc_device_t *, dc_event_type_t event, const void *da
 
 	switch (event) {
 	case DC_EVENT_PROGRESS:
-		dt->progressCB(lrint(100.0 * (double)progress->current / (double)progress->maximum));
+		dt->progressCB(static_cast<int>(100.0 * progress->current / progress->maximum));
 		break;
 	default:
 		emit dt->error("Unexpected event recived");
@@ -1995,30 +1995,62 @@ FirmwareUpdateThread::FirmwareUpdateThread(QObject *parent, device_data_t *data,
 {
 }
 
+void FirmwareUpdateThread::setTransport(std::function<QString(device_data_t *)> open,
+	std::function<dc_status_t(device_data_t *)> close)
+{
+	m_open = std::move(open);
+	m_close = std::move(close);
+}
+
 void FirmwareUpdateThread::run()
 {
-	dc_status_t rc;
+	// AI-generated (Claude)
+	// Keep Qt Bluetooth sockets in this worker for their whole lifetime.
+	if (m_open) {
+		const QString connectionError = m_open(m_data);
+		if (!connectionError.isEmpty()) {
+			if (m_close)
+				m_close(m_data);
+			emit error(tr("Could not connect for firmware update: %1").arg(connectionError));
+			return;
+		}
+	}
 
-	rc = dc_device_set_events(m_data->device, DC_EVENT_PROGRESS, DeviceThread::event_cb, this);
+	if (m_testOperation) {
+		if (!m_testOperation(m_data))
+			emit error(tr("Firmware update failed!"));
+		if (m_close)
+			m_close(m_data);
+		return;
+	}
+
+	dc_status_t rc = dc_device_set_events(m_data->device, DC_EVENT_PROGRESS, DeviceThread::event_cb, this);
 	if (rc != DC_STATUS_SUCCESS) {
 		emit error("Error registering the event handler.");
-		return;
-	}
-	switch (dc_device_get_type(m_data->device)) {
-	case DC_FAMILY_HW_OSTC3:
-		rc = hw_ostc3_device_fwupdate(m_data->device, qPrintable(m_fileName), m_forceUpdate);
-		break;
-	case DC_FAMILY_HW_OSTC:
-		rc = hw_ostc_device_fwupdate(m_data->device, qPrintable(m_fileName));
-		break;
-	default:
-		emit error(tr("This feature is not yet available for the selected dive computer."));
-		return;
+	} else {
+		switch (dc_device_get_type(m_data->device)) {
+		case DC_FAMILY_HW_OSTC3:
+			rc = hw_ostc3_device_fwupdate(m_data->device, qPrintable(m_fileName), m_forceUpdate);
+			break;
+		case DC_FAMILY_HW_OSTC:
+			rc = hw_ostc_device_fwupdate(m_data->device, qPrintable(m_fileName));
+			break;
+		default:
+			emit error(tr("This feature is not yet available for the selected dive computer."));
+			rc = DC_STATUS_UNSUPPORTED;
+			break;
+		}
+
+		if (rc != DC_STATUS_SUCCESS)
+			emit error(tr("Firmware update failed!"));
 	}
 
-	if (rc != DC_STATUS_SUCCESS) {
-		emit error(tr("Firmware update failed!"));
-	}
+	// AI-generated (GPT-5.6 Terra)
+	// A successful firmware command is authoritative: the OSTC may reset the
+	// updated CPU and tear down its transport before the local close completes.
+	// Do not report that expected teardown as an update failure.
+	if (m_close)
+		m_close(m_data);
 }
 
 

@@ -19,6 +19,8 @@ private slots:
 	void clampedGradientFactorsStayUnchanged();
 	void settingsBlockedDuringFirmwareAndReset();
 	void resetAndFirmwareIgnorePreviousError();
+	void firmwareWorkerOwnsTransport();
+	void firmwareWorkerIgnoresPostUpdateCloseFailure();
 	void resetInvalidatesOstc4Snapshot();
 	void disconnectBlockedDuringDeviceOperations();
 	void rejectPreservesOperationAndDisconnect();

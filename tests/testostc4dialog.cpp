@@ -162,6 +162,50 @@ void TestOstc4Dialog::resetAndFirmwareIgnorePreviousError()
 	QVERIFY(!config.lastError.contains(QStringLiteral("previous settings error")));
 }
 
+void TestOstc4Dialog::firmwareWorkerOwnsTransport()
+{
+	device_data_t data;
+	FirmwareUpdateThread worker(nullptr, &data, QString(), false);
+	int opens = 0;
+	int closes = 0;
+	QThread *operationThread = nullptr;
+	worker.setTransport(
+		[&](device_data_t *) {
+			++opens;
+			return QString();
+		},
+		[&](device_data_t *) {
+			++closes;
+			return DC_STATUS_SUCCESS;
+		});
+	worker.setTestOperation([&](device_data_t *) {
+			operationThread = QThread::currentThread();
+			return true;
+		});
+
+	worker.start();
+	QVERIFY(worker.wait(1000));
+	QCOMPARE(opens, 1);
+	QCOMPARE(closes, 1);
+	QVERIFY(operationThread != QThread::currentThread());
+}
+
+void TestOstc4Dialog::firmwareWorkerIgnoresPostUpdateCloseFailure()
+{
+	// AI-generated (GPT-5.6 Terra)
+	device_data_t data;
+	FirmwareUpdateThread worker(nullptr, &data, QString(), false);
+	QSignalSpy errors(&worker, &FirmwareUpdateThread::error);
+	worker.setTransport(
+		[](device_data_t *) { return QString(); },
+		[](device_data_t *) { return DC_STATUS_IO; });
+	worker.setTestOperation([](device_data_t *) { return true; });
+
+	worker.start();
+	QVERIFY(worker.wait(1000));
+	QCOMPARE(errors.size(), 0);
+}
+
 void TestOstc4Dialog::resetInvalidatesOstc4Snapshot()
 {
 	ConfigureDiveComputerDialog dialog(testDialogPath("ostc4-reset-snapshot-test.xml"));
