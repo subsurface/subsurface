@@ -852,6 +852,10 @@ DiveTripModelTree::DiveTripModelTree(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, [this] { surfaceGfsChanged(); });
 	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, [this] { surfaceGfsChanged(); });
+	// AI-generated (Claude)
+	// A dive mode switch or a set point change alters the tissue loading behind
+	// the Surface GF column, and a set point change also switches the dive to CCR.
+	connect(&diveListNotifier, &DiveListNotifier::eventsChanged, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &DiveTripModelTree::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &DiveTripModelTree::diveChanged);
@@ -1688,6 +1692,10 @@ DiveTripModelList::DiveTripModelList(QObject *parent) : DiveTripModelBase(parent
 	connect(&diveListNotifier, &DiveListNotifier::cylinderRemoved, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::cylindersReset, this, [this] { surfaceGfsChanged(); });
 	connect(&diveListNotifier, &DiveListNotifier::diveComputerEdited, this, [this] { surfaceGfsChanged(); });
+	// AI-generated (Claude)
+	// A dive mode switch or a set point change alters the tissue loading behind
+	// the Surface GF column, and a set point change also switches the dive to CCR.
+	connect(&diveListNotifier, &DiveListNotifier::eventsChanged, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::pictureOffsetChanged, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesRemoved, this, &DiveTripModelList::diveChanged);
 	connect(&diveListNotifier, &DiveListNotifier::picturesAdded, this, &DiveTripModelList::diveChanged);

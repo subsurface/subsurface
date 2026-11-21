@@ -12,5 +12,6 @@ private slots:
 	void testHiddenDiveAndTree();
 	void testAddDeleteAndTimeShift();
 	void testDecoModelTooltip();
+	void testEventsChanged();
 };
 #endif
