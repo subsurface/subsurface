@@ -286,6 +286,33 @@ void TestSurfaceGfColumn::testDecoModelTooltip()
 	QFAIL("Trip row not found");
 }
 
+// AI-generated (Claude)
+// Adding a dive mode switch in the profile only sends eventsChanged. The
+// dive list must still recalculate the Surface GF of the edited dive.
+void TestSurfaceGfColumn::testEventsChanged()
+{
+	dive *d = addDive(1, 1000000000, 30_m);
+	DiveTripModelList list;
+	DiveTripModelTree tree;
+	DiveTripModelBase &treeBase = tree;
+	std::optional<double> before = divelog.dives.end_surface_gf(*d);
+	QVERIFY(before);
+	// Populate both caches before the edit
+	QCOMPARE(cell(list, d).data().toInt(), qRound(*before));
+	QCOMPARE(cell(treeBase, d).data().toInt(), qRound(*before));
+
+	// Switch to PSCR at the start of the bottom phase. PSCR breathes less
+	// oxygen than open circuit, so the tissues load more inert gas.
+	add_event(&d->dcs[0], 120, SAMPLE_EVENT_BOOKMARK, 0, PSCR, "modechange");
+	std::optional<double> after = divelog.dives.end_surface_gf(*d);
+	QVERIFY(after);
+	QVERIFY(qRound(*after) != qRound(*before));
+
+	emit diveListNotifier.eventsChanged(d);
+	QCOMPARE(cell(list, d).data().toInt(), qRound(*after));
+	QCOMPARE(cell(treeBase, d).data().toInt(), qRound(*after));
+}
+
 // The desktop models archive also references these unrelated commands and widgets.
 // None is exercised by the dive-list model tests.
 namespace Command {
