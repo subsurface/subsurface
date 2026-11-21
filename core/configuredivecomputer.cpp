@@ -674,10 +674,26 @@ void ConfigureDiveComputer::startFirmwareUpdate(const QString &fileName, device_
 	}
 	lastError.clear();
 	setState(FWUPDATE);
+	// FirmwareUpdateThread runs the protocol in its own thread. Release any
+	// existing main-thread session before that worker opens its own transport.
+	if (stopReadSession() != DC_STATUS_SUCCESS) {
+		setError(tr("Settings transport did not close cleanly. Reconnect before updating firmware."));
+		setState(ERRORED);
+		return;
+	}
+	if ((data->device || data->iostream || data->context) && closeTransport(data) != DC_STATUS_SUCCESS) {
+		setError(tr("Could not close the existing connection before updating firmware."));
+		setState(ERRORED);
+		return;
+	}
 	if (firmwareThread)
 		firmwareThread->deleteLater();
 
 	firmwareThread = new FirmwareUpdateThread(this, data, fileName, forceUpdate);
+	// A descriptor is required for a real firmware update. Open and close its
+	// transport in the worker, never on the caller's Qt thread.
+	if (data->descriptor)
+		firmwareThread->setTransport(openTransport, closeTransport);
 	connectThreadSignals(firmwareThread);
 
 	firmwareThread->start();

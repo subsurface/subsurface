@@ -44,22 +44,11 @@ int cliFirmwareUpdate(const std::string &vendor, const std::string &product, con
 		return 1;
 	}
 
-	// If descriptor not filled yet, call fill_computer_list() in caller before this
-	QString err = config.dc_open(data);
-	if (!err.isEmpty()) {
-		fprintf(stderr, "Failed to open device: %s\n", qPrintable(err));
-		return 2;
-	}
-
 	// Expand tilde in filename
 	QString expandedFilename = expandTilde(QString::fromStdString(filename));
 
 	// Start firmware update and wait for thread to finish via state changes/signals.
-	// Close during the same FWUPDATE -> DONE transition as the GUI. For OSTC 4/5,
-	// leaving service mode promptly is what lets the device continue into the
-	// firmware installation step after the upload has completed.
 	bool hadError = false;
-	bool closedDevice = false;
 	QEventLoop loop;
 	QObject::connect(&config, &ConfigureDiveComputer::error, [&hadError](QString e){
 		fprintf(stderr, "Firmware update error: %s\n", e.toLocal8Bit().constData());
@@ -73,11 +62,7 @@ int cliFirmwareUpdate(const std::string &vendor, const std::string &product, con
 		fflush(stdout);
 	});
 	QObject::connect(&config, &ConfigureDiveComputer::stateChanged,
-			 [&config, data, &closedDevice, &loop](ConfigureDiveComputer::states oldState, ConfigureDiveComputer::states newState) {
-		if (oldState == ConfigureDiveComputer::FWUPDATE && newState == ConfigureDiveComputer::DONE && !closedDevice) {
-			config.dc_close(data);
-			closedDevice = true;
-		}
+			 [&loop](ConfigureDiveComputer::states, ConfigureDiveComputer::states newState) {
 		if (newState == ConfigureDiveComputer::DONE || newState == ConfigureDiveComputer::ERRORED)
 			loop.quit();
 	});
@@ -102,8 +87,6 @@ int cliFirmwareUpdate(const std::string &vendor, const std::string &product, con
 		return 3;
 	}
 
-	if (!closedDevice)
-		config.dc_close(data);
 	QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 	QThread::msleep(250);
 
