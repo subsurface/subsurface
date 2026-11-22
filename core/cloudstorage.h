@@ -11,6 +11,9 @@ public:
 	QNetworkReply* backend(const QString& email,const QString& password,const QString& pin = QString(),const QString& newpasswd = QString());
 	QNetworkReply* deleteAccount(const QString& email, const QString &passwd);
 	explicit CloudStorageAuthenticate(QObject *parent);
+	// AI-generated (Codex)
+	/** A transport/service failure, distinct from a credential rejection. */
+	QString errorString() const { return authenticationError; }
 signals:
 	void finishedAuthenticate();
 	void finishedDelete();
@@ -25,6 +28,7 @@ private:
 	QNetworkReply *reply;
 	QString userAgent;
 	QString cloudNewPassword;
+	QString authenticationError;
 };
 
 QNetworkAccessManager *manager();
