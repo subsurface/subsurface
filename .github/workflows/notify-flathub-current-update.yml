@@ -1,0 +1,25 @@
+# AI-generated (Claude)
+name: Notify Flathub of current updates
+
+on:
+  push:
+    branches:
+      - current
+
+permissions:
+  contents: read
+
+jobs:
+  notify-flathub:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Dispatch the current commit to Flathub
+        env:
+          GH_TOKEN: ${{ secrets.FLATHUB_DISPATCH_TOKEN }}
+          SUBSURFACE_SHA: ${{ github.sha }}
+        run: |
+          set -eu
+
+          jq -nc --arg sha "$SUBSURFACE_SHA" \
+            '{event_type:"subsurface-current-updated", client_payload:{subsurface_sha:$sha}}' \
+            | gh api --method POST repos/flathub/org.subsurface_divelog.Subsurface/dispatches --input -
