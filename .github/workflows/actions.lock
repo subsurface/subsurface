@@ -67,7 +67,6 @@ workflows:
         - 'actions/upload-artifact@v7.0.2'
         - 'jurplel/install-qt-action@v4.5.0'
         - 'softprops/action-gh-release@v3.0.4'
-    '.github/workflows/notify-flathub-current-update.yml': []
     '.github/workflows/notify-release-coordinator.yml': []
     '.github/workflows/post-releasenotes.yml':
         - 'actions/checkout@v7.0.1'
