@@ -752,6 +752,14 @@ bool QMLManager::verifyCredentials(QString email, QString password, QString pin)
 		return false;
 	}
 	myTimer.stop();
+	// AI-generated (Codex)
+	// Do not turn an unreachable cloud service into a password error.
+	const QString authenticationError = csa->errorString();
+	if (!authenticationError.isEmpty()) {
+		appendTextToLog(authenticationError);
+		setStartPageText(RED_FONT + authenticationError.toHtmlEscaped() + END_FONT);
+		return false;
+	}
 	if (prefs.cloud_verification_status == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
 		appendTextToLog(QStringLiteral("Incorrect email / password combination"));
 		setStartPageText(RED_FONT + tr("Incorrect email / password combination") + END_FONT);

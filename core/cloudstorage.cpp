@@ -45,6 +45,7 @@ static QUrl cloudBackendDelete()
 
 QNetworkReply* CloudStorageAuthenticate::backend(const QString& email,const QString& password,const QString& pin,const QString& newpasswd)
 {
+	authenticationError.clear();
 	QString payload(email + QChar(' ') + password);
 	QUrl requestUrl;
 	if (pin.isEmpty() && newpasswd.isEmpty()) {
@@ -107,7 +108,22 @@ void CloudStorageAuthenticate::uploadFinished()
 {
 	static std::string myLastError;
 
-	std::string cloudAuthReply = reply->readAll().toStdString();
+	std::string cloudAuthReply = reply->isOpen() ? reply->readAll().toStdString() : std::string();
+
+	// AI-generated (Codex, Claude)
+	// A failed request says nothing about the password. Without an HTTP
+	// response, with a server error, or with an empty reply other than 401,
+	// report a connection problem and keep the stored verification state.
+	// Replies that carry a message, including other 4xx, keep the existing
+	// handling, since the backend may report a rejection that way.
+	const int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+	if (status == 0 || status >= 500 || (cloudAuthReply.empty() && status != 401)) {
+		const QString detail = reply->error() == QNetworkReply::NoError ? tr("Empty server response") : reply->errorString();
+		authenticationError = tr("Cloud connection failed: %1").arg(detail);
+		report_error("%s", qPrintable(authenticationError));
+		emit finishedAuthenticate();
+		return;
+	}
 	report_info("Completed connection with cloud storage backend, response %s", cloudAuthReply.c_str());
 
 	if (cloudAuthReply == "[VERIFIED]" || cloudAuthReply == "[OK]") {
