@@ -118,18 +118,21 @@ void TestCloudStorageAuthenticate::cancelledRequest()
 void TestCloudStorageAuthenticate::serviceFailures_data()
 {
 	QTest::addColumn<int>("status");
-	QTest::newRow("internal-server-error") << 500;
-	QTest::newRow("unavailable") << 503;
-	QTest::newRow("empty-forbidden") << 403;
-	QTest::newRow("empty-success") << 200;
+	QTest::addColumn<QByteArray>("body");
+	QTest::newRow("internal-server-error") << 500 << QByteArray();
+	QTest::newRow("unavailable") << 503 << QByteArray();
+	QTest::newRow("unavailable-with-body") << 503 << QByteArray("[OK]");
+	QTest::newRow("empty-forbidden") << 403 << QByteArray();
+	QTest::newRow("empty-success") << 200 << QByteArray();
 }
 
 /** Confirm the real network reply finishes and leaves credentials unverified. */
 void TestCloudStorageAuthenticate::serviceFailures()
 {
 	QFETCH(int, status);
+	QFETCH(QByteArray, body);
 	responseStatus = status;
-	responseBody.clear();
+	responseBody = body;
 	CloudStorageAuthenticate auth(nullptr);
 	QSignalSpy finished(&auth, &CloudStorageAuthenticate::finishedAuthenticate);
 	auth.backend("test@example.invalid", "test-password");
