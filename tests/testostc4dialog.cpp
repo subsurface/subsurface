@@ -168,14 +168,18 @@ void TestOstc4Dialog::firmwareWorkerOwnsTransport()
 	FirmwareUpdateThread worker(nullptr, &data, QString(), false);
 	int opens = 0;
 	int closes = 0;
+	QThread *openThread = nullptr;
+	QThread *closeThread = nullptr;
 	QThread *operationThread = nullptr;
 	worker.setTransport(
 		[&](device_data_t *) {
 			++opens;
+			openThread = QThread::currentThread();
 			return QString();
 		},
 		[&](device_data_t *) {
 			++closes;
+			closeThread = QThread::currentThread();
 			return DC_STATUS_SUCCESS;
 		});
 	worker.setTestOperation([&](device_data_t *) {
@@ -187,6 +191,8 @@ void TestOstc4Dialog::firmwareWorkerOwnsTransport()
 	QVERIFY(worker.wait(1000));
 	QCOMPARE(opens, 1);
 	QCOMPARE(closes, 1);
+	QCOMPARE(openThread, operationThread);
+	QCOMPARE(closeThread, operationThread);
 	QVERIFY(operationThread != QThread::currentThread());
 }
 
