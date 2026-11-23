@@ -1812,10 +1812,6 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 	QString firmwarePath = QFileDialog::getOpenFileName(this, tr("Select firmware file"),
 							    filename, tr("All files") + " (*.*)");
 	if (!firmwarePath.isEmpty()) {
-		if (const QString err = config->openForOtherOperation(&device_data); !err.isEmpty()) {
-			configError(err);
-			return;
-		}
 		ui.progressBar->setValue(0);
 		ui.progressBar->setFormat("%p%");
 		ui.progressBar->setTextVisible(true);
