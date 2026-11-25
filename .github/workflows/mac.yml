@@ -191,6 +191,9 @@ jobs:
 
     - name: build and test subsurface-cli
       if: matrix.arch == 'arm64' && matrix.qtversion != 5
+      env:
+        CANONICALVERSION: ${{ needs.compute-version.outputs.version }}
+        CANONICALVERSION_4: ${{ needs.compute-version.outputs.version_4 }}
       run: |
         cd ${GITHUB_WORKSPACE}/..
         # set up the paths for Qt
