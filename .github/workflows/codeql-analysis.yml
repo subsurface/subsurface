@@ -49,6 +49,11 @@ jobs:
         fetch-depth: 0
         submodules: recursive
 
+    - name: set the version information
+      uses: ./.github/actions/manage-version
+      with:
+        no-increment: true
+
     - name: get container ready for build
       run: |
         sudo apt-get update
