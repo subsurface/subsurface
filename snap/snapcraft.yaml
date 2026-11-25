@@ -199,7 +199,21 @@ parts:
       else
         craftctl set grade=devel
       fi
-      craftctl set version=$( scripts/get-version.sh )
+      VERSION=$( scripts/get-version.sh )
+      # The version of a snap is limited to 32 characters, which the full
+      # version of a pull request build (for example
+      # 6.0.5840-patch.3.pull-request.5170) can exceed. Only shorten the
+      # version recorded in the snap metadata; the binary still reports the
+      # full version computed by get-version.sh.
+      if [ -f latest-subsurface-buildnumber-extension ]; then
+        EXTENSION=$( cat latest-subsurface-buildnumber-extension )
+        case "${EXTENSION}" in
+          pull-request.*)
+            VERSION="$( scripts/get-version.sh 3 )-pr${EXTENSION#pull-request.}"
+            ;;
+        esac
+      fi
+      craftctl set version="${VERSION}"
     override-build: |
       mkdir -p ../install-root
       ln -sf ../../../stage/usr/lib/*/qt6/plugins/geoservices/libqtgeoservices_googlemaps.so \

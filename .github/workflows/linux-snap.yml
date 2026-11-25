@@ -32,11 +32,15 @@ jobs:
       with:
         nightly-builds-secret: ${{ secrets.NIGHTLY_BUILDS }}
 
-    - name: store dummy version and build number for pull request
+    # The snap build runs in a container that cannot work out the build number
+    # itself, so hand it the real one. The version extension written by
+    # manage-version is picked up from the workspace as well.
+    - name: store the build number for pull request
       if: github.event_name == 'pull_request'
+      env:
+        BUILD_NUMBER: ${{ steps.version_number.outputs.buildnr }}
       run: |
-        echo "100" > latest-subsurface-buildnumber
-        echo "CICD-pull-request" > latest-subsurface-buildnumber-extension
+        echo "$BUILD_NUMBER" > latest-subsurface-buildnumber
 
     - name: Set up LXD
       uses: canonical/setup-lxd@main
