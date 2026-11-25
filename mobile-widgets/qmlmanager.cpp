@@ -1856,6 +1856,22 @@ QString QMLManager::getVersion() const
 	return QString(subsurface_git_version());
 }
 
+// AI-generated (Claude)
+QString QMLManager::getBuildKind() const
+{
+	switch (subsurface_build_kind()) {
+	case build_kind::pr:
+		if (subsurface_pr_number() > 0)
+			return tr("Pull request test build (#%1)").arg(subsurface_pr_number());
+		return tr("Pull request test build");
+	case build_kind::ci:
+		return tr("CI build");
+	case build_kind::local:
+	default:
+		return tr("Local build");
+	}
+}
+
 QString QMLManager::getGpsFromSiteName(const QString &siteName)
 {
 	struct dive_site *ds = divelog.sites.get_by_name(siteName.toStdString());
