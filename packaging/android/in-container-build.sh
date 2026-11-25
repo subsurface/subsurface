@@ -132,10 +132,9 @@ fi
 # Qt6 Android doesn't ship qmake mkspecs, so we use cmake
 echo "=== Building googlemaps plugin ==="
 cd "${BUILDROOT}/src"
-"${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" single . googlemaps
+# get-dep-lib.sh checks out the revision pinned for Qt 6 (CURRENT_GOOGLEMAPS)
+QT_VERSION="${QT_VERSION}" "${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" single . googlemaps
 cd googlemaps
-git fetch --quiet
-git checkout qt6-upstream --quiet 2>/dev/null || git switch qt6-upstream --quiet
 # use our CMakeLists.txt if the repo doesn't have one
 if [ ! -f CMakeLists.txt ]; then
 	cp "${SUBSURFACE_SOURCE}/scripts/docker/android-build-container/android-googlemaps-CMakeLists.txt" CMakeLists.txt

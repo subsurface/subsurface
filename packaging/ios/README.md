@@ -61,9 +61,9 @@ The Xcode project and app bundle are under
 
 On a re-run with no source changes, `ios-build-subsurface.sh` skips rebuilding
 Kirigami/ECM and the googlemaps plugin (it detects the installed outputs and
-the recorded Kirigami version/patch-set marker). Native C libraries
-(libxml2, libxslt, libzip, libgit2) and libdivecomputer are also skipped when
-their installed artefacts are current.
+the recorded Kirigami version/patch-set and googlemaps revision markers).
+Native C libraries (libxml2, libxslt, libzip, libgit2) and libdivecomputer are
+also skipped when their installed artefacts are current.
 
 To force a complete rebuild from scratch, delete or clear `BUILD_DIR` before
 re-running. The `~/git/ios_build_subsurface.sh` wrapper supports a `rebuild`
@@ -72,6 +72,11 @@ argument that does this automatically.
 **Note:** the Kirigami skip check covers both the pinned upstream version and
 the set of local patches (`mobile-widgets/3rdparty/00*.patch`). Changing either
 will trigger a full Kirigami rebuild on the next run.
+
+The googlemaps plugin is built from the revision pinned as `CURRENT_GOOGLEMAPS`
+in `scripts/get-dep-lib.sh` (a commit on the `qt6-upstream` branch of
+https://github.com/Subsurface/googlemaps). Changing that pin triggers a rebuild
+of the plugin on the next run.
 
 ## Signing and distribution
 

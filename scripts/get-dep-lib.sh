@@ -20,6 +20,9 @@ CURRENT_QT_ANDROID_CMAKE="master"
 CURRENT_LIBMTP="v1.1.23"
 CURRENT_LIBRAW="0.21.4"
 CURRENT_QLITEHTML="ed4bb77c8a993a4d664bf470dd6ad1649cd273f1"
+# a commit on the qt6-upstream branch of googlemaps, used for Qt 6 builds
+# (see the googlemaps case below for how Qt 5 builds are handled)
+CURRENT_GOOGLEMAPS="5da48f37eae976f12b59a3823a5c59af405708be"
 
 croak() {
 	echo $@
@@ -101,6 +104,8 @@ if [ $# -ne 2 ] && [ $# -ne 3 ] ; then
 	echo "(the name of the directory where build.sh resides)"
 	echo "<install dir> is the directory to clone in"
 	echo "<lib> is the name to be cloned"
+	echo "for googlemaps, set QT_VERSION (e.g. 6.10.3) in the environment to get the"
+	echo "revision pinned for Qt 6; without a Qt 6 QT_VERSION it clones master (Qt 5)"
 	exit 1
 fi
 
@@ -179,12 +184,15 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library breeze-icons $CURRENT_BREEZE_ICONS https://github.com/kde/breeze-icons.git
 			;;
 		googlemaps)
+			# Qt 6 builds use the pinned commit, Qt 5 builds (legacy) use
+			# master. The caller selects Qt 6 by passing QT_VERSION in the
+			# environment of this script, e.g. QT_VERSION=6.10.3
 			if [[ "$QT_VERSION" =~ ^6 ]] ; then
-				CURRENT_GOOGLEMAPS=qt6-upstream
+				GOOGLEMAPS_REV=$CURRENT_GOOGLEMAPS
 			else
-				CURRENT_GOOGLEMAPS=master
+				GOOGLEMAPS_REV=master
 			fi
-			git_checkout_library googlemaps $CURRENT_GOOGLEMAPS https://github.com/Subsurface/googlemaps.git
+			git_checkout_library googlemaps $GOOGLEMAPS_REV https://github.com/Subsurface/googlemaps.git
 			;;
 		hidapi)
 			git_checkout_library hidapi master https://github.com/libusb/hidapi.git
