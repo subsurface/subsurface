@@ -39,6 +39,12 @@ jobs:
   build:
     needs: [build-documentation, compute-version]
     runs-on: windows-2022
+    # Job-level so that every cmake and ninja invocation sees the same version:
+    # the generated-version target re-runs on each ninja invocation and would
+    # otherwise fall back to scripts/get-version.ps1 and report a "-local" build.
+    env:
+      CANONICALVERSION: ${{ needs.compute-version.outputs.version }}
+      CANONICALVERSION_4: ${{ needs.compute-version.outputs.version_4 }}
 
     steps:
       - name: Checkout repository
@@ -421,7 +427,7 @@ jobs:
         shell: pwsh
         run: |
           $buildDir = "${{ github.workspace }}\build"
-          # Find the current installer (e.g., subsurface-6.0.5547-patch.57.local.exe)
+          # Find the current installer (e.g., subsurface-6.0.5547-CICD-release.exe)
           $oldInstaller = Get-ChildItem "$buildDir\subsurface-*.exe" | Select-Object -First 1
 
           if (-not $oldInstaller) {
