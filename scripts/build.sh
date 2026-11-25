@@ -480,17 +480,11 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 	# build the googlemaps map plugin
 
 	cd "$SRC"
-	./${SRC_DIR}/scripts/get-dep-lib.sh single . googlemaps
+	# googlemaps no longer builds against Qt 5, so there are two revisions:
+	# get-dep-lib.sh checks out the one pinned for Qt 6 (CURRENT_GOOGLEMAPS) when it
+	# sees a Qt 6 QT_VERSION, and master otherwise
+	QT_VERSION="$QT_VERSION" ./${SRC_DIR}/scripts/get-dep-lib.sh single . googlemaps
 	pushd googlemaps
-	if [[ $QT_VERSION == 6* ]]; then
-		# the latest version of googlemaps as of Nov 2025 builds out of the box with Qt 6.10
-		# but no longer builds against Qt 5... so we have two branches now
-
-		# We need to fetch first as this isn't the branch checked out by get-dep-lib.sh
-		git fetch
-
-		git switch qt6-upstream
-	fi
 
 	if [ -z "$BUILD_PREFIX" ] ; then
 		GOOGLEMAPS_BUILDDIR="$SRC/googlemaps-build"

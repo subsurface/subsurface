@@ -47,7 +47,7 @@ echo "  Build type: ${BUILD_TYPE}"
 # 1. Build native dependencies (libxml2, libxslt, libzip, libgit2)
 echo "=== Building native dependencies ==="
 ARCH="${ARCH}" TARGET_SDK="${TARGET_SDK}" IOS_DEPLOYMENT_TARGET="${IOS_DEPLOYMENT_TARGET}" \
-	BUILD_DIR="${BUILD_DIR}" \
+	BUILD_DIR="${BUILD_DIR}" QT_VERSION="${QT_VERSION}" \
 	bash "${SUBSURFACE_SOURCE}/packaging/ios/ios-native-libs.sh"
 
 # 2. Build mobile components (ECM, Kirigami) with iOS cross-compilation
@@ -86,21 +86,32 @@ else
 fi
 
 # 2b. Build googlemaps plugin (static, for iOS)
-# Guard: skip if the installed plugin library is already present.
-if [ -f "${IOS_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.a" ]; then
-	echo "=== Skipping googlemaps plugin (already built) ==="
+# Guard: skip if the installed plugin library is present and was built from the
+# googlemaps revision currently pinned in get-dep-lib.sh.
+GOOGLEMAPS_REVISION=$(grep '^CURRENT_GOOGLEMAPS=' "${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" | cut -d= -f2 | tr -d '"')
+GOOGLEMAPS_MARKER="${GOOGLEMAPS_REVISION}"
+GOOGLEMAPS_MARKER_FILE="${IOS_INSTALL_PREFIX}/googlemaps.marker"
+
+PREVIOUS_GOOGLEMAPS_MARKER=""
+if [ -f "${GOOGLEMAPS_MARKER_FILE}" ]; then
+	PREVIOUS_GOOGLEMAPS_MARKER=$(cat "${GOOGLEMAPS_MARKER_FILE}")
+fi
+
+if [ -f "${IOS_INSTALL_PREFIX}/plugins/geoservices/libqtgeoservices_googlemaps.a" ] &&
+		[ "${GOOGLEMAPS_MARKER}" = "${PREVIOUS_GOOGLEMAPS_MARKER}" ]; then
+	echo "=== Skipping googlemaps plugin (revision ${GOOGLEMAPS_REVISION} already built) ==="
 else
 	echo "=== Building googlemaps plugin ==="
-	"${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" single "${BUILD_DIR}" googlemaps
+	# get-dep-lib.sh checks out the revision pinned for Qt 6 (CURRENT_GOOGLEMAPS)
+	QT_VERSION="${QT_VERSION}" "${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh" single "${BUILD_DIR}" googlemaps
 	cd "${BUILD_DIR}/googlemaps"
-	git fetch --quiet
-	git checkout qt6-upstream --quiet 2>/dev/null || git switch qt6-upstream --quiet
 	mkdir -p ios-build
 	cd ios-build
 	"${QT_IOS_PATH}/bin/qmake" "CONFIG+=release" "CONFIG+=static" ../googlemaps.pro
 	make -j"${NUM_CORES}"
 	mkdir -p "${IOS_INSTALL_PREFIX}/plugins/geoservices"
 	cp libqtgeoservices_googlemaps.a "${IOS_INSTALL_PREFIX}/plugins/geoservices/"
+	echo "${GOOGLEMAPS_MARKER}" > "${GOOGLEMAPS_MARKER_FILE}"
 fi
 
 # 3. Build libdivecomputer
