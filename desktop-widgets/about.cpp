@@ -12,12 +12,31 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget *parent) : QDialog(parent, QFlag(0))
 	setWindowModality(Qt::ApplicationModal);
 	QString versionString(subsurface_canonical_version());
 
+	// AI-generated (Claude)
+	QString buildKindString;
+	switch (subsurface_build_kind()) {
+	case build_kind::pr:
+		if (subsurface_pr_number() > 0)
+			buildKindString = tr("Pull request test build (#%1)").arg(subsurface_pr_number());
+		else
+			buildKindString = tr("Pull request test build");
+		break;
+	case build_kind::ci:
+		buildKindString = tr("CI build");
+		break;
+	case build_kind::local:
+	default:
+		buildKindString = tr("Local build");
+		break;
+	}
+
 	ui.aboutLabel->setText(tr("<span style='font-size: 18pt; font-weight: bold;'>"
-				  "Subsurface %1 </span><br><br>"
+				  "Subsurface %1 </span><br>"
+				  "<span style='font-size: 10pt'>%2</span><br><br>"
 				  "Multi-platform divelog software<br>"
 				  "<span style='font-size: 8pt'>"
 				  "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, Berthold Stoeger, and others, 2011-2026"
-				  "</span>").arg(versionString));
+				  "</span>").arg(versionString, buildKindString.toHtmlEscaped()));
 
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_W), this);
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
