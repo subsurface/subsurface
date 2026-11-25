@@ -84,10 +84,17 @@
 
 Function CheckSubsurfaceRunning
     # Return 0 (absent), 1 (running), or 2 (enumeration failed) on the stack.
-    # NSIS/System runs as a 32-bit process, even when installing a 64-bit app.
-    # &l4 writes sizeof(PROCESSENTRY32W) = 556; p is the 32-bit heap pointer.
+    # The layout of PROCESSENTRY32W follows the installer stub, not the
+    # installed app: the MSVC build uses an x86 stub, the MXE (legacy) build
+    # an amd64 stub. The System plugin does not align struct members, so the
+    # amd64 padding (before th32DefaultHeapID and at the end) is explicit.
+    # &l4 writes sizeof(PROCESSENTRY32W): 556 on x86, 568 on amd64.
     # Use WCHAR[260] and the explicit W APIs, not the target app's ABI.
+!if ${NSIS_PTR_SIZE} > 4
+    System::Call '*(&l4, i, i, i, p, i, i, i, i, i, &w260, i) p.r1'
+!else
     System::Call '*(&l4, i, i, p, i, i, i, i, i, &w260) p.r1'
+!endif
     StrCmp $1 0 check_failed
     StrCmp $1 "error" check_failed
     System::Call 'kernel32::CreateToolhelp32Snapshot(i 0x2, i 0) p.r0'
@@ -99,8 +106,12 @@ Function CheckSubsurfaceRunning
     Pop $3
     StrCmp $2 0 first_finished
     check_next:
-        # szExeFile begins after nine 32-bit fields (including the pointer).
+        # szExeFile is at offset 36 on x86 and 44 on amd64.
+!if ${NSIS_PTR_SIZE} > 4
+        System::Call '*$1(&v44, &w260 .r4)'
+!else
         System::Call '*$1(&v36, &w260 .r4)'
+!endif
         StrCmp $4 "error" enumeration_failed
         System::Call 'kernel32::lstrcmpiW(w r4, w "subsurface.exe") i.r2'
         StrCmp $2 "error" enumeration_failed
