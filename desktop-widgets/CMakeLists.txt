@@ -146,6 +146,8 @@ set(SUBSURFACE_INTERFACE
 	textedit.h
 	tripselectiondialog.cpp
 	tripselectiondialog.h
+	updatecheck.cpp
+	updatecheck.h
 	updatemanager.cpp
 	updatemanager.h
 )

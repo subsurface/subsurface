@@ -201,6 +201,12 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 	set(TEST_PASTE_DIVES TestPasteDives)
 endif()
 TEST(TestMerge testmerge.cpp)
+if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
+# the update decision does not depend on the rest of the desktop interface
+TEST(TestUpdateCheck testupdatecheck.cpp)
+target_sources(TestUpdateCheck PRIVATE ../desktop-widgets/updatecheck.cpp)
+set(TEST_UPDATE_CHECK TestUpdateCheck)
+endif()
 TEST(TestTagList testtaglist.cpp)
 if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 TEST(TestCylindersModelSensorRefresh testcylindersmodelsensorrefresh.cpp)
@@ -326,6 +332,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	${TEST_PICTURE}
 	${TEST_PASTE_DIVES}
 	TestMerge
+	${TEST_UPDATE_CHECK}
 	TestTagList
 	${TEST_CYLINDERS_MODEL_SENSOR_REFRESH}
 	${TEST_PLANNER_SHARED}
