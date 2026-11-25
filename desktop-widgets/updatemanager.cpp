@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/updatemanager.h"
+#include "desktop-widgets/updatecheck.h"
 #include "core/qthelper.h"
 #include <QtNetwork>
 #include <QMessageBox>
@@ -41,7 +42,8 @@ void UpdateManager::checkForUpdates(bool automatic)
 #endif
 	isAutomaticCheck = automatic;
 	QString version = subsurface_canonical_version();
-	QString url = QString("http://updatecheck.subsurface-divelog.org/updatecheck.html?os=%1&version=%2").arg(os, version);
+	QString url = QString("http://updatecheck.subsurface-divelog.org/updatecheck.html?os=%1&version=%2").arg(os, version) +
+		      updateCheckBuildParameters(subsurface_build_kind(), subsurface_pr_number());
 	QNetworkRequest request;
 	request.setUrl(url);
 	request.setRawHeader("Accept", "text/xml");
@@ -52,7 +54,7 @@ void UpdateManager::checkForUpdates(bool automatic)
 
 void UpdateManager::requestReceived()
 {
-	bool haveNewVersion = false;
+	bool showPopup = !isAutomaticCheck;
 	QMessageBox msgbox;
 	QString msgTitle = tr("Check for updates.");
 	QString msgText = "<h3>" + tr("Subsurface was unable to check for updates.") + "</h3>";
@@ -65,38 +67,13 @@ void UpdateManager::requestReceived()
 	} else {
 		//No network error
 		QString responseBody(reply->readAll());
-		QString responseLink;
-		if (responseBody.contains('"'))
-			responseLink = responseBody.split("\"").at(1);
-
-		msgbox.setIcon(QMessageBox::Information);
-		if (responseBody == "OK") {
-			msgText = tr("You are using the latest version of Subsurface.");
-		} else if (responseBody.startsWith("[\"http")) {
-			haveNewVersion = true;
-			msgText = tr("A new version of Subsurface is available.<br/>Click on:<br/><a href=\"%1\">%1</a><br/> to download it.")
-					.arg(responseLink);
-		} else if (responseBody.startsWith("Latest version")) {
-			// the webservice backend doesn't localize - but it's easy enough to just replace the
-			// strings that it is likely to send back
-			haveNewVersion = true;
-			msgText = QString("<b>") + tr("A new version of Subsurface is available.") + QString("</b><br/><br/>") +
-					tr("Latest version is %1, please check %2 our download page %3 for information in how to update.")
-					.arg(responseLink).arg("<a href=\"http://subsurface-divelog.org/download\">").arg("</a>");
-		} else {
-			// the webservice backend doesn't localize - but it's easy enough to just replace the
-			// strings that it is likely to send back
-			if (!responseBody.contains("latest development") &&
-			    !responseBody.contains("newer") &&
-			    !responseBody.contains("beta", Qt::CaseInsensitive))
-				haveNewVersion = true;
-			if (responseBody.contains("Newest release version is "))
-				responseBody.replace("Newest release version is ", tr("Newest release version is "));
-			msgText = tr("The server returned the following information:").append("<br/><br/>").append(responseBody);
-			msgbox.setIcon(QMessageBox::Warning);
-		}
+		UpdateCheckOutcome outcome = evaluateUpdateReply(subsurface_build_kind(), subsurface_pr_number(),
+								 isAutomaticCheck, responseBody);
+		showPopup = outcome.showPopup;
+		msgText = outcome.message;
+		msgbox.setIcon(outcome.warning ? QMessageBox::Warning : QMessageBox::Information);
 	}
-	if (haveNewVersion || !isAutomaticCheck) {
+	if (showPopup) {
 		msgbox.setWindowTitle(msgTitle);
 		msgbox.setWindowIcon(QIcon(":subsurface-icon"));
 		msgbox.setText(msgText);
