@@ -162,6 +162,7 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 endif()
 TEST(TestProfile testprofile.cpp)
 TEST(TestGpsCoords testgpscoords.cpp)
+TEST(TestVersion testversion.cpp)
 TEST(TestParse testparse.cpp)
 TEST(TestLibdivecomputer testlibdivecomputer.cpp)
 TEST(TestTankGasGuess testtankgasguess.cpp)
@@ -314,6 +315,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	${TEST_TEXT_HYPERLINK_EVENT_FILTER}
 	TestProfile
 	TestGpsCoords
+	TestVersion
 	TestParse
 	TestPlan
 	${TEST_DIVE_PLANNER_MODEL}
