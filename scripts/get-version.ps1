@@ -123,6 +123,31 @@ if (Test-Path $BuildNumberFile) {
     }
 }
 
+# AI-generated (Claude)
+# A GitHub Actions build must never silently report a '-local' version. It gets
+# its version extension either from the latest-subsurface-buildnumber-extension
+# file (written by the manage-version action) or from the CANONICALVERSION
+# environment variable (which the build uses instead of this script). When
+# neither is there, say so loudly.
+#
+# This is the switch between the two behaviours: while it is $false the problem
+# is only reported as a warning and the '-local' version is still printed. Set
+# it to $true (or set SUBSURFACE_ENFORCE_VERSION_GUARD=true in the environment)
+# to make the script fail instead, printing nothing on stdout.
+$EnforceCiVersionGuard = $false
+
+function Test-CiVersionSource {
+    if ($env:GITHUB_ACTIONS -ne "true" -or $env:CANONICALVERSION) {
+        return
+    }
+    $msg = "get-version.ps1: this GitHub Actions build has neither latest-subsurface-buildnumber-extension nor CANONICALVERSION, so the version would end in '-local'. Run the manage-version action in this job or pass CANONICALVERSION to the build."
+    if ($EnforceCiVersionGuard -or $env:SUBSURFACE_ENFORCE_VERSION_GUARD -eq "true") {
+        [Console]::Error.WriteLine("::error::$msg")
+        exit 1
+    }
+    [Console]::Error.WriteLine("::warning::$msg")
+}
+
 # Build version extension
 $VersionExtension = "-"
 if ($CommitsSince -ne 0) {
@@ -137,6 +162,10 @@ if (Test-Path $ExtensionFile) {
     $Suffix = $Suffix -replace "[^.a-zA-Z0-9-]", ""
     $VersionExtension += $Suffix
 } else {
+    # digits only versions do not use the extension
+    if ($Digits -eq "") {
+        Test-CiVersionSource
+    }
     $VersionExtension += "local"
 }
 
