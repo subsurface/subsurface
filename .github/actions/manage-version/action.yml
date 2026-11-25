@@ -39,10 +39,19 @@ runs:
     - name: retrieve the current version number in all other cases
       if: steps.get_new_build_number.outcome == 'skipped'
       env:
-        PULL_REQUEST_BRANCH: ${{ github.event.pull_request.head.ref }}
+        EVENT_NAME: ${{ github.event_name }}
+        PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
       shell: bash
       run: |
-        echo "pull-request.$PULL_REQUEST_BRANCH" > latest-subsurface-buildnumber-extension
+        # Pull request builds are identified by the pull request number. Every
+        # other build that does not increment the build number (manual runs,
+        # master pushes with no-increment) is an ad-hoc build, so the suffix
+        # is never empty.
+        if [ "$EVENT_NAME" = "pull_request" ] && [[ "$PULL_REQUEST_NUMBER" =~ ^[0-9]+$ ]]; then
+          echo "pull-request.$PULL_REQUEST_NUMBER" > latest-subsurface-buildnumber-extension
+        else
+          echo "adhoc" > latest-subsurface-buildnumber-extension
+        fi
 
     - name: store version number for the build
       id: version_number
