@@ -137,6 +137,7 @@ jobs:
       id: build
       env:
         CANONICALVERSION: ${{ needs.compute-version.outputs.version }}
+        CANONICALVERSION_4: ${{ needs.compute-version.outputs.version_4 }}
       run: |
         BUILD_EXTRA_ARGS=""
         if [ "${GITHUB_EVENT_NAME}" = "push" ]; then

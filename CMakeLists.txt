@@ -558,12 +558,20 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-	execute_process(
-		COMMAND bash scripts/get-version.sh
-		WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-		OUTPUT_VARIABLE SSRF_VERSION_STRING
-		OUTPUT_STRIP_TRAILING_WHITESPACE
-	)
+	# AI-generated (Claude)
+	# Use the version supplied by the build environment (as version.cmake
+	# does for the binary), so that the Info.plist matches the binary and
+	# the disk image name.
+	if(DEFINED ENV{CANONICALVERSION})
+		set(SSRF_VERSION_STRING "$ENV{CANONICALVERSION}")
+	else()
+		execute_process(
+			COMMAND bash scripts/get-version.sh
+			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+			OUTPUT_VARIABLE SSRF_VERSION_STRING
+			OUTPUT_STRIP_TRAILING_WHITESPACE
+		)
+	endif()
 	find_library(APP_SERVICES_LIBRARY ApplicationServices)
 	find_library(HID_LIB HidApi)
 	LIST(APPEND SUBSURFACE_LINK_LIBRARIES ${HID_LIB})
