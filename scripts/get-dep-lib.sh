@@ -57,7 +57,9 @@ git_checkout_library() {
 
 	local current_sha target_sha
 	current_sha=$(git rev-parse HEAD)
-	target_sha=$(git rev-parse "$version^{commit}" 2>/dev/null || git rev-parse "$version")
+	# the revision may not exist locally yet (e.g. a new tag or pin); that must
+	# not abort the script (set -e) before the fetch below gets a chance to run
+	target_sha=$(git rev-parse "$version^{commit}" 2>/dev/null || git rev-parse "$version") || target_sha=""
 
 	if [ ! "$current_sha" = "$target_sha" ] ; then
 		git fetch origin
