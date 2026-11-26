@@ -30,6 +30,7 @@ public:
 		NumberRole,
 		LocationRole,
 		DepthRole,
+		AverageDepthRole,
 		DurationRole,
 		DepthDurationRole,
 		RatingRole,
