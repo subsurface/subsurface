@@ -61,6 +61,68 @@
     <widget class="QLineEdit" name="diveSiteDescription"/>
    </item>
 
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_marker">
+     <property name="text">
+      <string>Marker</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="2" colspan="3">
+    <widget class="QWidget" name="markerChoice">
+     <layout class="QHBoxLayout" name="markerChoiceLayout">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QRadioButton" name="markerRedWhite">
+        <property name="toolTip">
+         <string>Diver-down flag</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="markerAlpha">
+        <property name="toolTip">
+         <string>Alpha flag</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="markerChoiceSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+
    <item row="3" column="0">
     <widget class="QLabel" name="label_2">
      <property name="text">

@@ -16,6 +16,7 @@ struct dive_site
 	std::string description;
 	std::string notes;
 	taxonomy_data taxonomy;
+	bool alpha_flag = false; // false: red/white diver-down marker, true: alpha flag
 
 	dive_site();
 	dive_site(const std::string &name);
