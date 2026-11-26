@@ -483,7 +483,7 @@ if [ "$QUICK" != "1" ] && [ "$BUILD_DESKTOP$BUILD_MOBILE" != "" ] ; then
 	# googlemaps no longer builds against Qt 5, so there are two revisions:
 	# get-dep-lib.sh checks out the one pinned for Qt 6 (CURRENT_GOOGLEMAPS) when it
 	# sees a Qt 6 QT_VERSION, and master otherwise
-	QT_VERSION="$QT_VERSION" ./${SRC_DIR}/scripts/get-dep-lib.sh single . googlemaps
+	QT_VERSION="$QT_VERSION" ./"${SRC_DIR}"/scripts/get-dep-lib.sh single . googlemaps
 	pushd googlemaps
 
 	if [ -z "$BUILD_PREFIX" ] ; then
