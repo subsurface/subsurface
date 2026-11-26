@@ -1446,7 +1446,14 @@ void QMLManager::commitChanges(QString diveId, QString number, QString date, QSt
 		diveChanged = true;
 		d->visibility = visibility;
 	}
-	if (formatNotes(d) != notes) {
+	// AI-generated (Claude)
+	// formatNotes() returns HTML and notes is plain text, so convert the
+	// former into plain text the same way as the editor output above before
+	// comparing. This keeps unchanged notes (including planner notes, which
+	// are stored as HTML) untouched.
+	QTextDocument formattedNotes;
+	formattedNotes.setHtml(formatNotes(d));
+	if (formattedNotes.toPlainText() != notes) {
 		diveChanged = true;
 		d->notes = notes.toStdString();
 	}
