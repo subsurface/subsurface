@@ -928,7 +928,21 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 							plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 						stopping = true;
 						previous_point_time = clock;
-						current_cylinder = gaschanges[gi].gasidx;
+
+						/* Stop for the minimum duration to switch gas on the current gas mix */
+						int next_cylinder = gaschanges[gi].gasidx;
+						if (!last_segment_min_switch && prefs.min_switch_duration > 0 &&
+						    get_o2(dive->get_cylinder(next_cylinder)->gasmix) != 1000) {
+							add_segment(ds, dive->depth_to_bar(depth),
+								dive->get_cylinder(current_cylinder)->gasmix,
+								prefs.min_switch_duration, po2, divemode, prefs.decosac, true);
+							clock += prefs.min_switch_duration;
+							if (is_final_plan)
+								plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
+							previous_point_time = clock;
+							last_segment_min_switch = true;
+						}
+						current_cylinder = next_cylinder;
 						if (divemode == CCR)
 							po2 = setpoint_change(dive, current_cylinder);
 #if DEBUG_PLAN & 16
@@ -936,14 +950,6 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 						printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
 							(get_o2(gas) + 5) / 10, (get_he(gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
-						/* Stop for the minimum duration to switch gas unless we switch to o2 */
-						if (!last_segment_min_switch && get_o2(dive->get_cylinder(current_cylinder)->gasmix) != 1000) {
-							add_segment(ds, dive->depth_to_bar(depth),
-								dive->get_cylinder(current_cylinder)->gasmix,
-								prefs.min_switch_duration, po2, divemode, prefs.decosac, true);
-							clock += prefs.min_switch_duration;
-							last_segment_min_switch = true;
-						}
 					} else {
 						/* The user has selected the option to switch gas only at required stops.
 						 * Remember that we are waiting to switch gas
@@ -983,7 +989,20 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 				 * Occurs when the user has selected the option to switch only at required stops
 				 */
 				if (pendinggaschange) {
-					current_cylinder = gaschanges[gi + 1].gasidx;
+					/* Stop for the minimum duration to switch gas on the current gas mix */
+					int next_cylinder = gaschanges[gi + 1].gasidx;
+					if (!last_segment_min_switch && prefs.min_switch_duration > 0 &&
+					    get_o2(dive->get_cylinder(next_cylinder)->gasmix) != 1000) {
+						add_segment(ds, dive->depth_to_bar(depth),
+							dive->get_cylinder(current_cylinder)->gasmix,
+							prefs.min_switch_duration, po2, divemode, prefs.decosac, true);
+						clock += prefs.min_switch_duration;
+						if (is_final_plan)
+							plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
+						previous_point_time = clock;
+						last_segment_min_switch = true;
+					}
+					current_cylinder = next_cylinder;
 					if (divemode == CCR)
 						po2 = setpoint_change(dive, current_cylinder);
 #if DEBUG_PLAN & 16
@@ -991,13 +1010,6 @@ planner_error_t plan(struct deco_state *ds, struct diveplan &diveplan, struct di
 					printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi + 1].gasidx,
 						(get_o2(gas) + 5) / 10, (get_he(gas) + 5) / 10, gaschanges[gi + 1].depth / 1000.0);
 #endif
-					/* Stop for the minimum duration to switch gas unless we switch to o2 */
-					if (!last_segment_min_switch && get_o2(dive->get_cylinder(current_cylinder)->gasmix) != 1000) {
-						add_segment(ds, dive->depth_to_bar(depth),
-							dive->get_cylinder(current_cylinder)->gasmix,
-							prefs.min_switch_duration, po2, divemode, prefs.decosac, true);
-						clock += prefs.min_switch_duration;
-					}
 					pendinggaschange = false;
 				}
 

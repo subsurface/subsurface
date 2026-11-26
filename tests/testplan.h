@@ -25,6 +25,7 @@ private slots:
 	// AI-generated (Claude)
 	void testRecreationalWithinNDL();
 	void testRecreationalExceedingNDL();
+	void testGasSwitchDurationPosition();
 };
 
 #endif // TESTPLAN_H
