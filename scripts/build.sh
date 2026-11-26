@@ -239,7 +239,7 @@ if [ "$BUILD_DOWNLOADER" = "1" ] ; then
 	BUILDS+=( "DownloaderExecutable" )
 	BUILDDIRS+=( "${BUILD_PREFIX}build-downloader" )
 fi
-if [ "$BUILD_DESKTOP" = "1" ] || [ "$BUILDS" = "" ] ; then
+if [ "$BUILD_DESKTOP" = "1" ] || [ "${#BUILDS[@]}" -eq 0 ] ; then
 	# if no option is given, we build the desktop version
 	echo "building Subsurface in ${BUILD_PREFIX:-$DEFAULT_PREFIX}build"
 	BUILDS+=( "DesktopExecutable" )
@@ -283,7 +283,7 @@ if [ "$PLATFORM" = Darwin ] ; then
 		MAC_OPTS="-mmacosx-version-min=${BASESDK} -arch arm64 -arch x86_64"
 	else
 		ARCHS=$(uname -m) # crazy, I know, but $(arch) results in the incorrect 'i386' on an x86_64 Mac
-		CMAKE_ARGS+="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES="$ARCHS" -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
+		CMAKE_ARGS+="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_ARCHITECTURES=${ARCHS} -DCMAKE_BUILD_TYPE={$DEBUGRELEASE} -DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} -DCMAKE_POLICY_VERSION_MINIMUM=3.16"
 		MAC_OPTS="-mmacosx-version-min=${BASESDK}"
 	fi
 	# OpenSSL can't deal with multi arch build
@@ -399,7 +399,7 @@ else
 		# since that starts with a dot, the field numbers in the cut need to be one higher
 		LDCONFIG=$(PATH=/sbin:/usr/sbin:$PATH which ldconfig)
 		if [ ! -z "$LDCONFIG" ] ; then
-			LIBGIT=$(realpath $("$LDCONFIG" -p | grep libgit2\\.so\\. | cut -d\  -f4) | awk -Fo '{ print $NF }')
+			LIBGIT=$("$LDCONFIG" -p | grep libgit2\\.so\\. | cut -d\  -f4 | tr '\n' '\0' | xargs -0 realpath | awk -Fo '{ print $NF }')
 			LIBGITMAJ=$(echo $LIBGIT | cut -d. -f2)
 			LIBGIT=$(echo $LIBGIT | cut -d. -f3)
 		fi
@@ -454,10 +454,9 @@ CFLAGS="$MAC_OPTS -I$INSTALL_ROOT/include $LIBDC_CFLAGS" "$SRC"/${SRC_DIR}/libdi
 if [ "$PLATFORM" = Darwin ] ; then
 	# remove some copmpiler options that aren't supported on Mac
 	# otherwise the log gets very noisy
-	for i in $(find . -name Makefile)
-	do
+	while IFS= read -r -d '' i; do
 		sed -i .bak 's/-Wrestrict//;s/-Wno-unused-but-set-variable//' "$i"
-	done
+	done < <(find . -name Makefile -print0)
 	# it seems that on my Mac some of the configure tests for libdivecomputer
 	# pass even though the feature tested for is actually missing
 	# let's hack around that

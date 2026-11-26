@@ -25,7 +25,7 @@ CURRENT_QLITEHTML="ed4bb77c8a993a4d664bf470dd6ad1649cd273f1"
 CURRENT_GOOGLEMAPS="5da48f37eae976f12b59a3823a5c59af405708be"
 
 croak() {
-	echo $@
+	echo "$@"
 	exit 1
 }
 
@@ -55,8 +55,9 @@ git_checkout_library() {
 	fi
 	pushd "$name" || croak "can't cd into $name"
 
-	local current_sha=$(git rev-parse HEAD)
-	local target_sha=$(git rev-parse "$version^{commit}" 2>/dev/null || git rev-parse "$version")
+	local current_sha target_sha
+	current_sha=$(git rev-parse HEAD)
+	target_sha=$(git rev-parse "$version^{commit}" 2>/dev/null || git rev-parse "$version")
 
 	if [ ! "$current_sha" = "$target_sha" ] ; then
 		git fetch origin
