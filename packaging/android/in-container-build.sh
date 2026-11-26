@@ -58,7 +58,6 @@ export ANDROID_NDK_HOME="${ANDROID_NDK_ROOT}"
 SYSROOT="${TOOLCHAIN}/sysroot"
 CFLAGS="--sysroot=${SYSROOT} -fPIC"
 CPPFLAGS="--sysroot=${SYSROOT} -fPIC"
-CXXFLAGS="--sysroot=${SYSROOT} -fPIC"
 LDFLAGS="-Wl,-z,max-page-size=16384"
 
 
@@ -189,7 +188,7 @@ if [ ! -f "${LIBDC_STAMP}" ] || [ "$(cat "${LIBDC_STAMP}" 2>/dev/null)" != "${LI
 	mkdir -p libdivecomputer-build && cd libdivecomputer-build
 	CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}" "${SUBSURFACE_SOURCE}"/libdivecomputer/configure --host="${TARGET}" --prefix="${PREFIX}" \
 		--enable-static --disable-shared --enable-examples=no
-	make -j$(nproc) && make install
+	make -j"$(nproc)" && make install
 	echo "${LIBDC_HASH}" > "${LIBDC_STAMP}"
 	# libdivecomputer's `make install` rewrote headers and the static lib
 	# into ${PREFIX}; subsurface's build.ninja records dependencies on
