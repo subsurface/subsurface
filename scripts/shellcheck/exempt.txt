@@ -4,7 +4,6 @@ packaging/macosx/homebrew-local-build.sh
 packaging/windows/docker-build.sh
 packaging/windows/in-container-build.sh
 packaging/windows/mxe-based-build.sh
-scripts/add-version-to-metainfo.sh
 scripts/build-libdivecomputer.sh
 scripts/build.sh
 scripts/check-version.sh

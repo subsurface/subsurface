@@ -4,10 +4,10 @@
 # crafted tar balls for OBS
 # this will, however, fail for plain tar balls created via git archive
 
-SCRIPT_DIR="$( cd "${BASH_SOURCE%/*}" ; pwd )"
+SCRIPT_DIR="$( cd "${BASH_SOURCE%/*}" && pwd )" || exit 1
 
 if [ -f "$SCRIPT_DIR"/../latest-subsurface-buildnumber ] ; then
-	VERSION=$("$SCRIPT_DIR"/get-version.sh)
+	VERSION=$("$SCRIPT_DIR"/get-version.sh) || exit $?
 else
 	sha=$(git log -1 --format="%H" 2>/dev/null)
 	if [ "$sha" != "" ] ; then

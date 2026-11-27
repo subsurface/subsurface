@@ -1479,7 +1479,16 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	endif()
 	install(FILES subsurface.debug DESTINATION bin)
 	install(FILES subsurface.desktop DESTINATION share/applications)
-	install(CODE "execute_process(COMMAND sh ${CMAKE_SOURCE_DIR}/scripts/add-version-to-metainfo.sh WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})")
+	# a failing get-version must not end up as an empty release version in
+	# the metainfo on GitHub Actions (see version.cmake)
+	install(CODE "
+		execute_process(COMMAND sh ${CMAKE_SOURCE_DIR}/scripts/add-version-to-metainfo.sh
+			WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+			RESULT_VARIABLE ADD_VERSION_RESULT)
+		if(NOT \"\${ADD_VERSION_RESULT}\" STREQUAL \"0\" AND \"\$ENV{GITHUB_ACTIONS}\" STREQUAL \"true\")
+			message(FATAL_ERROR \"add-version-to-metainfo.sh failed (\${ADD_VERSION_RESULT}) in a GitHub Actions build, see the output above\")
+		endif()
+	")
 	install(FILES metainfo/subsurface.metainfo.xml DESTINATION share/metainfo)
 	install(FILES icons/subsurface-icon.svg DESTINATION share/icons/hicolor/scalable/apps)
 	if (FLATHUB_BUILD)
