@@ -4,7 +4,9 @@
 # crafted tar balls for OBS
 # this will, however, fail for plain tar balls created via git archive
 
-SCRIPT_DIR="$( cd "${BASH_SOURCE%/*}" && pwd )" || exit 1
+# the script is run as "sh scripts/add-version-to-metainfo.sh", where sh may be
+# dash and BASH_SOURCE is not set, so locate it through $0
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)" || exit 1
 
 if [ -f "$SCRIPT_DIR"/../latest-subsurface-buildnumber ] ; then
 	VERSION=$("$SCRIPT_DIR"/get-version.sh) || exit $?
