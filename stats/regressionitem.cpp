@@ -6,6 +6,7 @@
 #include "zvalues.h"
 
 #include <cmath>
+#include <limits>
 
 static const double regressionLineWidth = 2.0;
 
@@ -31,73 +32,125 @@ void RegressionItem::setFeatures(bool regressionIn, bool confidenceIn)
 	updatePosition();
 }
 
-// Note: this calculates the confidence area, even if it isn't shown. Might want to optimize this.
+// AI-generated (GPT-6 Sol): keep the line independent of confidence geometry.
 void RegressionItem::updatePosition()
 {
+	auto clearImage = [this] {
+		if (img) {
+			img->fill(Qt::transparent);
+			setTextureDirty();
+		}
+	};
 	if (!xAxis || !yAxis)
-		return;
+		return clearImage();
 	auto [minX, maxX] = xAxis->minMax();
 	auto [minY, maxY] = yAxis->minMax();
 	auto [screenMinX, screenMaxX] = xAxis->minMaxScreen();
+	double top = yAxis->toScreen(maxY);
+	double bottom = yAxis->toScreen(minY);
+	if (!std::isfinite(minX) || !std::isfinite(maxX) || !std::isfinite(reg.a) ||
+	    !std::isfinite(reg.b) || !std::isfinite(screenMinX) || !std::isfinite(screenMaxX) ||
+	    !std::isfinite(top) || !std::isfinite(bottom) || screenMaxX <= screenMinX || bottom <= top)
+		return clearImage();
+	QRectF box(QPointF(screenMinX, top), QPointF(screenMaxX, bottom));
 
 	// Draw the confidence interval according to http://www2.stat.duke.edu/~tjl13/s101/slides/unit6lec3H.pdf p.5 with t*=2 for 95% confidence
 	QPolygonF poly;
-	const int num_samples = 101;
-	poly.reserve(num_samples * 2);
-	for (int i = 0; i < num_samples; ++i) {
-		double x = (maxX - minX) / (num_samples - 1) * static_cast<double>(i) + minX;
-		poly << QPointF(xAxis->toScreen(x),
-			yAxis->toScreen(reg.a * x + reg.b + 1.960 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
+	if (confidence && reg.n > 2 && reg.sx2 > 0.0 && std::isfinite(reg.res2) &&
+	    reg.res2 >= 0.0 && std::isfinite(reg.sx2) && std::isfinite(reg.xavg) &&
+	    std::isfinite(reg.r2)) {
+		const int num_samples = 101;
+		poly.reserve(num_samples * 2);
+		bool valid = true;
+		for (int side : { 1, -1 }) {
+			for (int index = 0; index < num_samples; ++index) {
+				int i = side == 1 ? index : num_samples - 1 - index;
+				double x = (maxX - minX) / (num_samples - 1) * static_cast<double>(i) + minX;
+				double dx = x - reg.xavg;
+				double variance = reg.res2 / (reg.n - 2) *
+					(1.0 / reg.n + dx * dx / (reg.n - 1) * (reg.n - 2) / reg.sx2);
+				QPointF point(xAxis->toScreen(x),
+					      yAxis->toScreen(reg.a * x + reg.b + side * 1.960 * sqrt(variance)));
+				if (!std::isfinite(point.x()) || !std::isfinite(point.y())) {
+					valid = false;
+					break;
+				}
+				poly << point;
+			}
+			if (!valid)
+				break;
+		}
+		if (valid)
+			poly = poly.intersected(box);
+		else
+			poly.clear();
 	}
-	for (int i = num_samples - 1; i >= 0; --i) {
-		double x = (maxX - minX) / (num_samples - 1) * static_cast<double>(i) + minX;
-		poly << QPointF(xAxis->toScreen(x),
-			yAxis->toScreen(reg.a * x + reg.b - 1.960 * sqrt(reg.res2 / (reg.n - 2)  * (1.0 / reg.n + (x - reg.xavg) * (x - reg.xavg) / (reg.n - 1) * (reg.n -2) / reg.sx2))));
+
+	// Clip the line as a segment, not as a polygon (a two-point polygon has no area).
+	QPointF from(screenMinX, yAxis->toScreen(reg.a * minX + reg.b));
+	QPointF to(screenMaxX, yAxis->toScreen(reg.a * maxX + reg.b));
+	bool hasBandLine = confidence && reg.n > 2 && reg.res2 == 0.0 &&
+			   reg.sx2 > 0.0 && std::isfinite(reg.sx2) && std::isfinite(reg.r2);
+	bool hasLine = (regression || hasBandLine) && std::isfinite(from.y()) && std::isfinite(to.y());
+	if (hasLine && from.y() != to.y()) {
+		if (from.y() < top || from.y() > bottom) {
+			double t = ((from.y() < top ? top : bottom) - from.y()) / (to.y() - from.y());
+			from += t * (to - from);
+		}
+		if (to.y() < top || to.y() > bottom) {
+			double t = ((to.y() < top ? top : bottom) - to.y()) / (from.y() - to.y());
+			to += t * (from - to);
+		}
 	}
-	QPolygonF linePolygon;
-	linePolygon.reserve(2);
-	linePolygon << QPointF(screenMinX, yAxis->toScreen(reg.a * minX + reg.b));
-	linePolygon << QPointF(screenMaxX, yAxis->toScreen(reg.a * maxX + reg.b));
+	hasLine = hasLine && box.contains(from) && box.contains(to) && from != to;
+	if (poly.size() < 3)
+		poly.clear();
 
-	QRectF box(QPointF(screenMinX, yAxis->toScreen(minY)), QPointF(screenMaxX, yAxis->toScreen(maxY)));
-
-	poly = poly.intersected(box);
-	linePolygon = linePolygon.intersected(box);
-	if (poly.size() < 2 || linePolygon.size() < 2)
-		return;
-
-	// Find lowest and highest point on screen. In principle, we need
-	// only check half of the polygon, but let's not optimize without reason.
+	// Include both independently clipped features in the canvas bounds.
 	double screenMinY = std::numeric_limits<double>::max();
 	double screenMaxY = std::numeric_limits<double>::lowest();
+	if (hasLine) {
+		screenMinY = std::min(from.y(), to.y());
+		screenMaxY = std::max(from.y(), to.y());
+	}
 	for (const QPointF &point: poly) {
-		double y = point.y();
-		if (y < screenMinY)
-			screenMinY = y;
-		if (y > screenMaxY)
-			screenMaxY = y;
+		screenMinY = std::min(screenMinY, point.y());
+		screenMaxY = std::max(screenMaxY, point.y());
+	}
+	if (!hasLine && poly.empty()) {
+		// An existing texture must be cleared when the last drawable feature disappears.
+		return clearImage();
 	}
 	screenMinY = floor(screenMinY - 1.0);
 	screenMaxY = ceil(screenMaxY + 1.0);
+	double canvasWidth = screenMaxX - screenMinX;
+	double canvasHeight = screenMaxY - screenMinY;
+	if (!std::isfinite(screenMinY) || !std::isfinite(screenMaxY) ||
+	    canvasWidth > 16384 || canvasHeight > 16384 ||
+	    canvasWidth * canvasHeight > 16000000)
+		return clearImage();
 	QPointF offset(screenMinX, screenMinY);
 	for (QPointF &point: poly)
 		point -= offset;
-	for (QPointF &point: linePolygon)
-		point -= offset;
-	ChartPixmapItem::resize(QSizeF(screenMaxX - screenMinX, screenMaxY - screenMinY));
+	from -= offset;
+	to -= offset;
+	ChartPixmapItem::resize(QSizeF(canvasWidth, canvasHeight));
 
 	img->fill(Qt::transparent);
-	if (confidence) {
+	if (!poly.empty()) {
 		QColor col(theme.regressionItemColor);
-		col.setAlphaF((float)reg.r2);
+		col.setAlphaF(static_cast<float>(qBound(0.0, reg.r2, 1.0)));
 		painter->setPen(Qt::NoPen);
 		painter->setBrush(QBrush(col));
 		painter->drawPolygon(poly);
 	}
 
-	if (regression) {
-		painter->setPen(QPen(theme.regressionItemColor, regressionLineWidth));
-		painter->drawLine(QPointF(linePolygon[0]), QPointF(linePolygon[1]));
+	if (hasLine) {
+		QColor color(theme.regressionItemColor);
+		if (!regression)
+			color.setAlphaF(static_cast<float>(qBound(0.0, reg.r2, 1.0)));
+		painter->setPen(QPen(color, regressionLineWidth));
+		painter->drawLine(from, to);
 	}
 
 	ChartPixmapItem::setPos(offset);

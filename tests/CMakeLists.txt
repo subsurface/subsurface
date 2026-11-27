@@ -159,6 +159,9 @@ if (SUBSURFACE_TARGET_EXECUTABLE MATCHES "DesktopExecutable")
 		set_tests_properties(TestTextHyperlinkEventFilter PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
 	endif()
 	set(TEST_TEXT_HYPERLINK_EVENT_FILTER TestTextHyperlinkEventFilter)
+	TEST(TestRegressionRendering testregressionrendering.cpp)
+	target_link_libraries(TestRegressionRendering subsurface_stats ${SUBSURFACE_LINK_LIBRARIES})
+	set(TEST_REGRESSION_RENDERING TestRegressionRendering)
 endif()
 TEST(TestProfile testprofile.cpp)
 TEST(TestGpsCoords testgpscoords.cpp)
@@ -319,6 +322,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	${TEST_BT_DEVICE_POWER_DIALOG}
 	${TEST_OSTC4_DIALOG}
 	${TEST_TEXT_HYPERLINK_EVENT_FILTER}
+	${TEST_REGRESSION_RENDERING}
 	TestProfile
 	TestGpsCoords
 	TestVersion
