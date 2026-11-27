@@ -11,11 +11,27 @@ if [ -f "$SCRIPT_DIR"/../latest-subsurface-buildnumber ] ; then
 else
 	sha=$(git log -1 --format="%H" 2>/dev/null)
 	if [ "$sha" != "" ] ; then
-		VERSION=$("$SCRIPT_DIR"/get-version-for-changeset.sh "$sha")
+		# AI-generated (Claude)
+		# On GitHub Actions a failing helper must fail the build. Elsewhere the
+		# empty version falls back to 'unknown' below.
+		VERSION=$("$SCRIPT_DIR"/get-version-for-changeset.sh "$sha") || {
+			status=$?
+			[ "$GITHUB_ACTIONS" = "true" ] && exit "$status"
+		}
 	else
 		VERSION="unknown"
 	fi
 fi
+
+# AI-generated (Claude)
+# The release version ends up in an XML attribute, so it must never be empty,
+# '<unknown>' (printed by get-version-for-changeset.sh when it finds no build
+# for a changeset) or anything else that is not a plain version string. Fall
+# back to the value used when there is no git. This has to stay POSIX, as the
+# script may be run by dash.
+case "$VERSION" in
+	""|*[!0-9A-Za-z._+-]*) VERSION="unknown" ;;
+esac
 
 if [ -f "$SCRIPT_DIR"/../.gitdate ] ; then
 	DATE=$(cat "$SCRIPT_DIR"/../.gitdate)
