@@ -87,6 +87,33 @@ void TestRegressionRendering::confidenceAndClipping()
 	view.emergencyShutdown();
 }
 
+// AI-generated (GPT-6 Sol): cover rounding at both clipped endpoints.
+void TestRegressionRendering::exactClippingBoundary()
+{
+	StatsView view;
+	auto x = view.createChartItem<ValueAxis>(QString(), 0.0, 100.0, 0, true);
+	auto y = view.createChartItem<ValueAxis>(QString(), 0.0, 100.0, 0, false);
+	x->setSize(100);
+	y->setSize(100);
+	x->setRange(0.0, 100.0);
+	y->setRange(0.0, 100.0);
+	x->setPos(QPointF(0, 100));
+	y->setPos(QPointF(0, 100));
+	regression_data entering { -0.49, 101.0, 0.0, 1.0, 50.0, 50.0, 2 };
+	auto first = view.createChartItem<RegressionProbe>(entering, &*x, &*y);
+	first->updatePosition(); // Screen endpoints (0,-1) and (100,48).
+	QVERIFY(opaquePixels(first->image()) > 0);
+	regression_data leaving { 0.49, 52.0, 0.0, 1.0, 50.0, 50.0, 2 };
+	auto last = view.createChartItem<RegressionProbe>(leaving, &*x, &*y);
+	last->updatePosition(); // Screen endpoints (0,48) and (100,-1).
+	QVERIFY(opaquePixels(last->image()) > 0);
+	regression_data outside { 0.0, 101.0, 0.0, 1.0, 50.0, 50.0, 2 };
+	auto hidden = view.createChartItem<RegressionProbe>(outside, &*x, &*y);
+	hidden->updatePosition();
+	QCOMPARE(opaquePixels(hidden->image()), 0);
+	view.emergencyShutdown();
+}
+
 void TestRegressionRendering::invalidGeometry()
 {
 	StatsView view;

@@ -11,6 +11,7 @@ private slots:
 	void initTestCase() { TestBase::initTestCase(); }
 	void twoPointsAndFeatures();
 	void confidenceAndClipping();
+	void exactClippingBoundary();
 	void invalidGeometry();
 };
 

@@ -94,12 +94,16 @@ void RegressionItem::updatePosition()
 	bool hasLine = (regression || hasBandLine) && std::isfinite(from.y()) && std::isfinite(to.y());
 	if (hasLine && from.y() != to.y()) {
 		if (from.y() < top || from.y() > bottom) {
-			double t = ((from.y() < top ? top : bottom) - from.y()) / (to.y() - from.y());
-			from += t * (to - from);
+			double edge = from.y() < top ? top : bottom;
+			double t = (edge - from.y()) / (to.y() - from.y());
+			from.setX(from.x() + t * (to.x() - from.x()));
+			from.setY(edge);
 		}
 		if (to.y() < top || to.y() > bottom) {
-			double t = ((to.y() < top ? top : bottom) - to.y()) / (from.y() - to.y());
-			to += t * (from - to);
+			double edge = to.y() < top ? top : bottom;
+			double t = (edge - to.y()) / (from.y() - to.y());
+			to.setX(to.x() + t * (from.x() - to.x()));
+			to.setY(edge);
 		}
 	}
 	hasLine = hasLine && box.contains(from) && box.contains(to) && from != to;
