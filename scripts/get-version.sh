@@ -16,6 +16,30 @@ croak_usage() {
 	croak "Usage: $0 [--no-fetch] [1|3|4]"
 }
 
+# AI-generated (Claude)
+# A GitHub Actions build must never silently report a '-local' version. It gets
+# its version extension either from the latest-subsurface-buildnumber-extension
+# file (written by the manage-version action) or from the CANONICALVERSION
+# environment variable (which the build uses instead of this script). When
+# neither is there, say so loudly.
+#
+# This is the switch between the two behaviours: while it is false the problem
+# is only reported as a warning and the '-local' version is still printed. Set
+# it to true (or export SUBSURFACE_ENFORCE_VERSION_GUARD=true) to make the
+# script fail instead, printing nothing on stdout.
+ENFORCE_CI_VERSION_GUARD=false
+
+check_ci_version_source() {
+	[[ $GITHUB_ACTIONS == "true" && -z $CANONICALVERSION ]] || return 0
+	local msg
+	msg="$0: this GitHub Actions build has neither latest-subsurface-buildnumber-extension nor CANONICALVERSION, so the version would end in '-local'. Run the manage-version action in this job or pass CANONICALVERSION to the build."
+	if [[ $ENFORCE_CI_VERSION_GUARD == "true" || $SUBSURFACE_ENFORCE_VERSION_GUARD == "true" ]] ; then
+		echo "::error::$msg" >&2
+		exit 1
+	fi
+	echo "::warning::$msg" >&2
+}
+
 NO_FETCH=false
 while [[ $# -gt 0 ]] ; do
 	case "$1" in
@@ -78,6 +102,8 @@ if [ -f "latest-subsurface-buildnumber-extension" ] ; then
 	SUFFIX=$(<"latest-subsurface-buildnumber-extension")
 	VERSION_EXTENSION+=$(sed 's@[/_]@-@g;s/[^.a-zA-Z0-9-]//g' <<< "$SUFFIX")
 else
+	# digits only versions do not use the extension
+	[[ -n $DIGITS ]] || check_ci_version_source
 	VERSION_EXTENSION+="local"
 fi
 
